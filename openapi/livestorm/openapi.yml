@@ -372,10 +372,10 @@ components:
           type: string
           description: Canceled time
         created_at:
-          type: string
+          type: integer
           description: Created time
         updated_at:
-          type: string
+          type: integer
           description: Updated time
         registrants_count:
           type: string
@@ -402,10 +402,10 @@ components:
           type: string
           description: Role assigned to
         created_at:
-          type: string
+          type: integer
           description: Created time
         updated_at:
-          type: string
+          type: integer
           description: Updated time
         timezone:
           type: string
@@ -1314,44 +1314,42 @@ paths:
                                 type: object
                                 nullable: true
                                 description: ''
-                                items:
-                                  type: object
-                                  properties:
-                                    event_id:
-                                      type: string
-                                      nullable: false
-                                      description: ''
-                                    created_at:
-                                      type: string
-                                      nullable: false
-                                      description: ''
-                                    updated_at:
-                                      type: string
-                                      nullable: false
-                                      description: ''
-                                    fields:
-                                      type: array
-                                      nullable: false
-                                      description: ''
-                                      items:
-                                        type: object
-                                        properties:
-                                          id:
-                                            type: string
-                                            nullable: false
-                                            description: ''
-                                          type:
-                                            type: string
-                                            nullable: false
-                                            description: ''
-                                          order:
-                                            type: integer
-                                            nullable: false
-                                            description: ''
-                                          required:
-                                            type: string
-                                            nullable: false
-                                            description: ''
+                                properties:
+                                  event_id:
+                                    type: string
+                                    nullable: false
+                                    description: ''
+                                  created_at:
+                                    type: integer
+                                    nullable: false
+                                    description: ''
+                                  updated_at:
+                                    type: integer
+                                    nullable: false
+                                    description: ''
+                                  fields:
+                                    type: array
+                                    nullable: false
+                                    description: ''
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                          nullable: false
+                                          description: ''
+                                        type:
+                                          type: string
+                                          nullable: false
+                                          description: ''
+                                        value:
+                                          type: string
+                                          nullable: true
+                                          description: ''
+                                        required:
+                                          type: boolean
+                                          nullable: false
+                                          description: ''
                               messages_count:
                                 type: integer
                                 nullable: false

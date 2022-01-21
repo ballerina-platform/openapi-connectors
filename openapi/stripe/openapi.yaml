@@ -29881,6 +29881,19 @@ paths:
           type: string
         style: simple
         description: subscription Id
+      - in: query
+        name: invoice_now
+        required: false
+        schema:
+          type: boolean
+        description: Will generate a final invoice that invoices for any un-invoiced metered usage and new/pending proration invoice items.
+        style: simple
+      - in: query
+        required: false
+        name: prorate
+        schema:
+          type: boolean
+        description: Will generate a proration invoice item that credits remaining unused time until the subscription period end.
       responses:
         '200':
           content:

@@ -611,9 +611,13 @@ public isolated client class Client {
     # <p>By default, upon subscription cancellation, Stripe will stop automatic collection of all finalized invoices for the customer. This is intended to prevent unexpected payment attempts after the customer has canceled a subscription. However, you can resume automatic collection of the invoices manually after subscription cancellation to have us proceed. Or, you could check for unpaid invoices before allowing the customer to cancel the subscription at all.</p>
     #
     # + subscriptionExposedId - subscription Id 
+    # + invoiceNow - Will generate a final invoice that invoices for any un-invoiced metered usage and new/pending proration invoice items. 
+    # + prorate - Will generate a proration invoice item that credits remaining unused time until the subscription period end. 
     # + return - Successful response. 
-    remote isolated function deleteSubscription(string subscriptionExposedId) returns Subscription|error {
+    remote isolated function deleteSubscription(string subscriptionExposedId, boolean? invoiceNow = (), boolean? prorate = ()) returns Subscription|error {
         string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
+        map<anydata> queryParam = {"invoice_now": invoiceNow, "prorate": prorate};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Subscription response = check self.clientEp->delete(resourcePath);
         return response;
     }

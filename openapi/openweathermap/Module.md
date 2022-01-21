@@ -26,13 +26,11 @@ To use the Open Weather Map connector in your Ballerina application, update the 
 Provide the obtained API Key in client configuration.
 
 ```ballerina
-    ApiKeysConfig config = {
+    openweathermap:ApiKeysConfig config = {
         appid : "<your appid>"
-    }
+    };
 
-    openweathermap:Client openweatherClient = check new openweathermap:Client(config);
-
-};
+    openweathermap:Client openweatherClient = check new Client(config);
 ```
 
 ### Step 3: Invoke  connector operation
@@ -40,7 +38,7 @@ Provide the obtained API Key in client configuration.
 1. Obtain current weather data by city name.
 
 ```ballerina
-    CurrentWeatherData result = check weatherclient->getCurretWeatherData("Colombo");
+    openweathermap:CurrentWeatherData result = check openweatherClient->getCurretWeatherData("Colombo");
     log:printInfo("Colombo Current Weather data : " + result.toString());
 
 ```

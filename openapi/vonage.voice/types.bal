@@ -48,7 +48,6 @@ public type GetcallsresponseEmbedded record {
 };
 
 # The unique identifier for the conversation this call leg is part of.
-#
 public type ConversationUuid string;
 
 public type UpdateCallRequestTransferAnswerUrl record {
@@ -58,7 +57,9 @@ public type UpdateCallRequestTransferAnswerUrl record {
 };
 
 # <strong>DEPRECATED</strong> The voice & language to use
-#
+# 
+# # Deprecated
+@deprecated
 public type VoiceName string;
 
 public type StartStreamRequest record {
@@ -77,7 +78,6 @@ public type DTMFResponse record {
 };
 
 # The Mobile Country Code Mobile Network Code ([MCCMNC](https://en.wikipedia.org/wiki/Mobile_country_code)) for the carrier network used to make this call.
-#
 public type Network string;
 
 # Connect to an App User
@@ -97,7 +97,6 @@ public type To record {
 };
 
 # Websocket URI
-#
 public type AddressWebsocket string;
 
 public type GetcallresponseLinksSelf record {
@@ -105,7 +104,6 @@ public type GetcallresponseLinksSelf record {
 };
 
 # The status of the call. [See possible values](https://developer.nexmo.com/voice/voice-api/guides/call-flow#event-objects)
-#
 public type Status string;
 
 public type DTMFRequest record {
@@ -121,11 +119,9 @@ public type UpdatecallrequesttransferanswerurlDestination record {
 };
 
 # The price per minute for this call. This is only sent if `status` is `completed`.
-#
 public type Rate string;
 
 # The SIP URI to connect to
-#
 public type AddressSip string;
 
 public type GetcallsresponseLinks record {
@@ -133,22 +129,24 @@ public type GetcallsresponseLinks record {
 };
 
 # The time the call started in the following format: `YYYY-MM-DD HH:MM:SS`. For example, `2020-01-01 12:00:00`. This is only sent if `status` is `completed`.
-#
 public type StartTime string;
 
 # The time elapsed for the call to take place in seconds. This is only sent if `status` is `completed`.
-#
 public type Duration string;
 
 # The total price charged for this call. This is only sent if `status` is `completed`.
-#
 public type Price string;
 
 public type CreateCallRequestBase record {
-    EndpointPhoneTo[]|EndpointSip|EndpointWebsocket|EndpointVBCExtension[] to;
+    (EndpointPhoneTo|EndpointSip|EndpointWebsocket|EndpointVBCExtension)[] to;
     # Connect to a Phone (PSTN) number
     EndpointPhoneFrom 'from;
     # **Required** unless `event_url` is configured at the application
+    # level, see [Create an Application](/api/application.v2#createApplication)
+    # 
+    # The webhook endpoint where call progress events are
+    # sent to. For more information about the values sent, see
+    # [Event webhook](/voice/voice-api/webhook-reference#event-webhook).
     string[] event_url?;
     # The HTTP method used to send event information to `event_url`.
     string event_method?;
@@ -184,7 +182,6 @@ public type CreateCallResponse record {
 };
 
 # The time the call started in the following format: `YYYY-MM-DD HH:MM:SS`. For xample, `2020-01-01 12:00:00`. This is only sent if `status` is `completed`.
-#
 public type EndTime string;
 
 public type NCCO record {
@@ -232,7 +229,6 @@ public type GetcallsresponseLinksSelf record {
 };
 
 # Possible values are `outbound` or `inbound`
-#
 public type Direction string;
 
 # Connect to a SIP Endpoint
@@ -244,27 +240,28 @@ public type EndpointSip record {
 };
 
 # The phone number to connect to
-#
 public type AddressE164 string;
 
 # The language to use
-#
 public type Language string;
 
 public type CreateCallRequestNcco record {
-    # With NCCO
-    NCCO[] ncco;
+    # The [Nexmo Call Control Object](/voice/voice-api/ncco-reference) to use for this call.
+    record {}[] ncco?;
     *CreateCallRequestBase;
 };
 
 public type CreateCallRequestAnswerUrl record {
-    # With Answer URL
-    string[] answer_url;
+    # The webhook endpoint where you provide the [Nexmo Call Control Object](/voice/voice-api/ncco-reference) that governs this call.
+    string[] answer_url?;
+    # The HTTP method used to send event information to answer_url.
+    string answer_method?;
     *CreateCallRequestBase;
 };
 
+public type UuidBody UpdateCallRequestTransferNcco|UpdateCallRequestTransferAnswerUrl|UpdateCallRequestHangup|UpdateCallRequestMute|UpdateCallRequestUnmute|UpdateCallRequestEarmuff|UpdateCallRequestUnearmuff;
+
 # The vocal style (vocal range, tessitura, and timbre) to use
-#
 public type Style int;
 
 public type StartTalkRequest record {
@@ -282,7 +279,7 @@ public type StartTalkRequest record {
     string level?;
 };
 
-public type  Body CreateCallRequestNcco|CreateCallRequestAnswerUrl;
+public type Body CreateCallRequestNcco|CreateCallRequestAnswerUrl;
 
 public type GetCallResponse record {
     GetcallresponseLinks _links?;
@@ -343,7 +340,6 @@ public type From record {
 };
 
 # Transfer the call to a new NCCO
-#
 public type RequestTransferActionParam string;
 
 public type UpdateCallRequestMute record {
@@ -352,15 +348,12 @@ public type UpdateCallRequestMute record {
 };
 
 # The unique identifier for this call leg. The UUID is created when your call request is accepted by Vonage. You use the UUID in all requests for individual live calls
-#
 public type Uuid string;
 
 public type UpdateCallRequestUnmute record {
     # Unmute the specified UUID
     string action?;
 };
-
-public type  Body1 UpdateCallRequestTransferNcco|UpdateCallRequestTransferAnswerUrl|UpdateCallRequestHangup|UpdateCallRequestMute|UpdateCallRequestUnmute|UpdateCallRequestEarmuff|UpdateCallRequestUnearmuff;
 
 # Details of the Websocket you want to connect to
 public type EndpointwebsocketHeaders record {

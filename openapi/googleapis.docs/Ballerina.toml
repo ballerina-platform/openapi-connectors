@@ -1,12 +1,12 @@
 [package]
-distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["Content & Files/Documents", "Cost/Freemium", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.docs"
 icon = "icon.png"
+distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.1.0"
+version = "1.1.2"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

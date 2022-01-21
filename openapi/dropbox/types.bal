@@ -530,7 +530,7 @@ public type Team record {
 };
 
 # The metadata of a shared link.
-public type  SharedLinkMetadata FileLinkMetadata|FolderLinkMetadata;
+public type SharedLinkMetadata FileLinkMetadata|FolderLinkMetadata;
 
 # Arguments to create a folder.
 public type CreateFolderArg record {
@@ -735,4 +735,3 @@ public type GetTemporaryLinkResult record {
     # Metadata for a file.
     FileMetadata metadata?;
 };
-

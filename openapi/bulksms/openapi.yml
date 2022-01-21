@@ -1551,10 +1551,11 @@ components:
           format: integer
           example: 234.0
         phoneNumber:
-          type: object
-          nullable: true
-          allOf:
-          - $ref: '#/components/schemas/PhoneNumber'
+          # type: object
+          # nullable: true
+          # allOf:
+          # schema:
+          $ref: '#/components/schemas/PhoneNumber'
   responses:
     bad-request:
       description: Bad Request. The content or structure of your submission, or a

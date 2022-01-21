@@ -221,7 +221,6 @@ public type Media record {
 public type FormdataDescription string;
 
 # All capabilities used by the resource.
-# All capabilities used by the resource.
 public type FormdataCapabilities string[];
 
 public type PostsBody record {
@@ -338,7 +337,6 @@ public type UsersIdBody record {
 # The id for the parent of the object.
 public type FormdataParent int;
 
-# Limit result set to all items that have the specified term assigned in the categories taxonomy.
 # Limit result set to all items that have the specified term assigned in the categories taxonomy.
 public type FormdataCategories string[];
 
@@ -506,7 +504,6 @@ public type CategoriesIdBody record {
     int parent?;
 };
 
-# Roles assigned to the resource.
 # Roles assigned to the resource.
 public type FormdataRoles string[];
 
@@ -698,7 +695,6 @@ public type FormdataSlug string;
 # Ensure result set excludes specific ids.
 public type FormdataParentExclude string;
 
-# Limit result set to all items that have the specified term assigned in the tags taxonomy.
 # Limit result set to all items that have the specified term assigned in the tags taxonomy.
 public type FormdataTags string[];
 

@@ -65,17 +65,18 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Submits a single supplier invoice instance.
     #
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function submitInvoiceInstance(string id, SubmitSupplierInvoiceRequest payload) returns SubmitSupplierInvoiceRequest|error {
-        string path = string `/supplierInvoiceRequests/${id}/submit`;
+        string resourcePath = string `/supplierInvoiceRequests/${id}/submit`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SubmitSupplierInvoiceRequest response = check self.clientEp->post(path, request, targetType = SubmitSupplierInvoiceRequest);
+        request.setPayload(jsonBody, "application/json");
+        SubmitSupplierInvoiceRequest response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Secured by: View: Supplier Invoice Request, Process: Supplier Invoice - Request
@@ -88,8 +89,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function viewSupplierInvoiceRequests(string id, string subresourceID) returns string|error {
-        string path = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}?type=viewContent`;
-        string response = check self.clientEp->get(path, targetType = string);
+        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}?type=viewContent`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of supplier invoices.
@@ -106,11 +107,11 @@ public isolated client class Client {
     # + toInvoiceDate - The date on or before which the supplier invoice is created using the MM/DD/YYYY format. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceRequests(string[]? company = (), string? fromDueDate = (), string? fromInvoiceDate = (), int? 'limit = (), int? offset = (), string[]? requester = (), string[]? status = (), string[]? supplier = (), string? toDueDate = (), string? toInvoiceDate = ()) returns InlineResponse200|error {
-        string path = string `/supplierInvoiceRequests`;
+        string resourcePath = string `/supplierInvoiceRequests`;
         map<anydata> queryParam = {"company": company, "fromDueDate": fromDueDate, "fromInvoiceDate": fromInvoiceDate, "limit": 'limit, "offset": offset, "requester": requester, "status": status, "supplier": supplier, "toDueDate": toDueDate, "toInvoiceDate": toInvoiceDate};
         map<Encoding> queryParamEncoding = {"company": {style: FORM, explode: true}, "requester": {style: FORM, explode: true}, "status": {style: FORM, explode: true}, "supplier": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates the supplier invoice as specified in the request.
@@ -125,14 +126,14 @@ public isolated client class Client {
     # + toInvoiceDate - The date on or before which the supplier invoice is created using the MM/DD/YYYY format. 
     # + return - Resource created. 
     remote isolated function createSupplierInvoice(CreateInvoiceRequestSummary payload, string[]? company = (), string? fromDueDate = (), string? fromInvoiceDate = (), string[]? requester = (), string[]? status = (), string[]? supplier = (), string? toDueDate = (), string? toInvoiceDate = ()) returns CreateInvoiceRequestSummary|error {
-        string path = string `/supplierInvoiceRequests`;
+        string resourcePath = string `/supplierInvoiceRequests`;
         map<anydata> queryParam = {"company": company, "fromDueDate": fromDueDate, "fromInvoiceDate": fromInvoiceDate, "requester": requester, "status": status, "supplier": supplier, "toDueDate": toDueDate, "toInvoiceDate": toInvoiceDate};
         map<Encoding> queryParamEncoding = {"company": {style: FORM, explode: true}, "requester": {style: FORM, explode: true}, "status": {style: FORM, explode: true}, "supplier": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateInvoiceRequestSummary response = check self.clientEp->post(path, request, targetType = CreateInvoiceRequestSummary);
+        request.setPayload(jsonBody, "application/json");
+        CreateInvoiceRequestSummary response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a single attachment instance.
@@ -141,8 +142,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceRequestAttachment(string id, string subresourceID) returns AttachmentSummary|error {
-        string path = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}`;
-        AttachmentSummary response = check self.clientEp->get(path, targetType = AttachmentSummary);
+        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}`;
+        AttachmentSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Secured by: View: Supplier Invoice Request, Process: Supplier Invoice - Request
@@ -156,10 +157,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceRequestAttachmentByID(string id, int? 'limit = (), int? offset = ()) returns string|error {
-        string path = string `/supplierInvoiceRequests/${id}/attachmentst`;
+        string resourcePath = string `/supplierInvoiceRequests/${id}/attachmentst`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp->get(path, targetType = string);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of supplier invoice lines.
@@ -169,10 +170,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceLines(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string path = string `/supplierInvoiceRequests/${id}/lines`;
+        string resourcePath = string `/supplierInvoiceRequests/${id}/lines`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a single supplier invoice instance.
@@ -180,8 +181,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceInstance(string id) returns InvoiceRequestSummary|error {
-        string path = string `/supplierInvoiceRequests/${id}`;
-        InvoiceRequestSummary response = check self.clientEp->get(path, targetType = InvoiceRequestSummary);
+        string resourcePath = string `/supplierInvoiceRequests/${id}`;
+        InvoiceRequestSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a collection of attachments for the specified supplier invoice.
@@ -191,10 +192,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceAttachments(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2002|error {
-        string path = string `/supplierInvoiceRequests/${id}/attachments`;
+        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new attachment for the supplier invoice.
@@ -202,11 +203,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createsNewAttachmentSupplierInvoice(string id, CreateAttachmentSummary payload) returns CreateAttachmentSummary|error {
-        string path = string `/supplierInvoiceRequests/${id}/attachments`;
+        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateAttachmentSummary response = check self.clientEp->post(path, request, targetType = CreateAttachmentSummary);
+        request.setPayload(jsonBody, "application/json");
+        CreateAttachmentSummary response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a single supplier invoice line instance.
@@ -215,8 +216,8 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceLineInstance(string id, string subresourceID) returns ViewLineSummary|error {
-        string path = string `/supplierInvoiceRequests/${id}/lines/${subresourceID}`;
-        ViewLineSummary response = check self.clientEp->get(path, targetType = ViewLineSummary);
+        string resourcePath = string `/supplierInvoiceRequests/${id}/lines/${subresourceID}`;
+        ViewLineSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

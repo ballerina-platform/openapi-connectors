@@ -14,30 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Create a new feature flag approval request
-public type PostFeatureFlagApprovalRequestRequest record {
-    # comment will be included in audit log item for change.
-    string comment?;
-    # A name that describes the changes you would like to apply to a feature flag configuration
-    string description;
-    # A semantic patch instruction
-    SemanticPatchInstruction instructions;
-    # Id of members to notify.
-    string[] notifyMemberIds;
-};
-
-# Create a new feature flag approval request
-public type DeleteFeatureFlagApprovalRequestRequest record {
-    # comment will be included in audit log item for change.
-    string comment?;
-    # A name that describes the changes you would like to apply to a feature flag configuration
-    string description;
-    # A semantic patch instruction
-    SemanticPatchInstruction instructions;
-    # Id of members to notify.
-    string[] notifyMemberIds;
-};
-
 public type FeatureFlagStatus record {
     Links _links?;
     record {} 'default?;
@@ -259,6 +235,11 @@ public type Rule record {
     int variation?;
 };
 
+public type FlagsFeatureflagkeyBody record {
+    # The variation value to set for the user. Must match the variation type of the flag.
+    boolean setting?;
+};
+
 public type Link record {
     string href?;
     string 'type?;
@@ -291,6 +272,17 @@ public type StreamSDKVersionData record {
     string sdk?;
     # The version of the sdk
     string 'version?;
+};
+
+public type FeatureflagkeyCopyBody record {
+    # comment will be included in audit log item for change.
+    string comment?;
+    # Define the parts of the flag configuration that will not be copied.
+    CopyActions[] excludedActions?;
+    # Define the parts of the flag configuration that will be copied.
+    CopyActions[] includedActions?;
+    FeatureFlagCopyObject 'source?;
+    FeatureFlagCopyObject target?;
 };
 
 public type Fallthrough record {
@@ -356,93 +348,7 @@ public type PatchOperation record {
     record {} value;
 };
 
-# | Name     | Description |
-# | --------:| ----------- |
-# | pending  | the feature flag approval request has not been reviewed yet |
-# | approved | the feature flag approval request has been approved and can now be applied |
-# | declined | the feature flag approval request has been declined and cannot be applied |
-public type FeatureFlagApprovalRequestReviewStatus string;
-
-public type UserSegments record {
-    Links _links?;
-    UserSegment[] items?;
-};
-
-public type Body8 record {
-    # comment will be included in audit log item for change.
-    string comment?;
-};
-
-public type Body9 record {
-    # comment will be included in audit log item for change.
-    string comment?;
-    # One of approve, decline, or comment.
-    string kind;
-};
-
-public type Usage record {
-    UsageLinks _links?;
-    StreamUsageSeries[] series?;
-};
-
-public type Body6 record {
-    string[] customRoles?;
-    string email;
-    string firstName?;
-    Statement[] inlineRole?;
-    string lastName?;
-    Role role?;
-};
-
-public type Body7 record {
-    ClientSideAvailability defaultClientSideAvailability?;
-    EnvironmentPost[] environments?;
-    boolean includeInSnippetByDefault?;
-    string 'key;
-    string name;
-    string[] tags?;
-};
-
-public type DestinationAmazonKinesis record {
-    string region?;
-    string roleArn?;
-    string streamName?;
-};
-
-public type Body4 record {
-    # comment will be included in audit log item for change.
-    string comment?;
-    # Define the parts of the flag configuration that will not be copied.
-    CopyActions[] excludedActions?;
-    # Define the parts of the flag configuration that will be copied.
-    CopyActions[] includedActions?;
-    FeatureFlagCopyObject 'source?;
-    FeatureFlagCopyObject target?;
-};
-
-public type Body5 record {
-    # Integration-specific configuration fields.
-    record {} config;
-    # A human-readable name for your subscription configuration.
-    string name;
-    # Whether the integration subscription is active or not.
-    boolean 'on?;
-    Statement[] statements?;
-    # Tags for the integration subscription.
-    string[] tags?;
-};
-
-public type Statement record {
-    string[] actions?;
-    string effect?;
-    # Targeted actions will be those actions NOT in this list. The "actions" field must be empty to use this field.
-    string[] notActions?;
-    # Targeted resource will be those resources NOT in this list. The "resources" field must be empty to use this field.
-    string[] notResources?;
-    string[] resources?;
-};
-
-public type Body2 record {
+public type FlagsProjectkeyBody record {
     ClientSideAvailability clientSideAvailability?;
     # Default values to be used when a new environment is created.
     Defaults defaults?;
@@ -462,9 +368,48 @@ public type Body2 record {
     Variation[] variations;
 };
 
-public type Body3 record {
-    string comment?;
-    PatchOperation[] patch?;
+# | Name     | Description |
+# | --------:| ----------- |
+# | pending  | the feature flag approval request has not been reviewed yet |
+# | approved | the feature flag approval request has been approved and can now be applied |
+# | declined | the feature flag approval request has been declined and cannot be applied |
+public type FeatureFlagApprovalRequestReviewStatus string;
+
+public type UserSegments record {
+    Links _links?;
+    UserSegment[] items?;
+};
+
+public type ProjectkeyEnvironmentkeyBody record {
+    # destination-specific configuration.
+    record {} config;
+    # The data export destination type. Available choices are kinesis, google-pubsub, mparticle, or segment.
+    string kind;
+    # A human-readable name for your data export destination.
+    string name;
+    # Whether the data export destination is on or not.
+    boolean 'on?;
+};
+
+public type Usage record {
+    UsageLinks _links?;
+    StreamUsageSeries[] series?;
+};
+
+public type DestinationAmazonKinesis record {
+    string region?;
+    string roleArn?;
+    string streamName?;
+};
+
+public type Statement record {
+    string[] actions?;
+    string effect?;
+    # Targeted actions will be those actions NOT in this list. The "actions" field must be empty to use this field.
+    string[] notActions?;
+    # Targeted resource will be those resources NOT in this list. The "resources" field must be empty to use this field.
+    string[] notResources?;
+    string[] resources?;
 };
 
 public type UsageError record {
@@ -518,17 +463,6 @@ public type CustomProperty record {
     string name;
     # Values for this property.
     string[] value?;
-};
-
-public type Body1 record {
-    # destination-specific configuration.
-    record {} config;
-    # The data export destination type. Available choices are kinesis, google-pubsub, mparticle, or segment.
-    string kind;
-    # A human-readable name for your data export destination.
-    string name;
-    # Whether the data export destination is on or not.
-    boolean 'on?;
 };
 
 public type Webhook record {
@@ -603,7 +537,6 @@ public type Policy record {
 };
 
 # A semantic patch instruction
-# A semantic patch instruction
 public type SemanticPatchInstruction SemanticpatchinstructionInner[];
 
 public type Destinations record {
@@ -614,11 +547,6 @@ public type Destinations record {
 public type UserTargetingExpirationForFlags record {
     Links _links?;
     UserTargetingExpirationForFlag[] items?;
-};
-
-public type Body12 record {
-    UnboundedSegmentTargetChanges excluded?;
-    UnboundedSegmentTargetChanges included?;
 };
 
 public type FeatureFlag record {
@@ -657,50 +585,6 @@ public type FeatureFlag record {
     Variation[] variations?;
 };
 
-public type Body11 record {
-    # A description for the user segment.
-    string description?;
-    # A unique key that will be used to reference the user segment in feature flags.
-    string 'key;
-    # A human-friendly name for the user segment.
-    string name;
-    # Tags for the user segment.
-    string[] tags?;
-    # Controls whether this segment can support unlimited numbers of users. Requires the beta API and additional setup. Include/exclude lists in this payload are not used in unbounded segments.
-    boolean unbounded?;
-};
-
-public type Body10 record {
-    # Description of the custom role.
-    string description?;
-    # The 20-hexdigit id or the key for a custom role.
-    string 'key;
-    # Name of the custom role.
-    string name;
-    Policy[] policy;
-};
-
-public type Body15 record {
-    # The name of the webhook.
-    string name?;
-    # Whether this webhook is enabled or not.
-    boolean 'on;
-    # If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you.
-    string secret?;
-    # If sign is false, the webhook will not include a signature header, and the secret can be omitted.
-    boolean sign;
-    Statement[] statements?;
-    # Tags for the webhook.
-    string[] tags?;
-    # The URL of the remote webhook.
-    string url;
-};
-
-public type Body14 record {
-    # The variation value to set for the user. Must match the variation type of the flag.
-    boolean setting?;
-};
-
 public type EnvironmentPost record {
     # A color swatch (as an RGB hex value with no leading '#', e.g. C8C8C8).
     string color;
@@ -722,23 +606,23 @@ public type EnvironmentPost record {
     string[] tags?;
 };
 
-public type Body13 record {
-    # A list of custom role IDs to use as access limits for the access token
-    string[] customRoleIds?;
-    # The default API version for this token
-    int defaultApiVersion?;
-    Statement[] inlineRole?;
-    # A human-friendly name for the access token
-    string name?;
-    # The name of a built-in role for the token
-    string role?;
-    # Whether the token will be a service token https://docs.launchdarkly.com/home/account-security/api-access-tokens#service-tokens
-    boolean serviceToken?;
+public type FeatureflagapprovalrequestidApplyBody record {
+    # comment will be included in audit log item for change.
+    string comment?;
 };
 
 public type FeatureFlagScheduledChanges record {
     Links _links?;
     FeatureFlagScheduledChange[] items?;
+};
+
+public type ProjectsBody record {
+    ClientSideAvailability defaultClientSideAvailability?;
+    EnvironmentPost[] environments?;
+    boolean includeInSnippetByDefault?;
+    string 'key;
+    string name;
+    string[] tags?;
 };
 
 public type FeatureFlagStatuses record {
@@ -768,6 +652,11 @@ public type StreamUsageMetadata record {
 public type DestinationGooglePubSub record {
     string project?;
     string topic?;
+};
+
+public type UsersegmentkeyUnboundedusersBody record {
+    UnboundedSegmentTargetChanges excluded?;
+    UnboundedSegmentTargetChanges included?;
 };
 
 public type Stream record {
@@ -800,6 +689,20 @@ public type Member record {
     Role role?;
 };
 
+public type TokensBody record {
+    # A list of custom role IDs to use as access limits for the access token
+    string[] customRoleIds?;
+    # The default API version for this token
+    int defaultApiVersion?;
+    Statement[] inlineRole?;
+    # A human-friendly name for the access token
+    string name?;
+    # The name of a built-in role for the token
+    string role?;
+    # Whether the token will be a service token https://docs.launchdarkly.com/home/account-security/api-access-tokens#service-tokens
+    boolean serviceToken?;
+};
+
 public type MAUMetadata record {
 };
 
@@ -810,6 +713,16 @@ public type StreamLinks record {
     Link self?;
     # Links to endpoints that are in the request path.
     Link[] subseries?;
+};
+
+public type RolesBody record {
+    # Description of the custom role.
+    string description?;
+    # The 20-hexdigit id or the key for a custom role.
+    string 'key;
+    # Name of the custom role.
+    string name;
+    Policy[] policy;
 };
 
 public type FeatureFlagScheduledChangesConflicts record {
@@ -834,6 +747,11 @@ public type IntegrationSubscription record {
     string[] tags?;
 };
 
+public type ProjectkeyFeatureflagkeyBody record {
+    string comment?;
+    PatchOperation[] patch?;
+};
+
 public type MAUbyCategory record {
     StreamBySDKLinks _links?;
     MAUMetadata[] metadata?;
@@ -848,6 +766,19 @@ public type UserFlagSetting record {
     boolean _value?;
     # The setting attribute indicates whether you've explicitly targeted this user to receive a particular variation. For example, if you have explicitly turned off a feature toggle for a user, setting will be false. A setting of null means that you haven't assigned that user to a specific variation.
     boolean setting?;
+};
+
+public type ProjectkeyEnvironmentkeyBody1 record {
+    # A description for the user segment.
+    string description?;
+    # A unique key that will be used to reference the user segment in feature flags.
+    string 'key;
+    # A human-friendly name for the user segment.
+    string name;
+    # Tags for the user segment.
+    string[] tags?;
+    # Controls whether this segment can support unlimited numbers of users. Requires the beta API and additional setup. Include/exclude lists in this payload are not used in unbounded segments.
+    boolean unbounded?;
 };
 
 public type Environment record {
@@ -878,6 +809,22 @@ public type Environment record {
     boolean secureMode?;
     # An array of tags for this environment.
     string[] tags?;
+};
+
+public type WebhooksBody record {
+    # The name of the webhook.
+    string name?;
+    # Whether this webhook is enabled or not.
+    boolean 'on;
+    # If sign is true, and the secret attribute is omitted, LaunchDarkly will automatically generate a secret for you.
+    string secret?;
+    # If sign is false, the webhook will not include a signature header, and the secret can be omitted.
+    boolean sign;
+    Statement[] statements?;
+    # Tags for the webhook.
+    string[] tags?;
+    # The URL of the remote webhook.
+    string url;
 };
 
 public type EvaluationUsageError record {
@@ -952,6 +899,22 @@ public type FeatureflagscheduledchangesconflictsInstructions record {
     string kind?;
 };
 
+public type MembersBody record {
+    string[] customRoles?;
+    string email;
+    string firstName?;
+    Statement[] inlineRole?;
+    string lastName?;
+    Role role?;
+};
+
+public type FeatureflagapprovalrequestidReviewBody record {
+    # comment will be included in audit log item for change.
+    string comment?;
+    # One of approve, decline, or comment.
+    string kind;
+};
+
 public type UserTargetingExpirationResourceIdForFlag record {
     string environmentKey?;
     string flagKey?;
@@ -984,6 +947,18 @@ public type UserSegment record {
     int 'version?;
 };
 
+public type IntegrationsIntegrationkeyBody record {
+    # Integration-specific configuration fields.
+    record {} config;
+    # A human-readable name for your subscription configuration.
+    string name;
+    # Whether the integration subscription is active or not.
+    boolean 'on?;
+    Statement[] statements?;
+    # Tags for the integration subscription.
+    string[] tags?;
+};
+
 public type FeatureFlagStatusAcrossEnvironments record {
     Links _links?;
     record {} environments?;
@@ -993,12 +968,6 @@ public type FeatureFlagStatusAcrossEnvironments record {
 public type Rollout record {
     string bucketBy?;
     WeightedVariation[] variations?;
-};
-
-public type Body record {
-    # A human-friendly name for the relay proxy configuration
-    string name?;
-    Policy[] policy?;
 };
 
 public type DestinationMParticle record {
@@ -1042,6 +1011,12 @@ public type UserTargetingExpirationForFlag record {
     string variationId?;
 };
 
+public type AccountRelayautoconfigsBody record {
+    # A human-friendly name for the relay proxy configuration
+    string name?;
+    Policy[] policy?;
+};
+
 public type AuditLogEntries record {
     Links _links?;
     AuditLogEntry[] items?;
@@ -1059,7 +1034,6 @@ public type StreamUsageLinks record {
     Link[] subseries?;
 };
 
-# Values for this property.
 # Values for this property.
 public type CustomPropertyValues string[];
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -44,6 +44,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Basic Number Insight
     #
@@ -52,10 +53,10 @@ public isolated client class Client {
     # + country - If a number does not have a country code or is uncertain, set the two-character country code. This code must be in ISO 3166-1 alpha-2 format and in upper case. For example, GB or US. If you set country and number is already in [E.164](https://en.wikipedia.org/wiki/E.164) format, country must match the country code in number. 
     # + return - OK 
     remote isolated function getNumberInsightBasic(string format, string number, string? country = ()) returns NiResponseJsonBasic|error {
-        string  path = string `/basic/${format}`;
+        string resourcePath = string `/basic/${format}`;
         map<anydata> queryParam = {"number": number, "country": country, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        NiResponseJsonBasic response = check self.clientEp-> get(path, targetType = NiResponseJsonBasic);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        NiResponseJsonBasic response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Standard Number Insight
@@ -66,10 +67,10 @@ public isolated client class Client {
     # + cnam - Indicates if the name of the person who owns the phone number should be looked up and returned in the response. Set to true to receive phone number owner name in the response. This features is available for US numbers only and incurs an additional charge. 
     # + return - OK 
     remote isolated function getNumberInsightStandard(string format, string number, string? country = (), boolean cnam = false) returns NiResponseJsonStandard|error {
-        string  path = string `/standard/${format}`;
+        string resourcePath = string `/standard/${format}`;
         map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        NiResponseJsonStandard response = check self.clientEp-> get(path, targetType = NiResponseJsonStandard);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        NiResponseJsonStandard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Advanced Number Insight (async)
@@ -84,10 +85,10 @@ public isolated client class Client {
     # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
     # + return - OK 
     remote isolated function getNumberInsightAsync(string format, string callback, string number, string? country = (), boolean cnam = false, @deprecated string? ip = ()) returns NiResponseAsync|error {
-        string  path = string `/advanced/async/${format}`;
+        string resourcePath = string `/advanced/async/${format}`;
         map<anydata> queryParam = {"callback": callback, "number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        NiResponseAsync response = check self.clientEp-> get(path, targetType = NiResponseAsync);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        NiResponseAsync response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Advanced Number Insight (sync)
@@ -101,10 +102,10 @@ public isolated client class Client {
     # + ip - This parameter is deprecated as we are no longer able to retrieve reliable IP data globally from carriers.  
     # + return - OK 
     remote isolated function getNumberInsightAdvanced(string format, string number, string? country = (), boolean cnam = false, @deprecated string? ip = ()) returns NiResponseJsonAdvanced|error {
-        string  path = string `/advanced/${format}`;
+        string resourcePath = string `/advanced/${format}`;
         map<anydata> queryParam = {"number": number, "country": country, "cnam": cnam, "ip": ip, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        NiResponseJsonAdvanced response = check self.clientEp-> get(path, targetType = NiResponseJsonAdvanced);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        NiResponseJsonAdvanced response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

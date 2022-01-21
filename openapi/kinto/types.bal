@@ -15,11 +15,11 @@
 // under the License.
 
 public type BatchResponseBodySchema record {
-    record  { record {} body?; record {} headers?; string path; int status;} [] responses;
+    record {record {} body?; record {} headers?; string path; int status;}[] responses;
 };
 
 public type Schema record {
-    record {}[] data?;
+    record {record {} 'collection\:schema?; record {} 'group\:schema?; record {} 'record\:schema?;}[] data?;
 };
 
 public type ErrorSchema record {
@@ -43,25 +43,25 @@ public type Schema3 record {
 };
 
 public type Schema4 record {
-    record {}[] data?;
+    record {string[] members?;}[] data?;
 };
 
 public type Schema1 record {
-    record  { string bucket; string collection; string host;} [] data?;
+    record {string bucket; string collection; string host;}[] data?;
 };
 
 public type Schema2 record {
-    record {}[] data?;
+    record {int cache_expires?; record {} schema?;}[] data?;
 };
 
 public type Objectschema1 record {
-    record  { int cache_expires?; record {} schema?;}  data?;
-    record  { string[] read?; string[] 'record\:create?; string[] write?;}  permissions?;
+    record {int cache_expires?; record {} schema?;} data?;
+    record {string[] read?; string[] 'record\:create?; string[] write?;} permissions?;
 };
 
 public type Objectschema2 record {
-    record  { string[] members?;}  data?;
-    record  { string[] read?; string[] write?;}  permissions?;
+    record {string[] members?;} data?;
+    record {string[] read?; string[] write?;} permissions?;
 };
 
 public type Defaults record {
@@ -72,13 +72,13 @@ public type Defaults record {
 };
 
 public type Objectschema3 record {
-    record  { record {} 'collection\:schema?; record {} 'group\:schema?; record {} 'record\:schema?;}  data?;
-    record  { string[] 'collection\:create?; string[] 'group\:create?; string[] read?; string[] write?;}  permissions?;
+    record {record {} 'collection\:schema?; record {} 'group\:schema?; record {} 'record\:schema?;} data?;
+    record {string[] 'collection\:create?; string[] 'group\:create?; string[] read?; string[] write?;} permissions?;
 };
 
 public type ObjectSchema record {
     record {} data?;
-    record  { string[] read?; string[] write?;}  permissions?;
+    record {string[] read?; string[] write?;} permissions?;
 };
 
 public type BatchPayloadSchema record {

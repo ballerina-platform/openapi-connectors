@@ -34,10 +34,11 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "//api.ote-godaddy.com/") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.ote-godaddy.com/") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieve a list of Domains for the specified Shopper
     #
@@ -50,13 +51,13 @@ public isolated client class Client {
     # + modifiedDate - Only include results that have been modified since the specified date 
     # + return - Request was successful 
     remote isolated function listDomains(string? xShopperId = (), string[]? statuses = (), string[]? statusGroups = (), int? 'limit = (), string? marker = (), string[]? includes = (), string? modifiedDate = ()) returns DomainSummary[]|error {
-        string  path = string `/v1/domains`;
+        string resourcePath = string `/v1/domains`;
         map<anydata> queryParam = {"statuses": statuses, "statusGroups": statusGroups, "limit": 'limit, "marker": marker, "includes": includes, "modifiedDate": modifiedDate};
         map<Encoding> queryParamEncoding = {"statuses": {style: FORM, explode: false}, "statusGroups": {style: FORM, explode: false}, "includes": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainSummary[] response = check self.clientEp-> get(path, accHeaders, targetType = DomainSummaryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainSummary[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve the legal agreement(s) required to purchase the specified TLD and add-ons
@@ -67,13 +68,13 @@ public isolated client class Client {
     # + forTransfer - Whether or not domain tranfer has been requested 
     # + return - Request was successful 
     remote isolated function getAgreement(string[] tlds, boolean privacy, string xMarketId = "en-US", boolean? forTransfer = ()) returns LegalAgreement[]|error {
-        string  path = string `/v1/domains/agreements`;
+        string resourcePath = string `/v1/domains/agreements`;
         map<anydata> queryParam = {"tlds": tlds, "privacy": privacy, "forTransfer": forTransfer};
         map<Encoding> queryParamEncoding = {"tlds": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LegalAgreement[] response = check self.clientEp-> get(path, accHeaders, targetType = LegalAgreementArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LegalAgreement[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Determine whether or not the specified domain is available for purchase
@@ -83,12 +84,12 @@ public isolated client class Client {
     # + forTransfer - Whether or not to include domains available for transfer. If set to True, checkType is ignored 
     # + return - Request was successful 
     remote isolated function getDomainAvailability(string domain, string checkType = "FAST", boolean forTransfer = false) returns DomainAvailableResponse|error {
-        string  path = string `/v1/domains/available`;
+        string resourcePath = string `/v1/domains/available`;
         map<anydata> queryParam = {"domain": domain, "checkType": checkType, "forTransfer": forTransfer};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainAvailableResponse response = check self.clientEp-> get(path, accHeaders, targetType = DomainAvailableResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainAvailableResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Determine whether or not the specified domains are available for purchase
@@ -96,16 +97,16 @@ public isolated client class Client {
     # + checkType - Optimize for time ('FAST') or accuracy ('FULL') 
     # + payload - Domain names for which to check availability 
     # + return - Request was successful 
-    remote isolated function getDomainsAvailabilityBulk(string[] payload, string checkType = "FAST") returns DomainAvailableBulk|error {
-        string  path = string `/v1/domains/available`;
+    remote isolated function getDomainsAvailabilityBulk(string[] payload, string checkType = "FAST") returns DomainAvailableBulk|DomainAvailableBulkMixed|error {
+        string resourcePath = string `/v1/domains/available`;
         map<anydata> queryParam = {"checkType": checkType};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainAvailableBulk response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainAvailableBulk);
+        request.setPayload(jsonBody, "application/json");
+        DomainAvailableBulk|DomainAvailableBulkMixed response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Validate the request body using the Domain Contact Validation Schema for specified domains.
@@ -115,15 +116,15 @@ public isolated client class Client {
     # + payload - An instance document expected for domains contacts validation 
     # + return - No response was specified 
     remote isolated function validateContacts(DomainsContactsBulk payload, int xPrivateLabelId = 1, string marketId = "en-US") returns http:Response|error {
-        string  path = string `/v1/domains/contacts/validate`;
+        string resourcePath = string `/v1/domains/contacts/validate`;
         map<anydata> queryParam = {"marketId": marketId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Private-Label-Id": xPrivateLabelId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Purchase and register the specified Domain
@@ -132,13 +133,13 @@ public isolated client class Client {
     # + payload - An instance document expected to match the JSON schema returned by `./schema/{tld}` 
     # + return - Request was successful 
     remote isolated function purchaseDomain(DomainPurchase payload, string? xShopperId = ()) returns DomainPurchaseResponse|error {
-        string  path = string `/v1/domains/purchase`;
+        string resourcePath = string `/v1/domains/purchase`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainPurchaseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainPurchaseResponse);
+        request.setPayload(jsonBody, "application/json");
+        DomainPurchaseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the schema to be submitted when registering a Domain for the specified TLD
@@ -146,10 +147,10 @@ public isolated client class Client {
     # + tld - The Top-Level Domain whose schema should be retrieved 
     # + return - Request was successful 
     remote isolated function retrieveSchema(string tld) returns JsonSchema|error {
-        string  path = string `/v1/domains/purchase/schema/${tld}`;
+        string resourcePath = string `/v1/domains/purchase/schema/${tld}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        JsonSchema response = check self.clientEp-> get(path, accHeaders, targetType = JsonSchema);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        JsonSchema response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Validate the request body using the Domain Purchase Schema for the specified TLD
@@ -157,13 +158,13 @@ public isolated client class Client {
     # + payload - An instance document expected to match the JSON schema returned by `./schema/{tld}` 
     # + return - Request was successful 
     remote isolated function validateRequestBody(DomainPurchase payload) returns http:Response|error {
-        string  path = string `/v1/domains/purchase/validate`;
+        string resourcePath = string `/v1/domains/purchase/validate`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Suggest alternate Domain names based on a seed Domain, a set of keywords, or the shopper's purchase history
@@ -180,23 +181,23 @@ public isolated client class Client {
     # + waitMs - Maximum amount of time, in milliseconds, to wait for responses If elapses, return the results compiled up to that point 
     # + return - Request was successful 
     remote isolated function suggestDomainNames(string? xShopperId = (), string? query = (), string? country = (), string? city = (), string[]? sources = (), string[]? tlds = (), int? lengthMax = (), int? lengthMin = (), int? 'limit = (), int waitMs = 1000) returns DomainSuggestion[]|error {
-        string  path = string `/v1/domains/suggest`;
+        string resourcePath = string `/v1/domains/suggest`;
         map<anydata> queryParam = {"query": query, "country": country, "city": city, "sources": sources, "tlds": tlds, "lengthMax": lengthMax, "lengthMin": lengthMin, "limit": 'limit, "waitMs": waitMs};
         map<Encoding> queryParamEncoding = {"sources": {style: FORM, explode: false}, "tlds": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainSuggestion[] response = check self.clientEp-> get(path, accHeaders, targetType = DomainSuggestionArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainSuggestion[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieves a list of TLDs supported and enabled for sale
     #
     # + return - Request was successful 
     remote isolated function listTLDs() returns TldSummary[]|error {
-        string  path = string `/v1/domains/tlds`;
+        string resourcePath = string `/v1/domains/tlds`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TldSummary[] response = check self.clientEp-> get(path, accHeaders, targetType = TldSummaryArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TldSummary[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Retrieve details for the specified Domain
@@ -205,10 +206,10 @@ public isolated client class Client {
     # + domain - Domain name whose details are to be retrieved 
     # + return - Request was successful 
     remote isolated function getDomainDetail(string domain, string? xShopperId = ()) returns DomainDetail|error {
-        string  path = string `/v1/domains/${domain}`;
+        string resourcePath = string `/v1/domains/${domain}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainDetail response = check self.clientEp-> get(path, accHeaders, targetType = DomainDetail);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainDetail response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Cancel a purchased domain
@@ -216,10 +217,10 @@ public isolated client class Client {
     # + domain - Domain to cancel 
     # + return - Request was successful 
     remote isolated function cancelDomain(string domain) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}`;
+        string resourcePath = string `/v1/domains/${domain}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update details for the specified Domain
@@ -229,13 +230,13 @@ public isolated client class Client {
     # + payload - Changes to apply to existing Domain 
     # + return - Request was successful 
     remote isolated function updateDomain(string domain, DomainUpdate payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}`;
+        string resourcePath = string `/v1/domains/${domain}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Update domain
@@ -245,13 +246,13 @@ public isolated client class Client {
     # + payload - Changes to apply to existing Contacts 
     # + return - No response was specified 
     remote isolated function updateContacts(string domain, DomainContacts payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/contacts`;
+        string resourcePath = string `/v1/domains/${domain}/contacts`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Submit a privacy cancellation request for the given domain
@@ -260,10 +261,10 @@ public isolated client class Client {
     # + domain - Domain whose privacy is to be cancelled 
     # + return - Request was successful 
     remote isolated function cancelPrivacy(string domain, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/privacy`;
+        string resourcePath = string `/v1/domains/${domain}/privacy`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Purchase privacy for a specified domain
@@ -273,13 +274,13 @@ public isolated client class Client {
     # + payload - Options for purchasing privacy 
     # + return - Request was successful 
     remote isolated function purchasePrivacy(string domain, PrivacyPurchase payload, string? xShopperId = ()) returns DomainPurchaseResponse|error {
-        string  path = string `/v1/domains/${domain}/privacy/purchase`;
+        string resourcePath = string `/v1/domains/${domain}/privacy/purchase`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainPurchaseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainPurchaseResponse);
+        request.setPayload(jsonBody, "application/json");
+        DomainPurchaseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Replace all DNS Records for the specified Domain
@@ -289,13 +290,13 @@ public isolated client class Client {
     # + payload - DNS Records to replace whatever currently exists 
     # + return - Request was successful 
     remote isolated function replaceDNSRecords(string domain, DNSRecord[] payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/records`;
+        string resourcePath = string `/v1/domains/${domain}/records`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Add the specified DNS Records to the specified Domain
@@ -305,13 +306,13 @@ public isolated client class Client {
     # + payload - DNS Records to add to whatever currently exists 
     # + return - Request was successful 
     remote isolated function addDNSRecord(string domain, ArrayOfDNSRecord payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/records`;
+        string resourcePath = string `/v1/domains/${domain}/records`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve DNS Records for the specified Domain, optionally with the specified Type and/or Name
@@ -324,12 +325,12 @@ public isolated client class Client {
     # + 'limit - Maximum number of items to return 
     # + return - Request was successful 
     remote isolated function getDNSRecord(string domain, string 'type, string name, string? xShopperId = (), int? offset = (), int? 'limit = ()) returns DNSRecord[]|error {
-        string  path = string `/v1/domains/${domain}/records/${'type}/${name}`;
+        string resourcePath = string `/v1/domains/${domain}/records/${'type}/${name}`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DNSRecord[] response = check self.clientEp-> get(path, accHeaders, targetType = DNSRecordArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DNSRecord[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Replace all DNS Records for the specified Domain with the specified Type and Name
@@ -341,13 +342,13 @@ public isolated client class Client {
     # + payload - DNS Records to replace whatever currently exists 
     # + return - Request was successful 
     remote isolated function replaceDNSRecordTypeName(string domain, string 'type, string name, DNSRecordCreateTypeName[] payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/records/${'type}/${name}`;
+        string resourcePath = string `/v1/domains/${domain}/records/${'type}/${name}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete all DNS Records for the specified Domain with the specified Type and Name
@@ -358,10 +359,10 @@ public isolated client class Client {
     # + name - DNS Record Name for which DNS Records are to be deleted 
     # + return - Request was successful 
     remote isolated function deleteDNSRecordTypeName(string domain, string 'type, string name, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/records/${'type}/${name}`;
+        string resourcePath = string `/v1/domains/${domain}/records/${'type}/${name}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Replace all DNS Records for the specified Domain with the specified Type
@@ -372,13 +373,13 @@ public isolated client class Client {
     # + payload - DNS Records to replace whatever currently exists 
     # + return - Request was successful 
     remote isolated function replaceDNSRecordType(string domain, string 'type, DNSRecordCreateType[] payload, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/records/${'type}`;
+        string resourcePath = string `/v1/domains/${domain}/records/${'type}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Renew the specified Domain
@@ -388,13 +389,13 @@ public isolated client class Client {
     # + payload - Options for renewing existing Domain 
     # + return - Request was successful 
     remote isolated function renewDomain(string domain, DomainRenew payload, string? xShopperId = ()) returns DomainPurchaseResponse|error {
-        string  path = string `/v1/domains/${domain}/renew`;
+        string resourcePath = string `/v1/domains/${domain}/renew`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainPurchaseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainPurchaseResponse);
+        request.setPayload(jsonBody, "application/json");
+        DomainPurchaseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Purchase and start or restart transfer process
@@ -404,13 +405,13 @@ public isolated client class Client {
     # + payload - Details for domain transfer purchase 
     # + return - Request was successful 
     remote isolated function startOrRestartTransferInProcess(string domain, DomainTransferIn payload, string? xShopperId = ()) returns DomainPurchaseResponse|error {
-        string  path = string `/v1/domains/${domain}/transfer`;
+        string resourcePath = string `/v1/domains/${domain}/transfer`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainPurchaseResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DomainPurchaseResponse);
+        request.setPayload(jsonBody, "application/json");
+        DomainPurchaseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Re-send Contact E-mail Verification for specified Domain
@@ -419,12 +420,12 @@ public isolated client class Client {
     # + domain - Domain whose Contact E-mail should be verified. 
     # + return - Request was successful 
     remote isolated function verifyEmail(string domain, string? xShopperId = ()) returns http:Response|error {
-        string  path = string `/v1/domains/${domain}/verifyRegistrantEmail`;
+        string resourcePath = string `/v1/domains/${domain}/verifyRegistrantEmail`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieve the forwarding information for the given fqdn
@@ -434,12 +435,12 @@ public isolated client class Client {
     # + includeSubs - Optionally include all sub domains if the fqdn specified is a domain and not a sub domain. 
     # + return - Request was successful 
     remote isolated function getDomainsForwards(string customerId, string fqdn, boolean? includeSubs = ()) returns DomainForwarding[]|error {
-        string  path = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
+        string resourcePath = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
         map<anydata> queryParam = {"includeSubs": includeSubs};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DomainForwarding[] response = check self.clientEp-> get(path, accHeaders, targetType = DomainForwardingArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DomainForwarding[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Modify the forwarding information for the given fqdn
@@ -449,13 +450,13 @@ public isolated client class Client {
     # + payload - Domain forwarding rule to create or replace on the fqdn 
     # + return - Request was successful 
     remote isolated function putDomainsForwards(string customerId, string fqdn, DomainForwardingCreate payload) returns http:Response|error {
-        string  path = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
+        string resourcePath = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Submit a forwarding cancellation request for the given fqdn
@@ -464,10 +465,10 @@ public isolated client class Client {
     # + fqdn - The fully qualified domain name whose forwarding details are to be deleted. 
     # + return - Request was successful 
     remote isolated function deleteDomainsForwards(string customerId, string fqdn) returns http:Response|error {
-        string  path = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
+        string resourcePath = string `/v2/customers/${customerId}/domains/forwards/${fqdn}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
 }

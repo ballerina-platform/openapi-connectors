@@ -15,7 +15,7 @@ info:
     guide](https://developer.mindsphere.io/concepts/concept-roles-scopes.html#iot-file-service)
   x-ballerina-display:
     label: Siemens IoT And Storage File Service
-    iconPath: resources/siemens.iotandstorage.iotfileservice.svg
+    iconPath: icon.png
 paths:
   /files/{entityId}/{filepath}:
     get:

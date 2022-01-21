@@ -57,6 +57,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # GET
     #
@@ -67,10 +68,10 @@ public isolated client class Client {
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
     # + return - Ok 
     remote isolated function getProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, string? xApideckDownstreamAuthorization = ()) returns json|error {
-        string  path = string `/proxy`;
+        string resourcePath = string `/proxy`;
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # PUT
@@ -82,14 +83,14 @@ public isolated client class Client {
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
     # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
-    remote isolated function putProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PutProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
-        string  path = string `/proxy`;
+    remote isolated function putProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, json payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
+        string resourcePath = string `/proxy`;
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->put(path, request, headers = accHeaders, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # POST
@@ -101,14 +102,14 @@ public isolated client class Client {
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
     # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
-    remote isolated function postProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PostProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
-        string  path = string `/proxy`;
+    remote isolated function postProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, json payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
+        string resourcePath = string `/proxy`;
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, headers = accHeaders, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # DELETE
@@ -120,10 +121,10 @@ public isolated client class Client {
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
     # + return - Ok 
     remote isolated function deleteProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, string? xApideckDownstreamAuthorization = ()) returns json|error {
-        string  path = string `/proxy`;
+        string resourcePath = string `/proxy`;
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> delete(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # PATCH
@@ -135,14 +136,14 @@ public isolated client class Client {
     # + xApideckDownstreamAuthorization - Downstream authorization header. This will skip the Vault token injection. 
     # + payload - Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT. 
     # + return - Ok 
-    remote isolated function patchProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, PatchProxyRequest payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
-        string  path = string `/proxy`;
+    remote isolated function patchProxy(string xApideckConsumerId, string xApideckAppId, string xApideckServiceId, string xApideckDownstreamUrl, json payload, string? xApideckDownstreamAuthorization = ()) returns json|error {
+        string resourcePath = string `/proxy`;
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "x-apideck-downstream-url": xApideckDownstreamUrl, "x-apideck-downstream-authorization": xApideckDownstreamAuthorization, "Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

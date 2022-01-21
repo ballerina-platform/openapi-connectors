@@ -18,7 +18,7 @@ public type StandardError record {
     string status;
     string id?;
     ErrorCategory category;
-    record  { }  subCategory?;
+    record {} subCategory?;
     string message;
     ErrorDetail[] errors;
     record {} context;
@@ -65,6 +65,15 @@ public type Paging record {
     PreviousPage prev?;
 };
 
+public type FilesFileidBody record {
+    # File data that will replace existing file in the file manager.
+    string file?;
+    # Character set of given file data.
+    string charsetHunch?;
+    # JSON String representing FileReplaceOptions
+    string options?;
+};
+
 public type Error record {
     # A human readable message describing the error along with remediation steps where appropriate
     string message;
@@ -80,6 +89,21 @@ public type Error record {
     record {} context?;
     # A map of link names to associated URIs containing documentation about the error or recommended remediation steps
     record {} links?;
+};
+
+public type V3FilesBody record {
+    # File to be uploaded.
+    string file?;
+    # Either 'folderId' or 'folderPath' is required. folderId is the ID of the folder the file will be uploaded to.
+    string folderId?;
+    # Either 'folderPath' or 'folderId' is required. This field represents the destination folder path for the uploaded file. If a path doesn't exist, the system will try to create one.
+    string folderPath?;
+    # Desired name for the uploaded file.
+    string fileName?;
+    # Character set of the uploaded file.
+    string charsetHunch?;
+    # JSON string representing FileUploadOptions.
+    string options?;
 };
 
 # Folder info
@@ -229,15 +253,6 @@ public type FolderInput record {
     string parentPath?;
 };
 
-public type Body1 record {
-    # File data that will replace existing file in the file manager.
-    string file?;
-    # Character set of given file data.
-    string charsetHunch?;
-    # JSON String representing FileReplaceOptions
-    string options?;
-};
-
 # Information on the task that has been started, and where to check it's status.
 public type ImportFromUrlTaskLocator record {
     # The ID of the task
@@ -292,21 +307,6 @@ public type NextPage record {
     string after;
     # Page link
     string link?;
-};
-
-public type Body record {
-    # File to be uploaded.
-    string file?;
-    # Either 'folderId' or 'folderPath' is required. folderId is the ID of the folder the file will be uploaded to.
-    string folderId?;
-    # Either 'folderPath' or 'folderId' is required. This field represents the destination folder path for the uploaded file. If a path doesn't exist, the system will try to create one.
-    string folderPath?;
-    # Desired name for the uploaded file.
-    string fileName?;
-    # Character set of the uploaded file.
-    string charsetHunch?;
-    # JSON string representing FileUploadOptions.
-    string options?;
 };
 
 # Information on the task that has been started, and where to check it's status.

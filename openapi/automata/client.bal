@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Send a company website to receive a list of companies related to them.
     #
@@ -47,12 +48,12 @@ public isolated client class Client {
     # + page - Page number of search results. Ex. https://api.byautomata.io/similar?link=ibm.com&page=1 
     # + return - A successful operation 
     remote isolated function getSimilar(string link, string page = "0") returns SimilarCompanyResponse|error {
-        string  path = string `/similar`;
+        string resourcePath = string `/similar`;
         map<anydata> queryParam = {"link": link, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SimilarCompanyResponse response = check self.clientEp-> get(path, accHeaders, targetType = SimilarCompanyResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SimilarCompanyResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Send search terms to receive the most relevant companies along with text snippets.
@@ -61,24 +62,24 @@ public isolated client class Client {
     # + page - Page number of search results. Ex. https://api.byautomata.io/search?page=0&link=cloud+computing,enterprise,security 
     # + return - A successful operation 
     remote isolated function search(string terms, string page = "0") returns SearchResponse|error {
-        string  path = string `/search`;
+        string resourcePath = string `/search`;
         map<anydata> queryParam = {"terms": terms, "page": page};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SearchResponse response = check self.clientEp-> get(path, accHeaders, targetType = SearchResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SearchResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # The /contentpro-similar-text endpoint accepts and arbitrary piece of text and returns similar articles and blogs written by companies.
     #
     # + return - A successful operation 
     remote isolated function searchSimilarText() returns SimilarTextResponse|error {
-        string  path = string `/contentpro-similar-text`;
+        string resourcePath = string `/contentpro-similar-text`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        SimilarTextResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = SimilarTextResponse);
+        SimilarTextResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send search terms to receive the most relevant articles and companies.
@@ -86,12 +87,12 @@ public isolated client class Client {
     # + terms - We provide information about related companies and articles based on the search terms you provide. Separate search terms with commas. Ex. https://api.byautomata.io/contentpro-search?terms=cloud+computing,enterprise,security 
     # + return - A successful operation 
     remote isolated function searchContent(string terms) returns ContentSearchResponse|error {
-        string  path = string `/contentpro-search`;
+        string resourcePath = string `/contentpro-search`;
         map<anydata> queryParam = {"terms": terms};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ContentSearchResponse response = check self.clientEp-> get(path, accHeaders, targetType = ContentSearchResponse);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ContentSearchResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

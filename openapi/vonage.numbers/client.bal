@@ -43,6 +43,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # List the numbers you own
     #
@@ -55,10 +56,10 @@ public isolated client class Client {
     # + index - Page index 
     # + return - OK 
     remote isolated function getOwnedNumbers(string? applicationId = (), boolean? hasApplication = (), string? country = (), string? pattern = (), int searchPattern = 0, int size = 10, int index = 1) returns InboundNumbers|error {
-        string  path = string `/account/numbers`;
+        string resourcePath = string `/account/numbers`;
         map<anydata> queryParam = {"application_id": applicationId, "has_application": hasApplication, "country": country, "pattern": pattern, "search_pattern": searchPattern, "size": size, "index": index, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        InboundNumbers response = check self.clientEp-> get(path, targetType = InboundNumbers);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InboundNumbers response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search available numbers
@@ -72,10 +73,10 @@ public isolated client class Client {
     # + index - Page index 
     # + return - OK 
     remote isolated function getAvailableNumbers(string country, string? 'type = (), string? pattern = (), int searchPattern = 0, string? features = (), int size = 10, int index = 1) returns AvailableNumbers|error {
-        string  path = string `/number/search`;
+        string resourcePath = string `/number/search`;
         map<anydata> queryParam = {"country": country, "type": 'type, "pattern": pattern, "search_pattern": searchPattern, "features": features, "size": size, "index": index, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        AvailableNumbers response = check self.clientEp-> get(path, targetType = AvailableNumbers);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        AvailableNumbers response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Buy a number
@@ -83,14 +84,13 @@ public isolated client class Client {
     # + payload - Number details 
     # + return - OK 
     remote isolated function buyANumber(NumberDetails payload) returns Response|error {
-        string  path = string `/number/buy`;
+        string resourcePath = string `/number/buy`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Response response = check self.clientEp->post(path, request, targetType=Response);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Cancel a number
@@ -98,14 +98,13 @@ public isolated client class Client {
     # + payload - Number details 
     # + return - OK 
     remote isolated function cancelANumber(NumberDetails payload) returns Response|error {
-        string  path = string `/number/cancel`;
+        string resourcePath = string `/number/cancel`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Response response = check self.clientEp->post(path, request, targetType=Response);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update a number
@@ -113,14 +112,13 @@ public isolated client class Client {
     # + payload - Number details 
     # + return - OK 
     remote isolated function updateANumber(NumberDetailsUpdate payload) returns Response|error {
-        string  path = string `/number/update`;
+        string resourcePath = string `/number/update`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        check request.setContentType("application/x-www-form-urlencoded");
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
-        request.setPayload(encodedRequestBody);
-        Response response = check self.clientEp->post(path, request, targetType=Response);
+        request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
+        Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

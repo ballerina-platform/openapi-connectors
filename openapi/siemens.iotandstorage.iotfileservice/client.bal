@@ -50,7 +50,7 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
-# This is a generated connector from [Siemens IoT File Service API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification. 
+# This is a generated connector from [Siemens IoT File Service API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification.
 # The IoT File API enables storing and retrieving files for asset (entity) instances.
 @display {label: "Siemens IoT And Storage File Service", iconPath: "icon.png"}
 public isolated client class Client {
@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # read a file
     #
@@ -74,10 +75,10 @@ public isolated client class Client {
     # + range - Part of a file to return in Bytes, eg bytes=200-600 
     # + return - file content 
     remote isolated function getFile(string entityId, string filepath, int? ifNoneMatch = (), string? range = ()) returns string|error {
-        string  path = string `/files/${entityId}/${filepath}`;
+        string resourcePath = string `/files/${entityId}/${filepath}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "range": range};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        string response = check self.clientEp-> get(path, accHeaders, targetType = string);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        string response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # delete a file
@@ -86,8 +87,8 @@ public isolated client class Client {
     # + filepath - unique identifier of the file 
     # + return - deleted 
     remote isolated function deleteFile(string entityId, string filepath) returns http:Response|error {
-        string  path = string `/files/${entityId}/${filepath}`;
-        http:Response response = check self.clientEp-> delete(path, targetType = http:Response);
+        string resourcePath = string `/files/${entityId}/${filepath}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # search files
@@ -100,10 +101,10 @@ public isolated client class Client {
     # + filter - filter based on supported fields - see filter syntax for more details (name, path, type, size, timestamp, created, updated) 
     # + return - successful operation 
     remote isolated function searchFiles(string entityId, int? offset = (), int? 'limit = (), boolean? count = (), string? 'order = (), string? filter = ()) returns File[]|error {
-        string  path = string `/files/${entityId}`;
+        string resourcePath = string `/files/${entityId}`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "count": count, "order": 'order, "filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
-        File[] response = check self.clientEp-> get(path, targetType = FileArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        File[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # list multi part uploads
@@ -112,16 +113,16 @@ public isolated client class Client {
     # + filepath - path of the file 
     # + return - multi part list 
     remote isolated function getFileList(string entityId, string filepath) returns Fileslist[]|error {
-        string  path = string `/fileslist/${entityId}/${filepath}`;
-        Fileslist[] response = check self.clientEp-> get(path, targetType = FileslistArr);
+        string resourcePath = string `/fileslist/${entityId}/${filepath}`;
+        Fileslist[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # get all bulk delete jobs
     #
     # + return - return all bulk delete jobs submitted by the tenant 1. <b>id</b>: Job Id created when bulk delete job is accepted 2. <b>timestamp</b>: Timestamp when the job was created 3. <b>status</b>: current status of the job. Possible values can be <br><b>[IN_PROGRESS, COMPLETED_WITH_ERRORS, COMPLETED, FAILED]</b> 
     remote isolated function getDeleteJobs() returns DeleteJobsResponse|error {
-        string  path = string `/files/deleteJobs`;
-        DeleteJobsResponse response = check self.clientEp-> get(path, targetType = DeleteJobsResponse);
+        string resourcePath = string `/files/deleteJobs`;
+        DeleteJobsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # initiate job to delete all files for the given asset identifier
@@ -129,11 +130,11 @@ public isolated client class Client {
     # + payload - bulk delete request 
     # + return - bulk delete request has been accepted for processing 
     remote isolated function submitDeleteJob(BulkDeleteRequest payload) returns BulkDeleteResponse|error {
-        string  path = string `/files/deleteJobs`;
+        string resourcePath = string `/files/deleteJobs`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BulkDeleteResponse response = check self.clientEp->post(path, request, targetType=BulkDeleteResponse);
+        request.setPayload(jsonBody, "application/json");
+        BulkDeleteResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # get the job status of bulk delete operation
@@ -141,8 +142,8 @@ public isolated client class Client {
     # + id - Job Id of bulk delete operation 
     # + return - return bulk delete job by job id submitted by the tenant 1. <b>id</B>: Job Id created when bulk delete job is accepted 2. <b>timestamp</b>: Timestamp when the job was created 3. <b>status</b>: current status of the job. Possible values can be<br><b>[IN_PROGRESS, COMPLETED_WITH_ERRORS, COMPLETED, FAILED]</b> 
     remote isolated function getDeleteJobStatus(string id) returns BulkDeleteJobResponse|error {
-        string  path = string `/files/deleteJobs/${id}`;
-        BulkDeleteJobResponse response = check self.clientEp-> get(path, targetType = BulkDeleteJobResponse);
+        string resourcePath = string `/files/deleteJobs/${id}`;
+        BulkDeleteJobResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

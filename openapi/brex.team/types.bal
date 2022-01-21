@@ -14,10 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Card unlock payload
-public type UnlockCardPostRequest record {
-};
-
 public type CreateLocationRequest record {
     # Name of the location
     string name;

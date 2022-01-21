@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieves business process event steps.
     #
@@ -78,11 +79,11 @@ public isolated client class Client {
     # + stepType - Retired. We retire this report field because when there are multiple steps on the business process definition that are associated with this event step, this report field doesn't return the step type for each associated step. We recommend that you use the Step Type report field instead. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEventSteps(string[]? businessProcess = (), string? createdOnOrAfter = (), string? createdOnOrBefore = (), string? dueDateOnOrAfter = (), string? dueDateOnOrBefore = (), int? 'limit = (), int? offset = (), string[]? stepType = ()) returns InlineResponse200|error {
-        string path = string `/eventSteps`;
+        string resourcePath = string `/eventSteps`;
         map<anydata> queryParam = {"businessProcess": businessProcess, "createdOnOrAfter": createdOnOrAfter, "createdOnOrBefore": createdOnOrBefore, "dueDateOnOrAfter": dueDateOnOrAfter, "dueDateOnOrBefore": dueDateOnOrBefore, "limit": 'limit, "offset": offset, "stepType": stepType};
         map<Encoding> queryParamEncoding = {"businessProcess": {style: FORM, explode: true}, "stepType": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves business process events.
@@ -99,11 +100,11 @@ public isolated client class Client {
     # + 'worker - Event about ~Worker~ for Facet Search 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEvents(string[]? businessProcess = (), string? completedOnOrAfter = (), string? completedOnOrBefore = (), string? initiatedOnOrAfter = (), string? initiatedOnOrBefore = (), string[]? initiator = (), int? 'limit = (), int? offset = (), string[]? status = (), string? 'worker = ()) returns InlineResponse2001|error {
-        string path = string `/events`;
+        string resourcePath = string `/events`;
         map<anydata> queryParam = {"businessProcess": businessProcess, "completedOnOrAfter": completedOnOrAfter, "completedOnOrBefore": completedOnOrBefore, "initiatedOnOrAfter": initiatedOnOrAfter, "initiatedOnOrBefore": initiatedOnOrBefore, "initiator": initiator, "limit": 'limit, "offset": offset, "status": status, "worker": 'worker};
         map<Encoding> queryParamEncoding = {"businessProcess": {style: FORM, explode: true}, "initiator": {style: FORM, explode: true}, "status": {style: FORM, explode: true}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves completed steps for a business process event.
@@ -113,10 +114,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompletedStepsBusinessProcess(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2002|error {
-        string path = string `/events/${id}/completedSteps`;
+        string resourcePath = string `/events/${id}/completedSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves all business process types.
@@ -125,10 +126,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAllBusinessProcessTypes(int? 'limit = (), int? offset = ()) returns InlineResponse2003|error {
-        string path = string `/types`;
+        string resourcePath = string `/types`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp->get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves attachments for a business process event.
@@ -138,10 +139,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAttachmentBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2004|error {
-        string path = string `/events/${id}/attachments`;
+        string resourcePath = string `/events/${id}/attachments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2004 response = check self.clientEp->get(path, targetType = InlineResponse2004);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a business process type.
@@ -149,8 +150,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessTypeByID(string id) returns BusinessProcessTypeDetails|error {
-        string path = string `/types/${id}`;
-        BusinessProcessTypeDetails response = check self.clientEp->get(path, targetType = BusinessProcessTypeDetails);
+        string resourcePath = string `/types/${id}`;
+        BusinessProcessTypeDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a business process event step.
@@ -158,8 +159,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEventStepByID(string id) returns EventStepsView|error {
-        string path = string `/eventSteps/${id}`;
-        EventStepsView response = check self.clientEp->get(path, targetType = EventStepsView);
+        string resourcePath = string `/eventSteps/${id}`;
+        EventStepsView response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves comments for a business process event.
@@ -169,10 +170,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCommentsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2005|error {
-        string path = string `/events/${id}/comments`;
+        string resourcePath = string `/events/${id}/comments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2005 response = check self.clientEp->get(path, targetType = InlineResponse2005);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves in progress steps for a business process event.
@@ -182,10 +183,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInProcessStepsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2006|error {
-        string path = string `/events/${id}/inProgressSteps`;
+        string resourcePath = string `/events/${id}/inProgressSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2006 response = check self.clientEp->get(path, targetType = InlineResponse2006);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2006 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Denies a business process event step.
@@ -193,11 +194,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function deniesBusinessProcess(string id, BusinessProcessStepsDeny payload) returns BusinessProcessStepsDeny|error {
-        string path = string `/eventSteps/${id}/deny`;
+        string resourcePath = string `/eventSteps/${id}/deny`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BusinessProcessStepsDeny response = check self.clientEp->post(path, request, targetType = BusinessProcessStepsDeny);
+        request.setPayload(jsonBody, "application/json");
+        BusinessProcessStepsDeny response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves instances that can be used as values for other endpoint parameters in this service.
@@ -205,10 +206,10 @@ public isolated client class Client {
     # + eventStep - Please do not add superclasses to, or relationships on this class without first discussing with the BPF team. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getRetrievesInstances(string? eventStep = ()) returns MultipleInstanceModelReference|error {
-        string path = string `/values/sendBack/to/`;
+        string resourcePath = string `/values/sendBack/to/`;
         map<anydata> queryParam = {"eventStep": eventStep};
-        path = path + check getPathForQueryParam(queryParam);
-        MultipleInstanceModelReference response = check self.clientEp->get(path, targetType = MultipleInstanceModelReference);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        MultipleInstanceModelReference response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves remaining steps for a business process event.
@@ -218,10 +219,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getRemainingStepsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2007|error {
-        string path = string `/events/${id}/remainingSteps`;
+        string resourcePath = string `/events/${id}/remainingSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2007 response = check self.clientEp->get(path, targetType = InlineResponse2007);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2007 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves attachment categories for a business process type.
@@ -232,10 +233,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAttachmentCategories(string id, string? eventTarget = (), int? 'limit = (), int? offset = ()) returns InlineResponse2008|error {
-        string path = string `/types/${id}/attachmentCategories`;
+        string resourcePath = string `/types/${id}/attachmentCategories`;
         map<anydata> queryParam = {"eventTarget": eventTarget, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2008 response = check self.clientEp->get(path, targetType = InlineResponse2008);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2008 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieves a business process event.
@@ -243,8 +244,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEvent(string id) returns EventDetails|error {
-        string path = string `/events/${id}`;
-        EventDetails response = check self.clientEp->get(path, targetType = EventDetails);
+        string resourcePath = string `/events/${id}`;
+        EventDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Approves a business process event step.
@@ -252,11 +253,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function approveBusinessProcess(string id, BusinessProcessStepsApprove payload) returns BusinessProcessStepsApprove|error {
-        string path = string `/eventSteps/${id}/approve`;
+        string resourcePath = string `/eventSteps/${id}/approve`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BusinessProcessStepsApprove response = check self.clientEp->post(path, request, targetType = BusinessProcessStepsApprove);
+        request.setPayload(jsonBody, "application/json");
+        BusinessProcessStepsApprove response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Sends back a business process event step.
@@ -264,11 +265,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function sendBackBusinessProcessEvent(string id, BusinessProcessStepSendBack payload) returns BusinessProcessStepSendBack|error {
-        string path = string `/eventSteps/${id}/sendBack`;
+        string resourcePath = string `/eventSteps/${id}/sendBack`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BusinessProcessStepSendBack response = check self.clientEp->post(path, request, targetType = BusinessProcessStepSendBack);
+        request.setPayload(jsonBody, "application/json");
+        BusinessProcessStepSendBack response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

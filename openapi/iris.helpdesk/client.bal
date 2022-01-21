@@ -43,6 +43,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get a list of helpdesk tickets
     #
@@ -67,12 +68,12 @@ public isolated client class Client {
     # + unassigned - Set this parameter to 1 if you need unassigned tickets also. For select only unassigned tickets exclude `assigned_to` from the request 
     # + return - A JSON array of tickets 
     remote isolated function getHelpdeskTickets(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? 'group = (), string? 'type = (), decimal? creator = (), decimal? modifier = (), string? search = (), string? searchBy = (), decimal? resolver = (), decimal? lid = (), string? mid = (), boolean? hideResolved = (), string? assignedTo = (), boolean? unassigned = ()) returns InlineResponse20058|error {
-        string  path = string `/api/v1/helpdesk`;
+        string resourcePath = string `/api/v1/helpdesk`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "group": 'group, "type": 'type, "creator": creator, "modifier": modifier, "search": search, "search_by": searchBy, "resolver": resolver, "lid": lid, "mid": mid, "hide_resolved": hideResolved, "assigned_to": assignedTo, "unassigned": unassigned};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20058 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20058);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20058 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new ticket
@@ -80,13 +81,13 @@ public isolated client class Client {
     # + payload - Ticket details 
     # + return - Ticket has been created successfully 
     remote isolated function createNewTicket(V1HelpdeskBody payload) returns TicketDetail|error {
-        string  path = string `/api/v1/helpdesk`;
+        string resourcePath = string `/api/v1/helpdesk`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TicketDetail response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TicketDetail);
+        request.setPayload(jsonBody, "application/json");
+        TicketDetail response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Add a ticket comment
@@ -95,13 +96,13 @@ public isolated client class Client {
     # + payload - Comment details 
     # + return - Comment was added successfully 
     remote isolated function addTicketComment(int ticketId, TicketidCommentBody payload) returns BriefTicketComments|error {
-        string  path = string `/api/v1/helpdesk/${ticketId}/comment`;
+        string resourcePath = string `/api/v1/helpdesk/${ticketId}/comment`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BriefTicketComments response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BriefTicketComments);
+        request.setPayload(jsonBody, "application/json");
+        BriefTicketComments response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get detailed ticked information
@@ -109,10 +110,10 @@ public isolated client class Client {
     # + ticketId - Ticket Id 
     # + return - A JSON array of tickets 
     remote isolated function getDetailedTicketInformation(int ticketId) returns TicketDetail|error {
-        string  path = string `/api/v1/helpdesk/${ticketId}`;
+        string resourcePath = string `/api/v1/helpdesk/${ticketId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TicketDetail response = check self.clientEp-> get(path, accHeaders, targetType = TicketDetail);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TicketDetail response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete a ticket
@@ -120,10 +121,10 @@ public isolated client class Client {
     # + ticketId - Ticket Id 
     # + return - Ticket has been deleted successfully 
     remote isolated function deleteTicket(int ticketId) returns InlineResponse20059|error {
-        string  path = string `/api/v1/helpdesk/${ticketId}`;
+        string resourcePath = string `/api/v1/helpdesk/${ticketId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20059 response = check self.clientEp-> delete(path, accHeaders, targetType = InlineResponse20059);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20059 response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update a ticket
@@ -132,13 +133,13 @@ public isolated client class Client {
     # + payload - Ticket details 
     # + return - Ticket has been updated successfully 
     remote isolated function updateTicket(int ticketId, HelpdeskTicketidBody payload) returns TicketDetail|error {
-        string  path = string `/api/v1/helpdesk/${ticketId}`;
+        string resourcePath = string `/api/v1/helpdesk/${ticketId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TicketDetail response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TicketDetail);
+        request.setPayload(jsonBody, "application/json");
+        TicketDetail response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get ticked assignment logs
@@ -146,10 +147,10 @@ public isolated client class Client {
     # + ticketId - Ticket Id 
     # + return - A JSON array of assignments 
     remote isolated function getTicketAssignmentLogs(int ticketId) returns InlineResponse20060[]|error {
-        string  path = string `/api/v1/helpdesk/${ticketId}/assignments`;
+        string resourcePath = string `/api/v1/helpdesk/${ticketId}/assignments`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20060[] response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20060Arr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20060[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a list of helpdesk ticket types
@@ -168,12 +169,12 @@ public isolated client class Client {
     # + modifier - Filter ticket types by the ticket modifier 
     # + return - A JSON array of ticket types 
     remote isolated function getHelpdeskTicketTypes(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? status = (), int? priority = (), decimal? daysToResolve = (), decimal? creator = (), decimal? modifier = ()) returns InlineResponse20061|error {
-        string  path = string `/api/v1/helpdesk/types`;
+        string resourcePath = string `/api/v1/helpdesk/types`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "status": status, "priority": priority, "daysToResolve": daysToResolve, "creator": creator, "modifier": modifier};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20061 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20061);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20061 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new helpdesk ticket type
@@ -181,13 +182,13 @@ public isolated client class Client {
     # + payload - Comment details 
     # + return - A JSON array of ticket types 
     remote isolated function createHelpdeskTicketType(HelpdeskTypesBody payload) returns TypeDetail|error {
-        string  path = string `/api/v1/helpdesk/types`;
+        string resourcePath = string `/api/v1/helpdesk/types`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TypeDetail response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TypeDetail);
+        request.setPayload(jsonBody, "application/json");
+        TypeDetail response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get details for a helpdesk ticket type
@@ -195,10 +196,10 @@ public isolated client class Client {
     # + typeId - Ticket Type Id 
     # + return - A JSON array of ticket types 
     remote isolated function getHelpdeskTicketType(int typeId) returns TypeDetail|error {
-        string  path = string `/api/v1/helpdesk/types/${typeId}`;
+        string resourcePath = string `/api/v1/helpdesk/types/${typeId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        TypeDetail response = check self.clientEp-> get(path, accHeaders, targetType = TypeDetail);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        TypeDetail response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete a ticket type
@@ -206,10 +207,10 @@ public isolated client class Client {
     # + typeId - Ticket Type Id 
     # + return - Result message 
     remote isolated function deleteTicketType(int typeId) returns InlineResponse20062|error {
-        string  path = string `/api/v1/helpdesk/types/${typeId}`;
+        string resourcePath = string `/api/v1/helpdesk/types/${typeId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20062 response = check self.clientEp-> delete(path, accHeaders, targetType = InlineResponse20062);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20062 response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update a helpdesk ticket type
@@ -218,13 +219,13 @@ public isolated client class Client {
     # + payload - Ticket data 
     # + return - A JSON array of ticket types 
     remote isolated function updateHelpdeskTicketType(int typeId, TypesTypeidBody payload) returns TypeDetail|error {
-        string  path = string `/api/v1/helpdesk/types/${typeId}`;
+        string resourcePath = string `/api/v1/helpdesk/types/${typeId}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TypeDetail response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TypeDetail);
+        request.setPayload(jsonBody, "application/json");
+        TypeDetail response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get a list of available users to notify and assign
@@ -234,12 +235,12 @@ public isolated client class Client {
     # + role - ID of user class 
     # + return - A JSON array of users 
     remote isolated function getAvailableUsersToNotify(int? page = (), int? perPage = (), string? role = ()) returns InlineResponse20032|error {
-        string  path = string `/api/v1/helpdesk/users`;
+        string resourcePath = string `/api/v1/helpdesk/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "role": role};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InlineResponse20032 response = check self.clientEp-> get(path, accHeaders, targetType = InlineResponse20032);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InlineResponse20032 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

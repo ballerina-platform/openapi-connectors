@@ -15,7 +15,6 @@
 // under the License.
 
 # Represents a destination towards which the technology on this project helps advance the Agency goals.
-#
 public type Destination string;
 
 # Lookup code representing more data about an object usually stored in our database.
@@ -110,7 +109,6 @@ public type Taxonomy record {
 };
 
 # A state/territory where work on this project is performed.
-#
 public type WorkLocation string;
 
 public type ProjectIdResponse record {
@@ -135,15 +133,12 @@ public type ProjectSearchResult record {
 };
 
 # The name of the Principal Investigator who is a lead scientist or engineer for an project.
-#
 public type PrincipalInvestigator string;
 
 # The name of a Program Manager responsible for management of an project.
-#
 public type ProgramManager string;
 
 # The name of a Program Director responsible for management of an project.
-#
 public type ProgramDirector string;
 
 # Lookup code type further showing how the lookup codes within this type will be used.
@@ -190,7 +185,6 @@ public type ProjectId record {
 };
 
 # The name of a Project Manager responsible for management of an project.
-#
 public type ProjectManager string;
 
 # Represents an individual and their details.
@@ -318,7 +312,6 @@ public type TechnologyArea record {
 };
 
 # The name of an investigator who is a scientist or engineer for an project.
-#
 public type CoInvestigator string;
 
 # Represents data associated with a single taxonomy node entity.
@@ -358,7 +351,6 @@ public type File record {
 };
 
 # Represents a file hyperlink or external hyperlink to a project closeout final report artifact.
-#
 public type CloseoutDocument string;
 
 # Represents a physical location.

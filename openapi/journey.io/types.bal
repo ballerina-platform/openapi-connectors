@@ -42,11 +42,9 @@ public type EventsIdentification record {
     LinkIdentification user?;
 };
 
-# The basic response containing the unique ID of the request and the response status
-# The object was created
 public type InlineResponse201 record {
-    InlineResponse201Meta meta?;
-    string message?;
+    InlineResponse201Meta meta;
+    string message;
 };
 
 # User identification requires a userId, email or both
@@ -57,11 +55,10 @@ public type LinkIdentification record {
     string userId?;
 };
 
-# The basic response containing the unique ID of the request and the response status
 public type InlineResponse200 record {
-    InlineResponse201Meta meta?;
+    InlineResponse201Meta meta;
     # Validation of API Key
-    InlineResponse200Data data?;
+    InlineResponse200Data data;
 };
 
 # Account identification requires an accountId, domain or both
@@ -72,19 +69,16 @@ public type EventsIdentificationAccount record {
     string accountId?;
 };
 
-# The basic response containing the unique ID of the request and the response status
-# The error message should specify what cause the error
 public type InlineResponse401 record {
-    InlineResponse201Meta meta?;
-    string message?;
+    InlineResponse201Meta meta;
+    string message;
 };
 
-# Specify the fields and/ or parameters that had errors
 public type InlineResponse400 record {
-    record  { string requestId; decimal status;}  meta;
+    record {string requestId; decimal status;} meta;
     string message;
     # Map that sums up all received values that seemed incorrect
-    InlineResponse400Errors errors?;
+    InlineResponse400Errors errors;
 };
 
 # Map that sums up all received values that seemed incorrect
@@ -122,11 +116,10 @@ public type InlineResponse201Meta record {
     decimal status;
 };
 
-# The basic response containing the unique ID of the request and the response status
 public type InlineResponse2001 record {
-    InlineResponse201Meta meta?;
+    InlineResponse201Meta meta;
     # A snippet
-    InlineResponse2001Data data?;
+    InlineResponse2001Data data;
 };
 
 # Event for a user or an account
@@ -145,12 +138,6 @@ public type LinkBody record {
     string deviceId;
     # User identification requires a userId, email or both
     LinkIdentification identification;
-};
-
-# The user being added/removed from the account
-public type AccountidUsersBody1 record {
-    # Unique identifier for the user in your database
-    string userId;
 };
 
 # The user being added/removed from the account

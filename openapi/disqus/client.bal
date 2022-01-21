@@ -45,6 +45,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Returns a list of categories within a forum.
     #
@@ -55,10 +56,10 @@ public isolated client class Client {
     # + 'order - order. Defaults to 'asc'. Choices: asc, desc. 
     # + return - An object with a single property response which is an array of Category objects. 
     remote isolated function listCategories(string forum, string? sinceId = (), string? cursor = (), string? 'limit = (), string? 'order = ()) returns Categories|error {
-        string path = string `/categories/list.json`;
+        string resourcePath = string `/categories/list.json`;
         map<anydata> queryParam = {"forum": forum, "since_id": sinceId, "cursor": cursor, "limit": 'limit, "order": 'order, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Categories response = check self.clientEp->get(path, targetType = Categories);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Categories response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns category details.
@@ -66,10 +67,10 @@ public isolated client class Client {
     # + category - Looks up a category by ID. 
     # + return - An object with a single property response which is a Category object. 
     remote isolated function getCategoryDetails(string category) returns Category|error {
-        string path = string `/categories/details.json`;
+        string resourcePath = string `/categories/details.json`;
         map<anydata> queryParam = {"category": category, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Category response = check self.clientEp->get(path, targetType = Category);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Category response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns forum details.
@@ -79,10 +80,10 @@ public isolated client class Client {
     # + related - You may specify relations to include with your response. Choices: author. Defaults to []. 
     # + return - An object with a single property response which is a Forum object. 
     remote isolated function getForumDetails(string forum, string? attach = (), string? related = ()) returns Forum|error {
-        string path = string `/forums/details.json`;
+        string resourcePath = string `/forums/details.json`;
         map<anydata> queryParam = {"forum": forum, "attach": attach, "related": related, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Forum response = check self.clientEp->get(path, targetType = Forum);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Forum response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of posts ordered by the date created.
@@ -103,10 +104,10 @@ public isolated client class Client {
     # + 'order - Choices: asc, desc. Defaults to 'desc' 
     # + return - An object with a single property response which is an array of Post objects. 
     remote isolated function listPosts(string? category = (), string? end = (), string? sortType = (), string? thread = (), string? forum = (), string? 'start = (), string? since = (), string? related = (), string? cursor = (), int? 'limit = (), string? filters = (), string? query = (), string? include = (), string? 'order = ()) returns Posts|error {
-        string path = string `/posts/list.json`;
+        string resourcePath = string `/posts/list.json`;
         map<anydata> queryParam = {"category": category, "end": end, "sortType": sortType, "thread": thread, "forum": forum, "start": 'start, "since": since, "related": related, "cursor": cursor, "limit": 'limit, "filters": filters, "query": query, "include": include, "order": 'order, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Posts response = check self.clientEp->get(path, targetType = Posts);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Posts response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns information about a post.
@@ -115,10 +116,10 @@ public isolated client class Client {
     # + related - You may specify relations to include with your response. Choices: forum, thread. Defaults to []. 
     # + return - An object with a single property response which is a Post object. 
     remote isolated function getPostDetails(string post, string? related = ()) returns Post|error {
-        string path = string `/posts/details.json`;
+        string resourcePath = string `/posts/details.json`;
         map<anydata> queryParam = {"post": post, "related": related, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Post response = check self.clientEp->get(path, targetType = Post);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Post response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of threads sorted by the date created.
@@ -136,10 +137,10 @@ public isolated client class Client {
     # + 'order - Choices: asc, desc. Defaults to 'desc'. 
     # + return - An object with a single property response which is an array of Thread objects. 
     remote isolated function listThreads(string? category = (), string? forum = (), string? thread = (), string? author = (), string? since = (), string? related = (), string? cursor = (), string? attach = (), int? 'limit = (), string? include = (), string? 'order = ()) returns Threads|error {
-        string path = string `/threads/list.json`;
+        string resourcePath = string `/threads/list.json`;
         map<anydata> queryParam = {"category": category, "forum": forum, "thread": thread, "author": author, "since": since, "related": related, "cursor": cursor, "attach": attach, "limit": 'limit, "include": include, "order": 'order, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        Threads response = check self.clientEp->get(path, targetType = Threads);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Threads response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns thread details.
@@ -150,10 +151,10 @@ public isolated client class Client {
     # + attach - Choices: topics. Defaults to []. 
     # + return - An object with a single property response which is a Thread object. 
     remote isolated function getThreadDetails(string thread, string? forum = (), string? related = (), string? attach = ()) returns DisqusThread|error {
-        string path = string `/threads/details.json`;
+        string resourcePath = string `/threads/details.json`;
         map<anydata> queryParam = {"thread": thread, "forum": forum, "related": related, "attach": attach, "access_token": self.apiKeyConfig.accessToken, "api_key": self.apiKeyConfig.apiKey, "api_secret": self.apiKeyConfig.apiSecret};
-        path = path + check getPathForQueryParam(queryParam);
-        DisqusThread response = check self.clientEp->get(path, targetType = DisqusThread);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        DisqusThread response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

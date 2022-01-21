@@ -40,19 +40,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Lookup EAN barcode value, return product data
     #
     # + payload - Barcode value 
     # + return - OK 
     remote isolated function barcodeEanLookup(string payload) returns BarcodeLookupResponse|error {
-        string  path = string `/barcode/lookup/ean`;
+        string resourcePath = string `/barcode/lookup/ean`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BarcodeLookupResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BarcodeLookupResponse);
+        request.setPayload(jsonBody, "application/json");
+        BarcodeLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a QR code barcode as PNG file
@@ -60,13 +61,13 @@ public isolated client class Client {
     # + payload - QR code text to convert into the QR code barcode 
     # + return - OK 
     remote isolated function generateBarcodeQrcode(string payload) returns string|error {
-        string  path = string `/barcode/generate/qrcode`;
+        string resourcePath = string `/barcode/generate/qrcode`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a UPC-A code barcode as PNG file
@@ -74,13 +75,13 @@ public isolated client class Client {
     # + payload - UPC-A barcode value to generate from 
     # + return - OK 
     remote isolated function generateBarcodeUpca(string payload) returns string|error {
-        string  path = string `/barcode/generate/upc-a`;
+        string resourcePath = string `/barcode/generate/upc-a`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a UPC-E code barcode as PNG file
@@ -88,13 +89,13 @@ public isolated client class Client {
     # + payload - UPC-E barcode value to generate from 
     # + return - OK 
     remote isolated function generateBarcodeUpce(string payload) returns string|error {
-        string  path = string `/barcode/generate/upc-e`;
+        string resourcePath = string `/barcode/generate/upc-e`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a EAN-13 code barcode as PNG file
@@ -102,13 +103,13 @@ public isolated client class Client {
     # + payload - Barcode value to generate from 
     # + return - OK 
     remote isolated function generateBarcodeEan13(string payload) returns string|error {
-        string  path = string `/barcode/generate/ean-13`;
+        string resourcePath = string `/barcode/generate/ean-13`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Generate a EAN-8 code barcode as PNG file
@@ -116,13 +117,13 @@ public isolated client class Client {
     # + payload - Barcode value to generate from 
     # + return - OK 
     remote isolated function generateBarcodeEan8(string payload) returns string|error {
-        string  path = string `/barcode/generate/ean-8`;
+        string resourcePath = string `/barcode/generate/ean-8`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, headers = accHeaders, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

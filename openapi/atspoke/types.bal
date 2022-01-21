@@ -789,7 +789,6 @@ public type RequestTypeInfoResponse record {
 };
 
 # A list of the subscribers on the request
-# A list of the subscribers on the request
 public type SubscriberList SubscriberlistInner[];
 
 # Body to bulk add labels

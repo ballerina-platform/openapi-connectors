@@ -40,16 +40,17 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get Popular Movies
     #
     # + return - Get popular movies response 
     @display {label: "Get Popular Movies"}
     remote isolated function getPopularMovies() returns InlineResponse200|error {
-        string  path = string `/movie/popular`;
+        string resourcePath = string `/movie/popular`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Upcoming Movies
@@ -57,10 +58,10 @@ public isolated client class Client {
     # + return - Get upcoming movies response 
     @display {label: "Get Upcoming Movies"}
     remote isolated function getUpcomingMovies() returns InlineResponse2001|error {
-        string  path = string `/movie/upcoming`;
+        string resourcePath = string `/movie/upcoming`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Movie Details
@@ -69,10 +70,10 @@ public isolated client class Client {
     # + return - Get movie by movie ID response 
     @display {label: "Get Movie Details"}
     remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movieId) returns InlineResponse2002|error {
-        string  path = string `/movie/${movieId}`;
+        string resourcePath = string `/movie/${movieId}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Top Rated
@@ -80,10 +81,10 @@ public isolated client class Client {
     # + return - Get top rated TV show response 
     @display {label: "Get Top Rated TV Shows"}
     remote isolated function getTopRatedTvShow() returns InlineResponse2003|error {
-        string  path = string `/tv/top_rated`;
+        string resourcePath = string `/tv/top_rated`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Details
@@ -94,10 +95,10 @@ public isolated client class Client {
     # + return - Get TV show by details response 
     @display {label: "Get TV Show Episode"}
     remote isolated function getTvShowEpisode(@display {label: "TV Show ID"} int tvId, @display {label: "Season Number"} int seasonNumber, @display {label: "Episode Number"} int episodeNumber) returns InlineResponse2004|error {
-        string  path = string `/tv/${tvId}/season/${seasonNumber}/episode/${episodeNumber}`;
+        string resourcePath = string `/tv/${tvId}/season/${seasonNumber}/episode/${episodeNumber}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search Movies
@@ -107,10 +108,10 @@ public isolated client class Client {
     # + return - Search movie response 
     @display {label: "Search Movies"}
     remote isolated function searchMovie(@display {label: "Search Text Query"} string query, @display {label: "Movie Release Year"} int? year = ()) returns InlineResponse200|error {
-        string  path = string `/search/movie`;
+        string resourcePath = string `/search/movie`;
         map<anydata> queryParam = {"query": query, "year": year, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Search TV Shows
@@ -120,10 +121,10 @@ public isolated client class Client {
     # + return - Search TV show response 
     @display {label: "Search TV Shows"}
     remote isolated function searchTvShow(@display {label: "Search Text Query"} string query, @display {label: "First Air Date"} int? firstAirDateYear = ()) returns InlineResponse2003|error {
-        string  path = string `/search/tv`;
+        string resourcePath = string `/search/tv`;
         map<anydata> queryParam = {"query": query, "firstAirDateYear": firstAirDateYear, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

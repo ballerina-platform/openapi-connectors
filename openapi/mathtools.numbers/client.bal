@@ -40,15 +40,16 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Get the number of the day for current day
     #
     # + return - 200 Success response 
     remote isolated function getNumberOfTheDay() returns json|error {
-        string  path = string `/numbers/nod`;
+        string resourcePath = string `/numbers/nod`;
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a random fact about a number
@@ -56,12 +57,12 @@ public isolated client class Client {
     # + number - Number value 
     # + return - 200 Success response 
     remote isolated function getRandomFactNumber(int number) returns json|error {
-        string  path = string `/numbers/fact`;
+        string resourcePath = string `/numbers/fact`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Generate random number(s)
@@ -71,12 +72,12 @@ public isolated client class Client {
     # + total - Total number of random numbers to generate. Defaults to 1 
     # + return - 200 Success response 
     remote isolated function generateRandomNumbers(int? min = (), int? max = (), int? total = ()) returns json|error {
-        string  path = string `/numbers/random`;
+        string resourcePath = string `/numbers/random`;
         map<anydata> queryParam = {"min": min, "max": max, "total": total};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the ordinal of the given number
@@ -84,12 +85,12 @@ public isolated client class Client {
     # + number - Number value 
     # + return - 200 Success response 
     remote isolated function getOrdinalOfNumber(int? number = ()) returns json|error {
-        string  path = string `/numbers/ordinal`;
+        string resourcePath = string `/numbers/ordinal`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the cardinal of the given number
@@ -98,12 +99,12 @@ public isolated client class Client {
     # + language - Language to use 
     # + return - 200 Success response 
     remote isolated function getCardinalOfNumber(int? number = (), string? language = ()) returns json|error {
-        string  path = string `/numbers/cardinal`;
+        string resourcePath = string `/numbers/cardinal`;
         map<anydata> queryParam = {"number": number, "language": language};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Spells out the number as a currency
@@ -112,12 +113,12 @@ public isolated client class Client {
     # + language - Language to use 
     # + return - 200 Success response 
     remote isolated function spellNumberAsCurrency(int? number = (), string? language = ()) returns json|error {
-        string  path = string `/numbers/currency`;
+        string resourcePath = string `/numbers/currency`;
         map<anydata> queryParam = {"number": number, "language": language};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert base 10 representation of a given number to egyptian numeral.
@@ -125,12 +126,12 @@ public isolated client class Client {
     # + number - Number to convert 
     # + return - 200 Success response 
     remote isolated function convertBase10ToEgyptianNumeral(int? number = ()) returns json|error {
-        string  path = string `/numbers/numeral/egyptian`;
+        string resourcePath = string `/numbers/numeral/egyptian`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert base 10 representation of a given number to chinese numeral.
@@ -138,12 +139,12 @@ public isolated client class Client {
     # + number - Number to convert 
     # + return - 200 Success response 
     remote isolated function convertBase10ToChineseNumeral(int? number = ()) returns json|error {
-        string  path = string `/numbers/numeral/chinese`;
+        string resourcePath = string `/numbers/numeral/chinese`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert base 10 representation of a given number to roman numeral.
@@ -151,12 +152,12 @@ public isolated client class Client {
     # + number - Number to convert 
     # + return - 200 Success response 
     remote isolated function convertBase10ToRomanNumeral(int? number = ()) returns json|error {
-        string  path = string `/numbers/numeral/roman`;
+        string resourcePath = string `/numbers/numeral/roman`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert a given number to binary
@@ -165,12 +166,12 @@ public isolated client class Client {
     # + 'from - Base of the supplied number (Optional base 10 assumed by default) 
     # + return - 200 success response 
     remote isolated function convertGivenNumberToBinary(int number, int? 'from = ()) returns json|error {
-        string  path = string `/numbers/base/binary`;
+        string resourcePath = string `/numbers/base/binary`;
         map<anydata> queryParam = {"number": number, "from": 'from};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert a given number to octal
@@ -179,12 +180,12 @@ public isolated client class Client {
     # + 'from - Base of the supplied number (Optional base 10 assumed by default) 
     # + return - 200 success response 
     remote isolated function convertGivenNumberToOctal(int number, int? 'from = ()) returns json|error {
-        string  path = string `/numbers/base/octal`;
+        string resourcePath = string `/numbers/base/octal`;
         map<anydata> queryParam = {"number": number, "from": 'from};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert a given number to hexadecimal
@@ -193,12 +194,12 @@ public isolated client class Client {
     # + 'from - Base of the supplied number (Optional base 10 assumed by default) 
     # + return - 200 success response 
     remote isolated function convertToHexadecimal(int number, int? 'from = ()) returns json|error {
-        string  path = string `/numbers/base/hex`;
+        string resourcePath = string `/numbers/base/hex`;
         map<anydata> queryParam = {"number": number, "from": 'from};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Convert a given number from one base to another base
@@ -208,12 +209,12 @@ public isolated client class Client {
     # + to - Target base to convert to 
     # + return - 200 success response 
     remote isolated function convertBase(int number, int to, int? 'from = ()) returns json|error {
-        string  path = string `/numbers/base`;
+        string resourcePath = string `/numbers/base`;
         map<anydata> queryParam = {"number": number, "from": 'from, "to": to};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get digits of pi (Ã,â‚¬)
@@ -222,12 +223,12 @@ public isolated client class Client {
     # + to - Optional start position 
     # + return - 200 Success response 
     remote isolated function getDigitsOfPI(int? 'from = (), int? to = ()) returns json|error {
-        string  path = string `/numbers/pi`;
+        string resourcePath = string `/numbers/pi`;
         map<anydata> queryParam = {"from": 'from, "to": to};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known prime number or not.
@@ -235,12 +236,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsPrime(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-prime`;
+        string resourcePath = string `/numbers/prime/is-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known mersenne prime number or not.
@@ -248,12 +249,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsMersennePrime(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-mersenne-prime`;
+        string resourcePath = string `/numbers/prime/is-mersenne-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known fermat prime number or not.
@@ -261,12 +262,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsFermatPrice(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-fermat-prime`;
+        string resourcePath = string `/numbers/prime/is-fermat-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known pell prime number or not.
@@ -274,12 +275,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsKnownPellPrime(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-pell-prime`;
+        string resourcePath = string `/numbers/prime/is-pell-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known partition prime number or not.
@@ -287,12 +288,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsKnownPartitionPrime(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-partition-prime`;
+        string resourcePath = string `/numbers/prime/is-partition-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a known fibonacci prime number or not.
@@ -300,12 +301,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsKnownFibonacciPrime(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-fibonacci-prime`;
+        string resourcePath = string `/numbers/prime/is-fibonacci-prime`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get the prime factors of a given number.
@@ -313,12 +314,12 @@ public isolated client class Client {
     # + number - Number to get the factors 
     # + return - 200 Success response 
     remote isolated function getPrimeFactors(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/factors`;
+        string resourcePath = string `/numbers/prime/factors`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a palindrome number or not.
@@ -326,12 +327,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsPalindrome(int? number = ()) returns json|error {
-        string  path = string `/numbers/is-palindrome`;
+        string resourcePath = string `/numbers/is-palindrome`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a triangle number or not.
@@ -339,12 +340,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsTriangle(int? number = ()) returns json|error {
-        string  path = string `/numbers/is-triangle`;
+        string resourcePath = string `/numbers/is-triangle`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a cube number or not.
@@ -352,12 +353,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsCube(int? number = ()) returns json|error {
-        string  path = string `/numbers/is-cube`;
+        string resourcePath = string `/numbers/is-cube`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a square number or not.
@@ -365,12 +366,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function checkNumberIsSquare(int? number = ()) returns json|error {
-        string  path = string `/numbers/is-square`;
+        string resourcePath = string `/numbers/is-square`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Checks whether a given number is a perfect number or not.
@@ -378,12 +379,12 @@ public isolated client class Client {
     # + number - Number to check 
     # + return - 200 Success response 
     remote isolated function getNumberIsPerfect(int? number = ()) returns json|error {
-        string  path = string `/numbers/prime/is-perfect`;
+        string resourcePath = string `/numbers/prime/is-perfect`;
         map<anydata> queryParam = {"number": number};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Mathtools-Api-Secret": self.apiKeyConfig.xMathtoolsApiSecret};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp-> get(path, accHeaders, targetType = json);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

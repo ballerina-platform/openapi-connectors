@@ -40,18 +40,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Create Action Notification Export
     #
     # + return - The ActionNotificationExports object. 
     remote isolated function postActionNotificationExports(ActionNotificationExportsBody payload) returns ActionNotificationExportEntity|error {
-        string  path = string `/action_notification_exports`;
+        string resourcePath = string `/action_notification_exports`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ActionNotificationExportEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ActionNotificationExportEntity);
+        request.setPayload(jsonBody, "application/json");
+        ActionNotificationExportEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Action Notification Export
@@ -59,10 +60,10 @@ public isolated client class Client {
     # + id - Action Notification Export ID. 
     # + return - The ActionNotificationExports object. 
     remote isolated function getActionNotificationExportsId(int id) returns ActionNotificationExportEntity|error {
-        string  path = string `/action_notification_exports/${id}`;
+        string resourcePath = string `/action_notification_exports/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionNotificationExportEntity response = check self.clientEp-> get(path, accHeaders, targetType = ActionNotificationExportEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionNotificationExportEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Action Notification Export Results
@@ -73,12 +74,12 @@ public isolated client class Client {
     # + actionNotificationExportId - ID of the associated action notification export. 
     # + return - A list of ActionNotificationExportResults objects. 
     remote isolated function getActionNotificationExportResults(int actionNotificationExportId, int? userId = (), string? cursor = (), int? perPage = ()) returns ActionNotificationExportResultEntity[]|error {
-        string  path = string `/action_notification_export_results`;
+        string resourcePath = string `/action_notification_export_results`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "action_notification_export_id": actionNotificationExportId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionNotificationExportResultEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionNotificationExportResultEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionNotificationExportResultEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # retry Action Webhook Failure
@@ -86,45 +87,45 @@ public isolated client class Client {
     # + id - Action Webhook Failure ID. 
     # + return - The ActionWebhookFailures object. 
     remote isolated function postActionWebhookFailuresIdRetry(int id) returns http:Response|error {
-        string  path = string `/action_webhook_failures/${id}/retry`;
+        string resourcePath = string `/action_webhook_failures/${id}/retry`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show information about current API key.  (Requires current API connection to be using an API key.)
     #
     # + return - The ApiKey object. 
     remote isolated function apiKeyFindCurrent() returns ApiKeyEntity|error {
-        string  path = string `/api_key`;
+        string resourcePath = string `/api_key`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete current API key.  (Requires current API connection to be using an API key.)
     #
     # + return - No body. 
     remote isolated function apiKeyDeleteCurrent() returns http:Response|error {
-        string  path = string `/api_key`;
+        string resourcePath = string `/api_key`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update current API key.  (Requires current API connection to be using an API key.)
     #
     # + return - The ApiKey object. 
     remote isolated function apiKeyUpdateCurrent(ApiKeyBody payload) returns ApiKeyEntity|error {
-        string  path = string `/api_key`;
+        string resourcePath = string `/api_key`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Api Key
@@ -132,10 +133,10 @@ public isolated client class Client {
     # + id - Api Key ID. 
     # + return - The ApiKeys object. 
     remote isolated function getApiKeysId(int id) returns ApiKeyEntity|error {
-        string  path = string `/api_keys/${id}`;
+        string resourcePath = string `/api_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Api Key
@@ -143,10 +144,10 @@ public isolated client class Client {
     # + id - Api Key ID. 
     # + return - No body. 
     remote isolated function deleteApiKeysId(int id) returns http:Response|error {
-        string  path = string `/api_keys/${id}`;
+        string resourcePath = string `/api_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Api Key
@@ -154,13 +155,13 @@ public isolated client class Client {
     # + id - Api Key ID. 
     # + return - The ApiKeys object. 
     remote isolated function patchApiKeysId(int id, ApiKeysIdBody payload) returns ApiKeyEntity|error {
-        string  path = string `/api_keys/${id}`;
+        string resourcePath = string `/api_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Api Keys
@@ -177,58 +178,58 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `expires_at`. 
     # + return - A list of ApiKeys objects. 
     remote isolated function getApiKeys(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ApiKeyEntity[]|error {
-        string  path = string `/api_keys`;
+        string resourcePath = string `/api_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Api Key
     #
     # + return - The ApiKeys object. 
     remote isolated function postApiKeys(ApiKeysBody payload) returns ApiKeyEntity|error {
-        string  path = string `/api_keys`;
+        string resourcePath = string `/api_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Get the most recent usage snapshot (usage data for billing purposes) for a Site.
     #
     # + return - The Site object. 
     remote isolated function getSiteUsage() returns UsageSnapshotEntity|error {
-        string  path = string `/site/usage`;
+        string resourcePath = string `/site/usage`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UsageSnapshotEntity response = check self.clientEp-> get(path, accHeaders, targetType = UsageSnapshotEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UsageSnapshotEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show site settings
     #
     # + return - The Site object. 
     remote isolated function getSite() returns SiteEntity|error {
-        string  path = string `/site`;
+        string resourcePath = string `/site`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SiteEntity response = check self.clientEp-> get(path, accHeaders, targetType = SiteEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SiteEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update site settings.
     #
     # + return - The Site object. 
     remote isolated function patchSite(SiteBody payload) returns SiteEntity|error {
-        string  path = string `/site`;
+        string resourcePath = string `/site`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SiteEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SiteEntity);
+        request.setPayload(jsonBody, "application/json");
+        SiteEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List IP Addresses associated with the current site
@@ -237,12 +238,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of IpAddresses objects. 
     remote isolated function getSiteIpAddresses(string? cursor = (), int? perPage = ()) returns IpAddressEntity[]|error {
-        string  path = string `/site/ip_addresses`;
+        string resourcePath = string `/site/ip_addresses`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        IpAddressEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = IpAddressEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        IpAddressEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show site DNS configuration.
@@ -251,25 +252,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of DnsRecords objects. 
     remote isolated function getSiteDnsRecords(string? cursor = (), int? perPage = ()) returns DnsRecordEntity[]|error {
-        string  path = string `/site/dns_records`;
+        string resourcePath = string `/site/dns_records`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DnsRecordEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = DnsRecordEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DnsRecordEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Test webhook.
     #
     # + return - The Behaviors object. 
     remote isolated function postSiteTestWebhook(SiteTestwebhookBody payload) returns StatusEntity|error {
-        string  path = string `/site/test-webhook`;
+        string resourcePath = string `/site/test-webhook`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StatusEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StatusEntity);
+        request.setPayload(jsonBody, "application/json");
+        StatusEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Api Keys
@@ -286,38 +287,38 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `expires_at`. 
     # + return - A list of ApiKeys objects. 
     remote isolated function getSiteApiKeys(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ApiKeyEntity[]|error {
-        string  path = string `/site/api_keys`;
+        string resourcePath = string `/site/api_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Api Key
     #
     # + return - The ApiKeys object. 
     remote isolated function postSiteApiKeys(SiteApiKeysBody payload) returns ApiKeyEntity|error {
-        string  path = string `/site/api_keys`;
+        string resourcePath = string `/site/api_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Update User
     #
     # + return - The Users object. 
     remote isolated function patchUser(UserBody payload) returns UserEntity|error {
-        string  path = string `/user`;
+        string resourcePath = string `/user`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UserEntity);
+        request.setPayload(jsonBody, "application/json");
+        UserEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Public Keys
@@ -327,25 +328,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of PublicKeys objects. 
     remote isolated function getUserPublicKeys(int? userId = (), string? cursor = (), int? perPage = ()) returns PublicKeyEntity[]|error {
-        string  path = string `/user/public_keys`;
+        string resourcePath = string `/user/public_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PublicKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Public Key
     #
     # + return - The PublicKeys object. 
     remote isolated function postUserPublicKeys(UserPublicKeysBody payload) returns PublicKeyEntity|error {
-        string  path = string `/user/public_keys`;
+        string resourcePath = string `/user/public_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PublicKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        PublicKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Group Users
@@ -356,12 +357,12 @@ public isolated client class Client {
     # + groupId - Group ID.  If provided, will return group_users of this group. 
     # + return - A list of GroupUsers objects. 
     remote isolated function getUserGroups(int? userId = (), string? cursor = (), int? perPage = (), int? groupId = ()) returns GroupUserEntity[]|error {
-        string  path = string `/user/groups`;
+        string resourcePath = string `/user/groups`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "group_id": groupId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupUserEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupUserEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupUserEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List As2 Keys
@@ -371,25 +372,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of As2Keys objects. 
     remote isolated function getUserAs2Keys(int? userId = (), string? cursor = (), int? perPage = ()) returns As2KeyEntity[]|error {
-        string  path = string `/user/as2_keys`;
+        string resourcePath = string `/user/as2_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        As2KeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = As2KeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        As2KeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create As2 Key
     #
     # + return - The As2Keys object. 
     remote isolated function postUserAs2Keys(UserAs2KeysBody payload) returns As2KeyEntity|error {
-        string  path = string `/user/as2_keys`;
+        string resourcePath = string `/user/as2_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        As2KeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=As2KeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        As2KeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Api Keys
@@ -406,25 +407,25 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `expires_at`. 
     # + return - A list of ApiKeys objects. 
     remote isolated function getUserApiKeys(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ApiKeyEntity[]|error {
-        string  path = string `/user/api_keys`;
+        string resourcePath = string `/user/api_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Api Key
     #
     # + return - The ApiKeys object. 
     remote isolated function postUserApiKeys(UserApiKeysBody payload) returns ApiKeyEntity|error {
-        string  path = string `/user/api_keys`;
+        string resourcePath = string `/user/api_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Unlock user who has been locked out due to failed logins.
@@ -432,12 +433,12 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - No body. 
     remote isolated function postUsersIdUnlock(int id) returns http:Response|error {
-        string  path = string `/users/${id}/unlock`;
+        string resourcePath = string `/users/${id}/unlock`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Resend user welcome email
@@ -445,12 +446,12 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - No body. 
     remote isolated function postUsersIdResendWelcomeEmail(int id) returns http:Response|error {
-        string  path = string `/users/${id}/resend_welcome_email`;
+        string resourcePath = string `/users/${id}/resend_welcome_email`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Trigger 2FA Reset process for user who has lost access to their existing 2FA methods.
@@ -458,12 +459,12 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - No body. 
     remote isolated function postUsersId2faReset(int id) returns http:Response|error {
-        string  path = string `/users/${id}/2fa/reset`;
+        string resourcePath = string `/users/${id}/2fa/reset`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = http:Response);
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show User
@@ -471,10 +472,10 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - The Users object. 
     remote isolated function getUsersId(int id) returns UserEntity|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserEntity response = check self.clientEp-> get(path, accHeaders, targetType = UserEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete User
@@ -482,10 +483,10 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - No body. 
     remote isolated function deleteUsersId(int id) returns http:Response|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update User
@@ -493,13 +494,13 @@ public isolated client class Client {
     # + id - User ID. 
     # + return - The Users object. 
     remote isolated function patchUsersId(int id, UsersIdBody payload) returns UserEntity|error {
-        string  path = string `/users/${id}`;
+        string resourcePath = string `/users/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UserEntity);
+        request.setPayload(jsonBody, "application/json");
+        UserEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Users
@@ -524,25 +525,25 @@ public isolated client class Client {
     # + search - Searches for partial matches of name, username, or email. 
     # + return - A list of Users objects. 
     remote isolated function getUsers(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? ids = (), string? qUsername = (), string? qEmail = (), string? qNotes = (), string? qAdmin = (), string? qAllowedIps = (), string? qPasswordValidityDays = (), string? qSslRequired = (), string? search = ()) returns UserEntity[]|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "ids": ids, "q[username]": qUsername, "q[email]": qEmail, "q[notes]": qNotes, "q[admin]": qAdmin, "q[allowed_ips]": qAllowedIps, "q[password_validity_days]": qPasswordValidityDays, "q[ssl_required]": qSslRequired, "search": search};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UserEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create User
     #
     # + return - The Users object. 
     remote isolated function postUsers(UsersBody payload) returns UserEntity|error {
-        string  path = string `/users`;
+        string resourcePath = string `/users`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserEntity);
+        request.setPayload(jsonBody, "application/json");
+        UserEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List User Cipher Uses
@@ -552,12 +553,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of UserCipherUses objects. 
     remote isolated function getUsersUserIdCipherUses(int userId, string? cursor = (), int? perPage = ()) returns UserCipherUseEntity[]|error {
-        string  path = string `/users/${userId}/cipher_uses`;
+        string resourcePath = string `/users/${userId}/cipher_uses`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserCipherUseEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UserCipherUseEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserCipherUseEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Public Keys
@@ -567,12 +568,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of PublicKeys objects. 
     remote isolated function getUsersUserIdPublicKeys(int userId, string? cursor = (), int? perPage = ()) returns PublicKeyEntity[]|error {
-        string  path = string `/users/${userId}/public_keys`;
+        string resourcePath = string `/users/${userId}/public_keys`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PublicKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Public Key
@@ -580,13 +581,13 @@ public isolated client class Client {
     # + userId - User ID.  Provide a value of `0` to operate the current session's user. 
     # + return - The PublicKeys object. 
     remote isolated function postUsersUserIdPublicKeys(int userId, UserIdPublicKeysBody payload) returns PublicKeyEntity|error {
-        string  path = string `/users/${userId}/public_keys`;
+        string resourcePath = string `/users/${userId}/public_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PublicKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        PublicKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Permissions
@@ -605,12 +606,12 @@ public isolated client class Client {
     # + includeGroups - If searching by user or group, also include user's permissions that are inherited from its groups? 
     # + return - A list of Permissions objects. 
     remote isolated function getUsersUserIdPermissions(string userId, string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? groupId = (), boolean? includeGroups = ()) returns PermissionEntity[]|error {
-        string  path = string `/users/${userId}/permissions`;
+        string resourcePath = string `/users/${userId}/permissions`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "group_id": groupId, "include_groups": includeGroups};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PermissionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PermissionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PermissionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Group Users
@@ -621,12 +622,12 @@ public isolated client class Client {
     # + groupId - Group ID.  If provided, will return group_users of this group. 
     # + return - A list of GroupUsers objects. 
     remote isolated function getUsersUserIdGroups(int userId, string? cursor = (), int? perPage = (), int? groupId = ()) returns GroupUserEntity[]|error {
-        string  path = string `/users/${userId}/groups`;
+        string resourcePath = string `/users/${userId}/groups`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "group_id": groupId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupUserEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupUserEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupUserEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List As2 Keys
@@ -636,12 +637,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of As2Keys objects. 
     remote isolated function getUsersUserIdAs2Keys(int userId, string? cursor = (), int? perPage = ()) returns As2KeyEntity[]|error {
-        string  path = string `/users/${userId}/as2_keys`;
+        string resourcePath = string `/users/${userId}/as2_keys`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        As2KeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = As2KeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        As2KeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create As2 Key
@@ -649,13 +650,13 @@ public isolated client class Client {
     # + userId - User ID.  Provide a value of `0` to operate the current session's user. 
     # + return - The As2Keys object. 
     remote isolated function postUsersUserIdAs2Keys(int userId, UserIdAs2KeysBody payload) returns As2KeyEntity|error {
-        string  path = string `/users/${userId}/as2_keys`;
+        string resourcePath = string `/users/${userId}/as2_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        As2KeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=As2KeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        As2KeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Api Keys
@@ -672,12 +673,12 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `expires_at`. 
     # + return - A list of ApiKeys objects. 
     remote isolated function getUsersUserIdApiKeys(int userId, string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ApiKeyEntity[]|error {
-        string  path = string `/users/${userId}/api_keys`;
+        string resourcePath = string `/users/${userId}/api_keys`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApiKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ApiKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApiKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Api Key
@@ -685,13 +686,13 @@ public isolated client class Client {
     # + userId - User ID.  Provide a value of `0` to operate the current session's user. 
     # + return - The ApiKeys object. 
     remote isolated function postUsersUserIdApiKeys(int userId, UserIdApiKeysBody payload) returns ApiKeyEntity|error {
-        string  path = string `/users/${userId}/api_keys`;
+        string resourcePath = string `/users/${userId}/api_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ApiKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ApiKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        ApiKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Apps
@@ -707,12 +708,12 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `name` and `app_type`. 
     # + return - A list of Apps objects. 
     remote isolated function getApps(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns AppEntity[]|error {
-        string  path = string `/apps`;
+        string resourcePath = string `/apps`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AppEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = AppEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AppEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show As2 Key
@@ -720,10 +721,10 @@ public isolated client class Client {
     # + id - As2 Key ID. 
     # + return - The As2Keys object. 
     remote isolated function getAs2KeysId(int id) returns As2KeyEntity|error {
-        string  path = string `/as2_keys/${id}`;
+        string resourcePath = string `/as2_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        As2KeyEntity response = check self.clientEp-> get(path, accHeaders, targetType = As2KeyEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        As2KeyEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete As2 Key
@@ -731,10 +732,10 @@ public isolated client class Client {
     # + id - As2 Key ID. 
     # + return - No body. 
     remote isolated function deleteAs2KeysId(int id) returns http:Response|error {
-        string  path = string `/as2_keys/${id}`;
+        string resourcePath = string `/as2_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update As2 Key
@@ -742,13 +743,13 @@ public isolated client class Client {
     # + id - As2 Key ID. 
     # + return - The As2Keys object. 
     remote isolated function patchAs2KeysId(int id, As2KeysIdBody payload) returns As2KeyEntity|error {
-        string  path = string `/as2_keys/${id}`;
+        string resourcePath = string `/as2_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        As2KeyEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=As2KeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        As2KeyEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List As2 Keys
@@ -758,25 +759,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of As2Keys objects. 
     remote isolated function getAs2Keys(int? userId = (), string? cursor = (), int? perPage = ()) returns As2KeyEntity[]|error {
-        string  path = string `/as2_keys`;
+        string resourcePath = string `/as2_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        As2KeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = As2KeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        As2KeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create As2 Key
     #
     # + return - The As2Keys object. 
     remote isolated function postAs2Keys(As2KeysBody payload) returns As2KeyEntity|error {
-        string  path = string `/as2_keys`;
+        string resourcePath = string `/as2_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        As2KeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=As2KeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        As2KeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Automation
@@ -784,10 +785,10 @@ public isolated client class Client {
     # + id - Automation ID. 
     # + return - The Automations object. 
     remote isolated function getAutomationsId(int id) returns AutomationEntity|error {
-        string  path = string `/automations/${id}`;
+        string resourcePath = string `/automations/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AutomationEntity response = check self.clientEp-> get(path, accHeaders, targetType = AutomationEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AutomationEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Automation
@@ -795,10 +796,10 @@ public isolated client class Client {
     # + id - Automation ID. 
     # + return - No body. 
     remote isolated function deleteAutomationsId(int id) returns http:Response|error {
-        string  path = string `/automations/${id}`;
+        string resourcePath = string `/automations/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Automation
@@ -806,13 +807,13 @@ public isolated client class Client {
     # + id - Automation ID. 
     # + return - The Automations object. 
     remote isolated function patchAutomationsId(int id, AutomationsIdBody payload) returns AutomationEntity|error {
-        string  path = string `/automations/${id}`;
+        string resourcePath = string `/automations/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AutomationEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=AutomationEntity);
+        request.setPayload(jsonBody, "application/json");
+        AutomationEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Automations
@@ -829,25 +830,25 @@ public isolated client class Client {
     # + automation - DEPRECATED: Type of automation to filter by. Use `filter[automation]` instead. 
     # + return - A list of Automations objects. 
     remote isolated function getAutomations(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? automation = ()) returns AutomationEntity[]|error {
-        string  path = string `/automations`;
+        string resourcePath = string `/automations`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "automation": automation};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AutomationEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = AutomationEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AutomationEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Automation
     #
     # + return - The Automations object. 
     remote isolated function postAutomations(AutomationsBody payload) returns AutomationEntity|error {
-        string  path = string `/automations`;
+        string resourcePath = string `/automations`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AutomationEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=AutomationEntity);
+        request.setPayload(jsonBody, "application/json");
+        AutomationEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Bandwidth Snapshots
@@ -863,25 +864,25 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `logged_at`. 
     # + return - A list of BandwidthSnapshots objects. 
     remote isolated function getBandwidthSnapshots(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns BandwidthSnapshotEntity[]|error {
-        string  path = string `/bandwidth_snapshots`;
+        string resourcePath = string `/bandwidth_snapshots`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BandwidthSnapshotEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BandwidthSnapshotEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BandwidthSnapshotEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Test webhook.
     #
     # + return - The Behaviors object. 
     remote isolated function postBehaviorsWebhookTest(WebhookTestBody payload) returns StatusEntity|error {
-        string  path = string `/behaviors/webhook/test`;
+        string resourcePath = string `/behaviors/webhook/test`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StatusEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=StatusEntity);
+        request.setPayload(jsonBody, "application/json");
+        StatusEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Behavior
@@ -889,10 +890,10 @@ public isolated client class Client {
     # + id - Behavior ID. 
     # + return - The Behaviors object. 
     remote isolated function getBehaviorsId(int id) returns BehaviorEntity|error {
-        string  path = string `/behaviors/${id}`;
+        string resourcePath = string `/behaviors/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BehaviorEntity response = check self.clientEp-> get(path, accHeaders, targetType = BehaviorEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BehaviorEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Behavior
@@ -900,10 +901,10 @@ public isolated client class Client {
     # + id - Behavior ID. 
     # + return - No body. 
     remote isolated function deleteBehaviorsId(int id) returns http:Response|error {
-        string  path = string `/behaviors/${id}`;
+        string resourcePath = string `/behaviors/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Behavior
@@ -911,13 +912,13 @@ public isolated client class Client {
     # + id - Behavior ID. 
     # + return - The Behaviors object. 
     remote isolated function patchBehaviorsId(int id, BehaviorsIdBody payload) returns BehaviorEntity|error {
-        string  path = string `/behaviors/${id}`;
+        string resourcePath = string `/behaviors/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BehaviorEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=BehaviorEntity);
+        request.setPayload(jsonBody, "application/json");
+        BehaviorEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Behaviors
@@ -934,25 +935,25 @@ public isolated client class Client {
     # + behavior - If set, only shows folder behaviors matching this behavior type. 
     # + return - A list of Behaviors objects. 
     remote isolated function getBehaviors(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? behavior = ()) returns BehaviorEntity[]|error {
-        string  path = string `/behaviors`;
+        string resourcePath = string `/behaviors`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "behavior": behavior};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BehaviorEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BehaviorEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BehaviorEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Behavior
     #
     # + return - The Behaviors object. 
     remote isolated function postBehaviors(BehaviorsBody payload) returns BehaviorEntity|error {
-        string  path = string `/behaviors`;
+        string resourcePath = string `/behaviors`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BehaviorEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BehaviorEntity);
+        request.setPayload(jsonBody, "application/json");
+        BehaviorEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Behaviors by path
@@ -971,12 +972,12 @@ public isolated client class Client {
     # + behavior - DEPRECATED: If set only shows folder behaviors matching this behavior type. Use `filter[behavior]` instead. 
     # + return - A list of Behaviors objects. 
     remote isolated function behaviorListForPath(string operationPath, string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? recursive = (), string? behavior = ()) returns BehaviorEntity[]|error {
-        string  path = string `/behaviors/folders/${operationPath}`;
+        string resourcePath = string `/behaviors/folders/${operationPath}`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "recursive": recursive, "behavior": behavior};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BehaviorEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BehaviorEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BehaviorEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show Bundle
@@ -984,10 +985,10 @@ public isolated client class Client {
     # + id - Bundle ID. 
     # + return - The Bundles object. 
     remote isolated function getBundlesId(int id) returns BundleEntity|error {
-        string  path = string `/bundles/${id}`;
+        string resourcePath = string `/bundles/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BundleEntity response = check self.clientEp-> get(path, accHeaders, targetType = BundleEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BundleEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Bundle
@@ -995,10 +996,10 @@ public isolated client class Client {
     # + id - Bundle ID. 
     # + return - No body. 
     remote isolated function deleteBundlesId(int id) returns http:Response|error {
-        string  path = string `/bundles/${id}`;
+        string resourcePath = string `/bundles/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Bundle
@@ -1006,13 +1007,13 @@ public isolated client class Client {
     # + id - Bundle ID. 
     # + return - The Bundles object. 
     remote isolated function patchBundlesId(int id, BundlesIdBody payload) returns BundleEntity|error {
-        string  path = string `/bundles/${id}`;
+        string resourcePath = string `/bundles/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BundleEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=BundleEntity);
+        request.setPayload(jsonBody, "application/json");
+        BundleEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Bundles
@@ -1029,25 +1030,25 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `created_at`. 
     # + return - A list of Bundles objects. 
     remote isolated function getBundles(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns BundleEntity[]|error {
-        string  path = string `/bundles`;
+        string resourcePath = string `/bundles`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BundleEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BundleEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BundleEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Bundle
     #
     # + return - The Bundles object. 
     remote isolated function postBundles(BundlesBody payload) returns BundleEntity|error {
-        string  path = string `/bundles`;
+        string resourcePath = string `/bundles`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BundleEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BundleEntity);
+        request.setPayload(jsonBody, "application/json");
+        BundleEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Send email(s) with a link to bundle
@@ -1055,13 +1056,13 @@ public isolated client class Client {
     # + id - Bundle ID. 
     # + return - No body. 
     remote isolated function postBundlesIdShare(int id, IdShareBody payload) returns http:Response|error {
-        string  path = string `/bundles/${id}/share`;
+        string resourcePath = string `/bundles/${id}/share`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, headers = accHeaders, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Bundle Downloads
@@ -1079,12 +1080,12 @@ public isolated client class Client {
     # + bundleRegistrationId - BundleRegistration ID 
     # + return - A list of BundleDownloads objects. 
     remote isolated function getBundleDownloads(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), int? bundleId = (), int? bundleRegistrationId = ()) returns BundleDownloadEntity[]|error {
-        string  path = string `/bundle_downloads`;
+        string resourcePath = string `/bundle_downloads`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "bundle_id": bundleId, "bundle_registration_id": bundleRegistrationId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BundleDownloadEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BundleDownloadEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BundleDownloadEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Bundle Recipients
@@ -1102,25 +1103,25 @@ public isolated client class Client {
     # + bundleId - List recipients for the bundle with this ID. 
     # + return - A list of BundleRecipients objects. 
     remote isolated function getBundleRecipients(int bundleId, int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns BundleRecipientEntity[]|error {
-        string  path = string `/bundle_recipients`;
+        string resourcePath = string `/bundle_recipients`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "bundle_id": bundleId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BundleRecipientEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BundleRecipientEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BundleRecipientEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Bundle Recipient
     #
     # + return - The BundleRecipients object. 
     remote isolated function postBundleRecipients(BundleRecipientsBody payload) returns BundleRecipientEntity|error {
-        string  path = string `/bundle_recipients`;
+        string resourcePath = string `/bundle_recipients`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BundleRecipientEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BundleRecipientEntity);
+        request.setPayload(jsonBody, "application/json");
+        BundleRecipientEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Bundle Registrations
@@ -1131,12 +1132,12 @@ public isolated client class Client {
     # + bundleId - ID of the associated Bundle 
     # + return - A list of BundleRegistrations objects. 
     remote isolated function getBundleRegistrations(int? userId = (), string? cursor = (), int? perPage = (), int? bundleId = ()) returns BundleRegistrationEntity[]|error {
-        string  path = string `/bundle_registrations`;
+        string resourcePath = string `/bundle_registrations`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "bundle_id": bundleId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BundleRegistrationEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = BundleRegistrationEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BundleRegistrationEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Clickwraps
@@ -1145,25 +1146,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of Clickwraps objects. 
     remote isolated function getClickwraps(string? cursor = (), int? perPage = ()) returns ClickwrapEntity[]|error {
-        string  path = string `/clickwraps`;
+        string resourcePath = string `/clickwraps`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ClickwrapEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ClickwrapEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ClickwrapEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Clickwrap
     #
     # + return - The Clickwraps object. 
     remote isolated function postClickwraps(ClickwrapsBody payload) returns ClickwrapEntity|error {
-        string  path = string `/clickwraps`;
+        string resourcePath = string `/clickwraps`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ClickwrapEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ClickwrapEntity);
+        request.setPayload(jsonBody, "application/json");
+        ClickwrapEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Clickwrap
@@ -1171,10 +1172,10 @@ public isolated client class Client {
     # + id - Clickwrap ID. 
     # + return - The Clickwraps object. 
     remote isolated function getClickwrapsId(int id) returns ClickwrapEntity|error {
-        string  path = string `/clickwraps/${id}`;
+        string resourcePath = string `/clickwraps/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ClickwrapEntity response = check self.clientEp-> get(path, accHeaders, targetType = ClickwrapEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ClickwrapEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Clickwrap
@@ -1182,10 +1183,10 @@ public isolated client class Client {
     # + id - Clickwrap ID. 
     # + return - No body. 
     remote isolated function deleteClickwrapsId(int id) returns http:Response|error {
-        string  path = string `/clickwraps/${id}`;
+        string resourcePath = string `/clickwraps/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Clickwrap
@@ -1193,13 +1194,13 @@ public isolated client class Client {
     # + id - Clickwrap ID. 
     # + return - The Clickwraps object. 
     remote isolated function patchClickwrapsId(int id, ClickwrapsIdBody payload) returns ClickwrapEntity|error {
-        string  path = string `/clickwraps/${id}`;
+        string resourcePath = string `/clickwraps/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ClickwrapEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ClickwrapEntity);
+        request.setPayload(jsonBody, "application/json");
+        ClickwrapEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show site DNS configuration.
@@ -1208,12 +1209,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of DnsRecords objects. 
     remote isolated function getDnsRecords(string? cursor = (), int? perPage = ()) returns DnsRecordEntity[]|error {
-        string  path = string `/dns_records`;
+        string resourcePath = string `/dns_records`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DnsRecordEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = DnsRecordEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DnsRecordEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List External Events
@@ -1229,25 +1230,25 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `created_at`, `event_type`, `remote_server_type`, `status` or `folder_behavior_id`. 
     # + return - A list of ExternalEvents objects. 
     remote isolated function getExternalEvents(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ExternalEventEntity[]|error {
-        string  path = string `/external_events`;
+        string resourcePath = string `/external_events`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ExternalEventEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ExternalEventEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ExternalEventEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create External Event
     #
     # + return - The ExternalEvents object. 
     remote isolated function postExternalEvents(ExternalEventsBody payload) returns ExternalEventEntity|error {
-        string  path = string `/external_events`;
+        string resourcePath = string `/external_events`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ExternalEventEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ExternalEventEntity);
+        request.setPayload(jsonBody, "application/json");
+        ExternalEventEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show External Event
@@ -1255,10 +1256,10 @@ public isolated client class Client {
     # + id - External Event ID. 
     # + return - The ExternalEvents object. 
     remote isolated function getExternalEventsId(int id) returns ExternalEventEntity|error {
-        string  path = string `/external_events/${id}`;
+        string resourcePath = string `/external_events/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ExternalEventEntity response = check self.clientEp-> get(path, accHeaders, targetType = ExternalEventEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ExternalEventEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Download file
@@ -1270,12 +1271,12 @@ public isolated client class Client {
     # + withPriorityColor - Include file priority color information? 
     # + return - The Files object. 
     remote isolated function fileDownload(string filePath, string? action = (), string? previewSize = (), boolean? withPreviews = (), boolean? withPriorityColor = ()) returns FileEntity|error {
-        string  path = string `/files/${filePath}`;
+        string resourcePath = string `/files/${filePath}`;
         map<anydata> queryParam = {"action": action, "preview_size": previewSize, "with_previews": withPreviews, "with_priority_color": withPriorityColor};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FileEntity response = check self.clientEp-> get(path, accHeaders, targetType = FileEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FileEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Upload file
@@ -1283,13 +1284,13 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - The Files object. 
     remote isolated function postFilesPath(string filePath, FilesFilepathBody payload) returns FileEntity|error {
-        string  path = string `/files/${filePath}`;
+        string resourcePath = string `/files/${filePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete file/folder
@@ -1298,12 +1299,12 @@ public isolated client class Client {
     # + recursive - If true, will recursively delete folers.  Otherwise, will error on non-empty folders. 
     # + return - No body. 
     remote isolated function deleteFilesPath(string filePath, boolean? recursive = ()) returns http:Response|error {
-        string  path = string `/files/${filePath}`;
+        string resourcePath = string `/files/${filePath}`;
         map<anydata> queryParam = {"recursive": recursive};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update file/folder metadata
@@ -1311,13 +1312,13 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - The Files object. 
     remote isolated function patchFilesPath(string filePath, FilesFilepathBody3 payload) returns FileEntity|error {
-        string  path = string `/files/${filePath}`;
+        string resourcePath = string `/files/${filePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=FileEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Return metadata for file/folder
@@ -1328,12 +1329,12 @@ public isolated client class Client {
     # + withPriorityColor - Include file priority color information? 
     # + return - The FileActions object. 
     remote isolated function fileActionMetadata(string filePath, string? previewSize = (), boolean? withPreviews = (), boolean? withPriorityColor = ()) returns FileEntity|error {
-        string  path = string `/file_actions/metadata/${filePath}`;
+        string resourcePath = string `/file_actions/metadata/${filePath}`;
         map<anydata> queryParam = {"preview_size": previewSize, "with_previews": withPreviews, "with_priority_color": withPriorityColor};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FileEntity response = check self.clientEp-> get(path, accHeaders, targetType = FileEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FileEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Copy file/folder
@@ -1341,13 +1342,13 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - The FileActions object. 
     remote isolated function fileActionCopy(string filePath, CopyFilepathBody payload) returns FileActionEntity|error {
-        string  path = string `/file_actions/copy/${filePath}`;
+        string resourcePath = string `/file_actions/copy/${filePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileActionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileActionEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileActionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Move file/folder
@@ -1355,13 +1356,13 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - The FileActions object. 
     remote isolated function fileActionMove(string filePath, MoveFilepathBody payload) returns FileActionEntity|error {
-        string  path = string `/file_actions/move/${filePath}`;
+        string resourcePath = string `/file_actions/move/${filePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileActionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileActionEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileActionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Begin file upload
@@ -1369,13 +1370,13 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - The FileActions object. 
     remote isolated function fileActionBeginUpload(string filePath, BeginUploadFilepathBody payload) returns FileUploadPartEntity[]|error {
-        string  path = string `/file_actions/begin_upload/${filePath}`;
+        string resourcePath = string `/file_actions/begin_upload/${filePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileUploadPartEntity[] response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileUploadPartEntityArr);
+        request.setPayload(jsonBody, "application/json");
+        FileUploadPartEntity[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete File Comment
@@ -1383,10 +1384,10 @@ public isolated client class Client {
     # + id - File Comment ID. 
     # + return - No body. 
     remote isolated function deleteFileCommentsId(int id) returns http:Response|error {
-        string  path = string `/file_comments/${id}`;
+        string resourcePath = string `/file_comments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update File Comment
@@ -1394,26 +1395,26 @@ public isolated client class Client {
     # + id - File Comment ID. 
     # + return - The FileComments object. 
     remote isolated function patchFileCommentsId(int id, FileCommentsIdBody payload) returns FileCommentEntity|error {
-        string  path = string `/file_comments/${id}`;
+        string resourcePath = string `/file_comments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileCommentEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=FileCommentEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileCommentEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Create File Comment
     #
     # + return - The FileComments object. 
     remote isolated function postFileComments(FileCommentsBody payload) returns FileCommentEntity|error {
-        string  path = string `/file_comments`;
+        string resourcePath = string `/file_comments`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileCommentEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileCommentEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileCommentEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List File Comments by path
@@ -1423,12 +1424,12 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - A list of FileComments objects. 
     remote isolated function fileCommentListForPath(string filePath, string? cursor = (), int? perPage = ()) returns FileCommentEntity[]|error {
-        string  path = string `/file_comments/files/${filePath}`;
+        string resourcePath = string `/file_comments/files/${filePath}`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FileCommentEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = FileCommentEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FileCommentEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete File Comment Reaction
@@ -1436,23 +1437,23 @@ public isolated client class Client {
     # + id - File Comment Reaction ID. 
     # + return - No body. 
     remote isolated function deleteFileCommentReactionsId(int id) returns http:Response|error {
-        string  path = string `/file_comment_reactions/${id}`;
+        string resourcePath = string `/file_comment_reactions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Create File Comment Reaction
     #
     # + return - The FileCommentReactions object. 
     remote isolated function postFileCommentReactions(FileCommentReactionsBody payload) returns FileCommentReactionEntity|error {
-        string  path = string `/file_comment_reactions`;
+        string resourcePath = string `/file_comment_reactions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FileCommentReactionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FileCommentReactionEntity);
+        request.setPayload(jsonBody, "application/json");
+        FileCommentReactionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show File Migration
@@ -1460,10 +1461,10 @@ public isolated client class Client {
     # + id - File Migration ID. 
     # + return - The FileMigrations object. 
     remote isolated function getFileMigrationsId(int id) returns FileMigrationEntity|error {
-        string  path = string `/file_migrations/${id}`;
+        string resourcePath = string `/file_migrations/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FileMigrationEntity response = check self.clientEp-> get(path, accHeaders, targetType = FileMigrationEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FileMigrationEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Folders by path
@@ -1479,12 +1480,12 @@ public isolated client class Client {
     # + withPriorityColor - Include file priority color information? 
     # + return - A list of Folders objects. 
     remote isolated function folderListForPath(string folderPath, string? cursor = (), int? perPage = (), string? filter = (), string? previewSize = (), string? search = (), boolean? searchAll = (), boolean? withPreviews = (), boolean? withPriorityColor = ()) returns FileEntity[]|error {
-        string  path = string `/folders/${folderPath}`;
+        string resourcePath = string `/folders/${folderPath}`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "filter": filter, "preview_size": previewSize, "search": search, "search_all": searchAll, "with_previews": withPreviews, "with_priority_color": withPriorityColor};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FileEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = FileEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FileEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create folder
@@ -1492,12 +1493,12 @@ public isolated client class Client {
     # + folderPath - Path to operate on. 
     # + return - The Folders object. 
     remote isolated function postFoldersPath(string folderPath) returns FileEntity|error {
-        string  path = string `/folders/${folderPath}`;
+        string resourcePath = string `/folders/${folderPath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FileEntity response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = FileEntity);
+        FileEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Form Field Sets
@@ -1507,25 +1508,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of FormFieldSets objects. 
     remote isolated function getFormFieldSets(int? userId = (), string? cursor = (), int? perPage = ()) returns FormFieldSetEntity[]|error {
-        string  path = string `/form_field_sets`;
+        string resourcePath = string `/form_field_sets`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FormFieldSetEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = FormFieldSetEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FormFieldSetEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Form Field Set
     #
     # + return - The FormFieldSets object. 
     remote isolated function postFormFieldSets(PostFormFieldSets payload) returns FormFieldSetEntity|error {
-        string  path = string `/form_field_sets`;
+        string resourcePath = string `/form_field_sets`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FormFieldSetEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=FormFieldSetEntity);
+        request.setPayload(jsonBody, "application/json");
+        FormFieldSetEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Form Field Set
@@ -1533,10 +1534,10 @@ public isolated client class Client {
     # + id - Form Field Set ID. 
     # + return - The FormFieldSets object. 
     remote isolated function getFormFieldSetsId(int id) returns FormFieldSetEntity|error {
-        string  path = string `/form_field_sets/${id}`;
+        string resourcePath = string `/form_field_sets/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FormFieldSetEntity response = check self.clientEp-> get(path, accHeaders, targetType = FormFieldSetEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FormFieldSetEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Form Field Set
@@ -1544,10 +1545,10 @@ public isolated client class Client {
     # + id - Form Field Set ID. 
     # + return - No body. 
     remote isolated function deleteFormFieldSetsId(int id) returns http:Response|error {
-        string  path = string `/form_field_sets/${id}`;
+        string resourcePath = string `/form_field_sets/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Form Field Set
@@ -1555,13 +1556,13 @@ public isolated client class Client {
     # + id - Form Field Set ID. 
     # + return - The FormFieldSets object. 
     remote isolated function patchFormFieldSetsId(int id, PatchFormFieldSets payload) returns FormFieldSetEntity|error {
-        string  path = string `/form_field_sets/${id}`;
+        string resourcePath = string `/form_field_sets/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FormFieldSetEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=FormFieldSetEntity);
+        request.setPayload(jsonBody, "application/json");
+        FormFieldSetEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Group Users
@@ -1572,12 +1573,12 @@ public isolated client class Client {
     # + groupId - Group ID.  If provided, will return group_users of this group. 
     # + return - A list of GroupUsers objects. 
     remote isolated function getGroupsGroupIdUsers(int groupId, int? userId = (), string? cursor = (), int? perPage = ()) returns GroupUserEntity[]|error {
-        string  path = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${groupId}/users`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupUserEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupUserEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupUserEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create User
@@ -1585,13 +1586,13 @@ public isolated client class Client {
     # + groupId - Group ID to associate this user with. 
     # + return - The Users object. 
     remote isolated function postGroupsGroupIdUsers(int groupId, GroupIdUsersBody payload) returns UserEntity|error {
-        string  path = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${groupId}/users`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserEntity);
+        request.setPayload(jsonBody, "application/json");
+        UserEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Permissions
@@ -1610,12 +1611,12 @@ public isolated client class Client {
     # + includeGroups - If searching by user or group, also include user's permissions that are inherited from its groups? 
     # + return - A list of Permissions objects. 
     remote isolated function getGroupsGroupIdPermissions(string groupId, string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? userId = (), boolean? includeGroups = ()) returns PermissionEntity[]|error {
-        string  path = string `/groups/${groupId}/permissions`;
+        string resourcePath = string `/groups/${groupId}/permissions`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "user_id": userId, "include_groups": includeGroups};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PermissionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PermissionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PermissionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Group User
@@ -1624,10 +1625,10 @@ public isolated client class Client {
     # + userId - User ID to remove from group. 
     # + return - No body. 
     remote isolated function deleteGroupsGroupIdMembershipsUserId(int groupId, int userId) returns http:Response|error {
-        string  path = string `/groups/${groupId}/memberships/${userId}`;
+        string resourcePath = string `/groups/${groupId}/memberships/${userId}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Group User
@@ -1636,13 +1637,13 @@ public isolated client class Client {
     # + userId - User ID to add to group. 
     # + return - The GroupUsers object. 
     remote isolated function patchGroupsGroupIdMembershipsUserId(int groupId, int userId, MembershipsUserIdBody payload) returns GroupUserEntity|error {
-        string  path = string `/groups/${groupId}/memberships/${userId}`;
+        string resourcePath = string `/groups/${groupId}/memberships/${userId}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupUserEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=GroupUserEntity);
+        request.setPayload(jsonBody, "application/json");
+        GroupUserEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Group
@@ -1650,10 +1651,10 @@ public isolated client class Client {
     # + id - Group ID. 
     # + return - The Groups object. 
     remote isolated function getGroupsId(int id) returns GroupEntity|error {
-        string  path = string `/groups/${id}`;
+        string resourcePath = string `/groups/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupEntity response = check self.clientEp-> get(path, accHeaders, targetType = GroupEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Group
@@ -1661,10 +1662,10 @@ public isolated client class Client {
     # + id - Group ID. 
     # + return - No body. 
     remote isolated function deleteGroupsId(int id) returns http:Response|error {
-        string  path = string `/groups/${id}`;
+        string resourcePath = string `/groups/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Group
@@ -1672,13 +1673,13 @@ public isolated client class Client {
     # + id - Group ID. 
     # + return - The Groups object. 
     remote isolated function patchGroupsId(int id, GroupsIdBody payload) returns GroupEntity|error {
-        string  path = string `/groups/${id}`;
+        string resourcePath = string `/groups/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=GroupEntity);
+        request.setPayload(jsonBody, "application/json");
+        GroupEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Groups
@@ -1695,25 +1696,25 @@ public isolated client class Client {
     # + ids - Comma-separated list of group ids to include in results. 
     # + return - A list of Groups objects. 
     remote isolated function getGroups(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? ids = ()) returns GroupEntity[]|error {
-        string  path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "ids": ids};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Group
     #
     # + return - The Groups object. 
     remote isolated function postGroups(GroupsBody payload) returns GroupEntity|error {
-        string  path = string `/groups`;
+        string resourcePath = string `/groups`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GroupEntity);
+        request.setPayload(jsonBody, "application/json");
+        GroupEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Group User
@@ -1723,12 +1724,12 @@ public isolated client class Client {
     # + userId - User ID to remove from group. 
     # + return - No body. 
     remote isolated function deleteGroupUsersId(int id, int groupId, int userId) returns http:Response|error {
-        string  path = string `/group_users/${id}`;
+        string resourcePath = string `/group_users/${id}`;
         map<anydata> queryParam = {"group_id": groupId, "user_id": userId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Group User
@@ -1736,13 +1737,13 @@ public isolated client class Client {
     # + id - Group User ID. 
     # + return - The GroupUsers object. 
     remote isolated function patchGroupUsersId(int id, GroupUsersIdBody payload) returns GroupUserEntity|error {
-        string  path = string `/group_users/${id}`;
+        string resourcePath = string `/group_users/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupUserEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=GroupUserEntity);
+        request.setPayload(jsonBody, "application/json");
+        GroupUserEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Group Users
@@ -1753,25 +1754,25 @@ public isolated client class Client {
     # + groupId - Group ID.  If provided, will return group_users of this group. 
     # + return - A list of GroupUsers objects. 
     remote isolated function getGroupUsers(int? userId = (), string? cursor = (), int? perPage = (), int? groupId = ()) returns GroupUserEntity[]|error {
-        string  path = string `/group_users`;
+        string resourcePath = string `/group_users`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "group_id": groupId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupUserEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = GroupUserEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupUserEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Group User
     #
     # + return - The GroupUsers object. 
     remote isolated function postGroupUsers(GroupUsersBody payload) returns GroupUserEntity|error {
-        string  path = string `/group_users`;
+        string resourcePath = string `/group_users`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GroupUserEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GroupUserEntity);
+        request.setPayload(jsonBody, "application/json");
+        GroupUserEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List history for specific file.
@@ -1785,12 +1786,12 @@ public isolated client class Client {
     # + filePath - Path to operate on. 
     # + return - A list of History objects. 
     remote isolated function historyListForFile(string filePath, string? startAt = (), string? endAt = (), string? display = (), string? cursor = (), int? perPage = (), record {}? sortBy = ()) returns ActionEntity[]|error {
-        string  path = string `/history/files/${filePath}`;
+        string resourcePath = string `/history/files/${filePath}`;
         map<anydata> queryParam = {"start_at": startAt, "end_at": endAt, "display": display, "cursor": cursor, "per_page": perPage, "sort_by": sortBy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List history for specific folder.
@@ -1804,12 +1805,12 @@ public isolated client class Client {
     # + folderPath - Path to operate on. 
     # + return - A list of History objects. 
     remote isolated function historyListForFolder(string folderPath, string? startAt = (), string? endAt = (), string? display = (), string? cursor = (), int? perPage = (), record {}? sortBy = ()) returns ActionEntity[]|error {
-        string  path = string `/history/folders/${folderPath}`;
+        string resourcePath = string `/history/folders/${folderPath}`;
         map<anydata> queryParam = {"start_at": startAt, "end_at": endAt, "display": display, "cursor": cursor, "per_page": perPage, "sort_by": sortBy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List history for specific user.
@@ -1823,12 +1824,12 @@ public isolated client class Client {
     # + userId - User ID. 
     # + return - A list of History objects. 
     remote isolated function historyListForUser(int userId, string? startAt = (), string? endAt = (), string? display = (), string? cursor = (), int? perPage = (), record {}? sortBy = ()) returns ActionEntity[]|error {
-        string  path = string `/history/users/${userId}`;
+        string resourcePath = string `/history/users/${userId}`;
         map<anydata> queryParam = {"start_at": startAt, "end_at": endAt, "display": display, "cursor": cursor, "per_page": perPage, "sort_by": sortBy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List site login history.
@@ -1841,12 +1842,12 @@ public isolated client class Client {
     # + sortBy - If set, sort records by the specified field in either 'asc' or 'desc' direction (e.g. sort_by[last_login_at]=desc). Valid fields are `user_id` and `created_at`. 
     # + return - A list of History objects. 
     remote isolated function historyListLogins(string? startAt = (), string? endAt = (), string? display = (), string? cursor = (), int? perPage = (), record {}? sortBy = ()) returns ActionEntity[]|error {
-        string  path = string `/history/login`;
+        string resourcePath = string `/history/login`;
         map<anydata> queryParam = {"start_at": startAt, "end_at": endAt, "display": display, "cursor": cursor, "per_page": perPage, "sort_by": sortBy};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List site full action history.
@@ -1865,25 +1866,25 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `user_id`, `folder` or `path`. 
     # + return - A list of History objects. 
     remote isolated function historyList(string? startAt = (), string? endAt = (), string? display = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns ActionEntity[]|error {
-        string  path = string `/history`;
+        string resourcePath = string `/history`;
         map<anydata> queryParam = {"start_at": startAt, "end_at": endAt, "display": display, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ActionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ActionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ActionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create History Export
     #
     # + return - The HistoryExports object. 
     remote isolated function postHistoryExports(HistoryExportsBody payload) returns HistoryExportEntity|error {
-        string  path = string `/history_exports`;
+        string resourcePath = string `/history_exports`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        HistoryExportEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=HistoryExportEntity);
+        request.setPayload(jsonBody, "application/json");
+        HistoryExportEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show History Export
@@ -1891,10 +1892,10 @@ public isolated client class Client {
     # + id - History Export ID. 
     # + return - The HistoryExports object. 
     remote isolated function getHistoryExportsId(int id) returns HistoryExportEntity|error {
-        string  path = string `/history_exports/${id}`;
+        string resourcePath = string `/history_exports/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        HistoryExportEntity response = check self.clientEp-> get(path, accHeaders, targetType = HistoryExportEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        HistoryExportEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List History Export Results
@@ -1905,12 +1906,12 @@ public isolated client class Client {
     # + historyExportId - ID of the associated history export. 
     # + return - A list of HistoryExportResults objects. 
     remote isolated function getHistoryExportResults(int historyExportId, int? userId = (), string? cursor = (), int? perPage = ()) returns HistoryExportResultEntity[]|error {
-        string  path = string `/history_export_results`;
+        string resourcePath = string `/history_export_results`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "history_export_id": historyExportId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        HistoryExportResultEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = HistoryExportResultEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        HistoryExportResultEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Inbox Recipients
@@ -1928,25 +1929,25 @@ public isolated client class Client {
     # + inboxId - List recipients for the inbox with this ID. 
     # + return - A list of InboxRecipients objects. 
     remote isolated function getInboxRecipients(int inboxId, int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns InboxRecipientEntity[]|error {
-        string  path = string `/inbox_recipients`;
+        string resourcePath = string `/inbox_recipients`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "inbox_id": inboxId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InboxRecipientEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = InboxRecipientEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InboxRecipientEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Inbox Recipient
     #
     # + return - The InboxRecipients object. 
     remote isolated function postInboxRecipients(InboxRecipientsBody payload) returns InboxRecipientEntity|error {
-        string  path = string `/inbox_recipients`;
+        string resourcePath = string `/inbox_recipients`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        InboxRecipientEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=InboxRecipientEntity);
+        request.setPayload(jsonBody, "application/json");
+        InboxRecipientEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Inbox Registrations
@@ -1956,12 +1957,12 @@ public isolated client class Client {
     # + folderBehaviorId - ID of the associated Inbox. 
     # + return - A list of InboxRegistrations objects. 
     remote isolated function getInboxRegistrations(int folderBehaviorId, string? cursor = (), int? perPage = ()) returns InboxRegistrationEntity[]|error {
-        string  path = string `/inbox_registrations`;
+        string resourcePath = string `/inbox_registrations`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "folder_behavior_id": folderBehaviorId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InboxRegistrationEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = InboxRegistrationEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InboxRegistrationEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Inbox Uploads
@@ -1979,12 +1980,12 @@ public isolated client class Client {
     # + inboxId - Inbox ID 
     # + return - A list of InboxUploads objects. 
     remote isolated function getInboxUploads(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), int? inboxRegistrationId = (), int? inboxId = ()) returns InboxUploadEntity[]|error {
-        string  path = string `/inbox_uploads`;
+        string resourcePath = string `/inbox_uploads`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "inbox_registration_id": inboxRegistrationId, "inbox_id": inboxId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        InboxUploadEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = InboxUploadEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InboxUploadEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show Invoice
@@ -1992,10 +1993,10 @@ public isolated client class Client {
     # + id - Invoice ID. 
     # + return - The Invoices object. 
     remote isolated function getInvoicesId(int id) returns AccountLineItemEntity|error {
-        string  path = string `/invoices/${id}`;
+        string resourcePath = string `/invoices/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountLineItemEntity response = check self.clientEp-> get(path, accHeaders, targetType = AccountLineItemEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountLineItemEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Invoices
@@ -2004,12 +2005,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of Invoices objects. 
     remote isolated function getInvoices(string? cursor = (), int? perPage = ()) returns AccountLineItemEntity[]|error {
-        string  path = string `/invoices`;
+        string resourcePath = string `/invoices`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountLineItemEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = AccountLineItemEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountLineItemEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List all possible public IP addresses
@@ -2018,12 +2019,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of IpAddresses objects. 
     remote isolated function getIpAddressesReserved(string? cursor = (), int? perPage = ()) returns PublicIpAddressEntity[]|error {
-        string  path = string `/ip_addresses/reserved`;
+        string resourcePath = string `/ip_addresses/reserved`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicIpAddressEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PublicIpAddressEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicIpAddressEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List IP Addresses associated with the current site
@@ -2032,12 +2033,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of IpAddresses objects. 
     remote isolated function getIpAddresses(string? cursor = (), int? perPage = ()) returns IpAddressEntity[]|error {
-        string  path = string `/ip_addresses`;
+        string resourcePath = string `/ip_addresses`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        IpAddressEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = IpAddressEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        IpAddressEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Locks by path
@@ -2048,12 +2049,12 @@ public isolated client class Client {
     # + includeChildren - Include locks from children objects? 
     # + return - A list of Locks objects. 
     remote isolated function lockListForPath(string lockPath, string? cursor = (), int? perPage = (), boolean? includeChildren = ()) returns LockEntity[]|error {
-        string  path = string `/locks/${lockPath}`;
+        string resourcePath = string `/locks/${lockPath}`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "include_children": includeChildren};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        LockEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = LockEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        LockEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Lock
@@ -2061,13 +2062,13 @@ public isolated client class Client {
     # + lockPath - Path 
     # + return - The Locks object. 
     remote isolated function postLocksPath(string lockPath, LocksLockpathBody payload) returns LockEntity|error {
-        string  path = string `/locks/${lockPath}`;
+        string resourcePath = string `/locks/${lockPath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        LockEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=LockEntity);
+        request.setPayload(jsonBody, "application/json");
+        LockEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Lock
@@ -2076,12 +2077,12 @@ public isolated client class Client {
     # + token - Lock token 
     # + return - No body. 
     remote isolated function deleteLocksPath(string lockPath, string token) returns http:Response|error {
-        string  path = string `/locks/${lockPath}`;
+        string resourcePath = string `/locks/${lockPath}`;
         map<anydata> queryParam = {"token": token};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Show Message
@@ -2089,10 +2090,10 @@ public isolated client class Client {
     # + id - Message ID. 
     # + return - The Messages object. 
     remote isolated function getMessagesId(int id) returns MessageEntity|error {
-        string  path = string `/messages/${id}`;
+        string resourcePath = string `/messages/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageEntity response = check self.clientEp-> get(path, accHeaders, targetType = MessageEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Message
@@ -2100,10 +2101,10 @@ public isolated client class Client {
     # + id - Message ID. 
     # + return - No body. 
     remote isolated function deleteMessagesId(int id) returns http:Response|error {
-        string  path = string `/messages/${id}`;
+        string resourcePath = string `/messages/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Message
@@ -2111,13 +2112,13 @@ public isolated client class Client {
     # + id - Message ID. 
     # + return - The Messages object. 
     remote isolated function patchMessagesId(int id, MessagesIdBody payload) returns MessageEntity|error {
-        string  path = string `/messages/${id}`;
+        string resourcePath = string `/messages/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=MessageEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Messages
@@ -2128,25 +2129,25 @@ public isolated client class Client {
     # + projectId - Project for which to return messages. 
     # + return - A list of Messages objects. 
     remote isolated function getMessages(int projectId, int? userId = (), string? cursor = (), int? perPage = ()) returns MessageEntity[]|error {
-        string  path = string `/messages`;
+        string resourcePath = string `/messages`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "project_id": projectId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = MessageEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Message
     #
     # + return - The Messages object. 
     remote isolated function postMessages(MessagesBody payload) returns MessageEntity|error {
-        string  path = string `/messages`;
+        string resourcePath = string `/messages`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=MessageEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Message Comment
@@ -2154,10 +2155,10 @@ public isolated client class Client {
     # + id - Message Comment ID. 
     # + return - The MessageComments object. 
     remote isolated function getMessageCommentsId(int id) returns MessageCommentEntity|error {
-        string  path = string `/message_comments/${id}`;
+        string resourcePath = string `/message_comments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageCommentEntity response = check self.clientEp-> get(path, accHeaders, targetType = MessageCommentEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageCommentEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Message Comment
@@ -2165,10 +2166,10 @@ public isolated client class Client {
     # + id - Message Comment ID. 
     # + return - No body. 
     remote isolated function deleteMessageCommentsId(int id) returns http:Response|error {
-        string  path = string `/message_comments/${id}`;
+        string resourcePath = string `/message_comments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Message Comment
@@ -2176,13 +2177,13 @@ public isolated client class Client {
     # + id - Message Comment ID. 
     # + return - The MessageComments object. 
     remote isolated function patchMessageCommentsId(int id, MessageCommentsIdBody payload) returns MessageCommentEntity|error {
-        string  path = string `/message_comments/${id}`;
+        string resourcePath = string `/message_comments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageCommentEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=MessageCommentEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageCommentEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Message Comments
@@ -2193,25 +2194,25 @@ public isolated client class Client {
     # + messageId - Message comment to return comments for. 
     # + return - A list of MessageComments objects. 
     remote isolated function getMessageComments(int messageId, int? userId = (), string? cursor = (), int? perPage = ()) returns MessageCommentEntity[]|error {
-        string  path = string `/message_comments`;
+        string resourcePath = string `/message_comments`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "message_id": messageId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageCommentEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = MessageCommentEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageCommentEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Message Comment
     #
     # + return - The MessageComments object. 
     remote isolated function postMessageComments(MessageCommentsBody payload) returns MessageCommentEntity|error {
-        string  path = string `/message_comments`;
+        string resourcePath = string `/message_comments`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageCommentEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=MessageCommentEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageCommentEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Message Comment Reaction
@@ -2219,10 +2220,10 @@ public isolated client class Client {
     # + id - Message Comment Reaction ID. 
     # + return - The MessageCommentReactions object. 
     remote isolated function getMessageCommentReactionsId(int id) returns MessageCommentReactionEntity|error {
-        string  path = string `/message_comment_reactions/${id}`;
+        string resourcePath = string `/message_comment_reactions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageCommentReactionEntity response = check self.clientEp-> get(path, accHeaders, targetType = MessageCommentReactionEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageCommentReactionEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Message Comment Reaction
@@ -2230,10 +2231,10 @@ public isolated client class Client {
     # + id - Message Comment Reaction ID. 
     # + return - No body. 
     remote isolated function deleteMessageCommentReactionsId(int id) returns http:Response|error {
-        string  path = string `/message_comment_reactions/${id}`;
+        string resourcePath = string `/message_comment_reactions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Message Comment Reactions
@@ -2244,25 +2245,25 @@ public isolated client class Client {
     # + messageCommentId - Message comment to return reactions for. 
     # + return - A list of MessageCommentReactions objects. 
     remote isolated function getMessageCommentReactions(int messageCommentId, int? userId = (), string? cursor = (), int? perPage = ()) returns MessageCommentReactionEntity[]|error {
-        string  path = string `/message_comment_reactions`;
+        string resourcePath = string `/message_comment_reactions`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "message_comment_id": messageCommentId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageCommentReactionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = MessageCommentReactionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageCommentReactionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Message Comment Reaction
     #
     # + return - The MessageCommentReactions object. 
     remote isolated function postMessageCommentReactions(MessageCommentReactionsBody payload) returns MessageCommentReactionEntity|error {
-        string  path = string `/message_comment_reactions`;
+        string resourcePath = string `/message_comment_reactions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageCommentReactionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=MessageCommentReactionEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageCommentReactionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Message Reaction
@@ -2270,10 +2271,10 @@ public isolated client class Client {
     # + id - Message Reaction ID. 
     # + return - The MessageReactions object. 
     remote isolated function getMessageReactionsId(int id) returns MessageReactionEntity|error {
-        string  path = string `/message_reactions/${id}`;
+        string resourcePath = string `/message_reactions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageReactionEntity response = check self.clientEp-> get(path, accHeaders, targetType = MessageReactionEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageReactionEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Message Reaction
@@ -2281,10 +2282,10 @@ public isolated client class Client {
     # + id - Message Reaction ID. 
     # + return - No body. 
     remote isolated function deleteMessageReactionsId(int id) returns http:Response|error {
-        string  path = string `/message_reactions/${id}`;
+        string resourcePath = string `/message_reactions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Message Reactions
@@ -2295,25 +2296,25 @@ public isolated client class Client {
     # + messageId - Message to return reactions for. 
     # + return - A list of MessageReactions objects. 
     remote isolated function getMessageReactions(int messageId, int? userId = (), string? cursor = (), int? perPage = ()) returns MessageReactionEntity[]|error {
-        string  path = string `/message_reactions`;
+        string resourcePath = string `/message_reactions`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "message_id": messageId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        MessageReactionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = MessageReactionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        MessageReactionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Message Reaction
     #
     # + return - The MessageReactions object. 
     remote isolated function postMessageReactions(MessageReactionsBody payload) returns MessageReactionEntity|error {
-        string  path = string `/message_reactions`;
+        string resourcePath = string `/message_reactions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        MessageReactionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=MessageReactionEntity);
+        request.setPayload(jsonBody, "application/json");
+        MessageReactionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Notification
@@ -2321,10 +2322,10 @@ public isolated client class Client {
     # + id - Notification ID. 
     # + return - The Notifications object. 
     remote isolated function getNotificationsId(int id) returns NotificationEntity|error {
-        string  path = string `/notifications/${id}`;
+        string resourcePath = string `/notifications/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NotificationEntity response = check self.clientEp-> get(path, accHeaders, targetType = NotificationEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NotificationEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Notification
@@ -2332,10 +2333,10 @@ public isolated client class Client {
     # + id - Notification ID. 
     # + return - No body. 
     remote isolated function deleteNotificationsId(int id) returns http:Response|error {
-        string  path = string `/notifications/${id}`;
+        string resourcePath = string `/notifications/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Notification
@@ -2343,13 +2344,13 @@ public isolated client class Client {
     # + id - Notification ID. 
     # + return - The Notifications object. 
     remote isolated function patchNotificationsId(int id, NotificationsIdBody payload) returns NotificationEntity|error {
-        string  path = string `/notifications/${id}`;
+        string resourcePath = string `/notifications/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=NotificationEntity);
+        request.setPayload(jsonBody, "application/json");
+        NotificationEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Notifications
@@ -2369,25 +2370,25 @@ public isolated client class Client {
     # + includeAncestors - If `include_ancestors` is `true` and `path` is specified, include notifications for any parent paths. Ignored if `path` is not specified. 
     # + return - A list of Notifications objects. 
     remote isolated function getNotifications(int? userId = (), string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), int? groupId = (), string? path = (), boolean? includeAncestors = ()) returns NotificationEntity[]|error {
-        string  resourcePath = string `/notifications`;
+        string resourcePath = string `/notifications`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "group_id": groupId, "path": path, "include_ancestors": includeAncestors};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        NotificationEntity[] response = check self.clientEp-> get(resourcePath, accHeaders, targetType = NotificationEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        NotificationEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Notification
     #
     # + return - The Notifications object. 
     remote isolated function postNotifications(NotificationsBody payload) returns NotificationEntity|error {
-        string  path = string `/notifications`;
+        string resourcePath = string `/notifications`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        NotificationEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=NotificationEntity);
+        request.setPayload(jsonBody, "application/json");
+        NotificationEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Payment
@@ -2395,10 +2396,10 @@ public isolated client class Client {
     # + id - Payment ID. 
     # + return - The Payments object. 
     remote isolated function getPaymentsId(int id) returns AccountLineItemEntity|error {
-        string  path = string `/payments/${id}`;
+        string resourcePath = string `/payments/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountLineItemEntity response = check self.clientEp-> get(path, accHeaders, targetType = AccountLineItemEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountLineItemEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Payments
@@ -2407,12 +2408,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of Payments objects. 
     remote isolated function getPayments(string? cursor = (), int? perPage = ()) returns AccountLineItemEntity[]|error {
-        string  path = string `/payments`;
+        string resourcePath = string `/payments`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        AccountLineItemEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = AccountLineItemEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountLineItemEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Permission
@@ -2420,10 +2421,10 @@ public isolated client class Client {
     # + id - Permission ID. 
     # + return - No body. 
     remote isolated function deletePermissionsId(int id) returns http:Response|error {
-        string  path = string `/permissions/${id}`;
+        string resourcePath = string `/permissions/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Permissions
@@ -2442,25 +2443,25 @@ public isolated client class Client {
     # + includeGroups - If searching by user or group, also include user's permissions that are inherited from its groups? 
     # + return - A list of Permissions objects. 
     remote isolated function getPermissions(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = (), string? groupId = (), string? userId = (), boolean? includeGroups = ()) returns PermissionEntity[]|error {
-        string  path = string `/permissions`;
+        string resourcePath = string `/permissions`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq, "group_id": groupId, "user_id": userId, "include_groups": includeGroups};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PermissionEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PermissionEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PermissionEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Permission
     #
     # + return - The Permissions object. 
     remote isolated function postPermissions(PermissionsBody payload) returns PermissionEntity|error {
-        string  path = string `/permissions`;
+        string resourcePath = string `/permissions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PermissionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PermissionEntity);
+        request.setPayload(jsonBody, "application/json");
+        PermissionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Project
@@ -2468,10 +2469,10 @@ public isolated client class Client {
     # + id - Project ID. 
     # + return - The Projects object. 
     remote isolated function getProjectsId(int id) returns ProjectEntity|error {
-        string  path = string `/projects/${id}`;
+        string resourcePath = string `/projects/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProjectEntity response = check self.clientEp-> get(path, accHeaders, targetType = ProjectEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProjectEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Project
@@ -2479,10 +2480,10 @@ public isolated client class Client {
     # + id - Project ID. 
     # + return - No body. 
     remote isolated function deleteProjectsId(int id) returns http:Response|error {
-        string  path = string `/projects/${id}`;
+        string resourcePath = string `/projects/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Project
@@ -2490,13 +2491,13 @@ public isolated client class Client {
     # + id - Project ID. 
     # + return - The Projects object. 
     remote isolated function patchProjectsId(int id, ProjectsIdBody payload) returns ProjectEntity|error {
-        string  path = string `/projects/${id}`;
+        string resourcePath = string `/projects/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProjectEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ProjectEntity);
+        request.setPayload(jsonBody, "application/json");
+        ProjectEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Projects
@@ -2505,25 +2506,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of Projects objects. 
     remote isolated function getProjects(string? cursor = (), int? perPage = ()) returns ProjectEntity[]|error {
-        string  path = string `/projects`;
+        string resourcePath = string `/projects`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ProjectEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = ProjectEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ProjectEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Project
     #
     # + return - The Projects object. 
     remote isolated function postProjects(ProjectsBody payload) returns ProjectEntity|error {
-        string  path = string `/projects`;
+        string resourcePath = string `/projects`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ProjectEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ProjectEntity);
+        request.setPayload(jsonBody, "application/json");
+        ProjectEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Public Key
@@ -2531,10 +2532,10 @@ public isolated client class Client {
     # + id - Public Key ID. 
     # + return - The PublicKeys object. 
     remote isolated function getPublicKeysId(int id) returns PublicKeyEntity|error {
-        string  path = string `/public_keys/${id}`;
+        string resourcePath = string `/public_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicKeyEntity response = check self.clientEp-> get(path, accHeaders, targetType = PublicKeyEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicKeyEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Public Key
@@ -2542,10 +2543,10 @@ public isolated client class Client {
     # + id - Public Key ID. 
     # + return - No body. 
     remote isolated function deletePublicKeysId(int id) returns http:Response|error {
-        string  path = string `/public_keys/${id}`;
+        string resourcePath = string `/public_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Public Key
@@ -2553,13 +2554,13 @@ public isolated client class Client {
     # + id - Public Key ID. 
     # + return - The PublicKeys object. 
     remote isolated function patchPublicKeysId(int id, PublicKeysIdBody payload) returns PublicKeyEntity|error {
-        string  path = string `/public_keys/${id}`;
+        string resourcePath = string `/public_keys/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicKeyEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PublicKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        PublicKeyEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Public Keys
@@ -2569,25 +2570,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of PublicKeys objects. 
     remote isolated function getPublicKeys(int? userId = (), string? cursor = (), int? perPage = ()) returns PublicKeyEntity[]|error {
-        string  path = string `/public_keys`;
+        string resourcePath = string `/public_keys`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        PublicKeyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = PublicKeyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PublicKeyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Public Key
     #
     # + return - The PublicKeys object. 
     remote isolated function postPublicKeys(PublicKeysBody payload) returns PublicKeyEntity|error {
-        string  path = string `/public_keys`;
+        string resourcePath = string `/public_keys`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PublicKeyEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PublicKeyEntity);
+        request.setPayload(jsonBody, "application/json");
+        PublicKeyEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Remote Servers
@@ -2596,25 +2597,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of RemoteServers objects. 
     remote isolated function getRemoteServers(string? cursor = (), int? perPage = ()) returns RemoteServerEntity[]|error {
-        string  path = string `/remote_servers`;
+        string resourcePath = string `/remote_servers`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RemoteServerEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = RemoteServerEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RemoteServerEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Remote Server
     #
     # + return - The RemoteServers object. 
     remote isolated function postRemoteServers(RemoteServersBody payload) returns RemoteServerEntity|error {
-        string  path = string `/remote_servers`;
+        string resourcePath = string `/remote_servers`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RemoteServerEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=RemoteServerEntity);
+        request.setPayload(jsonBody, "application/json");
+        RemoteServerEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show Remote Server
@@ -2622,10 +2623,10 @@ public isolated client class Client {
     # + id - Remote Server ID. 
     # + return - The RemoteServers object. 
     remote isolated function getRemoteServersId(int id) returns RemoteServerEntity|error {
-        string  path = string `/remote_servers/${id}`;
+        string resourcePath = string `/remote_servers/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RemoteServerEntity response = check self.clientEp-> get(path, accHeaders, targetType = RemoteServerEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RemoteServerEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Remote Server
@@ -2633,10 +2634,10 @@ public isolated client class Client {
     # + id - Remote Server ID. 
     # + return - No body. 
     remote isolated function deleteRemoteServersId(int id) returns http:Response|error {
-        string  path = string `/remote_servers/${id}`;
+        string resourcePath = string `/remote_servers/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Remote Server
@@ -2644,13 +2645,13 @@ public isolated client class Client {
     # + id - Remote Server ID. 
     # + return - The RemoteServers object. 
     remote isolated function patchRemoteServersId(int id, RemoteServersIdBody payload) returns RemoteServerEntity|error {
-        string  path = string `/remote_servers/${id}`;
+        string resourcePath = string `/remote_servers/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RemoteServerEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=RemoteServerEntity);
+        request.setPayload(jsonBody, "application/json");
+        RemoteServerEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete Request
@@ -2658,10 +2659,10 @@ public isolated client class Client {
     # + id - Request ID. 
     # + return - No body. 
     remote isolated function deleteRequestsId(int id) returns http:Response|error {
-        string  path = string `/requests/${id}`;
+        string resourcePath = string `/requests/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Requests
@@ -2673,25 +2674,25 @@ public isolated client class Client {
     # + requestPath - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory. 
     # + return - A list of Requests objects. 
     remote isolated function getRequests(string? cursor = (), int? perPage = (), record {}? sortBy = (), boolean? mine = (), string? requestPath = ()) returns RequestEntity[]|error {
-        string  path = string `/requests`;
+        string resourcePath = string `/requests`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "mine": mine, "requestPath": requestPath};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RequestEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = RequestEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RequestEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create Request
     #
     # + return - The Requests object. 
     remote isolated function postRequests(RequestsBody payload) returns RequestEntity|error {
-        string  path = string `/requests`;
+        string resourcePath = string `/requests`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        RequestEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=RequestEntity);
+        request.setPayload(jsonBody, "application/json");
+        RequestEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Requests
@@ -2703,35 +2704,35 @@ public isolated client class Client {
     # + folderPath - Path to show requests for.  If omitted, shows all paths. Send `/` to represent the root directory. 
     # + return - A list of Requests objects. 
     remote isolated function getRequestsFoldersPath(string folderPath, string? cursor = (), int? perPage = (), record {}? sortBy = (), boolean? mine = ()) returns RequestEntity[]|error {
-        string  path = string `/requests/folders/${folderPath}`;
+        string resourcePath = string `/requests/folders/${folderPath}`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "mine": mine};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        RequestEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = RequestEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        RequestEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create user session (log in)
     #
     # + return - The Sessions object. 
     remote isolated function postSessions(SessionsBody payload) returns SessionEntity|error {
-        string  path = string `/sessions`;
+        string resourcePath = string `/sessions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SessionEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SessionEntity);
+        request.setPayload(jsonBody, "application/json");
+        SessionEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Delete user session (log out)
     #
     # + return - No body. 
     remote isolated function deleteSessions() returns http:Response|error {
-        string  path = string `/sessions`;
+        string resourcePath = string `/sessions`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # List Settings Changes
@@ -2747,12 +2748,12 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `api_key_id` and `user_id`. 
     # + return - A list of SettingsChanges objects. 
     remote isolated function getSettingsChanges(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns SettingsChangeEntity[]|error {
-        string  path = string `/settings_changes`;
+        string resourcePath = string `/settings_changes`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SettingsChangeEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = SettingsChangeEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SettingsChangeEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show Sso Strategy
@@ -2760,10 +2761,10 @@ public isolated client class Client {
     # + id - Sso Strategy ID. 
     # + return - The SsoStrategies object. 
     remote isolated function getSsoStrategiesId(int id) returns SsoStrategyEntity|error {
-        string  path = string `/sso_strategies/${id}`;
+        string resourcePath = string `/sso_strategies/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SsoStrategyEntity response = check self.clientEp-> get(path, accHeaders, targetType = SsoStrategyEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SsoStrategyEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Sso Strategies
@@ -2772,12 +2773,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of SsoStrategies objects. 
     remote isolated function getSsoStrategies(string? cursor = (), int? perPage = ()) returns SsoStrategyEntity[]|error {
-        string  path = string `/sso_strategies`;
+        string resourcePath = string `/sso_strategies`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SsoStrategyEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = SsoStrategyEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SsoStrategyEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Show Style
@@ -2785,10 +2786,10 @@ public isolated client class Client {
     # + stylePath - Style path. 
     # + return - The Styles object. 
     remote isolated function getStylesPath(string stylePath) returns StyleEntity|error {
-        string  path = string `/styles/${stylePath}`;
+        string resourcePath = string `/styles/${stylePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        StyleEntity response = check self.clientEp-> get(path, accHeaders, targetType = StyleEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        StyleEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete Style
@@ -2796,10 +2797,10 @@ public isolated client class Client {
     # + stylePath - Style path. 
     # + return - No body. 
     remote isolated function deleteStylesPath(string stylePath) returns http:Response|error {
-        string  path = string `/styles/${stylePath}`;
+        string resourcePath = string `/styles/${stylePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Update Style
@@ -2807,13 +2808,13 @@ public isolated client class Client {
     # + stylePath - Style path. 
     # + return - The Styles object. 
     remote isolated function patchStylesPath(string stylePath, StylesStylepathBody payload) returns StyleEntity|error {
-        string  path = string `/styles/${stylePath}`;
+        string resourcePath = string `/styles/${stylePath}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        StyleEntity response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=StyleEntity);
+        request.setPayload(jsonBody, "application/json");
+        StyleEntity response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # List Sync Jobs
@@ -2822,12 +2823,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of SyncJobs objects. 
     remote isolated function getSyncJobs(string? cursor = (), int? perPage = ()) returns SyncJobEntity[]|error {
-        string  path = string `/sync_jobs`;
+        string resourcePath = string `/sync_jobs`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        SyncJobEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = SyncJobEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        SyncJobEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Usage Snapshots
@@ -2836,12 +2837,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of UsageSnapshots objects. 
     remote isolated function getUsageSnapshots(string? cursor = (), int? perPage = ()) returns UsageSnapshotEntity[]|error {
-        string  path = string `/usage_snapshots`;
+        string resourcePath = string `/usage_snapshots`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UsageSnapshotEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UsageSnapshotEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UsageSnapshotEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List Usage Daily Snapshots
@@ -2857,12 +2858,12 @@ public isolated client class Client {
     # + filterLteq - If set, return records where the specifiied field is less than or equal to the supplied value. Valid fields are `date` and `usage_snapshot_id`. 
     # + return - A list of UsageDailySnapshots objects. 
     remote isolated function getUsageDailySnapshots(string? cursor = (), int? perPage = (), record {}? sortBy = (), record {}? filter = (), record {}? filterGt = (), record {}? filterGteq = (), record {}? filterLike = (), record {}? filterLt = (), record {}? filterLteq = ()) returns UsageDailySnapshotEntity[]|error {
-        string  path = string `/usage_daily_snapshots`;
+        string resourcePath = string `/usage_daily_snapshots`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage, "sort_by": sortBy, "filter": filter, "filter_gt": filterGt, "filter_gteq": filterGteq, "filter_like": filterLike, "filter_lt": filterLt, "filter_lteq": filterLteq};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UsageDailySnapshotEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UsageDailySnapshotEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UsageDailySnapshotEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List User Cipher Uses
@@ -2872,12 +2873,12 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of UserCipherUses objects. 
     remote isolated function getUserCipherUses(int? userId = (), string? cursor = (), int? perPage = ()) returns UserCipherUseEntity[]|error {
-        string  path = string `/user_cipher_uses`;
+        string resourcePath = string `/user_cipher_uses`;
         map<anydata> queryParam = {"user_id": userId, "cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserCipherUseEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UserCipherUseEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserCipherUseEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # List User Requests
@@ -2886,25 +2887,25 @@ public isolated client class Client {
     # + perPage - Number of records to show per page.  (Max: 10,000, 1,000 or less is recommended). 
     # + return - A list of UserRequests objects. 
     remote isolated function getUserRequests(string? cursor = (), int? perPage = ()) returns UserRequestEntity[]|error {
-        string  path = string `/user_requests`;
+        string resourcePath = string `/user_requests`;
         map<anydata> queryParam = {"cursor": cursor, "per_page": perPage};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserRequestEntity[] response = check self.clientEp-> get(path, accHeaders, targetType = UserRequestEntityArr);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserRequestEntity[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create User Request
     #
     # + return - The UserRequests object. 
     remote isolated function postUserRequests(UserRequestsBody payload) returns UserRequestEntity|error {
-        string  path = string `/user_requests`;
+        string resourcePath = string `/user_requests`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UserRequestEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UserRequestEntity);
+        request.setPayload(jsonBody, "application/json");
+        UserRequestEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Show User Request
@@ -2912,10 +2913,10 @@ public isolated client class Client {
     # + id - User Request ID. 
     # + return - The UserRequests object. 
     remote isolated function getUserRequestsId(int id) returns UserRequestEntity|error {
-        string  path = string `/user_requests/${id}`;
+        string resourcePath = string `/user_requests/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        UserRequestEntity response = check self.clientEp-> get(path, accHeaders, targetType = UserRequestEntity);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        UserRequestEntity response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Delete User Request
@@ -2923,23 +2924,23 @@ public isolated client class Client {
     # + id - User Request ID. 
     # + return - No body. 
     remote isolated function deleteUserRequestsId(int id) returns http:Response|error {
-        string  path = string `/user_requests/${id}`;
+        string resourcePath = string `/user_requests/${id}`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> delete(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
     }
     # Create Webhook Test
     #
     # + return - The WebhookTests object. 
     remote isolated function postWebhookTests(WebhookTestsBody payload) returns WebhookTestEntity|error {
-        string  path = string `/webhook_tests`;
+        string resourcePath = string `/webhook_tests`;
         map<any> headerValues = {"X-FilesAPI-Key": self.apiKeyConfig.xFilesapiKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        WebhookTestEntity response = check self.clientEp->post(path, request, headers = accHeaders, targetType=WebhookTestEntity);
+        request.setPayload(jsonBody, "application/json");
+        WebhookTestEntity response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

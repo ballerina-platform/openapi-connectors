@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Gets page load (or an API call) performance from a specified global geography such as Paris, Tokyo, Virginia, Mumbai, Frankfurt, London, Seoul, California, Sao Paolo, and many more.
     #
@@ -48,10 +49,10 @@ public isolated client class Client {
     # + url - specific URL to perform load test time 
     # + return - Page load performance measurement response 
     remote isolated function getGlobalPageLoad(string origin, string url) returns PageLoadPerformance|error {
-        string  path = string `/globalpageload`;
+        string resourcePath = string `/globalpageload`;
         map<anydata> queryParam = {"origin": origin, "url": url, "license": self.apiKeyConfig.license};
-        path = path + check getPathForQueryParam(queryParam);
-        PageLoadPerformance response = check self.clientEp-> get(path, targetType = PageLoadPerformance);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        PageLoadPerformance response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

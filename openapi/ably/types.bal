@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,16 @@ public type MessageArr Message[];
 
 public type PresenceMessageArr PresenceMessage[];
 
-public type stringArr string[];
+public type StringArr string[];
 
-public type intArr int[];
+public type IntArr int[];
+
+public type PushPublishBody record {
+    # Push
+    Push push?;
+    # Push recipient details for a device.
+    Recipient recipient;
+};
 
 # Message object.
 public type Message record {
@@ -42,7 +49,7 @@ public type Message record {
     int timestamp?;
 };
 
-public type  InlineResponse2xx ChannelDetails[];
+public type InlineResponse2xx ChannelDetails[]|string[];
 
 # A ChannelStatus instance.
 public type ChannelStatus record {
@@ -72,6 +79,20 @@ public type Notification record {
     string title?;
 };
 
+public type PushPublishBody1 record {
+    # Push
+    Push push?;
+    # Push recipient details for a device.
+    Recipient recipient;
+};
+
+public type PushPublishBody2 record {
+    # Push
+    Push push?;
+    # Push recipient details for a device.
+    Recipient recipient;
+};
+
 public type TokenDetails record {
     # Regular expression representation of the capabilities of the token.
     string capability?;
@@ -84,6 +105,8 @@ public type TokenDetails record {
     # The Ably Token.
     string token?;
 };
+
+public type KeynameRequesttokenBody TokenRequest|SignedTokenRequest;
 
 # An Occupancy instance indicating the occupancy of a channel. For events indicating regional activity of a channel this indicates activity in that region, not global activity.
 public type Occupancy record {
@@ -126,8 +149,6 @@ public type Push record {
     PushWeb web?;
 };
 
-public type  Body TokenRequest|SignedTokenRequest;
-
 public type DeviceDetails record {
     # Optional trusted client identifier for the device.
     string clientId?;
@@ -166,24 +187,22 @@ public type PresenceMessage record {
     int timestamp?;
 };
 
-public type Body6 record {
-    # Push
-    Push push?;
-    # Push recipient details for a device.
-    Recipient recipient;
-};
-
 # Extends and overrides generic values when delivering via APNs. [See examples](https://www.ably.io/documentation/general/push/publish#payload-structure)
 public type PushApns record {
     # Notification
     Notification notification?;
 };
 
-public type Body4 record {
-    # Push
-    Push push?;
-    # Push recipient details for a device.
-    Recipient recipient;
+public type PushChannelsubscriptionsBody2 record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when clientId is empty, cannot be used with clientId.
+    string deviceId?;
+}|record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when deviceId is empty, cannot be used with deviceId.
+    string clientId?;
 };
 
 # Extends and overrides generic values when delivering via web. [See examples](https://www.ably.io/documentation/general/push/publish#payload-structure)
@@ -192,11 +211,28 @@ public type PushWeb record {
     Notification notification?;
 };
 
-public type Body5 record {
-    # Push
-    Push push?;
-    # Push recipient details for a device.
-    Recipient recipient;
+public type PushChannelsubscriptionsBody record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when clientId is empty, cannot be used with clientId.
+    string deviceId?;
+}|record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when deviceId is empty, cannot be used with deviceId.
+    string clientId?;
+};
+
+public type PushChannelsubscriptionsBody1 record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when clientId is empty, cannot be used with clientId.
+    string deviceId?;
+}|record {
+    # Channel name.
+    string 'channel?;
+    # Must be set when deviceId is empty, cannot be used with deviceId.
+    string clientId?;
 };
 
 public type ChannelDetails record {
@@ -209,10 +245,6 @@ public type ChannelDetails record {
     # A ChannelStatus instance.
     ChannelStatus status?;
 };
-
-public type  Body2 record {}|record {};
-
-public type  Body3 record {}|record {};
 
 # Extends and overrides generic values when delivering via GCM/FCM. [See examples](https://www.ably.io/documentation/general/push/publish#payload-structure)
 public type PushFcm record {
@@ -248,8 +280,6 @@ public type Recipient record {
     string transportType?;
 };
 
-public type  Body1 record {}|record {};
-
 public type InlineResponse2xx1 record {
     string 'channel?;
     string messageId?;
@@ -258,5 +288,5 @@ public type InlineResponse2xx1 record {
 public type SignedTokenRequest record {
     *TokenRequest;
     # A signature, generated as an HMAC of each of the above components, using the key secret value.
-    string mac?;
+    string mac;
 };

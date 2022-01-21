@@ -57,7 +57,7 @@ public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
-    # Create a [Medium account](https://medium.com/) and obtain tokens following [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
+    # Create a [Medium account](https://medium.com/)  and obtain tokens following [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -65,13 +65,14 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.medium.com/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get the authenticated user’s details
     #
     # + return - If success returns details of the user who has granted permission to the application otherwise the relevant error 
     remote isolated function getUserDetail() returns UserResponse|error {
-        string  path = string `/me`;
-        UserResponse response = check self.clientEp-> get(path, targetType = UserResponse);
+        string resourcePath = string `/me`;
+        UserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List the user’s publications
@@ -79,8 +80,8 @@ public isolated client class Client {
     # + userId - A unique identifier for the user. 
     # + return - If success returns a list of publications that the user is subscribed to, writes to, or edits otherwise the relevant error 
     remote isolated function getPublicationList(string userId) returns PublicationResponse|error {
-        string  path = string `/users/${userId}/publications`;
-        PublicationResponse response = check self.clientEp-> get(path, targetType = PublicationResponse);
+        string resourcePath = string `/users/${userId}/publications`;
+        PublicationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # List contributors for a given publication
@@ -88,8 +89,8 @@ public isolated client class Client {
     # + publicationId - A unique identifier for the publication. 
     # + return - If success returns a list of contributors 
     remote isolated function getContributorList(string publicationId) returns ContributorResponse|error {
-        string  path = string `/publications/${publicationId}/contributors`;
-        ContributorResponse response = check self.clientEp-> get(path, targetType = ContributorResponse);
+        string resourcePath = string `/publications/${publicationId}/contributors`;
+        ContributorResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a post on the authenticated user’s profile
@@ -98,11 +99,11 @@ public isolated client class Client {
     # + payload - Creates a post for user. 
     # + return - If success returns a Post record that includes the newly created post detail otherwise the relevant error 
     remote isolated function createUserPost(string authorId, Post payload) returns PostResponse|error {
-        string  path = string `/users/${authorId}/posts`;
+        string resourcePath = string `/users/${authorId}/posts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PostResponse response = check self.clientEp->post(path, request, targetType=PostResponse);
+        request.setPayload(jsonBody, "application/json");
+        PostResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

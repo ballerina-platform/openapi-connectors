@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Weather - Weather Conditions
     #
     # + payload - Input weather conditions 
     # + return - OK 
     remote isolated function weatherConditions(InputWeatherConditions payload) returns OutputWeatherConditions|error {
-        string  path = string `/WeatherConditions`;
+        string resourcePath = string `/WeatherConditions`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputWeatherConditions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputWeatherConditions);
+        request.setPayload(jsonBody, "application/json");
+        OutputWeatherConditions response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Weather - Daily Forecast
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Input weather daily forecast 
     # + return - OK 
     remote isolated function weatherDailyForecast(InputWeatherDailyForecast payload) returns OutputDailyForecast|error {
-        string  path = string `/WeatherDailyForecast`;
+        string resourcePath = string `/WeatherDailyForecast`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputDailyForecast response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputDailyForecast);
+        request.setPayload(jsonBody, "application/json");
+        OutputDailyForecast response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Weather - Hourly Forecast
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Input weather hourly forecast 
     # + return - OK 
     remote isolated function weatherHourlyForecast(InputWeatherHourlyForecast payload) returns OutputHourlyForecast|error {
-        string  path = string `/WeatherHourlyForecast`;
+        string resourcePath = string `/WeatherHourlyForecast`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputHourlyForecast response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputHourlyForecast);
+        request.setPayload(jsonBody, "application/json");
+        OutputHourlyForecast response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Weather - Activity Forecast
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Input weather activity forecast 
     # + return - OK 
     remote isolated function weatherActivityForecast(InputWeatherActivityForecast payload) returns OutputActivityForecast|error {
-        string  path = string `/WeatherActivityForecast`;
+        string resourcePath = string `/WeatherActivityForecast`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputActivityForecast response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputActivityForecast);
+        request.setPayload(jsonBody, "application/json");
+        OutputActivityForecast response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

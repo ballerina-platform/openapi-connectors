@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -61,453 +59,406 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials. 
     # Create a [Mailscript account](https://login.mailscript.com/signup) and obtain tokens.
     #
-    # + clientConfig - The configurations to be used when initializing the `connector`
-    # + serviceUrl - URL of the target service
-    # + return - An error if connector initialization failed
+    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + serviceUrl - URL of the target service 
+    # + return - An error if connector initialization failed 
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.mailscript.com/v2") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Get all actions for the user
     #
-    # + return - Successful operation
+    # + return - Successful operation 
     remote isolated function getAllActions() returns GetAllActionsResponse|error {
-        string  path = string `/actions`;
-        GetAllActionsResponse response = check self.clientEp-> get(path, targetType = GetAllActionsResponse);
+        string resourcePath = string `/actions`;
+        GetAllActionsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add an action
     #
-    # + payload - Add action body
-    # + return - Successful operation
-    remote isolated function addAction(Body payload) returns AddActionResponse|error {
-        string  path = string `/actions`;
+    # + payload - Add action body 
+    # + return - Successful operation 
+    remote isolated function addAction(ActionsBody payload) returns AddActionResponse|error {
+        string resourcePath = string `/actions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddActionResponse response = check self.clientEp->post(path, request, targetType=AddActionResponse);
+        request.setPayload(jsonBody, "application/json");
+        AddActionResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update an action key
     #
-    # + action - ID of action
-    # + payload - Action body
-    # + return - Successful update operation
-    remote isolated function updateAction(string action, Body1 payload) returns Key|error {
-        string  path = string `/actions/${action}`;
+    # + action - ID of action 
+    # + payload - Action body 
+    # + return - Successful update operation 
+    remote isolated function updateAction(string action, ActionsActionBody payload) returns Key|error {
+        string resourcePath = string `/actions/${action}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Key response = check self.clientEp->put(path, request, targetType=Key);
+        request.setPayload(jsonBody, "application/json");
+        Key response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete an action
     #
-    # + action - ID of the action
-    # + return - Successful delete operation
+    # + action - ID of the action 
+    # + return - Successful delete operation 
     remote isolated function deleteAction(string action) returns http:Response|error {
-        string  path = string `/actions/${action}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/actions/${action}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get all addresses you have access to
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAllAddresses() returns GetAllAddressesResponse|error {
-        string  path = string `/addresses`;
-        GetAllAddressesResponse response = check self.clientEp-> get(path, targetType = GetAllAddressesResponse);
+        string resourcePath = string `/addresses`;
+        GetAllAddressesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Claim a new Mailscript address
     #
-    # + payload - Address body
-    # + return - successful operation
+    # + payload - Address body 
+    # + return - successful operation 
     remote isolated function addAddress(AddAddressRequest payload) returns http:Response|error {
-        string  path = string `/addresses`;
+        string resourcePath = string `/addresses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Delete a mailscript address
     #
-    # + address - ID of address
-    # + return - successful delete operation
+    # + address - ID of address 
+    # + return - successful delete operation 
     remote isolated function deleteAddress(string address) returns http:Response|error {
-        string  path = string `/addresses/${address}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/addresses/${address}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # List address keys
     #
-    # + address - ID of address
-    # + return - successful operation
+    # + address - ID of address 
+    # + return - successful operation 
     remote isolated function getAllKeys(string address) returns GetAllKeysResponse|error {
-        string  path = string `/addresses/${address}/keys`;
-        GetAllKeysResponse response = check self.clientEp-> get(path, targetType = GetAllKeysResponse);
+        string resourcePath = string `/addresses/${address}/keys`;
+        GetAllKeysResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Add address key
     #
-    # + address - ID of address
-    # + payload - Key body
-    # + return - successful operation
+    # + address - ID of address 
+    # + payload - Key body 
+    # + return - successful operation 
     remote isolated function addKey(string address, AddKeyRequest payload) returns AddKeyResponse|error {
-        string  path = string `/addresses/${address}/keys`;
+        string resourcePath = string `/addresses/${address}/keys`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddKeyResponse response = check self.clientEp->post(path, request, targetType=AddKeyResponse);
+        request.setPayload(jsonBody, "application/json");
+        AddKeyResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get address key
     #
-    # + address - ID of address
-    # + 'key - ID of key
-    # + return - successful operation
+    # + address - ID of address 
+    # + 'key - ID of key 
+    # + return - successful operation 
     remote isolated function getKey(string address, string 'key) returns Key|error {
-        string  path = string `/addresses/${address}/'keys/${'key}`;
-        Key response = check self.clientEp-> get(path, targetType = Key);
+        string resourcePath = string `/addresses/${address}/keys/${'key}`;
+        Key response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an address key
     #
-    # + address - ID of address
-    # + 'key - ID of key
-    # + payload - Key body
-    # + return - Successful operation
+    # + address - ID of address 
+    # + 'key - ID of key 
+    # + payload - Key body 
+    # + return - Successful operation 
     remote isolated function updateKey(string address, string 'key, UpdateKeyRequest payload) returns Key|error {
-        string  path = string `/addresses/${address}/'keys/${'key}`;
+        string resourcePath = string `/addresses/${address}/keys/${'key}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Key response = check self.clientEp->put(path, request, targetType=Key);
+        request.setPayload(jsonBody, "application/json");
+        Key response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete address key
     #
-    # + address - ID of address
-    # + 'key - ID of key
-    # + return - Successful delete operation
+    # + address - ID of address 
+    # + 'key - ID of key 
+    # + return - Successful delete operation 
     remote isolated function deleteKey(string address, string 'key) returns http:Response|error {
-        string  path = string `/addresses/${address}/'keys/${'key}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/addresses/${address}/keys/${'key}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get a token for opening a daemon connection
     #
-    # + daemon - name of Daemon
-    # + return - Successful get operation
+    # + daemon - name of Daemon 
+    # + return - Successful get operation 
     remote isolated function getDaemonToken(string daemon) returns InlineResponse200|error {
-        string  path = string `/daemons/${daemon}/token`;
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        string resourcePath = string `/daemons/${daemon}/token`;
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get all domains you have access to
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAllDomains() returns GetAllDomainsResponse|error {
-        string  path = string `/domains`;
-        GetAllDomainsResponse response = check self.clientEp-> get(path, targetType = GetAllDomainsResponse);
+        string resourcePath = string `/domains`;
+        GetAllDomainsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Claim a new Domain
     #
-    # + payload - Domain body
-    # + return - successful operation
+    # + payload - Domain body 
+    # + return - successful operation 
     remote isolated function addDomain(AddDomainRequest payload) returns DomainResponse|error {
-        string  path = string `/domains`;
+        string resourcePath = string `/domains`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DomainResponse response = check self.clientEp->post(path, request, targetType=DomainResponse);
+        request.setPayload(jsonBody, "application/json");
+        DomainResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get domain verification
     #
-    # + domain - Full Top-level domain name
-    # + return - successful operation
+    # + domain - Full Top-level domain name 
+    # + return - successful operation 
     remote isolated function getDomainVerify(string domain) returns DomainResponse|error {
-        string  path = string `/domains/verify/${domain}`;
-        DomainResponse response = check self.clientEp-> get(path, targetType = DomainResponse);
+        string resourcePath = string `/domains/verify/${domain}`;
+        DomainResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Check a new Domain
     #
-    # + domain - Full Top-level domain name
-    # + return - successful operation
+    # + domain - Full Top-level domain name 
+    # + return - successful operation 
     remote isolated function checkDomainVerify(string domain) returns CheckDomainVerify|error {
-        string  path = string `/domains/verify/${domain}`;
+        string resourcePath = string `/domains/verify/${domain}`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        CheckDomainVerify response = check self.clientEp-> post(path, request, targetType = CheckDomainVerify);
+        CheckDomainVerify response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Remove a domain
     #
-    # + domain - Full Top-level domain name
-    # + return - successful operation
+    # + domain - Full Top-level domain name 
+    # + return - successful operation 
     remote isolated function removeDomainVerify(string domain) returns http:Response|error {
-        string  path = string `/domains/${domain}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/domains/${domain}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get all inputs you have access to
     #
-    # + name - Name
-    # + return - successful operation
+    # + name - Name 
+    # + return - successful operation 
     remote isolated function getAllInputs(string? name = ()) returns GetAllInputsResponse|error {
-        string  path = string `/inputs`;
+        string resourcePath = string `/inputs`;
         map<anydata> queryParam = {"name": name};
-        path = path + check getPathForQueryParam(queryParam);
-        GetAllInputsResponse response = check self.clientEp-> get(path, targetType = GetAllInputsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GetAllInputsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get all integrations for the user
     #
-    # + return - Successful operation
+    # + return - Successful operation 
     remote isolated function getAllIntegrations() returns GetAllIntegrationsResponse|error {
-        string  path = string `/integrations`;
-        GetAllIntegrationsResponse response = check self.clientEp-> get(path, targetType = GetAllIntegrationsResponse);
+        string resourcePath = string `/integrations`;
+        GetAllIntegrationsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete an integration
     #
-    # + integration - ID of the integration
-    # + return - Successful delete operation
+    # + integration - ID of the integration 
+    # + return - Successful delete operation 
     remote isolated function deleteIntegration(string integration) returns http:Response|error {
-        string  path = string `/integrations/${integration}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/integrations/${integration}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Send an email
     #
-    # + payload - request body
-    # + return - successful operation
+    # + payload - request body 
+    # + return - successful operation 
     remote isolated function send(SendRequest payload) returns http:Response|error {
-        string  path = string `/send`;
+        string resourcePath = string `/send`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get all triggers you have access to
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAllTriggers() returns GetAllTriggersResponse|error {
-        string  path = string `/triggers`;
-        GetAllTriggersResponse response = check self.clientEp-> get(path, targetType = GetAllTriggersResponse);
+        string resourcePath = string `/triggers`;
+        GetAllTriggersResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Setup a trigger
     #
-    # + payload - Trigger body
-    # + return - successful add operation
+    # + payload - Trigger body 
+    # + return - successful add operation 
     remote isolated function addTrigger(AddTriggerRequest payload) returns AddTriggerResponse|error {
-        string  path = string `/triggers`;
+        string resourcePath = string `/triggers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddTriggerResponse response = check self.clientEp->post(path, request, targetType=AddTriggerResponse);
+        request.setPayload(jsonBody, "application/json");
+        AddTriggerResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update a trigger
     #
-    # + trigger - ID of the trigger
-    # + payload - Trigger body
-    # + return - Successful update operation
+    # + trigger - ID of the trigger 
+    # + payload - Trigger body 
+    # + return - Successful update operation 
     remote isolated function updateTrigger(string trigger, AddTriggerRequest payload) returns http:Response|error {
-        string  path = string `/triggers/${trigger}`;
+        string resourcePath = string `/triggers/${trigger}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a trigger
     #
-    # + trigger - ID of the trigger
-    # + return - Successful delete operation
+    # + trigger - ID of the trigger 
+    # + return - Successful delete operation 
     remote isolated function deleteTrigger(string trigger) returns http:Response|error {
-        string  path = string `/triggers/${trigger}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/triggers/${trigger}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get the authenticated user
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAuthenticatedUser() returns User|error {
-        string  path = string `/user`;
-        User response = check self.clientEp-> get(path, targetType = User);
+        string resourcePath = string `/user`;
+        User response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a user
     #
-    # + payload - User body
-    # + return - Successful update operation
+    # + payload - User body 
+    # + return - Successful update operation 
     remote isolated function updateUser(UpdateUserRequest payload) returns http:Response|error {
-        string  path = string `/user`;
+        string resourcePath = string `/user`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Get all verificats for the user
     #
-    # + return - Successful operation
+    # + return - Successful operation 
     remote isolated function getAllVerifications() returns GetAllVerificationsResponse|error {
-        string  path = string `/verifications`;
-        GetAllVerificationsResponse response = check self.clientEp-> get(path, targetType = GetAllVerificationsResponse);
+        string resourcePath = string `/verifications`;
+        GetAllVerificationsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Start verification process for external email address or sms number
     #
-    # + payload - Key body
-    # + return - Successful operation
-    remote isolated function addVerification(Body2 payload) returns AddVerificationResponse|error {
-        string  path = string `/verifications`;
+    # + payload - Key body 
+    # + return - Successful operation 
+    remote isolated function addVerification(VerificationsBody payload) returns AddVerificationResponse|error {
+        string resourcePath = string `/verifications`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        AddVerificationResponse response = check self.clientEp->post(path, request, targetType=AddVerificationResponse);
+        request.setPayload(jsonBody, "application/json");
+        AddVerificationResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Verify an email address or sms number with a code
     #
-    # + verification - ID of the verification entry
-    # + payload - Verify action body
-    # + return - Successful operation
-    remote isolated function verify(string verification, Body3 payload) returns http:Response|error {
-        string  path = string `/verifications/${verification}/verify`;
+    # + verification - ID of the verification entry 
+    # + payload - Verify action body 
+    # + return - Successful operation 
+    remote isolated function verify(string verification, VerificationVerifyBody payload) returns http:Response|error {
+        string resourcePath = string `/verifications/${verification}/verify`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get all workflows you have access to
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAllWorkflows() returns GetAllWorkflowsResponse|error {
-        string  path = string `/workflows`;
-        GetAllWorkflowsResponse response = check self.clientEp-> get(path, targetType = GetAllWorkflowsResponse);
+        string resourcePath = string `/workflows`;
+        GetAllWorkflowsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Setup workflow
     #
-    # + payload - Workflow body
-    # + return - successful operation
+    # + payload - Workflow body 
+    # + return - successful operation 
     remote isolated function addWorkflow(AddWorkflowRequest payload) returns http:Response|error {
-        string  path = string `/workflows`;
+        string resourcePath = string `/workflows`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Set a property on a workflow
     #
-    # + payload - Set Workflow body
-    # + return - Successful update operation
+    # + payload - Set Workflow body 
+    # + return - Successful update operation 
     remote isolated function setWorkflow(SetWorkflowRequest payload) returns http:Response|error {
-        string  path = string `/workflows/set`;
+        string resourcePath = string `/workflows/set`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update an workflow
     #
-    # + workflow - ID of the workflow
-    # + payload - Workflow body
-    # + return - Successful update operation
+    # + workflow - ID of the workflow 
+    # + payload - Workflow body 
+    # + return - Successful update operation 
     remote isolated function updateWorkflow(string workflow, AddWorkflowRequest payload) returns http:Response|error {
-        string  path = string `/workflows/${workflow}`;
+        string resourcePath = string `/workflows/${workflow}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->put(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete a workflow
     #
-    # + workflow - ID of the workflow
-    # + return - Successful delete operation
+    # + workflow - ID of the workflow 
+    # + return - Successful delete operation 
     remote isolated function deleteWorkflow(string workflow) returns http:Response|error {
-        string  path = string `/workflows/${workflow}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/workflows/${workflow}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Get all workspaces you have access to
     #
-    # + return - successful operation
+    # + return - successful operation 
     remote isolated function getAllWorkspaces() returns GetAllWorkspacesResponse|error {
-        string  path = string `/workspaces`;
-        GetAllWorkspacesResponse response = check self.clientEp-> get(path, targetType = GetAllWorkspacesResponse);
+        string resourcePath = string `/workspaces`;
+        GetAllWorkspacesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Claim a Mailscript workspace
     #
-    # + payload - request body
-    # + return - successful operation
+    # + payload - request body 
+    # + return - successful operation 
     remote isolated function addWorkspace(AddWorkspaceRequest payload) returns http:Response|error {
-        string  path = string `/workspaces`;
+        string resourcePath = string `/workspaces`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map
-# + return - Returns generated Path or error at failure of client initialization
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

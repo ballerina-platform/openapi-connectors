@@ -40,18 +40,19 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Sends Custom Behavioral Event
     #
     # + return - No content 
     remote isolated function sendEvent(BehaviouralEvent payload) returns http:Response|error {
-        string  path = string `/events/v3/send`;
+        string resourcePath = string `/events/v3/send`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        http:Response response = check self.clientEp->post(path, request, targetType=http:Response);
+        request.setPayload(jsonBody, "application/json");
+        http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

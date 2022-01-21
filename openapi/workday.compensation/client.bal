@@ -65,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Provides the ability to set up and retrieve Scores on Scorecard Results.
     #
@@ -72,21 +73,21 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getScorecardResults(int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string path = string `/scorecardResults`;
+        string resourcePath = string `/scorecardResults`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp->get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a new Scorecard Result.
     #
     # + return - Resource created. 
     remote isolated function createsNewScorecardResults(CreateScorecardResults payload) returns CreateScorecardResults|error {
-        string path = string `/scorecardResults`;
+        string resourcePath = string `/scorecardResults`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateScorecardResults response = check self.clientEp->post(path, request, targetType = CreateScorecardResults);
+        request.setPayload(jsonBody, "application/json");
+        CreateScorecardResults response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves Compensation Scorecard information.
@@ -96,10 +97,10 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompensationScorecards(string? effectiveDate = (), int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string path = string `/scorecards`;
+        string resourcePath = string `/scorecards`;
         map<anydata> queryParam = {"effectiveDate": effectiveDate, "limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp->get(path, targetType = InlineResponse2001);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates a Compensation Scorecard
@@ -107,13 +108,13 @@ public isolated client class Client {
     # + effectiveDate - Effective date the scorecard task takes effect. 
     # + return - Resource created. 
     remote isolated function createsCompensationScorecards(CreateScoreCard payload, string? effectiveDate = ()) returns CreateScoreCard|error {
-        string path = string `/scorecards`;
+        string resourcePath = string `/scorecards`;
         map<anydata> queryParam = {"effectiveDate": effectiveDate};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreateScoreCard response = check self.clientEp->post(path, request, targetType = CreateScoreCard);
+        request.setPayload(jsonBody, "application/json");
+        CreateScoreCard response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Retrieves a worker instance.
@@ -121,8 +122,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerInstance(string id) returns WorkerProfile|error {
-        string path = string `/workers/${id}`;
-        WorkerProfile response = check self.clientEp->get(path, targetType = WorkerProfile);
+        string resourcePath = string `/workers/${id}`;
+        WorkerProfile response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Provides the ability to set up and retrieve Scores on Scorecard Results.
@@ -130,8 +131,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAndSetUpScoresOnScorecardResults(string id) returns ScoresetContainer|error {
-        string path = string `/scorecardResults/${id}`;
-        ScoresetContainer response = check self.clientEp->get(path, targetType = ScoresetContainer);
+        string resourcePath = string `/scorecardResults/${id}`;
+        ScoresetContainer response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes the Scorecard Results with the specified ID.
@@ -139,8 +140,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteScorecardResultsByID(string id) returns http:Response|error {
-        string path = string `/scorecardResults/${id}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/scorecardResults/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Retrieves a collection of workers.
@@ -150,10 +151,10 @@ public isolated client class Client {
     # + search - Searches ~workers~ by name. The search is case-insensitive. You can include space-delimited search strings for an OR search. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerCollection(int? 'limit = (), int? offset = (), string? search = ()) returns InlineResponse2002|error {
-        string path = string `/workers`;
+        string resourcePath = string `/workers`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "search": search};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp->get(path, targetType = InlineResponse2002);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Request a one-time payment for a worker with the specified ID.
@@ -161,11 +162,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function requestOneTimePayment(string id, OneTimePaymentPlanEventInput payload) returns OneTimePaymentPlanEventInput|error {
-        string path = string `/workers/${id}/requestOneTimePayment`;
+        string resourcePath = string `/workers/${id}/requestOneTimePayment`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OneTimePaymentPlanEventInput response = check self.clientEp->post(path, request, targetType = OneTimePaymentPlanEventInput);
+        request.setPayload(jsonBody, "application/json");
+        OneTimePaymentPlanEventInput response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Updates the Score for the specified Scorecard Result.
@@ -174,11 +175,11 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateScore(string id, string subresourceID, ScoreInput payload) returns ScoreInput|error {
-        string path = string `/scorecardResults/${id}/scores/${subresourceID}`;
+        string resourcePath = string `/scorecardResults/${id}/scores/${subresourceID}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ScoreInput response = check self.clientEp->patch(path, request, targetType = ScoreInput);
+        request.setPayload(jsonBody, "application/json");
+        ScoreInput response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Retrieves Compensation Scorecard information.
@@ -186,8 +187,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompensationScoreCardInfo(string id) returns ScoreCard|error {
-        string path = string `/scorecards/${id}`;
-        ScoreCard response = check self.clientEp->get(path, targetType = ScoreCard);
+        string resourcePath = string `/scorecards/${id}`;
+        ScoreCard response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates a Compensation Scorecard
@@ -195,11 +196,11 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateCompensationScorecard(string id, EditScoreCards payload) returns EditScoreCards|error {
-        string path = string `/scorecards/${id}`;
+        string resourcePath = string `/scorecards/${id}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        EditScoreCards response = check self.clientEp->put(path, request, targetType = EditScoreCards);
+        request.setPayload(jsonBody, "application/json");
+        EditScoreCards response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Deletes a Compensation Scorecard with the specified ID.
@@ -207,8 +208,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteCompensationScorecardByID(string id) returns http:Response|error {
-        string path = string `/scorecards/${id}`;
-        http:Response response = check self.clientEp->delete(path, targetType = http:Response);
+        string resourcePath = string `/scorecards/${id}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
 }

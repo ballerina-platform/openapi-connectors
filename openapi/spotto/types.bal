@@ -153,7 +153,7 @@ public type TagErrorInList record {
     # Index within the request that errors occurred
     float index;
     # List of errors for the asset at the given index of the request body
-    TagsExistError|TagsDuplicatedError[] errors;
+    (TagsExistError|TagsDuplicatedError)[] errors;
 };
 
 public type GetLocationInventoryResponse IInventoryItem[];
@@ -169,7 +169,7 @@ public type TagsDuplicatedConflict record {
 # Sort orders - ascending and descending
 public type SortOrders string;
 
-public type  PostTriggerRequest PostArrivedAtTriggerRequest|PostMovedTriggerRequest|PostWentOnlineTriggerRequest|PostWentOfflineTriggerRequest;
+public type PostTriggerRequest PostArrivedAtTriggerRequest|PostMovedTriggerRequest|PostWentOnlineTriggerRequest|PostWentOfflineTriggerRequest;
 
 public type UpdateLocationRequest record {
     # Update the name of the location, perhaps because of a typo or to be more descriptive.
@@ -276,7 +276,7 @@ public type IInventoryItem record {
     string name;
 };
 
-public type  UpdateAssetErrorResponse DefaultError|UpdateAssetError;
+public type UpdateAssetErrorResponse DefaultError|UpdateAssetError;
 
 # Reader went online after a given threshold.
 public type PostWentOnlineTriggerRequest record {
@@ -351,7 +351,7 @@ public type EmailAction record {
 
 public type PostLocationsRequest PostlocationsrequestInner[];
 
-public type  Rule MatchNameRule|StrictMatchIdRule;
+public type Rule MatchNameRule|StrictMatchIdRule;
 
 public type UserType string;
 
@@ -380,7 +380,7 @@ public type PostAssetRequest record {
 # 
 # FIXED: Are static and don't have a timestamp<br>
 # ROVING: Are dynamic and have a lastSeen timestamp
-public type  ReaderLocation IFixedReaderLocation|IRovingReaderLocation;
+public type ReaderLocation IFixedReaderLocation|IRovingReaderLocation;
 
 public type GetInternalUserResponse record {
     # User type for identifying internal users from external API users.
@@ -766,7 +766,7 @@ public type GetAssetLastLocationResponse record {
     ILastLocation lastLocation;
 };
 
-public type  GetTriggerResponse GetArrivedAtTriggerResponse|GetMovedTriggerResponse|GetWentOnlineTriggerResponse|GetWentOfflineTriggerResponse;
+public type GetTriggerResponse GetArrivedAtTriggerResponse|GetMovedTriggerResponse|GetWentOnlineTriggerResponse|GetWentOfflineTriggerResponse;
 
 # ==== INTEGRATIONS ====
 public type MQTTDisabled record {
@@ -774,7 +774,7 @@ public type MQTTDisabled record {
     boolean enabled;
 };
 
-public type  UpdateLocationErrorResponse DefaultError|UpdateLocationError;
+public type UpdateLocationErrorResponse DefaultError|UpdateLocationError;
 
 # Asset or Reader moved anywhere (No location rules)
 public type GetMovedTriggerResponse record {
@@ -885,7 +885,7 @@ public type UpdateTriggerRequest record {
     Rule[] locationRules?;
 };
 
-public type  PostAssetsErrorResponse DefaultError|PostAssetsError;
+public type PostAssetsErrorResponse DefaultError|PostAssetsError;
 
 # A single conflict with a new tag ID existing on an existing entity
 public type TagsExistConflict record {
@@ -971,7 +971,7 @@ public type GetTriggersResponse record {
 public type DeleteResponse record {
 };
 
-public type  PostUserRequest PostExternalUserRequest|PostInternalUserRequest;
+public type PostUserRequest PostExternalUserRequest|PostInternalUserRequest;
 
 public type PostlocationsrequestInner record {
     # Name of the new location, try to be descriptive to make it easy for people find it when searching.
@@ -995,7 +995,7 @@ public type MQTTAction record {
     string topic;
 };
 
-public type  SearchableSortFields StandardSortFields|string;
+public type SearchableSortFields StandardSortFields|string;
 
 public type UpdateUserRequest record {
     # Change the User's full name, or name of the external API user.
@@ -1022,7 +1022,7 @@ public type ILastLocation record {
     string name;
 };
 
-public type  Action WebhookAction|MQTTAction|EmailAction;
+public type Action WebhookAction|MQTTAction|EmailAction;
 
 public type PostInternalUserRequest record {
     # User type for identifying internal users.
@@ -1048,7 +1048,7 @@ public type GetUsersResponse record {
     GetUserResponse[] items;
 };
 
-public type  PostLocationsErrorResponse DefaultError|PostLocationsError;
+public type PostLocationsErrorResponse DefaultError|PostLocationsError;
 
 public type UpdateReaderRequest record {
     # Update the name of the reader, perhaps because of a typo or to be more descriptive.
@@ -1093,7 +1093,7 @@ public type GetRolesResponse record {
     GetRoleResponse[] items;
 };
 
-public type  MQTTSettings MQTTEnabledWithDetails|MQTTDisabled;
+public type MQTTSettings MQTTEnabledWithDetails|MQTTDisabled;
 
 public type UpdateLocationError record {
     # Error structure for revealing tag ID conflicts
@@ -1147,9 +1147,9 @@ public type GetTriggersQuery record {
 
 public type ReaderEmbedField string;
 
-public type  PostReaderRequest DefaultReaderRequest|IFixedReaderRequest;
+public type PostReaderRequest DefaultReaderRequest|IFixedReaderRequest;
 
-public type  GetUserResponse GetExternalUserResponse|GetInternalUserResponse;
+public type GetUserResponse GetExternalUserResponse|GetInternalUserResponse;
 
 public type GetReadersResponse record {
     GetReadersQuery query;

@@ -43,19 +43,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Collections - Add to collection
     #
     # + payload - Collection modification parameters 
     # + return - OK 
     remote isolated function addToCollection(InputCollectionModify payload) returns OutputCollectionResult|error {
-        string  path = string `/AddToCollection`;
+        string resourcePath = string `/AddToCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionResult);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Remove from collection
@@ -63,13 +64,13 @@ public isolated client class Client {
     # + payload - Collection modification parameters 
     # + return - OK 
     remote isolated function removeFromCollection(InputCollectionModify payload) returns OutputCollectionResult|error {
-        string  path = string `/RemoveFromCollection`;
+        string resourcePath = string `/RemoveFromCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionResult);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Filter collection
@@ -77,13 +78,13 @@ public isolated client class Client {
     # + payload - Filter collection parameters 
     # + return - OK 
     remote isolated function filterCollection(InputCollectionFilter payload) returns OutputCollectionResult|error {
-        string  path = string `/FilterCollection`;
+        string resourcePath = string `/FilterCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionResult);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Sort collection
@@ -91,13 +92,13 @@ public isolated client class Client {
     # + payload - Sort collection parameters 
     # + return - OK 
     remote isolated function sortCollection(InputCollectionSort payload) returns OutputCollectionResult|error {
-        string  path = string `/SortCollection`;
+        string resourcePath = string `/SortCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionResult);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Count collection
@@ -105,13 +106,13 @@ public isolated client class Client {
     # + payload - Count collection parameters 
     # + return - OK 
     remote isolated function countCollection(InputCollectionCount payload) returns OutputNumber|error {
-        string  path = string `/CountCollection`;
+        string resourcePath = string `/CountCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Split collection
@@ -119,13 +120,13 @@ public isolated client class Client {
     # + payload - Split collection parameters 
     # + return - OK 
     remote isolated function splitCollection(InputCollectionSplit payload) returns OutputMultiCollection|error {
-        string  path = string `/SplitCollection`;
+        string resourcePath = string `/SplitCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputMultiCollection response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputMultiCollection);
+        request.setPayload(jsonBody, "application/json");
+        OutputMultiCollection response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Replace values in collection
@@ -133,13 +134,13 @@ public isolated client class Client {
     # + payload - Replace values in collection parameters 
     # + return - OK 
     remote isolated function replaceValuesInCollection(InputCollectionReplace payload) returns OutputCollectionResult|error {
-        string  path = string `/ReplaceValuesInCollection`;
+        string resourcePath = string `/ReplaceValuesInCollection`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionResult response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionResult);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Contains string
@@ -147,13 +148,13 @@ public isolated client class Client {
     # + payload - Collection search parameters 
     # + return - OK 
     remote isolated function collectionContainsString(InputCollectionSearch payload) returns OutputCollectionString|error {
-        string  path = string `/CollectionContainsString`;
+        string resourcePath = string `/CollectionContainsString`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionString);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Starts with string
@@ -161,13 +162,13 @@ public isolated client class Client {
     # + payload - Collection search parameters 
     # + return - OK 
     remote isolated function collectionStartsWithString(InputCollectionSearch payload) returns OutputCollectionString|error {
-        string  path = string `/CollectionStartsWithString`;
+        string resourcePath = string `/CollectionStartsWithString`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionString);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Ends with string
@@ -175,13 +176,13 @@ public isolated client class Client {
     # + payload - Collection search parameters 
     # + return - OK 
     remote isolated function collectionEndsWithString(InputCollectionSearch payload) returns OutputCollectionString|error {
-        string  path = string `/CollectionEndsWithString`;
+        string resourcePath = string `/CollectionEndsWithString`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionString);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Contains number
@@ -189,13 +190,13 @@ public isolated client class Client {
     # + payload - Collection search parameters 
     # + return - OK 
     remote isolated function collectionContainsNumber(InputCollectionSearchNumeric payload) returns OutputCollectionNumber|error {
-        string  path = string `/CollectionContainsNumber`;
+        string resourcePath = string `/CollectionContainsNumber`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputCollectionNumber response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputCollectionNumber);
+        request.setPayload(jsonBody, "application/json");
+        OutputCollectionNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Collection to JSON
@@ -203,13 +204,13 @@ public isolated client class Client {
     # + payload - Collection conversion parameters 
     # + return - OK 
     remote isolated function collectionToJSON(InputCollectionConversion payload) returns OutputString|error {
-        string  path = string `/CollectionToJSON`;
+        string resourcePath = string `/CollectionToJSON`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Collections - Collection to XML
@@ -217,13 +218,13 @@ public isolated client class Client {
     # + payload - Collection conversion parameters 
     # + return - OK 
     remote isolated function collectionToXml(InputCollectionConversionXML payload) returns OutputString|error {
-        string  path = string `/CollectionToXML`;
+        string resourcePath = string `/CollectionToXML`;
         map<any> headerValues = {"X-IBM-Client-Id": self.apiKeyConfig.xIbmClientId};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        OutputString response = check self.clientEp->post(path, request, headers = accHeaders, targetType=OutputString);
+        request.setPayload(jsonBody, "application/json");
+        OutputString response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
 }

@@ -15,8 +15,6 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +65,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "http://localhost:8080/v1") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Retrieve a list of API Requests that have been made.
     #
@@ -74,10 +73,10 @@ public isolated client class Client {
     # + offset - How far into the collection of API Events should the response start 
     # + return - OK 
     remote isolated function getApiActivity(int 'limit = 50, int offset = 0) returns APIRequest[]|error {
-        string  path = string `/activity`;
+        string resourcePath = string `/activity`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
-        path = path + check getPathForQueryParam(queryParam);
-        APIRequest[] response = check self.clientEp-> get(path, targetType = APIRequestArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        APIRequest[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get all Vaults
@@ -85,10 +84,10 @@ public isolated client class Client {
     # + filter - Filter the Vault collection based on Vault name using SCIM eq filter 
     # + return - OK 
     remote isolated function getVaults(string? filter = ()) returns Vault[]|error {
-        string  path = string `/vaults`;
+        string resourcePath = string `/vaults`;
         map<anydata> queryParam = {"filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
-        Vault[] response = check self.clientEp-> get(path, targetType = VaultArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Vault[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get Vault details and metadata
@@ -96,8 +95,8 @@ public isolated client class Client {
     # + vaultUuid - The UUID of the Vault to fetch Items from 
     # + return - OK 
     remote isolated function getVaultById(string vaultUuid) returns Vault|error {
-        string  path = string `/vaults/${vaultUuid}`;
-        Vault response = check self.clientEp-> get(path, targetType = Vault);
+        string resourcePath = string `/vaults/${vaultUuid}`;
+        Vault response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get all items for inside a Vault
@@ -106,10 +105,10 @@ public isolated client class Client {
     # + filter - Filter the Item collection based on Item name using SCIM eq filter 
     # + return - OK 
     remote isolated function getVaultItems(string vaultUuid, string? filter = ()) returns Item[]|error {
-        string  path = string `/vaults/${vaultUuid}/items`;
+        string resourcePath = string `/vaults/${vaultUuid}/items`;
         map<anydata> queryParam = {"filter": filter};
-        path = path + check getPathForQueryParam(queryParam);
-        Item[] response = check self.clientEp-> get(path, targetType = ItemArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Item[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create a new Item
@@ -118,11 +117,11 @@ public isolated client class Client {
     # + payload - Object containing the information to create the item. 
     # + return - OK 
     remote isolated function createVaultItem(string vaultUuid, FullItem payload) returns FullItem|error {
-        string  path = string `/vaults/${vaultUuid}/items`;
+        string resourcePath = string `/vaults/${vaultUuid}/items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FullItem response = check self.clientEp->post(path, request, targetType=FullItem);
+        request.setPayload(jsonBody, "application/json");
+        FullItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Get the details of an Item
@@ -131,8 +130,8 @@ public isolated client class Client {
     # + itemUuid - The UUID of the Item to fetch 
     # + return - OK 
     remote isolated function getVaultItemById(string vaultUuid, string itemUuid) returns FullItem|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}`;
-        FullItem response = check self.clientEp-> get(path, targetType = FullItem);
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}`;
+        FullItem response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update an Item
@@ -142,11 +141,11 @@ public isolated client class Client {
     # + payload - Object containing the information to update in item. 
     # + return - OK 
     remote isolated function updateVaultItem(string vaultUuid, string itemUuid, FullItem payload) returns FullItem|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}`;
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FullItem response = check self.clientEp->put(path, request, targetType=FullItem);
+        request.setPayload(jsonBody, "application/json");
+        FullItem response = check self.clientEp->put(resourcePath, request);
         return response;
     }
     # Delete an Item
@@ -155,10 +154,8 @@ public isolated client class Client {
     # + itemUuid - The UUID of the Item to update 
     # + return - Successfully deleted an item 
     remote isolated function deleteVaultItem(string vaultUuid, string itemUuid) returns http:Response|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}`;
+        http:Response response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # Update a subset of Item attributes
@@ -168,11 +165,11 @@ public isolated client class Client {
     # + payload - Object containing the subset of information to patch the item. 
     # + return - OK - Item updated. If no Patch operations were provided, Item is unmodified. 
     remote isolated function patchVaultItem(string vaultUuid, string itemUuid, Patch payload) returns FullItem|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}`;
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        FullItem response = check self.clientEp->patch(path, request, targetType=FullItem);
+        request.setPayload(jsonBody, "application/json");
+        FullItem response = check self.clientEp->patch(resourcePath, request);
         return response;
     }
     # Get all the files inside an Item
@@ -182,10 +179,10 @@ public isolated client class Client {
     # + inlineFiles - Tells server to return the base64-encoded file contents in the response. 
     # + return - OK 
     remote isolated function getItemFiles(string vaultUuid, string itemUuid, boolean? inlineFiles = ()) returns File[]|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}/files`;
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}/files`;
         map<anydata> queryParam = {"inline_files": inlineFiles};
-        path = path + check getPathForQueryParam(queryParam);
-        File[] response = check self.clientEp-> get(path, targetType = FileArr);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        File[] response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the details of a File
@@ -196,10 +193,10 @@ public isolated client class Client {
     # + inlineFiles - Tells server to return the base64-encoded file contents in the response. 
     # + return - OK 
     remote isolated function getDetailsOfFileById(string vaultUuid, string itemUuid, string fileUuid, boolean? inlineFiles = ()) returns File|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}/files/${fileUuid}`;
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}/files/${fileUuid}`;
         map<anydata> queryParam = {"inline_files": inlineFiles};
-        path = path + check getPathForQueryParam(queryParam);
-        File response = check self.clientEp-> get(path, targetType = File);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        File response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Get the content of a File
@@ -209,58 +206,24 @@ public isolated client class Client {
     # + fileUuid - UUID of the file to get content from 
     # + return - Success 
     remote isolated function downloadFileByID(string vaultUuid, string itemUuid, string fileUuid) returns string|error {
-        string  path = string `/vaults/${vaultUuid}/items/${itemUuid}/files/${fileUuid}/content`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/vaults/${vaultUuid}/items/${itemUuid}/files/${fileUuid}/content`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Ping the server for liveness
     #
     # + return - OK 
     remote isolated function getHeartbeat() returns string|error {
-        string  path = string `/heartbeat`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/heartbeat`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Query server for exposed Prometheus metrics
     #
     # + return - Successfully returned Prometheus metrics 
     remote isolated function getPrometheusMetrics() returns string|error {
-        string  path = string `/metrics`;
-        string response = check self.clientEp-> get(path, targetType = string);
+        string resourcePath = string `/metrics`;
+        string response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
 }

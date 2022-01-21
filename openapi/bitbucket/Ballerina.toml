@@ -1,11 +1,11 @@
 [package]
-distribution = "slbeta6"
 license = ["Apache-2.0"]
 keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
 icon = "icon.png"
-version = "1.1.0"
+distribution = "slbeta6"
+version = "1.1.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

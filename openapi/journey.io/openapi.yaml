@@ -2024,20 +2024,6 @@ paths:
             client.remove_user_from_account("accountId", "userId")
       tags:
         - Accounts
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              description: The user being added/removed from the account
-              required:
-                - userId
-              properties:
-                userId:
-                  type: string
-                  format: user-id
-                  description: Unique identifier for the user in your database
       responses:
         '201':
           description: Object was created

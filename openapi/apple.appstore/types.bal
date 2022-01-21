@@ -58,7 +58,7 @@ public type IconAssetType string;
 
 public type BetaTestersResponse record {
     BetaTester[] data;
-    App|BetaGroup|Build[] included?;
+    (App|BetaGroup|Build)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -371,9 +371,15 @@ public type AppStoreReviewDetailResponse record {
     DocumentLinks links;
 };
 
+@deprecated
+public type AppstoreversionRelationshipsAgeratingdeclaration record {
+    AppcategoryRelationshipsSubcategoriesLinks links?;
+    AppinfoRelationshipsAgeratingdeclarationData data?;
+};
+
 public type BetaTesterResponse record {
     BetaTester data;
-    App|BetaGroup|Build[] included?;
+    (App|BetaGroup|Build)[] included?;
     DocumentLinks links;
 };
 
@@ -431,7 +437,7 @@ public type UserinvitationRelationships record {
 
 public type ProfileResponse record {
     Profile data;
-    BundleId|Device|Certificate[] included?;
+    (BundleId|Device|Certificate)[] included?;
     DocumentLinks links;
 };
 
@@ -446,7 +452,7 @@ public type CertificateType string;
 
 public type AppStoreVersionLocalizationsResponse record {
     AppStoreVersionLocalization[] data;
-    AppScreenshotSet|AppPreviewSet[] included?;
+    (AppScreenshotSet|AppPreviewSet)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -848,7 +854,7 @@ public type AppInfoLocalization record {
 
 public type AppstoreversionRelationships record {
     AppencryptiondeclarationRelationshipsApp app?;
-    AppinfoRelationshipsAgeratingdeclaration ageRatingDeclaration?;
+    AppstoreversionRelationshipsAgeratingdeclaration ageRatingDeclaration?;
     AppstoreversionRelationshipsAppstoreversionlocalizations appStoreVersionLocalizations?;
     AppstoreversionRelationshipsBuild build?;
     AppstoreversionRelationshipsAppstoreversionphasedrelease appStoreVersionPhasedRelease?;
@@ -971,7 +977,7 @@ public type BetalicenseagreementupdaterequestData record {
 
 public type BundleIdResponse record {
     BundleId data;
-    Profile|BundleIdCapability|App[] included?;
+    (Profile|BundleIdCapability|App)[] included?;
     DocumentLinks links;
 };
 
@@ -1108,7 +1114,7 @@ public type BetabuildlocalizationcreaterequestDataAttributes record {
 
 public type BuildResponse record {
     Build data;
-    PrereleaseVersion|BetaTester|BetaBuildLocalization|AppEncryptionDeclaration|BetaAppReviewSubmission|App|BuildBetaDetail|AppStoreVersion|BuildIcon|PerfPowerMetric|DiagnosticSignature[] included?;
+    (PrereleaseVersion|BetaTester|BetaBuildLocalization|AppEncryptionDeclaration|BetaAppReviewSubmission|App|BuildBetaDetail|AppStoreVersion|BuildIcon|PerfPowerMetric|DiagnosticSignature)[] included?;
     DocumentLinks links;
 };
 
@@ -1120,13 +1126,13 @@ public type AppstoreversionphasedreleaseupdaterequestData record {
 
 public type PrereleaseVersionResponse record {
     PrereleaseVersion data;
-    Build|App[] included?;
+    (Build|App)[] included?;
     DocumentLinks links;
 };
 
 public type AppCategoryResponse record {
     AppCategory data;
-    AppCategory|AppCategory[] included?;
+    (AppCategory|AppCategory)[] included?;
     DocumentLinks links;
 };
 
@@ -1198,7 +1204,7 @@ public type ErrorresponseErrors record {
     string code;
     string title;
     string detail;
-    record {}|record {} 'source?;
+    record {string pointer?;}|record {string 'parameter?;} 'source?;
 };
 
 public type AgeRatingDeclarationUpdateRequest record {
@@ -1415,7 +1421,7 @@ public type BetaAppLocalization record {
 
 public type AppStoreVersionsResponse record {
     AppStoreVersion[] data;
-    AgeRatingDeclaration|AppStoreVersionLocalization|Build|AppStoreVersionPhasedRelease|RoutingAppCoverage|AppStoreReviewDetail|AppStoreVersionSubmission|IdfaDeclaration[] included?;
+    (AgeRatingDeclaration|AppStoreVersionLocalization|Build|AppStoreVersionPhasedRelease|RoutingAppCoverage|AppStoreReviewDetail|AppStoreVersionSubmission|IdfaDeclaration)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -1476,7 +1482,7 @@ public type AppstoreversionphasedreleasecreaterequestDataAttributes record {
 
 public type ProfilesResponse record {
     Profile[] data;
-    BundleId|Device|Certificate[] included?;
+    (BundleId|Device|Certificate)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -1741,7 +1747,7 @@ public type AppRelationships record {
 
 public type AppsResponse record {
     App[] data;
-    BetaGroup|AppStoreVersion|PrereleaseVersion|BetaAppLocalization|Build|BetaLicenseAgreement|BetaAppReviewDetail|AppInfo|EndUserLicenseAgreement|AppPreOrder|AppPrice|Territory|InAppPurchase|GameCenterEnabledVersion|PerfPowerMetric[] included?;
+    (BetaGroup|AppStoreVersion|PrereleaseVersion|BetaAppLocalization|Build|BetaLicenseAgreement|BetaAppReviewDetail|AppInfo|EndUserLicenseAgreement|AppPreOrder|AppPrice|Territory|InAppPurchase|GameCenterEnabledVersion|PerfPowerMetric)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -1759,7 +1765,7 @@ public type BuildRelationshipsIconsData record {
 
 public type AppInfosResponse record {
     AppInfo[] data;
-    AppInfoLocalization|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory[] included?;
+    (AppInfoLocalization|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -2090,7 +2096,7 @@ public type BundleidRelationships record {
 
 public type AppInfoResponse record {
     AppInfo data;
-    AppInfoLocalization|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory[] included?;
+    (AppInfoLocalization|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory|AppCategory)[] included?;
     DocumentLinks links;
 };
 
@@ -2105,7 +2111,7 @@ public type UserAttributes record {
 
 public type BetaGroupsResponse record {
     BetaGroup[] data;
-    App|Build|BetaTester[] included?;
+    (App|Build|BetaTester)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -2152,7 +2158,7 @@ public type AppStoreVersionSubmissionResponse record {
 
 public type AppResponse record {
     App data;
-    BetaGroup|AppStoreVersion|PrereleaseVersion|BetaAppLocalization|Build|BetaLicenseAgreement|BetaAppReviewDetail|AppInfo|EndUserLicenseAgreement|AppPreOrder|AppPrice|Territory|InAppPurchase|GameCenterEnabledVersion|PerfPowerMetric[] included?;
+    (BetaGroup|AppStoreVersion|PrereleaseVersion|BetaAppLocalization|Build|BetaLicenseAgreement|BetaAppReviewDetail|AppInfo|EndUserLicenseAgreement|AppPreOrder|AppPrice|Territory|InAppPurchase|GameCenterEnabledVersion|PerfPowerMetric)[] included?;
     DocumentLinks links;
 };
 
@@ -2388,7 +2394,7 @@ public type UserinvitationcreaterequestDataRelationships record {
 
 public type BuildsResponse record {
     Build[] data;
-    PrereleaseVersion|BetaTester|BetaBuildLocalization|AppEncryptionDeclaration|BetaAppReviewSubmission|App|BuildBetaDetail|AppStoreVersion|BuildIcon|PerfPowerMetric|DiagnosticSignature[] included?;
+    (PrereleaseVersion|BetaTester|BetaBuildLocalization|AppEncryptionDeclaration|BetaAppReviewSubmission|App|BuildBetaDetail|AppStoreVersion|BuildIcon|PerfPowerMetric|DiagnosticSignature)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -2482,7 +2488,7 @@ public type BuildRelationshipsIcons record {
 
 public type AppStoreVersionLocalizationResponse record {
     AppStoreVersionLocalization data;
-    AppScreenshotSet|AppPreviewSet[] included?;
+    (AppScreenshotSet|AppPreviewSet)[] included?;
     DocumentLinks links;
 };
 
@@ -2602,7 +2608,7 @@ public type AppinfolocalizationcreaterequestDataAttributes record {
 
 public type PreReleaseVersionsResponse record {
     PrereleaseVersion[] data;
-    Build|App[] included?;
+    (Build|App)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -2742,7 +2748,7 @@ public type BuildRelationshipsBetaappreviewsubmissionData record {
 
 public type AppStoreVersionResponse record {
     AppStoreVersion data;
-    AgeRatingDeclaration|AppStoreVersionLocalization|Build|AppStoreVersionPhasedRelease|RoutingAppCoverage|AppStoreReviewDetail|AppStoreVersionSubmission|IdfaDeclaration[] included?;
+    (AgeRatingDeclaration|AppStoreVersionLocalization|Build|AppStoreVersionPhasedRelease|RoutingAppCoverage|AppStoreReviewDetail|AppStoreVersionSubmission|IdfaDeclaration)[] included?;
     DocumentLinks links;
 };
 
@@ -2879,7 +2885,7 @@ public type AppPreviewSetCreateRequest record {
 
 public type BetaGroupResponse record {
     BetaGroup data;
-    App|Build|BetaTester[] included?;
+    (App|Build|BetaTester)[] included?;
     DocumentLinks links;
 };
 
@@ -2979,7 +2985,7 @@ public type BetabuildlocalizationupdaterequestDataAttributes record {
 
 public type BundleIdsResponse record {
     BundleId[] data;
-    Profile|BundleIdCapability|App[] included?;
+    (Profile|BundleIdCapability|App)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };
@@ -3072,7 +3078,7 @@ public type AppstoreversionupdaterequestData record {
 
 public type AppCategoriesResponse record {
     AppCategory[] data;
-    AppCategory|AppCategory[] included?;
+    (AppCategory|AppCategory)[] included?;
     PagedDocumentLinks links;
     PagingInformation meta?;
 };

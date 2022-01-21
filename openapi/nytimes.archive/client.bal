@@ -41,6 +41,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Archive API
     #
@@ -48,10 +49,10 @@ public isolated client class Client {
     # + month - The month number (e.g. 1 for January). 
     # + return - The docs requested. 
     remote isolated function getArticles(int year, int month) returns InlineResponse200|error {
-        string  path = string `/${year}/${month}.json`;
+        string resourcePath = string `/${year}/${month}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

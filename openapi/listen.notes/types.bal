@@ -450,7 +450,7 @@ public type SearchResponse record {
     # The number of search results in this page.
     int count?;
     # A list of search results.
-    EpisodeSearchResult|PodcastSearchResult|CuratedListSearchResult[] results?;
+    (EpisodeSearchResult|PodcastSearchResult|CuratedListSearchResult)[] results?;
 };
 
 public type PlaylistsResponse record {
@@ -838,7 +838,6 @@ public type GetCuratedPodcastsResponse record {
     CuratedListSimple[] curated_lists;
 };
 
-# Array of genre ids.
 # Array of genre ids.
 public type GenreIdsField int[];
 

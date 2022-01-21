@@ -113,7 +113,7 @@ public type ResultDetails record {
     # object type
     string 'type?;
     # Unsupported
-    record  { }  unsupported?;
+    record {} unsupported?;
 };
 
 # Style information which applies to the whole rich text object
@@ -249,7 +249,7 @@ public type ObjectpropertiesSummary record {
     # The ID of the summary
     string id?;
     # The summary content
-    record  { }  text?;
+    record {} text?;
     # The type of the object
     string 'type?;
 };
@@ -257,7 +257,7 @@ public type ObjectpropertiesSummary record {
 # Read details
 public type ObjectpropertiesRead record {
     # checkbox details
-    record  { }  checkbox?;
+    record {} checkbox?;
     # ID of the checkbox
     string id?;
     # The object type
@@ -276,8 +276,6 @@ public type BlockcontentText record {
 };
 
 # Page content for the new page
-#
-# + PagechildrenInner - Page content for the new page
 public type PageChildren PagechildrenInner[];
 
 # The option items
@@ -393,7 +391,7 @@ public type PageUpdateRequestBody record {
 # Publishing/Releasing Date
 public type ObjectpropertiesPublishingreleaseDate record {
     # The date of publishing/release
-    record  { }  date?;
+    record {} date?;
     # ID of date
     string id?;
     # Type of the object
@@ -543,7 +541,7 @@ public type ObjectpropertiesName record {
     # Name ID
     string id?;
     # tilte
-    record  { }  title?;
+    record {} title?;
     # title Type
     string 'type?;
 };
@@ -625,7 +623,7 @@ public type ObjectpropertiesLink record {
     # Link type
     string 'type?;
     # URL
-    record  { }  url?;
+    record {} url?;
 };
 
 # The databases

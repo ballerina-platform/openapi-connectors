@@ -51,19 +51,20 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Save web page as PDF
     #
     # + payload - URL to be converted 
     # + return - A PDF file. 
     remote isolated function urlToPdf(Url2pdfrequest payload) returns string|error {
-        string  path = string `/convert/url/pdf`;
+        string resourcePath = string `/convert/url/pdf`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Capture web page Screenshots.
@@ -71,13 +72,13 @@ public isolated client class Client {
     # + payload - URL to be converted 
     # + return - Returns jpg or png file. 
     remote isolated function urlToScreenshot(Url2screenshotrequest payload) returns string|error {
-        string  path = string `/convert/url/screenshot`;
+        string resourcePath = string `/convert/url/screenshot`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        string response = check self.clientEp->post(path, request, targetType=string);
+        request.setPayload(jsonBody, "application/json");
+        string response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Download web page content
@@ -85,13 +86,13 @@ public isolated client class Client {
     # + payload - - _Base fetcher type_ is the right choice for fetching server-side rendered pages. It takes fewer resources and works faster than rendering HTML with _Chrome fetcher_ 
     # + return - Returns utf8 encoded web page content. 
     remote isolated function fetch(Fetchrequest payload) returns json|error {
-        string  path = string `/fetch`;
+        string resourcePath = string `/fetch`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Extract structured data from web pages
@@ -99,13 +100,13 @@ public isolated client class Client {
     # + payload - ### Field types and attributes 
     # + return - Returns data in the one of the follwing formats - JSON, JSON Lines, CSV, MS Excel, XML 
     remote isolated function parse(Parserequest payload) returns json|error {
-        string  path = string `/parse`;
+        string resourcePath = string `/parse`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Collect search results from search engines
@@ -113,13 +114,13 @@ public isolated client class Client {
     # + payload - <h2>Search parameters</h2> 
     # + return - Returns data in the one of the follwing formats - JSON, JSON Lines, CSV, MS Excel, XML 
     remote isolated function serp(Serprequest payload) returns json|error {
-        string  path = string `/serp`;
+        string resourcePath = string `/serp`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        json response = check self.clientEp->post(path, request, targetType=json);
+        request.setPayload(jsonBody, "application/json");
+        json response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

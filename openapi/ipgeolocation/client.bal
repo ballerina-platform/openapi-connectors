@@ -43,6 +43,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Retrieve the location of an IP address
     #
@@ -50,10 +51,10 @@ public isolated client class Client {
     # + fields - Comma separated fields to only receive a few fields from the JSON response. 
     # + return - Location of geolocated IP 
     remote isolated function getGeolocation(string? ipAddress = (), string? fields = ()) returns Geolocation|error {
-        string  path = string `/v1/`;
+        string resourcePath = string `/v1/`;
         map<anydata> queryParam = {"ip_address": ipAddress, "fields": fields, "api_key": self.apiKeyConfig.apiKey};
-        path = path + check getPathForQueryParam(queryParam);
-        Geolocation response = check self.clientEp-> get(path, targetType = Geolocation);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Geolocation response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

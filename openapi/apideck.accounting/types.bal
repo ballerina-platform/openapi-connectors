@@ -856,7 +856,7 @@ public type CreateCompanyResponse record {
 
 public type CustomField record {
     string id;
-    string|decimal|boolean|string[] value?;
+    string|decimal|boolean|string[]? value?;
 };
 
 # Links to navigate to previous or next pages through the API

@@ -30,6 +30,67 @@ public type FileVersionLegalHold record {
     string deleted_at?;
 };
 
+public type FoldersFolderIdBody record {
+    # The optional new name for this folder.
+    string name?;
+    # The optional description of this folder
+    string description?;
+    # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
+    string sync_state?;
+    # Specifies if users who are not the owner of the folder can invite new collaborators to the folder.
+    boolean can_non_owners_invite?;
+    # The parent folder for this folder. Use this to move the folder or to restore it out of the trash.
+    FoldersfolderIdParent parent?;
+    record {
+        # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
+        string access?;
+        # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
+        string password?;
+        # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
+        string vanity_name?;
+        # The timestamp at which this shared link will expire. This field can only be set by users with paid accounts.
+        string unshared_at?;
+        # The permissions on shared link.
+        record {
+            # If the shared link allows for downloading of files. This can only be set when `access` is set to `open` or `company`.
+            boolean can_download?;
+        } permissions?;
+    } shared_link?;
+    record {
+        # When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
+        string access?;
+    } folder_upload_email?;
+    # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
+    string[100] tags?;
+    # Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.
+    boolean is_collaboration_restricted_to_enterprise?;
+    # An array of collections to make this folder a member of. Currently we only support the `favorites` collection.  To get the ID for a collection, use the [List all collections][1] endpoint.  Passing an empty array `[]` or `null` will remove the folder from all collections.  [1]: ../advanced-files-and-folders/#get-collections
+    Reference[] collections?;
+    # Restricts collaborators who are not the owner of this folder from viewing other collaborations on this folder.  It also restricts non-owners from inviting new collaborators.  When setting this field to `false`, it is required to also set `can_non_owners_invite_collaborators` to `false` if it has not already been set.
+    boolean can_non_owners_view_collaborators?;
+};
+
+public type FoldersFolderIdremoveSharedLinkBody record {
+    # By setting this value to `null`, the shared link is removed from the folder.
+    record {} shared_link?;
+};
+
+public type RetentionPoliciesBody record {
+    # The name for the retention policy
+    string policy_name;
+    # The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
+    string policy_type;
+    # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
+    string disposition_action;
+    # The length of the retention policy. This length specifies the duration in days that the retention policy will be active for after being assigned to content.  If the policy has A `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
+    string retention_length?;
+    # Whether the owner of a file will be allowed to extend the retention.
+    boolean can_owner_extend_retention?;
+    # Whether owner and co-owners of a file are notified when the policy nears expiration.
+    boolean are_owners_notified?;
+    RetentionPoliciesCustomNotificationRecipients[] custom_notification_recipients?;
+};
+
 # A request to refresh an Access Token. Use this API to refresh an expired Access Token using a valid Refresh Token.
 public type Postoauth2tokenRefreshaccesstoken record {
     # The type of request being made, in this case a refresh request.
@@ -46,6 +107,15 @@ public type Postoauth2tokenRefreshaccesstoken record {
 public type FilesfileIdcopyParent record {
     # The ID of folder to copy the file to.
     string id;
+};
+
+public type WebLinksWebLinkIdBody1 record {
+    # An optional new name for the web link.
+    string name?;
+    record {
+        # The ID of parent item
+        string id?;
+    } parent?;
 };
 
 # The optional file version to assign the cards to.
@@ -100,10 +170,34 @@ public type CollaborationAllowlistUser record {
     string name?;
 };
 
+public type StoragePolicyAssignmentsBody record {
+    # The storage policy to assign to the user or enterprise
+    StoragePolicyAssignmentsStoragePolicy storage_policy;
+    # The user or enterprise to assign the storage policy to.
+    StoragePolicyAssignmentsAssignedTo assigned_to;
+};
+
 # A standard representation of a file version
-#
 public type FileVersion record {
     *FileversionMini;
+    # The name of the file version
+    string name?;
+    # Size of the file version in bytes
+    int size?;
+    # When the file version object was created
+    string created_at?;
+    # When the file version object was last updated
+    string modified_at?;
+    record {*UserMini;} modified_by?;
+    # When the file version object was trashed.
+    string? trashed_at?;
+    record {*UserMini;} trashed_by?;
+    # When the file version was restored from the trash.
+    string? restored_at?;
+    record {*UserMini;} restored_by?;
+    # When the file version object will be permanently deleted.
+    string? purged_at?;
+    record {} uploader_display_name?;
 };
 
 # A mini description of a Storage Policy object
@@ -114,10 +208,15 @@ public type StoragepolicyMini record {
     string 'type?;
 };
 
+public type FoldersFolderIdupdateSharedLinkBody record {
+    # The settings for the shared link to update.
+    FoldersfolderIdupdateSharedLinkSharedLink shared_link?;
+};
+
 # The error that occurs when a file can not be created due to a conflict.
-#
 public type ConflictError record {
     *ClientError;
+    ConflicterrorContextInfo context_info?;
 };
 
 # A Box Skill metadata card that adds a transcript to a file.
@@ -141,8 +240,6 @@ public type TranscriptSkillCard record {
 };
 
 # A list of storage policy assignments.
-#
-# The part of an API response that describes marker based pagination
 public type StoragePolicyAssignments record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -150,6 +247,7 @@ public type StoragePolicyAssignments record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    StoragePolicyAssignment[] entries?;
 };
 
 # A list of terms of services
@@ -169,9 +267,19 @@ public type TermsOfServiceUserStatusesUser record {
 };
 
 # A representation of a file that is used to show
-#
 public type FileConflict record {
     *FileMini;
+    # The SHA1 hash of the file.
+    string sha1?;
+    # A mini representation of a file version, used when nested within another resource.
+    FileversionMini file_version?;
+};
+
+public type FileIdContentBody record {
+    # The additional attributes of the file being uploaded. Mainly the name and the parent folder. These attributes are part of the multi part request body and are in JSON format.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
+    FilesfileIdcontentAttributes attributes;
+    # The content of the file to upload to Box.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
+    string file;
 };
 
 # A request for a new OAuth 2.0 token
@@ -223,9 +331,12 @@ public type EmailAliases record {
 };
 
 # A standard representation of a group, as returned from any group API endpoints by default
-#
 public type Group record {
     *GroupMini;
+    # When the group object was created
+    string created_at?;
+    # When the group object was last modified
+    string modified_at?;
 };
 
 # The item that will trigger the webhook
@@ -255,8 +366,6 @@ public type KeywordskillcardEntries record {
 };
 
 # A list of folder locks
-#
-# The part of an API response that describes marker based pagination
 public type FolderLocks record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -264,6 +373,7 @@ public type FolderLocks record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    FolderLock[] entries?;
 };
 
 # The user to invite
@@ -281,8 +391,6 @@ public type FileScope record {
 };
 
 # A list of groups.
-#
-# The part of an API response that describes pagination
 public type Groups record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -292,6 +400,7 @@ public type Groups record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    GroupMini[] entries?;
 };
 
 # A Box Skill metadata card that places a list of images on a timeline.
@@ -331,9 +440,12 @@ public type Files record {
 };
 
 # Mini representation of a group, including id and name of group.
-#
 public type GroupMini record {
     *GroupBase;
+    # The name of the group
+    string name?;
+    # The type of the group.
+    string group_type?;
 };
 
 # The order in which a pagination is ordered
@@ -361,13 +473,18 @@ public type ClassificationTemplate record {
     # Classifications are always copied along when the file or folder is copied.
     boolean copyInstanceOnItemCopy?;
     # A list of fields for this classification template. This includes only one field, the `Box__Security__Classification__Key`, which defines the different classifications available in this enterprise.
-    ClassificationtemplateFields[] fields?;
+    ClassificationtemplateFields[1] fields?;
 };
 
 # A chunk of a file uploaded as part of an upload session, as returned by some endpoints.
 public type UploadedPart record {
     # The representation of an upload session chunk.
     UploadPart part?;
+};
+
+public type TermsOfServiceUserStatusesTermsOfServiceUserStatusIdBody record {
+    # Whether the user has accepted the terms.
+    boolean is_accepted;
 };
 
 # An entry in the `entries` attribute of a metadata card
@@ -388,15 +505,30 @@ public type ClassificationtemplateOptions record {
     ClassificationtemplateStaticconfig staticConfig?;
 };
 
+public type TermsOfServicesBody record {
+    # Whether this terms of service is active.
+    string status;
+    # The type of user to set the terms of service for.
+    string tos_type?;
+    # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
+    string text;
+};
+
 # Defines who can download a file.
 public type FilesfileIdPermissions record {
     # Defines who is allowed to download this file. The possible values are either `open` for everyone or `company` for the other members of the user's enterprise.  This setting overrides the download permissions that are normally part of the `role` of a collaboration. When set to `company`, this essentially removes the download option for external users with `viewer` or `editor` a roles.
     string can_download?;
 };
 
+# The file version to revert to
+public type VersionsCurrentBody record {
+    # The file version ID
+    string id?;
+    # The type to revert to
+    string 'type?;
+};
+
 # A list of allowed domains for collaboration.
-#
-# The part of an API response that describes marker based pagination
 public type CollaborationAllowlistEntries record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -404,6 +536,7 @@ public type CollaborationAllowlistEntries record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    CollaborationAllowlistEntry[] entries?;
 };
 
 # The description of an event that happened within Box
@@ -448,9 +581,12 @@ public type Webhook record {
     string[] triggers?;
 };
 
+public type CollaborationWhitelistExemptTargetsBody record {
+    # The user to exempt.
+    CollaborationWhitelistExemptTargetsUser user;
+};
+
 # A list of collaborations
-#
-# The part of an API response that describes pagination
 public type Collaborations record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -460,6 +596,7 @@ public type Collaborations record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    Collaboration[] entries?;
 };
 
 # The settings for the shared link to create on the file.  Use an empty object (`{}`) to use the default settings for shared links.
@@ -476,6 +613,15 @@ public type FilesfileIdaddSharedLinkSharedLink record {
     FilesfileIdaddSharedLinkSharedLinkPermissions permissions?;
 };
 
+public type TermsOfServiceUserStatusesBody record {
+    # The terms of service to set the status for.
+    TermsOfServiceUserStatusesTos tos;
+    # The user to set the status for.
+    TermsOfServiceUserStatusesUser user;
+    # Whether the user has accepted the terms.
+    boolean is_accepted;
+};
+
 # The invocation of this service, used to track which instance of a service applied the metadata.
 public type SkillcardInvocation record {
     # `skill_invocation`
@@ -485,8 +631,6 @@ public type SkillcardInvocation record {
 };
 
 # A list of retention policy assignments
-#
-# The part of an API response that describes marker based pagination
 public type RetentionPolicyAssignments record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -494,10 +638,10 @@ public type RetentionPolicyAssignments record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    RetentionPolicyAssignment[] entries?;
 };
 
 # A list of files, folders and web links that matched the search query, including the additional information about any shared links through which the item has been shared with the user.  This response format is only returned when the `include_recent_shared_links` query parameter has been set to `true`.
-#
 public type SearchResultsWithSharedLinks record {
     # One greater than the offset of the last entry in the search results. The total number of entries in the collection may be less than `total_count`.
     int total_count?;
@@ -505,6 +649,8 @@ public type SearchResultsWithSharedLinks record {
     int 'limit?;
     # The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter used.
     int offset?;
+    # The search results for the query provided, including the additional information about any shared links through which the item has been shared with the user.
+    SearchResultWithSharedLink[] entries?;
 };
 
 # The title of the card.
@@ -516,13 +662,34 @@ public type KeywordskillcardSkillCardTitle record {
 };
 
 # Groups contain a set of users, and can be used in place of users in some operations, such as collaborations.
-#
 public type GroupFull record {
     *Group;
+    # Keeps track of which external source this group is coming from (e.g. "Active Directory", "Google Groups", "Facebook Groups").  Setting this will also prevent Box users from editing the group name and its members directly via the Box web application. This is desirable for one-way syncing of groups.
+    string provenance?;
+    # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group. Example values of this field could be an Active Directory Object ID or a Google Group ID.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
+    string external_sync_identifier?;
+    # Human readable description of the group.
+    string description?;
+    # Specifies who can invite the group to collaborate on items.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
+    string invitability_level?;
+    # Specifies who can view the members of the group (Get Memberships for Group).  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
+    string member_viewability_level?;
+    record {
+        # Specifies if the user can invite the group to collaborate on any items.
+        boolean can_invite_as_collaborator?;
+    } permissions?;
+};
+
+public type LegalHoldPoliciesLegalHoldPolicyIdBody record {
+    # The name of the policy.
+    string policy_name?;
+    # A description for the policy.
+    string description?;
+    # Notes around why the policy was released.
+    string release_notes?;
 };
 
 # A list of files, folders and web links that matched the search query.
-#
 public type SearchResults record {
     # One greater than the offset of the last entry in the search results. The total number of entries in the collection may be less than `total_count`.
     int total_count?;
@@ -530,12 +697,41 @@ public type SearchResults record {
     int 'limit?;
     # The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter used.
     int offset?;
+    # The search results for the query provided.
+    (File|Folder|WebLink)[] entries?;
 };
 
 # The timestamp for an entry.
 public type TranscriptskillcardAppears record {
     # The time in seconds when an entry should start appearing on a timeline.
     int 'start?;
+};
+
+public type FilesFileIdBody record {
+    # An optional different name for the file. This can be used to rename the file.
+    string name?;
+    # The description for a file. This can be seen in the right-hand sidebar panel when viewing a file in the Box web app. Additionally, this index is used in the search index of the file, allowing users to find the file by the content in the description.
+    string description?;
+    # The parent for this item
+    FilesfileIdParent parent?;
+    # Defines a shared link for an item. Set this to `null` to remove the shared link.
+    FilesfileIdSharedLink shared_link?;
+    # Defines a lock on an item. This prevents the item from being moved, renamed, or otherwise changed by anyone other than the user who created the lock.  Set this to `null` to remove the lock.
+    FilesfileIdLock 'lock?;
+    # Defines who can download a file.
+    FilesfileIdPermissions permissions?;
+    # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
+    string[100] tags?;
+};
+
+public type FilesFileIdremoveSharedLinkBody record {
+    # By setting this value to `null`, the shared link is removed from the file.
+    record {} shared_link?;
+};
+
+public type UploadSessionIdCommitBody record {
+    # The list details for the uploaded parts
+    UploadPart[] parts;
 };
 
 # The read-only and read-write access tokens for this item
@@ -567,8 +763,6 @@ public type GroupMembershipsUser record {
 };
 
 # A list of collections
-#
-# The part of an API response that describes pagination
 public type Collections record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -578,6 +772,7 @@ public type Collections record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    Collection[] entries?;
 };
 
 # The parent folder for this folder. Use this to move the folder or to restore it out of the trash.
@@ -592,6 +787,19 @@ public type TermsOfServiceUserStatusesTos record {
     string 'type;
     # The ID of terms of service
     string id;
+};
+
+public type CollaborationsBody record {
+    # The item to attach the comment to.
+    CollaborationsItem item;
+    # The user or group to give access to the item.
+    CollaborationsAccessibleBy accessible_by;
+    # The level of access granted.
+    string role;
+    # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
+    boolean can_view_path?;
+    # Set the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.
+    string expires_at?;
 };
 
 # A task assignment defines which task is assigned to which user to complete.
@@ -618,10 +826,75 @@ public type TaskAssignment record {
     UserMini assigned_by?;
 };
 
+public type UsersUserIdBody record {
+    # Set this to `null` to roll the user out of the enterprise and make them a free user
+    string? enterprise?;
+    # Whether the user should receive an email when they are rolled out of an enterprise
+    boolean notify?;
+    # The name of the user
+    string name?;
+    # The email address the user uses to log in
+    string login?;
+    # The user’s enterprise role
+    string role?;
+    # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
+    string language?;
+    # Whether the user can use Box Sync
+    boolean is_sync_enabled?;
+    # The user’s job title
+    string job_title?;
+    # The user’s phone number
+    string phone?;
+    # The user’s address
+    string address?;
+    # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
+    string[] tracking_codes?;
+    # Whether the user can see other enterprise users in their contact list
+    boolean can_see_managed_users?;
+    # The user's timezone
+    string timezone?;
+    # Whether the user is allowed to collaborate with users outside their enterprise
+    boolean is_external_collab_restricted?;
+    # Whether to exempt the user from enterprise device limits
+    boolean is_exempt_from_device_limits?;
+    # Whether the user must use two-factor authentication
+    boolean is_exempt_from_login_verification?;
+    # Whether the user is required to reset their password
+    boolean is_password_reset_required?;
+    # The user's account status
+    string status?;
+    # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
+    int space_amount?;
+    # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.  Set this value to `null` to remove the notification email.
+    UsersuserIdNotificationEmail? notification_email?;
+};
+
+public type GroupMembershipsBody record {
+    # The user to add to the group.
+    GroupMembershipsUser user;
+    # The group to add the user to.
+    GroupMembershipsGroup 'group;
+    # The role of the user in the group.
+    string role?;
+    # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
+    record {} configurable_permissions?;
+};
+
+public type LegalHoldPolicyAssignmentsBody record {
+    # The ID of the policy to assign.
+    string policy_id;
+    # The item to assign the policy to
+    LegalHoldPolicyAssignmentsAssignTo assign_to;
+};
+
 # Web links are objects that point to URLs. These objects are also known as bookmarks within the Box web application.  Web link objects are treated similarly to file objects, they will also support most actions that apply to regular files.
-#
 public type WeblinkMini record {
     *WeblinkBase;
+    # The URL this web link points to
+    string url?;
+    record {} sequence_id?;
+    # The name of the web link
+    string name?;
 };
 
 # The timestamp for an entry.
@@ -648,6 +921,13 @@ public type TimelineskillcardAppears record {
     int 'start?;
     # The time in seconds when an entry should stop appearing on a timeline.
     int end?;
+};
+
+public type RetentionPolicyAssignmentsBody record {
+    # The ID of the retention policy to assign
+    string policy_id;
+    # The item to assign the policy to
+    RetentionPolicyAssignmentsAssignTo assign_to;
 };
 
 # A list of task assignments
@@ -714,6 +994,13 @@ public type FileRequest record {
     string updated_at?;
 };
 
+public type FolderLocksBody record {
+    # The operations to lock for the folder. If `locked_operations` is included in the request, both `move` and `delete` must also be included and both set to `true`.
+    FolderLocksLockedOperations locked_operations?;
+    # The folder to apply the lock to.
+    FolderLocksFolder folder;
+};
+
 # The settings for the shared link to update.
 public type FilesfileIdupdateSharedLinkSharedLink record {
     # The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
@@ -736,6 +1023,11 @@ public type StoragePolicyAssignmentsStoragePolicy record {
     string id;
 };
 
+public type FolderIdWatermarkBody record {
+    # The watermark to imprint on the folder
+    FoldersfolderIdwatermarkWatermark watermark;
+};
+
 # The details for the upload session for the file.
 public type UploadUrl record {
     # A URL for an upload session that can be used to upload the file.
@@ -756,6 +1048,26 @@ public type ZipDownloadStatus record {
     int skipped_folder_count?;
     # The state of the archive being downloaded.
     string state?;
+};
+
+public type WebLinksWebLinkIdBody record {
+    # The new URL that the web link links to. Must start with `"http://"` or `"https://"`.
+    string url?;
+    record {
+        # The ID of parent item
+        string id?;
+    } parent?;
+    # A new name for the web link. Defaults to the URL if not set.
+    string name?;
+    # A new description of the web link.
+    string description?;
+};
+
+public type TaskAssignmentsBody record {
+    # The task to assign to a user.
+    TaskAssignmentsTask task;
+    # The user to assign the task to.
+    TaskAssignmentsAssignTo assign_to;
 };
 
 # Session endpoints.
@@ -813,6 +1125,24 @@ public type GroupBase record {
     string 'type?;
 };
 
+public type FilesUploadSessionsBody record {
+    # The ID of the folder to upload the new file to.
+    string folder_id;
+    # The total number of bytes of the file to be uploaded
+    int file_size;
+    # The name of new file
+    string file_name;
+};
+
+public type FoldersFolderIdBody1 record {
+    # An optional new name for the folder.
+    string name?;
+    record {
+        # The ID of parent item
+        string id?;
+    } parent?;
+};
+
 public type ConflicterrorContextInfo record {
     # A list of the file conflicts that caused this error.
     FileConflict[] conflicts?;
@@ -826,16 +1156,55 @@ public type TasksItem record {
     string 'type;
 };
 
+public type UserIdEmailAliasesBody record {
+    # The email address to add to the account as an alias.
+    string email;
+};
+
 # The metadata to set for this skill. This is a list of Box Skills cards. These cards will overwrite any existing Box skill cards on the file.
 public type SkillInvocationsskillIdMetadata record {
     # A list of Box Skill cards to apply to this file.
-    SkillCard|KeywordSkillCard|TimelineSkillCard|TranscriptSkillCard|StatusSkillCard[] cards?;
+    (SkillCard|KeywordSkillCard|TimelineSkillCard|TranscriptSkillCard|StatusSkillCard)[] cards?;
+};
+
+public type FileIdWatermarkBody record {
+    # The watermark to imprint on the file
+    FilesfileIdwatermarkWatermark watermark;
 };
 
 # A full representation of a user, as can be returned from any user API endpoint.
-#
 public type UserFull record {
     *User;
+    # The user’s enterprise role
+    string role?;
+    # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
+    UserfullTrackingCodes[] tracking_codes?;
+    # Whether the user can see other enterprise users in their contact list
+    boolean can_see_managed_users?;
+    # Whether the user can use Box Sync
+    boolean is_sync_enabled?;
+    # Whether the user is allowed to collaborate with users outside their enterprise
+    boolean is_external_collab_restricted?;
+    # Whether to exempt the user from Enterprise device limits
+    boolean is_exempt_from_device_limits?;
+    # Whether the user must use two-factor authentication
+    boolean is_exempt_from_login_verification?;
+    record {
+        # The unique identifier for this enterprise.
+        string id?;
+        # `enterprise`
+        string 'type?;
+        # The name of the enterprise
+        string name?;
+    } enterprise?;
+    # Tags for all files and folders owned by the user. Values returned will only contain tags that were set by the requester.
+    string[] my_tags?;
+    # The root (protocol, subdomain, domain) of any links that need to be generated for the user
+    string hostname?;
+    # Whether the user is an App User
+    boolean is_platform_access_only?;
+    # An external identifier for an app user, which can be used to look up the user. This can be used to tie user IDs from external identity providers to Box users.
+    string external_app_user_id?;
 };
 
 # Counts of assignments within this a legal hold policy by item type
@@ -887,9 +1256,17 @@ public type RetentionPolicyAssignment record {
 };
 
 # A retention policy blocks permanent deletion of content for a specified amount of time. Admins can create retention policies and then later assign them to specific folders or their entire enterprise.  To use this feature, you must have the manage retention policies scope enabled for your API key via your application management console.
-#
 public type RetentionPolicy record {
     *RetentionpolicyMini;
+    # The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
+    string policy_type?;
+    # The status of the retention policy. The status of a policy will be `active`, unless explicitly retired by an administrator, in which case the status will be `retired`. Once a policy has been retired, it cannot become active again.
+    string status?;
+    record {*UserMini;} created_by?;
+    # When the retention policy object was created
+    string created_at?;
+    # When the retention policy object was last modified
+    string modified_at?;
 };
 
 # The user or group to give access to the item.
@@ -908,6 +1285,13 @@ public type AssignedTo record {
     string id?;
     # The type for this object
     string 'type?;
+};
+
+public type FilesFileIdBody1 record {
+    # An optional new name for the file.
+    string name?;
+    # The parent for this item
+    FilesfileIdParent parent?;
 };
 
 # An object representing a skill
@@ -967,8 +1351,6 @@ public type Watermark record {
 };
 
 # A list of storage policies.
-#
-# The part of an API response that describes marker based pagination
 public type StoragePolicies record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -976,6 +1358,7 @@ public type StoragePolicies record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    StoragePolicy[] entries?;
 };
 
 # The event that is sent to a webhook address when an event happens.
@@ -993,11 +1376,6 @@ public type WebhookInvocation record {
     # The event name that triggered this webhook
     string trigger?;
     File|Folder 'source?;
-};
-
-public type Body56 record {
-    # The user to exempt.
-    CollaborationWhitelistExemptTargetsUser user;
 };
 
 # Membership is used to signify that a user is part of a group.
@@ -1036,21 +1414,7 @@ public type RetentionPoliciesCustomNotificationRecipients record {
     string login?;
 };
 
-public type Body55 record {
-    # The domain to add to the list of allowed domains.
-    string domain;
-    # The direction in which to allow collaborations.
-    string direction;
-};
-
-public type Body54 record {
-    # Whether the user has accepted the terms.
-    boolean is_accepted;
-};
-
 # A list of users.
-#
-# The part of an API response that describes pagination
 public type Users record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -1060,15 +1424,7 @@ public type Users record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
-};
-
-public type Body53 record {
-    # The terms of service to set the status for.
-    TermsOfServiceUserStatusesTos tos;
-    # The user to set the status for.
-    TermsOfServiceUserStatusesUser user;
-    # Whether the user has accepted the terms.
-    boolean is_accepted;
+    User[] entries?;
 };
 
 # The request body to update a file request.
@@ -1087,24 +1443,25 @@ public type FileRequestUpdateRequest record {
     string expires_at?;
 };
 
+public type TasksBody record {
+    # The file to attach the task to.
+    TasksItem item;
+    # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
+    string action?;
+    # An optional message to include with the task.
+    string message?;
+    # Defines when the task is due. Defaults to `null` if not provided.
+    string due_at?;
+    # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
+    string completion_rule?;
+};
+
 # An item to add to the `zip` archive. This can be a file or a folder.
 public type ZipdownloadrequestItems record {
     # The type of the item to add to the archive.
     string 'type;
     # The identifier of the item to add to the archive. When this item is a folder then this can not be the root folder with ID `0`.
     string id;
-};
-
-public type Body58 record {
-    # The storage policy to assign to the user or enterprise
-    StoragePolicyAssignmentsStoragePolicy storage_policy;
-};
-
-public type Body57 record {
-    # The storage policy to assign to the user or enterprise
-    StoragePolicyAssignmentsStoragePolicy storage_policy;
-    # The user or enterprise to assign the storage policy to.
-    StoragePolicyAssignmentsAssignedTo assigned_to;
 };
 
 # The bare basic representation of a folder, the minimal amount of fields returned when using the `fields` query parameter.
@@ -1148,9 +1505,62 @@ public type SkillinvocationTokenRead record {
 };
 
 # A mini representation of a user, as can be returned when nested within other resources.
-#
 public type UserMini record {
     *UserBase;
+    # The display name of this user
+    string name?;
+    # The primary email address of this user
+    string login?;
+};
+
+public type UsersBody record {
+    # The name of the user
+    string name;
+    # The email address the user uses to log in  Required, unless `is_platform_access_only` is set to `true`.
+    string login?;
+    # Specifies that the user is an app user.
+    boolean is_platform_access_only?;
+    # The user’s enterprise role
+    string role?;
+    # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
+    string language?;
+    # Whether the user can use Box Sync
+    boolean is_sync_enabled?;
+    # The user’s job title
+    string job_title?;
+    # The user’s phone number
+    string phone?;
+    # The user’s address
+    string address?;
+    # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
+    int space_amount?;
+    # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
+    string[] tracking_codes?;
+    # Whether the user can see other enterprise users in their contact list
+    boolean can_see_managed_users?;
+    # The user's timezone
+    string timezone?;
+    # Whether the user is allowed to collaborate with users outside their enterprise
+    boolean is_external_collab_restricted?;
+    # Whether to exempt the user from enterprise device limits
+    boolean is_exempt_from_device_limits?;
+    # Whether the user must use two-factor authentication
+    boolean is_exempt_from_login_verification?;
+    # The user's account status
+    string status?;
+    # An external identifier for an app user, which can be used to look up the user. This can be used to tie user IDs from external identity providers to Box users.
+    string external_app_user_id?;
+};
+
+public type CollaborationsCollaborationIdBody record {
+    # The level of access granted.
+    string role;
+    # <!--alex ignore reject--> Set the status of a `pending` collaboration invitation, effectively accepting, or rejecting the invite.
+    string status?;
+    # Update the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.  Additionally, a collaboration can only be given an expiration if it was created after the **Automatically remove invited collaborator** setting was enabled.
+    string expires_at?;
+    # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
+    boolean can_view_path?;
 };
 
 # The watermark to imprint on the folder
@@ -1185,20 +1595,11 @@ public type FolderlockLockedOperations record {
     boolean delete?;
 };
 
-public type Body45 record {
-    # The name for the retention policy
-    string policy_name;
-    # The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
-    string policy_type;
-    # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
-    string disposition_action;
-    # The length of the retention policy. This length specifies the duration in days that the retention policy will be active for after being assigned to content.  If the policy has A `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
-    string retention_length?;
-    # Whether the owner of a file will be allowed to extend the retention.
-    boolean can_owner_extend_retention?;
-    # Whether owner and co-owners of a file are notified when the policy nears expiration.
-    boolean are_owners_notified?;
-    RetentionPoliciesCustomNotificationRecipients[] custom_notification_recipients?;
+public type TermsOfServicesTermsOfServiceIdBody record {
+    # Whether this terms of service is active.
+    string status;
+    # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
+    string text;
 };
 
 # An OAuth 2.0 error
@@ -1209,44 +1610,22 @@ public type OAuth2Error record {
     string error_description?;
 };
 
-public type Body44 record {
-    # Defines the status of this invocation. Set this to `success` when setting Skill cards.
-    string status;
-    # The metadata to set for this skill. This is a list of Box Skills cards. These cards will overwrite any existing Box skill cards on the file.
-    SkillInvocationsskillIdMetadata metadata;
-    # The file to assign the cards to.
-    SkillInvocationsskillIdFile file;
-    # The optional file version to assign the cards to.
-    SkillInvocationsskillIdFileVersion file_version?;
-    # A descriptor that defines what items are affected by this call.  Set this to the default values when setting a card to a `success` state, and leave it out in most other situations.
-    SkillInvocationsskillIdUsage usage?;
+public type FolderIdCopyBody record {
+    # An optional new name for the copied folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
+    string name?;
+    # The destination folder to copy the folder to.
+    FoldersfolderIdcopyParent parent;
 };
 
-public type Body43 record {
-    # The item that will trigger the webhook
-    WebhooksTarget target?;
-    # The URL that is notified by this webhook
-    string address?;
-    # An array of event names that this webhook is to be triggered for
-    string[] triggers?;
-};
-
-public type Body42 record {
-    # The item that will trigger the webhook
-    WebhooksTarget target;
-    # The URL that is notified by this webhook
-    string address;
-    # An array of event names that this webhook is to be triggered for
-    string[] triggers;
-};
-
-public type Body49 record {
-    # The name of the policy.
-    string policy_name?;
-    # A description for the policy.
-    string description?;
-    # Notes around why the policy was released.
-    string release_notes?;
+public type TasksTaskIdBody record {
+    # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
+    string action?;
+    # The message included with the task.
+    string message?;
+    # When the task is due at.
+    string due_at?;
+    # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
+    string completion_rule?;
 };
 
 # The group to add the user to.
@@ -1255,61 +1634,12 @@ public type GroupMembershipsGroup record {
     string id;
 };
 
-public type Body48 record {
-    # The name of the policy.
-    string policy_name;
-    # A description for the policy.
-    string description?;
-    # The filter start date.  When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.  Required if `is_ongoing` is set to `false`.
-    string filter_started_at?;
-    # The filter end date.  When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.  Required if `is_ongoing` is set to `false`.
-    string filter_ended_at?;
-    # Whether new assignments under this policy should continue applying to files even after initialization.  When this policy is applied using a legal hold assignment, it will continue applying the policy to any new file versions even after it has been applied.  For example, if a legal hold assignment is placed on a user today, and that user uploads a file tomorrow, that file will get held. This will continue until the policy is retired.  Required if no filter dates are set.
-    boolean is_ongoing?;
-};
-
-public type Body47 record {
-    # The ID of the retention policy to assign
-    string policy_id;
-    # The item to assign the policy to
-    RetentionPolicyAssignmentsAssignTo assign_to;
-};
-
-public type Body46 record {
-    # The name for the retention policy
-    string policy_name?;
-    # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
-    string disposition_action?;
-    # Used to retire a retention policy.  If not retiring a policy, do not include this parameter or set it to `null`.
-    string status?;
-};
-
-public type Body52 record {
-    # Whether this terms of service is active.
-    string status;
-    # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
-    string text;
-};
-
-public type Body51 record {
-    # Whether this terms of service is active.
-    string status;
-    # The type of user to set the terms of service for.
-    string tos_type?;
-    # The terms of service text to display to users.  The text can be set to empty if the `status` is set to `disabled`.
-    string text;
-};
-
-public type Body50 record {
-    # The ID of the policy to assign.
-    string policy_id;
-    # The item to assign the policy to
-    LegalHoldPolicyAssignmentsAssignTo assign_to;
+public type CommentsCommentIdBody record {
+    # The text of the comment to update
+    string message?;
 };
 
 # A list of uploaded chunks for an upload session.
-#
-# The part of an API response that describes pagination
 public type UploadParts record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -1319,6 +1649,7 @@ public type UploadParts record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    UploadPart[] entries?;
 };
 
 public type CollaborationAcceptanceRequirementsStatusTermsOfServiceRequirement record {
@@ -1328,8 +1659,6 @@ public type CollaborationAcceptanceRequirementsStatusTermsOfServiceRequirement r
 };
 
 # A list of legal hold policies assignments.
-#
-# The part of an API response that describes marker based pagination
 public type LegalHoldPolicyAssignments record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -1337,6 +1666,7 @@ public type LegalHoldPolicyAssignments record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    LegalholdpolicyassignmentBase[] entries?;
 };
 
 # The user who the folder will be transferred to
@@ -1359,6 +1689,13 @@ public type StoragePolicyAssignment record {
     StoragepolicyMini storage_policy?;
     # The bare basic reference for an object
     AssignedTo assigned_to?;
+};
+
+public type GroupMembershipsGroupMembershipIdBody record {
+    # The role of the user in the group.
+    string role?;
+    # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
+    record {} configurable_permissions?;
 };
 
 # The details status of this event.
@@ -1410,107 +1747,15 @@ public type DevicePinner record {
     string modified_at?;
 };
 
-public type Body39 record {
-    # The name of the new group to be created. Must be unique within the enterprise.
-    string name?;
-    # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
-    string provenance?;
-    # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
-    string external_sync_identifier?;
-    # A human readable description of the group.
-    string description?;
-    # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
-    string invitability_level?;
-    # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
-    string member_viewability_level?;
-};
-
 # A mini representation of a retention policy, used when nested within another resource.
-#
 public type RetentionpolicyMini record {
     *RetentionpolicyBase;
-};
-
-public type Body34 record {
-    # Set this to `null` to roll the user out of the enterprise and make them a free user
-    string? enterprise?;
-    # Whether the user should receive an email when they are rolled out of an enterprise
-    boolean notify?;
-    # The name of the user
-    string name?;
-    # The email address the user uses to log in
-    string login?;
-    # The user’s enterprise role
-    string role?;
-    # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
-    string language?;
-    # Whether the user can use Box Sync
-    boolean is_sync_enabled?;
-    # The user’s job title
-    string job_title?;
-    # The user’s phone number
-    string phone?;
-    # The user’s address
-    string address?;
-    # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
-    string[] tracking_codes?;
-    # Whether the user can see other enterprise users in their contact list
-    boolean can_see_managed_users?;
-    # The user's timezone
-    string timezone?;
-    # Whether the user is allowed to collaborate with users outside their enterprise
-    boolean is_external_collab_restricted?;
-    # Whether to exempt the user from enterprise device limits
-    boolean is_exempt_from_device_limits?;
-    # Whether the user must use two-factor authentication
-    boolean is_exempt_from_login_verification?;
-    # Whether the user is required to reset their password
-    boolean is_password_reset_required?;
-    # The user's account status
-    string status?;
-    # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
-    int space_amount?;
-    # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.  Set this value to `null` to remove the notification email.
-    UsersuserIdNotificationEmail notification_email?;
-};
-
-public type Body33 record {
-    # The name of the user
-    string name;
-    # The email address the user uses to log in  Required, unless `is_platform_access_only` is set to `true`.
-    string login?;
-    # Specifies that the user is an app user.
-    boolean is_platform_access_only?;
-    # The user’s enterprise role
-    string role?;
-    # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
-    string language?;
-    # Whether the user can use Box Sync
-    boolean is_sync_enabled?;
-    # The user’s job title
-    string job_title?;
-    # The user’s phone number
-    string phone?;
-    # The user’s address
-    string address?;
-    # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
-    int space_amount?;
-    # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
-    string[] tracking_codes?;
-    # Whether the user can see other enterprise users in their contact list
-    boolean can_see_managed_users?;
-    # The user's timezone
-    string timezone?;
-    # Whether the user is allowed to collaborate with users outside their enterprise
-    boolean is_external_collab_restricted?;
-    # Whether to exempt the user from enterprise device limits
-    boolean is_exempt_from_device_limits?;
-    # Whether the user must use two-factor authentication
-    boolean is_exempt_from_login_verification?;
-    # The user's account status
-    string status?;
-    # An external identifier for an app user, which can be used to look up the user. This can be used to tie user IDs from external identity providers to Box users.
-    string external_app_user_id?;
+    # The name given to the retention policy
+    string policy_name?;
+    # The length of the retention policy. This length specifies the duration in days that the retention policy will be active for after being assigned to content.  If the policy has A `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
+    string retention_length?;
+    # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
+    string disposition_action?;
 };
 
 # A descriptor that defines what items are affected by this call.  Set this to the default values when setting a card to a `success` state, and leave it out in most other situations.
@@ -1521,72 +1766,135 @@ public type SkillInvocationsskillIdUsage record {
     decimal value?;
 };
 
-public type Body32 record {
-    # An optional new name for the web link.
+public type FileIdCopyBody record {
+    # An optional new name for the copied file.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), and protected names like `.` and `..` are automatically sanitized by removing the non-allowed characters.
     string name?;
-    record {# The ID of parent item
-        string id?;} parent?;
-};
-
-public type Body31 record {
-    # The new URL that the web link links to. Must start with `"http://"` or `"https://"`.
-    string url?;
-    record {# The ID of parent item
-        string id?;} parent?;
-    # A new name for the web link. Defaults to the URL if not set.
-    string name?;
-    # A new description of the web link.
-    string description?;
+    # An optional ID of the specific file version to copy.
+    string 'version?;
+    # The destination folder to copy the file to.
+    FilesfileIdcopyParent parent;
 };
 
 # A standard representation of a folder, as returned from any folder API endpoints by default
-#
 public type Folder record {
     *FolderMini;
-};
-
-public type Body38 record {
-    # The name of the new group to be created. This name must be unique within the enterprise.
-    string name;
-    # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
-    string provenance?;
-    # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
-    string external_sync_identifier?;
-    # A human readable description of the group.
-    string description?;
-    # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
-    string invitability_level?;
-    # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
-    string member_viewability_level?;
+    # The date and time when the folder was created. This value may be `null` for some folders such as the root folder or the trash folder.
+    string? created_at?;
+    # The date and time when the folder was last updated. This value may be `null` for some folders such as the root folder or the trash folder.
+    string? modified_at?;
+    record {} description?;
+    # The folder size in bytes.  Be careful parsing this integer as its value can get very large.
+    int size?;
+    record {
+        # The number of folders in this list.
+        int total_count?;
+        # The parent folders for this item
+        FolderMini[] entries?;
+    } path_collection?;
+    record {*UserMini;} created_by?;
+    record {*UserMini;} modified_by?;
+    # The time at which this folder was put in the trash.
+    string? trashed_at?;
+    # The time at which this folder is expected to be purged from the trash.
+    string? purged_at?;
+    # The date and time at which this folder was originally created.
+    string? content_created_at?;
+    # The date and time at which this folder was last updated.
+    string? content_modified_at?;
+    # The time and which the folder will be automatically be deleted.
+    string? expires_at?;
+    record {*UserMini;} owned_by?;
+    record {
+        # The URL that can be used to access the item on Box.  This URL will display the item in Box's preview UI where the file can be downloaded if allowed.  This URL will continue to work even when a custom `vanity_url` has been set for this shared link.
+        string url?;
+        # A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type.  This property will be `null` for folders.
+        string? download_url?;
+        # The "Custom URL" that can also be used to preview the item on Box.  Custom URLs can only be created or modified in the Box Web application.
+        string? vanity_url?;
+        # The custom name of a shared link, as used in the `vanity_url` field.
+        string? vanity_name?;
+        # The access level for this shared link.  * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are    collaborators on this item  If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin.
+        string access?;
+        # The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels.
+        string effective_access?;
+        # The effective permissions for this shared link.
+        string effective_permission?;
+        # The date and time when this link will be unshared. This field can only be set by users with paid accounts.
+        string? unshared_at?;
+        # Defines if the shared link requires a password to access the item.
+        boolean is_password_enabled?;
+        # Defines if this link allows a user to preview and download an item.
+        record {
+            # Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder.  This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.
+            boolean can_download?;
+            # Defines if the shared link allows for the item to be previewed.  This value is always `true`. For shared links on folders this also applies to any items in the folder.
+            boolean can_preview?;
+        } permissions?;
+        # The number of times this item has been downloaded.
+        int download_count?;
+        # The number of times this item has been previewed.
+        int preview_count?;
+    } shared_link?;
+    FolderFolderUploadEmail? folder_upload_email?;
+    record {*FolderMini;} parent?;
+    # Defines if this item has been deleted or not.  * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted.
+    string item_status?;
+    record {*Items;} item_collection?;
 };
 
 # A full representation of a folder, as can be returned from any folder API endpoints by default
-#
 public type FolderFull record {
     *Folder;
-};
-
-public type Body37 record {
-    # The enterprise to invite the user to
-    InvitesEnterprise enterprise;
-    # The user to invite
-    InvitesActionableBy actionable_by;
-};
-
-public type Body36 record {
-    # The email address to add to the account as an alias.
-    string email;
-};
-
-public type Body35 record {
-    # The user who the folder will be transferred to
-    UsersuserIdfolders0OwnedBy owned_by;
+    record {} sync_state?;
+    # Specifies if this folder has any other collaborators.
+    boolean has_collaborations?;
+    record {
+        # Specifies if the current user can delete this item.
+        boolean can_delete?;
+        # Specifies if the current user can download this item.
+        boolean can_download?;
+        # Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.
+        boolean can_invite_collaborator?;
+        # Specifies if the user can rename this item.
+        boolean can_rename?;
+        # Specifies if the user can change the access level of an existing shared link on this item.
+        boolean can_set_share_access?;
+        # Specifies if the user can create a shared link for this item.
+        boolean can_share?;
+        # Specifies if the user can upload into this folder.
+        boolean can_upload?;
+    } permissions?;
+    record {} tags?;
+    record {} can_non_owners_invite?;
+    # Specifies if this folder is owned by a user outside of the authenticated enterprise.
+    boolean is_externally_owned?;
+    record {} metadata?;
+    record {} is_collaboration_restricted_to_enterprise?;
+    # A list of access levels that are available for this folder.  For some folders, like the root folder, this will always be an empty list as sharing is not allowed at that level.
+    string[] allowed_shared_link_access_levels?;
+    # A list of the types of roles that user can be invited at when sharing this folder.
+    string[] allowed_invitee_roles?;
+    record {
+        # Specifies if this item has a watermark applied.
+        boolean is_watermarked?;
+    } watermark_info?;
+    # Specifies if collaborators who are not owners of this folder are restricted from viewing other collaborations on this folder.  It also restricts non-owners from inviting new collaborators.
+    boolean can_non_owners_view_collaborators?;
+    record {
+        # The name of the classification
+        string name?;
+        # An explanation of the meaning of this classification.
+        string definition?;
+        # The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.
+        string color?;
+    } classification?;
 };
 
 # A mini representation of a file version, used when nested within another resource.
-#
 public type FileversionMini record {
     *FileversionBase;
+    # The SHA1 hash of this version of the file.
+    string sha1?;
 };
 
 # The settings for the shared link to update.
@@ -1623,11 +1931,13 @@ public type TermsOfServiceUserStatuses record {
     TermsOfServiceUserStatus[] entries?;
 };
 
-public type Body41 record {
-    # The role of the user in the group.
-    string role?;
-    # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
-    record {} configurable_permissions?;
+public type WebhooksWebhookIdBody record {
+    # The item that will trigger the webhook
+    WebhooksTarget target?;
+    # The URL that is notified by this webhook
+    string address?;
+    # An array of event names that this webhook is to be triggered for
+    string[] triggers?;
 };
 
 # A list of event objects
@@ -1640,52 +1950,14 @@ public type Events record {
     Event[] entries?;
 };
 
-public type Body40 record {
-    # The user to add to the group.
-    GroupMembershipsUser user;
-    # The group to add the user to.
-    GroupMembershipsGroup 'group;
-    # The role of the user in the group.
-    string role?;
-    # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
-    record {} configurable_permissions?;
+public type FilesFileIdaddSharedLinkBody record {
+    # The settings for the shared link to create on the file.  Use an empty object (`{}`) to use the default settings for shared links.
+    FilesfileIdaddSharedLinkSharedLink shared_link?;
 };
 
-# The file version to revert to
-public type Body8 record {
-    # The file version ID
-    string id?;
-    # The type to revert to
-    string 'type?;
-};
-
-public type Body9 record {
-    # The watermark to imprint on the file
-    FilesfileIdwatermarkWatermark watermark;
-};
-
-public type Body6 record {
-    # The list details for the uploaded parts
-    UploadPart[] parts;
-};
-
-public type Body29 record {
-    # By setting this value to `null`, the shared link is removed from the folder.
-    record {} shared_link?;
-};
-
-public type Body7 record {
-    # An optional new name for the copied file.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), and protected names like `.` and `..` are automatically sanitized by removing the non-allowed characters.
-    string name?;
-    # An optional ID of the specific file version to copy.
-    string 'version?;
-    # The destination folder to copy the file to.
-    FilesfileIdcopyParent parent;
-};
-
-public type Body28 record {
-    # The settings for the shared link to update.
-    FoldersfolderIdupdateSharedLinkSharedLink shared_link?;
+public type FoldersFolderIdaddSharedLinkBody record {
+    # The settings for the shared link to create on the folder.  Use an empty object (`{}`) to use the default settings for shared links.
+    FoldersfolderIdaddSharedLinkSharedLink shared_link?;
 };
 
 # The user or enterprise to assign the storage policy to.
@@ -1704,15 +1976,6 @@ public type FilesfileIdcontentAttributes record {
     string content_modified_at?;
 };
 
-public type Body4 record {
-    # The ID of the folder to upload the new file to.
-    string folder_id;
-    # The total number of bytes of the file to be uploaded
-    int file_size;
-    # The name of new file
-    string file_name;
-};
-
 # Additional information about the classification.
 public type ClassificationtemplateStaticconfig record {
     # Additional information about the classification.  This is not an exclusive list of properties, and more object fields might be returned. These fields are used for internal Box Shield and Box Governance purposes and no additional value must be derived from these fields.
@@ -1726,20 +1989,6 @@ public type CollaborationAcceptanceRequirementsStatusStrongPasswordRequirement r
     boolean? user_has_strong_password?;
 };
 
-public type Body5 record {
-    # The total number of bytes of the file to be uploaded
-    int file_size;
-    # The optional new name of new file
-    string file_name?;
-};
-
-public type Body2 record {
-    # The additional attributes of the file being uploaded. Mainly the name and the parent folder. These attributes are part of the multi part request body and are in JSON format.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
-    FilesfileIdcontentAttributes attributes;
-    # The content of the file to upload to Box.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
-    string file;
-};
-
 # The bare basic reference for an object
 public type Reference record {
     # The unique identifier for this object
@@ -1748,24 +1997,10 @@ public type Reference record {
     string 'type?;
 };
 
-public type Body3 record {
-    # The additional attributes of the file being uploaded. Mainly the name and the parent folder. These attributes are part of the multi part request body and are in JSON format.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
-    FilescontentAttributes attributes;
-    # The content of the file to upload to Box.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
-    string file;
-};
-
 # The parent folder to create the new folder within.
 public type FoldersParent record {
     # The ID of parent folder
     string id;
-};
-
-public type Body23 record {
-    # An optional message by the assignee that can be added to the task.
-    string message?;
-    # The state of the task assigned to the user.  * For a task with an `action` value of `complete` this can be `incomplete` or `completed`. * For a task with an `action` of `review` this can be `incomplete`, `approved`, or `rejected`.
-    string resolution_state?;
 };
 
 # Defines a lock on an item. This prevents the item from being moved, renamed, or otherwise changed by anyone other than the user who created the lock.  Set this to `null` to remove the lock.
@@ -1778,13 +2013,6 @@ public type FilesfileIdLock record {
     boolean is_download_prevented?;
 };
 
-public type Body22 record {
-    # The task to assign to a user.
-    TaskAssignmentsTask task;
-    # The user to assign the task to.
-    TaskAssignmentsAssignTo assign_to;
-};
-
 # The terms of service that must be accepted before the collaboration can be accepted.
 public type CollaborationAcceptanceRequirementsStatus record {
     CollaborationAcceptanceRequirementsStatusTermsOfServiceRequirement terms_of_service_requirement?;
@@ -1792,21 +2020,11 @@ public type CollaborationAcceptanceRequirementsStatus record {
     CollaborationAcceptanceRequirementsStatusTwoFactorAuthenticationRequirement two_factor_authentication_requirement?;
 };
 
-public type Body21 record {
-    # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
-    string action?;
-    # The message included with the task.
-    string message?;
-    # When the task is due at.
-    string due_at?;
-    # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
-};
-
 # The Storage Policy object describes the storage zone.
-#
 public type StoragePolicy record {
     *StoragepolicyMini;
+    # A descriptive name of the region
+    string name?;
 };
 
 # A Box Skill metadata card that puts a status message in the metadata sidebar.
@@ -1827,29 +2045,6 @@ public type StatusSkillCard record {
     SkillcardInvocation invocation;
 };
 
-public type Body20 record {
-    # The file to attach the task to.
-    TasksItem item;
-    # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
-    string action?;
-    # An optional message to include with the task.
-    string message?;
-    # Defines when the task is due. Defaults to `null` if not provided.
-    string due_at?;
-    # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
-};
-
-public type Body27 record {
-    # The settings for the shared link to create on the folder.  Use an empty object (`{}`) to use the default settings for shared links.
-    FoldersfolderIdaddSharedLinkSharedLink shared_link?;
-};
-
-public type Body26 record {
-    # By setting this value to `null`, the shared link is removed from the file.
-    record {} shared_link?;
-};
-
 # The order in which a pagination is ordered
 public type DevicepinnersOrder record {
     # The field that is ordered by
@@ -1859,25 +2054,87 @@ public type DevicepinnersOrder record {
 };
 
 # Web links are objects that point to URLs. These objects are also known as bookmarks within the Box web application.  Web link objects are treated similarly to file objects, they will also support most actions that apply to regular files.
-#
 public type WebLink record {
     *WeblinkMini;
-};
-
-public type Body25 record {
-    # The settings for the shared link to update.
-    FilesfileIdupdateSharedLinkSharedLink shared_link?;
-};
-
-public type Body24 record {
-    # The settings for the shared link to create on the file.  Use an empty object (`{}`) to use the default settings for shared links.
-    FilesfileIdaddSharedLinkSharedLink shared_link?;
+    record {*FolderMini;} parent?;
+    # The description accompanying the web link. This is visible within the Box web application.
+    string description?;
+    record {
+        # The number of folders in this list.
+        int total_count?;
+        # The parent folders for this item
+        FolderMini[] entries?;
+    } path_collection?;
+    # When this file was created on Box’s servers.
+    string created_at?;
+    # When this file was last updated on the Box servers.
+    string modified_at?;
+    # When this file was last moved to the trash.
+    string? trashed_at?;
+    # When this file will be permanently deleted.
+    string? purged_at?;
+    record {*UserMini;} created_by?;
+    record {*UserMini;} modified_by?;
+    record {*UserMini;} owned_by?;
+    record {
+        # The URL that can be used to access the item on Box.  This URL will display the item in Box's preview UI where the file can be downloaded if allowed.  This URL will continue to work even when a custom `vanity_url` has been set for this shared link.
+        string url?;
+        # A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type.  This property will be `null` for folders.
+        string? download_url?;
+        # The "Custom URL" that can also be used to preview the item on Box.  Custom URLs can only be created or modified in the Box Web application.
+        string? vanity_url?;
+        # The custom name of a shared link, as used in the `vanity_url` field.
+        string? vanity_name?;
+        # The access level for this shared link.  * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are    collaborators on this item  If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin.
+        string access?;
+        # The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels.
+        string effective_access?;
+        # The effective permissions for this shared link.
+        string effective_permission?;
+        # The date and time when this link will be unshared. This field can only be set by users with paid accounts.
+        string? unshared_at?;
+        # Defines if the shared link requires a password to access the item.
+        boolean is_password_enabled?;
+        # Defines if this link allows a user to preview and download an item.
+        record {
+            # Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder.  This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.
+            boolean can_download?;
+            # Defines if the shared link allows for the item to be previewed.  This value is always `true`. For shared links on folders this also applies to any items in the folder.
+            boolean can_preview?;
+        } permissions?;
+        # The number of times this item has been downloaded.
+        int download_count?;
+        # The number of times this item has been previewed.
+        int preview_count?;
+    } shared_link?;
+    # Whether this item is deleted or not. Values include `active`, `trashed` if the file has been moved to the trash, and `deleted` if the file has been permanently deleted
+    string item_status?;
 };
 
 # Legal Hold Policy information describes the basic characteristics of the Policy, such as name, description, and filter dates.
-#
 public type LegalHoldPolicy record {
     *LegalholdpolicyMini;
+    # Name of the legal hold policy.
+    string policy_name?;
+    # Description of the legal hold policy. Optional property with a 500 character limit.
+    string description?;
+    # * 'active' - the policy is not in a transition state * 'applying' - that the policy is in the process of   being applied * 'releasing' - that the process is in the process   of being released * 'released' - the policy is no longer active
+    string status?;
+    # Counts of assignments within this a legal hold policy by item type
+    LegalholdpolicyAssignmentCounts assignment_counts?;
+    record {*UserMini;} created_by?;
+    # When the legal hold policy object was created
+    string created_at?;
+    # When the legal hold policy object was modified. Does not update when assignments are added or removed.
+    string modified_at?;
+    # When the policy release request was sent. (Because it can take time for a policy to fully delete, this isn't quite the same time that the policy is fully deleted).  If `null`, the policy was not deleted.
+    string deleted_at?;
+    # User-specified, optional date filter applies to Custodian assignments only
+    string filter_started_at?;
+    # User-specified, optional date filter applies to Custodian assignments only
+    string filter_ended_at?;
+    # Optional notes about why the policy was created.
+    string release_notes?;
 };
 
 # Base representation of a comment.
@@ -1889,26 +2146,34 @@ public type CommentBase record {
 };
 
 # The root-level record that is supposed to represent a single Terms of Service.
-#
 public type TermsOfService record {
     *TermsofserviceMini;
-};
-
-public type Body30 record {
-    # The URL that this web link links to. Must start with `"http://"` or `"https://"`.
-    string url;
-    # The parent folder to create the web link within.
-    WebLinksParent parent;
-    # Name of the web link. Defaults to the URL if not set.
-    string name?;
-    # Description of the web link.
-    string description?;
+    # Whether these terms are enabled or not
+    string status?;
+    record {
+        # The unique identifier for this enterprise.
+        string id?;
+        # `enterprise`
+        string 'type?;
+        # The name of the enterprise
+        string name?;
+    } enterprise?;
+    # Whether to apply these terms to managed users or external users
+    string tos_type?;
+    # The text for your terms and conditions. This text could be empty if the `status` is set to `disabled`.
+    string text?;
+    # When the legal item was created
+    string created_at?;
+    # When the legal item was modified.
+    string modified_at?;
 };
 
 # A mini representation of a file version, used when nested under another resource.
-#
 public type FolderMini record {
     *FolderBase;
+    record {} sequence_id?;
+    # The name of the folder.
+    string name?;
 };
 
 # The bare basic representation of a file, the minimal amount of fields returned when using the `fields` query parameter.
@@ -1922,8 +2187,6 @@ public type FileBase record {
 };
 
 # A list of webhooks.
-#
-# The part of an API response that describes marker based pagination
 public type Webhooks record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -1931,6 +2194,7 @@ public type Webhooks record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    Webhook[] entries?;
 };
 
 # A representation of a Box enterprise
@@ -1941,13 +2205,6 @@ public type Enterprise record {
     string 'type?;
     # The name of the enterprise
     string name?;
-};
-
-public type Body1 record {
-    # An optional new name for the file.
-    string name?;
-    # The parent for this item
-    FilesfileIdParent parent?;
 };
 
 # The item to attach the comment to.
@@ -1976,6 +2233,17 @@ public type UploadpartMini record {
     int size?;
 };
 
+public type WebLinksBody record {
+    # The URL that this web link links to. Must start with `"http://"` or `"https://"`.
+    string url;
+    # The parent folder to create the web link within.
+    WebLinksParent parent;
+    # Name of the web link. Defaults to the URL if not set.
+    string name?;
+    # Description of the web link.
+    string description?;
+};
+
 # A generic error
 public type ClientError record {
     # `error`
@@ -1994,6 +2262,28 @@ public type ClientError record {
     string request_id?;
 };
 
+public type GroupsGroupIdBody record {
+    # The name of the new group to be created. Must be unique within the enterprise.
+    string name?;
+    # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
+    string provenance?;
+    # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
+    string external_sync_identifier?;
+    # A human readable description of the group.
+    string description?;
+    # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
+    string invitability_level?;
+    # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
+    string member_viewability_level?;
+};
+
+public type FileIdUploadSessionsBody record {
+    # The total number of bytes of the file to be uploaded
+    int file_size;
+    # The optional new name of new file
+    string file_name?;
+};
+
 # The title of the card.
 public type SkillcardSkillCardTitle record {
     # An optional identifier for the title.
@@ -2003,22 +2293,16 @@ public type SkillcardSkillCardTitle record {
 };
 
 # Legal Hold Assignments are used to assign Legal Hold Policies to Users, Folders, Files, or File Versions.  Creating a Legal Hold Assignment puts a hold on the File-Versions that belong to the Assignment's 'apply-to' entity.
-#
 public type LegalHoldPolicyAssignment record {
     *LegalholdpolicyassignmentBase;
-};
-
-public type Body19 record {
-    # The item to attach the comment to.
-    CollaborationsItem item;
-    # The user or group to give access to the item.
-    CollaborationsAccessibleBy accessible_by;
-    # The level of access granted.
-    string role;
-    # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
-    boolean can_view_path?;
-    # Set the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.
-    string expires_at?;
+    record {*LegalholdpolicyMini;} legal_hold_policy?;
+    # The item that the the legal hold policy is assigned to. Includes type and ID.
+    File|Folder|WebLink assigned_to?;
+    record {*UserMini;} assigned_by?;
+    # When the legal hold policy assignment object was created
+    string assigned_at?;
+    # When the assignment release request was sent. (Because it can take time for an assignment to fully delete, this isn't quite the same time that the assignment is fully deleted). If null, Assignment was not deleted.
+    string deleted_at?;
 };
 
 # A task allows for file-centric workflows within Box. Users can create tasks on files and assign them to other users for them to complete the tasks.
@@ -2047,26 +2331,6 @@ public type Task record {
     string completion_rule?;
 };
 
-public type Body18 record {
-    # The level of access granted.
-    string role;
-    # <!--alex ignore reject--> Set the status of a `pending` collaboration invitation, effectively accepting, or rejecting the invite.
-    string status?;
-    # Update the expiration date for the collaboration. At this date, the collaboration will be automatically removed from the item.  This feature will only work if the **Automatically remove invited collaborators: Allow folder owners to extend the expiry date** setting has been enabled in the **Enterprise Settings** of the **Admin Console**. When the setting is not enabled, collaborations can not have an expiry date and a value for this field will be result in an error.  Additionally, a collaboration can only be given an expiration if it was created after the **Automatically remove invited collaborator** setting was enabled.
-    string expires_at?;
-    # Determines if the invited users can see the entire parent path to the associated folder. The user will not gain privileges in any parent folder and therefore can not see content the user is not collaborated on.  Be aware that this meaningfully increases the time required to load the invitee's **All Files** page. We recommend you limit the number of collaborations with `can_view_path` enabled to 1,000 per user.
-    boolean can_view_path?;
-};
-
-public type Body17 record {
-    # The text of the comment.  To mention a user, use the `tagged_message` parameter instead.
-    string message;
-    # The text of the comment, including `@[user_id:name]` somewhere in the message to mention another user, which will send them an email notification, letting them know they have been mentioned.  The `user_id` is the target user's ID, where the `name` can be any custom phrase. In the Box UI this name will link to the user's profile.  If you are not mentioning another user, use `message` instead.
-    string tagged_message?;
-    # The item to attach the comment to.
-    CommentsItem item?;
-};
-
 # A recent item accessed by a user.
 public type RecentItem record {
     # `recent_item`
@@ -2078,17 +2342,6 @@ public type RecentItem record {
     string interacted_at?;
     # If the item was accessed through a shared link it will appear here, otherwise this will be null.
     string interaction_shared_link?;
-};
-
-public type Body12 record {
-    # The name for the new folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
-    string name;
-    # The parent folder to create the new folder within.
-    FoldersParent parent;
-    record {# When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
-        string access?;} folder_upload_email?;
-    # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
-    string sync_state?;
 };
 
 # The title of the card.
@@ -2117,13 +2370,6 @@ public type KeywordSkillCard record {
     KeywordskillcardEntries[] entries;
 };
 
-public type Body11 record {
-    # An optional new name for the folder.
-    string name?;
-    record {# The ID of parent item
-        string id?;} parent?;
-};
-
 # The additional attributes of the file being uploaded. Mainly the name and the parent folder. These attributes are part of the multi part request body and are in JSON format.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
 public type FilescontentAttributes record {
     # The name of the file
@@ -2136,36 +2382,6 @@ public type FilescontentAttributes record {
     string content_modified_at?;
 };
 
-public type Body10 record {
-    # The optional new name for this folder.
-    string name?;
-    # The optional description of this folder
-    string description?;
-    # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
-    string sync_state?;
-    # Specifies if users who are not the owner of the folder can invite new collaborators to the folder.
-    boolean can_non_owners_invite?;
-    # The parent folder for this folder. Use this to move the folder or to restore it out of the trash.
-    FoldersfolderIdParent parent?;
-    record {# The level of access for the shared link. This can be restricted to anyone with the link (`open`), only people within the company (`company`) and only those who have been invited to the folder (`collaborators`).  If not set, this field defaults to the access level specified by the enterprise admin. To create a shared link with this default setting pass the `shared_link` object with no `access` field, for example `{ "shared_link": {} }`.  The `company` access level is only available to paid accounts.
-        string access?; # The password required to access the shared link. Set the password to `null` to remove it.  A password can only be set when `access` is set to `open`.
-        string password?; # Defines a custom vanity name to use in the shared link URL, for example `https://app.box.com/v/my-shared-link`.  Custom URLs should not be used when sharing sensitive content as vanity URLs are a lot easier to guess than regular shared links.
-        string vanity_name?; # The timestamp at which this shared link will expire. This field can only be set by users with paid accounts.
-        string unshared_at?; # The permissions on shared link.
-        record  { # If the shared link allows for downloading of files. This can only be set when `access` is set to `open` or `company`.
-            boolean can_download?;}  permissions?;} shared_link?;
-    record {# When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
-        string access?;} folder_upload_email?;
-    # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
-    string[] tags?;
-    # Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.
-    boolean is_collaboration_restricted_to_enterprise?;
-    # An array of collections to make this folder a member of. Currently we only support the `favorites` collection.  To get the ID for a collection, use the [List all collections][1] endpoint.  Passing an empty array `[]` or `null` will remove the folder from all collections.  [1]: ../advanced-files-and-folders/#get-collections
-    Reference[] collections?;
-    # Restricts collaborators who are not the owner of this folder from viewing other collaborations on this folder.  It also restricts non-owners from inviting new collaborators.  When setting this field to `false`, it is required to also set `can_non_owners_invite_collaborators` to `false` if it has not already been set.
-    boolean can_non_owners_view_collaborators?;
-};
-
 # A representation of a Box enterprise
 public type CollaborationAllowlistEnterprise record {
     # The unique identifier for this enterprise.
@@ -2176,6 +2392,19 @@ public type CollaborationAllowlistEnterprise record {
     string name?;
 };
 
+public type SkillInvocationsSkillIdBody record {
+    # Defines the status of this invocation. Set this to `success` when setting Skill cards.
+    string status;
+    # The metadata to set for this skill. This is a list of Box Skills cards. These cards will overwrite any existing Box skill cards on the file.
+    SkillInvocationsskillIdMetadata metadata;
+    # The file to assign the cards to.
+    SkillInvocationsskillIdFile file;
+    # The optional file version to assign the cards to.
+    SkillInvocationsskillIdFileVersion file_version?;
+    # A descriptor that defines what items are affected by this call.  Set this to the default values when setting a card to a `success` state, and leave it out in most other situations.
+    SkillInvocationsskillIdUsage usage?;
+};
+
 # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.
 public type UserNotificationEmail record {
     # The email address to send the notifications to.
@@ -2184,36 +2413,12 @@ public type UserNotificationEmail record {
     boolean is_confirmed?;
 };
 
-public type Body16 record {
-    # The text of the comment to update
-    string message?;
-};
-
 # The user to assign the task to.
 public type TaskAssignmentsAssignTo record {
     # The ID of the user to assign to the task.  To specify a user by their email address use the `login` parameter.
     string id?;
     # The email address of the user to assign to the task. To specify a user by their user ID please use the `id` parameter.
     string login?;
-};
-
-public type Body15 record {
-    # The operations to lock for the folder. If `locked_operations` is included in the request, both `move` and `delete` must also be included and both set to `true`.
-    FolderLocksLockedOperations locked_operations?;
-    # The folder to apply the lock to.
-    FolderLocksFolder folder;
-};
-
-public type Body14 record {
-    # The watermark to imprint on the folder
-    FoldersfolderIdwatermarkWatermark watermark;
-};
-
-public type Body13 record {
-    # An optional new name for the copied folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
-    string name?;
-    # The destination folder to copy the folder to.
-    FoldersfolderIdcopyParent parent;
 };
 
 # A request to create a `zip` archive to download
@@ -2225,8 +2430,6 @@ public type ZipDownloadRequest record {
 };
 
 # A list of group memberships.
-#
-# The part of an API response that describes pagination
 public type GroupMemberships record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -2236,6 +2439,7 @@ public type GroupMemberships record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    GroupMembership[] entries?;
 };
 
 # A token that can be used to make authenticated API calls.
@@ -2254,9 +2458,29 @@ public type AccessToken record {
     string issued_token_type?;
 };
 
+public type RetentionPoliciesRetentionPolicyIdBody record {
+    # The name for the retention policy
+    string policy_name?;
+    # The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
+    string disposition_action?;
+    # Used to retire a retention policy.  If not retiring a policy, do not include this parameter or set it to `null`.
+    string status?;
+};
+
+public type LegalHoldPoliciesBody record {
+    # The name of the policy.
+    string policy_name;
+    # A description for the policy.
+    string description?;
+    # The filter start date.  When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.  Required if `is_ongoing` is set to `false`.
+    string filter_started_at?;
+    # The filter end date.  When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.  Required if `is_ongoing` is set to `false`.
+    string filter_ended_at?;
+    # Whether new assignments under this policy should continue applying to files even after initialization.  When this policy is applied using a legal hold assignment, it will continue applying the policy to any new file versions even after it has been applied.  For example, if a legal hold assignment is placed on a user today, and that user uploads a file tomorrow, that file will get held. This will continue until the policy is retired.  Required if no filter dates are set.
+    boolean is_ongoing?;
+};
+
 # A list of files, folders, and web links in their mini representation.
-#
-# The part of an API response that describes pagination
 public type Items record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -2266,6 +2490,8 @@ public type Items record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    # The items in this collection.
+    (FileMini|FolderMini|WeblinkMini)[] entries?;
 };
 
 # The user that is exempt from any of the restrictions imposed by the list of allowed collaboration domains for this enterprise.
@@ -2285,8 +2511,6 @@ public type CollaborationAllowlistExemptTarget record {
 };
 
 # A list of file version retentions.
-#
-# The part of an API response that describes marker based pagination
 public type FileVersionRetentions record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -2294,6 +2518,7 @@ public type FileVersionRetentions record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    FileVersionRetention[] entries?;
 };
 
 # The permissions on shared link.
@@ -2331,8 +2556,6 @@ public type Tasks record {
 };
 
 # A list of recent items.
-#
-# The part of an API response that describes marker based pagination
 public type RecentItems record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -2340,6 +2563,7 @@ public type RecentItems record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    RecentItem[] entries?;
 };
 
 # The service that applied this metadata.
@@ -2351,9 +2575,10 @@ public type SkillcardSkill record {
 };
 
 # Comments are messages created on files. Comments can be made independently or created as responses to other comments
-#
 public type CommentFull record {
     *Comment;
+    # The string representing the comment text with @mentions included. @mention format is @[id:username] where `id` is user's Box ID and `username` is their display name.
+    string tagged_message?;
 };
 
 # Folder locks define access restrictions placed by folder owners to prevent specific folders from being moved or deleted.
@@ -2385,9 +2610,10 @@ public type TimelineskillcardEntries record {
 };
 
 # The request body to copy a file request.
-#
 public type FileRequestCopyRequest record {
     *FileRequestUpdateRequest;
+    # The folder to associate the new file request to.
+    FilerequestcopyrequestFolder folder?;
 };
 
 # The user to exempt.
@@ -2405,8 +2631,6 @@ public type SkillcardStatus record {
 };
 
 # A list of file version legal holds.
-#
-# The part of an API response that describes marker based pagination
 public type FileVersionLegalHolds record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -2414,6 +2638,7 @@ public type FileVersionLegalHolds record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    FileVersionLegalHold[] entries?;
 };
 
 # Defines a shared link for an item. Set this to `null` to remove the shared link.
@@ -2430,6 +2655,13 @@ public type FilesfileIdSharedLink record {
     FilesfileIdSharedLinkPermissions permissions?;
 };
 
+public type CollaborationWhitelistEntriesBody record {
+    # The domain to add to the list of allowed domains.
+    string domain;
+    # The direction in which to allow collaborations.
+    string direction;
+};
+
 # The folder to associate the new file request to.
 public type FilerequestcopyrequestFolder record {
     # `folder`
@@ -2439,8 +2671,6 @@ public type FilerequestcopyrequestFolder record {
 };
 
 # A list of file versions
-#
-# The part of an API response that describes pagination
 public type FileVersions record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -2450,11 +2680,10 @@ public type FileVersions record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    FileVersion[] entries?;
 };
 
 # A list of legal hold policies.
-#
-# The part of an API response that describes marker based pagination
 public type LegalHoldPolicies record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -2462,12 +2691,130 @@ public type LegalHoldPolicies record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    LegalHoldPolicy[] entries?;
+};
+
+public type FilesFileIdupdateSharedLinkBody record {
+    # The settings for the shared link to update.
+    FilesfileIdupdateSharedLinkSharedLink shared_link?;
 };
 
 # A full representation of a file, as can be returned from any file API endpoints by default
-#
 public type FileFull record {
     *File;
+    # The version number of this file
+    string version_number?;
+    # The number of comments on this file
+    int comment_count?;
+    record {
+        # Specifies if the current user can delete this item.
+        boolean can_delete?;
+        # Specifies if the current user can download this item.
+        boolean can_download?;
+        # Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.
+        boolean can_invite_collaborator?;
+        # Specifies if the user can rename this item.
+        boolean can_rename?;
+        # Specifies if the user can change the access level of an existing shared link on this item.
+        boolean can_set_share_access?;
+        # Specifies if the user can create a shared link for this item.
+        boolean can_share?;
+        # Specifies if the user can place annotations on this file.
+        boolean can_annotate?;
+        # Specifies if the user can place comments on this file.
+        boolean can_comment?;
+        # Specifies if the user can preview this file.
+        boolean can_preview?;
+        # Specifies if the user can upload a new version of this file.
+        boolean can_upload?;
+        # Specifies if the user view all annotations placed on this file
+        boolean can_view_annotations_all?;
+        # Specifies if the user view annotations placed by themselves on this file
+        boolean can_view_annotations_self?;
+    } permissions?;
+    record {} tags?;
+    record {
+        # The unique identifier for this lock
+        string id?;
+        # `lock`
+        string 'type?;
+        record {*UserMini;} created_by?;
+        # The time this lock was created at.
+        string created_at?;
+        # The time this lock is to expire at, which might be in the past.
+        string expired_at?;
+        # Whether or not the file can be downloaded while locked.
+        boolean is_download_prevented?;
+    } 'lock?;
+    # Indicates the (optional) file extension for this file. By default, this is set to an empty string.
+    string extension?;
+    # Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.
+    boolean is_package?;
+    record {
+        # The requested access token.
+        string access_token?;
+        # The time in seconds in seconds by which this token will expire.
+        int expires_in?;
+        # The type of access token returned.
+        string token_type?;
+        # The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.
+        FileScope[] restricted_to?;
+        # The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.
+        string url?;
+    } expiring_embed_link?;
+    record {
+        # Specifies if this item has a watermark applied.
+        boolean is_watermarked?;
+    } watermark_info?;
+    # A list of the types of roles that user can be invited at when sharing this file.
+    string[] allowed_invitee_roles?;
+    # Specifies if this file is owned by a user outside of the authenticated enterprise.
+    boolean is_externally_owned?;
+    # Specifies if this file has any other collaborators.
+    boolean has_collaborations?;
+    record {} metadata?;
+    # When the file will automatically be deleted
+    string? expires_at?;
+    record {
+        # A list of files
+        record {
+            # An object containing the URL that can be used to actually fetch the representation.
+            record {
+                # The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint.  This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string.  For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`.  When requesting the download URL the following additional query params can be passed along.  * `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response.  * `set_content_disposition_filename` - Allows the application to   define the representation's file name used in the   `Content-Disposition` header.  If not defined, the filename   is derived from the source file name in Box combined with the   extension of the representation.
+                string url_template?;
+            } content?;
+            # An object containing the URL that can be used to fetch more info on this representation.
+            record {
+                # The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.
+                string url?;
+            } info?;
+            # An object containing the size and type of this presentation.
+            record {
+                # The width by height size of this representation in pixels.
+                string dimensions?;
+                # Indicates if the representation is build up out of multiple pages.
+                boolean paged?;
+                # Indicates if the representation can be used as a thumbnail of the file.
+                boolean thumb?;
+            } properties?;
+            # Indicates the file type of the returned representation.
+            string representation?;
+            # An object containing the status of this representation.
+            record {
+                # The status of the representation.  * `success` defines the representation as ready to be viewed. * `viewable` defines a video to be ready for viewing. * `pending` defines the representation as to be generated. Retry   this endpoint to re-check the status. * `none` defines that the representation will be created when   requested. Request the URL defined in the `info` object to   trigger this generation.
+                string state?;
+            } status?;
+        }[] entries?;
+    } representations?;
+    record {
+        # The name of the classification
+        string name?;
+        # An explanation of the meaning of this classification.
+        string definition?;
+        # The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.
+        string color?;
+    } classification?;
+    record {} uploader_display_name?;
 };
 
 # A collection of items, including files and folders.  Currently, the only collection available is the `favorites` collection.  The contents of a collection can be explored in a similar way to which the contents of a folder is explored.
@@ -2482,10 +2829,87 @@ public type Collection record {
     string collection_type?;
 };
 
+public type WebhooksBody record {
+    # The item that will trigger the webhook
+    WebhooksTarget target;
+    # The URL that is notified by this webhook
+    string address;
+    # An array of event names that this webhook is to be triggered for
+    string[] triggers;
+};
+
+public type StoragePolicyAssignmentsStoragePolicyAssignmentIdBody record {
+    # The storage policy to assign to the user or enterprise
+    StoragePolicyAssignmentsStoragePolicy storage_policy;
+};
+
 # A standard representation of a file, as returned from any file API endpoints by default
-#
 public type File record {
     *FileMini;
+    # The optional description of this file
+    string description?;
+    # The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.
+    int size?;
+    record {
+        # The number of folders in this list.
+        int total_count?;
+        # The parent folders for this item
+        FolderMini[] entries?;
+    } path_collection?;
+    # The date and time when the file was created on Box.
+    string created_at?;
+    # The date and time when the file was last updated on Box.
+    string modified_at?;
+    # The time at which this file was put in the trash.
+    string? trashed_at?;
+    # The time at which this file is expected to be purged from the trash.
+    string? purged_at?;
+    # The date and time at which this file was originally created, which might be before it was uploaded to Box.
+    string? content_created_at?;
+    # The date and time at which this file was last updated, which might be before it was uploaded to Box.
+    string? content_modified_at?;
+    record {*UserMini;} created_by?;
+    record {*UserMini;} modified_by?;
+    record {*UserMini;} owned_by?;
+    record {
+        # The URL that can be used to access the item on Box.  This URL will display the item in Box's preview UI where the file can be downloaded if allowed.  This URL will continue to work even when a custom `vanity_url` has been set for this shared link.
+        string url?;
+        # A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type.  This property will be `null` for folders.
+        string? download_url?;
+        # The "Custom URL" that can also be used to preview the item on Box.  Custom URLs can only be created or modified in the Box Web application.
+        string? vanity_url?;
+        # The custom name of a shared link, as used in the `vanity_url` field.
+        string? vanity_name?;
+        # The access level for this shared link.  * `open` - provides access to this item to anyone with this link * `company` - only provides access to this item to people the same company * `collaborators` - only provides access to this item to people who are    collaborators on this item  If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin.
+        string access?;
+        # The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels.
+        string effective_access?;
+        # The effective permissions for this shared link.
+        string effective_permission?;
+        # The date and time when this link will be unshared. This field can only be set by users with paid accounts.
+        string? unshared_at?;
+        # Defines if the shared link requires a password to access the item.
+        boolean is_password_enabled?;
+        # Defines if this link allows a user to preview and download an item.
+        record {
+            # Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder.  This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.
+            boolean can_download?;
+            # Defines if the shared link allows for the item to be previewed.  This value is always `true`. For shared links on folders this also applies to any items in the folder.
+            boolean can_preview?;
+        } permissions?;
+        # The number of times this item has been downloaded.
+        int download_count?;
+        # The number of times this item has been previewed.
+        int preview_count?;
+    } shared_link?;
+    record {*FolderMini;} parent?;
+    # Defines if this item has been deleted or not.  * `active` when the item has is not in the trash * `trashed` when the item has been moved to the trash but not deleted * `deleted` when the item has been permanently deleted.
+    string item_status?;
+};
+
+public type Folders0Body record {
+    # The user who the folder will be transferred to
+    UsersuserIdfolders0OwnedBy owned_by;
 };
 
 # Represents a successful request to create a `zip` archive of a list of files and folders.
@@ -2501,15 +2925,47 @@ public type ZipDownload record {
 };
 
 # A standard representation of a user, as returned from any user API endpoints by default
-#
 public type User record {
     *UserMini;
+    # When the user object was created
+    string created_at?;
+    # When the user object was last modified
+    string modified_at?;
+    # The language of the user, formatted in modified version of the [ISO 639-1](/guides/api-calls/language-codes) format.
+    string language?;
+    # The user's timezone
+    string timezone?;
+    # The user’s total available space amount in bytes
+    int space_amount?;
+    # The amount of space in use by the user
+    int space_used?;
+    # The maximum individual file size in bytes the user can have
+    int max_upload_size?;
+    # The user's account status
+    string status?;
+    # The user’s job title
+    string job_title?;
+    # The user’s phone number
+    string phone?;
+    # The user’s address
+    string address?;
+    # URL of the user’s avatar image
+    string avatar_url?;
+    # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.
+    UserNotificationEmail? notification_email?;
 };
 
 # An alternate notification email address to which email notifications are sent. When it's confirmed, this will be the email address to which notifications are sent instead of to the primary email address.  Set this value to `null` to remove the notification email.
 public type UsersuserIdNotificationEmail record {
     # The email address to send the notifications to.
     string email?;
+};
+
+public type FilesContentBody record {
+    # The additional attributes of the file being uploaded. Mainly the name and the parent folder. These attributes are part of the multi part request body and are in JSON format.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
+    FilescontentAttributes attributes;
+    # The content of the file to upload to Box.  <Message warning>    The `attributes` part of the body must come **before** the   `file` part. Requests that do not follow this format when   uploading the file will receive a HTTP `400` error with a   `metadata_after_file_contents` error code.  </Message>
+    string file;
 };
 
 # The invocation of this service, used to track which instance of a service applied the metadata.
@@ -2547,8 +3003,6 @@ public type FileVersionRetention record {
 };
 
 # An individual conflict that occurred when trying to create the archive. This includes an array of 2 objects, each containing the original name and the renamed filename of a file or folder for which the names conflicted.
-#
-# + NameconflictInner - An individual conflict that occurred when trying to create the archive. This includes an array of 2 objects, each containing the original name and the renamed filename of a file or folder for which the names conflicted.
 public type NameConflict NameconflictInner[];
 
 # The bare basic representation of a file version, the minimal amount of fields returned when using the `fields` query parameter.
@@ -2599,27 +3053,44 @@ public type ClassificationtemplateFields record {
     ClassificationtemplateOptions[] options?;
 };
 
-public type Body record {
-    # An optional different name for the file. This can be used to rename the file.
-    string name?;
-    # The description for a file. This can be seen in the right-hand sidebar panel when viewing a file in the Box web app. Additionally, this index is used in the search index of the file, allowing users to find the file by the content in the description.
-    string description?;
-    # The parent for this item
-    FilesfileIdParent parent?;
-    # Defines a shared link for an item. Set this to `null` to remove the shared link.
-    FilesfileIdSharedLink shared_link?;
-    # Defines a lock on an item. This prevents the item from being moved, renamed, or otherwise changed by anyone other than the user who created the lock.  Set this to `null` to remove the lock.
-    FilesfileIdLock 'lock?;
-    # Defines who can download a file.
-    FilesfileIdPermissions permissions?;
-    # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
-    string[] tags?;
+public type FoldersBody record {
+    # The name for the new folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
+    string name;
+    # The parent folder to create the new folder within.
+    FoldersParent parent;
+    record {
+        # When this parameter has been set, users can email files to the email address that has been automatically created for this folder.  To create an email address, set this property either when creating or updating the folder.  When set to `collaborators`, only emails from registered email addresses for collaborators will be accepted. This includes any email aliases a user might have registered.  When set to `open` it will accept emails from any email address.
+        string access?;
+    } folder_upload_email?;
+    # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
+    string sync_state?;
+};
+
+public type InvitesBody record {
+    # The enterprise to invite the user to
+    InvitesEnterprise enterprise;
+    # The user to invite
+    InvitesActionableBy actionable_by;
 };
 
 # Standard representation of a comment.
-#
 public type Comment record {
     *CommentBase;
+    # Whether or not this comment is a reply to another comment
+    boolean is_reply_comment?;
+    # The text of the comment, as provided by the user
+    string message?;
+    record {*UserMini;} created_by?;
+    # The time this comment was created
+    string created_at?;
+    # The time this comment was last modified
+    string modified_at?;
+    record {
+        # The unique identifier for this object
+        string id?;
+        # The type for this object
+        string 'type?;
+    } item?;
 };
 
 # The parent for this item
@@ -2629,8 +3100,6 @@ public type FilesfileIdParent record {
 };
 
 # A list of comments
-#
-# The part of an API response that describes pagination
 public type Comments record {
     # One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     int total_count?;
@@ -2640,12 +3109,14 @@ public type Comments record {
     int offset?;
     # The order by which items are returned.  This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.
     CollaborationsOrder[] 'order?;
+    Comment[] entries?;
 };
 
 # The representation of an upload session chunk.
-#
 public type UploadPart record {
     *UploadpartMini;
+    # The SHA1 hash of the chunk.
+    string sha1?;
 };
 
 # The root-level record that is supposed to represent a single Terms of Service.
@@ -2663,9 +3134,38 @@ public type FilesfileIdSharedLinkPermissions record {
 };
 
 # A mini representation of a file, used when nested under another resource.
-#
 public type FileMini record {
     *FileBase;
+    record {} sequence_id?;
+    # The name of the file
+    string name?;
+    # The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.
+    string sha1?;
+    record {*FileversionMini;} file_version?;
+};
+
+public type CommentsBody record {
+    # The text of the comment.  To mention a user, use the `tagged_message` parameter instead.
+    string message;
+    # The text of the comment, including `@[user_id:name]` somewhere in the message to mention another user, which will send them an email notification, letting them know they have been mentioned.  The `user_id` is the target user's ID, where the `name` can be any custom phrase. In the Box UI this name will link to the user's profile.  If you are not mentioning another user, use `message` instead.
+    string tagged_message?;
+    # The item to attach the comment to.
+    CommentsItem item?;
+};
+
+public type GroupsBody record {
+    # The name of the new group to be created. This name must be unique within the enterprise.
+    string name;
+    # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
+    string provenance?;
+    # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
+    string external_sync_identifier?;
+    # A human readable description of the group.
+    string description?;
+    # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
+    string invitability_level?;
+    # Specifies who can see the members of the group.  * `admins_only` - the enterprise admin, co-admins, group's   group admin * `admins_and_members` - all admins and group members * `all_managed_users` - all managed users in the   enterprise
+    string member_viewability_level?;
 };
 
 # Legal Hold Assignments are used to assign Legal Hold Policies to Users, Folders, Files, or File Versions.  Creating a Legal Hold Assignment puts a hold on the File-Versions that belong to the Assignment's 'apply-to' entity.
@@ -2712,7 +3212,7 @@ public type Collaboration record {
     string id?;
     # `collaboration`
     string 'type?;
-    File|Folder|WebLink item?;
+    File|Folder|WebLink? item?;
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini accessible_by?;
     # The email address used to invite an unregistered collaborator, if they are not a registered user.
@@ -2757,9 +3257,14 @@ public type WebLinksParent record {
     string id;
 };
 
+public type TaskAssignmentsTaskAssignmentIdBody record {
+    # An optional message by the assignee that can be added to the task.
+    string message?;
+    # The state of the task assigned to the user.  * For a task with an `action` value of `complete` this can be `incomplete` or `completed`. * For a task with an `action` of `review` this can be `incomplete`, `approved`, or `rejected`.
+    string resolution_state?;
+};
+
 # A list of users that is exempt from any of the restrictions imposed by the list of allowed collaboration domains for this enterprise.
-#
-# The part of an API response that describes marker based pagination
 public type CollaborationAllowlistExemptTargets record {
     # The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
     int 'limit?;
@@ -2767,6 +3272,7 @@ public type CollaborationAllowlistExemptTargets record {
     int next_marker?;
     # The marker for the start of the previous page of results.
     int prev_marker?;
+    CollaborationAllowlistExemptTarget[] entries?;
 };
 
 # The permissions on shared link.

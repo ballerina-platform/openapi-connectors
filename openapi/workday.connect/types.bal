@@ -35,7 +35,7 @@ public type PushDetailRef record {
     # The URL to launch the appropriate mobile app upon acknowledgement.
     string? redirectURL?;
     # Message content of a push notification.
-    string? message?;
+    string? message;
     # Id of the instance
     string? id?;
 };
@@ -48,9 +48,9 @@ public type EmailDetailRef record {
     # Email Configuration Data container for REST API.
     string? name?;
     # Message content of the email.
-    string? body?;
+    string? body;
     # Email subject line.
-    string? subject?;
+    string? subject;
     # Reply To
     string? replyTo?;
 };
@@ -64,9 +64,9 @@ public type MessageTemplateDetailRef record {
     int? usageCount?;
     # Gives the date that the instance was originally created.
     string? createdOn?;
-    NotificationType? notificationType?;
+    NotificationType? notificationType;
     # Message Template Name
-    string? name?;
+    string? name;
     LastUpdatedBy? lastUpdatedBy?;
     # The Reference ID to use for lookups within our Workday Web Services. For ~supervisory organizations~, this is also the 'Organization ID'
     string? referenceID?;

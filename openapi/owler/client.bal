@@ -39,6 +39,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Basic Search Company by Ticker or Website or Name or PermID
     #
@@ -48,13 +49,13 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Search Results 
     remote isolated function basicCompanySearch(string q, string[]? fields = (), string? 'limit = (), string format = "json") returns BasicResults|error {
-        string  path = string `/v1/company/basicsearch`;
+        string resourcePath = string `/v1/company/basicsearch`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        BasicResults response = check self.clientEp-> get(path, accHeaders, targetType = BasicResults);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BasicResults response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Competitor information by Id
@@ -63,12 +64,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function geCompetiterInformationById(string companyId, string format = "json") returns CompanyCompetitorVO|error {
-        string  path = string `/v1/company/competitor/id/${companyId}`;
+        string resourcePath = string `/v1/company/competitor/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CompanyCompetitorVO response = check self.clientEp-> get(path, accHeaders, targetType = CompanyCompetitorVO);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CompanyCompetitorVO response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Competitor information by URL
@@ -77,12 +78,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByUrl(string website, string format = "json") returns CompanyCompetitorVO|error {
-        string  path = string `/v1/company/competitor/url/${website}`;
+        string resourcePath = string `/v1/company/competitor/url/${website}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        CompanyCompetitorVO response = check self.clientEp-> get(path, accHeaders, targetType = CompanyCompetitorVO);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CompanyCompetitorVO response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Competitor information by Id
@@ -92,12 +93,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByIdPremium(string companyId, string? paginationId = (), string format = "json") returns Competitors|error {
-        string  path = string `/v1/company/competitorpremium/id/${companyId}`;
+        string resourcePath = string `/v1/company/competitorpremium/id/${companyId}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Competitors response = check self.clientEp-> get(path, accHeaders, targetType = Competitors);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Competitors response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Competitor information by Url
@@ -107,12 +108,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByUrlPremium(string website, string? paginationId = (), string format = "json") returns Competitors|error {
-        string  path = string `/v1/company/competitorpremium/url/${website}`;
+        string resourcePath = string `/v1/company/competitorpremium/url/${website}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Competitors response = check self.clientEp-> get(path, accHeaders, targetType = Competitors);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Competitors response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Fuzzy Search Company by Name or Address or Phone
@@ -123,13 +124,13 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Search Results 
     remote isolated function fuzzyCompanySearch(string q, string[] fields, string? 'limit = (), string format = "json") returns FuzzyResults|error {
-        string  path = string `/v1/company/fuzzysearch`;
+        string resourcePath = string `/v1/company/fuzzysearch`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        FuzzyResults response = check self.clientEp-> get(path, accHeaders, targetType = FuzzyResults);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        FuzzyResults response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Company by Id
@@ -138,12 +139,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyById(string companyId, string format = "json") returns Company|error {
-        string  path = string `/v1/company/id/${companyId}`;
+        string resourcePath = string `/v1/company/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Company response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Search Company by Ticker or Website or Name or PermID
@@ -154,13 +155,13 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Search Results 
     remote isolated function searchCompany(string q, string[]? fields = (), string? 'limit = (), string format = "json") returns Results|error {
-        string  path = string `/v1/company/search`;
+        string resourcePath = string `/v1/company/search`;
         map<anydata> queryParam = {"q": q, "fields": fields, "limit": 'limit, "format": format};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Results response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Company by URL
@@ -169,12 +170,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByUrl(string website, string format = "json") returns Company|error {
-        string  path = string `/v1/company/url/${website}`;
+        string resourcePath = string `/v1/company/url/${website}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Company response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Complete Company Info by Id
@@ -183,12 +184,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByIdPremium(string companyId, string format = "json") returns Company|error {
-        string  path = string `/v1/companypremium/id/${companyId}`;
+        string resourcePath = string `/v1/companypremium/id/${companyId}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Company response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Basic Company Info by Url
@@ -197,12 +198,12 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByUrlPremium(string website, string format = "json") returns Company|error {
-        string  path = string `/v1/companypremium/url/${website}`;
+        string resourcePath = string `/v1/companypremium/url/${website}`;
         map<anydata> queryParam = {"format": format};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Company response = check self.clientEp-> get(path, accHeaders, targetType = Company);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Company response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Feeds for given Company Ids
@@ -214,13 +215,13 @@ public isolated client class Client {
     # + category - Categories separated by comma. If not specified, will search against all categories 
     # + return - Feeds Data 
     remote isolated function getFeedsForCompanyIds(string[] companyId, string format = "json", string 'limit = "10", string paginationId = "*", string[]? category = ()) returns Results|error {
-        string  path = string `/v1/feed`;
+        string resourcePath = string `/v1/feed`;
         map<anydata> queryParam = {"format": format, "company_id": companyId, "limit": 'limit, "pagination_id": paginationId, "category": category};
         map<Encoding> queryParamEncoding = {"company_id": {style: FORM, explode: false}, "category": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Results response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get Feeds for given Company Websites
@@ -232,13 +233,13 @@ public isolated client class Client {
     # + category - Categories separated by comma. If not specified, will search against all categories 
     # + return - Feeds Data 
     remote isolated function getFeedsForCompanyUrls(string[] domain, string format = "json", string 'limit = "10", string paginationId = "*", string[]? category = ()) returns Results|error {
-        string  path = string `/v1/feed/url`;
+        string resourcePath = string `/v1/feed/url`;
         map<anydata> queryParam = {"format": format, "domain": domain, "limit": 'limit, "pagination_id": paginationId, "category": category};
         map<Encoding> queryParamEncoding = {"domain": {style: FORM, explode: false}, "category": {style: FORM, explode: false}};
-        path = path + check getPathForQueryParam(queryParam, queryParamEncoding);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        Results response = check self.clientEp-> get(path, accHeaders, targetType = Results);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        Results response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

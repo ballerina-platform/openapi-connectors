@@ -14,18 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT.
-public type PutProxyRequest record {
-};
-
-# Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT.
-public type PostProxyRequest record {
-};
-
-# Depending on the verb/method of the request this will contain the request body you want to POST/PATCH/PUT.
-public type PatchProxyRequest record {
-};
-
 public type InlineResponse401 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string detail?;

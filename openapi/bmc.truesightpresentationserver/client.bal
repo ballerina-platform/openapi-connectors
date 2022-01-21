@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Triggers a new collect on a specific device.
     #
@@ -47,14 +48,14 @@ public isolated client class Client {
     # + monitorClass - The Monitor Class of the device. 
     # + return - Successful operation 
     remote isolated function collectNow(int deviceId, string monitorClass) returns ActionResponse|error {
-        string  path = string `/hardware/actions/${deviceId}/collect-now`;
+        string resourcePath = string `/hardware/actions/${deviceId}/collect-now`;
         map<anydata> queryParam = {"monitorClass": monitorClass};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ActionResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = ActionResponse);
+        ActionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Triggers a new discovery on a specific device.
@@ -62,12 +63,12 @@ public isolated client class Client {
     # + deviceId - The ID of the device. 
     # + return - Successful operation 
     remote isolated function rediscover(int deviceId) returns ActionResponse|error {
-        string  path = string `/hardware/actions/${deviceId}/rediscover`;
+        string resourcePath = string `/hardware/actions/${deviceId}/rediscover`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ActionResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = ActionResponse);
+        ActionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Sends a 'Reinitialize KM' command.
@@ -76,13 +77,13 @@ public isolated client class Client {
     # + payload - The request body as a JSON payload. 
     # + return - Successful operation 
     remote isolated function reinitialize(int deviceId, ReinitializeActionConfiguration payload) returns ActionResponse|error {
-        string  path = string `/hardware/actions/${deviceId}/reinitialize`;
+        string resourcePath = string `/hardware/actions/${deviceId}/reinitialize`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ActionResponse response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ActionResponse);
+        request.setPayload(jsonBody, "application/json");
+        ActionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Removes a specific instance from the monitoring environment.
@@ -92,14 +93,14 @@ public isolated client class Client {
     # + monitorSid - The Monitor SID of the device. 
     # + return - Successful operation 
     remote isolated function remove(int deviceId, string monitorClass, string monitorSid) returns ActionResponse|error {
-        string  path = string `/hardware/actions/${deviceId}/remove`;
+        string resourcePath = string `/hardware/actions/${deviceId}/remove`;
         map<anydata> queryParam = {"monitorClass": monitorClass, "monitorSid": monitorSid};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ActionResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = ActionResponse);
+        ActionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Resets the Error Count parameter.
@@ -109,14 +110,14 @@ public isolated client class Client {
     # + monitorSid - The Monitor SID of the device. 
     # + return - Successful operation 
     remote isolated function reset(int deviceId, string monitorClass, string monitorSid) returns ActionResponse|error {
-        string  path = string `/hardware/actions/${deviceId}/reset-error-count`;
+        string resourcePath = string `/hardware/actions/${deviceId}/reset-error-count`;
         map<anydata> queryParam = {"monitorClass": monitorClass, "monitorSid": monitorSid};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ActionResponse response = check self.clientEp-> post(path, request, headers = accHeaders, targetType = ActionResponse);
+        ActionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets summarized information about all monitored applications.
@@ -127,12 +128,12 @@ public isolated client class Client {
     # + sort - The column to sort by (case insensitive). 
     # + return - Successful operation 
     remote isolated function getApplications(string page = "0", int 'limit = 100, string direction = "asc", string sort = "name") returns ResultPage|error {
-        string  path = string `/hardware/applications`;
+        string resourcePath = string `/hardware/applications`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets detailed information for a specific application.
@@ -140,10 +141,10 @@ public isolated client class Client {
     # + applicationId - The ID of the application. 
     # + return - Successful operation 
     remote isolated function getOneApplication(string applicationId) returns ApplicationSummary|error {
-        string  path = string `/hardware/applications/${applicationId}`;
+        string resourcePath = string `/hardware/applications/${applicationId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ApplicationSummary response = check self.clientEp-> get(path, accHeaders, targetType = ApplicationSummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ApplicationSummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets the Monitors for a specific device.
@@ -151,10 +152,10 @@ public isolated client class Client {
     # + deviceId - The ID of the device. 
     # + return - Successful operation 
     remote isolated function getDeviceMonitors(int deviceId) returns http:Response|error {
-        string  path = string `/hardware/device-monitors/${deviceId}`;
+        string resourcePath = string `/hardware/device-monitors/${deviceId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp-> get(path, accHeaders, targetType = http:Response);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets summarized information about all monitored devices.
@@ -168,22 +169,22 @@ public isolated client class Client {
     # + serviceId - The ID of the service. 
     # + return - Successful operation 
     remote isolated function getDevices(string page = "0", int 'limit = 100, string direction = "asc", string sort = "name", string? groupId = (), string? applicationId = (), string? serviceId = ()) returns ResultPage|error {
-        string  path = string `/hardware/devices`;
+        string resourcePath = string `/hardware/devices`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets overall information for all devices.
     #
     # + return - Successful operation 
     remote isolated function getDevicesSummary() returns GlobalSummary|error {
-        string  path = string `/hardware/devices-summary`;
+        string resourcePath = string `/hardware/devices-summary`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GlobalSummary response = check self.clientEp-> get(path, accHeaders, targetType = GlobalSummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GlobalSummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets detailed information about a specific device.
@@ -191,10 +192,10 @@ public isolated client class Client {
     # + deviceId - The ID of the device. 
     # + return - Successful operation 
     remote isolated function getDevice(int deviceId) returns DeviceSummary|error {
-        string  path = string `/hardware/devices/${deviceId}`;
+        string resourcePath = string `/hardware/devices/${deviceId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DeviceSummary response = check self.clientEp-> get(path, accHeaders, targetType = DeviceSummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DeviceSummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets detailed information about an Agent.
@@ -202,10 +203,10 @@ public isolated client class Client {
     # + deviceId - The ID of the device. 
     # + return - Successful operation 
     remote isolated function getDeviceAgent(int deviceId) returns DeviceAgent|error {
-        string  path = string `/hardware/devices/${deviceId}/agent`;
+        string resourcePath = string `/hardware/devices/${deviceId}/agent`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        DeviceAgent response = check self.clientEp-> get(path, accHeaders, targetType = DeviceAgent);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        DeviceAgent response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets a list of all the devices monitored by an Agent.
@@ -213,10 +214,10 @@ public isolated client class Client {
     # + deviceId - The ID of the device. 
     # + return - Successful operation 
     remote isolated function getAgentDevices(int deviceId) returns ResultPage|error {
-        string  path = string `/hardware/devices/${deviceId}/agent-devices`;
+        string resourcePath = string `/hardware/devices/${deviceId}/agent-devices`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets data history for a parameter of a specific device over a given period.
@@ -229,12 +230,12 @@ public isolated client class Client {
     # + monitorSid - The Monitor SID (to filter the list of Monitors). 
     # + return - Successful operation 
     remote isolated function getDeviceParameterHistory(int deviceId, string parameterName, string monitorType, int? 'from = (), int? to = (), string? monitorSid = ()) returns ResultPage|error {
-        string  path = string `/hardware/devices/${deviceId}/parameter-history`;
+        string resourcePath = string `/hardware/devices/${deviceId}/parameter-history`;
         map<anydata> queryParam = {"parameterName": parameterName, "monitorType": monitorType, "from": 'from, "to": to, "monitorSid": monitorSid};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets the energy usage for a specific device and a given period.
@@ -244,12 +245,12 @@ public isolated client class Client {
     # + basis - Subdivision of the period for which you wish to retrieve energy usage data. 
     # + return - Successful operation 
     remote isolated function getDeviceEnergyUsage(int deviceId, string rollPeriod = "ONE_DAY", string basis = "HOURLY") returns ResultPage|error {
-        string  path = string `/hardware/energy-usage/${deviceId}`;
+        string resourcePath = string `/hardware/energy-usage/${deviceId}`;
         map<anydata> queryParam = {"rollPeriod": rollPeriod, "basis": basis};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets all group summaries.
@@ -260,12 +261,12 @@ public isolated client class Client {
     # + sort - The column to sort by (case insensitive). 
     # + return - Successful operation 
     remote isolated function getGroups(string page = "0", int 'limit = 100, string direction = "asc", string sort = "name") returns ResultPage|error {
-        string  path = string `/hardware/groups`;
+        string resourcePath = string `/hardware/groups`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets detailed information about a specific group.
@@ -273,10 +274,10 @@ public isolated client class Client {
     # + groupId - The ID of the group. 
     # + return - Successful operation 
     remote isolated function getOneGroup(string groupId) returns GroupSummary|error {
-        string  path = string `/hardware/groups/${groupId}`;
+        string resourcePath = string `/hardware/groups/${groupId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        GroupSummary response = check self.clientEp-> get(path, accHeaders, targetType = GroupSummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        GroupSummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Updates the values of the energy footprint parameter for a specific group.
@@ -285,13 +286,13 @@ public isolated client class Client {
     # + payload - The values you wish to assign. 
     # + return - Successful operation 
     remote isolated function updateEnergyCost(string groupId, GroupConfiguration payload) returns GlobalSummary|error {
-        string  path = string `/hardware/groups/${groupId}`;
+        string resourcePath = string `/hardware/groups/${groupId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GlobalSummary response = check self.clientEp->put(path, request, headers = accHeaders, targetType=GlobalSummary);
+        request.setPayload(jsonBody, "application/json");
+        GlobalSummary response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Gets the heating margin values for each monitored device, when available.
@@ -306,12 +307,12 @@ public isolated client class Client {
     # + serviceId - The ID of the service. 
     # + return - Successful operation 
     remote isolated function getHeatingMarginCoverage(boolean covered = true, string page = "0", int 'limit = 100, string direction = "asc", string sort = "name", string? groupId = (), string? applicationId = (), string? serviceId = ()) returns ResultPage|error {
-        string  path = string `/hardware/heating-margin-devices`;
+        string resourcePath = string `/hardware/heating-margin-devices`;
         map<anydata> queryParam = {"covered": covered, "page": page, "limit": 'limit, "direction": direction, "sort": sort, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets historical data for a specific group, application or service.
@@ -323,12 +324,12 @@ public isolated client class Client {
     # + to - End of the period (Epoch time, in seconds). 
     # + return - Successful operation 
     remote isolated function getHistory(string? groupId = (), string? applicationId = (), string? serviceId = (), int? 'from = (), int? to = ()) returns ResultPage|error {
-        string  path = string `/hardware/history`;
+        string resourcePath = string `/hardware/history`;
         map<anydata> queryParam = {"groupId": groupId, "applicationId": applicationId, "serviceId": serviceId, "from": 'from, "to": to};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Searches devices by name, model, manufacturer or serial number.
@@ -341,12 +342,12 @@ public isolated client class Client {
     # + 'limit - The maximum number of entries per page. 
     # + return - Successful operation 
     remote isolated function searchDevices(string searchTerms, string? groupId = (), string? applicationId = (), string? serviceId = (), string page = "0", int 'limit = 100) returns ResultPage|error {
-        string  path = string `/hardware/search-devices`;
+        string resourcePath = string `/hardware/search-devices`;
         map<anydata> queryParam = {"searchTerms": searchTerms, "groupId": groupId, "applicationId": applicationId, "serviceId": serviceId, "page": page, "limit": 'limit};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets summarized information about all monitored services.
@@ -357,12 +358,12 @@ public isolated client class Client {
     # + sort - The column to sort by (case insensitive). 
     # + return - Successful operation 
     remote isolated function getServices(string page = "0", int 'limit = 100, string direction = "asc", string sort = "name") returns ResultPage|error {
-        string  path = string `/hardware/services`;
+        string resourcePath = string `/hardware/services`;
         map<anydata> queryParam = {"page": page, "limit": 'limit, "direction": direction, "sort": sort};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ResultPage response = check self.clientEp-> get(path, accHeaders, targetType = ResultPage);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ResultPage response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Gets detailed information about a specific service.
@@ -370,10 +371,10 @@ public isolated client class Client {
     # + serviceId - The ID of the service. 
     # + return - Successful operation 
     remote isolated function getOneService(string serviceId) returns ServiceSummary|error {
-        string  path = string `/hardware/services/${serviceId}`;
+        string resourcePath = string `/hardware/services/${serviceId}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
-        ServiceSummary response = check self.clientEp-> get(path, accHeaders, targetType = ServiceSummary);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        ServiceSummary response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

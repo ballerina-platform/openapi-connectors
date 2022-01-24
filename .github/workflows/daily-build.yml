@@ -12,7 +12,7 @@ jobs:
       image: ballerina/ballerina:nightly
       options: --user root
     steps:
-      - uses: actions/checkout@v1   
+      - uses: actions/checkout@v2   
       - name: Build with Gradle
         env:
           BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}

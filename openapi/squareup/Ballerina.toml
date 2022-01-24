@@ -1,0 +1,13 @@
+[package]
+distribution = "slbeta6"
+license = ["Apache-2.0"]
+keywords = ["Commerce/eCommerce", "Cost/Paid"]
+org = "ballerinax"
+name = "squareup"
+icon = "icon.png"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.1"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

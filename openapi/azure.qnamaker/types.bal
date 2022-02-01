@@ -32,8 +32,8 @@ public type CreateKbInputDTO record {
 
 # Record to track long running operation.
 public type Operation record {
-    # Operation state.
-    record {} operationState;
+    # Enumeration of operation states.
+    OperationState operationState;
     # Timestamp when the operation was created.
     string createdTimestamp;
     # Timestamp when the current state was entered.
@@ -44,8 +44,8 @@ public type Operation record {
     string userId?;
     # Operation Id.
     string operationId?;
-    # Error details in case of failures.
-    record {} errorResponse?;
+    # Error response. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+    ErrorResponse errorResponse?;
 };
 
 # Active Learning settings.
@@ -112,18 +112,18 @@ public type CreateKbDTO record {
 
 # Contains list of QnAs to be updated
 public type UpdateKbOperationDTO record {
-    # An instance of CreateKbInputDTO for add operation
-    record {} add?;
-    # An instance of DeleteKbContentsDTO for delete Operation
-    record {} delete?;
-    # An instance of UpdateKbContentsDTO for Update Operation
-    record {} update?;
+    # Input to create KB.
+    CreateKbInputDTO add?;
+    # PATCH body schema of Delete Operation in UpdateKb
+    DeleteKbContentsDTO delete?;
+    # PATCH body schema for Update operation in Update Kb
+    UpdateKbContentsDTO update?;
 };
 
 # Endpoint settings.
 public type EndpointSettingsDTO record {
-    # An instance of ActiveLearningSettingsDTO active learning settings.
-    record {} activeLearning?;
+    # Active Learning settings.
+    ActiveLearningSettingsDTO activeLearning?;
 };
 
 # PATCH Body schema for Update Qna List
@@ -134,12 +134,12 @@ public type UpdateQnaDTO record {
     string answer?;
     # Source from which Q-A was indexed. eg. https://docs.microsoft.com/en-us/azure/cognitive-services/QnAMaker/FAQs
     string 'source?;
-    # List of questions associated with the answer.
-    record {} questions?;
-    # List of metadata associated with the answer to be updated
-    record {} metadata?;
-    # Context associated with Qna to be updated.
-    record {} context?;
+    # PATCH Body schema for Update Kb which contains list of questions to be added and deleted
+    UpdateQuestionsDTO questions?;
+    # PATCH Body schema to represent list of Metadata to be updated
+    UpdateMetadataDTO metadata?;
+    # Update Body schema to represent context to be updated
+    UpdateContextDTO context?;
 };
 
 # PATCH body schema of Delete Operation in UpdateKb
@@ -167,8 +167,8 @@ public type PromptDTO record {
     int displayOrder?;
     # Qna id corresponding to the prompt - if QnaId is present, QnADTO object is ignored.
     int qnaId?;
-    # QnADTO - Either QnaId or QnADTO needs to be present in a PromptDTO object
-    record {} qna?;
+    # Q-A object.
+    QnADTO qna?;
     # Text displayed to represent a follow up question prompt
     string displayText?;
 };
@@ -177,8 +177,8 @@ public type PromptDTO record {
 public type InnerErrorModel record {
     # A more specific error code than was provided by the containing error.
     string code?;
-    # An object containing more specific information than the current object about the error.
-    record {} innerError?;
+    # An object containing more specific information about the error. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+    InnerErrorModel innerError?;
 };
 
 # Update Body schema to represent context to be updated
@@ -201,16 +201,16 @@ public type WordAlterationsDTO record {
 
 # The error object. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
 public type Error record {
-    # One of a server-defined set of error codes.
-    record {} code;
+    # Human readable error code.
+    ErrorCode code;
     # A human-readable representation of the error.
     string message?;
     # The target of the error.
     string target?;
     # An array of details about specific errors that led to this reported error.
     Error[] details?;
-    # An object containing more specific information than the current object about the error.
-    record {} innerError?;
+    # An object containing more specific information about the error. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+    InnerErrorModel innerError?;
 };
 
 # Schema for EndpointKeys generate/refresh operations.
@@ -227,8 +227,8 @@ public type EndpointKeysDTO record {
 
 # Error response. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
 public type ErrorResponse record {
-    # The error object.
-    record {} _error?;
+    # The error object. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+    Error _error?;
 };
 
 # Post body schema for Replace KB operation.
@@ -244,7 +244,7 @@ public type ContextDTO record {
     # false - ignores context and includes this QnA in search result
     boolean isContextOnly?;
     # List of prompts associated with the answer.
-    PromptDTO[] prompts?;
+    PromptDTO[20] prompts?;
 };
 
 # Human readable error code.
@@ -276,8 +276,8 @@ public type QnADTO record {
     string[] questions;
     # List of metadata associated with the answer.
     MetadataDTO[] metadata?;
-    # Context of a QnA
-    record {} context?;
+    # Context associated with Qna.
+    ContextDTO context?;
 };
 
 # Enumeration of operation states.

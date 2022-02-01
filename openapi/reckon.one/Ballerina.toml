@@ -1,0 +1,13 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Finance/Accounting", "Cost/Freemium"]
+org = "ballerinax"
+name = "reckon.one"
+icon = "icon.png"
+distribution = "slbeta6"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

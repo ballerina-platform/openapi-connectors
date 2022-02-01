@@ -1,0 +1,13 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Business Intelligence/Reporting", "Cost/Freemium"]
+org = "ballerinax"
+name = "avatax"
+distribution = "slbeta6"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+icon = "icon.png"
+
+[build-options]
+observabilityIncluded = true

@@ -1,0 +1,12 @@
+[package]
+distribution = "slbeta6"
+license = ["Apache-2.0"]
+keywords = ["IT Operations/Geographic Information Systems", "Cost/Freemium"]
+org = "ballerinax"
+name = "geonames"
+icon = "icon.png"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+[build-options]
+observabilityIncluded = true

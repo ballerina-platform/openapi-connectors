@@ -7,7 +7,7 @@ This package provides the capability to access News API and get latest news head
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6 |
+| Ballerina Language | Ballerina Swan Lake 2201.0.0|
 | News API           | V2                        |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package enables partners to create draft listings on eBay for their seller.
 #### Compatibility
 |                                   | Version                       |
 |-----------------------------------|-------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta6     |
+| Ballerina Language                | Ballerina Swan Lake 2201.0.0    |
 | eBay Listing API                  | v1_beta.3.0                   |
 
 ## Report issues

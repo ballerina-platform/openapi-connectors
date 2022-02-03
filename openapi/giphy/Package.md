@@ -9,7 +9,7 @@ This package provides the capability to find GIFs and stickers through [Giphy AP
 ### Compatibility
 |                    | Version         |
 |--------------------|------------- ---|
-| Ballerina Language | Swan Lake Beta6 |
+| Ballerina Language | Swan Lake 2201.0.0|
 | Giphy API          | 1               |
 
 ## Report issues

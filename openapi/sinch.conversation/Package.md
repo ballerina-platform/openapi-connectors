@@ -6,7 +6,7 @@ The `ballerinax/sinch.conversation` is a [Ballerina](https://ballerina.io/) conn
 ### Compatibility
 |                           | Version                       |
 |---------------------------|-------------------------------|
-| Ballerina Language        | Ballerina Swan Lake Beta6     | 
+| Ballerina Language        | Ballerina Swan Lake 2201.0.0    | 
 | Sinch Conversation API    | v1.0                          |
 
 ## Report issues

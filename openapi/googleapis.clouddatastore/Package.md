@@ -7,7 +7,7 @@ This package provides the capability to access the schemaless NoSQL database to 
 ### Compatibility
 |                            | Version         |
 |----------------------------|-----------------|
-| Ballerina Language         | Swan Lake Beta6 | 
+| Ballerina Language         | Swan Lake 2201.0.0| 
 | Google Cloud Datastore API | v1              |
 
 ## Report issues

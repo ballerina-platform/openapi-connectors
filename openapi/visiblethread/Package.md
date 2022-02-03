@@ -8,7 +8,7 @@ The `visiblethread` is a [Ballerina](https://ballerina.io/) connector for connec
 #### Compatibility
 |                    | Version                  |
 |--------------------|--------------------------|
-| Ballerina Language | Balerina Swan Lake Beta6 |
+| Ballerina Language | Balerina Swan Lake 2201.0.0|
 | VisibleThread API  | v1.0                     |
 
 ## Report issues

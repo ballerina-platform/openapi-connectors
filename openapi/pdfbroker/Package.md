@@ -8,7 +8,7 @@ This package provides the capability to access pdfbroker API to generate pdf doc
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta6       |
+| Ballerina Language Version    | Swan Lake 2201.0.0      |
 | PDFBroker API                 | V1                    |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability to access Vonage Number Insight API.
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta6      |
+| Ballerina Language            | Ballerina Swan Lake 2201.0.0     |
 | Vonage Number Insight API     | 1.0.10                         |
 
 ## Report issues

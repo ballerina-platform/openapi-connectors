@@ -7,7 +7,7 @@ The `azure.anomalydetector` is a [Ballerina](https://ballerina.io/) connector fo
 #### Compatibility
 |                            | Version           |
 |----------------------------|-------------------|
-| Ballerina Language         | Swan Lake Beta6   |
+| Ballerina Language         | Swan Lake 2201.0.0  |
 | Azure Anomaly Detector API | v1                |
 
 ## Report issues

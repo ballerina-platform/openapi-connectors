@@ -6,7 +6,7 @@ The `ballerinax/plaid` is a [Ballerina](https://ballerina.io/) connector connect
 ### Compatibility
 |                       | Version                         |
 |-----------------------|---------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6       | 
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0      | 
 | Plaid API             | 2020-09-14                      |
 
 ## Report issues

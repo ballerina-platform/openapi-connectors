@@ -8,7 +8,7 @@ This package provides the capability to access the Google Cloud Billing Account.
 ### Compatibility
 |                           | Version                   |
 |---------------------------|---------------------------|
-| Ballerina Language        | Ballerina Swan Lake Beta6 |
+| Ballerina Language        | Ballerina Swan Lake 2201.0.0|
 | Cloud Billing Account API | v1                        |
 
 ## Report issues

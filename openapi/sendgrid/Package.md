@@ -9,7 +9,7 @@ This package provides the capability to easily access for the selected Sendgrid 
 ### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta6     |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.0.0    |
 | Sendgrid API Version          | 3.0                           |
 
 ## Report issues

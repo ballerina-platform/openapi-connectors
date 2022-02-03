@@ -7,7 +7,7 @@ The `ballerinax/interzoid.globalpageload` is a [Ballerina](https://ballerina.io/
 ### Compatibility
 |                                              | Version                   |
 |----------------------------------------------|---------------------------|
-| Ballerina Language                           | Swan Lake Beta6           |
+| Ballerina Language                           | Swan Lake 2201.0.0          |
 | Interzoid Global Page Load Performance API   | 1.0.0                     |
 
 ## Report issues

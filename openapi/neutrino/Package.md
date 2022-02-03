@@ -7,7 +7,7 @@ This package provides the capability to access Neutrino API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta6       | 
+| Ballerina Language            | Ballerina Swan Lake 2201.0.0      | 
 | Neutrino API                  | 3.5.0                           |
 
 ## Report issues

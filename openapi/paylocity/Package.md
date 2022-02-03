@@ -9,7 +9,7 @@ This package provides the capability to perform human capital management and pay
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta6 |
+| Ballerina Language | Swan Lake 2201.0.0|
 | Paylocity API      | 2               |
 
 ## Report issues

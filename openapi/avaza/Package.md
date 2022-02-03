@@ -7,7 +7,7 @@ This package provides the capability to collaborate on projects, chat, schedule 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6 |
+| Ballerina Language | Ballerina Swan Lake 2201.0.0|
 | Avaza API          | v1                        |
 
 ## Report issues

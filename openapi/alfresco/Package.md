@@ -6,7 +6,7 @@ The `ballerinax/alfresco` is a [Ballerina](https://ballerina.io/) connector for 
 ### Compatibility
 |                    | Version          |
 |--------------------|------------------|
-| Ballerina Language | Swan Lake Beta6  |
+| Ballerina Language | Swan Lake 2201.0.0 |
 | Alfresco API       | v1               |
 
 ## Report issues

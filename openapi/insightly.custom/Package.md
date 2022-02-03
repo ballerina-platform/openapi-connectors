@@ -6,7 +6,7 @@ The `ballerinax/insightly.custom` is a [Ballerina](https://ballerina.io/) connec
 ### Compatibility
 |                       | Version                    |
 |-----------------------|----------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6  | 
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0 | 
 | Insightly API         | v3.1                       |
 
 ## Report issues

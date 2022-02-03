@@ -6,7 +6,7 @@ The `ballerinax/brex.team` is a [Ballerina](https://ballerina.io/) connector con
 ### Compatibility
 |                       | Version                         |
 |-----------------------|---------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6       | 
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0      | 
 | Brex Team API         | 0.1                             |
 
 ## Report issues

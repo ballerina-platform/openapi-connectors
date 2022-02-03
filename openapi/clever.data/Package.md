@@ -9,7 +9,7 @@ This package provides the capability to get information of students, teachers, s
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake Beta6 |
+| Ballerina Language | Swan Lake 2201.0.0|
 | Clever Data API    | 1.2             |
  
 ## Report issues

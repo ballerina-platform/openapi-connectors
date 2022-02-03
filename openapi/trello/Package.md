@@ -5,7 +5,7 @@ The `ballerinax/trello` is a [Ballerina](https://ballerina.io/) connector for Tr
 #### Compatibility
 |                       | Version                   |
 |-----------------------|---------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6 |
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0|
 | Trello API            | v1                        |
 
 ## Report issues

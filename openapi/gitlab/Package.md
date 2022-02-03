@@ -5,7 +5,7 @@ The `ballerinax/gitlab` is a [Ballerina](https://ballerina.io/) connector for co
 #### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta6  |
+| Ballerina Language   | Ballerina Swan Lake 2201.0.0 |
 | GitLab REST API      | v4                         |
 
 ## Report issues

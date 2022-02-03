@@ -6,5 +6,5 @@ name = "workday.connect"
 icon = "icon.png"
 distribution = "2201.0.0"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.1.1"
+version = "1.2.0"
 authors = ["Ballerina"]

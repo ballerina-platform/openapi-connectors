@@ -8,7 +8,7 @@ The `owler` is a [Ballerina](https://ballerina.io/) connector for connecting to 
 #### Compatibility
 |                       | Version                  |
 |-----------------------|--------------------------|
-| Ballerina Language    | Balerina Swan Lake Beta6 |
+| Ballerina Language    | Balerina Swan Lake 2201.0.0|
 | Owler API             | v1.0                     |
 
 ## Report issues

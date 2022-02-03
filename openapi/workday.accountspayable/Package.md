@@ -9,7 +9,7 @@ This package provides the capability to easily access Workday accounts payable s
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake Beta6  |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.0.0 |
 | API Version                   | v1                         |
 
 ## Report issues

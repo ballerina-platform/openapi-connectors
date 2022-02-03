@@ -8,7 +8,7 @@ The `azure.qnamaker` is a [Ballerina](https://ballerina.io/) connector for conne
 #### Compatibility
 |                            | Version           |
 |----------------------------|-------------------|
-| Ballerina Language         | Swan Lake Beta6   |
+| Ballerina Language         | Swan Lake 2201.0.0  |
 | Azure QnA Maker API        | v4                |
 
 ## Report issues

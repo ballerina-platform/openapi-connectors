@@ -7,7 +7,7 @@ This package provides the capability to work with talk agents, groups, and ticke
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6 | 
+| Ballerina Language | Ballerina Swan Lake 2201.0.0| 
 | Zendesk Talk API   | v2                        |
 
 ## Report issues

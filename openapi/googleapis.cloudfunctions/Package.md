@@ -6,7 +6,7 @@ This package provides the capability to access lightweight compute solution for 
 ### Compatibility
 |                            | Version         |
 |----------------------------|-----------------|
-| Ballerina Language         | Swan Lake Beta6 | 
+| Ballerina Language         | Swan Lake 2201.0.0| 
 | Google Cloud Functions API | v1              |
 
 ## Report issues

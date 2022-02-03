@@ -7,7 +7,7 @@ This package provides the capability to manipulate files and folders, management
 ### Compatibility
 |                    | Version                    |
 |--------------------|----------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6  |
+| Ballerina Language | Ballerina Swan Lake 2201.0.0 |
 | Box Platform API   | V2.0.0                     |
 
 ## Report issues

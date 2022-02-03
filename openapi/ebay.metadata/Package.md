@@ -7,7 +7,7 @@ This package enables to retrieve eBay category policies and information on sales
 #### Compatibility
 |                                   | Version                       |
 |-----------------------------------|-------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta6     |
+| Ballerina Language                | Ballerina Swan Lake 2201.0.0    |
 | eBay Metadata API                 | v1.4.1                        |
 
 ## Report issues

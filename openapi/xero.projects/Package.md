@@ -6,7 +6,7 @@ The `ballerinax/xero.projects` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6 |
+| Ballerina Language | Ballerina Swan Lake 2201.0.0|
 | Xero Projects API  | 2.16.0                    |
 
 ## Report issues

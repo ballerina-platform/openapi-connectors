@@ -6,7 +6,7 @@ This package provides capabilities of generating random UUIDs.
 ### Compatibility
 |                           | Version                   |
 |---------------------------|---------------------------|
-| Ballerina Language        | Ballerina Swan Lake Beta6 |
+| Ballerina Language        | Ballerina Swan Lake 2201.0.0|
 | Fungenerators UUID API    | 1.5                       |
 
 ## Report issues

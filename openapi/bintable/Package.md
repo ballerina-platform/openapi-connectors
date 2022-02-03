@@ -7,7 +7,7 @@ This package provides the capability to BIN code lookup.
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake Beta6       |
+| Ballerina Language Version    | Swan Lake 2201.0.0      |
 | API Version                   | 1.0.0                 |
 
 ## Report issues

@@ -8,7 +8,7 @@ The `azure.iotcentral` is a [Ballerina](https://ballerina.io/) connector for con
 #### Compatibility
 |                               | Version                  |
 |-------------------------------|--------------------------|
-| Ballerina Language            | Balerina Swan Lake Beta6 |
+| Ballerina Language            | Balerina Swan Lake 2201.0.0|
 | Azure IoT Central REST API    | v1.0                     |
 
 ## Report issues

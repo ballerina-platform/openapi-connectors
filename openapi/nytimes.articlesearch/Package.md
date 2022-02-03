@@ -7,7 +7,7 @@ This package provides the capability to access New York Times Article Search API
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake Beta6       | 
+| Ballerina Language            | Ballerina Swan Lake 2201.0.0      | 
 | Article Search API            | 1.0.0                           |
 
 ## Report issues

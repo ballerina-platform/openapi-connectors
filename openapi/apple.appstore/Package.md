@@ -3,7 +3,7 @@ Connects to Apple App Store Connect API from Ballerina
 #### Compatibility
 |                               | Version         |
 |-------------------------------|-----------------|
-| Ballerina Language            | Swan Lake Beta6 |
+| Ballerina Language            | Swan Lake 2201.0.0|
 | Apple appstore API            | 1.4.1           |
 
 ### Package Overview

@@ -6,7 +6,7 @@ name = "prodpad"
 icon = "icon.png"
 distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.1.2"
+version = "1.2.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

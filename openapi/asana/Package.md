@@ -7,7 +7,7 @@ This package provides the capability to help teams organize, track and manage th
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake Beta6 |
+| Ballerina Language | Ballerina Swan Lake 2201.0.0|
 | Asana API          | V1.0                        |
 
 ## Report issues

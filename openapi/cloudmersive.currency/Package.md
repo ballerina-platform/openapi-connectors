@@ -7,7 +7,7 @@ The `ballerinax/cloudmersive.currency` is a [Ballerina](https://ballerina.io/) c
 ### Compatibility
 |                          | Version                    |
 |--------------------------|----------------------------|
-| Ballerina Language       | Ballerina Swan Lake Beta6  |
+| Ballerina Language       | Ballerina Swan Lake 2201.0.0 |
 | Cloudmersive API         | v1                         |
 
 ## Report issues

@@ -6,7 +6,7 @@ The `ballerinax/salesforce.einstein` is a [Ballerina](https://ballerina.io/) con
 ### Compatibility
 |                                              | Version                     |
 |----------------------------------------------|-----------------------------|
-| Ballerina Language                           | Ballerina Swan Lake Beta6   | 
+| Ballerina Language                           | Ballerina Swan Lake 2201.0.0  | 
 | Einstein Vision and Einstein Language API    | 2.0.1                       |
 
 ## Report issues

@@ -6,7 +6,7 @@ The `ballerinax/optimizely` is a [Ballerina](https://ballerina.io/) connector co
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6     | 
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0    | 
 | Optimizely API        | v2                            |
 
 ## Report issues

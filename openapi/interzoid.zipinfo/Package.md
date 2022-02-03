@@ -7,7 +7,7 @@ The `ballerinax/interzoid.zipinfo` is a [Ballerina](https://ballerina.io/) conne
 ### Compatibility
 |                                             | Version                   |
 |---------------------------------------------|---------------------------|
-| Ballerina Language                          | Ballerina Swan Lake Beta6 |
+| Ballerina Language                          | Ballerina Swan Lake 2201.0.0|
 | Interzoid Zip Code Detailed Information API | 1.0.0                     |
 
 ## Report issues

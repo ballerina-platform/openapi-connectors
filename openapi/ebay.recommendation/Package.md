@@ -7,7 +7,7 @@ This package provides access to information that can help sellers optimize their
 #### Compatibility
 |                                   | Version                       |
 |-----------------------------------|-------------------------------|
-| Ballerina Language                | Ballerina Swan Lake Beta6     |
+| Ballerina Language                | Ballerina Swan Lake 2201.0.0    |
 | eBay Recommendation API           | 1.1.0                         |
 
 ## Report issues

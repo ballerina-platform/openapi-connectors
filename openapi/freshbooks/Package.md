@@ -6,7 +6,7 @@ The `ballerinax/freshbooks` is a [Ballerina](https://ballerina.io/) connector co
 ### Compatibility
 |                       | Version                    |
 |-----------------------|----------------------------|
-| Ballerina Language    | Ballerina Swan Lake Beta6  | 
+| Ballerina Language    | Ballerina Swan Lake 2201.0.0 | 
 | FreshBooks API        | v1                         |
 
 ## Report issues

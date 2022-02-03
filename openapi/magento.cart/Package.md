@@ -7,7 +7,7 @@ This package provides the capability to access the operation to Amazon billing a
 ### Compatibility
 |                        | Version         |
 |------------------------|-----------------|
-| Ballerina Language     | Swan Lake Beta6 | 
+| Ballerina Language     | Swan Lake 2201.0.0| 
 | Magento API            | v2              |
 
 ## Report issues

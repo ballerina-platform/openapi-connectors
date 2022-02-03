@@ -7,7 +7,7 @@ The `ballerinax/pocketsmith` is a [Ballerina](https://ballerina.io/) connector f
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake Beta6  |
+| Ballerina Language   | Ballerina Swan Lake 2201.0.0 |
 | PocketSmith REST API | v2.0                       |
 
 ## Report issues

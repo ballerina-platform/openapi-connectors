@@ -1,13 +1,12 @@
 [package]
-distribution = "2201.0.0"
 license = ["Apache-2.0"]
 keywords = ["Commerce/eCommerce", "Cost/Paid"]
 org = "ballerinax"
 name = "squareup"
 icon = "icon.png"
+distribution = "2201.0.0"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

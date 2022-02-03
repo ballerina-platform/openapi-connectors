@@ -208,7 +208,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -272,7 +272,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "openweathermap"
-version = "1.1.1"
+version = "1.2.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "url"},

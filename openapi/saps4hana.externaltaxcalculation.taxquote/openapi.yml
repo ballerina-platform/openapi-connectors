@@ -1,0 +1,2091 @@
+openapi: 3.0.1
+info:
+  title: Tax Determination and Calculation via Integration Flow
+  description: >-
+    This is a generated connector for [SAP S/4HANA Integration with External Tax Calculation Engine API- Tax Determination and Calculation via Integration Flow API v1.0.0](https://api.sap.com/api/taxquote/overview) OpenAPI specification. 
+
+    Your external tax engine sends tax calculation results to the SAP S/4HANA
+    Cloud system via communication scenario SAP_COM_0249.
+
+    This API is consumed by the [SAP S/4HANA Integration with External Tax
+    Calculation Engines Integration
+    Package](https://api.sap.com/package/SAPS4HANAIntegrationwithExternalTaxCalculationEngines)
+    endpoint.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA Tax Determination and Calculation
+    iconPath: "icon.png"
+  version: 1.0.0
+# servers:
+#   - url: https://{host}.hana.ondemand.com/http
+#     description: SAP S/4HANA Integration with External Tax Calculation Engines
+#     variables:
+#       host:
+#         description: SAP Cloud Integration Host
+#         default: '{host}'
+security:
+  - OAuth2_ClientCredentials:
+      - read
+      - write
+      - admin
+tags:
+  - name: Tax v0
+    description: Tax Service V 0 Quote
+paths:
+  /quote:
+    post:
+      tags:
+        - Tax v0
+      summary: Determines and calculates indirect taxes.
+      description: >-
+        You can use this resource to determine which tax types are relevant and
+        to calculate the amount of tax due on a business transaction.
+      operationId: taxQuote_1
+      parameters:
+        - name: X-CorrelationID
+          in: header
+          description: >-
+            An ID that uniquely identifies an HTTP request.
+
+
+            The SAP Cloud Integration generates a new correlation ID when you do
+            not send the X-CorrelationID parameter on the HTTP request header.
+          schema:
+            type: string
+        - name: X-Routing-Key
+          in: header
+          description: >-
+            The tax engine that you want to use to calculate taxes in a certain
+            transaction (if you have configured multiple engines).
+          schema:
+            type: string
+      requestBody:
+        description: The request payload as per the model schema provided.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.v0.schema.TaxRequest'
+            examples:
+              Domestic purchase of material for Canada:
+                description: Domestic purchase of material for Canada
+                value:
+                  id: SO_01
+                  companyId: '2910'
+                  date: '2020-01-14T15:18:27.000Z'
+                  saleorPurchase: p
+                  grossOrNet: 'n'
+                  currency: CAD
+                  Items:
+                    - id: '000010'
+                      itemCode: TG11
+                      itemType: M
+                      quantity: '1.000'
+                      unitPrice: '100.000000000000'
+                  Locations:
+                    - type: SHIP_FROM
+                      addressLine1: 4440 78 Ave SE
+                      zipCode: T2C 2T5
+                      city: Calgary
+                      state: AB
+                      country: CA
+                    - type: SHIP_TO
+                      addressLine1: 40 Scurfield Blvd
+                      zipCode: R3Y 1G4
+                      city: Winnipeg
+                      state: MB
+                      country: CA
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.v0.schema.TaxResponse'
+              examples:
+                Domestic purchase of material for Canada:
+                  description: Domestic purchase of material for Canada
+                  value:
+                    date: '2020-01-14T15:18:27.000Z'
+                    inclusive: 'false'
+                    country: CA
+                    taxLines:
+                      - id: '1'
+                        country: CA
+                        taxcode: ''
+                        taxCodeLegalPhrase: ''
+                        taxValues:
+                          - taxTypeCode: '1'
+                            rate: '5.0'
+                            taxable: '100.00'
+                            value: '5.00'
+                            nonDeductibleTaxRate: '0.0'
+                            nonDeductibleTaxAmount: '0.00'
+                            deductibleTaxAmount: '5.00'
+                            dueCategory: R
+                            isTaxDeferred: false
+                            withholdingRelevant: false
+                          - taxTypeCode: '3'
+                            rate: '7.0'
+                            taxable: '100.00'
+                            value: '7.00'
+                            nonDeductibleTaxRate: '100.0'
+                            nonDeductibleTaxAmount: '7.00'
+                            deductibleTaxAmount: '0.00'
+                            dueCategory: R
+                            isTaxDeferred: false
+                            withholdingRelevant: false
+                    partnerName: Tax Service
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.v0.schema.ErrorResponse'
+              example:
+                status: 400
+                type: invalid_input
+                message: >-
+                  'Mat' is an invalid value for JSON parameter
+                  'Items[0].itemType'. Use one of the following values: m, M, s,
+                  S.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.v0.schema.ErrorResponse'
+              example:
+                status: 500
+                type: server_exception
+                message: >-
+                  An unexpected error occurred while processing your request.
+                  Open a support request.
+      security:
+        - OAuth2_ClientCredentials:
+            - read
+            - admin
+            - write
+components:
+  schemas:
+    api.v0.schema.AdditionalItemInformation:
+      type: object
+      properties:
+        type:
+          type: string
+          description: >-
+            Information about the operation, such as the material origin, own
+            production usage, and whether the service is sold electronically.
+        information:
+          type: string
+          description: >-
+            Information about the item type. The 'isServiceElectronicallySold'
+            parameter can have the values 'Y' (yes) or 'N' (no). In the tax
+            configuration application, you must maintain the product tax
+            classification for all relevant tax countries where the product is
+            sold electronically.
+    api.v0.schema.BusinessPartnerExemptionDetail:
+      type: object
+      properties:
+        locationType:
+          type: string
+          description: The location at which the product has the specified exemption.
+          enum:
+            - SHIP_FROM
+            - SHIP_TO
+            - CONTRACT_FROM
+            - CONTRACT_TO
+            - SERVICE_LOCATION
+        exemptionreasoncode:
+          type: string
+          description: The exemption code classification for the product.
+        taxType:
+          type: string
+          description: >-
+            The identification of the tax rate type on which you apply the
+            exemption.
+      description: The exemption details of a business partner.
+    api.v0.schema.CostInformation:
+      type: object
+      properties:
+        costType:
+          type: string
+          description: The type of cost, such as freight, discount, shipping, or others.
+        amount:
+          type: string
+          description: The corresponding amount for the cost type.
+    api.v0.schema.ExemptionDetail:
+      type: object
+      properties:
+        LocationType:
+          type: string
+          description: The location at which the product has the specified exemption.
+          enum:
+            - SHIP_FROM
+            - SHIP_TO
+            - CONTRACT_FROM
+            - CONTRACT_TO
+            - SERVICE_LOCATION
+        exemptionCode:
+          type: string
+          description: The Exemption Code classification for the product.
+        tariffId:
+          type: string
+          description: >-
+            The classification code for a tax rate. The tax authorities of the
+            country/region in which the the tax is applicable determine these
+            rates.
+        taxType:
+          type: string
+          description: >-
+            The identification of the tax rate type on which you apply the
+            exemption.
+        taxRateType:
+          type: string
+          description: The identification of the tax rate type.
+        region:
+          type: string
+          description: The code of the region in which the product exemption is valid.
+      description: The list of details on the tax exemption.
+    api.v0.schema.Item:
+      required:
+        - id
+        - quantity
+        - unitPrice
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique identifier for each item in the transaction.
+        itemCode:
+          type: string
+          description: >-
+            Pass the item code, for example, SKU of a product. Else pass the
+            productid as maintained in the Tax configuration application. In the
+            second case, the service considers the relevant tax classification
+            as maintained in the application.
+        quantity:
+          type: number
+          description: >-
+            The quantity of the line item. This can include fractions expressed
+            using decimal places.
+        unitPrice:
+          type: number
+          description: The unit price of the line item.
+        shippingCost:
+          type: string
+          description: >-
+            To determine tax on shipping costs, specify the tax as a separate
+            item. To indicate that an item relates to shipping costs, you must
+            enter 'Y' as the value of this parameter. For the United States of
+            America, tax is calculated if shipping is taxable in the particular
+            jurisdiction. If shipping is not taxable, the API returns zero tax
+            for the item.
+        itemType:
+          type: string
+          description: >-
+            The type of product - service or material. Enter 's' for service and
+            'm' for material.
+          enum:
+            - m
+            - M
+            - s
+            - S
+        exemptionDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.ExemptionDetail'
+        certificateId:
+          type: string
+          description: >-
+            The ID of the exemption certificate, as maintained in the tax
+            configuration application. The API considers the exemption only when
+            the following conditions are met: 1. The certificate ID is valid on
+            the date in the request payload. 2. The exemption details are
+            maintained in the tax configuration application.
+        itemClassifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.ItemClassification'
+        additionalItemInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.AdditionalItemInformation'
+        costInformation:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.CostInformation'
+        taxCategory:
+          type: string
+          description: >-
+            Determines if the taxes to be calculated are product taxes or
+            withholding taxes. This parameter is valid only for direct
+            calculation scenarios.
+          enum:
+            - PRODUCT_TAXES
+            - WITHHOLDING
+        taxCodeCountry:
+          type: string
+          description: >-
+            Determines the country/region for which the system calculates taxes.
+            The system uses the 2-character country/region code described on ISO
+            3166-1 alpha-2. This parameter is valid only for direct calculation
+            scenarios.
+          enum:
+            - AD
+            - AE
+            - AF
+            - AG
+            - AI
+            - AL
+            - AM
+            - AN
+            - AO
+            - AQ
+            - AR
+            - AS
+            - AT
+            - AU
+            - AW
+            - AX
+            - AZ
+            - BA
+            - BB
+            - BD
+            - BE
+            - BF
+            - BG
+            - BH
+            - BI
+            - BJ
+            - BL
+            - BM
+            - BN
+            - BO
+            - BQ
+            - BR
+            - BS
+            - BT
+            - BV
+            - BW
+            - BY
+            - BZ
+            - CA
+            - CC
+            - CD
+            - CF
+            - CG
+            - CH
+            - CI
+            - CK
+            - CL
+            - CM
+            - CN
+            - CO
+            - CR
+            - CS
+            - CU
+            - CV
+            - CW
+            - CX
+            - CY
+            - CZ
+            - DE
+            - DJ
+            - DK
+            - DM
+            - DO
+            - DZ
+            - EC
+            - EE
+            - EG
+            - EH
+            - ER
+            - ES
+            - ET
+            - FI
+            - FJ
+            - FK
+            - FM
+            - FO
+            - FR
+            - GA
+            - GB
+            - GD
+            - GE
+            - GF
+            - GG
+            - GH
+            - GI
+            - GL
+            - GM
+            - GN
+            - GP
+            - GQ
+            - GR
+            - GS
+            - GT
+            - GU
+            - GW
+            - GY
+            - HK
+            - HM
+            - HN
+            - HR
+            - HT
+            - HU
+            - ID
+            - IE
+            - IL
+            - IM
+            - IN
+            - IO
+            - IQ
+            - IR
+            - IS
+            - IT
+            - JE
+            - JM
+            - JO
+            - JP
+            - KE
+            - KG
+            - KH
+            - KI
+            - KM
+            - KN
+            - KP
+            - KR
+            - KW
+            - KY
+            - KZ
+            - LA
+            - LB
+            - LC
+            - LI
+            - LK
+            - LR
+            - LS
+            - LT
+            - LU
+            - LV
+            - LY
+            - MA
+            - MC
+            - MD
+            - ME
+            - MF
+            - MG
+            - MH
+            - MK
+            - ML
+            - MM
+            - MN
+            - MO
+            - MP
+            - MQ
+            - MR
+            - MS
+            - MT
+            - MU
+            - MV
+            - MW
+            - MX
+            - MY
+            - MZ
+            - NA
+            - NC
+            - NE
+            - NF
+            - NG
+            - NI
+            - NL
+            - 'NO'
+            - NP
+            - NR
+            - NU
+            - NZ
+            - OM
+            - PA
+            - PE
+            - PF
+            - PG
+            - PH
+            - PK
+            - PL
+            - PM
+            - PN
+            - PR
+            - PS
+            - PT
+            - PW
+            - PY
+            - QA
+            - RE
+            - RO
+            - RS
+            - RU
+            - RW
+            - SA
+            - SB
+            - SC
+            - SD
+            - SE
+            - SG
+            - SH
+            - SI
+            - SJ
+            - SK
+            - SL
+            - SM
+            - SN
+            - SO
+            - SR
+            - SS
+            - ST
+            - SV
+            - SX
+            - SY
+            - SZ
+            - TC
+            - TD
+            - TF
+            - TG
+            - TH
+            - TJ
+            - TK
+            - TL
+            - TM
+            - TN
+            - TO
+            - TR
+            - TT
+            - TV
+            - TW
+            - TZ
+            - UA
+            - UG
+            - UM
+            - US
+            - UY
+            - UZ
+            - VA
+            - VC
+            - VE
+            - VG
+            - VI
+            - VN
+            - VU
+            - WF
+            - WS
+            - YE
+            - YT
+            - ZA
+            - ZM
+            - ZW
+        taxCode:
+          type: string
+          description: >-
+            Determines which rule the system uses to calculate taxes. This
+            parameter is valid only for direct calculation scenarios.
+        taxCodeRegion:
+          type: string
+          description: >-
+            Determines the region for which the system calculates taxes. This
+            parameter is optional and valid only for direct calculation
+            scenarios.
+      description: >-
+        If you include too many line items in the request, it can impact the
+        performance. For more information, see SAP Note 2698505 on the SAP ONE
+        Support Launchpad.
+    api.v0.schema.ItemClassification:
+      type: object
+      properties:
+        itemStandardClassificationSystemCode:
+          type: string
+          description: The identifier of the item.
+        itemStandardClassificationCode:
+          type: string
+          description: The classification code for the system code.
+    api.v0.schema.Location:
+      required:
+        - country
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of address.
+          enum:
+            - SHIP_FROM
+            - SHIP_TO
+            - CONTRACT_FROM
+            - CONTRACT_TO
+            - SERVICE_LOCATION
+        addressLine1:
+          type: string
+          description: The first line of the address.
+        addressLine2:
+          type: string
+          description: The second line of the address.
+        addressLine3:
+          type: string
+          description: The third line of the address.
+        zipCode:
+          type: string
+          description: The ZIP or postal code.
+        city:
+          type: string
+          description: The name of the city.
+        state:
+          type: string
+          description: >-
+            The code of the state or province; do not add the country/region as
+            a prefix or suffix.
+        county:
+          type: string
+          description: The name of the county.
+        addressId:
+          type: string
+          description: >-
+            The ID of the address, as maintained in the tax configuration
+            application for the various location addresses. The 'addressID'
+            parameter is relevant only when location addresses are maintained in
+            the tax configuration application for a company, customer, or
+            supplier. For sale transactions and the location type 'SHIP_FROM',
+            the API checks for an address maintained for the company ID that is
+            specified in the request payload. For sale transactions and the
+            location type 'SHIP_TO', the API checks for an address maintained
+            for the business partner ID that is specified in the request
+            payload. For purchase transactions and the location type 'SHIP_TO',
+            the API checks for an address maintained for the company ID that is
+            specified in the request payload. For sale transactions and the
+            location type 'SHIP_FROM', the API checks for an address maintained
+            for the business partner ID that is specified in the request
+            payload. Note: if you specify an address ID in the request, you must
+            also specify a company ID and business partner ID.
+        country:
+          type: string
+          description: >-
+            The name of the country/region. Enter the 2-character country/region
+            code according to the standards of ISO 3166-1 alpha-2.
+          enum:
+            - AD
+            - AE
+            - AF
+            - AG
+            - AI
+            - AL
+            - AM
+            - AN
+            - AO
+            - AQ
+            - AR
+            - AS
+            - AT
+            - AU
+            - AW
+            - AX
+            - AZ
+            - BA
+            - BB
+            - BD
+            - BE
+            - BF
+            - BG
+            - BH
+            - BI
+            - BJ
+            - BL
+            - BM
+            - BN
+            - BO
+            - BQ
+            - BR
+            - BS
+            - BT
+            - BV
+            - BW
+            - BY
+            - BZ
+            - CA
+            - CC
+            - CD
+            - CF
+            - CG
+            - CH
+            - CI
+            - CK
+            - CL
+            - CM
+            - CN
+            - CO
+            - CR
+            - CS
+            - CU
+            - CV
+            - CW
+            - CX
+            - CY
+            - CZ
+            - DE
+            - DJ
+            - DK
+            - DM
+            - DO
+            - DZ
+            - EC
+            - EE
+            - EG
+            - EH
+            - ER
+            - ES
+            - ET
+            - FI
+            - FJ
+            - FK
+            - FM
+            - FO
+            - FR
+            - GA
+            - GB
+            - GD
+            - GE
+            - GF
+            - GG
+            - GH
+            - GI
+            - GL
+            - GM
+            - GN
+            - GP
+            - GQ
+            - GR
+            - GS
+            - GT
+            - GU
+            - GW
+            - GY
+            - HK
+            - HM
+            - HN
+            - HR
+            - HT
+            - HU
+            - ID
+            - IE
+            - IL
+            - IM
+            - IN
+            - IO
+            - IQ
+            - IR
+            - IS
+            - IT
+            - JE
+            - JM
+            - JO
+            - JP
+            - KE
+            - KG
+            - KH
+            - KI
+            - KM
+            - KN
+            - KP
+            - KR
+            - KW
+            - KY
+            - KZ
+            - LA
+            - LB
+            - LC
+            - LI
+            - LK
+            - LR
+            - LS
+            - LT
+            - LU
+            - LV
+            - LY
+            - MA
+            - MC
+            - MD
+            - ME
+            - MF
+            - MG
+            - MH
+            - MK
+            - ML
+            - MM
+            - MN
+            - MO
+            - MP
+            - MQ
+            - MR
+            - MS
+            - MT
+            - MU
+            - MV
+            - MW
+            - MX
+            - MY
+            - MZ
+            - NA
+            - NC
+            - NE
+            - NF
+            - NG
+            - NI
+            - NL
+            - 'NO'
+            - NP
+            - NR
+            - NU
+            - NZ
+            - OM
+            - PA
+            - PE
+            - PF
+            - PG
+            - PH
+            - PK
+            - PL
+            - PM
+            - PN
+            - PR
+            - PS
+            - PT
+            - PW
+            - PY
+            - QA
+            - RE
+            - RO
+            - RS
+            - RU
+            - RW
+            - SA
+            - SB
+            - SC
+            - SD
+            - SE
+            - SG
+            - SH
+            - SI
+            - SJ
+            - SK
+            - SL
+            - SM
+            - SN
+            - SO
+            - SR
+            - SS
+            - ST
+            - SV
+            - SX
+            - SY
+            - SZ
+            - TC
+            - TD
+            - TF
+            - TG
+            - TH
+            - TJ
+            - TK
+            - TL
+            - TM
+            - TN
+            - TO
+            - TR
+            - TT
+            - TV
+            - TW
+            - TZ
+            - UA
+            - UG
+            - UM
+            - US
+            - UY
+            - UZ
+            - VA
+            - VC
+            - VE
+            - VG
+            - VI
+            - VN
+            - VU
+            - WF
+            - WS
+            - YE
+            - YT
+            - ZA
+            - ZM
+            - ZW
+        isCompanyTaxRegistered:
+          type: string
+          description: >-
+            Shows whether the company is registered with the tax authorities at
+            this location. The application calling the API must identify whether
+            a company has a VAT establishment for tax purposes in the selling
+            country/region. If the company has a VAT establishment, the calling
+            application must specify 'Y' as the value for this parameter
+            "isCompanyTaxRegistered" for the selling location. If the company is
+            not established for VAT purposes, the calling application must
+            specify 'N' as the value for this parameter "isCompanyTaxRegistered"
+            for the selling location.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+        isBusinessPartnerTaxRegistered:
+          type: string
+          description: >-
+            Shows whether the business partner is registered for tax purposes.
+            The tax service does not differentiate between business-to-business
+            (B2B) and business-to-consumer (B2C) transactions. B2B transactions:
+            the calling application must specify 'Y' as the value of this
+            parameter. B2C transactions: the calling application must specify
+            'N' as the value of this parameter.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+      description: List of Addresses.
+    api.v0.schema.Party:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The identifier of each party in the business transaction. Use the
+            party master data ID that the consuming application defines. For
+            example, in SAP S/4HANA (Cloud and OP), the party ID is the business
+            partner number.
+        role:
+          type: string
+          description: The role played by the party in the transaction.
+          enum:
+            - SHIP_FROM
+            - SHIP_TO
+            - CONTRACT_FROM
+            - CONTRACT_TO
+            - SERVICE_LOCATION
+        taxRegistration:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.TaxRegistration'
+      description: Details about other parties.
+    api.v0.schema.TaxRegistration:
+      type: object
+      properties:
+        locationType:
+          type: string
+          description: The type of location.
+          enum:
+            - SHIP_FROM
+            - SHIP_TO
+            - CONTRACT_FROM
+            - CONTRACT_TO
+            - SERVICE_LOCATION
+        taxNumber:
+          type: string
+          description: The corresponding tax number for the tax number type code.
+        taxNumberTypeCode:
+          type: string
+          description: |-
+            The code for the tax number type.
+              * isNaturalPerson - Determines if this party of the business transaction is a natural person. Note: The system uses the information from this parameter to determine what data privacy and protection policies to apply on this payload data. The system does not use the information from this parameter to determine and calculate taxes. 'y' when the party is a natural person, otherwise 'n'.
+      description: The tax registration details.
+    api.v0.schema.TaxRequest:
+      required:
+        - Items
+        - currency
+        - date
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            A document ID that uniquely identifies the transaction, which is the
+            request that is sent for tax calculation.
+        companyId:
+          type: string
+          description: >-
+            The company ID, as maintained in the Tax Configuration application.
+            If the company master data is maintained in the tax configuration
+            application, include a value for this key in the request for the
+            service to use the relevant tax classification available in the
+            application to determine the tax amount.
+        businessPartnerId:
+          type: string
+          description: >-
+            The ID of a supplier or customer, as maintained in the Tax
+            Configuration application. Include a value for this parameter in the
+            request only if the tax configuration data for suppliers or
+            customers is maintained in the tax configuration application. In
+            this case, the service considers the relevant tax classification
+            available in the application to determine the tax amount.
+        date:
+          type: string
+          description: >-
+            The date of a transaction, such as the order date, invoice date, or
+            return date. To determine the tax due, the service applies the
+            relevant tax rules that apply on this date.
+          format: date-time
+        currency:
+          type: string
+          description: >-
+            Specifies the currency code according to ISO 4217 standards. All
+            amounts in the response have the number digits after the decimal
+            place in accordance with the currency in question.
+          enum:
+            - AED
+            - AFN
+            - ALL
+            - AMD
+            - ANG
+            - AOA
+            - ARS
+            - AUD
+            - AWG
+            - AZN
+            - BAM
+            - BBD
+            - BDT
+            - BGN
+            - BHD
+            - BIF
+            - BMD
+            - BND
+            - BOB
+            - BOV
+            - BRL
+            - BSD
+            - BTN
+            - BWP
+            - BYN
+            - BYR
+            - BZD
+            - CAD
+            - CDF
+            - CHE
+            - CHF
+            - CHW
+            - CLF
+            - CLP
+            - CNY
+            - COP
+            - COU
+            - CRC
+            - CSD
+            - CUC
+            - CUP
+            - CVE
+            - CYP
+            - CZK
+            - DJF
+            - DKK
+            - DOP
+            - DZD
+            - EEK
+            - EGP
+            - ERN
+            - ETB
+            - EUR
+            - FJD
+            - FKP
+            - GBP
+            - GEL
+            - GHC
+            - GHS
+            - GIP
+            - GMD
+            - GNF
+            - GTQ
+            - GWP
+            - GYD
+            - HKD
+            - HNL
+            - HRK
+            - HTG
+            - HUF
+            - IDR
+            - ILS
+            - INR
+            - IQD
+            - IRR
+            - ISK
+            - JMD
+            - JOD
+            - JPY
+            - KES
+            - KGS
+            - KHR
+            - KMF
+            - KPW
+            - KRW
+            - KWD
+            - KYD
+            - KZT
+            - LAK
+            - LBP
+            - LKR
+            - LRD
+            - LSL
+            - LTL
+            - LVL
+            - LYD
+            - MAD
+            - MDL
+            - MGA
+            - MKD
+            - MMK
+            - MNT
+            - MOP
+            - MRO
+            - MRU
+            - MTL
+            - MUR
+            - MVR
+            - MWK
+            - MXN
+            - MXV
+            - MYR
+            - MZN
+            - NAD
+            - NGN
+            - NIO
+            - NOK
+            - NPR
+            - NZD
+            - OMR
+            - PAB
+            - PEN
+            - PGK
+            - PHP
+            - PKR
+            - PLN
+            - PYG
+            - QAR
+            - ROL
+            - RON
+            - RSD
+            - RUB
+            - RWF
+            - SAR
+            - SBD
+            - SCR
+            - SDD
+            - SDG
+            - SEK
+            - SGD
+            - SHP
+            - SIT
+            - SKK
+            - SLL
+            - SOS
+            - SRD
+            - SSP
+            - STD
+            - SVC
+            - SYP
+            - SZL
+            - THB
+            - TJS
+            - TMM
+            - TMT
+            - TND
+            - TOP
+            - TRY
+            - TTD
+            - TWD
+            - TZS
+            - UAH
+            - UGX
+            - USD
+            - USN
+            - USS
+            - UYI
+            - UYU
+            - UZS
+            - VEB
+            - VEF
+            - VND
+            - VUV
+            - WST
+            - XAF
+            - XAG
+            - XAU
+            - XBA
+            - XBB
+            - XBC
+            - XBD
+            - XCD
+            - XDR
+            - XFO
+            - XFU
+            - XOF
+            - XPD
+            - XPF
+            - XPT
+            - XSU
+            - XTS
+            - XUA
+            - XXX
+            - YER
+            - ZAR
+            - ZMK
+            - ZMW
+            - ZWD
+            - ZWL
+            - ZWN
+        isTransactionWithinTaxReportingGroup:
+          type: string
+          description: >-
+            Indicates if the parties involved in the transaction belong to the
+            same tax reporting group, as defined by law.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+        cashDiscountPercent:
+          type: string
+          description: >-
+            The percentage discount that applies to the business transaction
+            request sent. In accordance with country/region tax determination
+            guidelines, the service determines whether a cash discount affects
+            the base amount used for tax calculation.
+        isCashDiscountPlanned:
+          type: string
+          description: >-
+            If the cash discount is planned for the transaction, enter 'y' or
+            'Y' as the value of this parameter. If the cash discount is already
+            considered in the transaction, enter 'n' or 'N' as the value of this
+            parameter.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+        grossOrNet:
+          type: string
+          description: >-
+            Shows whether the transaction is gross or net. Use g for gross and n
+            for net.
+          enum:
+            - g
+            - 'n'
+            - G
+            - 'N'
+        saleorPurchase:
+          type: string
+          description: >-
+            Shows whether the transaction is a sale or purchase. Use s or S for
+            a sale and p or P for a purchase.
+          enum:
+            - s
+            - p
+            - S
+            - P
+        operationNatureCode:
+          type: string
+          description: Identifies the nature of the operation.
+        isCompanyDeferredTaxEnabled:
+          type: string
+          description: >-
+            Indicates if the company can defer the tax due until the date of the
+            invoice payment. This applies only if the company has the required
+            authorizations for tax deferral. If you enter 'y' as the value in
+            this parameter, the service applies deferred tax rules and indicates
+            tax deferral in the response.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+        Items:
+          type: array
+          description: >-
+            If you include too many line items in the request, it can impact the
+            performance. For more information, see SAP Note 2698505 on the SAP
+            ONE Support Launchpad.
+          items:
+            $ref: '#/components/schemas/api.v0.schema.Item'
+        Locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.Location'
+        BusinessPartnerExemptionDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.BusinessPartnerExemptionDetail'
+        Party:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.Party'
+        isTraceRequired:
+          type: string
+          description: >-
+            Shows whether tracing of the tax determination process is enabled.
+            To enable the trace, enter 'y' or 'Y' as the value of the parameter.
+            To disable the trace, enter 'n' or 'N'. When enabled, the trace
+            content is sent as part of the response payload.
+          enum:
+            - 'y'
+            - 'n'
+            - 'Y'
+            - 'N'
+      description: The request payload as per the model schema provided.
+    api.v0.schema.ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The status code.
+          format: int32
+        type:
+          type: string
+          description: The message type.
+          enum:
+            - bad_request
+            - unsupported_media
+            - invalid_input
+            - invalid_content
+            - server_exception
+            - invalid_input_Location
+            - problem_in_cloud_connector
+            - request_not_valid
+            - request_data_not_valid
+            - unable_to_determine_tax_engine
+            - partner_did_not_resolve_taxes
+            - partner_invalid_response
+            - taxConfiguration_connection_exception
+            - unable_to_determine_tax_configuration_destination
+            - no_content
+            - partial_content
+        message:
+          type: string
+          description: The message content.
+      description: >-
+        Invalid date in the request / Invalid country/region code in the request
+        / Invalid type in the request / Any of the mandatory parameters is
+        missing / Invalid currency in the request / Invalid GrossOrNet in the
+        request / Invalid SaleOrPurchase in the request / Max length given in
+        the schema / Location Type is missing/invalid / ExemptionCode is
+        missing/invalid / More than 1 Ship_From in the exemptionDetils / More
+        than 1 Ship_To in the exemptionDetails / More than 1 Ship_From in the
+        Locations / More than 1 Ship_To in the Locations/ Invalid Zipcode in
+        SHIP_TO Location for US / More than 1 shippingCost in items / Invalid
+        shippingCost in items " / Invalid fromDate / Invalid toDate / Invalid
+        Date Range / Missing value for toDate / Missing value for fromDate.
+    api.v0.schema.TaxAttribute:
+      type: object
+      properties:
+        attributeType:
+          type: string
+          description: The type of the tax attribute.
+        attributeValue:
+          type: string
+          description: Corresponding value for the attributes.
+      description: Other tax attributes.
+    api.v0.schema.TaxLine:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for each item in the transaction.
+        country:
+          type: string
+          description: >-
+            The taxable country/region. If the tax country/region for an item
+            differs from the other items, then the tax service sends back the
+            tax country/region for each item.
+          enum:
+            - AD
+            - AE
+            - AF
+            - AG
+            - AI
+            - AL
+            - AM
+            - AN
+            - AO
+            - AQ
+            - AR
+            - AS
+            - AT
+            - AU
+            - AW
+            - AX
+            - AZ
+            - BA
+            - BB
+            - BD
+            - BE
+            - BF
+            - BG
+            - BH
+            - BI
+            - BJ
+            - BL
+            - BM
+            - BN
+            - BO
+            - BQ
+            - BR
+            - BS
+            - BT
+            - BV
+            - BW
+            - BY
+            - BZ
+            - CA
+            - CC
+            - CD
+            - CF
+            - CG
+            - CH
+            - CI
+            - CK
+            - CL
+            - CM
+            - CN
+            - CO
+            - CR
+            - CS
+            - CU
+            - CV
+            - CW
+            - CX
+            - CY
+            - CZ
+            - DE
+            - DJ
+            - DK
+            - DM
+            - DO
+            - DZ
+            - EC
+            - EE
+            - EG
+            - EH
+            - ER
+            - ES
+            - ET
+            - FI
+            - FJ
+            - FK
+            - FM
+            - FO
+            - FR
+            - GA
+            - GB
+            - GD
+            - GE
+            - GF
+            - GG
+            - GH
+            - GI
+            - GL
+            - GM
+            - GN
+            - GP
+            - GQ
+            - GR
+            - GS
+            - GT
+            - GU
+            - GW
+            - GY
+            - HK
+            - HM
+            - HN
+            - HR
+            - HT
+            - HU
+            - ID
+            - IE
+            - IL
+            - IM
+            - IN
+            - IO
+            - IQ
+            - IR
+            - IS
+            - IT
+            - JE
+            - JM
+            - JO
+            - JP
+            - KE
+            - KG
+            - KH
+            - KI
+            - KM
+            - KN
+            - KP
+            - KR
+            - KW
+            - KY
+            - KZ
+            - LA
+            - LB
+            - LC
+            - LI
+            - LK
+            - LR
+            - LS
+            - LT
+            - LU
+            - LV
+            - LY
+            - MA
+            - MC
+            - MD
+            - ME
+            - MF
+            - MG
+            - MH
+            - MK
+            - ML
+            - MM
+            - MN
+            - MO
+            - MP
+            - MQ
+            - MR
+            - MS
+            - MT
+            - MU
+            - MV
+            - MW
+            - MX
+            - MY
+            - MZ
+            - NA
+            - NC
+            - NE
+            - NF
+            - NG
+            - NI
+            - NL
+            - 'NO'
+            - NP
+            - NR
+            - NU
+            - NZ
+            - OM
+            - PA
+            - PE
+            - PF
+            - PG
+            - PH
+            - PK
+            - PL
+            - PM
+            - PN
+            - PR
+            - PS
+            - PT
+            - PW
+            - PY
+            - QA
+            - RE
+            - RO
+            - RS
+            - RU
+            - RW
+            - SA
+            - SB
+            - SC
+            - SD
+            - SE
+            - SG
+            - SH
+            - SI
+            - SJ
+            - SK
+            - SL
+            - SM
+            - SN
+            - SO
+            - SR
+            - SS
+            - ST
+            - SV
+            - SX
+            - SY
+            - SZ
+            - TC
+            - TD
+            - TF
+            - TG
+            - TH
+            - TJ
+            - TK
+            - TL
+            - TM
+            - TN
+            - TO
+            - TR
+            - TT
+            - TV
+            - TW
+            - TZ
+            - UA
+            - UG
+            - UM
+            - US
+            - UY
+            - UZ
+            - VA
+            - VC
+            - VE
+            - VG
+            - VI
+            - VN
+            - VU
+            - WF
+            - WS
+            - YE
+            - YT
+            - ZA
+            - ZM
+            - ZW
+        totalTax:
+          type: string
+          description: The total amount of tax for an item.
+        taxcode:
+          type: string
+          description: The tax code for an item in the operation.
+        taxCodeDescription:
+          type: string
+          description: >-
+            The description of the tax code that is determined for the
+            transaction.
+        taxCodeLegalPhrase:
+          type: string
+          description: >-
+            The legal phrase associated with the tax code. Where applicable,
+            this item relates to the tax act or article numbers.
+        totalRate:
+          type: string
+          description: The total tax rate.
+        totalWithholdingTax:
+          type: string
+          description: The total amount of withholding tax.
+        totalWithholdingTaxRate:
+          type: string
+          description: The total withholding tax rate.
+        withholdingTaxCode:
+          type: string
+          description: The withholding tax code.
+        taxValues:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.TaxValue'
+    api.v0.schema.TaxResponse:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        total:
+          type: string
+          description: The total amount to be paid or collected.
+        inclusive:
+          type: string
+          description: >-
+            Shows whether tax was included in the gross amount: included (true)
+            or not included (false).
+        subTotal:
+          type: string
+          description: The amount on which tax is applicable.
+        totalTax:
+          type: string
+          description: The total amount of tax for an item.
+        totalWithholdingTax:
+          type: string
+          description: The total amount of withholding tax.
+        country:
+          type: string
+          description: >-
+            The taxable country/region. Note: the API returns the country/region
+            only if all items have the same tax country/region.
+          enum:
+            - AD
+            - AE
+            - AF
+            - AG
+            - AI
+            - AL
+            - AM
+            - AN
+            - AO
+            - AQ
+            - AR
+            - AS
+            - AT
+            - AU
+            - AW
+            - AX
+            - AZ
+            - BA
+            - BB
+            - BD
+            - BE
+            - BF
+            - BG
+            - BH
+            - BI
+            - BJ
+            - BL
+            - BM
+            - BN
+            - BO
+            - BQ
+            - BR
+            - BS
+            - BT
+            - BV
+            - BW
+            - BY
+            - BZ
+            - CA
+            - CC
+            - CD
+            - CF
+            - CG
+            - CH
+            - CI
+            - CK
+            - CL
+            - CM
+            - CN
+            - CO
+            - CR
+            - CS
+            - CU
+            - CV
+            - CW
+            - CX
+            - CY
+            - CZ
+            - DE
+            - DJ
+            - DK
+            - DM
+            - DO
+            - DZ
+            - EC
+            - EE
+            - EG
+            - EH
+            - ER
+            - ES
+            - ET
+            - FI
+            - FJ
+            - FK
+            - FM
+            - FO
+            - FR
+            - GA
+            - GB
+            - GD
+            - GE
+            - GF
+            - GG
+            - GH
+            - GI
+            - GL
+            - GM
+            - GN
+            - GP
+            - GQ
+            - GR
+            - GS
+            - GT
+            - GU
+            - GW
+            - GY
+            - HK
+            - HM
+            - HN
+            - HR
+            - HT
+            - HU
+            - ID
+            - IE
+            - IL
+            - IM
+            - IN
+            - IO
+            - IQ
+            - IR
+            - IS
+            - IT
+            - JE
+            - JM
+            - JO
+            - JP
+            - KE
+            - KG
+            - KH
+            - KI
+            - KM
+            - KN
+            - KP
+            - KR
+            - KW
+            - KY
+            - KZ
+            - LA
+            - LB
+            - LC
+            - LI
+            - LK
+            - LR
+            - LS
+            - LT
+            - LU
+            - LV
+            - LY
+            - MA
+            - MC
+            - MD
+            - ME
+            - MF
+            - MG
+            - MH
+            - MK
+            - ML
+            - MM
+            - MN
+            - MO
+            - MP
+            - MQ
+            - MR
+            - MS
+            - MT
+            - MU
+            - MV
+            - MW
+            - MX
+            - MY
+            - MZ
+            - NA
+            - NC
+            - NE
+            - NF
+            - NG
+            - NI
+            - NL
+            - 'NO'
+            - NP
+            - NR
+            - NU
+            - NZ
+            - OM
+            - PA
+            - PE
+            - PF
+            - PG
+            - PH
+            - PK
+            - PL
+            - PM
+            - PN
+            - PR
+            - PS
+            - PT
+            - PW
+            - PY
+            - QA
+            - RE
+            - RO
+            - RS
+            - RU
+            - RW
+            - SA
+            - SB
+            - SC
+            - SD
+            - SE
+            - SG
+            - SH
+            - SI
+            - SJ
+            - SK
+            - SL
+            - SM
+            - SN
+            - SO
+            - SR
+            - SS
+            - ST
+            - SV
+            - SX
+            - SY
+            - SZ
+            - TC
+            - TD
+            - TF
+            - TG
+            - TH
+            - TJ
+            - TK
+            - TL
+            - TM
+            - TN
+            - TO
+            - TR
+            - TT
+            - TV
+            - TW
+            - TZ
+            - UA
+            - UG
+            - UM
+            - US
+            - UY
+            - UZ
+            - VA
+            - VC
+            - VE
+            - VG
+            - VI
+            - VN
+            - VU
+            - WF
+            - WS
+            - YE
+            - YT
+            - ZA
+            - ZM
+            - ZW
+        taxLines:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.TaxLine'
+        warning:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.Warning'
+        traceLog:
+          type: array
+          description: >-
+            Includes the trace content for tax determination. Applies only when
+            the value of the 'isTraceRequired' parameter is 'y' in the request
+            payload.
+          items:
+            type: string
+            description: >-
+              Includes the trace content for tax determination. Applies only
+              when the value of the 'isTraceRequired' parameter is 'y' in the
+              request payload.
+    api.v0.schema.TaxValue:
+      type: object
+      properties:
+        level:
+          type: string
+          description: >-
+            Returns the tax level in the tax hierarchy for a tax on tax
+            scenario. The highest level is 1. In the case of sales and use tax
+            in US, level 1 indicates State tax, level 2 indicates county and so
+            on.
+        taxTypeCode:
+          type: string
+          description: Tax type code.
+        name:
+          type: string
+          description: Name of tax type.
+        rate:
+          type: string
+          description: Tax rate.
+        taxable:
+          type: string
+          description: >-
+            Returns the base amount used for tax calculations. In cases where a
+            cash discount percentage is passed, country/region tax determination
+            guidelines can affect the base amount.
+        exemptedBasePercent:
+          type: string
+          description: Percentage of base amount exempted.
+        exemptedBaseAmount:
+          type: string
+          description: Exempted base amount.
+        otherBaseAmount:
+          type: string
+          description: Other base amount.
+        value:
+          type: string
+          description: Tax amount including the non-deductible amount where applicable.
+        nonDeductibleTaxRate:
+          type: string
+          description: Non-deductible tax rate.
+        nonDeductibleTaxAmount:
+          type: string
+          description: Non-deductible tax amount.
+        deductibleTaxAmount:
+          type: string
+          description: Deductible tax amount.
+        taxAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/api.v0.schema.TaxAttribute'
+        jurisdiction:
+          type: string
+          description: Jurisdiction name.
+        jurisdictionCode:
+          type: string
+          description: Returns the unique identifier of tax jurisdiction in the US.
+        dueCategory:
+          type: string
+          description: >-
+            Returns "P" (payable) in cases of taxes due to the authorities, and
+            "R" (receivable) for input taxes that can be claimed.
+          enum:
+            - P
+            - p
+            - R
+            - r
+        isTaxDeferred:
+          type: boolean
+          description: Is tax deferred or not.
+        withholdingRelevant:
+          type: boolean
+          description: Tax value is withholding relevant or not.
+    api.v0.schema.Warning:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The code of the warning.
+        description:
+          type: string
+          description: The description of the warning.
+      description: >-
+        Return messages for scenarios where one or more input values are not
+        taken into consideration for tax calculation. It is also relevant in
+        cases in which the API overrides input values.
+  securitySchemes:
+    OAuth2_ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: ""
+          scopes:
+            read: Grants read access
+            admin: Grants read and write access to administrative information
+            write: Grants write access
+x-sap-stateInfo:
+  state: Active
+x-sap-shortText: Determines and calculates indirect taxes due on business transactions.

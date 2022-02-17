@@ -1,0 +1,4266 @@
+openapi: 3.0.1
+info:
+  title: Magento Asynchronous Customer REST endpoints - All inclusive
+  version: 2.3.5
+  description: >-
+    This is a generated connector for [Magento REST Asynchronous API v2.2](https://devdocs.magento.com/redoc/2.3/async-admin-rest-api.html) OpenAPI specification.
+    
+    The Magento Asynchronous Customer REST API service enables applications to build and manage the Magento e-commerce platform. 
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+ 
+    Follow [this guide](https://devdocs.magento.com/guides/v2.4/get-started/authentication/gs-authentication-token.html) and obtain tokens.
+  x-ballerina-display:
+    label: Magento Asynchronous Customer
+    iconPath: "icon.png"
+# servers:
+# - url: https://example.com/rest/default/async
+tags:
+- name: amazon-billing-address/{amazonOrderReferenceId}
+- name: amazon-shipping-address/{amazonOrderReferenceId}
+- name: amazon/order-ref
+- name: carts/guest-carts/{cartId}/giftCards
+- name: carts/guest-carts/{cartId}/giftCards/{giftCardCode}
+- name: carts/mine
+- name: carts/mine/balance/apply
+- name: carts/mine/collect-totals
+- name: carts/mine/payment-information
+- name: carts/mine/set-payment-information
+- name: customers
+- name: customers/isEmailAvailable
+- name: customers/me/activate
+- name: customers/me/password
+- name: customers/password
+- name: customers/resetPassword
+- name: giftregistry/mine/estimate-shipping-methods
+- name: guest-carts
+- name: guest-carts/{cartId}
+- name: guest-carts/{cartId}/billing-address
+- name: guest-carts/{cartId}/collect-totals
+- name: guest-carts/{cartId}/coupons
+- name: guest-carts/{cartId}/coupons/{couponCode}
+- name: guest-carts/{cartId}/estimate-shipping-methods
+- name: guest-carts/{cartId}/gift-message
+- name: guest-carts/{cartId}/gift-message/{itemId}
+- name: guest-carts/{cartId}/items
+- name: guest-carts/{cartId}/items/{itemId}
+- name: guest-carts/{cartId}/order
+- name: guest-carts/{cartId}/payment-information
+- name: guest-carts/{cartId}/selected-payment-method
+- name: guest-carts/{cartId}/set-payment-information
+- name: guest-carts/{cartId}/shipping-information
+- name: guest-carts/{cartId}/totals-information
+- name: guest-giftregistry/{cartId}/estimate-shipping-methods
+- name: integration/admin/token
+- name: integration/customer/token
+- name: negotiable-carts/{cartId}/billing-address
+- name: negotiable-carts/{cartId}/coupons
+- name: negotiable-carts/{cartId}/coupons/{couponCode}
+- name: negotiable-carts/{cartId}/estimate-shipping-methods
+- name: negotiable-carts/{cartId}/estimate-shipping-methods-by-address-id
+- name: negotiable-carts/{cartId}/giftCards
+- name: negotiable-carts/{cartId}/giftCards/{giftCardCode}
+- name: negotiable-carts/{cartId}/payment-information
+- name: negotiable-carts/{cartId}/set-payment-information
+- name: negotiable-carts/{cartId}/shipping-information
+- name: requisition_lists
+- name: reward/mine/use-reward
+- name: vertex-address-validation/vertex-address
+- name: worldpay-guest-carts/{cartId}/payment-information
+security:
+  - bearerAuth: []
+paths:
+  /async/V1/amazon-billing-address/{amazonOrderReferenceId}:
+    put:
+      tags:
+      - amazon-billing-address/{amazonOrderReferenceId}
+      summary: amazon-billing-address/{amazonOrderReferenceId}
+      operationId: amazonPaymentAddressManagementV1GetBillingAddressPut
+      parameters:
+      - name: amazonOrderReferenceId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressConsentToken
+              type: object
+              properties:
+                addressConsentToken:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressConsentToken
+              type: object
+              properties:
+                addressConsentToken:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: amazonPaymentAddressManagementV1GetBillingAddressPutBody
+  /async/V1/amazon-shipping-address/{amazonOrderReferenceId}:
+    put:
+      tags:
+      - amazon-shipping-address/{amazonOrderReferenceId}
+      summary: amazon-shipping-address/{amazonOrderReferenceId}
+      operationId: amazonPaymentAddressManagementV1GetShippingAddressPut
+      parameters:
+      - name: amazonOrderReferenceId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressConsentToken
+              type: object
+              properties:
+                addressConsentToken:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressConsentToken
+              type: object
+              properties:
+                addressConsentToken:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: amazonPaymentAddressManagementV1GetShippingAddressPutBody
+  /async/V1/amazon/order-ref:
+    delete:
+      tags:
+      - amazon/order-ref
+      summary: amazon/order-ref
+      operationId: amazonPaymentOrderInformationManagementV1RemoveOrderReferenceDelete
+      responses:
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/carts/guest-carts/{cartId}/giftCards:
+    post:
+      tags:
+      - carts/guest-carts/{cartId}/giftCards
+      summary: carts/guest-carts/{cartId}/giftCards
+      description: Add gift card to the cart.
+      operationId: giftCardAccountGuestGiftCardAccountManagementV1AddGiftCardPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - giftCardAccountData
+              type: object
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - giftCardAccountData
+              type: object
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: giftCardAccountGuestGiftCardAccountManagementV1AddGiftCardPostBody
+  /async/V1/carts/guest-carts/{cartId}/giftCards/{giftCardCode}:
+    delete:
+      tags:
+      - carts/guest-carts/{cartId}/giftCards/{giftCardCode}
+      summary: carts/guest-carts/{cartId}/giftCards/{giftCardCode}
+      description: Remove GiftCard Account entity.
+      operationId: giftCardAccountGuestGiftCardAccountManagementV1DeleteByQuoteIdDelete
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: giftCardCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/carts/mine:
+    put:
+      tags:
+      - carts/mine
+      summary: carts/mine
+      description: Save quote
+      operationId: quoteCartRepositoryV1SavePut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - quote
+              type: object
+              properties:
+                quote:
+                  $ref: '#/components/schemas/quote-data-cart-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - quote
+              type: object
+              properties:
+                quote:
+                  $ref: '#/components/schemas/quote-data-cart-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteCartRepositoryV1SavePutBody
+  /async/V1/carts/mine/balance/apply:
+    post:
+      tags:
+      - carts/mine/balance/apply
+      summary: carts/mine/balance/apply
+      description: Apply store credit
+      operationId: customerBalanceBalanceManagementV1ApplyPost
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/carts/mine/collect-totals:
+    put:
+      tags:
+      - carts/mine/collect-totals
+      summary: carts/mine/collect-totals
+      description: Set shipping/billing methods and additional data for cart and collect
+        totals.
+      operationId: quoteCartTotalManagementV1CollectTotalsPut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                shippingCarrierCode:
+                  type: string
+                  description: The carrier code.
+                shippingMethodCode:
+                  type: string
+                  description: The shipping method code.
+                additionalData:
+                  $ref: '#/components/schemas/quote-data-totals-additional-data-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                shippingCarrierCode:
+                  type: string
+                  description: The carrier code.
+                shippingMethodCode:
+                  type: string
+                  description: The shipping method code.
+                additionalData:
+                  $ref: '#/components/schemas/quote-data-totals-additional-data-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteCartTotalManagementV1CollectTotalsPutBody
+  /async/V1/carts/mine/payment-information:
+    post:
+      tags:
+      - carts/mine/payment-information
+      summary: carts/mine/payment-information
+      description: Set payment information and place order for a specified cart.
+      operationId: checkoutPaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutPaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPostBody
+  /async/V1/carts/mine/set-payment-information:
+    post:
+      tags:
+      - carts/mine/set-payment-information
+      summary: carts/mine/set-payment-information
+      description: Set payment information for a specified cart.
+      operationId: checkoutPaymentInformationManagementV1SavePaymentInformationPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutPaymentInformationManagementV1SavePaymentInformationPostBody
+  /async/V1/customers:
+    post:
+      tags:
+      - customers
+      summary: customers
+      description: Create customer account. Perform necessary business operations
+        like sending email.
+      operationId: customerAccountManagementV1CreateAccountPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - customer
+              type: object
+              properties:
+                customer:
+                  $ref: '#/components/schemas/customer-data-customer-interface'
+                password:
+                  type: string
+                redirectUrl:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - customer
+              type: object
+              properties:
+                customer:
+                  $ref: '#/components/schemas/customer-data-customer-interface'
+                password:
+                  type: string
+                redirectUrl:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1CreateAccountPostBody
+  /async/V1/customers/isEmailAvailable:
+    post:
+      tags:
+      - customers/isEmailAvailable
+      summary: customers/isEmailAvailable
+      description: Check if given email is associated with a customer account in given
+        website.
+      operationId: customerAccountManagementV1IsEmailAvailablePost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - customerEmail
+              type: object
+              properties:
+                customerEmail:
+                  type: string
+                websiteId:
+                  type: integer
+                  description: If not set, will use the current websiteId
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - customerEmail
+              type: object
+              properties:
+                customerEmail:
+                  type: string
+                websiteId:
+                  type: integer
+                  description: If not set, will use the current websiteId
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1IsEmailAvailablePostBody
+  /async/V1/customers/me/activate:
+    put:
+      tags:
+      - customers/me/activate
+      summary: customers/me/activate
+      description: Activate a customer account using a key that was sent in a confirmation
+        email.
+      operationId: customerAccountManagementV1ActivateByIdPut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - confirmationKey
+              type: object
+              properties:
+                confirmationKey:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - confirmationKey
+              type: object
+              properties:
+                confirmationKey:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1ActivateByIdPutBody
+  /async/V1/customers/me/password:
+    put:
+      tags:
+      - customers/me/password
+      summary: customers/me/password
+      description: Change customer password.
+      operationId: customerAccountManagementV1ChangePasswordByIdPut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - currentPassword
+              - newPassword
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - currentPassword
+              - newPassword
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1ChangePasswordByIdPutBody
+  /async/V1/customers/password:
+    put:
+      tags:
+      - customers/password
+      summary: customers/password
+      description: Send an email to the customer with a password reset link.
+      operationId: customerAccountManagementV1InitiatePasswordResetPut
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - template
+              type: object
+              properties:
+                email:
+                  type: string
+                template:
+                  type: string
+                websiteId:
+                  type: integer
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - email
+              - template
+              type: object
+              properties:
+                email:
+                  type: string
+                template:
+                  type: string
+                websiteId:
+                  type: integer
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1InitiatePasswordResetPutBody
+  /async/V1/customers/resetPassword:
+    post:
+      tags:
+      - customers/resetPassword
+      summary: customers/resetPassword
+      description: Reset customer password.
+      operationId: customerAccountManagementV1ResetPasswordPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - newPassword
+              - resetToken
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: If empty value given then the customer will be matched
+                    by the RP token.
+                resetToken:
+                  type: string
+                newPassword:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - email
+              - newPassword
+              - resetToken
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: If empty value given then the customer will be matched
+                    by the RP token.
+                resetToken:
+                  type: string
+                newPassword:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: customerAccountManagementV1ResetPasswordPostBody
+  /async/V1/giftregistry/mine/estimate-shipping-methods:
+    post:
+      tags:
+      - giftregistry/mine/estimate-shipping-methods
+      summary: giftregistry/mine/estimate-shipping-methods
+      description: Estimate shipping
+      operationId: giftRegistryShippingMethodManagementV1EstimateByRegistryIdPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - registryId
+              type: object
+              properties:
+                registryId:
+                  type: integer
+                  description: The estimate registry id
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - registryId
+              type: object
+              properties:
+                registryId:
+                  type: integer
+                  description: The estimate registry id
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: giftRegistryShippingMethodManagementV1EstimateByRegistryIdPostBody
+  /async/V1/guest-carts:
+    post:
+      tags:
+      - guest-carts
+      summary: guest-carts
+      description: Enable an customer or guest user to create an empty cart and quote
+        for an anonymous customer.
+      operationId: quoteGuestCartManagementV1CreateEmptyCartPost
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/guest-carts/{cartId}:
+    put:
+      tags:
+      - guest-carts/{cartId}
+      summary: guest-carts/{cartId}
+      description: Assign a specified customer to a specified shopping cart.
+      operationId: quoteGuestCartManagementV1AssignCustomerPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - customerId
+              - storeId
+              type: object
+              properties:
+                customerId:
+                  type: integer
+                  description: The customer ID.
+                storeId:
+                  type: integer
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - customerId
+              - storeId
+              type: object
+              properties:
+                customerId:
+                  type: integer
+                  description: The customer ID.
+                storeId:
+                  type: integer
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestCartManagementV1AssignCustomerPutBody
+  /async/V1/guest-carts/{cartId}/billing-address:
+    post:
+      tags:
+      - guest-carts/{cartId}/billing-address
+      summary: guest-carts/{cartId}/billing-address
+      description: Assign a specified billing address to a specified cart.
+      operationId: quoteGuestBillingAddressManagementV1AssignPost
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+                useForShipping:
+                  type: boolean
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+                useForShipping:
+                  type: boolean
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestBillingAddressManagementV1AssignPostBody
+  /async/V1/guest-carts/{cartId}/collect-totals:
+    put:
+      tags:
+      - guest-carts/{cartId}/collect-totals
+      summary: guest-carts/{cartId}/collect-totals
+      description: Set shipping/billing methods and additional data for cart and collect
+        totals for guest.
+      operationId: quoteGuestCartTotalManagementV1CollectTotalsPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                shippingCarrierCode:
+                  type: string
+                  description: The carrier code.
+                shippingMethodCode:
+                  type: string
+                  description: The shipping method code.
+                additionalData:
+                  $ref: '#/components/schemas/quote-data-totals-additional-data-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                shippingCarrierCode:
+                  type: string
+                  description: The carrier code.
+                shippingMethodCode:
+                  type: string
+                  description: The shipping method code.
+                additionalData:
+                  $ref: '#/components/schemas/quote-data-totals-additional-data-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestCartTotalManagementV1CollectTotalsPutBody
+  /async/V1/guest-carts/{cartId}/coupons:
+    delete:
+      tags:
+      - guest-carts/{cartId}/coupons
+      summary: guest-carts/{cartId}/coupons
+      description: Delete a coupon from a specified cart.
+      operationId: quoteGuestCouponManagementV1RemoveDelete
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/guest-carts/{cartId}/coupons/{couponCode}:
+    put:
+      tags:
+      - guest-carts/{cartId}/coupons/{couponCode}
+      summary: guest-carts/{cartId}/coupons/{couponCode}
+      description: Add a coupon by code to a specified cart.
+      operationId: quoteGuestCouponManagementV1SetPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      - name: couponCode
+        in: path
+        description: The coupon code data.
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/guest-carts/{cartId}/estimate-shipping-methods:
+    post:
+      tags:
+      - guest-carts/{cartId}/estimate-shipping-methods
+      summary: guest-carts/{cartId}/estimate-shipping-methods
+      description: Estimate shipping by address and return list of available shipping
+        methods
+      operationId: quoteGuestShipmentEstimationV1EstimateByExtendedAddressPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestShipmentEstimationV1EstimateByExtendedAddressPostBody
+  /async/V1/guest-carts/{cartId}/gift-message:
+    post:
+      tags:
+      - guest-carts/{cartId}/gift-message
+      summary: guest-carts/{cartId}/gift-message
+      description: Set the gift message for an entire order.
+      operationId: giftMessageGuestCartRepositoryV1SavePost
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - giftMessage
+              type: object
+              properties:
+                giftMessage:
+                  $ref: '#/components/schemas/gift-message-data-message-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - giftMessage
+              type: object
+              properties:
+                giftMessage:
+                  $ref: '#/components/schemas/gift-message-data-message-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: giftMessageGuestCartRepositoryV1SavePostBody
+  /async/V1/guest-carts/{cartId}/gift-message/{itemId}:
+    post:
+      tags:
+      - guest-carts/{cartId}/gift-message/{itemId}
+      summary: guest-carts/{cartId}/gift-message/{itemId}
+      description: Set the gift message for a specified item in a specified shopping
+        cart.
+      operationId: giftMessageGuestItemRepositoryV1SavePost
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        description: The item ID.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - giftMessage
+              type: object
+              properties:
+                giftMessage:
+                  $ref: '#/components/schemas/gift-message-data-message-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - giftMessage
+              type: object
+              properties:
+                giftMessage:
+                  $ref: '#/components/schemas/gift-message-data-message-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: giftMessageGuestItemRepositoryV1SavePostBody
+  /async/V1/guest-carts/{cartId}/items:
+    post:
+      tags:
+      - guest-carts/{cartId}/items
+      summary: guest-carts/{cartId}/items
+      description: Add/update the specified cart item.
+      operationId: quoteGuestCartItemRepositoryV1SavePost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - cartItem
+              type: object
+              properties:
+                cartItem:
+                  $ref: '#/components/schemas/quote-data-cart-item-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - cartItem
+              type: object
+              properties:
+                cartItem:
+                  $ref: '#/components/schemas/quote-data-cart-item-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestCartItemRepositoryV1SavePostBody
+  /async/V1/guest-carts/{cartId}/items/{itemId}:
+    put:
+      tags:
+      - guest-carts/{cartId}/items/{itemId}
+      summary: guest-carts/{cartId}/items/{itemId}
+      description: Add/update the specified cart item.
+      operationId: quoteGuestCartItemRepositoryV1SavePut
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - cartItem
+              type: object
+              properties:
+                cartItem:
+                  $ref: '#/components/schemas/quote-data-cart-item-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - cartItem
+              type: object
+              properties:
+                cartItem:
+                  $ref: '#/components/schemas/quote-data-cart-item-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestCartItemRepositoryV1SavePutBody
+    delete:
+      tags:
+      - guest-carts/{cartId}/items/{itemId}
+      summary: guest-carts/{cartId}/items/{itemId}
+      description: Remove the specified item from the specified cart.
+      operationId: quoteGuestCartItemRepositoryV1DeleteByIdDelete
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        description: The item ID of the item to be removed.
+        required: true
+        schema:
+          type: integer
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/guest-carts/{cartId}/order:
+    put:
+      tags:
+      - guest-carts/{cartId}/order
+      summary: guest-carts/{cartId}/order
+      description: Place an order for a specified cart.
+      operationId: quoteGuestCartManagementV1PlaceOrderPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestCartManagementV1PlaceOrderPutBody
+  /async/V1/guest-carts/{cartId}/payment-information:
+    post:
+      tags:
+      - guest-carts/{cartId}/payment-information
+      summary: guest-carts/{cartId}/payment-information
+      description: Set payment information and place order for a specified cart.
+      operationId: checkoutGuestPaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutGuestPaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPostBody
+  /async/V1/guest-carts/{cartId}/selected-payment-method:
+    put:
+      tags:
+      - guest-carts/{cartId}/selected-payment-method
+      summary: guest-carts/{cartId}/selected-payment-method
+      description: Add a specified payment method to a specified shopping cart.
+      operationId: quoteGuestPaymentMethodManagementV1SetPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - method
+              type: object
+              properties:
+                method:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - method
+              type: object
+              properties:
+                method:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: quoteGuestPaymentMethodManagementV1SetPutBody
+  /async/V1/guest-carts/{cartId}/set-payment-information:
+    post:
+      tags:
+      - guest-carts/{cartId}/set-payment-information
+      summary: guest-carts/{cartId}/set-payment-information
+      description: Set payment information for a specified cart.
+      operationId: checkoutGuestPaymentInformationManagementV1SavePaymentInformationPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutGuestPaymentInformationManagementV1SavePaymentInformationPostBody
+  /async/V1/guest-carts/{cartId}/shipping-information:
+    post:
+      tags:
+      - guest-carts/{cartId}/shipping-information
+      summary: guest-carts/{cartId}/shipping-information
+      operationId: checkoutGuestShippingInformationManagementV1SaveAddressInformationPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-shipping-information-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-shipping-information-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutGuestShippingInformationManagementV1SaveAddressInformationPostBody
+  /async/V1/guest-carts/{cartId}/totals-information:
+    post:
+      tags:
+      - guest-carts/{cartId}/totals-information
+      summary: guest-carts/{cartId}/totals-information
+      description: Calculate quote totals based on address and shipping method.
+      operationId: checkoutGuestTotalsInformationManagementV1CalculatePost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-totals-information-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-totals-information-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: checkoutGuestTotalsInformationManagementV1CalculatePostBody
+  /async/V1/guest-giftregistry/{cartId}/estimate-shipping-methods:
+    post:
+      tags:
+      - guest-giftregistry/{cartId}/estimate-shipping-methods
+      summary: guest-giftregistry/{cartId}/estimate-shipping-methods
+      description: Estimate shipping
+      operationId: giftRegistryGuestCartShippingMethodManagementV1EstimateByRegistryIdPost
+      parameters:
+      - name: cartId
+        in: path
+        description: The shopping cart ID.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - registryId
+              type: object
+              properties:
+                registryId:
+                  type: integer
+                  description: The estimate registry id
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - registryId
+              type: object
+              properties:
+                registryId:
+                  type: integer
+                  description: The estimate registry id
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: giftRegistryGuestCartShippingMethodManagementV1EstimateByRegistryIdPostBody
+  /async/V1/integration/admin/token:
+    post:
+      tags:
+      - integration/admin/token
+      summary: integration/admin/token
+      description: Create access token for admin given the admin credentials.
+      operationId: integrationAdminTokenServiceV1CreateAdminAccessTokenPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              - username
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - password
+              - username
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: integrationAdminTokenServiceV1CreateAdminAccessTokenPostBody
+  /async/V1/integration/customer/token:
+    post:
+      tags:
+      - integration/customer/token
+      summary: integration/customer/token
+      description: Create access token for admin given the customer credentials.
+      operationId: integrationCustomerTokenServiceV1CreateCustomerAccessTokenPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - password
+              - username
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - password
+              - username
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: integrationCustomerTokenServiceV1CreateCustomerAccessTokenPostBody
+  /async/V1/negotiable-carts/{cartId}/billing-address:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/billing-address
+      summary: negotiable-carts/{cartId}/billing-address
+      description: Assigns a specified billing address to a specified cart.
+      operationId: negotiableQuoteBillingAddressManagementV1AssignPost
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+                useForShipping:
+                  type: boolean
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+                useForShipping:
+                  type: boolean
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuoteBillingAddressManagementV1AssignPostBody
+  /async/V1/negotiable-carts/{cartId}/coupons:
+    delete:
+      tags:
+      - negotiable-carts/{cartId}/coupons
+      summary: negotiable-carts/{cartId}/coupons
+      description: Deletes a coupon from a specified cart.
+      operationId: negotiableQuoteCouponManagementV1RemoveDelete
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: integer
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/negotiable-carts/{cartId}/coupons/{couponCode}:
+    put:
+      tags:
+      - negotiable-carts/{cartId}/coupons/{couponCode}
+      summary: negotiable-carts/{cartId}/coupons/{couponCode}
+      description: Adds a coupon by code to a specified cart.
+      operationId: negotiableQuoteCouponManagementV1SetPut
+      parameters:
+      - name: cartId
+        in: path
+        description: The cart ID.
+        required: true
+        schema:
+          type: integer
+      - name: couponCode
+        in: path
+        description: The coupon code data.
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/negotiable-carts/{cartId}/estimate-shipping-methods:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/estimate-shipping-methods
+      summary: negotiable-carts/{cartId}/estimate-shipping-methods
+      description: Estimate shipping by address and return list of available shipping
+        methods
+      operationId: negotiableQuoteShipmentEstimationV1EstimateByExtendedAddressPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuoteShipmentEstimationV1EstimateByExtendedAddressPostBody
+  /async/V1/negotiable-carts/{cartId}/estimate-shipping-methods-by-address-id:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/estimate-shipping-methods-by-address-id
+      summary: negotiable-carts/{cartId}/estimate-shipping-methods-by-address-id
+      description: Estimate shipping
+      operationId: negotiableQuoteShippingMethodManagementV1EstimateByAddressIdPost
+      parameters:
+      - name: cartId
+        in: path
+        description: The shopping cart ID.
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressId
+              type: object
+              properties:
+                addressId:
+                  type: integer
+                  description: The estimate address id
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressId
+              type: object
+              properties:
+                addressId:
+                  type: integer
+                  description: The estimate address id
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuoteShippingMethodManagementV1EstimateByAddressIdPostBody
+  /async/V1/negotiable-carts/{cartId}/giftCards:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/giftCards
+      summary: negotiable-carts/{cartId}/giftCards
+      operationId: negotiableQuoteGiftCardAccountManagementV1SaveByQuoteIdPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - giftCardAccountData
+              type: object
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - giftCardAccountData
+              type: object
+              properties:
+                giftCardAccountData:
+                  $ref: '#/components/schemas/gift-card-account-data-gift-card-account-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuoteGiftCardAccountManagementV1SaveByQuoteIdPostBody
+  /async/V1/negotiable-carts/{cartId}/giftCards/{giftCardCode}:
+    delete:
+      tags:
+      - negotiable-carts/{cartId}/giftCards/{giftCardCode}
+      summary: negotiable-carts/{cartId}/giftCards/{giftCardCode}
+      description: Remove GiftCard Account entity
+      operationId: negotiableQuoteGiftCardAccountManagementV1DeleteByQuoteIdDelete
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: giftCardCode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/negotiable-carts/{cartId}/payment-information:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/payment-information
+      summary: negotiable-carts/{cartId}/payment-information
+      description: Set payment information and place order for a specified cart.
+      operationId: negotiableQuotePaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuotePaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPostBody
+  /async/V1/negotiable-carts/{cartId}/set-payment-information:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/set-payment-information
+      summary: negotiable-carts/{cartId}/set-payment-information
+      description: Set payment information for a specified cart.
+      operationId: negotiableQuotePaymentInformationManagementV1SavePaymentInformationPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - paymentMethod
+              type: object
+              properties:
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuotePaymentInformationManagementV1SavePaymentInformationPostBody
+  /async/V1/negotiable-carts/{cartId}/shipping-information:
+    post:
+      tags:
+      - negotiable-carts/{cartId}/shipping-information
+      summary: negotiable-carts/{cartId}/shipping-information
+      operationId: negotiableQuoteShippingInformationManagementV1SaveAddressInformationPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-shipping-information-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - addressInformation
+              type: object
+              properties:
+                addressInformation:
+                  $ref: '#/components/schemas/checkout-data-shipping-information-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: negotiableQuoteShippingInformationManagementV1SaveAddressInformationPostBody
+  /async/V1/requisition_lists:
+    post:
+      tags:
+      - requisition_lists
+      summary: requisition_lists
+      description: Save Requisition List
+      operationId: requisitionListRequisitionListRepositoryV1SavePost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - requisitionList
+              type: object
+              properties:
+                requisitionList:
+                  $ref: '#/components/schemas/requisition-list-data-requisition-list-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - requisitionList
+              type: object
+              properties:
+                requisitionList:
+                  $ref: '#/components/schemas/requisition-list-data-requisition-list-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: requisitionListRequisitionListRepositoryV1SavePostBody
+  /async/V1/reward/mine/use-reward:
+    post:
+      tags:
+      - reward/mine/use-reward
+      summary: reward/mine/use-reward
+      description: Set reward points to quote
+      operationId: rewardRewardManagementV1SetPost
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        401:
+          description: 401 Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+  /async/V1/vertex-address-validation/vertex-address:
+    post:
+      tags:
+      - vertex-address-validation/vertex-address
+      summary: vertex-address-validation/vertex-address
+      operationId: vertexAddressValidationAddressManagementV1GetValidAddressPost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - address
+              type: object
+              properties:
+                address:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: vertexAddressValidationAddressManagementV1GetValidAddressPostBody
+  /async/V1/worldpay-guest-carts/{cartId}/payment-information:
+    post:
+      tags:
+      - worldpay-guest-carts/{cartId}/payment-information
+      summary: worldpay-guest-carts/{cartId}/payment-information
+      description: Proxy handler for guest place order
+      operationId: worldpayGuestPaymentInformationManagementProxyV1SavePaymentInformationAndPlaceOrderPost
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+          application/xml:
+            schema:
+              required:
+              - email
+              - paymentMethod
+              type: object
+              properties:
+                email:
+                  type: string
+                paymentMethod:
+                  $ref: '#/components/schemas/quote-data-payment-interface'
+                billingAddress:
+                  $ref: '#/components/schemas/quote-data-address-interface'
+              xml:
+                name: request
+        required: false
+      responses:
+        202:
+          description: 202 Accepted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/asynchronous-operations-data-async-response-interface'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/error-response'
+      x-codegen-request-body-name: worldpayGuestPaymentInformationManagementProxyV1SavePaymentInformationAndPlaceOrderPostBody
+components: 
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    error-response:
+      required:
+      - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        errors:
+          $ref: '#/components/schemas/error-errors'
+        code:
+          type: integer
+          description: Error code
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+        trace:
+          type: string
+          description: Stack trace
+    error-errors:
+      type: array
+      description: Errors list
+      items:
+        $ref: '#/components/schemas/error-errors-item'
+    error-errors-item:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        parameters:
+          $ref: '#/components/schemas/error-parameters'
+      description: Error details
+    error-parameters:
+      type: array
+      description: Error parameters list
+      items:
+        $ref: '#/components/schemas/error-parameters-item'
+    error-parameters-item:
+      type: object
+      properties:
+        resources:
+          type: string
+          description: ACL resource
+        fieldName:
+          type: string
+          description: Missing or invalid field name
+        fieldValue:
+          type: string
+          description: Incorrect field value
+      description: Error parameters item
+    customer-data-customer-interface:
+      required:
+      - email
+      - firstname
+      - lastname
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Customer id
+        group_id:
+          type: integer
+          description: Group id
+        default_billing:
+          type: string
+          description: Default billing address id
+        default_shipping:
+          type: string
+          description: Default shipping address id
+        confirmation:
+          type: string
+          description: Confirmation
+        created_at:
+          type: string
+          description: Created at time
+        updated_at:
+          type: string
+          description: Updated at time
+        created_in:
+          type: string
+          description: Created in area
+        dob:
+          type: string
+          description: Date of birth
+        email:
+          type: string
+          description: Email address
+        firstname:
+          type: string
+          description: First name
+        lastname:
+          type: string
+          description: Last name
+        middlename:
+          type: string
+          description: Middle name
+        prefix:
+          type: string
+          description: Prefix
+        suffix:
+          type: string
+          description: Suffix
+        gender:
+          type: integer
+          description: Gender
+        store_id:
+          type: integer
+          description: Store id
+        taxvat:
+          type: string
+          description: Tax Vat
+        website_id:
+          type: integer
+          description: Website id
+        addresses:
+          type: array
+          description: Customer addresses.
+          items:
+            $ref: '#/components/schemas/customer-data-address-interface'
+        disable_auto_group_change:
+          type: integer
+          description: Disable auto group change flag.
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-customer-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Customer interface.
+    customer-data-address-interface:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID
+        customer_id:
+          type: integer
+          description: Customer ID
+        region:
+          $ref: '#/components/schemas/customer-data-region-interface'
+        region_id:
+          type: integer
+          description: Region ID
+        country_id:
+          type: string
+          description: Country code in ISO_3166-2 format
+        street:
+          type: array
+          description: Street
+          items:
+            type: string
+        company:
+          type: string
+          description: Company
+        telephone:
+          type: string
+          description: Telephone number
+        fax:
+          type: string
+          description: Fax number
+        postcode:
+          type: string
+          description: Postcode
+        city:
+          type: string
+          description: City name
+        firstname:
+          type: string
+          description: First name
+        lastname:
+          type: string
+          description: Last name
+        middlename:
+          type: string
+          description: Middle name
+        prefix:
+          type: string
+          description: Prefix
+        suffix:
+          type: string
+          description: Suffix
+        vat_id:
+          type: string
+          description: Vat id
+        default_shipping:
+          type: boolean
+          description: If this address is default shipping address.
+        default_billing:
+          type: boolean
+          description: If this address is default billing address
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-address-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Customer address interface.
+    customer-data-region-interface:
+      required:
+      - region
+      - region_code
+      - region_id
+      type: object
+      properties:
+        region_code:
+          type: string
+          description: Region code
+        region:
+          type: string
+          description: Region
+        region_id:
+          type: integer
+          description: Region id
+        extension_attributes:
+          $ref: '#/components/schemas/customer-data-region-extension-interface'
+      description: Customer address region interface.
+    customer-data-region-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\RegionInterface
+    customer-data-address-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\AddressInterface
+    framework-attribute-interface:
+      required:
+      - attribute_code
+      - value
+      type: object
+      properties:
+        attribute_code:
+          type: string
+          description: Attribute code
+        value:
+          type: string
+          description: Attribute value
+      description: Interface for custom attribute value.
+    customer-data-customer-extension-interface:
+      type: object
+      properties:
+        company_attributes:
+          $ref: '#/components/schemas/company-data-company-customer-interface'
+        is_subscribed:
+          type: boolean
+        amazon_id:
+          type: string
+        vertex_customer_code:
+          type: string
+      description: ExtensionInterface class for @see \Magento\Customer\Api\Data\CustomerInterface
+    company-data-company-customer-interface:
+      type: object
+      properties:
+        customer_id:
+          type: integer
+          description: Customer ID.
+        company_id:
+          type: integer
+          description: Company ID.
+        job_title:
+          type: string
+          description: Get job title.
+        status:
+          type: integer
+          description: Customer status.
+        telephone:
+          type: string
+          description: Get telephone.
+        extension_attributes:
+          $ref: '#/components/schemas/company-data-company-customer-extension-interface'
+      description: Extended customer custom attributes interface.
+    company-data-company-customer-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Company\Api\Data\CompanyCustomerInterface
+    asynchronous-operations-data-async-response-interface:
+      required:
+      - bulk_uuid
+      - errors
+      - request_items
+      type: object
+      properties:
+        bulk_uuid:
+          type: string
+          description: Bulk Uuid.
+        request_items:
+          type: array
+          description: The list of request items with status data.
+          items:
+            $ref: '#/components/schemas/asynchronous-operations-data-item-status-interface'
+        errors:
+          type: boolean
+          description: There errors during processing bulk
+        extension_attributes:
+          $ref: '#/components/schemas/asynchronous-operations-data-async-response-extension-interface'
+      description: Interface AsyncResponseInterface Temporary data object to give
+        response from webapi async router
+    asynchronous-operations-data-item-status-interface:
+      required:
+      - data_hash
+      - id
+      - status
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Entity Id.
+        data_hash:
+          type: string
+          description: md5 hash of entity params array.
+        status:
+          type: string
+          description: accepted|rejected
+        error_message:
+          type: string
+          description: Error information.
+        error_code:
+          type: integer
+          description: Error code.
+      description: ItemStatusInterface interface Temporary object with status of requested
+        item. Indicate if entity param was Accepted|Rejected to bulk schedule
+    asynchronous-operations-data-async-response-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\AsynchronousOperations\Api\Data\AsyncResponseInterface
+    quote-data-cart-interface:
+      required:
+      - customer
+      - id
+      - store_id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Cart/quote ID.
+        created_at:
+          type: string
+          description: Cart creation date and time. Otherwise, null.
+        updated_at:
+          type: string
+          description: Cart last update date and time. Otherwise, null.
+        converted_at:
+          type: string
+          description: Cart conversion date and time. Otherwise, null.
+        is_active:
+          type: boolean
+          description: Active status flag value. Otherwise, null.
+        is_virtual:
+          type: boolean
+          description: Virtual flag value. Otherwise, null.
+        items:
+          type: array
+          description: Array of items. Otherwise, null.
+          items:
+            $ref: '#/components/schemas/quote-data-cart-item-interface'
+        items_count:
+          type: integer
+          description: Number of different items or products in the cart. Otherwise,
+            null.
+        items_qty:
+          type: number
+          description: Total quantity of all cart items. Otherwise, null.
+        customer:
+          $ref: '#/components/schemas/customer-data-customer-interface'
+        billing_address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        reserved_order_id:
+          type: string
+          description: Reserved order ID. Otherwise, null.
+        orig_order_id:
+          type: integer
+          description: Original order ID. Otherwise, null.
+        currency:
+          $ref: '#/components/schemas/quote-data-currency-interface'
+        customer_is_guest:
+          type: boolean
+          description: For guest customers, false for logged in customers
+        customer_note:
+          type: string
+          description: Notice text
+        customer_note_notify:
+          type: boolean
+          description: Customer notification flag
+        customer_tax_class_id:
+          type: integer
+          description: Customer tax class ID.
+        store_id:
+          type: integer
+          description: Store identifier
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-cart-extension-interface'
+      description: Interface CartInterface
+    quote-data-cart-item-interface:
+      required:
+      - qty
+      - quote_id
+      type: object
+      properties:
+        item_id:
+          type: integer
+          description: Item ID. Otherwise, null.
+        sku:
+          type: string
+          description: Product SKU. Otherwise, null.
+        qty:
+          type: number
+          description: Product quantity.
+        name:
+          type: string
+          description: Product name. Otherwise, null.
+        price:
+          type: number
+          description: Product price. Otherwise, null.
+        product_type:
+          type: string
+          description: Product type. Otherwise, null.
+        quote_id:
+          type: string
+          description: Quote id.
+        product_option:
+          $ref: '#/components/schemas/quote-data-product-option-interface'
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-cart-item-extension-interface'
+      description: Interface CartItemInterface
+    quote-data-product-option-interface:
+      type: object
+      properties:
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-product-option-extension-interface'
+      description: Product option interface
+    quote-data-product-option-extension-interface:
+      type: object
+      properties:
+        custom_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/catalog-data-custom-option-interface'
+        bundle_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/bundle-data-bundle-option-interface'
+        configurable_item_options:
+          type: array
+          items:
+            $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-interface'
+        downloadable_option:
+          $ref: '#/components/schemas/downloadable-data-downloadable-option-interface'
+        giftcard_item_option:
+          $ref: '#/components/schemas/gift-card-data-gift-card-option-interface'
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ProductOptionInterface
+    catalog-data-custom-option-interface:
+      required:
+      - option_id
+      - option_value
+      type: object
+      properties:
+        option_id:
+          type: string
+          description: Option id
+        option_value:
+          type: string
+          description: Option value
+        extension_attributes:
+          $ref: '#/components/schemas/catalog-data-custom-option-extension-interface'
+      description: Interface CustomOptionInterface
+    catalog-data-custom-option-extension-interface:
+      type: object
+      properties:
+        file_info:
+          $ref: '#/components/schemas/framework-data-image-content-interface'
+      description: ExtensionInterface class for @see \Magento\Catalog\Api\Data\CustomOptionInterface
+    framework-data-image-content-interface:
+      required:
+      - base64_encoded_data
+      - name
+      - type
+      type: object
+      properties:
+        base64_encoded_data:
+          type: string
+          description: Media data (base64 encoded content)
+        type:
+          type: string
+          description: MIME type
+        name:
+          type: string
+          description: Image name
+      description: Image Content data interface
+    bundle-data-bundle-option-interface:
+      required:
+      - option_id
+      - option_qty
+      - option_selections
+      type: object
+      properties:
+        option_id:
+          type: integer
+          description: Bundle option id.
+        option_qty:
+          type: integer
+          description: Bundle option quantity.
+        option_selections:
+          type: array
+          description: Bundle option selection ids.
+          items:
+            type: integer
+        extension_attributes:
+          $ref: '#/components/schemas/bundle-data-bundle-option-extension-interface'
+      description: Interface BundleOptionInterface
+    bundle-data-bundle-option-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Bundle\Api\Data\BundleOptionInterface
+    configurable-product-data-configurable-item-option-value-interface:
+      required:
+      - option_id
+      type: object
+      properties:
+        option_id:
+          type: string
+          description: Option SKU
+        option_value:
+          type: integer
+          description: Item id
+        extension_attributes:
+          $ref: '#/components/schemas/configurable-product-data-configurable-item-option-value-extension-interface'
+      description: Interface ConfigurableItemOptionValueInterface
+    configurable-product-data-configurable-item-option-value-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\ConfigurableProduct\Api\Data\ConfigurableItemOptionValueInterface
+    downloadable-data-downloadable-option-interface:
+      required:
+      - downloadable_links
+      type: object
+      properties:
+        downloadable_links:
+          type: array
+          description: The list of downloadable links
+          items:
+            type: integer
+      description: Downloadable Option
+    gift-card-data-gift-card-option-interface:
+      required:
+      - giftcard_amount
+      - giftcard_recipient_email
+      - giftcard_recipient_name
+      - giftcard_sender_email
+      - giftcard_sender_name
+      type: object
+      properties:
+        giftcard_amount:
+          type: string
+          description: Gift card amount.
+        custom_giftcard_amount:
+          type: number
+          description: Gift card open amount value.
+        giftcard_sender_name:
+          type: string
+          description: Gift card sender name.
+        giftcard_recipient_name:
+          type: string
+          description: Gift card recipient name.
+        giftcard_sender_email:
+          type: string
+          description: Gift card sender email.
+        giftcard_recipient_email:
+          type: string
+          description: Gift card recipient email.
+        giftcard_message:
+          type: string
+          description: Giftcard message.
+        extension_attributes:
+          $ref: '#/components/schemas/gift-card-data-gift-card-option-extension-interface'
+      description: Interface GiftCardOptionInterface
+    gift-card-data-gift-card-option-extension-interface:
+      type: object
+      properties:
+        giftcard_created_codes:
+          type: array
+          items:
+            type: string
+      description: ExtensionInterface class for @see \Magento\GiftCard\Api\Data\GiftCardOptionInterface
+    quote-data-cart-item-extension-interface:
+      type: object
+      properties:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+        negotiable_quote_item:
+          $ref: '#/components/schemas/negotiable-quote-data-negotiable-quote-item-interface'
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartItemInterface
+    sales-rule-data-rule-discount-interface:
+      required:
+      - discount_data
+      - rule_id
+      - rule_label
+      type: object
+      properties:
+        discount_data:
+          $ref: '#/components/schemas/sales-rule-data-discount-data-interface'
+        rule_label:
+          type: string
+          description: Rule Label
+        rule_id:
+          type: integer
+          description: Rule ID
+      description: Rule discount Interface
+    sales-rule-data-discount-data-interface:
+      required:
+      - amount
+      - base_amount
+      - base_original_amount
+      - original_amount
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Amount
+        base_amount:
+          type: number
+          description: Base Amount
+        original_amount:
+          type: number
+          description: Original Amount
+        base_original_amount:
+          type: number
+          description: Base Original Amount
+      description: Discount Data Interface
+    negotiable-quote-data-negotiable-quote-item-interface:
+      required:
+      - item_id
+      - original_discount_amount
+      - original_price
+      - original_tax_amount
+      type: object
+      properties:
+        item_id:
+          type: integer
+          description: Quote item id
+        original_price:
+          type: number
+          description: Quote item original price
+        original_tax_amount:
+          type: number
+          description: Quote item original tax amount
+        original_discount_amount:
+          type: number
+          description: Quote item original discount amount
+        extension_attributes:
+          $ref: '#/components/schemas/negotiable-quote-data-negotiable-quote-item-extension-interface'
+      description: Interface CompanyQuoteConfigInterface
+    negotiable-quote-data-negotiable-quote-item-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\NegotiableQuote\Api\Data\NegotiableQuoteItemInterface
+    quote-data-address-interface:
+      required:
+      - city
+      - country_id
+      - email
+      - firstname
+      - lastname
+      - postcode
+      - region
+      - region_code
+      - region_id
+      - street
+      - telephone
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Id
+        region:
+          type: string
+          description: Region name
+        region_id:
+          type: integer
+          description: Region id
+        region_code:
+          type: string
+          description: Region code
+        country_id:
+          type: string
+          description: Country id
+        street:
+          type: array
+          description: Street
+          items:
+            type: string
+        company:
+          type: string
+          description: Company
+        telephone:
+          type: string
+          description: Telephone number
+        fax:
+          type: string
+          description: Fax number
+        postcode:
+          type: string
+          description: Postcode
+        city:
+          type: string
+          description: City name
+        firstname:
+          type: string
+          description: First name
+        lastname:
+          type: string
+          description: Last name
+        middlename:
+          type: string
+          description: Middle name
+        prefix:
+          type: string
+          description: Prefix
+        suffix:
+          type: string
+          description: Suffix
+        vat_id:
+          type: string
+          description: Vat id
+        customer_id:
+          type: integer
+          description: Customer id
+        email:
+          type: string
+          description: Billing/shipping email
+        same_as_billing:
+          type: integer
+          description: Same as billing flag
+        customer_address_id:
+          type: integer
+          description: Customer address id
+        save_in_address_book:
+          type: integer
+          description: Save in address book flag
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-address-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Interface AddressInterface
+    quote-data-address-extension-interface:
+      type: object
+      properties:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/sales-rule-data-rule-discount-interface'
+        gift_registry_id:
+          type: integer
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\AddressInterface
+    quote-data-currency-interface:
+      type: object
+      properties:
+        global_currency_code:
+          type: string
+          description: Global currency code
+        base_currency_code:
+          type: string
+          description: Base currency code
+        store_currency_code:
+          type: string
+          description: Store currency code
+        quote_currency_code:
+          type: string
+          description: Quote currency code
+        store_to_base_rate:
+          type: number
+          description: Store currency to base currency rate
+        store_to_quote_rate:
+          type: number
+          description: Store currency to quote currency rate
+        base_to_global_rate:
+          type: number
+          description: Base currency to global currency rate
+        base_to_quote_rate:
+          type: number
+          description: Base currency to quote currency rate
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-currency-extension-interface'
+      description: Interface CurrencyInterface
+    quote-data-currency-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CurrencyInterface
+    quote-data-cart-extension-interface:
+      type: object
+      properties:
+        shipping_assignments:
+          type: array
+          items:
+            $ref: '#/components/schemas/quote-data-shipping-assignment-interface'
+        negotiable_quote:
+          $ref: '#/components/schemas/negotiable-quote-data-negotiable-quote-interface'
+        amazon_order_reference_id:
+          $ref: '#/components/schemas/amazon-payment-data-quote-link-interface'
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\CartInterface
+    quote-data-shipping-assignment-interface:
+      required:
+      - items
+      - shipping
+      type: object
+      properties:
+        shipping:
+          $ref: '#/components/schemas/quote-data-shipping-interface'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/quote-data-cart-item-interface'
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-shipping-assignment-extension-interface'
+      description: Interface ShippingAssignmentInterface
+    quote-data-shipping-interface:
+      required:
+      - address
+      - method
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        method:
+          type: string
+          description: Shipping method
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-shipping-extension-interface'
+      description: Interface ShippingInterface
+    quote-data-shipping-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingInterface
+    quote-data-shipping-assignment-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\ShippingAssignmentInterface
+    negotiable-quote-data-negotiable-quote-interface:
+      required:
+      - applied_rule_ids
+      - creator_id
+      - creator_type
+      - deleted_sku
+      - email_notification_status
+      - expiration_period
+      - has_unconfirmed_changes
+      - is_address_draft
+      - is_customer_price_changed
+      - is_regular_quote
+      - is_shipping_tax_changed
+      - negotiated_price_type
+      - negotiated_price_value
+      - notifications
+      - quote_id
+      - quote_name
+      - shipping_price
+      - status
+      type: object
+      properties:
+        quote_id:
+          type: integer
+          description: Negotiable quote ID.
+        is_regular_quote:
+          type: boolean
+          description: Is regular quote.
+        status:
+          type: string
+          description: Negotiable quote status.
+        negotiated_price_type:
+          type: integer
+          description: Negotiated price type.
+        negotiated_price_value:
+          type: number
+          description: Negotiated price value.
+        shipping_price:
+          type: number
+          description: Proposed shipping price.
+        quote_name:
+          type: string
+          description: Negotiable quote name.
+        expiration_period:
+          type: string
+          description: Expiration period.
+        email_notification_status:
+          type: integer
+          description: Email notification status.
+        has_unconfirmed_changes:
+          type: boolean
+          description: Has unconfirmed changes.
+        is_shipping_tax_changed:
+          type: boolean
+          description: Shipping tax changes.
+        is_customer_price_changed:
+          type: boolean
+          description: Customer price changes.
+        notifications:
+          type: integer
+          description: Quote notifications.
+        applied_rule_ids:
+          type: string
+          description: Quote rules.
+        is_address_draft:
+          type: boolean
+          description: Is address draft.
+        deleted_sku:
+          type: string
+          description: Deleted products sku.
+        creator_id:
+          type: integer
+          description: Quote creator id.
+        creator_type:
+          type: integer
+          description: Quote creator type.
+        original_total_price:
+          type: number
+          description: Quote original total price.
+        base_original_total_price:
+          type: number
+          description: Quote original total price in base currency.
+        negotiated_total_price:
+          type: number
+          description: Quote negotiated total price.
+        base_negotiated_total_price:
+          type: number
+          description: Quote negotiated total price in base currency.
+        extension_attributes:
+          $ref: '#/components/schemas/negotiable-quote-data-negotiable-quote-extension-interface'
+      description: Interface NegotiableQuoteInterface
+    negotiable-quote-data-negotiable-quote-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\NegotiableQuote\Api\Data\NegotiableQuoteInterface
+    amazon-payment-data-quote-link-interface:
+      required:
+      - amazon_order_reference_id
+      - confirmed
+      - id
+      - quote_id
+      - sandbox_simulation_reference
+      type: object
+      properties:
+        id:
+          type: string
+        amazon_order_reference_id:
+          type: string
+          description: Amazon order reference id
+        quote_id:
+          type: integer
+          description: Quote id
+        sandbox_simulation_reference:
+          type: string
+          description: Sandbox simulation reference
+        confirmed:
+          type: boolean
+          description: Quote confirmed with amazon
+      description: ""
+    quote-data-payment-interface:
+      required:
+      - method
+      type: object
+      properties:
+        po_number:
+          type: string
+          description: Purchase order number
+        method:
+          type: string
+          description: Payment method code
+        additional_data:
+          type: array
+          description: Payment additional details
+          items:
+            type: string
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-payment-extension-interface'
+      description: Interface PaymentInterface
+    quote-data-payment-extension-interface:
+      type: object
+      properties:
+        agreement_ids:
+          type: array
+          items:
+            type: string
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\PaymentInterface
+    quote-data-totals-additional-data-interface:
+      type: object
+      properties:
+        extension_attributes:
+          $ref: '#/components/schemas/quote-data-totals-additional-data-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Additional data for totals collection.
+    quote-data-totals-additional-data-extension-interface:
+      type: object
+      properties:
+        gift_messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/gift-message-data-message-interface'
+      description: ExtensionInterface class for @see \Magento\Quote\Api\Data\TotalsAdditionalDataInterface
+    gift-message-data-message-interface:
+      required:
+      - message
+      - recipient
+      - sender
+      type: object
+      properties:
+        gift_message_id:
+          type: integer
+          description: Gift message ID. Otherwise, null.
+        customer_id:
+          type: integer
+          description: Customer ID. Otherwise, null.
+        sender:
+          type: string
+          description: Sender name.
+        recipient:
+          type: string
+          description: Recipient name.
+        message:
+          type: string
+          description: Message text.
+        extension_attributes:
+          $ref: '#/components/schemas/gift-message-data-message-extension-interface'
+      description: Interface MessageInterface
+    gift-message-data-message-extension-interface:
+      type: object
+      properties:
+        entity_id:
+          type: string
+        entity_type:
+          type: string
+        wrapping_id:
+          type: integer
+        wrapping_allow_gift_receipt:
+          type: boolean
+        wrapping_add_printed_card:
+          type: boolean
+      description: ExtensionInterface class for @see \Magento\GiftMessage\Api\Data\MessageInterface
+    requisition-list-data-requisition-list-interface:
+      required:
+      - customer_id
+      - description
+      - id
+      - items
+      - name
+      - updated_at
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Requisition List ID
+        customer_id:
+          type: integer
+          description: Customer ID
+        name:
+          type: string
+          description: Requisition List Name
+        updated_at:
+          type: string
+          description: Requisition List Update Time
+        description:
+          type: string
+          description: Requisition List Description
+        items:
+          type: array
+          description: Requisition List Items
+          items:
+            $ref: '#/components/schemas/requisition-list-data-requisition-list-item-interface'
+        extension_attributes:
+          $ref: '#/components/schemas/requisition-list-data-requisition-list-extension-interface'
+      description: Interface RequisitionListInterface
+    requisition-list-data-requisition-list-item-interface:
+      required:
+      - added_at
+      - id
+      - options
+      - qty
+      - requisition_list_id
+      - sku
+      - store_id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Requisition List ID.
+        sku:
+          type: integer
+          description: Product SKU.
+        requisition_list_id:
+          type: integer
+          description: Requisition List ID.
+        qty:
+          type: number
+          description: Product Qty.
+        options:
+          type: array
+          description: Requisition list item options.
+          items:
+            type: string
+        store_id:
+          type: integer
+          description: Store ID.
+        added_at:
+          type: string
+          description: Added_at value.
+        extension_attributes:
+          $ref: '#/components/schemas/requisition-list-data-requisition-list-item-extension-interface'
+      description: Interface RequisitionListItemInterface
+    requisition-list-data-requisition-list-item-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\RequisitionList\Api\Data\RequisitionListItemInterface
+    requisition-list-data-requisition-list-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\RequisitionList\Api\Data\RequisitionListInterface
+    checkout-data-shipping-information-interface:
+      required:
+      - shipping_address
+      - shipping_carrier_code
+      - shipping_method_code
+      type: object
+      properties:
+        shipping_address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        billing_address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        shipping_method_code:
+          type: string
+          description: Shipping method code
+        shipping_carrier_code:
+          type: string
+          description: Carrier code
+        extension_attributes:
+          $ref: '#/components/schemas/checkout-data-shipping-information-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Interface ShippingInformationInterface
+    checkout-data-shipping-information-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Checkout\Api\Data\ShippingInformationInterface
+    checkout-data-totals-information-interface:
+      required:
+      - address
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/quote-data-address-interface'
+        shipping_method_code:
+          type: string
+          description: Shipping method code
+        shipping_carrier_code:
+          type: string
+          description: Carrier code
+        extension_attributes:
+          $ref: '#/components/schemas/checkout-data-totals-information-extension-interface'
+        custom_attributes:
+          type: array
+          description: Custom attributes values.
+          items:
+            $ref: '#/components/schemas/framework-attribute-interface'
+      description: Interface TotalsInformationInterface
+    checkout-data-totals-information-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\Checkout\Api\Data\TotalsInformationInterface
+    gift-card-account-data-gift-card-account-interface:
+      required:
+      - base_gift_cards_amount
+      - base_gift_cards_amount_used
+      - gift_cards_amount
+      - gift_cards_amount_used
+      type: object
+      properties:
+        gift_cards:
+          type: array
+          description: Cards codes.
+          items:
+            type: string
+        gift_cards_amount:
+          type: number
+          description: Cards amount in quote currency.
+        base_gift_cards_amount:
+          type: number
+          description: Cards amount in base currency.
+        gift_cards_amount_used:
+          type: number
+          description: Cards amount used in quote currency.
+        base_gift_cards_amount_used:
+          type: number
+          description: Cards amount used in base currency.
+        extension_attributes:
+          $ref: '#/components/schemas/gift-card-account-data-gift-card-account-extension-interface'
+      description: Gift Card Account data
+    gift-card-account-data-gift-card-account-extension-interface:
+      type: object
+      description: ExtensionInterface class for @see \Magento\GiftCardAccount\Api\Data\GiftCardAccountInterface
+x-tagGroups:
+- name: amazon billing address
+  tags:
+  - amazon-billing-address/{amazonOrderReferenceId}
+- name: amazon shipping address
+  tags:
+  - amazon-shipping-address/{amazonOrderReferenceId}
+- name: amazon
+  tags:
+  - amazon/order-ref
+- name: carts
+  tags:
+  - carts/guest-carts/{cartId}/giftCards
+  - carts/guest-carts/{cartId}/giftCards/{giftCardCode}
+  - carts/mine
+  - carts/mine/balance/apply
+  - carts/mine/collect-totals
+  - carts/mine/payment-information
+  - carts/mine/set-payment-information
+- name: customers
+  tags:
+  - customers
+  - customers/isEmailAvailable
+  - customers/me/activate
+  - customers/me/password
+  - customers/password
+  - customers/resetPassword
+- name: giftregistry
+  tags:
+  - giftregistry/mine/estimate-shipping-methods
+- name: guest carts
+  tags:
+  - guest-carts
+  - guest-carts/{cartId}
+  - guest-carts/{cartId}/billing-address
+  - guest-carts/{cartId}/collect-totals
+  - guest-carts/{cartId}/coupons
+  - guest-carts/{cartId}/coupons/{couponCode}
+  - guest-carts/{cartId}/estimate-shipping-methods
+  - guest-carts/{cartId}/gift-message
+  - guest-carts/{cartId}/gift-message/{itemId}
+  - guest-carts/{cartId}/items
+  - guest-carts/{cartId}/items/{itemId}
+  - guest-carts/{cartId}/order
+  - guest-carts/{cartId}/payment-information
+  - guest-carts/{cartId}/selected-payment-method
+  - guest-carts/{cartId}/set-payment-information
+  - guest-carts/{cartId}/shipping-information
+  - guest-carts/{cartId}/totals-information
+- name: guest giftregistry
+  tags:
+  - guest-giftregistry/{cartId}/estimate-shipping-methods
+- name: integration
+  tags:
+  - integration/admin/token
+  - integration/customer/token
+- name: negotiable carts
+  tags:
+  - negotiable-carts/{cartId}/billing-address
+  - negotiable-carts/{cartId}/coupons
+  - negotiable-carts/{cartId}/coupons/{couponCode}
+  - negotiable-carts/{cartId}/estimate-shipping-methods
+  - negotiable-carts/{cartId}/estimate-shipping-methods-by-address-id
+  - negotiable-carts/{cartId}/giftCards
+  - negotiable-carts/{cartId}/giftCards/{giftCardCode}
+  - negotiable-carts/{cartId}/payment-information
+  - negotiable-carts/{cartId}/set-payment-information
+  - negotiable-carts/{cartId}/shipping-information
+- name: requisition_lists
+  tags:
+  - requisition_lists
+- name: reward
+  tags:
+  - reward/mine/use-reward
+- name: vertex address validation
+  tags:
+  - vertex-address-validation/vertex-address
+- name: worldpay guest carts
+  tags:
+  - worldpay-guest-carts/{cartId}/payment-information

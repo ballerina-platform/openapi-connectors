@@ -1,7 +1,7 @@
 Connects to [SAP S/4HANA for Procurement Planning System for Cross-domain Identity Management API v1.0.0](https://api.sap.com/api/SCIMService/overview) from Ballerina
 
 ## Package overview
-The `ballerinax/saps4hana.pp.crossdomainIdentityManagement` is a [Ballerina](https://ballerina.io/) connector for Procurement Planning Cross-domain Identity Management that allows to read and write user data.
+The `ballerinax/saps4hana.pp.idm` is a [Ballerina](https://ballerina.io/) connector for Procurement Planning Cross-domain Identity Management that allows to read and write user data.
 
 
 ### Compatibility

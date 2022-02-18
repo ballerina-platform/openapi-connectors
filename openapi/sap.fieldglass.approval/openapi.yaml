@@ -1,0 +1,554 @@
+openapi: 3.0.1
+info:
+  title: Approval API
+  description: >-
+    This is a generated connector for [SAP Fieldglass Approval API API v1.0.0](https://api.sap.com/api/approvals/resource) OpenAPI specification. 
+    
+    The SAP Fieldglass Approval API allows clients to approve or reject SAP
+    Fieldglass work items. Clients retrieve the work items pending an approval
+    action from the authenticated user and return the workflow action to be
+    performed (either approve or reject). The list and details provided by the
+    SAP Fieldglass API give clients the ability to present work items for
+    approval to their users with the level of detail needed to make an informed
+    approval decision and the mechanism to return the approval or rejection
+    decision.
+  termsOfService: https://www.fieldglass.net/TermsOfUse.en_US.pdf
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAP Fieldglass Approval
+    iconPath: "icon.png"
+  contact:
+    name: SAP Fieldglass Approval API
+    url: http://www.fieldglass.com
+    email: Fieldglass_API@sap.com
+  license:
+    name: SAP Fieldglass
+    url: https://www.fieldglass.net/TermsOfUse.en_US.pdf
+  version: 1.0.0
+externalDocs:
+  description: SAP Fieldglass Approval API Guide
+  url: https://help.sap.com/viewer/695f67ff045b402bad469e7340b3108c/Latest/en-US
+# servers:
+#   - url: https://sandbox.api.sap.com/fieldglass/api/v1
+security:
+  - OAuth2:
+      - user
+paths:
+  /approvals:
+    get:
+      tags:
+        - Approval
+      summary: Get a list of items that require approval
+      description: Returns a list of work items requiring approval action.
+      operationId: getItemListForApproval
+      parameters:
+        - name: Authorization
+          in: header
+          description: Only required for production access when using SAP Fieldglass.
+          schema:
+            type: string
+        - name: X-ApplicationKey
+          in: header
+          description: >-
+            The company-specific key provided by SAP Fieldglass for API access.
+            Required for production access.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/approvals'
+        '400':
+          description: >-
+            Bad Request. This response is returned if the specified URL is
+            invalid, the request is not formatted correctly, or if the request
+            is missing a required field.
+          content: {}
+        '401':
+          description: Unauthorized. User/password or application key is not verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Token is not verified.
+          content: {}
+        '404':
+          description: Not Found. Service being requested does not exist.
+          content: {}
+        '500':
+          description: Internal Server Error. Server is not available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '503':
+          description: Internal Server Error. Server is not available.
+          content:
+            text/html:
+              example: <html><body><b>Http/1.1 Service Unavailable</b></body> </html>
+  /approvals/module_{moduleId}:
+    get:
+      tags:
+        - Approval
+      summary: Get items that require approval for a module
+      description: >-
+        Returns a list of work items requiring approval action, filtered down to
+        a specific module.
+      operationId: getItemListFroApprovalByModule
+      parameters:
+        - name: Authorization
+          in: header
+          description: Only required for production access when using SAP Fieldglass.
+          schema:
+            type: string
+        - name: X-ApplicationKey
+          in: header
+          description: >-
+            The company-specific key provided by SAP Fieldglass for API access.
+            Required for production access.
+          schema:
+            type: string
+        - name: moduleId
+          in: path
+          description: >-
+            The ID for the module (for example, 40 for Job Posting or 270 for
+            Work Order). A full list can be found in the supporting
+            documentation.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/approvals'
+        '400':
+          description: >-
+            Bad Request. This response is returned if the specified URL is
+            invalid, the request is not formatted correctly, or if the request
+            is missing a required field.
+          content: {}
+        '401':
+          description: Unauthorized. User/password or application key is not verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Token is not verified.
+          content: {}
+        '404':
+          description: Not Found. Service being requested does not exist.
+          content: {}
+        '500':
+          description: Internal Server Error. Server is not available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '503':
+          description: Internal Server Error. Server is not available.
+          content:
+            text/html:
+              example: <html><body><b>Http/1.1 Service Unavailable</b></body> </html>
+  /approvals/module_{moduleId}/{workItemId}/action/{action}:
+    post:
+      tags:
+        - Approval
+      summary: Approve or reject an item
+      description: Take action on the work item by either approving or rejecting it.
+      operationId: approveOrRejectItem
+      parameters:
+        - name: Authorization
+          in: header
+          description: Only required for production access when using SAP Fieldglass.
+          schema:
+            type: string
+        - name: X-ApplicationKey
+          in: header
+          description: >-
+            The company-specific key provided by SAP Fieldglass for API access.
+            Required for production access.
+          schema:
+            type: string
+        - name: moduleId
+          in: path
+          description: >-
+            The ID for the module (for example, 40 for Job Posting or 270 for
+            Work Order). A full list can be found in the supporting
+            documentation.
+          required: true
+          schema:
+            type: string
+        - name: workItemId
+          in: path
+          description: >-
+            The ID of the work item. You can get this from the response received
+            when getting the list of items that require approval.
+          required: true
+          schema:
+            type: string
+        - name: action
+          in: path
+          description: >-
+            The action to take on the work item. This can be either ''approve''
+            or ''reject''. If it is reject, the reasonId is required.
+          required: true
+          schema:
+            type: string
+        - name: comments
+          in: query
+          description: Any comments about the action.
+          schema:
+            type: string
+        - name: reasonId
+          in: query
+          description: >-
+            The reasonId for the rejection. This is required when the action is
+            'reject'. You can get a list of rejection reasons available for the
+            module from the response when getting rejection reasons.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/approvals'
+        '400':
+          description: >-
+            Bad Request. This response is returned if the specified URL is
+            invalid, the request is not formatted correctly, or if the request
+            is missing a required field.
+          content: {}
+        '401':
+          description: Unauthorized. User/password or application key is not verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Token is not verified.
+          content: {}
+        '404':
+          description: Not Found. Service being requested does not exist.
+          content: {}
+        '500':
+          description: Internal Server Error. Server is not available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '503':
+          description: Internal Server Error. Server is not available.
+          content:
+            text/html:
+              example: <html><body><b>Http/1.1 Service Unavailable</b></body> </html>
+  /approvals/module_{moduleId}/{workItemId}:
+    get:
+      tags:
+        - Approval
+      summary: Get details for work item
+      description: Returns details for a specific work item.
+      operationId: getWorkItemDetail
+      parameters:
+        - name: Authorization
+          in: header
+          description: Only required for production access when using SAP Fieldglass.
+          schema:
+            type: string
+        - name: X-ApplicationKey
+          in: header
+          description: >-
+            The company-specific key provided by SAP Fieldglass for API access.
+            Required for production access.
+          schema:
+            type: string
+        - name: moduleId
+          in: path
+          description: >-
+            The ID for the module (for example, 40 for Job Posting or 270 for
+            Work Order). A full list can be found in the supporting
+            documentation.
+          required: true
+          schema:
+            type: string
+        - name: workItemId
+          in: path
+          description: The ID of the work item.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/approvals'
+        '400':
+          description: >-
+            Bad Request. This response is returned if the specified URL is
+            invalid, the request is not formatted correctly, or if the request
+            is missing a required field.
+          content: {}
+        '401':
+          description: Unauthorized. User/password or application key is not verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Token is not verified.
+          content: {}
+        '404':
+          description: Not Found. Service being requested does not exist.
+          content: {}
+        '500':
+          description: Internal Server Error. Server is not available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '503':
+          description: Internal Server Error. Server is not available.
+          content:
+            text/html:
+              example: <html><body><b>Http/1.1 Service Unavailable</b></body> </html>
+  /approvals/reject_reasons/module_{moduleId}:
+    get:
+      tags:
+        - Approval
+      summary: Get rejection reasons
+      description: Returns all configured work item rejection reasons by module.
+      operationId: getRejectionReasons
+      parameters:
+        - name: Authorization
+          in: header
+          description: Only required for production access when using SAP Fieldglass.
+          schema:
+            type: string
+        - name: X-ApplicationKey
+          in: header
+          description: >-
+            The company-specific key provided by SAP Fieldglass for API access.
+            Required for production access.
+          schema:
+            type: string
+        - name: moduleId
+          in: path
+          description: >-
+            The ID for the module (for example, 40 for Job Posting or 270 for
+            Work Order). A full list can be found in the supporting
+            documentation.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/approvals'
+        '400':
+          description: >-
+            Bad Request. This response is returned if the specified URL is
+            invalid, the request is not formatted correctly, or if the request
+            is missing a required field.
+          content: {}
+        '401':
+          description: Unauthorized. User/password or application key is not verified.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden. Token is not verified.
+          content: {}
+        '404':
+          description: Not Found. Service being requested does not exist.
+          content: {}
+        '500':
+          description: Internal Server Error. Server is not available.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        '503':
+          description: Internal Server Error. Server is not available.
+          content:
+            text/html:
+              example: <html><body><b>Http/1.1 Service Unavailable</b></body> </html>
+components:
+  schemas:
+    approvals:
+      type: object
+      properties:
+        HEADER:
+          type: object
+          properties:
+            appVersion:
+              type: string
+              description: API version.
+            OSUAStr:
+              type: string
+              description: API version
+            numRecs:
+              type: integer
+              description: Number of records returned in the payload.
+            status:
+              type: string
+              description: Status of the API call.
+            details:
+              type: string
+              description: Always All Ok for successful responses.
+        PAYLOAD:
+          type: array
+          items:
+            type: object
+            properties:
+              moduleID:
+                type: string
+                description: Numeric module reference ID.
+              moduleName:
+                type: string
+                description: Name of module, also type of object to be approved.
+              ID:
+                type: string
+                description: >-
+                  Globally unique database-level identifier of object. This is
+                  the ID used for the drill down call. Not visible to end users.
+              Attributes:
+                type: object
+                properties:
+                  ref:
+                    type: string
+                    description: Object ID, visible to end users.
+                  uom:
+                    type: string
+                    description: 3-character currency code.
+                  name:
+                    type: string
+                    description: Name of object as defined by user.
+                  startDate:
+                    type: string
+                    description: Start date.
+                  endDate:
+                    type: string
+                    description: End date.
+                  amount:
+                    type: string
+                    description: Amount to be approved.
+                  refVersion:
+                    type: integer
+                    description: Revision number of object to be approved.
+                  validObject:
+                    type: boolean
+                    description: Always returns false.
+                  createDate:
+                    type: string
+                    description: >-
+                      Recorded start date of object to be approved. Logical
+                      value is module dependent.
+                  creatorName:
+                    type: string
+                    description: Creator name.
+                  uniqueName:
+                    type: string
+                    description: Unique name.
+                  emailId:
+                    type: string
+                    description: Unique name.
+                  status:
+                    type: string
+                    description: Ok if response is OK.
+                  sourceLink:
+                    type: string
+                    description: Source link.
+                  others:
+                    type: object
+                    properties: {}
+                    description: >-
+                      Additional data captured in SAP Fieldglass for the object.
+                      Full list of data is module and configuration-dependent
+                      and should be consumed/presented as extrinsic.
+              Status:
+                type: string
+                description: Ok if response is OK.
+              Details:
+                type: string
+                description: All ok if response is OK.
+              ActivityID:
+                type: string
+                description: Ok if response is OK.
+    Status:
+      type: object
+      properties:
+        TransactionID:
+          type: string
+          description: Transaction ID.
+        ReturnCode:
+          type: integer
+          description: Return code.
+          format: int32
+        Message:
+          type: string
+          description: Message.
+    Error:
+      type: string
+  parameters:
+    headerAuthorization:
+      name: Authorization
+      in: header
+      description: Only required for production access when using SAP Fieldglass.
+      schema:
+        type: string
+    headerApplicationKey:
+      name: X-ApplicationKey
+      in: header
+      description: >-
+        The company-specific key provided by SAP Fieldglass for API access.
+        Required for production access.
+      schema:
+        type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: >-
+        To use this REST API, you need to get OAuth client credentials (user
+        credentials and client-specific application key) from an SAP Fieldglass
+        account representative. After that, you need to pass the obtained client
+        credentials to the SAP Fieldglass token endpoint to obtain an access
+        token.
+      flows:
+        clientCredentials:
+          tokenUrl: " "
+          scopes:
+            user: approve work items
+x-servers:
+  - url: https://{hostname}/api/{suffix}
+    description: REST API
+    templates:
+      hostname:
+        enum:
+          - www.fieldglass.net
+        default: www.fieldglass.net
+        description: The SAP Fieldglass region where the SAP Fieldglass APIs are used.
+      suffix:
+        enum:
+          - v1
+          - vc
+        default: vc
+        description: The suffix for the URL.
+x-sap-shortText: Enables you to approve or reject SAP Fieldglass work items.

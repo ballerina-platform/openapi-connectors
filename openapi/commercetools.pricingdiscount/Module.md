@@ -1,7 +1,7 @@
 ## Overview
 This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.
 
-The commercetools Platform HTTP API offers an interface for programmatic access to the data stored on the platform and associated functionality.
+The commercetools Platform HTTP API(Pricing & Discount) offers an interface for programmatic access to to information on tax categories, product discount and discount code.
 
 ## Prerequisites
 

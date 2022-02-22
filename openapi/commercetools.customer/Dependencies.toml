@@ -271,7 +271,7 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "commercetools"
+name = "commercetools.customer"
 version = "1.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
@@ -279,7 +279,7 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "commercetools", moduleName = "commercetools"}
+	{org = "ballerinax", packageName = "commercetools.customer", moduleName = "commercetools.customer"}
 ]
 
 

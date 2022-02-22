@@ -2,7 +2,7 @@
 license = ["Apache-2.0"]
 keywords = ["Commerce/eCommerce", "Cost/Paid"]
 org = "ballerinax"
-name = "commercetools"
+name = "commercetools.customer"
 icon = "icon.png"
 distribution = "2201.0.0"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"

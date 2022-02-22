@@ -1,7 +1,7 @@
 Connects to [Commercetools API v1](https://docs.commercetools.com/api/)) from Ballerina
 
 ## Package overview
-The `ballerinax/commercetools` is a [Ballerina](https://ballerina.io/) connector to access commercetools platform.
+The `ballerinax/commercetools.customizedata` is a [Ballerina](https://ballerina.io/) connector to access commercetools platform customize data related operations.
 
 ### Compatibility
 |                    | Version                     |

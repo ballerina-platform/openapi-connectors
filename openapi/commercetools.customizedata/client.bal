@@ -68,8 +68,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getProductTypeByID(string projectKey, string iD, Expansion[]? expand = ()) returns ProductType|error {
-        string resourcePath = string `/${projectKey}/product-types/${iD}`;
+    remote isolated function getProductTypeByID(string projectKey, string id, Expansion[]? expand = ()) returns ProductType|error {
+        string resourcePath = string `/${projectKey}/product-types/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -78,8 +78,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateProductTypeByID(string projectKey, string iD, ProductTypeUpdate payload, Expansion[]? expand = ()) returns ProductType|error {
-        string resourcePath = string `/${projectKey}/product-types/${iD}`;
+    remote isolated function updateProductTypeByID(string projectKey, string id, ProductTypeUpdate payload, Expansion[]? expand = ()) returns ProductType|error {
+        string resourcePath = string `/${projectKey}/product-types/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -91,8 +91,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteProductTypeByID(string projectKey, string iD, float 'version, Expansion[]? expand = ()) returns ProductType|error {
-        string resourcePath = string `/${projectKey}/product-types/${iD}`;
+    remote isolated function deleteProductTypeByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns ProductType|error {
+        string resourcePath = string `/${projectKey}/product-types/${id}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -157,8 +157,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getTypeByID(string projectKey, string iD, Expansion[]? expand = ()) returns Type|error {
-        string resourcePath = string `/${projectKey}/types/${iD}`;
+    remote isolated function getTypeByID(string projectKey, string id, Expansion[]? expand = ()) returns Type|error {
+        string resourcePath = string `/${projectKey}/types/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -167,8 +167,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateTypeByID(string projectKey, string iD, TypeUpdate payload, Expansion[]? expand = ()) returns Type|error {
-        string resourcePath = string `/${projectKey}/types/${iD}`;
+    remote isolated function updateTypeByID(string projectKey, string id, TypeUpdate payload, Expansion[]? expand = ()) returns Type|error {
+        string resourcePath = string `/${projectKey}/types/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -180,8 +180,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteTypeByID(string projectKey, string iD, float 'version, Expansion[]? expand = ()) returns Type|error {
-        string resourcePath = string `/${projectKey}/types/${iD}`;
+    remote isolated function deleteTypeByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns Type|error {
+        string resourcePath = string `/${projectKey}/types/${id}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

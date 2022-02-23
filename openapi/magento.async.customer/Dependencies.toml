@@ -269,7 +269,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "magento.async.customer"
-version = "1.0.1"
+version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerinai", name = "observe"}

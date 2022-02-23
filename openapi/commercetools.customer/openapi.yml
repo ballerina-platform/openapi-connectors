@@ -16,14 +16,14 @@ info:
 security:
   - bearerAuth: [] 
 paths:
-  /{projectKey}/customers/{ID}:
+  /{projectKey}/customers/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -545,7 +545,7 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/in-store/key={storeKey}/customers/{ID}:
+  /{projectKey}/in-store/key={storeKey}/customers/{id}:
     parameters:
       - name: projectKey
         in: path
@@ -557,7 +557,7 @@ paths:
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -3583,7 +3583,7 @@ paths:
       security:
         - oauth_2_0:
             - "manage_customers:{projectKey}"
-      operationId: CreateTokenForVerifyingCustomerEmail
+      operationId: CreateTokenForVerifyingCustomerEmailByPasswordToken
       description: |-
         The token value is used to reset the password of the customer with the given email. The token is
         valid only for 10 minutes.
@@ -4404,7 +4404,7 @@ paths:
       security:
         - oauth_2_0:
             - "manage_customers:{projectKey}"
-      operationId: createTokenForVerifyingCustomerEmail
+      operationId: createTokenForVerifyingCustomerEmailByEmailToken
       description: |-
         Create a Token for verifying the Customer's Email
       requestBody:
@@ -6661,14 +6661,14 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/customer-groups/{ID}:
+  /{projectKey}/customer-groups/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -7357,7 +7357,7 @@ paths:
         - oauth_2_0:
             - "manage_customers:{projectKey}"
             - "manage_customer_groups:{projectKey}"
-      operationId: ByProjectKeyCustomerGroupsKeyByKeyPost
+      operationId: updateCustomerGroupbyKey
       description: |-
       parameters:
         - name: expand
@@ -7538,7 +7538,7 @@ paths:
         - oauth_2_0:
             - "manage_customers:{projectKey}"
             - "manage_customer_groups:{projectKey}"
-      operationId: ByProjectKeyCustomerGroupsKeyByKeyDelete
+      operationId: deleteCustomerGroupbyKey
       parameters:
         - name: version
           in: query
@@ -7728,7 +7728,7 @@ paths:
         - oauth_2_0:
             - "view_customers:{projectKey}"
             - "view_customer_groups:{projectKey}"
-      operationId: ByProjectKeyCustomerGroupsGet
+      operationId: queryCustomerGroups
       parameters:
         - name: where
           in: query
@@ -7931,7 +7931,7 @@ paths:
         - oauth_2_0:
             - "manage_customers:{projectKey}"
             - "manage_customer_groups:{projectKey}"
-      operationId: ByProjectKeyCustomerGroupsPost
+      operationId: createCustomerGroup
       parameters:
         - name: expand
           in: query

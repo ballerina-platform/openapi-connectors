@@ -16,14 +16,14 @@ info:
 security:
   - bearerAuth: [] 
 paths:
-  /{projectKey}/tax-categories/{ID}:
+  /{projectKey}/tax-categories/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -2477,14 +2477,14 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/product-discounts/{ID}:
+  /{projectKey}/product-discounts/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -3893,14 +3893,14 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/cart-discounts/{ID}:
+  /{projectKey}/cart-discounts/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -4418,14 +4418,14 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/discount-codes/{ID}:
+  /{projectKey}/discount-codes/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:

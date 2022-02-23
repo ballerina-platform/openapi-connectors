@@ -16,14 +16,14 @@ info:
 security:
   - bearerAuth: [] 
 paths:
-  /{projectKey}/product-types/{ID}:
+  /{projectKey}/product-types/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:
@@ -1428,14 +1428,14 @@ paths:
             application/json:
                 schema:
                   $ref: '#/components/schemas/ErrorResponse'
-  /{projectKey}/types/{ID}:
+  /{projectKey}/types/{id}:
     parameters:
       - name: projectKey
         in: path
         required: true
         schema:
           type: string
-      - name: ID
+      - name: id
         in: path
         required: true
         schema:

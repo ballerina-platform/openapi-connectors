@@ -51,7 +51,7 @@ public type ClientConfig record {|
 |};
 
 # This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification. 
-# The commercetools Platform HTTP API(Pricing & Discounts) offers an interface for programmatic access to information on tax categories, product discount and discount code.
+# The commercetools Platform HTTP API(Pricing & Discounts) offers an interface for programmatic access to information on tax catergories, product discount and discount code.
 @display {label: "Commercetools Pricing & Discounts", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
@@ -68,8 +68,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getTaxCategoriesByID(string projectKey, string iD, Expansion[]? expand = ()) returns TaxCategory|error {
-        string resourcePath = string `/${projectKey}/tax-categories/${iD}`;
+    remote isolated function getTaxCategoriesByID(string projectKey, string id, Expansion[]? expand = ()) returns TaxCategory|error {
+        string resourcePath = string `/${projectKey}/tax-categories/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -78,8 +78,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateTaxCategoriesByID(string projectKey, string iD, TaxCategoryUpdate payload, Expansion[]? expand = ()) returns TaxCategory|error {
-        string resourcePath = string `/${projectKey}/tax-categories/${iD}`;
+    remote isolated function updateTaxCategoriesByID(string projectKey, string id, TaxCategoryUpdate payload, Expansion[]? expand = ()) returns TaxCategory|error {
+        string resourcePath = string `/${projectKey}/tax-categories/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -91,8 +91,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteTaxCategoriesByID(string projectKey, string iD, float 'version, Expansion[]? expand = ()) returns TaxCategory|error {
-        string resourcePath = string `/${projectKey}/tax-categories/${iD}`;
+    remote isolated function deleteTaxCategoriesByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns TaxCategory|error {
+        string resourcePath = string `/${projectKey}/tax-categories/${id}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -223,8 +223,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getProductDiscountByID(string projectKey, string iD, Expansion[]? expand = ()) returns ProductDiscount|error {
-        string resourcePath = string `/${projectKey}/product-discounts/${iD}`;
+    remote isolated function getProductDiscountByID(string projectKey, string id, Expansion[]? expand = ()) returns ProductDiscount|error {
+        string resourcePath = string `/${projectKey}/product-discounts/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -233,8 +233,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateProductDiscountByID(string projectKey, string iD, ProductDiscountUpdate payload, Expansion[]? expand = ()) returns ProductDiscount|error {
-        string resourcePath = string `/${projectKey}/product-discounts/${iD}`;
+    remote isolated function updateProductDiscountByID(string projectKey, string id, ProductDiscountUpdate payload, Expansion[]? expand = ()) returns ProductDiscount|error {
+        string resourcePath = string `/${projectKey}/product-discounts/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -246,8 +246,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteProductDiscountByID(string projectKey, string iD, float 'version, Expansion[]? expand = ()) returns ProductDiscount|error {
-        string resourcePath = string `/${projectKey}/product-discounts/${iD}`;
+    remote isolated function deleteProductDiscountByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns ProductDiscount|error {
+        string resourcePath = string `/${projectKey}/product-discounts/${id}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -312,8 +312,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getCartDiscountByID(string projectKey, string iD, Expansion[]? expand = ()) returns CartDiscount|error {
-        string resourcePath = string `/${projectKey}/cart-discounts/${iD}`;
+    remote isolated function getCartDiscountByID(string projectKey, string id, Expansion[]? expand = ()) returns CartDiscount|error {
+        string resourcePath = string `/${projectKey}/cart-discounts/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -322,8 +322,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateCartDiscountByID(string projectKey, string iD, CartDiscountUpdate payload, Expansion[]? expand = ()) returns CartDiscount|error {
-        string resourcePath = string `/${projectKey}/cart-discounts/${iD}`;
+    remote isolated function updateCartDiscountByID(string projectKey, string id, CartDiscountUpdate payload, Expansion[]? expand = ()) returns CartDiscount|error {
+        string resourcePath = string `/${projectKey}/cart-discounts/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -335,8 +335,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCartDiscountByID(string projectKey, string iD, float 'version, Expansion[]? expand = ()) returns CartDiscount|error {
-        string resourcePath = string `/${projectKey}/cart-discounts/${iD}`;
+    remote isolated function deleteCartDiscountByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns CartDiscount|error {
+        string resourcePath = string `/${projectKey}/cart-discounts/${id}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -345,8 +345,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getDiscountCodeByID(string projectKey, string iD, Expansion[]? expand = ()) returns DiscountCode|error {
-        string resourcePath = string `/${projectKey}/discount-codes/${iD}`;
+    remote isolated function getDiscountCodeByID(string projectKey, string id, Expansion[]? expand = ()) returns DiscountCode|error {
+        string resourcePath = string `/${projectKey}/discount-codes/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -355,8 +355,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function updateDiscountCodeByID(string projectKey, string iD, DiscountCodeUpdate payload, Expansion[]? expand = ()) returns DiscountCode|error {
-        string resourcePath = string `/${projectKey}/discount-codes/${iD}`;
+    remote isolated function updateDiscountCodeByID(string projectKey, string id, DiscountCodeUpdate payload, Expansion[]? expand = ()) returns DiscountCode|error {
+        string resourcePath = string `/${projectKey}/discount-codes/${id}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -368,8 +368,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteDiscountCodeByID(string projectKey, string iD, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns DiscountCode|error {
-        string resourcePath = string `/${projectKey}/discount-codes/${iD}`;
+    remote isolated function deleteDiscountCodeByID(string projectKey, string id, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns DiscountCode|error {
+        string resourcePath = string `/${projectKey}/discount-codes/${id}`;
         map<anydata> queryParam = {"dataErasure": dataErasure, "version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

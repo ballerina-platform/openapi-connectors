@@ -6,7 +6,7 @@ The `ballerinax/commercetools.cartsordershoppinglists` is a [Ballerina](https://
 ### Compatibility
 |                    | Version                     |
 |--------------------|-----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language | Ballerina Swan Lake Beta6   |
 | Commercetools API  | 1.0.0                       |
 
 ## Report issues

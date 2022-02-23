@@ -6,7 +6,7 @@ The `ballerinax/commercetools.customizebehavior` is a [Ballerina](https://baller
 ### Compatibility
 |                    | Version                     |
 |--------------------|-----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language | Ballerina Swan Lake Beta6   |
 | Commercetools API  | 1.0.0                       |
 
 ## Report issues

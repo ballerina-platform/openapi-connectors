@@ -4,9 +4,9 @@ keywords = ["Commerce/eCommerce", "Cost/Paid"]
 org = "ballerinax"
 name = "commercetools.customer"
 icon = "icon.png"
-distribution = "2201.0.0"
+distribution = "slbeta6"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.1.0"
+version = "1.0.0"
 authors = ["Ballerina"]
 
 [build-options]

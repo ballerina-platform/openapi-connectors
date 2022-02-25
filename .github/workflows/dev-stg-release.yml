@@ -1,0 +1,41 @@
+name: Dev/Staging BCentral Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bal_central_environment:
+        description: Ballerina Central Environment
+        type: choice
+        options:
+        - STAGE
+        - DEV
+        required: true
+
+jobs:
+    release:
+      runs-on: ubuntu-latest
+      env: 
+        BALLERINA_${{ github.event.inputs.bal_central_environment }}_CENTRAL: true
+      container:
+        image: ballerina/ballerina:2201.0.0
+        options: --user root
+      steps:
+        - name: Install Git
+          run: apk --no-cache add git
+        - uses: actions/checkout@v2
+
+        - name: Push to Staging
+          if: github.event.inputs.bal_central_environment == 'STAGE'
+          env:
+            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_STAGE_ACCESS_TOKEN }}
+            JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          run: |
+            ./gradlew build -Prelease=true -Premote=true
+
+        - name: Push to Dev
+          if: github.event.inputs.bal_central_environment == 'DEV'
+          env:
+            BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_DEV_ACCESS_TOKEN }}
+            JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          run: |
+            ./gradlew build -Prelease=true -Premote=true

@@ -38,7 +38,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MarketingEventCreateRequestParams'
+              $ref: '#/components/schemas/MarketingEventCreateRequest'
         required: true
       responses:
         '200':
@@ -65,7 +65,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputMarketingEventExternalUniqueIdentifier'
+              $ref: '#/components/schemas/MarketingEventExternalUniqueIdentifierBatch'
         required: true
       responses:
         default:
@@ -96,7 +96,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging'
+                $ref: '#/components/schemas/MarketingEventSearchResponse'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -115,7 +115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputMarketingEventCreateRequestParams'
+              $ref: '#/components/schemas/MarketingEventBatchCreateRequest'
         required: true
       responses:
         '200':
@@ -123,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseMarketingEventPublicDefaultResponse'
+                $ref: '#/components/schemas/MarketingEventCollectionResponse'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -160,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MarketingEventPublicReadResponse'
+                $ref: '#/components/schemas/PublicMarketingEventReadResponse'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -187,7 +187,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MarketingEventCreateRequestParams'
+              $ref: '#/components/schemas/MarketingEventCreateRequest'
         required: true
       responses:
         '200':
@@ -195,7 +195,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MarketingEventPublicDefaultResponse'
+                $ref: '#/components/schemas/PublicMarketingEventResponse'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -263,7 +263,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MarketingEventUpdateRequestParams'
+              $ref: '#/components/schemas/MarketingEventUpdateRequest'
         required: true
       responses:
         '200':
@@ -271,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MarketingEventPublicDefaultResponse'
+                $ref: '#/components/schemas/PublicMarketingEventResponse'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -352,7 +352,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputMarketingEventEmailSubscriber'
+              $ref: '#/components/schemas/MarketingEventEmailSubscriberBatch'
         required: true
       responses:
         default:
@@ -398,7 +398,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputMarketingEventSubscriber'
+              $ref: '#/components/schemas/MarketingEventSubscriberBatch'
         required: true
       responses:
         default:
@@ -473,7 +473,7 @@ paths:
         - developer_hapikey: []
 components:
   schemas:
-    BatchInputMarketingEventCreateRequestParams:
+    MarketingEventBatchCreateRequest:
       required:
         - inputs
       type: object
@@ -481,8 +481,8 @@ components:
         inputs:
           type: array
           items:
-            $ref: '#/components/schemas/MarketingEventCreateRequestParams'
-    BatchInputMarketingEventEmailSubscriber:
+            $ref: '#/components/schemas/MarketingEventCreateRequest'
+    MarketingEventEmailSubscriberBatch:
       required:
         - inputs
       type: object
@@ -493,7 +493,7 @@ components:
           items:
             $ref: '#/components/schemas/MarketingEventEmailSubscriber'
       description: List of marketing event details to create or update
-    BatchInputMarketingEventExternalUniqueIdentifier:
+    MarketingEventExternalUniqueIdentifierBatch:
       required:
         - inputs
       type: object
@@ -502,7 +502,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MarketingEventExternalUniqueIdentifier'
-    BatchInputMarketingEventSubscriber:
+    MarketingEventSubscriberBatch:
       required:
         - inputs
       type: object
@@ -513,7 +513,7 @@ components:
           items:
             $ref: '#/components/schemas/MarketingEventSubscriber'
       description: List of HubSpot contacts to subscribe to the marketing event
-    BatchResponseMarketingEventPublicDefaultResponse:
+    MarketingEventCollectionResponse:
       description: Batch marketing event info
       required:
         - completedAt
@@ -534,7 +534,7 @@ components:
           type: array
           description: Marketing event info
           items:
-            $ref: '#/components/schemas/MarketingEventPublicDefaultResponse'
+            $ref: '#/components/schemas/PublicMarketingEventResponse'
         numErrors:
           type: integer
           description: Error count
@@ -561,7 +561,7 @@ components:
           description: Links
           additionalProperties:
             type: string
-    CollectionResponseMarketingEventExternalUniqueIdentifierNoPaging:
+    MarketingEventSearchResponse:
       required:
         - results
       type: object
@@ -744,7 +744,7 @@ components:
         eventDetailsUrl:
           type: string
           description: 'The url that will be used to fetch marketing event details by id. Must contain a `%s` character sequence that will be substituted with the event id. For example: `https://my.event.app/events/%s`'
-    MarketingEventCreateRequestParams:
+    MarketingEventCreateRequest:
       required:
         - customProperties
         - eventName
@@ -866,7 +866,7 @@ components:
         externalEventId:
           type: string
           description: The id of the marketing event in the external event application.
-    MarketingEventPublicDefaultResponse:
+    PublicMarketingEventResponse:
       description: Public marketing event  info
       required:
         - createdAt
@@ -921,7 +921,7 @@ components:
           type: string
           description: Updated date/time
           format: date-time
-    MarketingEventPublicReadResponse:
+    PublicMarketingEventReadResponse:
       required:
         - attendees
         - cancellations
@@ -1015,7 +1015,7 @@ components:
           type: integer
           description: VID
           format: int32
-    MarketingEventUpdateRequestParams:
+    MarketingEventUpdateRequest:
       required:
         - customProperties
       type: object

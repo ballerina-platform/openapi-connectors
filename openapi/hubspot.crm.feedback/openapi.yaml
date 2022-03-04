@@ -13,7 +13,7 @@ info:
 
     Create a [HubSpot account](https://www.hubspot.com/) and obtain the API Key following [this guide](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.162640933)."
 servers:
-  - url: 'https://api.hubapi.com/'
+  - url: 'https://api.hubapi.com'
 tags:
   - name: Basic
   - name: Search
@@ -81,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging'
+                $ref: '#/components/schemas/SimplePublicObjectWithAssociationsArray'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -92,7 +92,7 @@ paths:
         - Batch
       summary: 'Read a batch of feedback submissions by internal ID, or unique property values'
       description: Read a list of feedback submissions given a collection of IDs. Use the `properties` request body property to control which properties are returned.
-      operationId: batch/read_read Batch
+      operationId: batch/read
       parameters:
         - name: archived
           in: query
@@ -104,10 +104,11 @@ paths:
             type: boolean
             default: false
       requestBody:
+        description: Object which contains array of internal IDs of feedbacks
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchReadInputSimplePublicObjectId'
+              $ref: '#/components/schemas/SimplePublicObjectIdReadArray'
         required: true
       responses:
         '200':
@@ -115,13 +116,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+                $ref: '#/components/schemas/SimplePublicObjectBatch'
         '207':
           description: multiple statuses
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+                $ref: '#/components/schemas/SimplePublicObjectBatchWithErrors'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -135,6 +136,7 @@ paths:
       operationId: do Search
       parameters: []
       requestBody:
+        description: feedback search request
         content:
           application/json:
             schema:
@@ -146,7 +148,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging'
+                $ref: '#/components/schemas/SimplePublicObjectWithForwardPaging'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -159,7 +161,7 @@ paths:
         - Basic
       summary: Read
       description: 'Read an Object identified by `{feedbackSubmissionId}`. `{feedbackSubmissionId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.'
-      operationId: 'get By Id'
+      operationId: 'get Object By Id'
       parameters:
         - name: feedbackSubmissionId
           in: path
@@ -264,7 +266,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseAssociatedIdForwardPaging'
+                $ref: '#/components/schemas/AssociatedIdArrayWithForwardPaging'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -281,7 +283,7 @@ components:
           type: string
         type:
           type: string
-    BatchInputSimplePublicObjectBatchInput:
+    SimplePublicObjectArray:
       required:
         - inputs
       type: object
@@ -290,7 +292,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectBatchInput'
-    BatchInputSimplePublicObjectId:
+    SimplePublicObjectIdArray:
       required:
         - inputs
       type: object
@@ -299,7 +301,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
-    BatchInputSimplePublicObjectInput:
+    SimplePublicObjectInputArray:
       required:
         - inputs
       type: object
@@ -308,7 +310,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
-    BatchReadInputSimplePublicObjectId:
+    SimplePublicObjectIdReadArray:
       required:
         - inputs
         - properties
@@ -324,7 +326,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
-    BatchResponseSimplePublicObject:
+    SimplePublicObjectBatch:
       required:
         - completedAt
         - results
@@ -356,7 +358,7 @@ components:
           type: object
           additionalProperties:
             type: string
-    BatchResponseSimplePublicObjectWithErrors:
+    SimplePublicObjectBatchWithErrors:
       required:
         - completedAt
         - results
@@ -395,7 +397,7 @@ components:
           type: object
           additionalProperties:
             type: string
-    CollectionResponseAssociatedId:
+    AssociatedIdArray:
       required:
         - results
       type: object
@@ -406,7 +408,7 @@ components:
             $ref: '#/components/schemas/AssociatedId'
         paging:
           $ref: '#/components/schemas/Paging'
-    CollectionResponseAssociatedIdForwardPaging:
+    AssociatedIdArrayWithForwardPaging:
       required:
         - results
       type: object
@@ -417,7 +419,7 @@ components:
             $ref: '#/components/schemas/AssociatedId'
         paging:
           $ref: '#/components/schemas/ForwardPaging'
-    CollectionResponseSimplePublicObjectWithAssociationsForwardPaging:
+    SimplePublicObjectWithAssociationsArray:
       required:
         - results
       type: object
@@ -428,7 +430,7 @@ components:
             $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
         paging:
           $ref: '#/components/schemas/ForwardPaging'
-    CollectionResponseWithTotalSimplePublicObjectForwardPaging:
+    SimplePublicObjectWithForwardPaging:
       required:
         - results
         - total
@@ -793,7 +795,7 @@ components:
         associations:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociatedId'
+            $ref: '#/components/schemas/AssociatedIdArray'
       example:
         properties:
           hs_content: What a great product!

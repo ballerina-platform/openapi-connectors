@@ -58,9 +58,9 @@ if (bEvent is company:SimplePublicObject) {
 2. List companies
 
 ```ballerina
-company:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+company:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is company:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is company:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Company list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

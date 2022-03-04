@@ -272,7 +272,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "hubspot.crm.schema"
-version = "1.2.0"
+version = "2.0.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "url"},

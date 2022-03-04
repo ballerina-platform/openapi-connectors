@@ -62,7 +62,7 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com/") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         return;
@@ -75,16 +75,17 @@ public isolated client class Client {
     # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored. 
     # + archived - Whether to return only results that have been archived. 
     # + return - successful operation 
-    remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error {
+    remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns SimplePublicObjectWithAssociationsArray|error {
         string resourcePath = string `/crm/v3/objects/line_items`;
         map<anydata> queryParam = {"limit": 'limit, "after": after, "properties": properties, "associations": associations, "archived": archived};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp->get(resourcePath);
+        SimplePublicObjectWithAssociationsArray response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Create
     #
+    # + payload - Line item data 
     # + return - successful operation 
     remote isolated function create(SimplePublicObjectInput payload) returns SimplePublicObject|error {
         string resourcePath = string `/crm/v3/objects/line_items`;
@@ -96,8 +97,9 @@ public isolated client class Client {
     }
     # Archive a batch of line items by ID
     #
+    # + payload - Record containing an array of line item IDs 
     # + return - No content 
-    remote isolated function batchArchiveArchive(BatchInputSimplePublicObjectId payload) returns http:Response|error {
+    remote isolated function batchArchive(SimplePublicObjectIdArray payload) returns http:Response|error {
         string resourcePath = string `/crm/v3/objects/line_items/batch/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -107,49 +109,53 @@ public isolated client class Client {
     }
     # Create a batch of line items
     #
+    # + payload - Record with an array of line item data 
     # + return - successful operation 
-    remote isolated function batchCreateCreate(BatchInputSimplePublicObjectInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchCreate(SimplePublicObjectInputArray payload) returns SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch|error {
         string resourcePath = string `/crm/v3/objects/line_items/batch/create`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read a batch of line items by internal ID, or unique property values
     #
     # + archived - Whether to return only results that have been archived. 
+    # + payload - Object which contains array of internal IDs of line items 
     # + return - successful operation 
-    remote isolated function batchReadRead(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchRead(SimplePublicObjectIdReadArray payload, boolean archived = false) returns SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch|error {
         string resourcePath = string `/crm/v3/objects/line_items/batch/read`;
         map<anydata> queryParam = {"archived": archived};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update a batch of line items
     #
+    # + payload - Record with array of updated line item data 
     # + return - successful operation 
-    remote isolated function batchUpdateUpdate(BatchInputSimplePublicObjectBatchInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchUpdate(SimplePublicObjectArray payload) returns SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch|error {
         string resourcePath = string `/crm/v3/objects/line_items/batch/update`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Filter, Sort, and Search CRM Objects
     #
+    # + payload - Line item search request 
     # + return - successful operation 
-    remote isolated function doSearch(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
+    remote isolated function doSearch(PublicObjectSearchRequest payload) returns SimplePublicObjectWithForwardPaging|error {
         string resourcePath = string `/crm/v3/objects/line_items/search`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectWithForwardPaging response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read
@@ -160,7 +166,7 @@ public isolated client class Client {
     # + archived - Whether to return only results that have been archived. 
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
-    remote isolated function getById(string lineItemId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
+    remote isolated function getObjectById(string lineItemId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
         string resourcePath = string `/crm/v3/objects/line_items/${lineItemId}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
@@ -181,6 +187,7 @@ public isolated client class Client {
     #
     # + lineItemId - Line item ID 
     # + idProperty - The name of a property whose values are unique for this object type 
+    # + payload - Attributes to update in line item 
     # + return - successful operation 
     remote isolated function update(string lineItemId, SimplePublicObjectInput payload, string? idProperty = ()) returns SimplePublicObject|error {
         string resourcePath = string `/crm/v3/objects/line_items/${lineItemId}`;
@@ -199,11 +206,11 @@ public isolated client class Client {
     # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results. 
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
-    remote isolated function associationsGetAll(string lineItemId, string toObjectType, string? after = (), int 'limit = 500) returns CollectionResponseAssociatedIdForwardPaging|error {
+    remote isolated function associationsGetAll(string lineItemId, string toObjectType, string? after = (), int 'limit = 500) returns AssociatedIdArrayWithForwardPaging|error {
         string resourcePath = string `/crm/v3/objects/line_items/${lineItemId}/associations/${toObjectType}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp->get(resourcePath);
+        AssociatedIdArrayWithForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Associate a line item with another object

@@ -28,9 +28,10 @@ public type ErrorDetail record {
 };
 
 # A collection of Events
-public type CollectionResponseExternalUnifiedEvent record {
+public type ExternalUnifiedEventCollection record {
     # Array of results
     ExternalUnifiedEvent[] results;
+    # Pagination data
     Paging paging?;
 };
 
@@ -67,10 +68,13 @@ public type ExternalUnifiedEvent record {
     string occurredAt;
     # A unique identifier for the event.
     string id;
+    # External event properties.
     record {} properties;
 };
 
+# Pagination data
 public type Paging record {
+    # Next Page info
     NextPage next?;
 };
 
@@ -91,7 +95,10 @@ public type Error record {
     record {} links?;
 };
 
+# Next Page info
 public type NextPage record {
+    # Page after
     string after;
+    # Page link
     string link?;
 };

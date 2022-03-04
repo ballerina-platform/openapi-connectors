@@ -14,11 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type CollectionResponsePublicImportResponse record {
-    PublicImportResponse[] results;
-    Paging paging?;
-};
-
 public type Paging record {
     NextPage next?;
     PreviousPage prev?;
@@ -30,6 +25,11 @@ public type PublicObjectListRecord record {
     string listId;
     # The type of object contained in the list.
     string objectType;
+};
+
+public type PublicImportCollectionResponse record {
+    PublicImportResponse[] results;
+    Paging paging?;
 };
 
 public type Error record {
@@ -47,6 +47,11 @@ public type Error record {
     record {} context?;
     # A map of link names to associated URIs containing documentation about the error or recommended remediation steps
     record {} links?;
+};
+
+public type PublicImportErrorCollection record {
+    PublicImportError[] results;
+    ForwardPaging paging?;
 };
 
 public type ImportRowCore record {
@@ -112,11 +117,6 @@ public type V3ImportsBody record {
     string files?;
     # JSON formatted metadata about the import. This includes a name for the import and the column mappings for each file. See the overview tab for more on the required format.
     string importRequest?;
-};
-
-public type CollectionResponsePublicImportErrorForwardPaging record {
-    PublicImportError[] results;
-    ForwardPaging paging?;
 };
 
 # A current summary of the import, whether complete or not.

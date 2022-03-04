@@ -114,7 +114,7 @@ public isolated client class Client {
     # Update a schema
     #
     # + objectType - Fully qualified name or object type ID of your schema. 
-    # + payload - Attributes to update in your schema. 
+    # + payload - Attributes to update in schema 
     # + return - successful operation 
     remote isolated function update(string objectType, ObjectTypeDefinitionPatch payload) returns ObjectTypeDefinition|error {
         string resourcePath = string `/crm/v3/schemas/${objectType}`;

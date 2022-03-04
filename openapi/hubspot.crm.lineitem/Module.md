@@ -57,9 +57,9 @@ if (bEvent is lineitem:SimplePublicObject) {
 2. List line-items
 
 ```ballerina
-lineitem:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+lineitem:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is lineitem:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is lineitem:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Line-item list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

@@ -50,39 +50,41 @@ public isolated client class Client {
     # + associations - A comma separated list of object types to retrieve associated IDs for. If any of the specified associations do not exist, they will be ignored. 
     # + archived - Whether to return only results that have been archived. 
     # + return - successful operation 
-    remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error {
+    remote isolated function getPage(int 'limit = 10, string? after = (), string[]? properties = (), string[]? associations = (), boolean archived = false) returns SimplePublicObjectWithAssociationsArray|error {
         string resourcePath = string `/crm/v3/objects/quotes`;
         map<anydata> queryParam = {"limit": 'limit, "after": after, "properties": properties, "associations": associations, "archived": archived, "hapikey": self.apiKeyConfig.hapikey};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CollectionResponseSimplePublicObjectWithAssociationsForwardPaging response = check self.clientEp->get(resourcePath);
+        SimplePublicObjectWithAssociationsArray response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Read a batch of quotes by internal ID, or unique property values
     #
     # + archived - Whether to return only results that have been archived. 
+    # + payload - Object which contains array of internal IDs of quotes 
     # + return - successful operation 
-    remote isolated function batchReadRead(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchRead(SimplePublicObjectIdReadArray payload, boolean archived = false) returns SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch|error {
         string resourcePath = string `/crm/v3/objects/quotes/batch/read`;
         map<anydata> queryParam = {"archived": archived, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectBatchWithErrors|SimplePublicObjectBatch response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Filter, Sort, and Search CRM Objects
     #
+    # + payload - Quote search request 
     # + return - successful operation 
-    remote isolated function doSearch(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
+    remote isolated function doSearch(PublicObjectSearchRequest payload) returns SimplePublicObjectWithForwardPaging|error {
         string resourcePath = string `/crm/v3/objects/quotes/search`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CollectionResponseWithTotalSimplePublicObjectForwardPaging response = check self.clientEp->post(resourcePath, request);
+        SimplePublicObjectWithForwardPaging response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Read
@@ -93,7 +95,7 @@ public isolated client class Client {
     # + archived - Whether to return only results that have been archived. 
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
-    remote isolated function getById(string quoteId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
+    remote isolated function getObjectById(string quoteId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
         string resourcePath = string `/crm/v3/objects/quotes/${quoteId}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty, "hapikey": self.apiKeyConfig.hapikey};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
@@ -108,11 +110,11 @@ public isolated client class Client {
     # + after - The paging cursor token of the last successfully read resource will be returned as the `paging.next.after` JSON property of a paged response containing more results. 
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
-    remote isolated function associationsGetAll(string quoteId, string toObjectType, string? after = (), int 'limit = 500) returns CollectionResponseAssociatedIdForwardPaging|error {
+    remote isolated function associationsGetAll(string quoteId, string toObjectType, string? after = (), int 'limit = 500) returns AssociatedIdArrayWithForwardPaging|error {
         string resourcePath = string `/crm/v3/objects/quotes/${quoteId}/associations/${toObjectType}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CollectionResponseAssociatedIdForwardPaging response = check self.clientEp->get(resourcePath);
+        AssociatedIdArrayWithForwardPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

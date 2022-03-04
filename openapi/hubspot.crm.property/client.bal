@@ -62,7 +62,7 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com/") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         return;
@@ -82,6 +82,7 @@ public isolated client class Client {
     # Create a property
     #
     # + objectType - CRM object type 
+    # + payload - Property data 
     # + return - successful operation 
     remote isolated function create(string objectType, PropertyCreate payload) returns Property|error {
         string resourcePath = string `/crm/v3/properties/${objectType}`;
@@ -94,8 +95,9 @@ public isolated client class Client {
     # Archive a batch of properties
     #
     # + objectType - CRM object type 
+    # + payload - Property name 
     # + return - No content 
-    remote isolated function batchArchiveArchive(string objectType, BatchInputPropertyName payload) returns http:Response|error {
+    remote isolated function batchArchive(string objectType, BatchInputPropertyName payload) returns http:Response|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/batch/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -106,8 +108,9 @@ public isolated client class Client {
     # Create a batch of properties
     #
     # + objectType - CRM object type 
+    # + payload - Property data array 
     # + return - successful operation 
-    remote isolated function batchCreateCreate(string objectType, BatchInputPropertyCreate payload) returns BatchResponseProperty|error {
+    remote isolated function batchCreate(string objectType, BatchInputPropertyCreate payload) returns BatchResponseProperty|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/batch/create`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -118,8 +121,9 @@ public isolated client class Client {
     # Read a batch of properties
     #
     # + objectType - CRM object type 
+    # + payload - Property name input array 
     # + return - successful operation 
-    remote isolated function batchReadRead(string objectType, BatchReadInputPropertyName payload) returns BatchResponseProperty|error {
+    remote isolated function batchRead(string objectType, BatchReadInputPropertyName payload) returns BatchResponseProperty|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/batch/read`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -139,6 +143,7 @@ public isolated client class Client {
     # Create a property group
     #
     # + objectType - CRM object type 
+    # + payload - Property group data 
     # + return - successful operation 
     remote isolated function groupsCreate(string objectType, PropertyGroupCreate payload) returns PropertyGroup|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/groups`;
@@ -172,6 +177,7 @@ public isolated client class Client {
     #
     # + objectType - CRM object type 
     # + groupName - Group name 
+    # + payload - Property group data to update 
     # + return - successful operation 
     remote isolated function groupsUpdate(string objectType, string groupName, PropertyGroupUpdate payload) returns PropertyGroup|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/groups/${groupName}`;
@@ -208,6 +214,7 @@ public isolated client class Client {
     #
     # + objectType - CRM object type 
     # + propertyName - Property name 
+    # + payload - Property data to update 
     # + return - successful operation 
     remote isolated function propertyUpdate(string objectType, string propertyName, PropertyUpdate payload) returns Property|error {
         string resourcePath = string `/crm/v3/properties/${objectType}/${propertyName}`;

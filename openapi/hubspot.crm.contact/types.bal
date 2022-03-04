@@ -1,3 +1,4 @@
+
 // Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
@@ -56,6 +57,10 @@ public type ErrorDetail record {
     record {} context?;
 };
 
+public type SimplePublicObjectArray record {
+    SimplePublicObjectBatchInput[] inputs;
+};
+
 public type ForwardPaging record {
     NextPage next?;
 };
@@ -64,13 +69,7 @@ public type SimplePublicObjectId record {
     string id;
 };
 
-public type BatchReadInputSimplePublicObjectId record {
-    string[] properties;
-    string idProperty?;
-    SimplePublicObjectId[] inputs;
-};
-
-public type BatchInputSimplePublicObjectId record {
+public type SimplePublicObjectIdArray record {
     SimplePublicObjectId[] inputs;
 };
 
@@ -87,10 +86,6 @@ public type SimplePublicObject record {
     string updatedAt;
     boolean archived?;
     string archivedAt?;
-};
-
-public type BatchInputSimplePublicObjectInput record {
-    SimplePublicObjectInput[] inputs;
 };
 
 public type Paging record {
@@ -135,6 +130,10 @@ public type BatchResponseSimplePublicObjectWithErrors record {
     record {} links?;
 };
 
+public type SimplePublicObjectInputArray record {
+    SimplePublicObjectInput[] inputs;
+};
+
 public type SimplePublicObjectInput record {
     record {} properties;
 };
@@ -165,10 +164,6 @@ public type Filter record {
     string operator;
 };
 
-public type BatchInputSimplePublicObjectBatchInput record {
-    SimplePublicObjectBatchInput[] inputs;
-};
-
 public type PreviousPage record {
     string before;
     string link?;
@@ -182,6 +177,12 @@ public type CollectionResponseAssociatedIdForwardPaging record {
 public type SimplePublicObjectBatchInput record {
     record {} properties;
     string id;
+};
+
+public type SimplePublicObjectIdReadArray record {
+    string[] properties;
+    string idProperty?;
+    SimplePublicObjectId[] inputs;
 };
 
 public type AssociatedId record {

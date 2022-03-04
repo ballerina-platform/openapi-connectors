@@ -44,6 +44,7 @@ public isolated client class Client {
     }
     # Sends Custom Behavioral Event
     #
+    # + payload - Behavioural event data 
     # + return - No content 
     remote isolated function sendEvent(BehaviouralEvent payload) returns http:Response|error {
         string resourcePath = string `/events/v3/send`;

@@ -55,9 +55,9 @@ if (bEvent is deal:SimplePublicObject) {
 2. List deals
 
 ```ballerina
-deal:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+deal:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is deal:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is deal:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Deal list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

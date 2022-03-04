@@ -33,9 +33,9 @@ quote:Client baseClient = check new Client(clientConfig);
 1. List quotes
 
 ```
-quote:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+quote:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is quote:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is quote:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Quote list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

@@ -6,7 +6,7 @@ info:
   title: Schemas
   description: 'This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
   
-  The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object''s type, properties, and associations. The schema can be uniquely identified by its **object type ID**.'
+    The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object''s type, properties, and associations. The schema can be uniquely identified by its **object type ID**.'
   version: v3
   x-ballerina-init-description: >
     The connector initialization requires setting the API credentials.
@@ -153,7 +153,7 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Attributes to update in your schema.
+        description: Attributes to update in schema
         content:
           application/json:
             schema:

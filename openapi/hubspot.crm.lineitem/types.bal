@@ -25,22 +25,19 @@ public type StandardError record {
     record {} links;
 };
 
-public type CollectionResponseAssociatedId record {
-    AssociatedId[] results;
-    Paging paging?;
-};
-
-public type BatchResponseSimplePublicObject record {
-    string status;
-    SimplePublicObject[] results;
-    string requestedAt?;
-    string startedAt;
-    string completedAt;
-    record {} links?;
-};
-
 public type FilterGroup record {
     Filter[] filters;
+};
+
+public type SimplePublicObjectWithForwardPaging record {
+    int total;
+    SimplePublicObject[] results;
+    ForwardPaging paging?;
+};
+
+public type AssociatedIdArrayWithForwardPaging record {
+    AssociatedId[] results;
+    ForwardPaging paging?;
 };
 
 public type ErrorDetail record {
@@ -56,6 +53,10 @@ public type ErrorDetail record {
     record {} context?;
 };
 
+public type SimplePublicObjectArray record {
+    SimplePublicObjectBatchInput[] inputs;
+};
+
 public type ForwardPaging record {
     NextPage next?;
 };
@@ -64,20 +65,22 @@ public type SimplePublicObjectId record {
     string id;
 };
 
-public type BatchReadInputSimplePublicObjectId record {
-    string[] properties;
-    string idProperty?;
-    SimplePublicObjectId[] inputs;
-};
-
-public type BatchInputSimplePublicObjectId record {
-    SimplePublicObjectId[] inputs;
-};
-
-public type CollectionResponseWithTotalSimplePublicObjectForwardPaging record {
-    int total;
+public type SimplePublicObjectBatch record {
+    string status;
     SimplePublicObject[] results;
-    ForwardPaging paging?;
+    string requestedAt?;
+    string startedAt;
+    string completedAt;
+    record {} links?;
+};
+
+public type SimplePublicObjectIdArray record {
+    SimplePublicObjectId[] inputs;
+};
+
+public type AssociatedIdArray record {
+    AssociatedId[] results;
+    Paging paging?;
 };
 
 public type SimplePublicObject record {
@@ -89,8 +92,9 @@ public type SimplePublicObject record {
     string archivedAt?;
 };
 
-public type BatchInputSimplePublicObjectInput record {
-    SimplePublicObjectInput[] inputs;
+public type SimplePublicObjectWithAssociationsArray record {
+    SimplePublicObjectWithAssociations[] results;
+    ForwardPaging paging?;
 };
 
 public type Paging record {
@@ -124,7 +128,15 @@ public type Error record {
     record {} links?;
 };
 
-public type BatchResponseSimplePublicObjectWithErrors record {
+public type SimplePublicObjectInputArray record {
+    SimplePublicObjectInput[] inputs;
+};
+
+public type SimplePublicObjectInput record {
+    record {} properties;
+};
+
+public type SimplePublicObjectBatchWithErrors record {
     string status;
     SimplePublicObject[] results;
     int numErrors?;
@@ -133,15 +145,6 @@ public type BatchResponseSimplePublicObjectWithErrors record {
     string startedAt;
     string completedAt;
     record {} links?;
-};
-
-public type SimplePublicObjectInput record {
-    record {} properties;
-};
-
-public type CollectionResponseSimplePublicObjectWithAssociationsForwardPaging record {
-    SimplePublicObjectWithAssociations[] results;
-    ForwardPaging paging?;
 };
 
 public type ErrorCategory record {
@@ -165,23 +168,20 @@ public type Filter record {
     string operator;
 };
 
-public type BatchInputSimplePublicObjectBatchInput record {
-    SimplePublicObjectBatchInput[] inputs;
-};
-
 public type PreviousPage record {
     string before;
     string link?;
 };
 
-public type CollectionResponseAssociatedIdForwardPaging record {
-    AssociatedId[] results;
-    ForwardPaging paging?;
-};
-
 public type SimplePublicObjectBatchInput record {
     record {} properties;
     string id;
+};
+
+public type SimplePublicObjectIdReadArray record {
+    string[] properties;
+    string idProperty?;
+    SimplePublicObjectId[] inputs;
 };
 
 public type AssociatedId record {

@@ -13,7 +13,7 @@ info:
   
     Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
-  - url: 'https://api.hubapi.com/'
+  - url: 'https://api.hubapi.com'
 tags:
   - name: Core
   - name: Batch
@@ -81,6 +81,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property data
         content:
           application/json:
             schema:
@@ -110,7 +111,7 @@ paths:
         - Batch
       summary: Archive a batch of properties
       description: 'Archive a provided list of properties. This method will return a 204 No Content response on success regardless of the initial state of the property (e.g. active, already archived, non-existent).'
-      operationId: 'batch/archive_archive'
+      operationId: 'batch/archive'
       parameters:
         - name: objectType
           in: path
@@ -121,6 +122,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property name
         content:
           application/json:
             schema:
@@ -147,7 +149,7 @@ paths:
         - Batch
       summary: Create a batch of properties
       description: Create a batch of properties using the same rules as when creating an individual property.
-      operationId: 'batch/create_create'
+      operationId: 'batch/create'
       parameters:
         - name: objectType
           in: path
@@ -158,6 +160,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property data array
         content:
           application/json:
             schema:
@@ -193,7 +196,7 @@ paths:
         - Batch
       summary: Read a batch of properties
       description: Read a provided list of properties.
-      operationId: 'batch/read_read'
+      operationId: 'batch/read'
       parameters:
         - name: objectType
           in: path
@@ -204,6 +207,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property name input array
         content:
           application/json:
             schema:
@@ -289,6 +293,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property group data
         content:
           application/json:
             schema:
@@ -419,6 +424,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property group data to update
         content:
           application/json:
             schema:
@@ -558,6 +564,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Property data to update
         content:
           application/json:
             schema:
@@ -1108,6 +1115,7 @@ components:
           format: int32
         archived:
           type: boolean
+          description: Archive ID
       description: An ID for a group of properties
       example:
         name: mypropertygroup

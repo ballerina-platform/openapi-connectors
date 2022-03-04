@@ -85,6 +85,7 @@ public isolated client class Client {
     # Create a pipeline
     #
     # + objectType - CRM object type 
+    # + payload - Pipeline input 
     # + return - successful operation 
     remote isolated function create(string objectType, PipelineInput payload) returns Pipeline|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}`;
@@ -111,6 +112,7 @@ public isolated client class Client {
     #
     # + objectType - CRM object type 
     # + pipelineId - Pipeline ID 
+    # + payload - Pipeline input 
     # + return - successful operation 
     remote isolated function replace(string objectType, string pipelineId, PipelineInput payload) returns Pipeline|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}/${pipelineId}`;
@@ -135,6 +137,7 @@ public isolated client class Client {
     # + objectType - CRM object type 
     # + pipelineId - Pipeline ID 
     # + archived - Whether to return only results that have been archived. 
+    # + payload - Attributes to update in pipeline 
     # + return - successful operation 
     remote isolated function update(string objectType, string pipelineId, PipelinePatchInput payload, boolean archived = false) returns Pipeline|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}/${pipelineId}`;
@@ -163,6 +166,7 @@ public isolated client class Client {
     #
     # + objectType - CRM object type 
     # + pipelineId - Pipeline ID 
+    # + payload - Pipeline stage input 
     # + return - successful operation 
     remote isolated function stageCreate(string objectType, string pipelineId, PipelineStageInput payload) returns PipelineStage|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}/${pipelineId}/stages`;
@@ -191,6 +195,7 @@ public isolated client class Client {
     # + objectType - CRM object type 
     # + pipelineId - Pipeline ID 
     # + stageId - Stage ID 
+    # + payload - Pipeline stage input 
     # + return - successful operation 
     remote isolated function stageReplace(string objectType, string pipelineId, string stageId, PipelineStageInput payload) returns PipelineStage|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}/${pipelineId}/stages/${stageId}`;
@@ -217,6 +222,7 @@ public isolated client class Client {
     # + pipelineId - Pipeline ID 
     # + stageId - Stage ID 
     # + archived - Whether to return only results that have been archived. 
+    # + payload - Pipeline stage patch input 
     # + return - successful operation 
     remote isolated function stageUpdate(string objectType, string pipelineId, string stageId, PipelineStagePatchInput payload, boolean archived = false) returns PipelineStage|error {
         string resourcePath = string `/crm/v3/pipelines/${objectType}/${pipelineId}/stages/${stageId}`;

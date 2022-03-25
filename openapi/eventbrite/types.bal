@@ -764,6 +764,18 @@ public type Category record {
     Subcategory[]? subcategories?;
 };
 
+# Full details of the organization
+public type Organization record {
+    # The organization name
+    string? name?;
+    # The organization vertical
+    string? vertical?;
+    # The organization image id
+    string? image_id?;
+    # The organization id
+    string? id?;
+};
+
 # The Discount object represents a discount that an Order owner can use when purchasing tickets to an Event.
 public type Discount record {
     # Type
@@ -1496,6 +1508,14 @@ public type OfflineSettings record {
     string? payment_method?;
     # Instructions
     string? instructions?;
+};
+
+# An object with a property organizations which is an array of Organization objects.
+public type Organizations record {
+    # Pagination
+    Pagination? pagination?;
+    # An array of Organization objects.
+    Organization[]? organizations?;
 };
 
 # The Event object represents an Eventbrite Event. An Event is owned by one Organization.

@@ -23,6 +23,7 @@ List<String> updatedBallerinaPackages = new ArrayList<>();
 boolean release = false;
 boolean remote = false;
 boolean buildAll = false;
+boolean testTool = false;
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
 }
@@ -32,6 +33,13 @@ if (project.hasProperty("release")){
 if (project.hasProperty("buildAll")){
     buildAll = new Boolean(project.property("buildAll").toString())
 }
+if (project.hasProperty("testTool")){
+    testTool = new Boolean(project.property("testTool").toString())
+}
+
+String toolTestsDirPath = project.projectDir.absolutePath + "/tool-tests";
+List<String> toolTestPackages = new ArrayList<>();
+toolTestPackages = Utils.findBallerinaPackages(toolTestsDirPath);
 
 Utils.loadOpenAPIProperties(project.projectDir.absolutePath)
 String openApiPackageDirPath = project.projectDir.absolutePath + "/openapi";
@@ -42,25 +50,27 @@ if (buildAll){
 }
 
 task codeBuild {
-    println "Task: Building connectors..."
-    for (String path : updatedBallerinaPackages) {
-        Utils.executePrechecks(path);
-        exec {
-            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
-        }
-    }
-
-    if (!release) {
-        println "Task: Pushing connectors to local..."
+    if (!testTool) {
+        println "Task: Building connectors..."
         for (String path : updatedBallerinaPackages) {
-            try {
-                exec {
-                    workingDir "${path}"
-                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
-                }
+            Utils.executePrechecks(path);
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
             }
-            catch (Exception ex) {
-                println "Failed to push connector [" + path + "] to local repository. Error : " + ex.toString(); 
+        }
+
+        if (!release) {
+            println "Task: Pushing connectors to local..."
+            for (String path : updatedBallerinaPackages) {
+                try {
+                    exec {
+                        workingDir "${path}"
+                        commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal push --repository=local"
+                    }
+                }
+                catch (Exception ex) {
+                    println "Failed to push connector [" + path + "] to local repository. Error : " + ex.toString();
+                }
             }
         }
     }
@@ -93,3 +103,51 @@ task releaseConnector {
     }
 }
 
+task testOpenAPITool {
+    if (testTool) {
+        println "Task: Testing OpenAPI tool ..."
+        for (String path : toolTestPackages) {
+            println "----- Case - " + path
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.yaml --mode client"
+                workingDir(path)
+            }
+            println "Connector generation done for " + path
+
+            exec {
+                commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
+            }
+            println "bal pack done for " + path
+        }
+
+
+        // Test variations of commands in the openapi tool
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.yaml --mode client --nullable"
+            workingDir(toolTestsDirPath + "/15-nullable")
+        }
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack"
+            workingDir(toolTestsDirPath + "/15-nullable")
+        }
+
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.yaml --mode client " +
+                    "--license "+ toolTestsDirPath + "/resources/licence.txt"
+            workingDir(toolTestsDirPath + "/16-license")
+        }
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack"
+            workingDir(toolTestsDirPath + "/16-license")
+        }
+
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.yaml --mode client --with-tests"
+            workingDir(toolTestsDirPath + "/17-with-tests")
+        }
+        exec {
+            commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack"
+            workingDir(toolTestsDirPath + "/17-with-tests")
+        }
+    }
+}

@@ -1,0 +1,42 @@
+name: Test OpenAPI tool
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      bal_docker_version:
+        description: Ballerina Docker version
+        required: true
+        default: 'nightly'
+      
+jobs:
+  test_openapi_tool_nightly:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    container:
+      image: ballerina/ballerina:nightly
+      options: --user root
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build with Gradle
+        env:
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          GRADLE_USER_HOME: ~/.gradle
+        run: |
+          ./gradlew build -PtestTool=true
+
+  test_openapi_tool_with_specified_version:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    container:
+      image: ballerina/ballerina:${{ github.event.inputs.bal_docker_version }}
+      options: --user root
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build with Gradle
+        env:
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          GRADLE_USER_HOME: ~/.gradle
+        run: |
+          ./gradlew build -PtestTool=true

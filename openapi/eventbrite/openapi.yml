@@ -19,7 +19,43 @@ servers:
 tags:
   - name: event
 paths:
-  /organizations/{organization_id}/events:
+  /users/me/organizations/:
+    get:
+      summary: "Returns a list of the organizations to which you are a member. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/organization/list-your-organizations/list-your-organizations"
+      parameters: []
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a single property organizations which is an array of Organization objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Organizations'
+      operationId: "list_organizations"
+  /users/{user_id}/organizations/:
+    get:
+      summary: "Returns the list organizations by user ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/organization/list-organizations-by-user/list-organizations-by-user"
+      parameters: 
+        - in: "path"
+          name: "user_id"
+          description: "ID of User. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a single property organizations which is an array of Organization objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Organizations'
+      operationId: "list_organizations_by_user"
+  /organizations/{organization_id}/events/:
     post:
       summary: "Create a new Event."
       description: "https://www.eventbrite.com/platform/api#/reference/event/create/create-an-event"
@@ -144,7 +180,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/EventsByOrganization'
       operationId: "list_events_by_organization"
-  /events/{event_id}/publish:
+  /events/{event_id}/publish/:
     post:
       summary: "Publish an Event."
       description: "https://www.eventbrite.com/platform/api#/reference/event/publish/publish-an-event"
@@ -165,7 +201,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/PublishedEvent'
       operationId: "publish_event"
-  /organizations/{organization_id}/discounts:
+  /organizations/{organization_id}/discounts/:
     post:
       summary: "Create a new Discount."
       description: "https://www.eventbrite.com/platform/api#/reference/discount/retrieve/create-a-discount"
@@ -266,7 +302,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Discounts'
       operationId: "list_discounts"
-  /events/{event_id}/ticket_classes:
+  /events/{event_id}/ticket_classes/:
     post:
       summary: "Create a new Ticket Class."
       description: "https://www.eventbrite.com/platform/api#/reference/ticket-class/create/create-a-ticket-class"
@@ -293,7 +329,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/CreatedTicketClass'
       operationId: "create_ticket_class"
-  /categories:
+  /categories/:
     get:
       summary: "Returns a list of Category as categories, including subcategories nested. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/categories/list/list-of-categories"
@@ -308,7 +344,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Categories'
       operationId: "list_categories"
-  /venues/{venue_id}/events:
+  /venues/{venue_id}/events/:
     get:
       summary: "List Events by Venue ID. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/event/list/list-events-by-venue"
@@ -353,7 +389,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/EventsByVenue'
       operationId: "list_events_by_venue"
-  /users/{user_id}:
+  /users/{user_id}/:
     get:
       summary: "Retrieve Information about a User Account."
       description: "https://www.eventbrite.com/platform/api#/reference/user/retrieve-information-about-a-user-account/retrieve-information-about-a-user-account"
@@ -374,7 +410,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/UserObject'
       operationId: "get_user_details"
-  /organizations/{organization_id}/orders:
+  /organizations/{organization_id}/orders/:
     get:
       summary: "Returns a paginated response of orders, under the key orders, of orders placed against any of the events the organization owns (events that would be returned from /organizations/:id/events/)."
       description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-organization-id"
@@ -419,7 +455,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/OrdersByOrganization'
       operationId: "list_orders_by_organization"
-  /events/{event_id}/orders:
+  /events/{event_id}/orders/:
     get:
       summary: "List Orders by Event ID. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-event-id"
@@ -476,7 +512,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/OrdersByEvent'
       operationId: "list_orders_by_event"
-  /users/{user_id}/orders:
+  /users/{user_id}/orders/:
     get:
       summary: "List Orders by User ID. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-user-id"
@@ -509,7 +545,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/OrdersByOrganization'
       operationId: "list_orders_by_user"
-  /organizations/{organization_id}/attendees:
+  /organizations/{organization_id}/attendees/:
     get:
       summary: "List Attendees of an Organization's Events by Organization ID. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/attendee/list/list-attendees-by-organization"
@@ -542,7 +578,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/AttendeesByOrganization'
       operationId: "list_attendees"
-  /events/{event_id}/attendees:
+  /events/{event_id}/attendees/:
     get:
       summary: "List Attendees by Event ID. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/attendee/list/list-attendees-by-event"
@@ -587,7 +623,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/AttendeesByEvent'
       operationId: "list_attendees_by_event"
-  /events/{event_id}/attendees/{attendee_id}:
+  /events/{event_id}/attendees/{attendee_id}/:
     get:
       summary: "Retrieve an Attendee by Attendee ID."
       description: "https://www.eventbrite.com/platform/api#/reference/attendee/retrieve/retrieve-an-attendee"
@@ -614,7 +650,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Attendee'
       operationId: "get_attendee_details"
-  /organizations/{organization_id}/venues:
+  /organizations/{organization_id}/venues/:
     post:
       summary: "Create new Venue under an Organization."
       description: "https://www.eventbrite.com/platform/api#/reference/venue/create/create-a-venue"
@@ -661,7 +697,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Venues'
       operationId: "list_venues"
-  /events/{event_id}/teams:
+  /events/{event_id}/teams/:
     get:
       summary: "Returns a list of teams for the event. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/event-teams/list/list-by-event"
@@ -682,7 +718,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Teams'
       operationId: "list_teams"
-  /events/{event_id}/teams/{team_id}/attendees:
+  /events/{event_id}/teams/{team_id}/attendees/:
     get:
       summary: "Returns attendee for a single team. Returns a paginated response."
       description: "https://www.eventbrite.com/platform/api#/reference/event-teams/retrieve/list-attendees-by-team"
@@ -709,7 +745,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Attendees'
       operationId: "list_attendees_by_team"
-  /events/{event_id}/teams/{team_id}:
+  /events/{event_id}/teams/{team_id}/:
     get:
       summary: "Returns information for a single team."
       description: "https://www.eventbrite.com/platform/api#/reference/event-teams/list/retrieve-team"
@@ -736,7 +772,7 @@ paths:
               schema: 
                 $ref: '#/components/schemas/Team'
       operationId: "get_team_details"
-  /events/{event_id}:
+  /events/{event_id}/:
     get:
       summary: "Retrieve an Event by Event ID."
       description: "https://www.eventbrite.com/platform/api#/reference/event/retrieve/retrieve-an-event"
@@ -1553,6 +1589,22 @@ components:
             $ref: '#/components/schemas/Subcategory'
           description: List of subcategories (only shown on some endpoints)
       description: Full details of the event category (requires the category expansion)
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The organization name
+        vertical:
+          type: string
+          description: The organization vertical
+        image_id:
+          type: string
+          description: The organization image id
+        id:
+          type: string
+          description: The organization id
+      description: Full details of the organization
     Subcategory:
       type: object
       properties:
@@ -2269,6 +2321,17 @@ components:
             $ref: '#/components/schemas/Category'
           description: An array of Category objects. 
       description: An object with a property categories which is an array of Category objects.
+    Organizations:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        organizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
+          description: An array of Organization objects. 
+      description: An object with a property organizations which is an array of Organization objects.
     Pagination:
       type: object
       properties:

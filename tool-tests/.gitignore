@@ -1,0 +1,6 @@
+**/target
+**/tests
+**/client.bal
+**/types.bal
+**/utils.bal
+**/Dependencies.toml

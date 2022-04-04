@@ -1,0 +1,2580 @@
+openapi: 3.0.0
+info:
+  title: Salesforce Pardot V5 Synchronous API
+  description: |
+    This is a generated connector for [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
+    The version 5 of the Pardot API to read and update a variety of assets and objects, like File and Layout Template objects.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Salesforce account](https://www.salesforce.com) and obtain tokens following [this guide](https://developer.salesforce.com/docs/marketing/pardot/guide/authentication.html).
+  x-ballerina-display:
+    label: Salesforce Pardot
+    iconPath: "icon.png"
+  contact: {}
+  version: '1.0'
+servers:
+  - url: https://pi.demo.pardot.com/api/v5
+tags:
+  - name: Campaign
+    description: |-
+      A Pardot campaign tracks the first interaction that a person has with your online marketing materials. Associate your assets to a Pardot campaign to organize and track your marketing efforts. Learn more about Pardot campaigns in [Salesforce Help](https://help.salesforce.com/s/articleView?id=sf.pardot_campaigns_parent.htm&type=5).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/campaign-v5.html#campaign-resources)
+  - name: Custom Field
+    description: |-
+      Use custom fields to capture and track more data about your prospects. You can use custom fields in forms and sync the Pardot fields with Salesforce fields. Learn more about Pardot fields in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_forms_prospect_fields.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/custom-field-v5.html)
+  - name: Custom redirects
+    description: |-
+      Track links on your website or third-party site with Pardot’s custom redirects. For example, you can track a link on your Twitter page or a banner ad on a third-party site. When a user clicks a link, a corresponding activity is created on their profile. Learn about custom redirects in [Salefsorce Help](https://help.salesforce.com/articleView?id=sf.pardot_content_custom_redirects.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/custom-redirect-v5.html)
+  - name: External Activities
+    description: |-
+      External activity helps marketers use all of their prospect engagement to drive their marketing automations. There are two main components to external activity: an extension, which represents an integration, and the activity type, which is the type of engagement that can be submitted. For example, an extension can be an integration with Zoom, and the activity type can be registered for call and attended call.
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/external-activities-v5.html)
+  - name: Files
+    description: |-
+      Upload images and other files to use in your Pardot emails, forms, and landing pages. Learn about files in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_content_files_parent.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/file-v5.html)
+  - name: Folder
+    description: |-
+      Organize and nest your content and marketing assets in a way that makes sense for your team. Learn about folders in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_content_folders_parent.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/folder-v5.html)
+  - name: Form
+    description: |-
+      Use forms to collect visitor information and create identified prospects. Learn more about forms in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_forms.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/form-v5.html)
+  - name: Layout Templates
+    description: |-
+      Layout templates are used to format landing pages, forms, and site search results. Learn more about layout templates in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_landing_pages_create_layout.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/layout-template-v5.html)
+  - name: Lists
+    description: |-
+      A list is a group of prospects that you can use to send list emails or to feed engagement programs. Learn more about lists in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_segmentation_overview.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/list-v5.html)
+  - name: Prospect
+    description: |-
+      Use the prospect resources to create and delete prospects, and to query and modify their information. Learn more about prospects in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_prospects.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/prospect-v5.html)
+  - name: Prospect Accounts
+    description: |-
+      Prospect accounts group prospect accounts that work for the same company under the same umbrella, keeping all the information about the company in one place. Use prospect account resources to request the name and Pardot ID of your prospect accounts. Learn more about prospect accounts in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_prospect_account_parent.htm).
+
+      [View this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/prospect-account-v5.html)
+  - name: Tracker Domain
+    description: |-
+      Tracker domains give your visitors a seamless transition between your hosted pages and forms and your Pardot assets. Learn more about tracker domains in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_admin_tracker_domain_parent.htm).
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/tracker-domain-v5.html)
+  - name: User
+    description: |-
+      User resources tell you about the Pardot users in your organization. Learn more about users in [Salesforce Help](https://help.salesforce.com/articleView?id=sf.pardot_users_managing_users.htm).
+
+
+      [See this object's documentation](https://developer.salesforce.com/docs/marketing/pardot/guide/user-v5.html)
+  - name: Visit
+    description: Use visit resources to learn about a user visit to your website. Discover the user's Pardot ID, Google Analytics parameters, and other information.
+  - name: Visitor Page Views
+    description: Use visitor page view resources to learn about page views on your website.
+  - name: Alternative Auth Requests
+    description: Authentication alternatives to Salesforce OAuth2.0.
+paths:
+  /objects/campaigns/{id}:
+    get:
+      tags:
+        - Campaign
+      description: Retrieves a single campaign.
+      operationId: Read campaign
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id, name, folderId, cost, parentCampaignId, isDeleted, createdById, updatedById, createdAt, updatedAt, salesforceId, parentCampaignId, folder, createdBy, updatedBy, parentCampaign
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/campaigns:
+    get:
+      tags:
+        - Campaign
+      description: Retrieves a collection of campaigns.
+      operationId:  Query campaigns
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,folderId, cost, parentCampaignId, isDeleted, createdById, updatedById, createdAt, updatedAt, salesforceId
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/name'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/custom-fields/{id}:
+    get:
+      tags:
+        - Custom Field
+      description: Retrieves a single custom field.
+      operationId: Read custom field
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id, name, fieldId, apiFieldId, type, isRecordMultipleResponses, salesforceId, isUseValues, isAnalyticsSynced, createdById, updatedById, createdAt, updatedAt
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    patch:
+      tags:
+        - Custom Field
+      description: Updates a custom field.
+      operationId: Update custom field
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id, name, fieldId, apiFieldId, type, isRecordMultipleResponses, salesforceId, isUseValues, isAnalyticsSynced, createdById, updatedById, createdAt, updatedAt
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Custom Field update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldUpdateRequest'
+            example:
+              name: TestField3
+              fieldId: Number_Field3
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    delete:
+      tags:
+        - Custom Field
+      description: Deletes a custom field.
+      operationId: Delete custom field
+      parameters:
+        - name: id
+          in: path
+          description: (required) CustomField record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'No content'
+      deprecated: false
+  /objects/custom-fields:
+    post:
+      tags:
+        - Custom Field
+      description: Creates a custom field.
+      operationId: Create Custom Field
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id, name, fieldId, apiFieldId, type, isRecordMultipleResponses, salesforceId, isUseValues, isAnalyticsSynced, createdById, updatedById, createdAt, updatedAt
+      requestBody:
+        description: Custom Field create request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomFieldCreateRequest'
+            example:
+              name: TestField2
+              fieldId: Number_Field2
+              type: text
+              valuesPrefill: us states
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+
+      deprecated: false
+    get:
+      tags:
+        - Custom Field
+      description: Retrieves a collection of custom fields.
+      operationId: Query custom fields
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id, name, fieldId, apiFieldId, type, isRecordMultipleResponses, salesforceId, isUseValues, isAnalyticsSynced, createdById, updatedById, createdAt, updatedAt
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/custom-redirects/{id}:
+    get:
+      tags:
+        - Custom redirects
+      description: Retrieves a single custom redirect.
+      operationId: Read Custom Redirect
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,salesforceId,folderId,name,destinationUrl,campaignId,trackerDomainId,vanityUrlPath,vanityUrl,trackedUrl,gaSource,gaMedium,gaTerm,gaContent,gaCampaign,bitlyIsPersonalized,bitlyShortUrl,createdAt,updatedAt,createdById,updatedById,isDeleted
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    patch:
+      tags:
+        - Custom redirects
+      description: Updates a custom redirect.
+      operationId: Update Custom redirect
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,salesforceId,folderId,name,destinationUrl,campaignId,trackerDomainId,vanityUrlPath,vanityUrl,trackedUrl,gaSource,gaMedium,gaTerm,gaContent,gaCampaign,bitlyIsPersonalized,bitlyShortUrl,createdAt,updatedAt,createdById,updatedById,isDeleted
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Custom Redirects update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRedirectsUpdateRequest'
+            example:
+              folderId: 0
+              name: my CustomRedirect
+              destinationUrl: my CustomRedirect
+              campaignId: 0
+              trackerDomainId: 0
+              vanityUrlPath: my CustomRedirect
+              gaSource: my CustomRedirect
+              gaMedium: my CustomRedirect
+              gaTerm: my CustomRedirect
+              gaContent: my CustomRedirect
+              gaCampaign: my CustomRedirect
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+
+      deprecated: false
+    delete:
+      tags:
+        - Custom redirects
+      description: Deletes a custom redirect.
+      operationId: Delete Custom Redirect
+      parameters:
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'No content'
+      deprecated: false
+  /objects/custom-redirects:
+    get:
+      tags:
+        - Custom redirects
+      description: Retrieves a collection of custom redirects.
+      operationId: Query Custom redirects
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,salesforceId,folderId,name,destinationUrl,campaignId,trackerDomainId,vanityUrlPath,vanityUrl,trackedUrl,gaSource,gaMedium,gaTerm,gaContent,gaCampaign,bitlyIsPersonalized,bitlyShortUrl,createdAt,updatedAt,createdById,updatedById,isDeleted
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    post:
+      tags:
+        - Custom redirects
+      description: Creates a custom redirect.
+      operationId: Create Custom redirect
+      parameters:
+        - name: fields
+          in: query
+          description: (required) CustomRedirect fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,salesforceId,folderId,name,destinationUrl,campaignId,trackerDomainId,vanityUrlPath,vanityUrl,trackedUrl,gaSource,gaMedium,gaTerm,gaContent,gaCampaign,bitlyIsPersonalized,bitlyShortUrl,createdAt,updatedAt,createdById,updatedById,isDeleted
+      requestBody:
+        description: Custom Redirects create request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomRedirectsCreateRequest'
+            example:
+              folderId: 0
+              name: my CustomRedirect
+              destinationUrl: my CustomRedirect
+              campaignId: 0
+              trackerDomainId: 0
+              vanityUrlPath: my CustomRedirect
+              gaSource: my CustomRedirect
+              gaMedium: my CustomRedirect
+              gaTerm: my CustomRedirect
+              gaContent: my CustomRedirect
+              gaCampaign: my CustomRedirect
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /external-activities:
+    post:
+      tags:
+        - External Activities
+      operationId: Create External Activity
+      description: |-
+        Submits external activity to Pardot. 
+      requestBody:
+        description: External Activity create request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalActivityCreateRequest'
+            example:
+              extension: extension API name
+              type: activity type API name
+              email: prospect@email.com
+              value: any value
+              activityDate: '2021-01-01T11:08:00-04:00'
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+
+      deprecated: false
+  /objects/files/{id}:
+    get:
+      tags:
+        - Files
+      description: Retrieves a single file.
+      operationId: Read File
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,url,size,bitlyIsPersonalized,bitlyShortUrl,vanityUrl,vanityUrlPath,createdById,updatedById,createdAt,updatedAt,salesforceId,campaignId,trackerDomainId,isTracked,folderId
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    patch:
+      tags:
+        - Files
+      description: Updates a file.
+      operationId: Update File
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,url,size,bitlyIsPersonalized,bitlyShortUrl,vanityUrl,vanityUrlPath,createdById,updatedById,createdAt,updatedAt,salesforceId,campaignId,trackerDomainId,isTracked,folderId,createdBy.id,createdBy.username,updatedBy.id,updatedBy.username,trackerDomain.id,trackerDomain.domain
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: File update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileUpdateRequest'
+            example:
+              name: my file
+              campaignId: 1
+              trackerDomainId: 2
+              folderId: 1
+              vanityUrlPath: myFile
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+
+      deprecated: false
+    delete:
+      tags:
+        - Files
+      description: Deletes a file.
+      operationId: Delete File
+      parameters:
+        - name: id
+          in: path
+          description: (required) record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'No content'
+      deprecated: false
+  /objects/files:
+    get:
+      tags:
+        - Files
+      description: Retrieves a collection of files.
+      operationId: Query Files
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,url,size,bitlyIsPersonalized,bitlyShortUrl,vanityUrl,vanityUrlPath,createdById,updatedById,createdAt,updatedAt,salesforceId,campaignId,trackerDomainId,isTracked,folderId
+        -
+          $ref: '#/components/parameters/order_by'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    post:
+      tags:
+        - Files
+      description: Creates a file.
+      operationId: Create File
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,url,size,bitlyIsPersonalized,bitlyShortUrl,vanityUrl,vanityUrlPath,createdById,updatedById,createdAt,updatedAt,salesforceId,campaignId,trackerDomainId,isTracked,folderId
+      requestBody:
+        description: File create request payload
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema: 
+                $ref: '#/components/schemas/FileCreateRequestObject'
+        required: false
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/folders/{id}:
+    get:
+      tags:
+        - Folder
+      description: Retrieve a single folder.
+      operationId: Read Folder
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,parentFolderId,path,usePermissions,createdAt,updatedAt,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+
+      deprecated: false
+  /objects/folders:
+    get:
+      tags:
+        - Folder
+      description: Retrieves a collection of folders.
+      operationId: Query Folders
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,parentFolderId,path,usePermissions,createdAt,updatedAt,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/parent_folder_id'
+        -
+          $ref: '#/components/parameters/parent_folder_id_greater_than'
+        -
+          $ref: '#/components/parameters/parent_folder_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/parent_folder_id_less_than'
+        -
+          $ref: '#/components/parameters/parent_folder_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/parent_folder_id_is_null'
+        -
+          $ref: '#/components/parameters/parent_folder_id_is_not_null'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/forms/{id}:
+    get:
+      tags:
+        - Form
+      description: Retrieve a single form.
+      operationId: read Form
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,campaignId,embedCode,salesforceId,layoutTemplateId,submitButtonText,beforeFormContent,afterFormContent,thankYouContent,isAlwaysDisplay,redirectLocation,isUseRedirectLocation,fontSize,fontFamily,fontColor,labelAlignment,radioAlignment,checkboxAlignment,requiredCharacter,isCookieless,showNotProspect,isCaptchaEnabled,isDeleted,trackerDomainId,createdAt,updatedAt,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/forms:
+    get:
+      tags:
+        - Form
+      description: Retrieve a collection of forms.
+      operationId: Query Forms
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,campaignId,embedCode,salesforceId,layoutTemplateId,submitButtonText,beforeFormContent,afterFormContent,thankYouContent,isAlwaysDisplay,redirectLocation,isUseRedirectLocation,fontSize,fontFamily,fontColor,labelAlignment,radioAlignment,checkboxAlignment,requiredCharacter,isCookieless,showNotProspect,isCaptchaEnabled,isDeleted,trackerDomainId,createdAt,updatedAt,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/layout-templates/{id}:
+    get:
+      tags:
+        - Layout Templates
+      description: Retrieve a single layout template.
+      operationId: read Layout templates
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,layoutContent,formContent,siteSearchContent,isIncludeDefaultCss,folderId,isDeleted,createdAt,updatedAt,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    patch:
+      tags:
+        - Layout Templates
+      description: Update a layout template.
+      operationId: update Layout template
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,layoutContent,formContent,siteSearchContent,isIncludeDefaultCss,folderId,isDeleted,createdAt,updatedAt,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: Layout Template update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LayoutTemplateUpdateRequest'
+            example:
+              name: my template
+              layoutContent: <html></html>
+              formContent: <form></form>
+              siteSearchContent: search content
+              isIncludeDefaultCss: true
+              folderId: 1
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    delete:
+      tags:
+        - Layout Templates
+      description: Delete a layout template.
+      operationId: delete Layout template
+      parameters:
+        - name: id
+          in: path
+          description: (required) record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'No content'
+      deprecated: false
+  /objects/layout-templates:
+    get:
+      tags:
+        - Layout Templates
+      description: Retrieve a collection of layout templates.
+      operationId: query Layout templates
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,layoutContent,formContent,siteSearchContent,isIncludeDefaultCss,folderId,isDeleted,createdAt,updatedAt,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    post:
+      tags:
+        - Layout Templates
+      description: Create a layout template.
+      operationId: create Layout template
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,layoutContent,formContent,siteSearchContent,isIncludeDefaultCss,folderId,isDeleted,createdAt,updatedAt,createdById,updatedById
+      requestBody:
+        description: Layout Template create request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LayoutTemplateCreateRequest'
+            example:
+              name: my template
+              layoutContent: <html></html>
+              formContent: <form></form>
+              siteSearchContent: search content
+              isIncludeDefaultCss: true
+              folderId: 1
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/lists/{id}:
+    get:
+      tags:
+        - Lists
+      description: Retrieve a single list.
+      operationId: read List
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,title,description,isDeleted,isDynamic,isPublic,isSalesforceVisible,createdAt,updatedAt,createdById,updatedById,folderId,campaignId
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    patch:
+      tags:
+        - Lists
+      description: Update a list.
+      operationId: Update List
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,title,description,isDeleted,isDynamic,isPublic,isSalesforceVisible,createdAt,updatedAt,createdById,updatedById,folderId,campaignId
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: List update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListUpdateRequest'
+            example:
+              name: updated name
+              description: updated description
+              title: updated title
+              isPublic: false
+              campaignId: 2
+              folderId: 2
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    delete:
+      tags:
+        - Lists
+      description: Delete a list.
+      operationId: delete List
+      parameters:
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+      deprecated: false
+  /objects/lists:
+    get:
+      tags:
+        - Lists
+      description: Retrieve a collection of lists.
+      operationId: Query Lists
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,title,description,isDeleted,isDynamic,isPublic,isSalesforceVisible,createdAt,updatedAt,createdById,updatedById,folderId,campaignId
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/name'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+    post:
+      tags:
+        - Lists
+      description: Create a list.
+      operationId: Create List
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,title,description,isDeleted,isDynamic,isPublic,isSalesforceVisible,createdAt,updatedAt,createdById,updatedById,folderId,campaignId
+      requestBody:
+        description: List create request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListCreateRequest'
+            example:
+              name: test name 3
+              description: test description
+              title: test title
+              isPublic: false
+              campaignId: 1
+              folderId: 1
+        required: true
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/prospects/{id}:
+    get:
+      tags:
+        - Prospect
+      description: Retrieve a single prospect.
+      operationId:  Read Prospect
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,addressOne,addressTwo,annualRevenue,assignedToId,campaignId,campaignParameter,city,comments,company,contentParameter,convertedAt,convertedFromObjectName,convertedFromObjectType,country,createdAt,salesforceAccountId,salesforceCampaignId,salesforceContactId,salesforceLastSync,salesforceLeadId,salesforceOwnerId,salesforceUrl,department,email,emailBouncedAt,emailBouncedReason,employees,fax,firstActivityAt,firstAssignedAt,firstName,firstReferrerQuery,firstReferrerType,firstReferrerUrl,grade,industry,isDeleted,isDoNotCall,isDoNotEmail,isEmailHardBounced,isReviewed,isStarred,jobTitle,lastActivityAt,lastName,lifecycleStageId,mediumParameter,notes,optedOut,password,phone,profileId,prospectAccountId,recentInteraction,salesforceId,salutation,score,source,sourceParameter,state,termParameter,territory,updatedAt,userId,website,yearsInBusiness,zip,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/prospects:
+    get:
+      tags:
+        - Prospect
+      description: Retrieve a collection of prospects.
+      operationId: Query Prospects
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,addressOne,addressTwo,annualRevenue,assignedToId,campaignId,campaignParameter,city,comments,company,contentParameter,convertedAt,convertedFromObjectName,convertedFromObjectType,country,createdAt,salesforceAccountId,salesforceCampaignId,salesforceContactId,salesforceLastSync,salesforceLeadId,salesforceOwnerId,salesforceUrl,department,email,emailBouncedAt,emailBouncedReason,employees,fax,firstActivityAt,firstAssignedAt,firstName,firstReferrerQuery,firstReferrerType,firstReferrerUrl,grade,industry,isDeleted,isDoNotCall,isDoNotEmail,isEmailHardBounced,isReviewed,isStarred,jobTitle,lastActivityAt,lastName,lifecycleStageId,mediumParameter,notes,optedOut,password,phone,profileId,prospectAccountId,recentInteraction,salesforceId,salutation,score,source,sourceParameter,state,termParameter,territory,updatedAt,userId,website,yearsInBusiness,zip,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/last_activity_at'
+        -
+          $ref: '#/components/parameters/last_activity_after'
+        -
+          $ref: '#/components/parameters/last_activity_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/last_activity_before'
+        -
+          $ref: '#/components/parameters/last_activity_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/user_id'
+        -
+          $ref: '#/components/parameters/user_id_greater_than'
+        -
+          $ref: '#/components/parameters/user_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/user_id_less_than'
+        -
+          $ref: '#/components/parameters/user_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/assigned_to_id'
+        -
+          $ref: '#/components/parameters/assigned_to_id_greater_than'
+        -
+          $ref: '#/components/parameters/assigned_to_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/assigned_to_id_less_than'
+        -
+          $ref: '#/components/parameters/assigned_to_id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/prospect-accounts/{id}:
+    get:
+      tags:
+        - Prospect Accounts
+      description: Retrieve a single prospect account.
+      operationId: Read Prospect Account
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,salesforceId,createdAt,updatedAt,createdById,updatedById,assignedToId,annualRevenue,billingAddressOne,billingAddressTwo,billingCity,billingCountry,billingState,billingZip,description,employees,fax,industry,number,ownership,phone,rating,shippingAddressOne,shippingAddressTwo,shippingCity,shippingCountry,shippingState,shippingZip,sic,site,tickerSymbol,type,website,isDeleted
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/prospect-accounts:
+    get:
+      tags:
+        - Prospect Accounts
+      description: Retrieve a collection of prospect accounts.
+      operationId: Query Prospect Accounts
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,name,salesforceId,createdAt,updatedAt,createdById,updatedById,assignedToId,annualRevenue,billingAddressOne,billingAddressTwo,billingCity,billingCountry,billingState,billingZip,description,employees,fax,industry,number,ownership,phone,rating,shippingAddressOne,shippingAddressTwo,shippingCity,shippingCountry,shippingState,shippingZip,sic,site,tickerSymbol,type,website,isDeleted
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/tracker-domains/{id}:
+    get:
+      tags:
+        - Tracker Domain
+      description: Retrieve a single tracker domain.
+      operationId: Read Tracker Domain
+      parameters:
+        - name: fields
+          in: query
+          description: (Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,domain,isPrimary,isDeleted
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/tracker-domains:
+    get:
+      tags:
+        - Tracker Domain
+      description: Retrieve a collection of tracker domains.
+      operationId: Query Tracker Domains
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,domain,isPrimary,isDeleted,defaultCampaignId,httpsStatus,sslStatus,sslStatusDetails,sslRequestedById,validationStatus,validatedAt,vanityUrlStatus,trackingCode,createdAt,updatedAt,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/users/{id}:
+    get:
+      tags:
+        - User
+      description: Retrieve a single user.
+      operationId: Read User
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,email,firstName,lastName,username,jobTitle,role,salesforceId,createdAt,updatedAt,isDeleted,createdById,updatedById
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/users:
+    get:
+      tags:
+        - User
+      description: Retrieve a collection of users.
+      operationId: Query Users
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,email,firstName,lastName,username,jobTitle,role,salesforceId,createdAt,updatedAt,isDeleted,createdById,updatedById
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/email'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/visits/{id}:
+    get:
+      tags:
+        - Visit
+      description: Retrieve a single visit.
+      operationId: Read Visit
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,visitorId,prospectId,visitorPageViewCount,firstVisitorPageViewAt,lastVisitorPageViewAt,durationInSeconds,campaignParameter,mediumParameter,sourceParameter,contentParameter,termParameter,createdAt,updatedAt
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/visits:
+    get:
+      tags:
+        - Visit
+      description: Retrieve a collection of visits.
+      operationId: Query Visits
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,visitorId,prospectId,visitorPageViewCount,firstVisitorPageViewAt,lastVisitorPageViewAt,durationInSeconds,campaignParameter,mediumParameter,sourceParameter,contentParameter,termParameter,createdAt,updatedAt
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/visitor_id'
+        -
+          $ref: '#/components/parameters/visitor_id_greater_than'
+        -
+          $ref: '#/components/parameters/visitor_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/visitor_id_less_than'
+        -
+          $ref: '#/components/parameters/visitor_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/prospect_id'
+        -
+          $ref: '#/components/parameters/prospect_id_greater_than'
+        -
+          $ref: '#/components/parameters/prospect_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/prospect_id_less_than'
+        -
+          $ref: '#/components/parameters/prospect_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/visitor-page-views/{id}:
+    get:
+      tags:
+        - Visitor Page Views
+      description: Retrieve a single visitor page view.
+      operationId: Get Visitor Page Views
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,url,title,createdAt,visitorId,campaignId,visitId,durationInSeconds,salesforceId
+        - name: id
+          in: path
+          description: Record id
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+  /objects/visitor-page-views:
+    get:
+      tags:
+        - Visitor Page Views
+      description: Retrieve a collection of visitor page views.
+      operationId: Query Visitor Page Views
+      parameters:
+        - name: fields
+          in: query
+          description: Record fields to return
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: id,url,title,createdAt,visitorId,campaignId,visitId,durationInSeconds,salesforceId
+        -
+          $ref: '#/components/parameters/order_by'
+        -
+          $ref: '#/components/parameters/id'
+        -
+          $ref: '#/components/parameters/id_greater_than'
+        -
+          $ref: '#/components/parameters/id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/id_less_than'
+        -
+          $ref: '#/components/parameters/id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/visitor_id'
+        -
+          $ref: '#/components/parameters/visitor_id_greater_than'
+        -
+          $ref: '#/components/parameters/visitor_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/visitor_id_less_than'
+        -
+          $ref: '#/components/parameters/visitor_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/visit_id'
+        -
+          $ref: '#/components/parameters/visit_id_greater_than'
+        -
+          $ref: '#/components/parameters/visit_id_greater_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/visit_id_less_than'
+        -
+          $ref: '#/components/parameters/visit_id_less_than_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at'
+        -
+          $ref: '#/components/parameters/created_at_after'
+        -
+          $ref: '#/components/parameters/created_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/created_at_before'
+        -
+          $ref: '#/components/parameters/created_at_before_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at'
+        -
+          $ref: '#/components/parameters/updated_at_after'
+        -
+          $ref: '#/components/parameters/updated_at_after_or_equal_to'
+        -
+          $ref: '#/components/parameters/updated_at_before'
+        -
+          $ref: '#/components/parameters/updated_at_before_or_equal_to'
+      responses:
+        '200':
+          description: Response payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Record'
+      deprecated: false
+components:
+  schemas:
+    Record:
+      type: object
+    CustomFieldCreateRequest:
+      title: Custom Field create request
+      required:
+        - name
+        - fieldId
+        - type
+        - valuesPrefill
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        fieldId:
+          type: string
+          description: User-defined ID of the object.
+        type: 
+          type: string
+          description: Possible values- Text, "Radio Button", Checkbox, Dropdown, Textarea, Multi-Select, Hidden, Number, Date, "CRM User"
+        isRecordMultipleResponses: 
+          type: boolean
+          description: True if it records multiple responses, false otherwise.
+        salesforceId:
+          type: string
+          description: Salesforce Id of the object.
+        isUseValues:
+          type: boolean
+          description: True if values are used false otherwise.
+        valuesPrefill:
+          type: string
+          description: Write-Only field on create operation. Possible values- Countries, "Country Codes", "US States", "US State Codes", "Canadian Provinces", "Canadian Province Codes", "US States and Canadian Provinces", "US State and Canadian Province Codes", "Japanese Prefectures", "Japanese Prefecture Codes"
+        isRequired:
+          type: boolean
+          description: True if the custom field is required.
+      example:
+        name: TestField2
+        fieldId: Number_Field2
+        type: text
+        valuesPrefill: us states
+    CustomFieldUpdateRequest:
+      title: UpdateRequest
+      required:
+        - name
+        - fieldId
+        - type
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        fieldId:
+          type: string
+          description: User-defined ID of the object.
+        type: 
+          type: string
+          description: Possible values- Text, "Radio Button", Checkbox, Dropdown, Textarea, Multi-Select, Hidden, Number, Date, "CRM User"
+        isRecordMultipleResponses: 
+          type: boolean
+          description: True if it records multiple responses, false otherwise.
+        salesforceId:
+          type: string
+          description: Salesforce Id of the object.
+        isUseValues:
+          type: boolean
+          description: True if values are used false otherwise.
+        valuesPrefill:
+          type: string
+          description: Write-Only field on create operation. Possible values- Countries, "Country Codes", "US States", "US State Codes", "Canadian Provinces", "Canadian Province Codes", "US States and Canadian Provinces", "US State and Canadian Province Codes", "Japanese Prefectures", "Japanese Prefecture Codes"
+        isRequired:
+          type: boolean
+          description: True if the custom field is required.
+    CustomRedirectsUpdateRequest:
+      title: Custom redirects update request
+      type: object
+      properties:
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        destinationUrl:
+          type: string
+          description: A fully qualified URL. The visitor who clicks the custom redirect will be directed to this location. E.g. https://example.com/content.html
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot Campaign related to this object.
+        trackerDomainId:
+          type: integer
+          format: int32
+          description: ID of the tracker domain to use in the URL for this object. Uses the primary tracker domain for the account if not specified on create.
+        vanityUrlPath:
+          type: string
+          description: Vanity URL path (excluding protocol and host). Must be unique for each tracker domain. E.g. /my-link. The value assumes empty (/) if not specified on create.
+        gaSource:
+          type: string
+          description: Campaign source
+        gaMedium:
+          type: string
+          description: Campaign medium
+        gaTerm:
+          type: string
+          description: Campaign keyword
+        gaContent:
+          type: string
+          description: Campaign content
+        gaCampaign:
+          type: string
+          description: Campaign ID
+      example:
+        folderId: 0
+        name: my CustomRedirect
+        destinationUrl: my CustomRedirect
+        campaignId: 0
+        trackerDomainId: 0
+        vanityUrlPath: my CustomRedirect
+        gaSource: my CustomRedirect
+        gaMedium: my CustomRedirect
+        gaTerm: my CustomRedirect
+        gaContent: my CustomRedirect
+        gaCampaign: my CustomRedirect
+    CustomRedirectsCreateRequest:
+      title: Custom redirects update request
+      required:
+        - name
+        - destinationUrl
+        - campaignId
+      type: object
+      properties:
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        destinationUrl:
+          type: string
+          description: A fully qualified URL. The visitor who clicks the custom redirect will be directed to this location. E.g. https://example.com/content.html
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot Campaign related to this object.
+        trackerDomainId:
+          type: integer
+          format: int32
+          description: ID of the tracker domain to use in the URL for this object. Uses the primary tracker domain for the account if not specified on create.
+        vanityUrlPath:
+          type: string
+          description: Vanity URL path (excluding protocol and host). Must be unique for each tracker domain. E.g. /my-link. The value assumes empty (/) if not specified on create.
+        gaSource:
+          type: string
+          description: Campaign source
+        gaMedium:
+          type: string
+          description: Campaign medium
+        gaTerm:
+          type: string
+          description: Campaign keyword
+        gaContent:
+          type: string
+          description: Campaign content
+        gaCampaign:
+          type: string
+          description: Campaign ID
+      example:
+        folderId: 0
+        name: my CustomRedirect
+        destinationUrl: my CustomRedirect
+        campaignId: 0
+        trackerDomainId: 0
+        vanityUrlPath: my CustomRedirect
+        gaSource: my CustomRedirect
+        gaMedium: my CustomRedirect
+        gaTerm: my CustomRedirect
+        gaContent: my CustomRedirect
+        gaCampaign: my CustomRedirect
+    ExternalActivityCreateRequest:
+      title: External Activity create request
+      required:
+        - extension
+        - type
+        - email
+        - value
+      type: object
+      properties:
+        extension:
+          type: string
+          description: Name of the extension for this activity.
+        type:
+          type: string
+          description: The type of external activity for this record. It must be a value from one of the registered types in the account.
+        email:
+          type: string
+          description: The email address of the prospect related to this external activity. If there are multiple prospects with the specified email address, the one with the most recent activity is selected.
+        value:
+          type: string
+          description: Any string value related to this activity. This value isn’t checked and can be any value. The value can be 100 characters or less.
+        activityDate:
+          type: string
+          description: The date the external activity happened. It can be used by the user to backdate the activity. If not specified, then the current date is used. Must be in ISO8601 format with offset. Example- 2021-01-01T11:08:00+00:00
+      example:
+        extension: extension API name
+        type: activity type API name
+        email: prospect@email.com
+        value: any value
+        activityDate: '2021-01-01T11:08:00-04:00'
+    FileCreateRequestObject:
+      required:
+        - file
+        - input
+      type: object
+      properties:
+        file:
+          type: string
+          description: File content
+        input:
+          description: File create request
+          $ref: '#/components/schemas/FileCreateRequest'
+    FileCreateRequest:
+      title: input
+      description: File create request
+      required:
+        - name
+        - campaignId
+        - trackerDomainId
+        - folderId
+        - vanityUrlPath
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot. Uses the name of the file being uploaded if not specified on create.
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot campaign related to this object. Uses null if not specified on create.
+        trackerDomainId:
+          type: integer
+          format: int32
+          description: ID of the TrackerDomain to use in the URL for this object. Uses the primary tracker domain for the account if not specified on create.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+        vanityUrlPath:
+          type: string
+          description: Vanity URL path (excluding protocol and host). Must be unique for each tracker domain. For example /my-link. The value assumes empty (/) if not specified on create.
+      example:
+        name: my file
+        campaignId: 1
+        trackerDomainId: 1
+        folderId: 1
+        vanityUrlPath: myFile
+    FileUpdateRequest:
+      title: File update request
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot. Uses the name of the file being uploaded if not specified on create.
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot campaign related to this object. Uses null if not specified on create.
+        trackerDomainId:
+          type: integer
+          format: int32
+          description: ID of the TrackerDomain to use in the URL for this object. Uses the primary tracker domain for the account if not specified on create.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+        vanityUrlPath:
+          type: string
+          description: Vanity URL path (excluding protocol and host). Must be unique for each tracker domain. For example /my-link. The value assumes empty (/) if not specified on create.
+      example:
+        name: my file
+        campaignId: 1
+        trackerDomainId: 2
+        folderId: 1
+        vanityUrlPath: myFile
+    LayoutTemplateCreateRequest:
+      title: Layout Template create request
+      required:
+        - name
+        - layoutContent
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        layoutContent:
+          type: string
+          description: HTML content of this layout template encoded as JSON string.
+        formContent:
+          type: string
+          description: HTML content encoded as JSON string that controls form display logic. Uses default values if not provided.
+        siteSearchContent:
+          type: string
+          description: HTML content encoded as JSON string that controls the site search content. Uses default values if not provided.
+        isIncludeDefaultCss:
+          type: boolean
+          description: True if not supplying custom CSS styling.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+      example:
+        name: my template
+        layoutContent: <html></html>
+        formContent: <form></form>
+        siteSearchContent: search content
+        isIncludeDefaultCss: true
+        folderId: 1
+    LayoutTemplateUpdateRequest:
+      title: Layout Template update request
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        layoutContent:
+          type: string
+          description: HTML content of this layout template encoded as JSON string.
+        formContent:
+          type: string
+          description: HTML content encoded as JSON string that controls form display logic. Uses default values if not provided.
+        siteSearchContent:
+          type: string
+          description: HTML content encoded as JSON string that controls the site search content. Uses default values if not provided.
+        isIncludeDefaultCss:
+          type: boolean
+          description: True if not supplying custom CSS styling.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+      example:
+        name: my template
+        layoutContent: <html></html>
+        formContent: <form></form>
+        siteSearchContent: search content
+        isIncludeDefaultCss: true
+        folderId: 1
+    ListCreateRequest:
+      title: List create request
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        description:
+          type: string
+          description: Description of the list object.
+        title:
+          type: string
+          description: Description of the list object.
+        isPublic:
+          type: boolean
+          description: True if the list is public.
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot campaign related to this object. Uses null if not specified on create.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+      example:
+        name: test name 3
+        description: test description
+        title: test title
+        isPublic: false
+        campaignId: 1
+        folderId: 1
+    ListUpdateRequest:
+      title: List update request
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the object for identification in Pardot.
+        description:
+          type: string
+          description: Description of the list object.
+        title:
+          type: string
+          description: Description of the list object.
+        isPublic:
+          type: boolean
+          description: True if the list is public.
+        campaignId:
+          type: integer
+          format: int32
+          description: Pardot campaign related to this object. Uses null if not specified on create.
+        folderId:
+          type: integer
+          format: int32
+          description: ID of the folder containing this object. Uses the asset type's uncategorized folder if not specified on create.
+      example:
+        name: updated name
+        description: updated description
+        title: updated title
+        isPublic: false
+        campaignId: 2
+        folderId: 2
+  parameters:
+    order_by:
+      name: orderBy
+      in: query
+      description: When executing a query, the following fields can be specified in the orderBy parameter.
+      required: false
+      schema:
+        type: string
+    id:
+      name: id
+      in: query
+      description: Returns any records where ID is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    id_greater_than:    
+      name: idGreaterThan
+      in: query
+      description: Returns any records where ID is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    id_greater_than_or_equal_to:
+      name: idGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where ID is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    id_less_than:
+      name: idLessThan
+      in: query
+      description: Returns any records where ID is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    id_less_than_or_equal_to:
+      name: idLessThanOrEqualTo
+      in: query
+      description: Returns any records where ID is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    name:
+      name: name
+      in: query
+      description: Returns any records where Name is equal to the given string value.
+      required: false
+      schema:
+        type: string
+    created_at:
+      name: createdAt
+      in: query
+      description: Returns any records where CreatedAt is equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    created_at_after:
+      name: createdAtAfter
+      in: query
+      description: Returns any records where CreatedAt is after the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    created_at_after_or_equal_to:
+      name: createdAtAfterOrEqualTo
+      in: query
+      description: Returns any records where CreatedAt is after or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    created_at_before:
+      name: createdAtBefore
+      in: query
+      description: Returns any records where CreatedAt is before the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    created_at_before_or_equal_to:
+      name: createdAtBeforeOrEqualTo
+      in: query
+      description: Returns any records where CreatedAt is before or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    updated_at:
+      name: updatedAt
+      in: query
+      description: Returns any records where UpdatedAt is equal to the given datetime value.e.
+      required: false
+      schema:
+        type: string
+    updated_at_after:
+      name: updatedAtAfter
+      in: query
+      description: Returns any records where UpdatedAt is after the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    updated_at_after_or_equal_to:
+      name: updatedAtAfterOrEqualTo
+      in: query
+      description: Returns any records where UpdatedAt is after or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    updated_at_before:
+      name: updatedAtBefore
+      in: query
+      description: Returns any records where UpdatedAt is before the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    updated_at_before_or_equal_to:
+      name: updatedAtBeforeOrEqualTo
+      in: query
+      description: Returns any records where UpdatedAt is before or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    parent_folder_id:
+      name: parentFolderId
+      in: query
+      description: Returns any records where the parentFolderId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    parent_folder_id_greater_than:    
+      name: parentFolderIdGreaterThan
+      in: query
+      description: Returns any records where the parentFolderId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    parent_folder_id_greater_than_or_equal_to:
+      name: parentFolderIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where the parentFolderId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    parent_folder_id_less_than:
+      name: parentFolderIdLessThan
+      in: query
+      description: Returns any records where the parentFolderId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    parent_folder_id_less_than_or_equal_to:
+      name: parentFolderIdLessThanOrEqualTo
+      in: query
+      description: Returns any records where the parentFolderId is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    parent_folder_id_is_null:
+      name: parentFolderIdIsNull
+      in: query
+      description: Returns any records where the parentFolderId is null when true is specified.
+      required: false
+      schema:
+        type: boolean
+    parent_folder_id_is_not_null:
+      name: parentFolderIdIsNotNull
+      in: query
+      description: Returns any records where the parentFolderId isn’t null when true is specified.
+      required: false
+      schema:
+        type: boolean
+    last_activity_at:
+      name: lastActivityAt
+      in: query
+      description: Returns any records where LastActivityAt is equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    last_activity_after:
+      name: lastActivityAtAfter
+      in: query
+      description: Returns any records where LastActivityAt is after the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    last_activity_after_or_equal_to:
+      name: lastActivityAtAfterOrEqualTo
+      in: query
+      description: Returns any records where LastActivityAt is after or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    last_activity_before:
+      name: lastActivityAtBefore
+      in: query
+      description: Returns any records where LastActivityAt is before the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: string
+    last_activity_before_or_equal_to:
+      name: lastActivityAtBeforeOrEqualTo
+      in: query
+      description: Returns any records where LastActivityAt is before or equal to the given datetime value.
+      required: false
+      schema:
+        type: string
+    user_id:
+      name: userId
+      in: query
+      description: Returns any records where UserId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    user_id_greater_than:
+      name: userIdGreaterThan
+      in: query
+      description: Returns any records where UserId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    user_id_greater_than_or_equal_to:    
+      name: userIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where UserId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    user_id_less_than:
+      name: userIdLessThan
+      in: query
+      description: Returns any records where UserId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    user_id_less_than_or_equal_to:
+      name: userIdLessThanOrEqualTo
+      in: query
+      description: Returns any records where UserId is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    assigned_to_id:
+      name: assignedToId
+      in: query
+      description: Returns any records where AssignedToId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    assigned_to_id_greater_than:
+      name: assignedToIdGreaterThan
+      in: query
+      description: Returns any records where AssignedToId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    assigned_to_id_greater_than_or_equal_to:
+      name: assignedToIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where AssignedToId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    assigned_to_id_less_than:
+      name: assignedToIdLessThan
+      in: query
+      description: Returns any records where AssignedToId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    assigned_to_id_less_than_or_equal_to:
+      name: assignedToIdLessThanOrEqualTo
+      in: query
+      description: Returns any records where AssignedToId is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    email:
+      name: email
+      in: query
+      description: Returns any records where Email is equal to the given string value.
+      required: false
+      schema:
+        type: string
+    visitor_id:
+      name: visitorId
+      in: query
+      description: Returns any records where VisitorId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    visitor_id_greater_than:
+      name: visitorIdGreaterThan
+      in: query
+      description: Returns any records where VisitorId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    visitor_id_greater_than_or_equal_to:
+      name: visitorIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where VisitorId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    visitor_id_less_than:
+      name: visitorIdLessThan
+      in: query
+      description: Returns any records where VisitorId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    visitor_id_less_than_or_equal_to:
+      name: visitorIdLessThanOrEqualTo
+      in: query
+      description: Returns any records where CreatedAt is before the given datetime value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    prospect_id:
+      name: prospectId
+      in: query
+      description: Returns any records where ProspectId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    prospect_id_greater_than:
+      name: prospectIdGreaterThan
+      in: query
+      description: Returns any records where ProspectId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    prospect_id_greater_than_or_equal_to:
+      name: prospectIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any records where ProspectId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    prospect_id_less_than:
+      name: prospectIdLessThan
+      in: query
+      description: Returns any records where ProspectId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    prospect_id_less_than_or_equal_to:
+      name: prospectIdLessThanOrEqualTo
+      in: query
+      description: Returns any records where ProspectId is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    visit_id:
+      name: visitId
+      in: query
+      description: Returns any visitor page view where VisitId is equal to the given integer value.
+      required: false
+      schema:
+        type: integer
+    visit_id_greater_than:
+      name: visitIdGreaterThan
+      in: query
+      description: Returns any visitor page view where VisitId is greater than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    visit_id_greater_than_or_equal_to:
+      name: visitIdGreaterThanOrEqualTo
+      in: query
+      description: Returns any visitor page view where VisitId is greater than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+    visit_id_less_than:
+      name: visitIdLessThan
+      in: query
+      description: Returns any visitor page view where VisitId is less than the specified value, non-inclusive.
+      required: false
+      schema:
+        type: integer
+    visit_id_less_than_or_equal_to:
+      name: visitIdLessThanOrEqualTo
+      in: query
+      description: Returns any visitor page view where VisitId is less than or equal to the specified value.
+      required: false
+      schema:
+        type: integer
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://{DefaultParameterValue}/services/oauth2/authorize
+          scopes:
+            pardot_api: ''
+security:
+  - oauth2:
+      - pardot_api

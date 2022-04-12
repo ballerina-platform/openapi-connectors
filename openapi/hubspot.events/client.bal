@@ -80,12 +80,12 @@ public isolated client class Client {
     # + 'limit - The maximum number of events to return, defaults to 20. 
     # + sort - Selects the sort field and order. Defaults to ascending, prefix with `-` for descending order. `occurredAt` is the only field supported for sorting. 
     # + return - successful operation 
-    remote isolated function listEvents(string objectType, int objectId, string? occurredAfter = (), string? occurredBefore = (), string? eventType = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = ()) returns CollectionResponseExternalUnifiedEvent|error {
+    remote isolated function listEvents(string objectType, int objectId, string? occurredAfter = (), string? occurredBefore = (), string? eventType = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = ()) returns ExternalUnifiedEventCollection|error {
         string resourcePath = string `/events/v3/events`;
         map<anydata> queryParam = {"occurredAfter": occurredAfter, "occurredBefore": occurredBefore, "objectType": objectType, "objectId": objectId, "eventType": eventType, "after": after, "before": before, "limit": 'limit, "sort": sort};
         map<Encoding> queryParamEncoding = {"sort": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CollectionResponseExternalUnifiedEvent response = check self.clientEp->get(resourcePath);
+        ExternalUnifiedEventCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

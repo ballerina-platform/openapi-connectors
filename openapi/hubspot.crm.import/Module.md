@@ -34,9 +34,9 @@ import:Client baseClient = check new Client(clientConfig);
 1. List imports
 
 ```ballerina
-import:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+import:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is import:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is import:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Imports list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

@@ -63,7 +63,7 @@ public isolated client class Client {
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com/") returns error? {
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.hubapi.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         return;
@@ -74,15 +74,16 @@ public isolated client class Client {
     # + before - The paging cursor token from second page onwards will be returned as the `paging.next.before` JSON property of a paged response containing more results. 
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
-    remote isolated function getPage(string? after = (), string? before = (), int? 'limit = ()) returns CollectionResponsePublicImportResponse|error {
+    remote isolated function getPage(string? after = (), string? before = (), int? 'limit = ()) returns PublicImportCollectionResponse|error {
         string resourcePath = string `/crm/v3/imports/`;
         map<anydata> queryParam = {"after": after, "before": before, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CollectionResponsePublicImportResponse response = check self.clientEp->get(resourcePath);
+        PublicImportCollectionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Start a new import
     #
+    # + payload - Data import resourses 
     # + return - successful operation 
     remote isolated function create(V3ImportsBody payload) returns PublicImportResponse|error {
         string resourcePath = string `/crm/v3/imports/`;
@@ -117,11 +118,11 @@ public isolated client class Client {
     # + 'limit - The maximum number of results to display per page. 
     # + importId - Import ID 
     # + return - successful operation 
-    remote isolated function errors(int importId, string? after = (), int? 'limit = ()) returns CollectionResponsePublicImportErrorForwardPaging|error {
+    remote isolated function errors(int importId, string? after = (), int? 'limit = ()) returns PublicImportErrorCollection|error {
         string resourcePath = string `/crm/v3/imports/${importId}/errors`;
         map<anydata> queryParam = {"after": after, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CollectionResponsePublicImportErrorForwardPaging response = check self.clientEp->get(resourcePath);
+        PublicImportErrorCollection response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

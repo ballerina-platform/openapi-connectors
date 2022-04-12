@@ -13,7 +13,7 @@ info:
   
     Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
-  - url: 'https://api.hubapi.com/'
+  - url: 'https://api.hubapi.com'
 tags:
   - name: Basic
   - name: Search
@@ -81,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseSimplePublicObjectWithAssociationsForwardPaging'
+                $ref: '#/components/schemas/SimplePublicObjectWithAssociationsArray'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -96,6 +96,7 @@ paths:
       operationId: create
       parameters: []
       requestBody:
+        description: Company data
         content:
           application/json:
             schema:
@@ -121,13 +122,14 @@ paths:
         - Batch
       summary: Archive a batch of companies by ID
       description: 'Archive a list of companies given a collection of IDs. This method will return a `204 No Content` response on success regardless of the initial state of the object (e.g. active, already archived, non-existent).'
-      operationId: batch/archive_archive
+      operationId: batch/archive
       parameters: []
       requestBody:
+        description: Record containing an array of company IDs
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectId'
+              $ref: '#/components/schemas/SimplePublicObjectIdArray'
         required: true
       responses:
         '204':
@@ -145,13 +147,14 @@ paths:
         - Batch
       summary: Create a batch of companies
       description: Create a batch of companies. This follows the same rules as creating an individual object.
-      operationId: batch/create_create
+      operationId: batch/create
       parameters: []
       requestBody:
+        description: Record with an array of company data
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectInput'
+              $ref: '#/components/schemas/SimplePublicObjectInputArray'
         required: true
       responses:
         '201':
@@ -159,13 +162,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+                $ref: '#/components/schemas/SimplePublicObjectBatch'
         '207':
           description: multiple statuses
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+                $ref: '#/components/schemas/SimplePublicObjectBatchWithErrors'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -178,7 +181,7 @@ paths:
         - Batch
       summary: 'Read a batch of companies by internal ID, or unique property values'
       description: Read a list of companies given a collection of IDs. Use the `properties` request body property to control which properties are returned.
-      operationId: batch/read_read
+      operationId: batch/read
       parameters:
         - name: archived
           in: query
@@ -190,10 +193,11 @@ paths:
             type: boolean
             default: false
       requestBody:
+        description: Object which contains array of internal IDs of companies
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchReadInputSimplePublicObjectId'
+              $ref: '#/components/schemas/SimplePublicObjectIdReadArray'
         required: true
       responses:
         '200':
@@ -201,13 +205,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+                $ref: '#/components/schemas/SimplePublicObjectBatch'
         '207':
           description: multiple statuses
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+                $ref: '#/components/schemas/SimplePublicObjectBatchWithErrors'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -220,13 +224,14 @@ paths:
         - Batch
       summary: Update a batch of companies
       description: Perform a partial upate on a batch of companies. This follows the same rules as performing partial updates on an individual object.
-      operationId: batch/update_update
+      operationId: batch/update
       parameters: []
       requestBody:
+        description: Record with array of updated company data
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectBatchInput'
+              $ref: '#/components/schemas/SimplePublicObjectArray'
         required: true
       responses:
         '200':
@@ -234,13 +239,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObject'
+                $ref: '#/components/schemas/SimplePublicObjectBatch'
         '207':
           description: multiple statuses
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BatchResponseSimplePublicObjectWithErrors'
+                $ref: '#/components/schemas/SimplePublicObjectBatchWithErrors'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -256,6 +261,7 @@ paths:
       operationId: do Search
       parameters: []
       requestBody:
+        description: Company search request
         content:
           application/json:
             schema:
@@ -267,7 +273,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseWithTotalSimplePublicObjectForwardPaging'
+                $ref: '#/components/schemas/SimplePublicObjectWithForwardPaging'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -282,7 +288,7 @@ paths:
         - Basic
       summary: Read
       description: 'Read an Object identified by `{companyId}`. `{companyId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.'
-      operationId: 'get By Id'
+      operationId: 'get Object By Id'
       parameters:
         - name: companyId
           in: path
@@ -391,6 +397,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Attributes to update in company
         content:
           application/json:
             schema:
@@ -456,7 +463,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CollectionResponseAssociatedIdForwardPaging'
+                $ref: '#/components/schemas/AssociatedIdArrayWithForwardPaging'
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -586,7 +593,7 @@ components:
           type: string
         type:
           type: string
-    BatchInputSimplePublicObjectBatchInput:
+    SimplePublicObjectArray:
       required:
         - inputs
       type: object
@@ -595,7 +602,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectBatchInput'
-    BatchInputSimplePublicObjectId:
+    SimplePublicObjectIdArray:
       required:
         - inputs
       type: object
@@ -604,7 +611,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
-    BatchInputSimplePublicObjectInput:
+    SimplePublicObjectInputArray:
       required:
         - inputs
       type: object
@@ -613,7 +620,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
-    BatchReadInputSimplePublicObjectId:
+    SimplePublicObjectIdReadArray:
       required:
         - inputs
         - properties
@@ -629,7 +636,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
-    BatchResponseSimplePublicObject:
+    SimplePublicObjectBatch:
       required:
         - completedAt
         - results
@@ -661,7 +668,7 @@ components:
           type: object
           additionalProperties:
             type: string
-    BatchResponseSimplePublicObjectWithErrors:
+    SimplePublicObjectBatchWithErrors:
       required:
         - completedAt
         - results
@@ -700,7 +707,7 @@ components:
           type: object
           additionalProperties:
             type: string
-    CollectionResponseAssociatedId:
+    AssociatedIdArray:
       required:
         - results
       type: object
@@ -711,7 +718,7 @@ components:
             $ref: '#/components/schemas/AssociatedId'
         paging:
           $ref: '#/components/schemas/Paging'
-    CollectionResponseAssociatedIdForwardPaging:
+    AssociatedIdArrayWithForwardPaging:
       required:
         - results
       type: object
@@ -722,7 +729,7 @@ components:
             $ref: '#/components/schemas/AssociatedId'
         paging:
           $ref: '#/components/schemas/ForwardPaging'
-    CollectionResponseSimplePublicObjectWithAssociationsForwardPaging:
+    SimplePublicObjectWithAssociationsArray:
       required:
         - results
       type: object
@@ -733,7 +740,7 @@ components:
             $ref: '#/components/schemas/SimplePublicObjectWithAssociations'
         paging:
           $ref: '#/components/schemas/ForwardPaging'
-    CollectionResponseWithTotalSimplePublicObjectForwardPaging:
+    SimplePublicObjectWithForwardPaging:
       required:
         - results
         - total
@@ -1067,6 +1074,7 @@ components:
       type: object
       properties:
         properties:
+          description: Company properties object
           type: object
           additionalProperties:
             type: string
@@ -1106,7 +1114,7 @@ components:
         associations:
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/CollectionResponseAssociatedId'
+            $ref: '#/components/schemas/AssociatedIdArray'
       example:
         properties:
           city: Cambridge

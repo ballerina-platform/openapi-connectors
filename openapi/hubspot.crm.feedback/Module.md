@@ -31,9 +31,9 @@ feedback:Client baseClient = check new Client(clientConfig);
 1. List feedbacks
 
 ```ballerina
-feedback:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+feedback:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is feedback:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is feedback:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Feedback list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

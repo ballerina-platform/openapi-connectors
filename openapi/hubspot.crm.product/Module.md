@@ -55,9 +55,9 @@ if (bEvent is product:SimplePublicObject) {
 2. List product instances
 
 ```ballerina
-product:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+product:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is product:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is product:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Product list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

@@ -55,9 +55,9 @@ if (bEvent is contact:SimplePublicObject) {
 2. List contacts
 
 ```ballerina
-contact:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+contact:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is contact:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is contact:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Contact list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

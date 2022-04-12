@@ -79,6 +79,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Pipeline input
         content:
           application/json:
             schema:
@@ -173,6 +174,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Pipeline input
         content:
           application/json:
             schema:
@@ -263,6 +265,7 @@ paths:
             type: boolean
             default: false
       requestBody:
+        description: Attributes to update in pipeline
         content:
           application/json:
             schema:
@@ -357,6 +360,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Pipeline stage input
         content:
           application/json:
             schema:
@@ -467,6 +471,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Pipeline stage input
         content:
           application/json:
             schema:
@@ -573,6 +578,7 @@ paths:
             type: boolean
             default: false
       requestBody:
+        description: Pipeline stage patch input
         content:
           application/json:
             schema:

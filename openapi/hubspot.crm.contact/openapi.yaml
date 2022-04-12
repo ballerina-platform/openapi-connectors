@@ -97,6 +97,7 @@ paths:
       operationId: create
       parameters: []
       requestBody:
+        description: Contact data
         content:
           application/json:
             schema:
@@ -121,13 +122,14 @@ paths:
         - Batch
       summary: Archive a batch of contacts by ID
       description: 'Archive a list of contacts given a collection of IDs. This method will return a `204 No Content` response on success regardless of the initial state of the object (e.g. active, already archived, non-existent).'
-      operationId: batch/archive_archive
+      operationId: batch/archive
       parameters: []
       requestBody:
+        description: Record containing an array of contact IDs
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectId'
+              $ref: '#/components/schemas/SimplePublicObjectIdArray'
         required: true
       responses:
         '204':
@@ -145,13 +147,14 @@ paths:
         - Batch
       summary: Create a batch of contacts
       description: Create a batch of contacts. This follows the same rules as creating an individual object.
-      operationId: batch/create_create
+      operationId: batch/create
       parameters: []
       requestBody:
+        description: Record with an array of contact data
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectInput'
+              $ref: '#/components/schemas/SimplePublicObjectInputArray'
         required: true
       responses:
         '201':
@@ -178,7 +181,7 @@ paths:
         - Batch
       summary: 'Read a batch of contacts by internal ID, or unique property values'
       description: Read a list of contacts given a collection of IDs. Use the `properties` request body property to control which properties are returned.
-      operationId: batch/read_read
+      operationId: batch/read
       parameters:
         - name: archived
           in: query
@@ -190,10 +193,11 @@ paths:
             type: boolean
             default: false
       requestBody:
+        description: Object which contains array of internal IDs of contacts
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchReadInputSimplePublicObjectId'
+              $ref: '#/components/schemas/SimplePublicObjectIdReadArray'
         required: true
       responses:
         '200':
@@ -220,13 +224,14 @@ paths:
         - Batch
       summary: Update a batch of contacts
       description: Perform a partial upate on a batch of contacts. This follows the same rules as performing partial updates on an individual object.
-      operationId: batch/update_update
+      operationId: batch/update
       parameters: []
       requestBody:
+        description: Record with array of updated contact data
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BatchInputSimplePublicObjectBatchInput'
+              $ref: '#/components/schemas/SimplePublicObjectArray'
         required: true
       responses:
         '200':
@@ -253,9 +258,10 @@ paths:
         - Search
       summary: 'Filter, Sort, and Search CRM Objects'
       description: 'Filter, Sort, and Search CRM Objects'
-      operationId: post-/crm/v3/objects/contacts/search_do Search
+      operationId: search
       parameters: []
       requestBody:
+        description: Contact search request
         content:
           application/json:
             schema:
@@ -282,7 +288,7 @@ paths:
         - Basic
       summary: Read
       description: 'Read an Object identified by `{contactId}`. `{contactId}` refers to the internal object ID by default, or optionally any unique property value as specified by the `idProperty` query param.  Control what is returned via the `properties` query param.'
-      operationId: 'get By Id'
+      operationId: 'get Object By Id'
       parameters:
         - name: contactId
           in: path
@@ -391,6 +397,7 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Attributes to update in contact
         content:
           application/json:
             schema:
@@ -586,7 +593,7 @@ components:
           type: string
         type:
           type: string
-    BatchInputSimplePublicObjectBatchInput:
+    SimplePublicObjectArray:
       required:
         - inputs
       type: object
@@ -595,7 +602,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectBatchInput'
-    BatchInputSimplePublicObjectId:
+    SimplePublicObjectIdArray:
       required:
         - inputs
       type: object
@@ -604,7 +611,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectId'
-    BatchInputSimplePublicObjectInput:
+    SimplePublicObjectInputArray:
       required:
         - inputs
       type: object
@@ -613,7 +620,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SimplePublicObjectInput'
-    BatchReadInputSimplePublicObjectId:
+    SimplePublicObjectIdReadArray:
       required:
         - inputs
         - properties

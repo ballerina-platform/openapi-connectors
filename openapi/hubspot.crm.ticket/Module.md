@@ -56,9 +56,9 @@ if (bEvent is ticket:SimplePublicObject) {
 2. List tickets
 
 ```ballerina
-ticket:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging|error bEvent = baseClient->getPage();
+ticket:SimplePublicObjectWithAssociationsArray|error bEvent = baseClient->getPage();
 
-if (bEvent is ticket:CollectionResponseSimplePublicObjectWithAssociationsForwardPaging) {
+if (bEvent is ticket:SimplePublicObjectWithAssociationsArray) {
     log:printInfo("Ticket list" + bEvent.toString());
 } else {
     log:printError(msg = bEvent.message());

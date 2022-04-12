@@ -71,6 +71,7 @@ public isolated client class Client {
     }
     # Upload file
     #
+    # + payload - File data 
     # + return - successful operation 
     remote isolated function filesUpload(V3FilesBody payload) returns File|error {
         string resourcePath = string `/files/v3/files`;
@@ -82,8 +83,9 @@ public isolated client class Client {
     }
     # Import a file from a URL into the file manager.
     #
+    # + payload - Import data input 
     # + return - accepted 
-    remote isolated function postFilesV3FilesImportFromUrlAsyncImportfromurl(ImportFromUrlInput payload) returns ImportFromUrlTaskLocator|error {
+    remote isolated function filesImportFromUrl(ImportFromUrlInput payload) returns ImportFromUrlTaskLocator|error {
         string resourcePath = string `/files/v3/files/import-from-url/async`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -95,7 +97,7 @@ public isolated client class Client {
     #
     # + taskId - Import by URL task ID 
     # + return - successful operation 
-    remote isolated function tasksStatusCheckimport(string taskId) returns FileActionResponse|error {
+    remote isolated function checkImportStatus(string taskId) returns FileActionResponse|error {
         string resourcePath = string `/files/v3/files/import-from-url/async/tasks/${taskId}/status`;
         FileActionResponse response = check self.clientEp->get(resourcePath);
         return response;
@@ -127,7 +129,7 @@ public isolated client class Client {
     # + isUsableInContent - If true shows files that have been marked to be used in new content. It false shows files that should not be used in new content. 
     # + allowsAnonymousAccess - If 'true' will show private files; if 'false' will show public files 
     # + return - successful operation 
-    remote isolated function filesSearchDosearch(string[]? properties = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = (), string? id = (), string? createdAt = (), string? createdAtLte = (), string? createdAtGte = (), string? updatedAt = (), string? updatedAtLte = (), string? updatedAtGte = (), string? name = (), string? filePath = (), int? parentFolderId = (), int? size = (), int? height = (), int? width = (), string? encoding = (), string? 'type = (), string? extension = (), string? url = (), boolean? isUsableInContent = (), boolean? allowsAnonymousAccess = ()) returns CollectionResponseFile|error {
+    remote isolated function filesDoSearch(string[]? properties = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = (), string? id = (), string? createdAt = (), string? createdAtLte = (), string? createdAtGte = (), string? updatedAt = (), string? updatedAtLte = (), string? updatedAtGte = (), string? name = (), string? filePath = (), int? parentFolderId = (), int? size = (), int? height = (), int? width = (), string? encoding = (), string? 'type = (), string? extension = (), string? url = (), boolean? isUsableInContent = (), boolean? allowsAnonymousAccess = ()) returns CollectionResponseFile|error {
         string resourcePath = string `/files/v3/files/search`;
         map<anydata> queryParam = {"properties": properties, "after": after, "before": before, "limit": 'limit, "sort": sort, "id": id, "createdAt": createdAt, "createdAtLte": createdAtLte, "createdAtGte": createdAtGte, "updatedAt": updatedAt, "updatedAtLte": updatedAtLte, "updatedAtGte": updatedAtGte, "name": name, "filePath": filePath, "parentFolderId": parentFolderId, "size": size, "height": height, "width": width, "encoding": encoding, "type": 'type, "extension": extension, "url": url, "isUsableInContent": isUsableInContent, "allowsAnonymousAccess": allowsAnonymousAccess};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "sort": {style: FORM, explode: true}};
@@ -137,9 +139,10 @@ public isolated client class Client {
     }
     # Get file.
     #
-    # + fileId - Id of the desired file. 
+    # + fileId - Id of the desired file 
+    # + properties - File properties 
     # + return - successful operation 
-    remote isolated function filesGetbyId(string fileId, string[]? properties = ()) returns File|error {
+    remote isolated function filesGetById(string fileId, string[]? properties = ()) returns File|error {
         string resourcePath = string `/files/v3/files/${fileId}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
@@ -149,7 +152,8 @@ public isolated client class Client {
     }
     # Replace file.
     #
-    # + fileId - Id of the desired file. 
+    # + fileId - Id of the desired file 
+    # + payload - File data 
     # + return - successful operation 
     remote isolated function filesReplace(string fileId, FilesFileidBody payload) returns File|error {
         string resourcePath = string `/files/v3/files/${fileId}`;
@@ -171,9 +175,9 @@ public isolated client class Client {
     # update file properties
     #
     # + fileId - ID of file to update 
-    # + payload - Options to update. 
+    # + payload - Options to update 
     # + return - successful operation 
-    remote isolated function filesUpdateproperties(string fileId, FileUpdateInput payload) returns File|error {
+    remote isolated function updateFileProperties(string fileId, FileUpdateInput payload) returns File|error {
         string resourcePath = string `/files/v3/files/${fileId}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -185,7 +189,7 @@ public isolated client class Client {
     #
     # + fileId - ID of file to GDPR delete 
     # + return - No content 
-    remote isolated function deleteArchivegdpr(string fileId) returns http:Response|error {
+    remote isolated function deleteArchiveGdpr(string fileId) returns http:Response|error {
         string resourcePath = string `/files/v3/files/${fileId}/gdpr-delete`;
         http:Response response = check self.clientEp->delete(resourcePath);
         return response;
@@ -208,7 +212,7 @@ public isolated client class Client {
     #
     # + payload - Folder creation options 
     # + return - successful operation 
-    remote isolated function postFilesV3FoldersCreate(FolderInput payload) returns Folder|error {
+    remote isolated function foldersCreate(FolderInput payload) returns Folder|error {
         string resourcePath = string `/files/v3/folders`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -234,7 +238,7 @@ public isolated client class Client {
     # + folderPath - Search for folders by path. 
     # + parentFolderId - Search for folders with the given parent folder ID. 
     # + return - successful operation 
-    remote isolated function foldersSearchDosearch(string[]? properties = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = (), string? id = (), string? createdAt = (), string? createdAtLte = (), string? createdAtGte = (), string? updatedAt = (), string? updatedAtLte = (), string? updatedAtGte = (), string? name = (), string? folderPath = (), int? parentFolderId = ()) returns CollectionResponseFolder|error {
+    remote isolated function doSearch(string[]? properties = (), string? after = (), string? before = (), int? 'limit = (), string[]? sort = (), string? id = (), string? createdAt = (), string? createdAtLte = (), string? createdAtGte = (), string? updatedAt = (), string? updatedAtLte = (), string? updatedAtGte = (), string? name = (), string? folderPath = (), int? parentFolderId = ()) returns CollectionResponseFolder|error {
         string resourcePath = string `/files/v3/folders/search`;
         map<anydata> queryParam = {"properties": properties, "after": after, "before": before, "limit": 'limit, "sort": sort, "id": id, "createdAt": createdAt, "createdAtLte": createdAtLte, "createdAtGte": createdAtGte, "updatedAt": updatedAt, "updatedAtLte": updatedAtLte, "updatedAtGte": updatedAtGte, "name": name, "folderPath": folderPath, "parentFolderId": parentFolderId};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "sort": {style: FORM, explode: true}};
@@ -246,7 +250,7 @@ public isolated client class Client {
     #
     # + payload - Properties to change in the folder 
     # + return - accepted 
-    remote isolated function updateAsyncUpdateproperties(FolderUpdateInput payload) returns FolderUpdateTaskLocator|error {
+    remote isolated function updateFolderProperties(FolderUpdateInput payload) returns FolderUpdateTaskLocator|error {
         string resourcePath = string `/files/v3/folders/update/async`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -258,7 +262,7 @@ public isolated client class Client {
     #
     # + taskId - Task ID of folder update 
     # + return - successful operation 
-    remote isolated function statusCheckupdatestatus(string taskId) returns FolderActionResponse|error {
+    remote isolated function checkUpdateStatus(string taskId) returns FolderActionResponse|error {
         string resourcePath = string `/files/v3/folders/update/async/tasks/${taskId}/status`;
         FolderActionResponse response = check self.clientEp->get(resourcePath);
         return response;
@@ -268,7 +272,7 @@ public isolated client class Client {
     # + folderId - ID of desired folder 
     # + properties - Properties to set on returned folder. 
     # + return - successful operation 
-    remote isolated function foldersGetbyid(string folderId, string[]? properties = ()) returns Folder|error {
+    remote isolated function foldersGetById(string folderId, string[]? properties = ()) returns Folder|error {
         string resourcePath = string `/files/v3/folders/${folderId}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
@@ -290,7 +294,7 @@ public isolated client class Client {
     # + folderPath - Path of desired folder. 
     # + properties - Properties to set on returned folder. 
     # + return - successful operation 
-    remote isolated function foldersGetbypath(string folderPath, string[]? properties = ()) returns Folder|error {
+    remote isolated function foldersGetByPath(string folderPath, string[]? properties = ()) returns Folder|error {
         string resourcePath = string `/files/v3/folders/${folderPath}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
@@ -302,7 +306,7 @@ public isolated client class Client {
     #
     # + folderPath - Path of folder to delete 
     # + return - No content 
-    remote isolated function foldersArchivebypath(string folderPath) returns http:Response|error {
+    remote isolated function foldersArchiveByPath(string folderPath) returns http:Response|error {
         string resourcePath = string `/files/v3/folders/${folderPath}`;
         http:Response response = check self.clientEp->delete(resourcePath);
         return response;

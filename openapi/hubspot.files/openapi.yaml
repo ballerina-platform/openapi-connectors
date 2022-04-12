@@ -28,8 +28,9 @@ paths:
         - Files
       summary: Upload file
       description: Upload a single file with content specified in request body.
-      operationId: files_upload
+      operationId: files upload
       requestBody:
+        description: File data
         content:
           multipart/form-data:
             schema:
@@ -72,8 +73,9 @@ paths:
         - Files
       summary: Import a file from a URL into the file manager.
       description: Asynchronously imports the file at the given URL into the file manager.
-      operationId: post-/files/v3/files/import-from-url/async_importFromUrl
+      operationId: files/import from url
       requestBody:
+        description: Import data input 
         content:
           application/json:
             schema:
@@ -99,7 +101,7 @@ paths:
         - Files
       summary: Check import status.
       description: Check the status of requested import.
-      operationId: 'tasks/status_checkImport'
+      operationId: check Import Status
       parameters:
         - name: taskId
           in: path
@@ -129,7 +131,7 @@ paths:
         - Files
       summary: Search files
       description: Search through files in the file manager. Does not display hidden or archived files.
-      operationId: files/search_doSearch
+      operationId: files/do Search
       parameters:
         - name: properties
           in: query
@@ -358,11 +360,11 @@ paths:
         - Files
       summary: Get file.
       description: Get file by ID.
-      operationId: 'files/getBy/Id'
+      operationId: files/get By/Id
       parameters:
         - name: fileId
           in: path
-          description: Id of the desired file.
+          description: Id of the desired file
           required: true
           style: simple
           explode: false
@@ -370,6 +372,7 @@ paths:
             pattern: \d+
             type: string
         - name: properties
+          description: File properties
           in: query
           required: false
           style: form
@@ -398,11 +401,11 @@ paths:
         - Files
       summary: Replace file.
       description: Replace existing file data with new file data. Can be used to change image content without having to upload a new file and update all references.
-      operationId: 'files/replace'
+      operationId: files replace
       parameters:
         - name: fileId
           in: path
-          description: Id of the desired file.
+          description: Id of the desired file
           required: true
           style: simple
           explode: false
@@ -410,6 +413,7 @@ paths:
             pattern: \d+
             type: string
       requestBody:
+        description: File data
         content:
           multipart/form-data:
             schema:
@@ -442,7 +446,7 @@ paths:
         - Files
       summary: Delete file
       description: Delete file by ID
-      operationId: 'delete/files'
+      operationId: delete files
       parameters:
         - name: fileId
           in: path
@@ -468,7 +472,7 @@ paths:
         - Files
       summary: update file properties
       description: Update properties of file by ID.
-      operationId: 'files/updateProperties'
+      operationId: Update File Properties
       parameters:
         - name: fileId
           in: path
@@ -480,7 +484,7 @@ paths:
             pattern: \d+
             type: string
       requestBody:
-        description: Options to update.
+        description: Options to update
         content:
           application/json:
             schema:
@@ -505,7 +509,7 @@ paths:
         - Files
       summary: GDPR delete
       description: GDRP delete file
-      operationId: 'delete_archiveGDPR'
+      operationId: delete archive GDPR
       parameters:
         - name: fileId
           in: path
@@ -532,7 +536,7 @@ paths:
         - Files
       summary: Get signed URL to access private file.
       description: Generates signed URL that allows temporary access to a private file.
-      operationId: 'getSignedUrl'
+      operationId: get Signed Url
       parameters:
         - name: fileId
           in: path
@@ -593,7 +597,7 @@ paths:
         - Folders
       summary: Create folder.
       description: Creates a folder.
-      operationId: post-/files/v3/folders_create
+      operationId: folders create
       requestBody:
         description: Folder creation options
         content:
@@ -620,7 +624,7 @@ paths:
         - Folders
       summary: Search folders
       description: Search for folders. Does not contain hidden or archived folders.
-      operationId: folders/search_doSearch
+      operationId:  do Search
       parameters:
         - name: properties
           in: query
@@ -774,7 +778,7 @@ paths:
         - Folders
       summary: Update folder properties
       description: Update properties of folder by given ID. This action happens asynchronously and will update all of the folder's children as well.
-      operationId: update/async_updateProperties
+      operationId: update Folder Properties
       requestBody:
         description: Properties to change in the folder
         content:
@@ -801,7 +805,7 @@ paths:
         - Folders
       summary: Check folder update status.
       description: Check status of folder update. Folder updates happen asynchronously.
-      operationId: 'status_checkUpdateStatus'
+      operationId: check Update Status
       parameters:
         - name: taskId
           in: path
@@ -830,7 +834,7 @@ paths:
         - Folders
       summary: Get folder
       description: Get folder by ID
-      operationId: 'folders/getById'
+      operationId: folders get By Id
       parameters:
         - name: folderId
           in: path
@@ -897,7 +901,7 @@ paths:
         - Folders
       summary: Get folder.
       description: Get folder by path.
-      operationId: 'folders/getByPath'
+      operationId: folders/get By Path
       parameters:
         - name: folderPath
           in: path
@@ -937,7 +941,7 @@ paths:
         - Folders
       summary: Delete folder.
       description: Delete folder by path.
-      operationId: 'folders/archiveByPath'
+      operationId: folders/archive By Path
       parameters:
         - name: folderPath
           in: path

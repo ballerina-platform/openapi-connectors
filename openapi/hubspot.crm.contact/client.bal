@@ -86,6 +86,7 @@ public isolated client class Client {
     }
     # Create
     #
+    # + payload - Contact data 
     # + return - successful operation 
     remote isolated function create(SimplePublicObjectInput payload) returns SimplePublicObject|error {
         string resourcePath = string `/crm/v3/objects/contacts`;
@@ -97,8 +98,9 @@ public isolated client class Client {
     }
     # Archive a batch of contacts by ID
     #
+    # + payload - Record containing an array of contact IDs 
     # + return - No content 
-    remote isolated function batchArchiveArchive(BatchInputSimplePublicObjectId payload) returns http:Response|error {
+    remote isolated function batchArchive(SimplePublicObjectIdArray payload) returns http:Response|error {
         string resourcePath = string `/crm/v3/objects/contacts/batch/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -108,8 +110,9 @@ public isolated client class Client {
     }
     # Create a batch of contacts
     #
+    # + payload - Record with an array of contact data 
     # + return - successful operation 
-    remote isolated function batchCreateCreate(BatchInputSimplePublicObjectInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchCreate(SimplePublicObjectInputArray payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
         string resourcePath = string `/crm/v3/objects/contacts/batch/create`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -120,8 +123,9 @@ public isolated client class Client {
     # Read a batch of contacts by internal ID, or unique property values
     #
     # + archived - Whether to return only results that have been archived. 
+    # + payload - Object which contains array of internal IDs of contacts 
     # + return - successful operation 
-    remote isolated function batchReadRead(BatchReadInputSimplePublicObjectId payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchRead(SimplePublicObjectIdReadArray payload, boolean archived = false) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
         string resourcePath = string `/crm/v3/objects/contacts/batch/read`;
         map<anydata> queryParam = {"archived": archived};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -133,8 +137,9 @@ public isolated client class Client {
     }
     # Update a batch of contacts
     #
+    # + payload - Record with array of updated contact data 
     # + return - successful operation 
-    remote isolated function batchUpdateUpdate(BatchInputSimplePublicObjectBatchInput payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
+    remote isolated function batchUpdate(SimplePublicObjectArray payload) returns BatchResponseSimplePublicObject|BatchResponseSimplePublicObjectWithErrors|error {
         string resourcePath = string `/crm/v3/objects/contacts/batch/update`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -144,8 +149,9 @@ public isolated client class Client {
     }
     # Filter, Sort, and Search CRM Objects
     #
+    # + payload - Contact search request 
     # + return - successful operation 
-    remote isolated function postCrmV3ObjectsContactsSearchDoSearch(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
+    remote isolated function search(PublicObjectSearchRequest payload) returns CollectionResponseWithTotalSimplePublicObjectForwardPaging|error {
         string resourcePath = string `/crm/v3/objects/contacts/search`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -161,7 +167,7 @@ public isolated client class Client {
     # + archived - Whether to return only results that have been archived. 
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
-    remote isolated function getById(string contactId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
+    remote isolated function getObjectById(string contactId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
         string resourcePath = string `/crm/v3/objects/contacts/${contactId}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
@@ -182,6 +188,7 @@ public isolated client class Client {
     #
     # + contactId - Contact ID 
     # + idProperty - The name of a property whose values are unique for this object type 
+    # + payload - Record containing data to update 
     # + return - successful operation 
     remote isolated function update(string contactId, SimplePublicObjectInput payload, string? idProperty = ()) returns SimplePublicObject|error {
         string resourcePath = string `/crm/v3/objects/contacts/${contactId}`;

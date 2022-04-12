@@ -54,6 +54,7 @@ public type PropertyGroup record {
     string label;
     # Property groups are displayed in order starting with the lowest positive integer value. Values of -1 will cause the property group to be displayed after any positive values.
     int displayOrder;
+    # Archive ID
     boolean archived;
 };
 

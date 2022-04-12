@@ -10,7 +10,7 @@ jobs:
   container:
     runs-on: ubuntu-latest
     container:
-      image: ballerina/ballerina:2201.0.1
+      image: ballerina/ballerina:2201.0.2
       options: --user root
     steps:
       - name: Install Git

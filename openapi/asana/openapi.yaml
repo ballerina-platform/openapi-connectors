@@ -7481,7 +7481,6 @@ components:
               type: string
             current_status:
               $ref: "#/components/schemas/ProjectStatusResponse"
-              nullable: true
             custom_field_settings:
               description: Array of Custom Field Settings (in compact form).
               items:
@@ -7802,6 +7801,7 @@ components:
     ProjectStatusRequest:
       $ref: "#/components/schemas/ProjectStatusBase"
     ProjectStatusResponse:
+      nullable: true
       allOf:
         - $ref: "#/components/schemas/ProjectStatusBase"
         - properties:
@@ -8522,6 +8522,7 @@ components:
           type: object
     TaskCompact:
       description: The *task* is the basic object around which many operations in Asana are centered.
+      nullable: true
       allOf:
         - $ref: "#/components/schemas/AsanaResource"
         - description: The *task* is the basic object around which many operations in Asana are centered.
@@ -8681,7 +8682,6 @@ components:
             assignee:
               description: Users assigned to the task.
               $ref: "#/components/schemas/UserCompact"
-              nullable: true
             custom_fields:
               description: Array of custom field values applied to the task. These represent the custom field values recorded on this project for a particular custom field. For example, these custom field values will contain an `enum_value` property for custom fields of type enum, a `text_value` property for custom fields of type text, and so on. Please note that the `gid` returned on each custom field value *is identical* to the `gid` of the custom field, which allows referencing the custom field metadata through the `/custom_fields/custom_field-gid` endpoint.
               items:
@@ -8697,7 +8697,6 @@ components:
             parent:
               $ref: "#/components/schemas/TaskCompact"
               description: The parent of this task, or `null` if this is not a subtask. This property cannot be modified using a PUT request but you can change it with the `setParent` endpoint. You can create subtasks by using the subtasks endpoint.
-              nullable: true
               readOnly: true
             permalink_url:
               description: A url that points directly to the object within Asana.
@@ -8836,10 +8835,9 @@ components:
               readOnly: true
               type: string
           type: object
-    UserBase:
-      $ref: "#/components/schemas/UserCompact"
     UserCompact:
       description: The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
+      nullable: true
       allOf:
         - $ref: "#/components/schemas/AsanaResource"
         - description: A *user* object represents an account in Asana that can be given access to various workspaces, projects, and tasks.
@@ -8852,10 +8850,10 @@ components:
           x-docs-overrides:
             properties.resource_type.example: user
     UserRequest:
-      $ref: "#/components/schemas/UserBase"
+      $ref: "#/components/schemas/UserCompact"
     UserResponse:
       allOf:
-        - $ref: "#/components/schemas/UserBase"
+        - $ref: "#/components/schemas/UserCompact"
         - properties:
             email:
               description: The user's email address.

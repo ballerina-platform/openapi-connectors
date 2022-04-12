@@ -60,14 +60,14 @@ public type PortfolioResponse record {
     # The time at which this resource was created.
     string created_at?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact created_by?;
+    UserCompact? created_by?;
     # Array of custom field settings applied to the portfolio.
     CustomFieldSettingResponse[] custom_field_settings?;
     # The localized day on which this portfolio is due. This takes a date with format YYYY-MM-DD.
     string? due_on?;
     UserCompact[] members?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact owner?;
+    UserCompact? owner?;
     # A url that points directly to the object within Asana.
     string permalink_url?;
     # The day on which work for this portfolio begins, or null if the portfolio has no start date. This takes a date with `YYYY-MM-DD` format. *Note: `due_on` must be present in the request when setting or unsetting the `start_on` parameter. Additionally, start_on and due_on cannot be the same date.*
@@ -191,7 +191,7 @@ public type ProjectBase record {
     string? color?;
     # The time at which this resource was created.
     string created_at?;
-    ProjectStatusResponse current_status?;
+    ProjectStatusResponse? current_status?;
     # Array of Custom Field Settings (in compact form).
     CustomFieldSettingCompact[] custom_field_settings?;
     # The default view (list, board, calendar, or timeline) of a project.
@@ -222,7 +222,7 @@ public type ProjectBase record {
 public type CustomFieldResponse record {
     *CustomFieldBase;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact created_by?;
+    UserCompact? created_by?;
     # Enum options are the possible values which an enum custom field can adopt.
     EnumOption enum_value?;
 };
@@ -267,7 +267,7 @@ public type JobCompact record {
     # A *project* represents a prioritized list of tasks in Asana or a board with columns of tasks represented as cards. It exists in a single workspace or organization and is accessible to a subset of users in that workspace or organization, depending on its permissions.
     ProjectCompact new_project?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact new_task?;
+    TaskCompact? new_task?;
     # The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
     string resource_subtype?;
     # Status of job.
@@ -498,7 +498,7 @@ public type UserTaskListCompact record {
     # The name of the user task list.
     string name?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact owner?;
+    UserCompact? owner?;
     # The workspace in which the user task list is located.
     WorkspaceCompact workspace?;
 };
@@ -524,7 +524,8 @@ public type PortfolioBase record {
     string color?;
 };
 
-public type UserRequest UserBase;
+# The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
+public type UserRequest UserCompact?;
 
 public type TaskSetParentRequest record {
     # A subtask of the parent to insert the task after, or `null` to insert at the beginning of the list.
@@ -589,7 +590,7 @@ public type ProjectResponse record {
     # The icon for a project.
     string? icon?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact owner?;
+    UserCompact? owner?;
     # A url that points directly to the object within Asana.
     string permalink_url?;
     # A *team* is used to group related projects and people together within an organization.
@@ -599,15 +600,12 @@ public type ProjectResponse record {
 # A *team* is used to group related projects and people together within an organization.
 public type TeamBase TeamCompact;
 
-# The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-public type UserBase UserCompact;
-
 public type ProjectStatusResponse record {
     *ProjectStatusBase;
     # The time at which this resource was created.
     string created_at?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact created_by?;
+    UserCompact? created_by?;
 };
 
 # *OAuth Required*. *Conditional*. This field is returned only if external values are set or included by using [Opt In] (/docs/input-output-options).
@@ -689,7 +687,7 @@ public type ProjectMembershipResponse record {
 };
 
 public type UserResponse record {
-    *UserBase;
+    *UserCompact;
     # The user's email address.
     string email?;
     # A map of the user’s profile photo in various sizes, or null if no photo is set. Sizes provided are 21, 27, 36, 60, and 128. Images are in PNG format.
@@ -717,7 +715,7 @@ public type TeamMembershipCompact record {
     # A *team* is used to group related projects and people together within an organization.
     TeamCompact team?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
 };
 
 public type PortfolioMembershipCompact record {
@@ -725,7 +723,7 @@ public type PortfolioMembershipCompact record {
     # A *portfolio* gives a high-level overview of the status of multiple initiatives in Asana.
     PortfolioCompact portfolio?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
 };
 
 # A response object returned from the task count endpoint.
@@ -748,19 +746,19 @@ public type TaskCountResponse record {
 public type StoryResponse record {
     *StoryBase;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact assignee?;
+    UserCompact? assignee?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact created_by?;
+    UserCompact? created_by?;
     # Custom Fields store the metadata that is used in order to add user-specified information to tasks in Asana. Be sure to reference the [Custom Fields](/docs/asana-custom-fields) developer documentation for more information about how custom fields relate to various resources in Asana.
     CustomFieldCompact custom_field?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact dependency?;
+    TaskCompact? dependency?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact duplicate_of?;
+    TaskCompact? duplicate_of?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact duplicated_from?;
+    TaskCompact? duplicated_from?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact follower?;
+    UserCompact? follower?;
     # *Deprecated - please use likes instead*
     # *Conditional*. True if the story is hearted by the authorized user, false if not.
     boolean hearted?;
@@ -827,7 +825,7 @@ public type StoryResponse record {
     # The object this story is associated with. Currently may only be a task.
     StoryresponseTarget target?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact task?;
+    TaskCompact? task?;
 };
 
 public type PortfoliosPortfolioGidBody record {
@@ -837,7 +835,7 @@ public type PortfoliosPortfolioGidBody record {
 public type ProjectMembershipCompact record {
     *AsanaResource;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
 };
 
 public type TaskRemoveTagRequest record {
@@ -943,13 +941,13 @@ public type InlineResponse20027 record {
 public type TaskResponse record {
     *TaskBase;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact assignee?;
+    UserCompact? assignee?;
     # Array of custom field values applied to the task. These represent the custom field values recorded on this project for a particular custom field. For example, these custom field values will contain an `enum_value` property for custom fields of type enum, a `text_value` property for custom fields of type text, and so on. Please note that the `gid` returned on each custom field value *is identical* to the `gid` of the custom field, which allows referencing the custom field metadata through the `/custom_fields/custom_field-gid` endpoint.
     CustomFieldResponse[] custom_fields?;
     # Array of users following this task.
     UserCompact[] followers?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact parent?;
+    TaskCompact? parent?;
     # A url that points directly to the object within Asana.
     string permalink_url?;
     # *Create-only.* Array of projects this task is associated with. At task creation time, this array can be used to add the task to many projects at once. After task creation, these associations can be modified using the addProject and removeProject endpoints.
@@ -994,7 +992,7 @@ public type TaskGidDuplicateBody record {
 public type ProjectStatusBase record {
     *ProjectStatusCompact;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact author?;
+    UserCompact? author?;
     # The color associated with the status update.
     string color;
     # [Opt In](/docs/input-output-options). The text content of the status update with formatting as HTML.
@@ -1108,7 +1106,7 @@ public type TaskBase record {
     # The time at which this task was completed, or null if the task is incomplete.
     string? completed_at?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact completed_by?;
+    UserCompact? completed_by?;
     # The time at which this resource was created.
     string created_at?;
     # [Opt In](/docs/input-output-options). Array of resources referencing tasks that this task depends on. The objects contain only the gid of the dependency.
@@ -1216,7 +1214,7 @@ public type EventResponse record {
     # *Deprecated: Refer to the resource_type of the resource.* The type of the resource that generated the event.
     string 'type?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
 };
 
 # A *team* is used to group related projects and people together within an organization.
@@ -1237,7 +1235,7 @@ public type StoryCompact record {
     # The time at which this resource was created.
     string created_at?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact created_by?;
+    UserCompact? created_by?;
     # The subtype of this resource. Different subtypes retain many of the same fields and behavior, but may render differently in Asana or represent resources with different semantic meaning.
     string resource_subtype?;
     # *Create-only*. Human-readable text for the story or comment.
@@ -1350,7 +1348,7 @@ public type Like record {
     # Globally unique identifier of the object, as a string.
     string gid?;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
 };
 
 public type ProjectsBody record {
@@ -1367,7 +1365,7 @@ public type AttachmentResponse record {
     # The service hosting the attachment. Valid values are `asana`, `dropbox`, `gdrive` and `box`.
     string host?;
     # The *task* is the basic object around which many operations in Asana are centered.
-    TaskCompact parent?;
+    TaskCompact? parent?;
     # The URL where the attachment can be viewed, which may be friendlier to users in a browser than just directing them to a raw file. May be null if no view URL exists for the service.
     string? view_url?;
 };
@@ -1451,7 +1449,7 @@ public type TaskGidAdddependenciesBody record {
 public type WorkspaceMembershipCompact record {
     *AsanaResource;
     # The owner of the user task list, i.e. the person whose My Tasks is represented by this resource.
-    UserCompact user?;
+    UserCompact? user?;
     # The workspace in which the user task list is located.
     WorkspaceCompact workspace?;
 };
@@ -1642,7 +1640,7 @@ public type WorkspaceCompact record {
 };
 
 public type InlineResponse20012 record {
-    ProjectStatusResponse data?;
+    ProjectStatusResponse? data?;
 };
 
 public type EnumOptionInsertRequest record {

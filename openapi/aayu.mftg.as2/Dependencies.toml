@@ -41,8 +41,9 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "file"
-version = "1.2.1"
+version = "1.2.2"
 dependencies = [
+	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "log"},
 	{org = "ballerina", name = "os"},
@@ -87,6 +88,9 @@ version = "1.2.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
+]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
 ]
 
 [[package]]
@@ -211,7 +215,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.2"
+version = "1.0.3"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -274,16 +278,39 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "mft"
+name = "aayu.mftg.as2"
 version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "mime"},
 	{org = "ballerina", name = "url"},
-	{org = "ballerinai", name = "observe"}
+	{org = "ballerinai", name = "observe"},
+	{org = "ballerinax", name = "aws.s3"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "mft", moduleName = "mft"}
+	{org = "ballerinax", packageName = "aayu.mftg.as2", moduleName = "aayu.mftg.as2"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "aws.s3"
+version = "2.2.1"
+dependencies = [
+	{org = "ballerina", name = "crypto"},
+	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "io"},
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "lang.array"},
+	{org = "ballerina", name = "log"},
+	{org = "ballerina", name = "os"},
+	{org = "ballerina", name = "regex"},
+	{org = "ballerina", name = "time"},
+	{org = "ballerina", name = "url"}
+]
+modules = [
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"},
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3.s3"}
 ]
 
 

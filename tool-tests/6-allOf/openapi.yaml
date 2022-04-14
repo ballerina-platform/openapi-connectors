@@ -14994,8 +14994,8 @@ components:
           description: >-
             Indicate the text qualifier of the CSV file. Generally the value is
             "
-          example: '"'
-          default: '"'
+          example: ''
+          default: ''
       description: The CSV file description
     inputFileReadXmlConfiguration:
       required:

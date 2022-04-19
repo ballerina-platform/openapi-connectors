@@ -6,7 +6,7 @@ name = "hubspot.marketing"
 icon = "icon.png"
 distribution = "2201.0.0"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "2.0.0"
+version = "2.0.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

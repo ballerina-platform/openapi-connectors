@@ -70,186 +70,231 @@ public isolated client class Client {
     # Create or Update an Account. The ID of the object to update is specified in the request body.​
     #
     # + realmId - Realm ID. 
+    # + accept - Accept header 
     # + payload - Account creation data 
     # + return - Success 
-    remote isolated function createOrUpdateAccount(string realmId, AccountCreateObject payload) returns AccountResponse|error {
+    remote isolated function createOrUpdateAccount(string realmId, AccountCreateObject payload, string accept = "application/json") returns AccountResponse|error {
         string resourcePath = string `/v3/company/${realmId}/account`;
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountResponse response = check self.clientEp->post(resourcePath, request);
+        AccountResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of an Account object that has been previously created.
     #
     # + realmId - Realm ID. 
     # + accountId - Account ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readAccount(string realmId, string accountId) returns AccountResponse|error {
+    remote isolated function readAccount(string realmId, string accountId, string accept = "application/json") returns AccountResponse|error {
         string resourcePath = string `/v3/company/${realmId}/account/${accountId}`;
-        AccountResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        AccountResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update a Bill. The ID of the object to update is specified in the request body.​
     #
     # + realmId - Realm ID. 
     # + operation - Opearation type 
+    # + accept - Accept header 
     # + payload - Bill creation data 
     # + return - Success 
-    remote isolated function createOrUpdateBill(string realmId, BillCreateObject payload, string? operation = ()) returns BillResponse|error {
+    remote isolated function createOrUpdateBill(string realmId, BillCreateObject payload, string? operation = (), string accept = "application/json") returns BillResponse|error {
         string resourcePath = string `/v3/company/${realmId}/bill`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BillResponse response = check self.clientEp->post(resourcePath, request);
+        BillResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of a bill that has been previously created.
     #
     # + realmId - Realm ID. 
     # + billId - Bill ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readBill(string realmId, string billId) returns BillResponse|error {
+    remote isolated function readBill(string realmId, string billId, string accept = "application/json") returns BillResponse|error {
         string resourcePath = string `/v3/company/${realmId}/bill/${billId}`;
-        BillResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        BillResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update a Customer. The ID of the object to update is specified in the request body.​
     #
     # + realmId - Realm ID. 
+    # + accept - Accept header 
     # + payload - Customer creation data 
     # + return - Success 
-    remote isolated function createOrUpdateCustomer(string realmId, CustomerCreateObject payload) returns CustomerResponse|error {
+    remote isolated function createOrUpdateCustomer(string realmId, CustomerCreateObject payload, string accept = "application/json") returns CustomerResponse|error {
         string resourcePath = string `/v3/company/${realmId}/customer`;
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CustomerResponse response = check self.clientEp->post(resourcePath, request);
+        CustomerResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of a Customer object that has been previously created.
     #
     # + realmId - Realm ID. 
     # + customerId - Customer ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readCustomer(string realmId, string customerId) returns CustomerResponse|error {
+    remote isolated function readCustomer(string realmId, string customerId, string accept = "application/json") returns CustomerResponse|error {
         string resourcePath = string `/v3/company/${realmId}/customer/${customerId}`;
-        CustomerResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        CustomerResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update a Payment.  The ID of the object to update is specifiedin the request body.​
     #
     # + realmId - Realm ID. 
     # + operation - Opearation type 
+    # + accept - Accept header 
     # + payload - Payment creation data 
     # + return - Success 
-    remote isolated function createOrUpdatePayment(string realmId, PaymentCreateObject payload, string? operation = ()) returns PaymentResponse|error {
+    remote isolated function createOrUpdatePayment(string realmId, PaymentCreateObject payload, string? operation = (), string accept = "application/json") returns PaymentResponse|error {
         string resourcePath = string `/v3/company/${realmId}/payment`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentResponse response = check self.clientEp->post(resourcePath, request);
+        PaymentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of a Payment object that has been previously created.
     #
     # + realmId - Realm ID. 
     # + paymentId - Payment ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readPayment(string realmId, string paymentId) returns PaymentResponse|error {
+    remote isolated function readPayment(string realmId, string paymentId, string accept = "application/json") returns PaymentResponse|error {
         string resourcePath = string `/v3/company/${realmId}/payment/${paymentId}`;
-        PaymentResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        PaymentResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update an Estimate  The ID of the object to update is specifiedin the request body.​
     #
     # + realmId - Realm ID. 
     # + operation - Opearation type 
+    # + accept - Accept header 
     # + payload - Estimate creation data 
     # + return - Success 
-    remote isolated function createOrUpdateEstimate(string realmId, EstimateCreateObject payload, string? operation = ()) returns EstimateResponse|error {
+    remote isolated function createOrUpdateEstimate(string realmId, EstimateCreateObject payload, string? operation = (), string accept = "application/json") returns EstimateResponse|error {
         string resourcePath = string `/v3/company/${realmId}/estimate`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EstimateResponse response = check self.clientEp->post(resourcePath, request);
+        EstimateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of an estimate that has been previously created.
     #
     # + realmId - Realm ID. 
     # + estimateId - Estimate ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readEstimate(string realmId, string estimateId) returns EstimateResponse|error {
+    remote isolated function readEstimate(string realmId, string estimateId, string accept = "application/json") returns EstimateResponse|error {
         string resourcePath = string `/v3/company/${realmId}/estimate/${estimateId}`;
-        EstimateResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        EstimateResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update an Invoice  The ID of the object to update is specifiedin the request body.​
     #
     # + realmId - Realm ID. 
     # + operation - Opearation type 
+    # + accept - Accept header 
     # + payload - Invoice creation data 
     # + return - Success 
-    remote isolated function createOrUpdateInvoice(string realmId, InvoiceCreateObject payload, string? operation = ()) returns InvoiceResponse|error {
+    remote isolated function createOrUpdateInvoice(string realmId, InvoiceCreateObject payload, string? operation = (), string accept = "application/json") returns InvoiceResponse|error {
         string resourcePath = string `/v3/company/${realmId}/invoice`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InvoiceResponse response = check self.clientEp->post(resourcePath, request);
+        InvoiceResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of an invoice that has been previously created.
     #
     # + realmId - Realm ID. 
     # + invoiceId - Invoice ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readInvoice(string realmId, string invoiceId) returns InvoiceResponse|error {
+    remote isolated function readInvoice(string realmId, string invoiceId, string accept = "application/json") returns InvoiceResponse|error {
         string resourcePath = string `/v3/company/${realmId}/invoice/${invoiceId}`;
-        InvoiceResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        InvoiceResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create or Update a vendor The ID of the object to update is specified in the request body.​ Either the DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes are required during create.
     #
     # + realmId - Realm ID. 
+    # + accept - Accept header 
     # + payload - Vendor creation data 
     # + return - Success 
-    remote isolated function createOrUpdateVendor(string realmId, VendorCreateObject payload) returns VendorResponse|error {
+    remote isolated function createOrUpdateVendor(string realmId, VendorCreateObject payload, string accept = "application/json") returns VendorResponse|error {
         string resourcePath = string `/v3/company/${realmId}/vendor`;
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        VendorResponse response = check self.clientEp->post(resourcePath, request);
+        VendorResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
     # Retrieves the details of a vendor object that has been previously created.
     #
     # + realmId - Realm ID. 
     # + vendorId - Vendor ID. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function readVendor(string realmId, string vendorId) returns VendorResponse|error {
+    remote isolated function readVendor(string realmId, string vendorId, string accept = "application/json") returns VendorResponse|error {
         string resourcePath = string `/v3/company/${realmId}/vendor/${vendorId}`;
-        VendorResponse response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        VendorResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Query an entity
     #
     # + realmId - Realm ID. 
     # + query - Query statement. 
+    # + accept - Accept header 
     # + return - Success 
-    remote isolated function queryEntity(string realmId, string query) returns json|error {
+    remote isolated function queryEntity(string realmId, string query, string accept = "application/json") returns json|error {
         string resourcePath = string `/v3/company/${realmId}/query`;
         map<anydata> queryParam = {"query": query};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->get(resourcePath);
+        map<any> headerValues = {"accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        json response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

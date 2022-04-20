@@ -1066,7 +1066,7 @@ components:
       type: object
       properties:
         price:
-          type: number
+          type: string
           description: Price
         title:
           type: string

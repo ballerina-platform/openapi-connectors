@@ -38,6 +38,12 @@ paths:
           schema:
             type: string
           description: Realm ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Account creation data
         content:
@@ -72,6 +78,12 @@ paths:
           schema:
             type: string
           description: Account ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -100,6 +112,12 @@ paths:
           schema:
             type: string
           description: Opearation type
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Bill creation data
         content:
@@ -132,6 +150,12 @@ paths:
           schema:
             type: string
           description: Bill ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -154,6 +178,12 @@ paths:
           schema:
             type: string
           description: Realm ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Customer creation data
         content:
@@ -188,6 +218,12 @@ paths:
           schema:
             type: string
           description: Customer ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -216,6 +252,12 @@ paths:
           schema:
             type: string
           description: Opearation type
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Payment creation data
         content:
@@ -250,6 +292,12 @@ paths:
           schema:
             type: string
           description: Payment ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -278,6 +326,12 @@ paths:
           schema:
             type: string
           description: Opearation type
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Estimate creation data
         content:
@@ -311,6 +365,12 @@ paths:
           schema:
             type: string
           description: Estimate ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -339,6 +399,12 @@ paths:
           schema:
             type: string
           description: Opearation type
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       requestBody:
         description: Invoice creation data
         content:
@@ -372,6 +438,12 @@ paths:
           schema:
             type: string
           description: Invoice ID.
+        - in: header
+          name: accept
+          schema:
+            type: string
+            default: application/json
+          description: Accept header
       responses:
         '200':
           description: Success
@@ -394,6 +466,12 @@ paths:
             schema:
               type: string
             description: Realm ID.
+          - in: header
+            name: accept
+            schema:
+              type: string
+              default: application/json
+            description: Accept header
       requestBody:
         description: Vendor creation data
         content:
@@ -426,6 +504,12 @@ paths:
             schema:
               type: string
             description: Vendor ID.      
+          - in: header
+            name: accept
+            schema:
+              type: string
+              default: application/json
+            description: Accept header    
       responses:
         200:
           description: Success
@@ -452,6 +536,12 @@ paths:
             schema:
               type: string
             description: Query statement.     
+          - in: header
+            name: accept
+            schema:
+              type: string
+              default: application/json
+            description: Accept header 
       responses:
         200:
           description: Success
@@ -1331,7 +1421,7 @@ components:
             allowed. The Cards online payment check box is not checked on the
             QuickBooks UI.
         CustomField:
-          type: object
+          type: array
           description: >-
             One of, up to three custom fields for the transaction. Available for
             custom fields so configured for the company. Check
@@ -1339,6 +1429,7 @@ components:
             Preferences.VendorAndPurchasesPrefs.POCustomField for custom fields
             currenly configured. Click here to learn about managing custom
             fields.
+          items: {}
           # $ref: '#/components/schemas/TxnTaxDetail'
         ShipAddr:
           type: object

@@ -78,6 +78,16 @@ components:
           type: string
         WindMPH:
           type: string
+        AirQuality:
+          type: string
+        AirQualityIndex:
+          type: string
+        AirQualityCode:
+          type: string
+        Sunrise:
+          type: string
+        Sunset:
+          type: string
 paths:
   /getweatherzipcode:
     get:

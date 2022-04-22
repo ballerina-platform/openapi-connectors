@@ -27,4 +27,9 @@ public type WeatherData record {
     string Weather?;
     string WindDir?;
     string WindMPH?;
+    string AirQuality?;
+    string AirQualityIndex?;
+    string AirQualityCode?;
+    string Sunrise?;
+    string Sunset?;
 };

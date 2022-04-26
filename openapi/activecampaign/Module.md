@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector for [ActiveCampaign API version 3](https://developers.activecampaign.com/reference/overview) OpenAPI specification.
+This is a generated connector for [ActiveCampaign API v3](https://developers.activecampaign.com/reference/overview) OpenAPI specification.
 
 ActiveCampaign is an integrated email marketing, automation, sales software, and CRM platform. It lets users perform powerful automation, email marketing, and customer relationship management.
 

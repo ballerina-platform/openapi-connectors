@@ -27,7 +27,7 @@ activecampaign:ApiKeysConfig apiKeyConfig = {
     apiToken:"<API_TOKEN>"
 };
 
-activecampaign:Client baseClient = check new Client(clientConfig);
+activecampaign:Client baseClient = check new (clientConfig);
 ```
 
 ### Step 3: Invoke connector operation

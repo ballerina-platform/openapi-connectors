@@ -309,8 +309,7 @@ dependencies = [
 	{org = "ballerina", name = "url"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"},
-	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3.s3"}
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"}
 ]
 
 

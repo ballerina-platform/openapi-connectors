@@ -1,14 +1,14 @@
-Connects to [MFT API](https://aayutechnologies.com/docs/product/mft-gateway/) from Ballerina
+Connects to [MFT Gateway API by Aayu Technologies](https://aayutechnologies.com/docs/product/mft-gateway/) from Ballerina
 
 ## Package overview
-The `ballerinax/mft` is a [Ballerina](https://ballerina.io/) connector for MFT.
-This package provides the capability to access MFT API.
+The `ballerinax/aayu.mftg.as2` is a [Ballerina](https://ballerina.io/) connector for MFT Gateway API by Aayu Technologies.
+This package provides the capability to access MFT Gateway API.
 
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.0.0   |
-| MFT REST API                  | 1.0                            | 
+| Ballerina Language            | Ballerina Swan Lake 2201.0.2   |
+| MFT Gateway REST API          | 1.0                            | 
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

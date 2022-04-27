@@ -15,6 +15,8 @@
 // under the License.
 
 import ballerina/http;
+import ballerinax/aws.s3;
+import ballerina/io;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
@@ -24,21 +26,25 @@ public type ApiKeysConfig record {|
 
 # This is a generated connector for [MFT REST API v1.0](https://documenter.getpostman.com/view/12285357/UV5WEe66) OpenAPI specification.
 # The [MFT REST API](https://documenter.getpostman.com/view/12285357/UV5WEe66)  provides a secure AS2 secured channel for such communications, and offers your company, multiple ways to upload/download files, or automate the exchange through integration mechanisms.
-@display {label: "MFT", iconPath: "icon.png"}
+@display {label: "Aayu MFTG AS2", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;
+    final string as2From;
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create a [MFT account](https://console.mftgateway.com/auth/register) and obtain tokens following [this guide](https://aayutechnologies.com/docs/product/mft-gateway/user-guide/).
+    # (Note : Token Validity is 1h)
     #
     # + apiKeyConfig - API keys for authorization 
+    # + as2From - Station AS2 identifier (which message is send from)
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.mftgateway.com") returns error? {
+    public isolated function init(ApiKeysConfig apiKeyConfig, string as2From, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.mftgateway.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        self.as2From = as2From;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
         return;
     }
@@ -68,24 +74,46 @@ public isolated client class Client {
     //     return response;
     // }
 
-    # Send Message
+    # Sends AS2 Message. Recommend less than 3MB. 
     #
-    # + as2From - Station AS2 identifier which sends the message 
     # + as2To - Partner AS2 identifier which intends to receive the message 
-    # + payload - File body as byte array
+    # + payload - File payload as byte array
     # + subject - Subject of the message. If not specified, the default subject configured for the intended partner will be applied. 
     # + attachmentName - Name of the message attachment (Only applicable when sending a message with single attachment) 
     # + contentType - Content type of the message payload. For multiple attachments, content type should be **multipart/form-data** with valid form content 
     # + return - Accepted for Processing 
-    remote isolated function sendMessage(string as2From, string as2To, string contentType, MessageSubmitBody payload, string? subject = (), string? attachmentName = ()) returns SuccessfulMessageSubmitResponse|error {
+    remote isolated function sendAS2Message(string as2To, string contentType, byte[] payload, string? subject = (), string? attachmentName = ()) returns SuccessfulMessageSubmitResponse|error {
         string resourcePath = string `/message/submit`;
-        map<any> headerValues = {"AS2-From": as2From, "AS2-To": as2To, "Subject": subject, "Attachment-Name": attachmentName, "Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"AS2-From": self.as2From, "AS2-To": as2To, "Subject": subject, "Attachment-Name": attachmentName, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        request.setBinaryPayload(payload.File, contentType);
+        request.setBinaryPayload(payload, contentType);
         SuccessfulMessageSubmitResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
+
+    # Sends AS2 Message. Recommend for large messages. The message will be uploading to AWS S3 bucket.
+    # As a prerequisite, Enable (AWS S3 integration)[https://console.mftgateway.com/integration/s3] in MFT gateway.
+    # Create new credentials & obtain `awsAccessKeyID`, `awsSecretAcessKey`
+    #
+    # + as2To - Partner AS2 identifier which intends to receive the message
+    # + payload - File payload as stream
+    # + awsAccessKeyID - AWS access key ID (Enable & download credentials from https://console.mftgateway.com/integration/s3)
+    # + awsSecretAccessKey - AWS secret access key (Enable & download credentials from https://console.mftgateway.com/integration/s3)
+    # + awsS3BucketName - Name of the AWS S3 bucket (Enable AWS S3 integration https://console.mftgateway.com/integration/s3, Obtain the S3 bucket name from console)
+    # + attachmentName - Name of the message attachment
+    # + return - An error on failure or else `()`
+    remote isolated function sendLargeAS2Message(string as2To, stream<io:Block, io:Error?> payload, string awsAccessKeyID, string awsSecretAccessKey, string awsS3BucketName, string attachmentName) returns error? {
+        s3:ConnectionConfig amazonS3Config = {
+            accessKeyId: awsAccessKeyID,
+            secretAccessKey: awsSecretAccessKey,
+            region: "us-east-1"
+        };
+        string s3Path = string `${awsS3BucketName}/AS2/send/${self.as2From}/${as2To}`;
+        s3:Client amazonS3Client = check new (amazonS3Config);
+        return amazonS3Client->createObject(s3Path, attachmentName, payload);
+    }
+
     # List Received Messages
     #
     # + sortDir - Sort direction of messages 

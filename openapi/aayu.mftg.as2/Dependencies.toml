@@ -252,6 +252,9 @@ version = "2.2.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "time", moduleName = "time"}
+]
 
 [[package]]
 org = "ballerina"
@@ -284,6 +287,7 @@ dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "mime"},
+	{org = "ballerina", name = "time"},
 	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"},
 	{org = "ballerinax", name = "aws.s3"}
@@ -309,7 +313,8 @@ dependencies = [
 	{org = "ballerina", name = "url"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"}
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"},
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3.s3"}
 ]
 
 

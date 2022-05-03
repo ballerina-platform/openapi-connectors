@@ -15,8 +15,9 @@
 // under the License.
 
 import ballerina/http;
-import ballerinax/aws.s3;
 import ballerina/io;
+import ballerina/time;
+import ballerinax/aws.s3;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
@@ -29,24 +30,52 @@ public type ApiKeysConfig record {|
 @display {label: "Aayu MFTG AS2", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
-    final readonly & ApiKeysConfig apiKeyConfig;
     final string as2From;
+    final string username;
+    final string password;
+    final time:Seconds zeroSeconds = 0;
+    private string authToken = "";
+    private time:Utc expirationTime = [0, 0];
+
     # Gets invoked to initialize the `connector`.
     # The connector initialization requires setting the API credentials. 
     # Create a [MFT account](https://console.mftgateway.com/auth/register) and obtain tokens following [this guide](https://aayutechnologies.com/docs/product/mft-gateway/user-guide/).
     # (Note : Token Validity is 1h)
     #
-    # + apiKeyConfig - API keys for authorization 
+    # + username - Valid email address used to sign in [MFTG console](https://console.mftgateway.com/)
+    # + password - Valid Password used to sign in [MFTG console](https://console.mftgateway.com/)
     # + as2From - Station AS2 identifier (which message is send from)
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, string as2From, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.mftgateway.com") returns error? {
+    public isolated function init(string username, string password, string as2From, http:ClientConfiguration clientConfig = {}, string serviceUrl = "https://api.mftgateway.com") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.as2From = as2From;
-        self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        self.username = username;
+        self.password = password;
+        self.authToken = check self.getToken(username, password);
         return;
+    }
+
+    # Get a valid token
+    # Returns the current token (if valid) or creates a new token using username & password provided.
+    #
+    # + username - Valid email address used to sign in [MFTG console](https://console.mftgateway.com/)
+    # + password - Valid Password used to sign in [MFTG console](https://console.mftgateway.com/)
+    # + return - Valid token
+    isolated function getToken(string username, string password) returns string|error {
+        lock {
+            if (time:utcDiffSeconds(self.expirationTime, time:utcNow()) < self.zeroSeconds) {
+                string resourcePath = string `/authorize`;
+                http:Request request = new;
+                request.setPayload({username, password}, "application/json");
+                SuccessfulAuthorizationResponse response = check self.clientEp->post(resourcePath, request);
+                self.expirationTime = time:utcAddSeconds(time:utcNow(), 3000);
+                return response.api_token;
+            }
+            return self.authToken;
+        }
     }
 
     // # Authorize
@@ -84,7 +113,7 @@ public isolated client class Client {
     # + return - Accepted for Processing 
     remote isolated function sendAS2Message(string as2To, string contentType, byte[] payload, string? subject = (), string? attachmentName = ()) returns SuccessfulMessageSubmitResponse|error {
         string resourcePath = string `/message/submit`;
-        map<any> headerValues = {"AS2-From": self.as2From, "AS2-To": as2To, "Subject": subject, "Attachment-Name": attachmentName, "Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"AS2-From": self.as2From, "AS2-To": as2To, "Subject": subject, "Attachment-Name": attachmentName, "Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setBinaryPayload(payload, contentType);
@@ -129,7 +158,7 @@ public isolated client class Client {
         string resourcePath = string `/message/inbox`;
         map<anydata> queryParam = {"sortDir": sortDir, "pageLength": pageLength, "pageOffset": pageOffset, "stationAS2Id": stationAS2Id, "partnerAS2Id": partnerAS2Id, "as2MessageId": as2MessageId, "subject": subject, "fetchAll": fetchAll};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -143,7 +172,7 @@ public isolated client class Client {
         string resourcePath = string `/message/inbox/${getEncodedUri(as2MessageId)}`;
         map<anydata> queryParam = {"markAsRead": markAsRead};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AS2Message response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -154,7 +183,7 @@ public isolated client class Client {
     # + return - Successfully Deleted 
     remote isolated function deleteInboxMessage(string as2MessageId) returns SuccessfulMessageDeletionResponse|error {
         string resourcePath = string `/message/inbox/${getEncodedUri(as2MessageId)}`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageDeletionResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
@@ -165,7 +194,7 @@ public isolated client class Client {
     # + return - Successfully marked as Unread 
     remote isolated function markReceivedMessageAsUnRead(string as2MessageId) returns ResponseWithMessage|error {
         string resourcePath = string `/message/inbox/${getEncodedUri(as2MessageId)}/markUnread`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
@@ -178,7 +207,7 @@ public isolated client class Client {
     # + return - Successfully Retrieved 
     remote isolated function retrieveInboxMessageAttachments(string as2MessageId) returns SuccessfulAttachmentListResponse|error {
         string resourcePath = string `/message/inbox/${getEncodedUri(as2MessageId)}/attachments`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulAttachmentListResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -189,7 +218,7 @@ public isolated client class Client {
     # + return - Successfully Retrieved 
     remote isolated function retrieveInboxMessageMDN(string as2MessageId) returns SuccessfulMDNRetrievalResponse|error {
         string resourcePath = string `/message/inbox/${getEncodedUri(as2MessageId)}/mdn`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMDNRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -200,7 +229,7 @@ public isolated client class Client {
     # + return - Successfully Deleted 
     remote isolated function batchDeleteInboxMessages(MessageBatchOperationRequest payload) returns SuccessfulMessageBatchDeletionResponse|error {
         string resourcePath = string `/message/inbox/delete`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -222,7 +251,7 @@ public isolated client class Client {
         string resourcePath = string `/message/outbox`;
         map<anydata> queryParam = {"sortDir": sortDir, "pageLength": pageLength, "pageOffset": pageOffset, "stationAS2Id": stationAS2Id, "partnerAS2Id": partnerAS2Id, "as2MessageId": as2MessageId, "subject": subject};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -241,7 +270,7 @@ public isolated client class Client {
         string resourcePath = string `/message/outbox/queued`;
         map<anydata> queryParam = {"sortDir": sortDir, "pageLength": pageLength, "pageOffset": pageOffset, "stationAS2Id": stationAS2Id, "partnerAS2Id": partnerAS2Id, "as2MessageId": as2MessageId, "subject": subject};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -260,7 +289,7 @@ public isolated client class Client {
         string resourcePath = string `/message/outbox/failed`;
         map<anydata> queryParam = {"sortDir": sortDir, "pageLength": pageLength, "pageOffset": pageOffset, "stationAS2Id": stationAS2Id, "partnerAS2Id": partnerAS2Id, "as2MessageId": as2MessageId, "subject": subject};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -279,7 +308,7 @@ public isolated client class Client {
         string resourcePath = string `/message/outbox/incomplete`;
         map<anydata> queryParam = {"sortDir": sortDir, "pageLength": pageLength, "pageOffset": pageOffset, "stationAS2Id": stationAS2Id, "partnerAS2Id": partnerAS2Id, "as2MessageId": as2MessageId, "subject": subject};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -290,7 +319,7 @@ public isolated client class Client {
     # + return - Successfully Retrieved 
     remote isolated function retrieveOutboxMessage(string as2MessageId) returns AS2Message|error {
         string resourcePath = string `/message/outbox/${getEncodedUri(as2MessageId)}`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AS2Message response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -301,7 +330,7 @@ public isolated client class Client {
     # + return - Successfully Deleted 
     remote isolated function deleteOutboxMessage(string as2MessageId) returns SuccessfulMessageDeletionResponse|error {
         string resourcePath = string `/message/outbox/${getEncodedUri(as2MessageId)}`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMessageDeletionResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
         return response;
@@ -312,7 +341,7 @@ public isolated client class Client {
     # + return - Successfully Retrieved 
     remote isolated function retrieveOutboxMessageAttachments(string as2MessageId) returns SuccessfulAttachmentListResponse|error {
         string resourcePath = string `/message/outbox/${getEncodedUri(as2MessageId)}/attachments`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulAttachmentListResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -323,7 +352,7 @@ public isolated client class Client {
     # + return - Successfully Retrieved 
     remote isolated function retrieveOutboxMessageMDN(string as2MessageId) returns SuccessfulMDNRetrievalResponse|error {
         string resourcePath = string `/message/outbox/${getEncodedUri(as2MessageId)}/mdn`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulMDNRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -334,7 +363,7 @@ public isolated client class Client {
     # + return - Successfully Deleted 
     remote isolated function batchDeleteOutboxMessages(MessageBatchOperationRequest payload) returns SuccessfulMessageBatchDeletionResponse|error {
         string resourcePath = string `/message/outbox/delete`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -350,7 +379,7 @@ public isolated client class Client {
         string resourcePath = string `/certificate`;
         map<anydata> queryParam = {"certType": certType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulCertListRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -361,7 +390,7 @@ public isolated client class Client {
     # + return - A certificate with given alias found 
     remote isolated function retrieveCertificateMetadata(string alias) returns SuccessfulCertRetrievalResponse|error {
         string resourcePath = string `/certificate/${alias}`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SuccessfulCertRetrievalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
@@ -372,7 +401,7 @@ public isolated client class Client {
     # + return - Successfully Created 
     remote isolated function createStation(CreateStationRequest payload) returns SuccessfulStationCreationResponse|error {
         string resourcePath = string `/station`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
@@ -386,7 +415,7 @@ public isolated client class Client {
     # + return - Successfully Created 
     remote isolated function createPartner(CreatePartnerRequest payload) returns SuccessfulPartnerCreationResponse|error {
         string resourcePath = string `/partner`;
-        map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
+        map<any> headerValues = {"Authorization": check self.getToken(self.username, self.password)};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);

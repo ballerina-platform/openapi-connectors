@@ -33,7 +33,6 @@ public isolated client class Client {
     final string as2From;
     final string username;
     final string password;
-    final time:Seconds zeroSeconds = 0;
     private string authToken = "";
     private time:Utc expirationTime = [0, 0];
 
@@ -65,12 +64,12 @@ public isolated client class Client {
     # + password - Valid Password used to sign in [MFTG console](https://console.mftgateway.com/)
     # + return - Valid token
     isolated function getToken(string username, string password) returns string|error {
+        
         lock {
-            if (time:utcDiffSeconds(self.expirationTime, time:utcNow()) < self.zeroSeconds) {
-                string resourcePath = string `/authorize`;
+            if (time:utcDiffSeconds(self.expirationTime, time:utcNow()) < ZERO_SECONDS) {
                 http:Request request = new;
                 request.setPayload({username, password}, "application/json");
-                SuccessfulAuthorizationResponse response = check self.clientEp->post(resourcePath, request);
+                SuccessfulAuthorizationResponse response = check self.clientEp->post(string `/authorize`, request);
                 self.expirationTime = time:utcAddSeconds(time:utcNow(), 3000);
                 return response.api_token;
             }

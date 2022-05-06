@@ -5,8 +5,7 @@ The [MFT Gateway REST API](https://aayutechnologies.com/docs/product/mft-gateway
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 
-* Create a account on [MFT Gateway (by Aayu technologies)](https://console.mftgateway.com/auth/register) 
-* Obtain tokens following [this guide](https://aayutechnologies.com/docs/product/mft-gateway/user-guide/).
+* Create a account on [MFT Gateway (by Aayu technologies)](https://console.mftgateway.com/auth/register)
 * Create a [Station](https://aayutechnologies.com/docs/product/mft-gateway/creating-as2-station/) in the MFT Gateway account.
  
 ## Quickstart
@@ -19,11 +18,10 @@ First, import the `ballerinax/aayu.mftg.as2` module into the Ballerina project.
 ```
 
 ### Step 2: Create a new connector instance
-
-Create a `mftg:Client` instance using an API token (obtained from MFTgateway) and Station Identifier.
+Create a `mftg:Client` instance using username, password (used to sign in MFTgateway) and Station identifier.
 
 ```ballerina
-    mftg:Client mftgClient = check new ({authorization: <VALID_API_TOKEN>}, as2From);
+    mftg:Client mftgClient = check new (username, password, stationIdentifier);
 ```
 
 ### Step 3: Invoke connector operation

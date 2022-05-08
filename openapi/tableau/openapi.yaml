@@ -1,0 +1,1692 @@
+openapi: 3.0.1
+info:
+  title: Tableau REST API OpenAPI Endpoints
+  description: |-
+    Versions: <i>Tableau Server 2021.1 / Tableau Online March 2022 and later</i> 
+
+     This documentation describes the growing number OpenAPI endpoints  being released alongside more than 150 [classic REST endpoints](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref.htm)  that are currently in wide usage in the Tableau community. 
+
+     There are some differences users of the classic endpoints will recognize when viewing these new endpoints. 
+
+     - Request bodies for these new REST endpoints must  be formatted using JSON. 
+
+     -  Endpoint URIs may contain a hyphen ('-') instead of an API version number, indicating that the resource is versioned separately from the numbered API release. For more information, see  [REST API and Resource Versions](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm). 
+
+     > Starting in Tableau Server 2022.1 / Tableau Online March 2022, differences between releases will be noted in this reference.To view the previous version of this reference, see [Tableau REST API OpenAPI Endpoints (v2021.4)](https://help.tableau.com/current/api/rest_api/en-us/REST/TAG/index.html#operation/addAnalyticsExtensionsConnection).
+  version: ''
+  x-logo:
+    url: https://help.tableau.com/current/api/rest_api/en-us/Resources/tableau-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Tableau REST API
+tags:
+  - name: Analytics Extensions Settings Methods
+    description: |-
+      Enable and configure [analytics extensions](https://help.tableau.com/current/server/en-us/config_r_tabpy.htm) on sites and, for on premise installations, on servers. With these extensions you can extend Tableau dynamic calculations with languages like R and python, and with other tools and platforms. For more information, see [Analytics Extensions API](https://tableau.github.io/analytics-extensions-api/). 
+
+      When upgrading from a server version less than 2020.2, analytics extensions must be enabled on each site even if external services were enabled on the server being upgraded. Connections for sites must be ported manually. 
+
+      Using the analytics extensions settings methods you can: <ul> <li>Enable and disable analytics extensions for a Tableau server (on-premise only) or for a site.</li> <li>Create and manage an extension's connections to the service hosting your custom calculations.</li> </ul>
+  - name: Dashboard Extensions Settings Methods
+    description: |-
+      Enable and configure security for [dashboard extensions](https://help.tableau.com/current/server/en-us/config_r_tabpy.htm) on sites and, for on premise installations, on servers. With these extensions you can add custom features to a dashboard using JavaScript. 
+
+      Using the extension methods of the Tableau Server REST API you can: <ul> <li>List the settings for extensions of a server or site</li> <li>Enable or disable extensions or sandboxed extensions for a server or site</li> <li>List, get, create, and delete entries in server blocked extensions list</li> <li>List, get, create, update, and delete entries in server allowed (safe) extensions list</li> </ul> 
+
+      This functionality relates to the UI elements and concepts described at [Manage Dashboard Settings](https://help.tableau.com/current/server/en-us/dashboard_extensions_server.htm).
+servers:
+  - url: https://tableau.example.com/
+paths:
+  /api/-/settings/site/extensions/analytics/connections/{connection_luid}:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Get analytics extension details
+      description: |-
+        Get the details of a specified analytics extension connection to an external service. 
+
+         > Permissions: Can only be called by users with site or server administrator permissions.
+      operationId: AnalyticsExtensionsService_getAnalyticsExtensionsConnection
+      parameters:
+        - name: connection_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionItem'
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Update analytics extension connection of site
+      description: |-
+        Updates the details of specified analytics extension connection for an external service to a site. 
+
+         > Permissions: Can only be called by users with site or server administrator permissions.
+      operationId: AnalyticsExtensionsService_updateAnalyticsExtensionsConnection
+      parameters:
+        - name: connection_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json:
+            schema:
+              $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionItem'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionItem'
+        '400':
+          description: 'Invalid Request. One or more of the following connection parameters could be incorrect: host name, port, connection type, username, password, or SSL settings.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    delete:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Delete analytics extension connection from site
+      description: |-
+        Deletes a specific analytics extension connection for an external service from a site. 
+
+         > Permissions: Can only be called by users with site or server administrator permissions.
+      operationId: AnalyticsExtensionsService_deleteAnalyticsExtensionsConnection
+      parameters:
+        - name: connection_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '204':
+          description: Successful.
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/dashboard/safeListItems/{safe_list_item_luid}:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Get allowed dashboard extension on site
+      description: |-
+        Gets the details of a specific dashboard extension on the safe list of the site you are signed into. 
+
+         > Permissions - Can only be called by users with site or server administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_getDashboardExtensionsSafeListItem
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+        - name: safe_list_item_luid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json:
+              schema:
+                $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Update settings for allowed dashboard extension on site
+      description: |-
+        Updates the settings of a specific dashboard extension in the safe list of the site you are signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_updateDashboardExtensionsSafeListItem
+      parameters:
+        - name: safe_list_item_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json:
+            schema:
+              $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json:
+              schema:
+                $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    delete:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Disallow dashboard extension on site
+      description: |-
+        Deletes a specific dashboard extension from the safe list of the site you are signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_deleteDashboardExtensionsSafeListItem
+      parameters:
+        - name: safe_list_item_luid
+          in: path
+          required: true
+          schema:
+            type: string
+            description: ''
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/analytics/workbooks/{workbook_luid}/connections:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: List analytics extension connections of workbook
+      description: |-
+        Lists basic details of each analytics extension connection available for a specified workbook, including connection type and name. 
+
+         > Permissions: This method can be called by users that have permissions to the specified workbook.
+      operationId: AnalyticsExtensionsService_getConnectionOptionsForWorkbook
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+        - name: workbook_luid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: The user does not have permissions to this workbook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/analytics/workbooks/{workbook_luid}/selected_connection:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Get current analytics extension for workbook
+      description: |-
+        Gets basic details, including connection type and name, of the analytics extension connection to an external service that the specified workbook is currently using. 
+
+         > Permissions: This method can be called by users with authoring access to the workbook.
+      operationId: AnalyticsExtensionsService_getSelectedConnectionForWorkbook
+      parameters:
+        - name: workbook_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: The user does not have permissions for this workbook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Update analytics extension for workbook
+      description: |-
+        Updates the analytics extension connection to external service currently used by a workbook. 
+
+         > Permissions: This method can be called by users that have permissions to the specified workbook.
+      operationId: AnalyticsExtensionsService_updateWorkbookWithConnection
+      parameters:
+        - name: workbook_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.analyticsextensions.v1.ConnectionMapping+json:
+            schema:
+              $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMapping'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: The user does not have permissions to this workbook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    delete:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Remove current analytics extension connection for workbook
+      description: |-
+        Remove the currently used analytics extension connection to an external service  from the specified workbook. The connection remains configured, and is available for further usage by the workbook. 
+
+         > Permissions: This method can be called by users with authoring access to the workbook.
+      operationId: AnalyticsExtensionsService_deleteConnectionFromWorkbook
+      parameters:
+        - name: workbook_luid
+          in: path
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '204':
+          description: Successful.
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: The user does not have perissions for this workbook.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/analytics:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Get enabled state of analytics extensions on site
+      description: |-
+        Gets the enabled/disabled state of analytics extensions on a site. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: AnalyticsExtensionsService_getAnalyticsExtensionsSiteSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Update enabled state of analytics extensions on site
+      description: |-
+        Enables or disables analytics extensions on a site. 
+
+         > Permissions: Can only be called by users with site or server administrator permissions. 
+
+         > Availability: Not available for Tableau Online.
+      operationId: AnalyticsExtensionsService_updateAnalyticsExtensionsSiteSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.analyticsextensions.v1.SiteSettings+json:
+            schema:
+              $ref: '#/components/schemas/tableau.analyticsextensions.v1.SiteSettings'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/dashboard:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: List dashboard extension settings of site
+      description: |-
+        Lists the dashboard extension settings of the site you are signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_getDashboardExtensionsSiteSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Update dashboard extension settings of site
+      description: |-
+        Updates the settings for dashboard extensions for the site you are signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_updateDashboardExtensionsSiteSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.extensions.dashboard.v1.SiteSettings+json:
+            schema:
+              $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SiteSettings'
+      responses:
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/server/extensions/dashboard/blockListItems:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: List blocked dashboard extensions on server
+      description: |-
+        Lists the dashboard extensions on the blocked list of a server. 
+
+         > Permissions: This method can only be called by users with server administrator permissions. 
+
+         > Availability: Not available for Tableau Online.
+      operationId: DashboardExtensionsServerSettingsService_getDashboardExtensionsBlockListItems
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    post:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Block dashboard extension on server
+      description: |-
+        Adds a dashboard extension to the block list of a server.  
+
+         > Permissions: This method can only be called by users with server or site administrator permissions. 
+
+         > Availability: Not available for Tableau Online.
+      operationId: DashboardExtensionsServerSettingsService_createDashboardExtensionsBlockListItem
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.extensions.dashboard.v1.BlockListItem+json:
+            schema:
+              $ref: '#/components/schemas/tableau.extensions.dashboard.v1.BlockListItem'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/dashboard/safeListItems:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Lists allowed dashboard extensions on site
+      description: |-
+        Lists the dashboard extensions on the safe list of the site you are signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_getDashboardExtensionsSafeListItems
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    post:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Allow dashboard extension on site
+      description: |-
+        Adds a dashboard extension to the safe list of the site you are  signed into. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: DashboardExtensionsSiteSettingsService_createDashboardExtensionsSafeListItem
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json:
+            schema:
+              $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/site/extensions/analytics/connections:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: List analytics extension connections on site
+      description: |-
+        Lists a site's analytics extension connections for external services. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: AnalyticsExtensionsService_getAnalyticsExtensionsConnections
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    post:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Add analytics extension connection to site
+      description: |-
+        Adds an analytics extensions connection for an external service to a site. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: AnalyticsExtensionsService_addAnalyticsExtensionsConnection
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json:
+            schema:
+              $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionItem'
+      responses:
+        '201':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/server/extensions/analytics:
+    get:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Get enabled state of analytics extensions on server
+      description: |-
+        Gets the enabled/disabled state of analytics extensions on a server. 
+
+         > Permissions: This method can only be called by users with server or site administrator permissions.
+      operationId: AnalyticsExtensionsService_getAnalyticsExtensionsServerSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Analytics Extensions Settings Methods
+      summary: Enable or disable analytics extensions on server
+      description: |-
+        Enables or disables analytics extensions on a server. 
+
+         > Permissions: This method can only be called by users with server administrator permissions.
+      operationId: AnalyticsExtensionsService_updateAnalyticsExtensionsServerSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.analyticsextensions.v1.ServerSettings+json:
+            schema:
+              $ref: '#/components/schemas/tableau.analyticsextensions.v1.ServerSettings'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server or site administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/server/extensions/dashboard/blockListItems/{block_list_item_luid}:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Get blocked dashboard extension on server
+      description: |-
+        Gets the details of a specific dashboard extension on the blocked list of a server. 
+
+         > Permissions: This method can only be called by users with server administrator permissions. 
+
+         > Availability: Not available for Tableau Online.
+      operationId: DashboardExtensionsServerSettingsService_getDashboardExtensionsBlockListItem
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+        - name: block_list_item_luid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    delete:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Unblock dashboard extension on server
+      description: |-
+        Deletes a specific extension from the block list of a server. 
+
+         > Permissions: This method can only be called by users with server administrator permissions. 
+
+         >Availability: Not available for Tableau Online.
+      operationId: DashboardExtensionsServerSettingsService_deleteDashboardExtensionsBlockListItem
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+        - name: block_list_item_luid
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+  /api/-/settings/server/extensions/dashboard:
+    get:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: List settings for dashboard extensions on server
+      description: |-
+        Lists the dashboard extension settings of a server. 
+
+         > Permissions: This method can only be called by users with server administrator permissions. 
+
+         > Availability: Not available for Tableau Online.
+      operationId: DashboardExtensionsServerSettingsService_getDashboardExtensionsServerSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+    put:
+      tags:
+        - Dashboard Extensions Settings Methods
+      summary: Update dashboard extensions settings of server
+      description: |-
+        Updates the settings for dashboard extensions of a server 
+
+         > Permissions: This method can only be called by users with server administrator permissions.
+      operationId: DashboardExtensionsServerSettingsService_updateDashboardExtensionsServerSettings
+      parameters:
+        - $ref: '#/components/parameters/tableau.auth.header'
+      requestBody:
+        content:
+          application/vnd.tableau.extensions.dashboard.v1.ServerSettings+json:
+            schema:
+              $ref: '#/components/schemas/tableau.extensions.dashboard.v1.ServerSettings'
+      responses:
+        '200':
+          description: Successful.
+          content:
+            application/vnd.tableau.analyticsextensions.v1.ConnectionMetadataList+json:
+              schema:
+                $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadataList'
+        '400':
+          description: Invalid Request. The requested was incorrect.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '401':
+          description: Unable to authenticate user. Credentials are missing or invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '403':
+          description: Server administrator permissions are required for this request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '404':
+          description: Invalid request. The requested resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '500':
+          description: Unknown error. There was an internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tableau.error'
+components:
+  schemas:
+    tableau.error:
+      type: object
+      properties:
+        httpErrorCode:
+          type: string
+        message:
+          type: string
+    tableau.analyticsextensions.v1.ConnectionItem:
+      properties:
+        connection_luid:
+          type: string
+        host:
+          type: string
+          description: |-
+            Required. The location of an external service (TabPy, Rserve, EINSTEIN_DISCOVERY, Generic API, or other) that responds to your analytics extension requests. The case sensitive value must be a URI, IPv4 or IPv6 address that is a maximum of 255 Unicode characters. 
+             
+             Starting in Tableau 2022.1 / Online April 2022, a host address can include path information (`www.example.com/path`), where previous versions supported only the root domain name (`www.example.com`).
+        port:
+          type: integer
+          description: Required. Integer between 1 and 65535.
+          format: int32
+        is_auth_enabled:
+          type: boolean
+          description: |-
+            For Tableau Online: The value is always true. 
+             
+             For on premise Tableau servers:  Optional. Set to true if authentication is enabled on the external service. If  true, username and password are required. Default is false.
+        username:
+          type: string
+          description: 'For Tableau Online: A username is always required.'
+        password:
+          type: string
+          description: 'For Tableau Online: A password is always required.'
+        is_ssl_enabled:
+          type: boolean
+          description: |-
+            For Tableau Online: The value is always true. 
+             
+             For on premise Tableau servers:  Optional. Set to true if authentication is enabled on the external service. If  true, username and password are required. Default is false.
+        connection_brief:
+          $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionBrief'
+    tableau.analyticsextensions.v1.ServerSettings:
+      properties:
+        enabled:
+          type: boolean
+    tableau.extensions.dashboard.v1.ServerSettings:
+      properties:
+        block_list_items:
+          type: array
+          items:
+            description: The server block list.
+            $ref: '#/components/schemas/tableau.extensions.dashboard.v1.BlockListItem'
+        extensions_enabled:
+          type: boolean
+          description: Specifies whether sandboxed extensions are allowed to run on the site.
+      description: Extension settings of a Tableau server.
+    tableau.analyticsextensions.v1.ConnectionList:
+      properties:
+        connectionList:
+          type: array
+          items:
+            description: List of connections to external services available for analytics extensions on a site. Multiple connections are available on a site for all connection types except Einstein_Discovery, where only a single connection per site is supported.
+            $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionItem'
+    tableau.extensions.dashboard.v1.BlockListItems:
+      properties:
+        block_list_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/tableau.extensions.dashboard.v1.BlockListItem'
+      description: List of dashboard extensions blocked from running on a server.
+    tableau.extensions.dashboard.v1.SiteSettings:
+      properties:
+        extensions_enabled:
+          type: boolean
+          description: Specifies whether extensions are allowed to run on the site.
+        allow_sandboxed:
+          type: boolean
+          description: Specifies whether sandboxed extensions are allowed to run on the site.
+        safe_list_items:
+          type: array
+          items:
+            description: The site safe list.
+            $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+      description: Dashboard extension settings of a site.
+    tableau.analyticsextensions.v1.ConnectionMetadataList:
+      properties:
+        connectionMetadataList:
+          type: array
+          items:
+            description: List of basic connection details, including connection type and name, for each analytics extension connection available on a site.
+            $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionMetadata'
+    tableau.extensions.dashboard.v1.BlockListItem:
+      properties:
+        url:
+          type: string
+          description: Location of the dashboard extension to be blocked from a site.
+        block_list_item_luid:
+          type: string
+      description: A dashboard extension that is blocked from running on a server.
+    tableau.extensions.dashboard.v1.SafeListItem:
+      properties:
+        safe_list_item_luid:
+          type: string
+        url:
+          type: string
+          description: Location (URL) of the dashboard extension to be allowed on a site.
+        allow_full_data:
+          type: boolean
+          description: When true, the extension has access to underlying data of a workbook. This setting is only effective when the extension is on the site safe list. Default is false.
+        prompt_needed:
+          type: boolean
+          description: When true, the user will be prompted to grant an extension access to the underlying data of a workbook. This setting is only effective when the extension is on the site safe list. Default is false.
+      description: A dashboard extension that is allowed to run on a site.
+    tableau.analyticsextensions.v1.ConnectionBrief:
+      properties:
+        connection_name:
+          type: string
+          description: Required. The title of the connection.
+        connection_type:
+          type: string
+          description: 'Required. The kind of service responding to analytics extension requests. The value can be: TABPY, for a [Tableau TabPy](https://github.com/tableau/TabPy) server; GENERIC_API for your custom service that complies with the [Analytics Extensions API spec](https://tableau.github.io/analytics-extensions-api/docs/ae_intro.html); or RSERVE, for an [Rserve](https://www.tableau.com/solutions/r) service; or EINSTEIN_DISCOVERY for your instance of [Einstein Discovery](https://help.tableau.com/current/server-linux/en-us/config_r_tabpy.htm).'
+          enum:
+            - UNDEFINED
+            - TABPY
+            - RSERVE
+            - EINSTEIN_DISCOVERY
+            - GENERIC_API
+    tableau.analyticsextensions.v1.ConnectionMapping:
+      properties:
+        workbook_luid:
+          type: string
+        connection_luid:
+          type: string
+    tableau.extensions.dashboard.v1.SafeListItems:
+      properties:
+        safe_list_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/tableau.extensions.dashboard.v1.SafeListItem'
+      description: List of dashboard extensions allowed to run on a site.
+    tableau.analyticsextensions.v1.SiteSettings:
+      properties:
+        enabled:
+          type: boolean
+    tableau.analyticsextensions.v1.ConnectionMetadata:
+      properties:
+        connection_luid:
+          type: string
+        connection_brief:
+          $ref: '#/components/schemas/tableau.analyticsextensions.v1.ConnectionBrief'
+  parameters:
+    tableau.auth.header:
+      name: X-Tableau-Auth
+      in: header
+      required: false
+      schema:
+        type: string
+      description: |-
+        The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request. 
+
+         The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning).

@@ -4665,6 +4665,10 @@ components:
           type: string
       type: object
   securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
     OAuth:
       flows:
         authorizationCode:

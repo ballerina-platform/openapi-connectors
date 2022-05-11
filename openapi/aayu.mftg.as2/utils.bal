@@ -21,6 +21,7 @@ import ballerina/time;
 type SimpleBasicType string|boolean|int|float|decimal;
 
 const time:Seconds ZERO_SECONDS = 0;
+const time:Seconds VALIDITY_PERIOD = 3000;
 # Represents encoding mechanism details.
 type Encoding record {
     # Defines how multiple values are delimited

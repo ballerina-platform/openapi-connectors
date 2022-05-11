@@ -70,8 +70,8 @@ public isolated client class Client {
                 http:Request request = new;
                 request.setPayload({username, password}, "application/json");
                 SuccessfulAuthorizationResponse response = check self.clientEp->post(string `/authorize`, request);
-                self.expirationTime = time:utcAddSeconds(time:utcNow(), 3000);
-                return response.api_token;
+                self.expirationTime = time:utcAddSeconds(time:utcNow(), VALIDITY_PERIOD);
+                self.authToken =  response.api_token;
             }
             return self.authToken;
         }

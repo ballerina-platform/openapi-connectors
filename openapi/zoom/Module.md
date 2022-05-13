@@ -25,7 +25,7 @@ import ballerinax/zoom;
 ```
 
 ### Step 2: Create a new connector instance
-Configure the connection using http:OAuth2RefreshTokenGrantConfig or http:BearerTokenConfig.
+Configure the connection using http:OAuth2RefreshTokenGrantConfig, http:BearerTokenConfig or http:JwtIssuerConfig
 
 ```ballerina
 zoom:Configuration configuration = {

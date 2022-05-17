@@ -54,7 +54,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "http"
-version = "2.2.2"
+version = "2.2.1"
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "cache"},
@@ -209,7 +209,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]

@@ -10,11 +10,26 @@ jobs:
       image: ballerina/ballerina:nightly
       options: --user root
     steps:
-      - uses: actions/checkout@v2
-      - name: Build with Gradle
-        env:
-          BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
-          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-          GRADLE_USER_HOME: ~/.gradle
+      # - uses: actions/checkout@v2
+      # - name: Build with Gradle
+        # env:
+        #   BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
+        #   JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+        #   GRADLE_USER_HOME: ~/.gradle
+      #   run: |
+      #     ./gradlew build -Prelease=false -Premote=true
+      - name: Instal curl
+        run: apt install curl
+      - name: Notify failure
+        # if: ${{ failure() }}
         run: |
-          ./gradlew build -Prelease=false -Premote=true
+          curl -X POST \
+          'https://api.github.com/repos/ballerina-platform/ballerina-release/dispatches' \
+          -H 'Accept: application/vnd.github.v3+json' \
+          -H 'Authorization: Bearer ${{ secrets.BALLERINA_BOT_TOKEN }}' \
+          --data "{
+            \"event_type\": \"notify-build-failure\",
+            \"client_payload\": {
+              \"repoName\": \"openapi-connectors\"
+            }
+          }"

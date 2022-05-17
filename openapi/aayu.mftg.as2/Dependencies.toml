@@ -190,7 +190,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "mime"
-version = "2.2.1"
+version = "2.2.2"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -215,7 +215,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -313,8 +313,7 @@ dependencies = [
 	{org = "ballerina", name = "url"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"},
-	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3.s3"}
+	{org = "ballerinax", packageName = "aws.s3", moduleName = "aws.s3"}
 ]
 
 

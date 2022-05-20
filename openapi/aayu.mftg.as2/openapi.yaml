@@ -1692,9 +1692,6 @@ components:
     # Send message
     SuccessfulMessageSubmitResponse:
       title: Successful Message Submission Response
-      required:
-        - message
-        - as2MessageId
       type: object
       properties:
         message:

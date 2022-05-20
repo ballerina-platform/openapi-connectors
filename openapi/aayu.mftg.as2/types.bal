@@ -36,8 +36,8 @@ public type MdnMessage record {
 };
 
 public type SuccessfulMessageSubmitResponse record {
-    string message;
-    string as2MessageId;
+    string message?;
+    string as2MessageId?;
 };
 
 public type Attachment record {

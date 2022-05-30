@@ -1,0 +1,19 @@
+Connects to [SugarCRM API](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) from Ballerina
+
+## Package overview
+The `ballerinax/sugarcrm` is a [Ballerina](https://ballerina.io/) connector for SugarCRM API.
+This package provides the capability to access SugarCRM instance.
+
+### Compatibility
+|                             | Version                        |
+|-----------------------------|--------------------------------|
+| Ballerina Language          | Ballerina Swan Lake 2201.0.3   | 
+| SugarCRM API                | v12.0                          |
+
+## Report issues
+To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)
+
+## Useful links
+- Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+- Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
+- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag

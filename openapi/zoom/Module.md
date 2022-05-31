@@ -28,7 +28,7 @@ import ballerinax/zoom;
 Configure the connection using http:OAuth2RefreshTokenGrantConfig, http:BearerTokenConfig or http:JwtIssuerConfig
 
 ```ballerina
-zoom:Configuration configuration = {
+zoom:ClientConfig configuration = {
     auth: {
         refreshUrl: "https://zoom.us/oauth/token",
         refreshToken : "<REFRESH_TOKEN>",

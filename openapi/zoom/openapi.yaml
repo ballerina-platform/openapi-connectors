@@ -33,6 +33,306 @@ tags:
   - description: Meeting operations
     name: Webinars
 paths:
+  "/users":
+    get:
+      description: >-
+        Use this API to list your account's users. 
+
+        **Scopes:** `user:read:admin` 
+
+        **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Medium`
+      summary: List users
+      operationId: listUsers
+      x-ballerina-display:
+        label: List Users
+      parameters:
+        - description: "The user's status. active, live or upcoming. Default is active."
+          in: query
+          name: status
+          schema:
+            default: active
+            enum:
+              - active
+              - inactive
+              - pending
+            type: string
+            example: active
+          x-ballerina-display:
+            label: User's Status
+          x-enum-descriptions:
+            - the user exists on the account
+            - the user has been deactivated
+            - the user exists on the account but has not activated their account
+        - description: "The number of records returned within a single API call."
+          in: query
+          name: page_size
+          schema:
+            default: 30
+            maximum: 300
+            type: integer
+          x-ballerina-display:
+            label: Page Size
+        - description: "The role's unique ID. Use this parameter to filter the response by a specific role."
+          in: query
+          name: role_id
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Role's Unique ID
+        - description: "The page number of the current page in the returned records."
+          in: query
+          name: page_number
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Page Number
+        - description: "Use this parameter to display one of the following attributes in the API call's response. custom_attributes or host_key."
+          in: query
+          name: include_fields
+          schema:
+            enum:
+              - custom_attributes
+              - host_key
+            type: string
+          x-ballerina-display:
+            label: Include Fields
+          x-enum-descriptions:
+            - return the user's custom attributes
+            - return the user's host key
+        - description: "The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes."
+          in: query
+          name: next_page_token
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Next Page Token
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersResponse'
+          description: "HTTP Status Code:200. User list returned."
+      security:
+        - OAuth: []
+      tags:
+        - Users
+  "/metrics/meetings":
+    get:
+      description: >-
+        List total live or past meetings that occurred during a specified period of time. This overview will show if features such as audio, video, screen sharing, and recording were being used in the meeting. You can also see the license types of each user on your account.<br> You can specify a monthly date range for the dashboard data using the `from` and `to` query parameters. The month should fall within the last six months.
+
+        **Scopes:** `dashboard_meetings:read:admin` 
+
+        **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Resource-intensive`
+
+        **Prerequisites:** Business or a higher plan.
+      summary: List dashboard meetings
+      operationId: listDashboardMeetings
+      x-ballerina-display:
+        label: List Dashboard Meetings
+      parameters:
+        - description: |-
+            Specify a value to get the response for the corresponding meeting type. The value of this field can be one of the following: `past` - Meeting that already occurred in the specified date range. `pastOne` - Past meetings that were attended by only one user. `live` - Live meetings.
+
+            If you do not provide this field, the default value will be `live` and thus, the API will only query responses for live meetings.
+          in: query
+          name: type
+          schema:
+            default: live
+            enum:
+              - past
+              - pastOne
+              - live
+            type: string
+            example: past
+          x-ballerina-display:
+            label: Meeting Type
+          x-enum-descriptions:
+            - past meetings
+            - past one user meetings
+            - live meetings
+        - description: "Start date in 'yyyy-mm-dd' format. The date range defined by the 'from' and 'to' parameters should only be one month as the report includes only one month worth of data at once."
+          in: query
+          name: from
+          required: true
+          schema:
+            format: date
+            type: string
+            example: '2022-01-01'
+          x-ballerina-display:
+            label: Start Date
+        - description: "End date in 'yyyy-mm-dd' format."
+          in: query
+          name: to
+          required: true
+          schema:
+            format: date
+            type: string
+            example: '2022-01-28'
+          x-ballerina-display:
+            label: End date
+        - description: "The number of records returned within a single API call."
+          in: query
+          name: page_size
+          schema:
+            default: 30
+            maximum: 300
+            type: integer
+          x-ballerina-display:
+            label: Page Size
+        - description: "The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes."
+          in: query
+          name: next_page_token
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Next Page Token
+        - description: "The group ID. The API response will only contain meetings where the host is a member of the queried group ID."
+          in: query
+          name: group_id
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Group ID
+        - description: "Set the value of this field to 'tracking_fields' if you would like to include tracking fields of each meeting in the response."
+          in: query
+          name: include_fields
+          schema:
+            enum:
+              - tracking_fields
+            type: string
+          x-ballerina-display:
+            label: Include Fields
+          x-enum-descriptions:
+            - include tracking fields of each meeting
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDashboardMeetingsResponse'
+          description: "HTTP Status Code:200. Dashboard meetings returned. Only available for paid accounts that have dashboard feature enabled."
+        "300":
+          description: >
+            **Error Code:** `300`
+
+            The next page token is invalid or expired.
+      security:
+        - OAuth: []
+      tags:
+        - Dashboards
+  "/metrics/meetings/{meetingId}/participants":
+    get:
+      description: |-
+        Use this API to return a list of participants from live or past meetings. 
+
+         If you do not provide the `type` query parameter, the default value will be set to the `live` value. This API will only return metrics for participants in a live meeting, if any exist. You can specify a monthly date range for the dashboard data using the `from` and `to` query parameters. The month should fall within the last six months. 
+
+        **Note:** 
+
+        This API may return empty values for participants' `user_name`, `ip_address`, `location`, and `email` responses when the account calling this API: 
+        * Does **not** have a signed HIPAA business associate agreement (BAA). 
+        * Is a [**legacy** HIPAA BAA account](https://marketplace.zoom.us/docs/api-reference/other-references/legacy-business-associate-agreements). 
+        * Displays data for any users who are **not** part of the host's account (external users) unless they meet certain conditions. See [Email address display rules](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#email-address) for details. 
+
+        **Scopes:** `dashboard_meetings:read:admin` <br> **[Rate Limit Label](https://marketplace.zoom.us/docs/api-reference/rate-limits#rate-limits):** `Heavy` 
+
+        **Prerequisites:** 
+        * A Business or higher plan.
+      summary: List dashboard meeting participants
+      operationId: listDashboardMeetingParticipants
+      x-ballerina-display:
+        label: List Dashboard Meeting Participants
+      parameters:
+        - description: |-
+            The meeting's ID or universally unique ID (UUID). 
+            If you provide a meeting ID, the API will return a response for the latest meeting instance. 
+            If you provide a meeting UUID that begins with a `/` character or contains the `//` characters, you **must** double-encode the meeting UUID before making an API request.
+          in: path
+          name: meetingId
+          required: true
+          schema:
+            oneOf:
+              - type: integer
+                example: 5638296721
+              - type: string
+                example: 4444AAAiAAAAAiAiAiiAii==
+        - description: |-
+            The type of meeting to query: 
+            * `past` — All past meetings. 
+            * `pastOne` — All past one-user meetings. 
+            * `live` - All live meetings. 
+
+            This value defaults to `live`.
+          in: query
+          name: type
+          schema:
+            default: live
+            enum:
+              - past
+              - pastOne
+              - live
+            type: string
+            example: past
+          x-ballerina-display:
+            label: Meeting Type
+          x-enum-descriptions:
+            - Past meetings.
+            - Past one-user meetings.
+            - Live meetings.
+        - description: "The number of records returned within a single API call."
+          in: query
+          name: page_size
+          schema:
+            default: 30
+            maximum: 300
+            type: integer
+          x-ballerina-display:
+            label: Page Size
+        - description: "The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes."
+          in: query
+          name: next_page_token
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Next Page Token
+        - description: "Provide `registrant_id` as the value for this field if you would like to see the registrant ID attribute in the response of this API call. A registrant ID is a unique identifier of a [meeting registrant](/api-reference/zoom-api/methods#operation/meetingRegistrants). This is not supported for `live` meeting types."
+          in: query
+          name: include_fields
+          schema:
+            enum:
+              - registrant_id
+            type: string
+          x-ballerina-display:
+            label: Include Fields
+          x-enum-descriptions:
+            -  a unique identifier of a [meeting registrant](/api-reference/zoom-api/methods#operation/meetingRegistrants)
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDashboardMeetingParticipantsResponse'
+          description: "HTTP Status Code:200. Meeting participants returned. Only available for paid accounts that have enabled the dashboard feature."
+        '300':
+          description: |-
+            **Error Code:** `300`<br>
+            Can not access webinar info.<br>
+            {meetingId} or the next page token is either invalid or expired.
+        '400':
+          description: |-
+            **Error Code:** `12702`<br>
+            Can not access a meeting a year ago.
+        '404':
+          description: |-
+            **HTTP Status Code:** `404`<br>
+            **Error Code:** `3001`<br>
+            Meeting ID is invalid or has not ended.
+      security:
+        - OAuth: []
+      tags:
+        - Dashboards
   "/users/{userId}/meetings":
     get:
       description: >-
@@ -2706,6 +3006,7 @@ components:
     CreateBatchPollsRequest:
       properties:
         questions:
+          description: Poll questions
           items:
             $ref: '#/components/schemas/PollQuestions'
           type: array
@@ -3040,6 +3341,7 @@ components:
           x-ballerina-display:
             label: Language
         auto_approve:
+          description: Enable auto approve
           type: boolean
           x-ballerina-display:
             label:  Enable Auto Approve
@@ -3212,6 +3514,7 @@ components:
             value of `name` field will be "Anonymous Attendee".
           type: string
         question_details:
+          description: Poll question answers
           items:
             $ref: '#/components/schemas/PollQuestionAnswer'
           type: array
@@ -3347,6 +3650,7 @@ components:
           description: Meeting Poll ID
           type: string
         questions:
+          description: Poll questions
           items:
             $ref: '#/components/schemas/PollQuestions'
           type: array
@@ -4663,6 +4967,656 @@ components:
           description: Email address of the user. This field will be returned if the user
             logged into Zoom to join the meeting.
           type: string
+      type: object
+    ListUsersResponse:
+      allOf:
+        - $ref: '#/components/schemas/PaginationObject'
+        - $ref: '#/components/schemas/UsersList'
+      description: List of users
+    UsersList:
+      description: Users Details 
+      properties:
+        users:
+          description: Information about the users.
+          items:
+            $ref: '#/components/schemas/UserDetails'
+          type: array
+    UserDetails:
+      description: User Details 
+      properties:
+        created_at:
+          description: The time at which the user's account was created.
+          format: date-time
+          type: string
+          example: '2019-06-01T07:58:03Z'
+        custom_attributes:
+          description: Information about the user's custom attributes. This field is **only** returned if users are assigned custom attributes and you provided the `custom_attributes` value for the `include_fields` query parameter in the API request.
+          items:
+            $ref: '#/components/schemas/CustomAttributeDetails'
+          type: array
+        dept:
+          description: The user's department.
+          type: string
+          example: Developers
+        email:
+          description: The user's email address.
+          format: email
+          type: string
+          example: jchill@example.com
+        employee_unique_id:
+          description: The employee's unique ID. The this field only returns when SAML single sign-on (SSO) is enabled or the `login_type` value is `101` (SSO).
+          type: string
+          example: HqDyI037Qjili1kNsSIrIg
+        first_name:
+          description: The user's first name.
+          maxLength: 64
+          type: string
+          example: Jill
+        group_ids:
+          description: The IDs of groups where the user is a member.
+          items:
+            type: string
+            example: t-_-d56CSWG-7BF15LLrOw
+          type: array
+        host_key:
+          description: The user's [host key](https://support.zoom.us/hc/en-us/articles/205172555-Using-your-host-key). This field is **only** returned if users are assigned a host key and you provided the `host_key` value for the `include_fields` query parameter in the API request.
+          type: string
+          example: '299492849'
+        id:
+          description: The user's ID. The API does **not** return this value for users with the `pending` status.
+          type: string
+          example: KDcuGIm1QgePTO8WbOqwIQ
+        im_group_ids:
+          description: The IDs of IM directory groups where the user is a member.
+          items:
+            type: string
+            example: t-_-d56CSWG-7BF15LLrOw
+          type: array
+        last_client_version:
+          description: The last client version that user used to log in.
+          type: string
+          example: 5.2.45120.0906(win)
+        last_login_time:
+          description: The user's last login time. This field has a three-day buffer period. For example, if user first logged in on `2020-01-01` and then logged out and logged in on `2020-01-02`, this value will still reflect the login time of `2020-01-01`. However, if the user logs in on `2020-01-04`, the value of this field will reflect the corresponding login time since it exceeds the three-day buffer period.
+          format: date-time
+          type: string
+          example: '2022-03-25T05:40:55Z'
+        last_name:
+          description: The user's last name.
+          maxLength: 64
+          type: string
+          example: Chill
+        plan_united_type:
+          description: This field is returned if the user is enrolled in the [Zoom United](https://zoom.us/pricing/zoom-bundles) plan.
+          type: string
+          example: '0'
+        pmi:
+          description: The user's [Personal Meeting ID (PMI)](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#understanding-personal-meeting-id-pmi).
+          format: int64
+          type: integer
+          example: 6589310093
+        role_id:
+          description: The unique ID of the user's assigned [role](/api-reference/zoom-api/methods#operation/roles).
+          type: string
+          example: '0'
+        status:
+          description: |-
+            The user's status: 
+            * `active` — An active user. 
+            * `inactive` — A deactivated user. 
+            * `pending` — A pending user.
+          enum:
+            - active
+            - inactive
+            - pending
+          example: active
+          type: string
+          x-enum-descriptions:
+            - An active user
+            - A deactivated user
+            - A pending user
+        timezone:
+          description: The user's timezone.
+          type: string
+          example: Asia/Shanghai
+        type:
+          description: |-
+            The user's assigned plan type: 
+            * `1` — Basic. 
+            * `2` — Licensed. 
+            * `3` — On-prem. 
+            * `99` — None (this can only be set with `ssoCreate`).
+          enum:
+            - 1
+            - 2
+            - 3
+            - 99
+          example: 1
+          type: integer
+          x-enum-descriptions:
+            - Basic
+            - Licensed
+            - On-prem
+            - None (this can only be set with `ssoCreate`)
+        verified:
+          description: |-
+            Display whether the user's email address for the Zoom account is verified: 
+            * `1` — A verified user email. 
+            * `0` — The user's email **not** verified.
+          enum:
+            - 1
+            - 0
+          type: integer
+          example: 1
+      required:
+        - email
+        - type
+      type: object
+    CustomAttributeDetails:
+      description: User's Custom Attribute Details 
+      properties:
+        key:
+          description: The custom attribute's unique ID.
+          type: string
+          example: cbf_cywdkexrtqc73f97gd4w6g
+        name:
+          description: The custom attribute's name.
+          type: string
+          example: A1
+        value:
+          description: The custom attribute's value.
+          type: string
+          example: '2323'
+      type: object
+    ListDashboardMeetingsResponse:
+      allOf:
+        - $ref: '#/components/schemas/DurationObject'
+        - $ref: '#/components/schemas/PaginationObject'
+        - $ref: '#/components/schemas/DashboardMeetingList'
+      description: List of dashboard meetings
+    DurationObject:
+      description: Duration Details 
+      properties:
+        from:
+          description: Start date for this report in 'yyyy-mm-dd' format.
+          format: date
+          type: string
+          example: '2022-04-01'
+        to:
+          description: End date for this report in 'yyyy-mm-dd' format.
+          format: date
+          type: string
+          example: '2022-04-07'     
+      type: object
+    DashboardMeetingList:
+      description: List of dashboard meetings
+      type: object
+      properties:
+        meetings:
+          description: List of Meeting metric details.
+          items:
+            $ref: '#/components/schemas/MeetingMetricDetails'
+          type: array
+    MeetingMetricDetails:
+      description: Meeting metric details
+      properties:
+        host:
+          description: Host display name.
+          type: string
+          example: jchill meeting
+        custom_keys:
+          description: Custom keys and values assigned to the meeting.
+          items:
+            properties:
+              key:
+                description: Custom key associated with the meeting.
+                maxLength: 64
+                type: string
+                example: Host Nation
+              value:
+                description: Value of the custom key associated with the meeting.
+                maxLength: 256
+                type: string
+                example: US
+            type: object
+          maxItems: 10
+          type: array
+        dept:
+          description: Department of the host.
+          type: string
+          example: Developers
+        duration:
+          description: 'Meeting duration. Formatted as hh:mm:ss, for example: `16:08` for 16 minutes and 8 seconds.'
+          type: string
+          example: '00:56'
+        email:
+          description: Email address of the host.
+          type: string
+          example: user@example.com
+        end_time:
+          description: Meeting end time.
+          format: date-time
+          type: string
+          example: '2022-01-04T07:50:47Z'
+        has_3rd_party_audio:
+          description: Indicates whether or not [third party audio](https://support.zoom.us/hc/en-us/articles/202470795-3rd-Party-Audio-Conference) was used in the meeting.
+          type: boolean
+          example: true
+        has_archiving:
+          description: Whether the archiving feature was used in the meeting.
+          type: boolean
+          example: true
+        has_pstn:
+          description: Indicates whether or not the PSTN was used in the meeting.
+          type: boolean
+          example: true
+        has_recording:
+          description: 'Indicates whether or not the recording feature was used in the meeting. '
+          type: boolean
+          example: true
+        has_screen_share:
+          description: Indicates whether or not screenshare feature was used in the meeting.
+          type: boolean
+          example: true
+        has_sip:
+          description: Indicates whether or not someone joined the meeting using SIP.
+          type: boolean
+          example: true
+        has_video:
+          description: Indicates whether or not video was used in the meeting.
+          type: boolean
+          example: true
+        has_voip:
+          description: Indicates whether or not VoIP was used in the meeting.
+          type: boolean
+          example: true
+        id:
+          description: '[Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.'
+          format: int64
+          type: integer
+          example: 93201235621
+        in_room_participants:
+          description: The number of Zoom Room participants in the meeting.
+          type: integer
+          example: 2
+        participants:
+          description: Meeting participant count.
+          type: integer
+          example: 2
+        start_time:
+          description: Meeting start time.
+          format: date-time
+          type: string
+          example: '2022-01-04T08:04:27Z'
+        topic:
+          description: Meeting topic.
+          type: string
+          example: Share Now
+        tracking_fields:
+          description: Tracking fields and values assigned to the meeting.
+          items:
+            properties:
+              field:
+                description: Label of the tracking field.
+                maxLength: 64
+                type: string
+                example: field1
+              value:
+                description: Value of the tracking field.
+                maxLength: 256
+                type: string
+                example: value1
+            type: object
+          type: array
+        user_type:
+          description: License type of the user.
+          type: string
+          example: Licensed
+        uuid:
+          description: Meeting UUID. Please double encode your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.
+          type: string
+          example: gm8s9L+PTEC+FG3sFbd1Cw==
+        audio_quality:
+          type: string
+          description: |-
+            The meeting's [audio quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+            * `good` — The audio is almost flawless and the quality is excellent. 
+            * `fair` — The audio occasionally has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+            * `poor` — The audio often has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+            * `bad` — The sound quality is extremely poor and the audio content is almost inaudible.
+          enum:
+            - good
+            - fair
+            - poor
+            - bad
+          example: good
+        video_quality:
+          type: string
+          description: |-
+            The meeting's [video quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+            * `good` — The video is almost flawless and the quality is excellent. 
+            * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+            * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+            * `bad` — The picture is very blurred and often gets stuck.
+          enum:
+            - good
+            - fair
+            - poor
+            - bad
+          example: good
+        screen_share_quality:
+          type: string
+          description: |-
+            The meeting's [screen share quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+            * `good` — The video is almost flawless and the quality is excellent. 
+            * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+            * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+            * `bad` — The picture is very blurred and often gets stuck.
+          enum:
+            - good
+            - fair
+            - poor
+            - bad
+          example: good
+      title: Metrics
+      type: object
+    ListDashboardMeetingParticipantsResponse:
+      allOf:
+        - $ref: '#/components/schemas/PaginationObject'
+        - $ref: '#/components/schemas/DashboardMeetingParticipantsList'
+      description: List of dashboard meetings
+    DashboardMeetingParticipantsList:
+      description: List of dashboard meeting participants
+      type: object
+      properties:
+        participants:
+          description: List of Meeting participants details.
+          items:
+            $ref: '#/components/schemas/MeetingParticipantsDetails'
+          type: array
+    MeetingParticipantsDetails:
+      description: Information about the meeting participants. If a participant left a meeting and rejoined the same meeting, their information will appear as many times as they joined the meeting.
+      properties:
+        audio_quality:
+          description: |-
+            The participant's [audio quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+            * `good` — The audio is almost flawless and the quality is excellent. 
+            * `fair` — The audio occasionally has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+            * `poor` — The audio often has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+            * `bad` — The sound quality is extremely poor and the audio content is almost inaudible.
+          enum:
+            - ''
+            - good
+            - fair
+            - poor
+            - bad
+          type: string
+          example: good
+        camera:
+          description: |-
+            The type of camera that the participant used during the meeting. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: FaceTime HD Camera
+        connection_type:
+          description: The participant's connection type.
+          type: string
+          example: UDP
+        customer_key:
+          type: string
+          maxLength: 15
+          description: The participant's SDK identifier. This value can be alphanumeric, up to a maximum length of 15 characters.
+          example: 349589LkJyeW
+        data_center:
+          description: The data center where participant's meeting data is stored.
+          type: string
+          example: United States (SC Top)
+        device:
+          description: |-
+            The type of device the participant used to join the meeting: 
+            * `Phone` — The participant joined via PSTN. 
+            * `H.323/SIP` — The participant joined via an H.323 or SIP device. 
+            * `Windows` — The participant joined via VoIP using a Windows device. 
+            * `Mac` — The participant joined via VoIP using a Mac device. 
+            * `iOS` — The participant joined via VoIP using an iOS device. 
+            * `Android` — The participant joined via VoIP using an Android device. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          enum:
+            - Phone
+            - H.323/SIP
+            - Windows
+            - Mac
+            - iOS
+            - Android
+          type: string
+          example: Phone
+        domain:
+          description: |-
+            The participant's PC domain. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: example.com
+        email:
+          description: The participant's email address. If the participant is **not** part of the host's account, this returns an empty string value, with some exceptions. See [Email address display rules](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#email-address) for details.
+          format: email
+          type: string
+          example: user@example.com
+        from_sip_uri:
+          description: The meeting participant's SIP From header URI. The API only returns this response when the participant joins a meeting via SIP.
+          type: string
+          example: example.com
+        full_data_center:
+          description: The data center where participant's meeting data is stored. This field includes a semicolon-separated list of HTTP Tunnel (HT), Cloud Room Connector (CRC), and Real-Time Web Gateway (RWG) location information.
+          type: string
+          example: United States (SC Top);
+        harddisk_id:
+          description: |-
+            The participant's hard disk ID. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: Disk01
+        id:
+          description: The participant's universally unique ID. This value is the same as the participant's user ID if the participant joins the meeting by logging into Zoom. If the participant joins the meeting without logging into Zoom, this returns an empty value.
+          type: string
+          example: zJKyaiAyTNC-MWjiWC18KQ
+        in_room_participants:
+          description: The number of participants that joined via Zoom Room.
+          type: integer
+          example: 2
+        ip_address:
+          description: The participant's IP address.
+          type: string
+          example: 10.100.111.8
+        join_time:
+          description: The time at which participant joined the meeting.
+          format: date-time
+          type: string
+          example: '2022-03-01T10:15:14Z'
+        leave_reason:
+          description: |-
+            The reason why the participant left the meeting, where `$name` is the participant's username: 
+            * `$name left the meeting.` 
+            * `$name got disconnected from the meeting.` 
+            * `Host ended the meeting.` 
+            * `Host closed the meeting.` 
+            * `Host started a new meeting.` 
+            * `Network connection error.` 
+            * `Host did not join.` 
+            * `Exceeded free meeting minutes limit.` 
+            * `Removed by host.` 
+            * `Unknown reason.` 
+            * `Leave waiting room.` 
+            * `Removed by host from waiting room.`
+          enum:
+            - $name left the meeting.
+            - $name got disconnected from the meeting.
+            - Host ended the meeting.
+            - Host closed the meeting.
+            - Host started a new meeting.
+            - Network connection error.
+            - Host did not join.
+            - Exceeded free meeting minutes limit.
+            - Removed by host.
+            - Unknown reason.
+            - Leave waiting room.
+            - Removed by host from waiting room.
+          type: string
+          example: Host ended the meeting.
+        leave_time:
+          description: The time at which a participant left the meeting. For live meetings, this field will only return if a participant has left the ongoing meeting.
+          format: date-time
+          type: string
+          example: '2022-03-01T10:17:35Z'
+        location:
+          description: The participant's location.
+          type: string
+          example: United States
+        mac_addr:
+          description: |-
+            The participant's MAC address. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: f85e-a012-92d8
+        microphone:
+          description: |-
+            The type of microphone that the participant used during the meeting. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: Microphone (2- High Definition Audio Device)
+        network_type:
+          description: |-
+            The participant's network type: 
+
+            * `Wired` 
+            * `Wifi` 
+            * `PPP` — Point-to-Point. 
+            * `Cellular` — 3G, 4G, and 5G cellular. 
+            * `Others` — An unknown device.
+          enum:
+            - Wired
+            - Wifi
+            - PPP
+            - Cellular
+            - Others
+          type: string
+          example: Wired
+        participant_user_id:
+          description: |-
+            The participant's universally unique ID (UUID): 
+            * If the participant joins the meeting by logging into Zoom, this value is the `id` value in the [**Get a user**](/api-reference/zoom-api/methods#operation/user) API response. 
+            * If the participant joins the meeting **without** logging into Zoom, this returns an empty string value.
+          type: string
+          example: DYHrdpjrS3uaOf7dPkkg8w
+        pc_name:
+          description: The participant's PC name.
+          type: string
+          example: HW0010449
+        recording:
+          description: Whether the recording feature was used during the meeting.
+          type: boolean
+          example: false
+        registrant_id:
+          description: |-
+            The participant's unique registrant ID. This field only returns if you pass the `registrant_id` value for the `include_fields` query parameter. 
+
+            This field does not return if the `type` query parameter is the `live` value.
+          type: string
+          example: fdgsfh2ey82fuh
+        role:
+          description: |-
+            The participant's role: 
+            * `host` — Host. 
+            * `attendee` — Attendee.
+          enum:
+            - host
+            - attendee
+          type: string
+          example: host
+        screen_share_quality:
+          description: |-
+            The participant's [screen share quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+            * `good` — The video is almost flawless and the quality is excellent. 
+            * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+            * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+            * `bad` — The picture is very blurred and often gets stuck.
+          enum:
+            - ''
+            - good
+            - fair
+            - poor
+            - bad
+          type: string
+          example: good
+        share_application:
+          description: Whether the participant chose to share an iPhone/iPad app during the screenshare.
+          type: boolean
+          example: true
+        share_desktop:
+          description: Whether the participant chose to share their desktop during the screenshare.
+          type: boolean
+          example: true
+        share_whiteboard:
+          description: Whether the participant chose to share their whiteboard during the screenshare.
+          type: boolean
+          example: true
+        sip_uri:
+          description: The meeting participant's SIP (Session Initiation Protocol) Contact header URI. The API only returns this response when the participant joins a meeting via SIP.
+          type: string
+          example: example.com
+        speaker:
+          description: |-
+            The type of speaker that the participant used during the meeting. 
+
+            **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+          type: string
+          example: speaker (2- High Definition Audio Device)
+        status:
+          description: |-
+            The participant's status: 
+            * `in_meeting` — In a meeting. 
+            * `in_waiting_room` — In a waiting room.
+          enum:
+            - in_meeting
+            - in_waiting_room
+          type: string
+          example: in_meeting
+        user_id:
+          description: The participant's ID. This value assigned to a participant upon joining a meeting and is only valid for the meeting's duration.
+          type: string
+          example: '20162560'
+        user_name:
+          description: The participant's display name.
+          type: string
+          example: jchill
+        version:
+          description: The participant's Zoom client version.
+          type: string
+          example: 5.9.1.2581
+        video_quality:
+          description: |-
+            The participant's [video quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+            * `good` — The video is almost flawless and the quality is excellent. 
+            * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+            * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+            * `bad` — The picture is very blurred and often gets stuck.
+          enum:
+            - ''
+            - good
+            - fair
+            - poor
+            - bad
+          type: string
+          example: good
+        bo_mtg_id:
+          type: string
+          description: The [breakout room](https://support.zoom.us/hc/en-us/articles/206476313-Managing-breakout-rooms) ID. Each breakout room is assigned a unique ID.
+          example: Dkgwu8nm/ExG1vM+GhLRhA==
       type: object
   securitySchemes:
     bearerAuth:            

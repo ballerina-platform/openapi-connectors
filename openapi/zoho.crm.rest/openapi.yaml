@@ -1,0 +1,392 @@
+openapi: 3.0.0
+servers:
+  - description: API server
+    url: https://www.zohoapis.com/crm/v2
+info:
+  x-ballerina-display:
+    label: Zoho CRM REST
+    iconPath: "icon.png"
+  title: Zoho CRM REST
+  version: v2
+  description: |
+    This is a generated connector for [Zoho CRM](https://www.zoho.com/crm/developer/docs/api/v2/modules-api.html) OpenAPI specification.
+    Zoho CRM REST API provides the capability to unify customer data from across different applications and databases.
+  x-ballerina-init-description: |
+    The connector initialization requires setting the API credentials. 
+    Create a [Zoho account](https://www.zoho.com/crm/signup.html) and obtain tokens.
+security:
+  - OAuth2: []
+  - Bearer: []
+paths:
+  /{module_api_name}:
+    get:
+      summary: Get the list of available records from a module.
+      operationId: listRecords
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref:   "#/components/schemas/RecordsData"
+          description: Records
+    post:
+      summary: Add new records to a module.
+      operationId: addRecord
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+        description: Record
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+          description: Success
+    put:
+      summary: Update existing record in the module.
+      operationId: updateRecord
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+        description: Record
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+          description: Success
+  /{module_api_name}/{record_id}:
+    get:
+      summary: Get a record from a module.
+      operationId: getRecord
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+        - name: record_id
+          in: path
+          required: true
+          description: Record ID
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref:   "#/components/schemas/RecordsData"
+          description: Record
+        204:
+          description: No Content.
+          content: {}
+    delete:
+      summary: Delete existing record in the module.
+      operationId: deleteRecord
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+        - name: record_id
+          in: path
+          required: true
+          description: Record ID
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+          description: Success
+  /{module_api_name}/search:
+    get:
+      summary:  Retrieve the records that match your search criteria.
+      operationId: searchRecords
+      parameters:
+        - name: module_api_name
+          in: path
+          required: true
+          description: Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, 
+            Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules.
+          schema:
+            type: string
+        - name: criteria
+          in: query
+          description: Performs search by following the shown criteria
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Performs module search by email. All the email fields of a particular module will be searched and listed.
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: Performs module search by phone number. All the phone fields of a particular module will be searched and listed.
+          schema:
+            type: string
+        - name: word
+          in: query
+          description: Performs global search by word.
+          schema:
+            type: string
+        - name: converted
+          in: query
+          description: To get the list of converted records. Default value is false.
+          schema:
+            type: string
+        - name: approved
+          in: query
+          description: To get the list of approved records. Default value is true.
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: To get the list of records from the respective pages. Default value for page is 1.
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: To get the list of records available per page. The default and the maximum possible value is 200.
+          schema:
+            type: integer
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref:   "#/components/schemas/RecordsData"
+          description: Records
+        204:
+          description: No Content.
+          content: {}
+  /Leads/{record_id}/actions/convert:
+    post:
+      summary: Convert a lead into a contact or an account.
+      operationId: convertLead
+      parameters:
+      - name: record_id
+        in: path
+        description: Record ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New contact, account and deal properties
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeadData"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConvertLeadResponse"
+          description: Connections 
+components: 
+  schemas:
+    RecordsData:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Record"
+        info:
+          properties:
+            per_page:
+              type: integer
+            count:
+              type: integer
+            page:
+              type: integer
+            more_records:
+              type: boolean
+    Record:
+      properties:
+        Owner:
+          $ref: "#/components/schemas/Owner"
+        $currency_symbol:
+          description: Represents the symbol of the currency of the organization. For instance, '₹'.
+          type: string
+        $process_flow:
+          description: Represents if the record is a part of review process.
+          type: boolean
+        Exchange_Rate:
+          description: Represents the exchange rate set for the organization.
+          type: integer
+        Currency:
+          description: Represents the currency of the organization.
+          type: string
+        $approved:
+          description: Represents if the current record is approved.
+          type: boolean
+        $approval:
+          description: Represents the details of the approval process.
+          type: object
+        Created_Time:
+          description: Represents the date and time at which the record was created.
+          type: string
+        Modified_Time:
+          description: Represents the date and time at which the record was last modified.
+          type: string
+        $editable:
+          description: Represents if the user can edit records in the current module.
+          type: boolean
+        Created_By:
+          description: Represents the name, ID, and email of the user who created the current record.
+          type: object
+        Modified_By:
+          description: Represents the name, ID, and email of the user who last modified the record.
+          type: object
+        $orchestration:
+          description: Represents if the current record is a part of orchestration.
+          type: boolean
+          nullable: true
+    Owner:
+      description: Represents the name, ID, and email ID of the record owner.
+      properties:
+        name:
+          description: Name
+          type: string
+        id:
+          description: Owner ID
+          type: string
+        email:
+          description: Email
+          type: string
+    Response:
+      properties:
+        data:
+          type: array
+          items:
+            properties:
+              code:
+                type: string
+              details:
+                properties:
+                  Modified_Time:
+                    type: string
+                  Modified_By:
+                    $ref: "#/components/schemas/By"
+                  Created_Time:
+                    type: string
+                  id:
+                    type: string
+                  Created_By:
+                    $ref: "#/components/schemas/By"
+              message:
+                type: string
+              status:
+                type: string
+    By:
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+    LeadData:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+    Lead: 
+      type: object
+      properties:
+        overwrite:
+          type: boolean
+          description: Specify if the Lead details must be overwritten in the Contact/Account/Deal based on lead conversion mapping configuration.
+        notify_lead_owner:
+          type: boolean
+          description: Specify whether the lead owner must get notified about the lead conversion via email.
+        notify_new_entity_owner:
+          type: boolean
+          description: Specify whether the user to whom the contact/account is assigned to must get notified about the lead conversion via email.
+        Accounts:
+          type: string
+          description: Use this key to associate an account with the lead being converted. Pass the unique and valid account ID.
+        Contacts:
+          type: string
+          description: Use this key to associate a contact with the lead being converted. Pass the unique and valid contact ID.
+        assign_to:
+          type: string
+          description: Use this key to assign record owner for the new contact and account. Pass the unique and valid user ID.
+        Deals: 
+          type: object
+          properties:
+            Deal_Name:
+              type: string
+            Closing_Date:
+              type: string
+            Stage:
+              type: string
+          required:
+            - "Deal_Name"
+            - "Closing_Date"
+            - "Stage"
+        carry_over_tags:
+          type: object
+    ConvertLeadResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadResponse'
+    LeadResponse:
+      type: object
+      properties:
+        Contacts:
+          type: string
+        Deals:
+          type: string
+          nullable: true
+        Account: 
+          type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2        
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+    Bearer:
+      type: http
+      scheme: bearer

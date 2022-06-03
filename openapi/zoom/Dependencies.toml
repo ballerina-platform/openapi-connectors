@@ -209,7 +209,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "observe"
-version = "1.0.4"
+version = "1.0.5"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -273,7 +273,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "zoom"
-version = "1.4.0"
+version = "1.4.1"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "url"},

@@ -86,6 +86,12 @@ public type BreakoutRoomSettings record {
     BreakoutRoomsDetails[] rooms?;
 };
 
+# Users Details
+public type UsersList record {
+    # Information about the users.
+    UserDetails[] users?;
+};
+
 # Details of the meeting.
 public type GetMeetingDetailsResponse record {
     *MeetingFullMetadata;
@@ -148,12 +154,71 @@ public type GlobalDialInNumbersDetails record {
     string 'type?;
 };
 
+# User Details
+public type UserDetails record {
+    # The time at which the user's account was created.
+    string created_at?;
+    # Information about the user's custom attributes. This field is **only** returned if users are assigned custom attributes and you provided the `custom_attributes` value for the `include_fields` query parameter in the API request.
+    CustomAttributeDetails[] custom_attributes?;
+    # The user's department.
+    string dept?;
+    # The user's email address.
+    string email;
+    # The employee's unique ID. The this field only returns when SAML single sign-on (SSO) is enabled or the `login_type` value is `101` (SSO).
+    string employee_unique_id?;
+    # The user's first name.
+    string first_name?;
+    # The IDs of groups where the user is a member.
+    string[] group_ids?;
+    # The user's [host key](https://support.zoom.us/hc/en-us/articles/205172555-Using-your-host-key). This field is **only** returned if users are assigned a host key and you provided the `host_key` value for the `include_fields` query parameter in the API request.
+    string host_key?;
+    # The user's ID. The API does **not** return this value for users with the `pending` status.
+    string id?;
+    # The IDs of IM directory groups where the user is a member.
+    string[] im_group_ids?;
+    # The last client version that user used to log in.
+    string last_client_version?;
+    # The user's last login time. This field has a three-day buffer period. For example, if user first logged in on `2020-01-01` and then logged out and logged in on `2020-01-02`, this value will still reflect the login time of `2020-01-01`. However, if the user logs in on `2020-01-04`, the value of this field will reflect the corresponding login time since it exceeds the three-day buffer period.
+    string last_login_time?;
+    # The user's last name.
+    string last_name?;
+    # This field is returned if the user is enrolled in the [Zoom United](https://zoom.us/pricing/zoom-bundles) plan.
+    string plan_united_type?;
+    # The user's [Personal Meeting ID (PMI)](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#understanding-personal-meeting-id-pmi).
+    int pmi?;
+    # The unique ID of the user's assigned [role](/api-reference/zoom-api/methods#operation/roles).
+    string role_id?;
+    # The user's status: 
+    # * `active` — An active user. 
+    # * `inactive` — A deactivated user. 
+    # * `pending` — A pending user.
+    string status?;
+    # The user's timezone.
+    string timezone?;
+    # The user's assigned plan type: 
+    # * `1` — Basic. 
+    # * `2` — Licensed. 
+    # * `3` — On-prem. 
+    # * `99` — None (this can only be set with `ssoCreate`).
+    int 'type;
+    # Display whether the user's email address for the Zoom account is verified: 
+    # * `1` — A verified user email. 
+    # * `0` — The user's email **not** verified.
+    int verified?;
+};
+
 # Language interpretation for meetings. 
 public type LanguageInterpretationDetails record {
     # Indicate whether or not you would like to enable language interpretation or this meeting.
     boolean enable?;
     # Information associated with the interpreter.
     InterpreterDetails[] interpreters?;
+};
+
+# List of users
+public type ListUsersResponse record {
+    *PaginationObject;
+    *UsersList;
 };
 
 # Poll
@@ -222,11 +287,11 @@ public type ReccurenceDetails record {
     # Select the final date on which the meeting will recur before it is canceled. Should be in UTC time, such as 2017-11-25T12:00:00Z. (Cannot be used with "end_times".)
     string end_date_time?;
     # Select how many times the meeting should recur before it is canceled. (Cannot be used with "end_date_time".)
-    int end_times?;
+    int end_times = 1;
     # Use this field **only if you're scheduling a recurring meeting of type** `3` to state which day in a month, the meeting should recur. The value range is from 1 to 31.
     # 
     # For instance, if you would like the meeting to recur on 23rd of each month, provide `23` as the value of this field and `1` as the value of the `repeat_interval` field. Instead, if you would like the meeting to recur every three months, on 23rd of the month, change the value of the `repeat_interval` field to `3`.
-    int monthly_day?;
+    int monthly_day = 1;
     # Use this field **only if you're scheduling a recurring meeting of type** `3` to state the week of the month when the meeting should recur. If you use this field, **you must also use the `monthly_week_day` field to state the day of the week when the meeting should recur.** `-1` - Last week of the month.`1` - First week of the month.`2` - Second week of the month.`3` - Third week of the month.`4` - Fourth week of the month.
     int monthly_week?;
     # Use this field **only if you're scheduling a recurring meeting of type** `3` to state a specific day in a week when the monthly meeting should recur. To use this field, you must also use the `monthly_week` field. 
@@ -242,11 +307,21 @@ public type ReccurenceDetails record {
     # This field is required **if you're scheduling a recurring meeting of type** `2` to state which day(s) of the week the meeting should repeat.   The value for this field could be a number between `1` to `7` in string format. For instance, if the meeting should recur on Sunday, provide `"1"` as the value of this field. **Note:** If you would like the meeting to occur on multiple days of a week, you should provide comma separated values for this field. For instance, if the meeting should recur on Sundays and Tuesdays provide `"1,3"` as the value of this field.
     # 
     #  `1`  - Sunday. `2` - Monday.`3` - Tuesday.`4` -  Wednesday.`5` -  Thursday.`6` - Friday.`7` - Saturday.
-    string weekly_days?;
+    string weekly_days = "1";
 };
 
 public type CreateBatchPollsResponse record {
     AddPollQuestionsResponse[] polls?;
+};
+
+# User's Custom Attribute Details
+public type CustomAttributeDetails record {
+    # The custom attribute's unique ID.
+    string 'key?;
+    # The custom attribute's name.
+    string name?;
+    # The custom attribute's value.
+    string value?;
 };
 
 public type CustomKeys record {
@@ -262,6 +337,13 @@ public type CreateMeetingResponse record {
     *RequestedMeetingDetails;
 };
 
+public type MeetingmetricdetailsTrackingFields record {
+    # Label of the tracking field.
+    string 'field?;
+    # Value of the tracking field.
+    string value?;
+};
+
 # List of Meetings
 public type ListPastMeetingsResponse record {
     # List of ended meeting instances.
@@ -274,6 +356,7 @@ public type UserSubmittedAnswers record {
     string email?;
     # Name of the user who submitted answers to the poll. If "anonymous" option is enabled for a poll, the participant's polling information will be kept anonymous and the value of `name` field will be "Anonymous Attendee".
     string name?;
+    # Poll question answers
     PollQuestionAnswer[] question_details?;
 };
 
@@ -380,7 +463,7 @@ public type MeetingSettings record {
     # Contact name for registration
     string contact_name?;
     # Custom keys and values assigned to the meeting.
-    CustomKeys[10] custom_keys?;
+    CustomKeys[] custom_keys?;
     # Choose between enhanced encryption and [end-to-end encryption](https://support.zoom.us/hc/en-us/articles/360048660871) when starting or a meeting. When using end-to-end encryption, several features (e.g. cloud recording, phone/SIP/H.323 dial-in) will be **automatically disabled**. The value of this field can be one of the following:
     # `enhanced_encryption`: Enhanced encryption. Encryption is stored in the cloud if you enable this option. 
     # 
@@ -434,6 +517,15 @@ public type MeetingSettings record {
     # Add watermark when viewing a shared screen.
     boolean watermark?;
 };
+
+public type MeetingmetricdetailsCustomKeys record {
+    # Custom key associated with the meeting.
+    string 'key?;
+    # Value of the custom key associated with the meeting.
+    string value?;
+};
+
+public type MeetingId int|string;
 
 # Meeting settings
 public type MeetingSettingsInRequest record {
@@ -541,6 +633,12 @@ public type InterpreterDetails record {
     string languages?;
 };
 
+# List of dashboard meetings
+public type ListDashboardMeetingParticipantsResponse record {
+    *PaginationObject;
+    *DashboardMeetingParticipantsList;
+};
+
 # Poll
 public type CreateMeetingPollRequest record {
     # Array of Polls
@@ -564,10 +662,221 @@ public type BreakoutRoomsDetails record {
     string[] participants?;
 };
 
+# Information about the meeting participants. If a participant left a meeting and rejoined the same meeting, their information will appear as many times as they joined the meeting.
+public type MeetingParticipantsDetails record {
+    # The participant's [audio quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+    # * `good` — The audio is almost flawless and the quality is excellent. 
+    # * `fair` — The audio occasionally has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+    # * `poor` — The audio often has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+    # * `bad` — The sound quality is extremely poor and the audio content is almost inaudible.
+    string audio_quality?;
+    # The type of camera that the participant used during the meeting. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string camera?;
+    # The participant's connection type.
+    string connection_type?;
+    # The participant's SDK identifier. This value can be alphanumeric, up to a maximum length of 15 characters.
+    string customer_key?;
+    # The data center where participant's meeting data is stored.
+    string data_center?;
+    # The type of device the participant used to join the meeting: 
+    # * `Phone` — The participant joined via PSTN. 
+    # * `H.323/SIP` — The participant joined via an H.323 or SIP device. 
+    # * `Windows` — The participant joined via VoIP using a Windows device. 
+    # * `Mac` — The participant joined via VoIP using a Mac device. 
+    # * `iOS` — The participant joined via VoIP using an iOS device. 
+    # * `Android` — The participant joined via VoIP using an Android device. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string device?;
+    # The participant's PC domain. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string domain?;
+    # The participant's email address. If the participant is **not** part of the host's account, this returns an empty string value, with some exceptions. See [Email address display rules](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#email-address) for details.
+    string email?;
+    # The meeting participant's SIP From header URI. The API only returns this response when the participant joins a meeting via SIP.
+    string from_sip_uri?;
+    # The data center where participant's meeting data is stored. This field includes a semicolon-separated list of HTTP Tunnel (HT), Cloud Room Connector (CRC), and Real-Time Web Gateway (RWG) location information.
+    string full_data_center?;
+    # The participant's hard disk ID. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string harddisk_id?;
+    # The participant's universally unique ID. This value is the same as the participant's user ID if the participant joins the meeting by logging into Zoom. If the participant joins the meeting without logging into Zoom, this returns an empty value.
+    string id?;
+    # The number of participants that joined via Zoom Room.
+    int in_room_participants?;
+    # The participant's IP address.
+    string ip_address?;
+    # The time at which participant joined the meeting.
+    string join_time?;
+    # The reason why the participant left the meeting, where `$name` is the participant's username: 
+    # * `$name left the meeting.` 
+    # * `$name got disconnected from the meeting.` 
+    # * `Host ended the meeting.` 
+    # * `Host closed the meeting.` 
+    # * `Host started a new meeting.` 
+    # * `Network connection error.` 
+    # * `Host did not join.` 
+    # * `Exceeded free meeting minutes limit.` 
+    # * `Removed by host.` 
+    # * `Unknown reason.` 
+    # * `Leave waiting room.` 
+    # * `Removed by host from waiting room.`
+    string leave_reason?;
+    # The time at which a participant left the meeting. For live meetings, this field will only return if a participant has left the ongoing meeting.
+    string leave_time?;
+    # The participant's location.
+    string location?;
+    # The participant's MAC address. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string mac_addr?;
+    # The type of microphone that the participant used during the meeting. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string microphone?;
+    # The participant's network type: 
+    # 
+    # * `Wired` 
+    # * `Wifi` 
+    # * `PPP` — Point-to-Point. 
+    # * `Cellular` — 3G, 4G, and 5G cellular. 
+    # * `Others` — An unknown device.
+    string network_type?;
+    # The participant's universally unique ID (UUID): 
+    # * If the participant joins the meeting by logging into Zoom, this value is the `id` value in the [**Get a user**](/api-reference/zoom-api/methods#operation/user) API response. 
+    # * If the participant joins the meeting **without** logging into Zoom, this returns an empty string value.
+    string participant_user_id?;
+    # The participant's PC name.
+    string pc_name?;
+    # Whether the recording feature was used during the meeting.
+    boolean recording?;
+    # The participant's unique registrant ID. This field only returns if you pass the `registrant_id` value for the `include_fields` query parameter. 
+    # 
+    # This field does not return if the `type` query parameter is the `live` value.
+    string registrant_id?;
+    # The participant's role: 
+    # * `host` — Host. 
+    # * `attendee` — Attendee.
+    string role?;
+    # The participant's [screen share quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+    # * `good` — The video is almost flawless and the quality is excellent. 
+    # * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+    # * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+    # * `bad` — The picture is very blurred and often gets stuck.
+    string screen_share_quality?;
+    # Whether the participant chose to share an iPhone/iPad app during the screenshare.
+    boolean share_application?;
+    # Whether the participant chose to share their desktop during the screenshare.
+    boolean share_desktop?;
+    # Whether the participant chose to share their whiteboard during the screenshare.
+    boolean share_whiteboard?;
+    # The meeting participant's SIP (Session Initiation Protocol) Contact header URI. The API only returns this response when the participant joins a meeting via SIP.
+    string sip_uri?;
+    # The type of speaker that the participant used during the meeting. 
+    # 
+    # **Note:** This response returns an empty string (`““`) value for any users who are **not** a part of the host's account (external users).
+    string speaker?;
+    # The participant's status: 
+    # * `in_meeting` — In a meeting. 
+    # * `in_waiting_room` — In a waiting room.
+    string status?;
+    # The participant's ID. This value assigned to a participant upon joining a meeting and is only valid for the meeting's duration.
+    string user_id?;
+    # The participant's display name.
+    string user_name?;
+    # The participant's Zoom client version.
+    string 'version?;
+    # The participant's [video quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts). The API only returns this value when the **Meeting quality scores and network alerts on Dashboard** setting is enabled in the Zoom Web Portal and the **Show meeting quality score and network alerts on Dashboard** option is selected in [**Account Settings**](https://zoom.us/account/setting): 
+    # * `good` — The video is almost flawless and the quality is excellent. 
+    # * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+    # * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+    # * `bad` — The picture is very blurred and often gets stuck.
+    string video_quality?;
+    # The [breakout room](https://support.zoom.us/hc/en-us/articles/206476313-Managing-breakout-rooms) ID. Each breakout room is assigned a unique ID.
+    string bo_mtg_id?;
+};
+
 # List of meeting participants
 public type MeetingPartcipantsList record {
     # Array of meeting participant objects.
     PartcipantDetails[] participants?;
+};
+
+# Meeting metric details
+public type MeetingMetricDetails record {
+    # Host display name.
+    string host?;
+    # Custom keys and values assigned to the meeting.
+    MeetingmetricdetailsCustomKeys[] custom_keys?;
+    # Department of the host.
+    string dept?;
+    # Meeting duration. Formatted as hh:mm:ss, for example: `16:08` for 16 minutes and 8 seconds.
+    string duration?;
+    # Email address of the host.
+    string email?;
+    # Meeting end time.
+    string end_time?;
+    # Indicates whether or not [third party audio](https://support.zoom.us/hc/en-us/articles/202470795-3rd-Party-Audio-Conference) was used in the meeting.
+    boolean has_3rd_party_audio?;
+    # Whether the archiving feature was used in the meeting.
+    boolean has_archiving?;
+    # Indicates whether or not the PSTN was used in the meeting.
+    boolean has_pstn?;
+    # Indicates whether or not the recording feature was used in the meeting. 
+    boolean has_recording?;
+    # Indicates whether or not screenshare feature was used in the meeting.
+    boolean has_screen_share?;
+    # Indicates whether or not someone joined the meeting using SIP.
+    boolean has_sip?;
+    # Indicates whether or not video was used in the meeting.
+    boolean has_video?;
+    # Indicates whether or not VoIP was used in the meeting.
+    boolean has_voip?;
+    # [Meeting ID](https://support.zoom.us/hc/en-us/articles/201362373-What-is-a-Meeting-ID-): Unique identifier of the meeting in "**long**" format(represented as int64 data type in JSON), also known as the meeting number.
+    int id?;
+    # The number of Zoom Room participants in the meeting.
+    int in_room_participants?;
+    # Meeting participant count.
+    int participants?;
+    # Meeting start time.
+    string start_time?;
+    # Meeting topic.
+    string topic?;
+    # Tracking fields and values assigned to the meeting.
+    MeetingmetricdetailsTrackingFields[] tracking_fields?;
+    # License type of the user.
+    string user_type?;
+    # Meeting UUID. Please double encode your UUID when using it for API calls if the UUID begins with a '/'or contains '//' in it.
+    string uuid?;
+    # The meeting's [audio quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+    # * `good` — The audio is almost flawless and the quality is excellent. 
+    # * `fair` — The audio occasionally has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+    # * `poor` — The audio often has distortion, noise, and other problems, but the content is basically continuous. Participants can communicate normally. 
+    # * `bad` — The sound quality is extremely poor and the audio content is almost inaudible.
+    string audio_quality?;
+    # The meeting's [video quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+    # * `good` — The video is almost flawless and the quality is excellent. 
+    # * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+    # * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+    # * `bad` — The picture is very blurred and often gets stuck.
+    string video_quality?;
+    # The meeting's [screen share quality score](https://support.zoom.us/hc/en-us/articles/360061244651-Using-meeting-quality-scores-and-network-alerts): 
+    # * `good` — The video is almost flawless and the quality is excellent. 
+    # * `fair` — The video definition is high, occasionally gets stuck, fast or slow, or other problems, but the frequency is very low and the video quality is good. 
+    # * `poor` — The video definition is not high, but not many problems exist. The video quality is mediocre. 
+    # * `bad` — The picture is very blurred and often gets stuck.
+    string screen_share_quality?;
+};
+
+# List of dashboard meetings
+public type ListDashboardMeetingsResponse record {
+    *DurationObject;
+    *PaginationObject;
+    *DashboardMeetingList;
 };
 
 # Ended meeting details
@@ -643,7 +952,16 @@ public type UpdateMeetingstatusRequest record {
     string action?;
 };
 
+# Duration Details
+public type DurationObject record {
+    # Start date for this report in 'yyyy-mm-dd' format.
+    string 'from?;
+    # End date for this report in 'yyyy-mm-dd' format.
+    string to?;
+};
+
 public type CreateBatchPollsRequest record {
+    # Poll questions
     PollQuestions[] questions?;
     # Meeting Poll Title.
     string title?;
@@ -737,6 +1055,7 @@ public type PaginationObject record {
 public type AddMeetingRegistrantRequest record {
     # Registrant's language preference for confirmation  emails. The value can be one of the following: `en-US`,`de-DE`,`es-ES`,`fr-FR`,`jp-JP`,`pt-PT`,`ru-RU`,`zh-CN`, `zh-TW`, `ko-KO`, `it-IT`, `vi-VN`.
     string language?;
+    # Enable auto approve
     boolean auto_approve?;
     # Registrant's address.
     string address?;
@@ -786,6 +1105,7 @@ public type MeetingList record {
 public type AddPollQuestionsResponse record {
     # Meeting Poll ID
     string id?;
+    # Poll questions
     PollQuestions[] questions?;
     # Status of the Meeting Poll:<br>`notstart` - Poll not started<br>`started` - Poll started<br>`ended` - Poll ended<br>`sharing` - Sharing poll results
     string status?;
@@ -809,6 +1129,12 @@ public type ApprovalAndDenialInfo record {
     boolean enable?;
     # Specify whether to allow users from specific regions to join thismeeting; or block users from specific regions from oining this meeting. Values: approve or deny
     string method?;
+};
+
+# List of dashboard meeting participants
+public type DashboardMeetingParticipantsList record {
+    # List of Meeting participants details.
+    MeetingParticipantsDetails[] participants?;
 };
 
 # Detailed Meeting Metadata
@@ -835,6 +1161,12 @@ public type TemplateDetails record {
     # `1`: meeting template <br>
     # `2`: admin meeting template
     int 'type?;
+};
+
+# List of dashboard meetings
+public type DashboardMeetingList record {
+    # List of Meeting metric details.
+    MeetingMetricDetails[] meetings?;
 };
 
 public type ListPastMeetingPollsResponse record {

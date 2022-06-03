@@ -68,6 +68,57 @@ public isolated client class Client {
         self.clientEp = httpEp;
         return;
     }
+    # List users
+    #
+    # + status - The user's status. active, live or upcoming. Default is active. 
+    # + pageSize - The number of records returned within a single API call. 
+    # + roleId - The role's unique ID. Use this parameter to filter the response by a specific role. 
+    # + pageNumber - The page number of the current page in the returned records. 
+    # + includeFields - Use this parameter to display one of the following attributes in the API call's response. custom_attributes or host_key. 
+    # + nextPageToken - The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. 
+    # + return - HTTP Status Code:200. User list returned. 
+    @display {label: "List Users"}
+    remote isolated function listUsers(@display {label: "User's Status"} string status = "active", @display {label: "Page Size"} int pageSize = 30, @display {label: "Role's Unique ID"} string? roleId = (), @display {label: "Page Number"} string? pageNumber = (), @display {label: "Include Fields"} string? includeFields = (), @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListUsersResponse|error {
+        string resourcePath = string `/users`;
+        map<anydata> queryParam = {"status": status, "page_size": pageSize, "role_id": roleId, "page_number": pageNumber, "include_fields": includeFields, "next_page_token": nextPageToken};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListUsersResponse response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # List dashboard meetings
+    #
+    # + 'type - Specify a value to get the response for the corresponding meeting type. The value of this field can be one of the following: `past` - Meeting that already occurred in the specified date range. `pastOne` - Past meetings that were attended by only one user. `live` - Live meetings. If you do not provide this field, the default value will be `live` and thus, the API will only query responses for live meetings. 
+    # + 'from - Start date in 'yyyy-mm-dd' format. The date range defined by the 'from' and 'to' parameters should only be one month as the report includes only one month worth of data at once. 
+    # + to - End date in 'yyyy-mm-dd' format. 
+    # + pageSize - The number of records returned within a single API call. 
+    # + nextPageToken - The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. 
+    # + groupId - The group ID. The API response will only contain meetings where the host is a member of the queried group ID. 
+    # + includeFields - Set the value of this field to 'tracking_fields' if you would like to include tracking fields of each meeting in the response. 
+    # + return - HTTP Status Code:200. Dashboard meetings returned. Only available for paid accounts that have dashboard feature enabled. 
+    @display {label: "List Dashboard Meetings"}
+    remote isolated function listDashboardMeetings(@display {label: "Start Date"} string 'from, @display {label: "End date"} string to, @display {label: "Meeting Type"} string 'type = "live", @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Group ID"} string? groupId = (), @display {label: "Include Fields"} string? includeFields = ()) returns ListDashboardMeetingsResponse|error {
+        string resourcePath = string `/metrics/meetings`;
+        map<anydata> queryParam = {"type": 'type, "from": 'from, "to": to, "page_size": pageSize, "next_page_token": nextPageToken, "group_id": groupId, "include_fields": includeFields};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListDashboardMeetingsResponse response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # List dashboard meeting participants
+    #
+    # + meetingId - The meeting's ID or universally unique ID (UUID).  If you provide a meeting ID, the API will return a response for the latest meeting instance.  If you provide a meeting UUID that begins with a `/` character or contains the `//` characters, you **must** double-encode the meeting UUID before making an API request. 
+    # + 'type - The type of meeting to query:  * `past` — All past meetings.  * `pastOne` — All past one-user meetings.  * `live` - All live meetings.  This value defaults to `live`. 
+    # + pageSize - The number of records returned within a single API call. 
+    # + nextPageToken - The next page token is used to paginate through large result sets.  A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. 
+    # + includeFields - Provide `registrant_id` as the value for this field if you would like to see the registrant ID attribute in the response of this API call. A registrant ID is a unique identifier of a [meeting registrant](/api-reference/zoom-api/methods#operation/meetingRegistrants). This is not supported for `live` meeting types. 
+    # + return - HTTP Status Code:200. Meeting participants returned. Only available for paid accounts that have enabled the dashboard feature. 
+    @display {label: "List Dashboard Meeting Participants"}
+    remote isolated function listDashboardMeetingParticipants(MeetingId meetingId, @display {label: "Meeting Type"} string 'type = "live", @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Include Fields"} string? includeFields = ()) returns ListDashboardMeetingParticipantsResponse|error {
+        string resourcePath = string `/metrics/meetings/${meetingId}/participants`;
+        map<anydata> queryParam = {"type": 'type, "page_size": pageSize, "next_page_token": nextPageToken, "include_fields": includeFields};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListDashboardMeetingParticipantsResponse response = check self.clientEp->get(resourcePath);
+        return response;
+    }
     # List meetings
     #
     # + userId - The user ID or email address of the user. For user-level apps, pass `me` as the value for userId. 

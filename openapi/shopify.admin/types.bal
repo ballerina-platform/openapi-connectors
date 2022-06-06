@@ -370,7 +370,7 @@ public type Order record {
     # The two or three-letter language code, optionally followed by a region modifier.
     string? customer_locale?;
     # An ordered list of stacked discount applications.
-    DiscountApplications? discount_applications?;
+    DiscountApplication[]? discount_applications?;
     # A list of discounts applied to the order.
     DiscountCode[]? discount_codes?;
     # The customer's email address.
@@ -954,9 +954,6 @@ public type ClientDetails record {
     # Details of the browsing client, including software and operating versions.
     string? user_agent?;
 };
-
-# An ordered list of stacked discount applications.
-public type DiscountApplications DiscountApplication[]?;
 
 # A list of products
 public type ProductVariantList record {

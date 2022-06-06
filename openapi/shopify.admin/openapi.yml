@@ -2211,7 +2211,10 @@ components:
           type: string
           description: The two or three-letter language code, optionally followed by a region modifier.
         discount_applications:
-          $ref: '#/components/schemas/DiscountApplications'  
+          type: array
+          description: "An ordered list of stacked discount applications."
+          items:
+            $ref: '#/components/schemas/DiscountApplication'  
         discount_codes:
           type: array
           items:
@@ -2514,17 +2517,6 @@ components:
         presentment_money:
           $ref: '#/components/schemas/Price'
       description: "The current total taxes charged on the order in shop and presentment currencies. The amount values associated with this field reflect order edits, returns, and refunds."
-    DiscountApplications:
-      type: object
-      properties:
-        discount_applications:
-          $ref: '#/components/schemas/Discount_applications'
-      description: "Stacked discount applications object"
-    Discount_applications:
-      type: array
-      items:
-        $ref: '#/components/schemas/DiscountApplication'
-      description: "An ordered list of stacked discount applications."
     DiscountApplication:
       type: object
       properties:

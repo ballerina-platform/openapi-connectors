@@ -164,6 +164,30 @@ public type DiscountApplication record {
     string? value_type?;
 };
 
+# The order risk for an order.
+public type OrderRisk record {
+    # Whether this order risk is severe enough to force the cancellation of the order. If true, then this order risk is included in the Order canceled message that's shown on the details page of the canceled order.
+    boolean? cause_cancel?;
+    # The ID of the checkout that the order risk belongs to.
+    int? checkout_id?;
+    # Whether the order risk is displayed on the order details page in the Shopify admin. If false, then this order risk is ignored when Shopify determines your app's overall risk level for the order.
+    boolean? display?;
+    # A unique numeric identifier for the order risk.
+    int? id?;
+    # The message that's displayed to the merchant to indicate the results of the fraud check. The message is displayed only if display is set to true.
+    string? merchant_message?;
+    # The message that's displayed to the merchant to indicate the results of the fraud check. The message is displayed only if display is set to true.
+    string? message?;
+    # The ID of the order that the order risk belongs to.
+    int? order_id?;
+    # The recommended action given to the merchant. Valid values are, `cancel` - There is a high level of risk that this order is fraudulent. The merchant should cancel the order. `investigate` - There is a medium level of risk that this order is fraudulent. The merchant should investigate the order. `accept` - There is a low level of risk that this order is fraudulent. The order risk found no indication of fraud.
+    string? recommendation?;
+    # A number between 0 and 1 that's assigned to the order. The closer the score is to 1, the more likely it is that the order is fraudulent.
+    string? score?;
+    # The source of the order risk.
+    string? 'source?;
+};
+
 # The ID of the physical location where the transaction was processed.
 public type LocationID record {
     # The ID of the physical location where the transaction was processed.
@@ -277,6 +301,18 @@ public type SmsMarketingConsent record {
     string? consent_updated_at?;
     # The source for whether the customer has consented to receive marketing material by SMS.
     string? consent_collected_from?;
+};
+
+# The webhook subscription count object.
+public type WebhookCountObject record {
+    # Webhook subscription count.
+    int? count?;
+};
+
+# The webhook object.
+public type WebhookObject record {
+    # The webhook resource.
+    Webhook? webhook?;
 };
 
 # The discount applied to the line item or the draft order object. Each draft order object can have one applied_discount object and each draft order line item can have its own applied_discount.
@@ -546,6 +582,12 @@ public type TotalDiscountsSet record {
     Price? presentment_money?;
 };
 
+# The webhook object to be updated.
+public type UpdateWebhook record {
+    # The webhook resource.
+    Webhook? webhook?;
+};
+
 # The Order fulfillment object to be created.
 public type CreateOrderFulfillment record {
     # You can use the Fulfillment resource to view, create, modify, or delete an order's or fulfillment order's fulfillments. A fulfillment order represents a group of one or more items in an order that are to be fulfilled from the same location. A fulfillment represents work that is completed as part of a fulfillment order and can include one or more items. You can use the Fulfillment resource to manage fulfillments for both orders and fulfillment orders.
@@ -588,6 +630,12 @@ public type Fulfillment record {
     string? updated_at?;
     # The name of the inventory management service.
     string? variant_inventory_management?;
+};
+
+# The object representation of a list of webhook subscriptions.
+public type WebhookList record {
+    # A list of webhook subscriptions
+    Webhook[]? webhooks?;
 };
 
 # Schedule associated to the payment terms
@@ -762,6 +810,18 @@ public type CustomerAddress record {
     string? zip?;
 };
 
+# The webhook object to be created.
+public type CreateWebhook record {
+    # The webhook resource.
+    Webhook? webhook?;
+};
+
+# The order risk object to be updated.
+public type UpdateOrderRisk record {
+    # The order risk for an order.
+    OrderRisk? risk?;
+};
+
 # The Customer object.
 public type CustomerObject record {
     # The Customer resource stores information about a shop's customers, such as their contact details, their order history, and whether they've agreed to receive email marketing.
@@ -882,6 +942,12 @@ public type DraftOrderShippingLine record {
 public type OrderObject record {
     # An order is a customer's request to purchase one or more products from a shop. You can create, retrieve, update, and delete orders using the Order resource.
     Order? 'order?;
+};
+
+# The order risk object for an order.
+public type OrderRiskObject record {
+    # The order risk for an order.
+    OrderRisk? risk?;
 };
 
 # The price of the line item in shop and presentment currencies.
@@ -1109,6 +1175,12 @@ public type Metafield record {
     string? description?;
 };
 
+# The order risk object to be created.
+public type CreateOrderRisk record {
+    # The order risk for an order.
+    OrderRisk? risk?;
+};
+
 # A historical record of each item in the fulfillment.
 public type LineItem record {
     # The ID of the line item within the fulfillment.
@@ -1251,6 +1323,30 @@ public type CurrentSubtotalPriceSet record {
     Price? presentment_money?;
 };
 
+# The webhook resource.
+public type Webhook record {
+    # Destination URI to which the webhook subscription should send the POST request when an event occurs.
+    string? address?;
+    # The Admin API version that Shopify uses to serialize webhook events. This value is inherited from the app that created the webhook subscription.
+    string? api_version?;
+    # Date and time when the webhook subscription was created. The API returns this value in ISO 8601 format.
+    string? created_at?;
+    # An optional array of top-level resource fields that should be serialized and sent in the POST request. If absent, all fields will be sent.
+    string[]? fields?;
+    # Format in which the webhook subscription should send the data. Valid values are JSON and XML. Defaults to JSON.
+    string? format?;
+    # Unique numeric identifier for the webhook subscription.
+    int? id?;
+    # Optional array of namespaces for any metafields that should be included with each webhook.
+    string[]? metafield_namespaces?;
+    # Optional array of namespaces for any private metafields that should be included with each webhook.
+    string[]? private_metafield_namespaces?;
+    # Event that triggers the webhook. Valid values are app/uninstalled, bulk_operations/finish, carts/create, carts/update, checkouts/create, checkouts/delete, checkouts/update, collection_listings/add, collection_listings/remove, collection_listings/update, collections/create, collections/delete, collections/update, customer_groups/create, customer_groups/delete, customer_groups/update, customer_payment_methods/create, customer_payment_methods/revoke, customer_payment_methods/update, customers/create, customers/delete, customers/disable, customers/enable, customers/update, customers_marketing_consent/update, disputes/create, disputes/update, domains/create, domains/destroy, domains/update, draft_orders/create, draft_orders/delete, draft_orders/update, fulfillment_events/create, fulfillment_events/delete, fulfillments/create, fulfillments/update, inventory_items/create, inventory_items/delete, inventory_items/update, inventory_levels/connect, inventory_levels/disconnect, inventory_levels/update, locales/create, locales/update, locations/create, locations/delete, locations/update, order_transactions/create, orders/cancelled, orders/create, orders/delete, orders/edited, orders/fulfilled, orders/paid, orders/partially_fulfilled, orders/updated, product_listings/add, product_listings/remove, product_listings/update, products/create, products/delete, products/update, profiles/create, profiles/delete, profiles/update, refunds/create, selling_plan_groups/create, selling_plan_groups/delete, selling_plan_groups/update, shop/update, subscription_billing_attempts/challenged, subscription_billing_attempts/failure, subscription_billing_attempts/success, subscription_contracts/create, subscription_contracts/update, tender_transactions/create, themes/create, themes/delete, themes/publish, themes/update
+    string? topic?;
+    # Date and time when the webhook subscription was updated. The API returns this value in ISO 8601 format.
+    string? updated_at?;
+};
+
 # A list of orders
 public type OrderList record {
     # A list of orders
@@ -1269,6 +1365,12 @@ public type SubtotalPriceSet record {
 public type CreateRefund record {
     # Schedule associated to the payment terms
     RefundRequest? refund?;
+};
+
+# The object representation of a list of order risks
+public type OrderRiskList record {
+    # A list of order risks
+    OrderRisk[]? risks?;
 };
 
 # A list of order fulfillments

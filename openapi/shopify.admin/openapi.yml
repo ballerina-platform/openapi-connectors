@@ -21,6 +21,8 @@ tags:
   - name: products
   - name: orders
   - name: fulfillments
+  - name: order_risks
+  - name: webhooks
 paths:
   /admin/api/2021-10/customers.json:
     get:
@@ -1649,6 +1651,319 @@ paths:
               schema: 
                 $ref: '#/components/schemas/RefundObject'
       operationId: "create_refund_for_order"
+  /admin/api/2021-10/orders/{order_id}/risks.json:
+    get:
+      summary: "Retrieves a list of all order risks for an order."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/order-risk#get-orders-order-id-risks"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "order_risks"
+      responses:
+        200:
+          description: "List of all order risks for an order"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderRiskList'
+      operationId: "get_order_risks"
+    post:
+      summary: "Creates an order risk for an order."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/order-risk#post-orders-order-id-risks"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The order risk object to be created. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateOrderRisk'
+      tags:
+        - "order_risks"
+      responses:
+        200:
+          description: "Created order risk"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderRiskObject'
+      operationId: "create_order_risk"
+  /admin/api/2021-10/orders/{order_id}/risks/{risk_id}.json:
+    get:
+      summary: "Retrieves a single order risk by its ID."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/order-risk#get-orders-order-id-risks-risk-id"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+        - in: "path"
+          name: "risk_id"
+          description: "Order Risk ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "order_risks"
+      responses:
+        200:
+          description: "Requested order risk"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderRiskObject'
+      operationId: "get_order_risk"
+    put:
+      summary: "Updates an order risk."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/order-risk#put-orders-order-id-risks-risk-id"
+      parameters:
+        - in: "path"
+          name: "order_id"
+          description: "Order ID"
+          schema:
+            type: string
+          required: true
+        - in: "path"
+          name: "risk_id"
+          description: "Order Risk ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The order risk object to be updated.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateOrderRisk'
+      tags:
+        - "order_risks"
+      responses:
+        200:
+          description: "Updated order risk"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrderRiskObject'
+      operationId: "update_order_risk"
+    # delete:
+    #   summary: "Deletes an order risk for an order."
+    #   description: "https://shopify.dev/api/admin-rest/2021-10/resources/order-risk#delete-orders-order-id-risks-risk-id"
+    #   parameters:
+    #     - in: "path"
+    #       name: "order_id"
+    #       description: "Order ID"
+    #       schema:
+    #         type: string
+    #       required: true
+    #     - in: "path"
+    #       name: "risk_id"
+    #       description: "Order Risk ID"
+    #       schema:
+    #         type: string
+    #       required: true
+    #   tags:
+    #     - "order_risks"
+    #   responses:
+    #     200:
+    #       description: Status OK
+    #   operationId: "delete_order_risk"
+  /admin/api/2021-10/webhooks.json:
+    get:
+      summary: "Retrieves a list of webhooks."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#get-webhooks"
+      parameters:
+        - in: "query"
+          name: "address"
+          description: "Retrieve webhook subscriptions that send the POST request to this URI."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "created_at_max"
+          description: "Retrieve webhook subscriptions that were created before a given date and time (format: 2014-04-25T16:15:47-04:00)."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "created_at_min"
+          description: "Retrieve webhook subscriptions that were created after a given date and time (format: 2014-04-25T16:15:47-04:00)."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "fields"
+          description: "Comma-separated list of the properties you want returned for each item in the result list. Use this parameter to restrict the returned list of items to only those properties you specify."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "limit"
+          description: "Maximum number of webhook subscriptions that should be returned. Setting this parameter outside the maximum range will return an error. (default: 50, maximum: 250)"
+          schema: 
+            type: integer
+          required: false
+        - in: "query"
+          name: "since_id"
+          description: "Restrict the returned list to webhook subscriptions whose id is greater than the specified since_id."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "topic"
+          description: "Show webhook subscriptions with a given topic. For a list of valid values, refer to the topic property (https://shopify.dev/api/admin-rest/2021-10/resources/webhook)."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "updated_at_max"
+          description: "Retrieve webhooks that were updated after a given date and time (format: 2014-04-25T16:15:47-04:00)."
+          schema: 
+            type: string
+          required: false
+        - in: "query"
+          name: "updated_at_min"
+          description: "Retrieve webhooks that were updated before a given date and time (format: 2014-04-25T16:15:47-04:00)."
+          schema: 
+            type: string
+          required: false
+      tags:
+        - "webhooks"
+      responses:
+        200:
+          description: "List of all webhook subscriptions for your shop"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/WebhookList'
+      operationId: "get_webhooks"
+    post:
+      summary: "Create a new webhook subscription by specifying both an address and a topic."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#post-webhooks"
+      parameters: []
+      requestBody:
+        description: The webhook subscription object to be created. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateWebhook'
+      tags:
+        - "webhooks"
+      responses:
+        200:
+          description: "Created webhook subscription"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/WebhookObject'
+      operationId: "create_webhook"
+  /admin/api/2021-10/webhooks/{webhook_id}.json:
+    get:
+      summary: "Retrieves a single order risk by its ID."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#get-webhooks-webhook-id"
+      parameters:
+        - in: "path"
+          name: "webhook_id"
+          description: "Webhook ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "fields"
+          description: "Comma-separated list of the properties you want returned for each item in the result list. Use this parameter to restrict the returned list of items to only those properties you specify."
+          schema: 
+            type: string
+          required: false
+      tags:
+        - "webhooks"
+      responses:
+        200:
+          description: "Requested webhook subscription"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/WebhookObject'
+      operationId: "get_webhook"
+    put:
+      summary: "Update a webhook subscription's topic or address URIs."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#put-webhooks-webhook-id"
+      parameters:
+        - in: "path"
+          name: "webhook_id"
+          description: "Webhook ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The webhook object to be updated.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateWebhook'
+      tags:
+        - "webhooks"
+      responses:
+        200:
+          description: "Updated webhook"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/WebhookObject'
+      operationId: "update_webhook"
+    # delete:
+    #   summary: "Delete a webhook subscription."
+    #   description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#delete-webhooks-webhook-id"
+    #   parameters:
+    #     - in: "path"
+    #       name: "webhook_id"
+    #       description: "Webhook ID"
+    #       schema:
+    #         type: string
+    #       required: true
+    #   tags:
+    #     - "webhooks"
+    #   responses:
+    #     200:
+    #       description: Status OK
+    #   operationId: "delete_webhook"
+  /admin/api/2021-10/webhooks/count.json:
+    get:
+      summary: "Retrieves a count of existing webhook subscriptions. The results can be filtered by address or by topic."
+      description: "https://shopify.dev/api/admin-rest/2021-10/resources/webhook#get-webhooks-count"
+      parameters:
+        - in: "query"
+          name: "address"
+          description: "Retrieve webhook subscriptions that send the POST request to this URI."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "topic"
+          description: "The topic of the webhook subscriptions. For a list of valid values, refer to the topic property (https://shopify.dev/api/admin-rest/2021-10/resources/webhook)."
+          schema: 
+            type: string
+          required: false
+      tags:
+        - "webhooks"
+      responses:
+        200:
+          description: "Requested webhook subscription"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/WebhookCountObject'
+      operationId: "get_webhook_count"
 
 components:
   schemas:
@@ -3501,6 +3816,148 @@ components:
           type: boolean
           description: Whether to refund all remaining shipping.
       description: Specify how much shipping to refund.
+    OrderRiskList:
+      type: object
+      properties:
+        risks:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderRisk'
+          description: A list of order risks
+      description: The object representation of a list of order risks
+    OrderRisk:
+      type: object 
+      properties:
+        cause_cancel:
+          type: boolean
+          description: Whether this order risk is severe enough to force the cancellation of the order. If true, then this order risk is included in the Order canceled message that's shown on the details page of the canceled order.
+        checkout_id:
+          type: integer
+          description: The ID of the checkout that the order risk belongs to.
+        display:
+          type: boolean
+          description: Whether the order risk is displayed on the order details page in the Shopify admin. If false, then this order risk is ignored when Shopify determines your app's overall risk level for the order.
+        id:
+          type: integer
+          description: A unique numeric identifier for the order risk.
+        merchant_message:
+          type: string
+          description: The message that's displayed to the merchant to indicate the results of the fraud check. The message is displayed only if display is set to true.
+        message:
+          type: string
+          description: The message that's displayed to the merchant to indicate the results of the fraud check. The message is displayed only if display is set to true.
+        order_id:
+          type: integer
+          description: The ID of the order that the order risk belongs to.
+        recommendation:
+          type: string
+          enum:
+            - cancel
+            - investigate
+            - accept
+          description: The recommended action given to the merchant. Valid values are, 
+            `cancel` - There is a high level of risk that this order is fraudulent. The merchant should cancel the order. 
+            `investigate` - There is a medium level of risk that this order is fraudulent. The merchant should investigate the order.
+            `accept` - There is a low level of risk that this order is fraudulent. The order risk found no indication of fraud.
+        score:
+          type: string
+          description: A number between 0 and 1 that's assigned to the order. The closer the score is to 1, the more likely it is that the order is fraudulent. 
+        source:
+          type: string
+          description: The source of the order risk.
+      description: The order risk for an order.
+    OrderRiskObject:
+      type: object
+      properties: 
+        risk:
+          $ref: '#/components/schemas/OrderRisk'
+      description: The order risk object for an order.
+    CreateOrderRisk:
+      type: object
+      properties: 
+        risk:
+          $ref: '#/components/schemas/OrderRisk'
+      description: The order risk object to be created.
+    UpdateOrderRisk:
+      type: object
+      properties: 
+        risk:
+          $ref: '#/components/schemas/OrderRisk'
+      description: The order risk object to be updated.
+    WebhookList:
+      type: object
+      properties:
+        webhooks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Webhook'
+          description: A list of webhook subscriptions
+      description: The object representation of a list of webhook subscriptions.
+    Webhook:
+      type: object 
+      properties:
+        address:
+          type: string
+          description: Destination URI to which the webhook subscription should send the POST request when an event occurs.
+        api_version:
+          type: string
+          description: The Admin API version that Shopify uses to serialize webhook events. This value is inherited from the app that created the webhook subscription.
+        created_at:
+          type: string
+          description: Date and time when the webhook subscription was created. The API returns this value in ISO 8601 format.
+        fields:
+          type: array
+          items:
+            type: string
+          description: An optional array of top-level resource fields that should be serialized and sent in the POST request. If absent, all fields will be sent.
+        format:
+          type: string
+          description: Format in which the webhook subscription should send the data. Valid values are JSON and XML. Defaults to JSON.
+        id:
+          type: integer
+          description: Unique numeric identifier for the webhook subscription.
+        metafield_namespaces:
+          type: array
+          items:
+            type: string
+          description: Optional array of namespaces for any metafields that should be included with each webhook.
+        private_metafield_namespaces:
+          type: array
+          items:
+            type: string
+          description: Optional array of namespaces for any private metafields that should be included with each webhook.
+        topic:
+          type: string
+          description: Event that triggers the webhook. Valid values are app/uninstalled, bulk_operations/finish, carts/create, carts/update, checkouts/create, checkouts/delete, checkouts/update, collection_listings/add, collection_listings/remove, collection_listings/update, collections/create, collections/delete, collections/update, customer_groups/create, customer_groups/delete, customer_groups/update, customer_payment_methods/create, customer_payment_methods/revoke, customer_payment_methods/update, customers/create, customers/delete, customers/disable, customers/enable, customers/update, customers_marketing_consent/update, disputes/create, disputes/update, domains/create, domains/destroy, domains/update, draft_orders/create, draft_orders/delete, draft_orders/update, fulfillment_events/create, fulfillment_events/delete, fulfillments/create, fulfillments/update, inventory_items/create, inventory_items/delete, inventory_items/update, inventory_levels/connect, inventory_levels/disconnect, inventory_levels/update, locales/create, locales/update, locations/create, locations/delete, locations/update, order_transactions/create, orders/cancelled, orders/create, orders/delete, orders/edited, orders/fulfilled, orders/paid, orders/partially_fulfilled, orders/updated, product_listings/add, product_listings/remove, product_listings/update, products/create, products/delete, products/update, profiles/create, profiles/delete, profiles/update, refunds/create, selling_plan_groups/create, selling_plan_groups/delete, selling_plan_groups/update, shop/update, subscription_billing_attempts/challenged, subscription_billing_attempts/failure, subscription_billing_attempts/success, subscription_contracts/create, subscription_contracts/update, tender_transactions/create, themes/create, themes/delete, themes/publish, themes/update 
+        updated_at:
+          type: string
+          description: Date and time when the webhook subscription was updated. The API returns this value in ISO 8601 format.
+      description: The webhook resource.
+    WebhookObject:
+      type: object
+      properties: 
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+      description: The webhook object.
+    CreateWebhook:
+      type: object
+      properties: 
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+      description: The webhook object to be created.
+    UpdateWebhook:
+      type: object
+      properties: 
+        webhook:
+          $ref: '#/components/schemas/Webhook'
+      description: The webhook object to be updated.
+    WebhookCountObject:
+      type: object
+      properties: 
+        count:
+          type: integer
+          description: Webhook subscription count. 
+      description: The webhook subscription count object.
 
   securitySchemes:
     api_token:
@@ -3508,4 +3965,3 @@ components:
       name: X-Shopify-Access-Token
       in: header
       description: Represents API Key `X-Shopify-Access-Token`
-

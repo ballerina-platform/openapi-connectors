@@ -22,12 +22,12 @@ import ballerinax/shopify.admin;
 ```
 
 ### Step 2: Create a new connector instance
-Create a `admin:ApiKeysConfig` with the API key obtained, and initialize the connector with it.
+Create a `admin:ApiKeysConfig` with the Shopify access token obtained, and initialize the connector with it.
 ```ballerina
 admin:ApiKeysConfig config = {
-    xShopifyAccessToken: "<API_KEY>"
+    xShopifyAccessToken: "<ACCESS_TOKEN>"
 }
-admin:Client baseClient = check new Client(config);
+admin:Client baseClient = check new (config, "https://<shopify_store_name>.myshopify.com");
 ```
 
 ### Step 3: Invoke connector operation
@@ -40,7 +40,7 @@ admin:Client baseClient = check new Client(config);
     ```ballerina
     public function main() returns error? {
         admin:CustomerList response = check baseClient->getCustomers();
-        log:printInfo(response.toString());
+        log:printInfo(response.toJsonString());
     }
     ``` 
 

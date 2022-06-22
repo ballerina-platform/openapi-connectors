@@ -412,4 +412,136 @@ public isolated client class Client {
         RefundObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
         return response;
     }
+    # Retrieves a list of all order risks for an order.
+    #
+    # + orderId - Order ID 
+    # + return - List of all order risks for an order 
+    remote isolated function getOrderRisks(string orderId) returns OrderRiskList|error {
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/risks.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderRiskList response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response;
+    }
+    # Creates an order risk for an order.
+    #
+    # + orderId - Order ID 
+    # + payload - The order risk object to be created. 
+    # + return - Created order risk 
+    remote isolated function createOrderRisk(string orderId, CreateOrderRisk payload) returns OrderRiskObject|error {
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/risks.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        OrderRiskObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        return response;
+    }
+    # Retrieves a single order risk by its ID.
+    #
+    # + orderId - Order ID 
+    # + riskId - Order Risk ID 
+    # + return - Requested order risk 
+    remote isolated function getOrderRisk(string orderId, string riskId) returns OrderRiskObject|error {
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/risks/${riskId}.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        OrderRiskObject response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response;
+    }
+    # Updates an order risk.
+    #
+    # + orderId - Order ID 
+    # + riskId - Order Risk ID 
+    # + payload - The order risk object to be updated. 
+    # + return - Updated order risk 
+    remote isolated function updateOrderRisk(string orderId, string riskId, UpdateOrderRisk payload) returns OrderRiskObject|error {
+        string resourcePath = string `/admin/api/2021-10/orders/${orderId}/risks/${riskId}.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        OrderRiskObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        return response;
+    }
+    # Retrieves a list of webhooks.
+    #
+    # + address - Retrieve webhook subscriptions that send the POST request to this URI. 
+    # + createdAtMax - Retrieve webhook subscriptions that were created before a given date and time (format: 2014-04-25T16:15:47-04:00). 
+    # + createdAtMin - Retrieve webhook subscriptions that were created after a given date and time (format: 2014-04-25T16:15:47-04:00). 
+    # + fields - Comma-separated list of the properties you want returned for each item in the result list. Use this parameter to restrict the returned list of items to only those properties you specify. 
+    # + 'limit - Maximum number of webhook subscriptions that should be returned. Setting this parameter outside the maximum range will return an error. (default: 50, maximum: 250) 
+    # + sinceId - Restrict the returned list to webhook subscriptions whose id is greater than the specified since_id. 
+    # + topic - Show webhook subscriptions with a given topic. For a list of valid values, refer to the topic property (https://shopify.dev/api/admin-rest/2021-10/resources/webhook). 
+    # + updatedAtMax - Retrieve webhooks that were updated after a given date and time (format: 2014-04-25T16:15:47-04:00). 
+    # + updatedAtMin - Retrieve webhooks that were updated before a given date and time (format: 2014-04-25T16:15:47-04:00). 
+    # + return - List of all webhook subscriptions for your shop 
+    remote isolated function getWebhooks(string? address = (), string? createdAtMax = (), string? createdAtMin = (), string? fields = (), int? 'limit = (), string? sinceId = (), string? topic = (), string? updatedAtMax = (), string? updatedAtMin = ()) returns WebhookList|error {
+        string resourcePath = string `/admin/api/2021-10/webhooks.json`;
+        map<anydata> queryParam = {"address": address, "created_at_max": createdAtMax, "created_at_min": createdAtMin, "fields": fields, "limit": 'limit, "since_id": sinceId, "topic": topic, "updated_at_max": updatedAtMax, "updated_at_min": updatedAtMin};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebhookList response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response;
+    }
+    # Create a new webhook subscription by specifying both an address and a topic.
+    #
+    # + payload - The webhook subscription object to be created. 
+    # + return - Created webhook subscription 
+    remote isolated function createWebhook(CreateWebhook payload) returns WebhookObject|error {
+        string resourcePath = string `/admin/api/2021-10/webhooks.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        WebhookObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        return response;
+    }
+    # Retrieves a single order risk by its ID.
+    #
+    # + webhookId - Webhook ID 
+    # + fields - Comma-separated list of the properties you want returned for each item in the result list. Use this parameter to restrict the returned list of items to only those properties you specify. 
+    # + return - Requested webhook subscription 
+    remote isolated function getWebhook(string webhookId, string? fields = ()) returns WebhookObject|error {
+        string resourcePath = string `/admin/api/2021-10/webhooks/${webhookId}.json`;
+        map<anydata> queryParam = {"fields": fields};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebhookObject response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response;
+    }
+    # Update a webhook subscription's topic or address URIs.
+    #
+    # + webhookId - Webhook ID 
+    # + payload - The webhook object to be updated. 
+    # + return - Updated webhook 
+    remote isolated function updateWebhook(string webhookId, UpdateWebhook payload) returns WebhookObject|error {
+        string resourcePath = string `/admin/api/2021-10/webhooks/${webhookId}.json`;
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        WebhookObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        return response;
+    }
+    # Retrieves a count of existing webhook subscriptions. The results can be filtered by address or by topic.
+    #
+    # + address - Retrieve webhook subscriptions that send the POST request to this URI. 
+    # + topic - The topic of the webhook subscriptions. For a list of valid values, refer to the topic property (https://shopify.dev/api/admin-rest/2021-10/resources/webhook). 
+    # + return - Requested webhook subscription 
+    remote isolated function getWebhookCount(string? address = (), string? topic = ()) returns WebhookCountObject|error {
+        string resourcePath = string `/admin/api/2021-10/webhooks/count.json`;
+        map<anydata> queryParam = {"address": address, "topic": topic};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"X-Shopify-Access-Token": self.apiKeyConfig.xShopifyAccessToken};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        WebhookCountObject response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response;
+    }
 }

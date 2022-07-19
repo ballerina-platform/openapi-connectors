@@ -4,9 +4,15 @@ keywords = ["Support/Customer Support", "Cost/Freemium"]
 org = "ballerinax"
 name = "servicenow"
 icon = "icon.png"
-distribution = "2201.0.0"
+distribution = "2201.1.0"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.2.1"
+version = "2.0.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true
+
+[[platform.java11.dependency]]
+path = "./native/build/libs/native-2.0.0.jar"
+groupId = "io.ballerinax"
+artifactId = "servicenow"
+version = "2.0.0"

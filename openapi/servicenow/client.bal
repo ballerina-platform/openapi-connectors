@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/http;
+import ballerina/jballerina.java;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
@@ -67,6 +68,152 @@ public isolated client class Client {
         self.clientEp = httpEp;
         return;
     }
+    # Inserts one record in the specified table. Multiple record insertion is not supported by this method.
+    #
+    # + tableName - Name of the table in which to save the record. 
+    # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
+    # + sysparmDisplayValue - Data retrieval operation for reference and choice fields. 
+    # + sysparmExcludeReferenceLink - Flag that indicates whether to exclude Table API links for reference fields 
+    # + sysparmFields - Comma-separated list of fields to return in the response. 
+    # + sysparmInputDisplayValue - Flag that indicates whether to set field values using the display value or the actual value. 
+    # + sysparmView - UI view for which to render the data. Determines the fields returned in the response. 
+    # + accept - Data format of the response body. 
+    # + contentType - Data format of the request body. Supported types   - application/json   - application/xml. 
+    # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
+    # + returnType - The payload, which is expected to be returned after data binding.
+    # + return - If successful, returns a JSON object that includes created record of the table. Otherwise returns the relevant error. 
+    remote isolated function create(string tableName, record{} payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = (), typedesc<record {}> returnType = <>)returns returnType|error = @java:Method {
+        'class: "io.ballerinax.servicenow.ReadOperationExecutor"
+    } external;
+
+    private isolated function processCreate(typedesc<record {}> returnType, string tableName, record{} payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns record{}|error {
+        string resourcePath = string `/api/now/table/${tableName}`;
+        map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_view": sysparmView};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        request.setPayload(payload.toJson(), "application/json");
+        if xNoResponseBody == "true" {
+            return {};
+        }
+        map<json> response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        return response.get("result").cloneWithType(returnType);
+    }
+
+    # Retrieves the record identified by the specified sys_id from the specified table.
+    #
+    # + tableName - Name of the table from which to retrieve the record.  <i>Example&#58; Incident 
+    # + sysId - Sys_id of the record to retrieve  <i>Example&#58; b7a00a202f1030105b5b2b5df699b618 
+    # + sysparmDisplayValue - Data retrieval operation for reference and choice fields. 
+    # + sysparmExcludeReferenceLink - Flag that indicates whether to exclude Table API links for reference fields 
+    # + sysparmFields - Comma-separated list of fields to return in the response. In the use case of __query incidents__ those fields are __number,sys_id,sys_created_on,cmdb_ci,correlation_id,state,assignment_group,short_description,description,close_code,close_notes__   <i>Example&#58; number,sys_id,sys_created_on,cmdb_ci,correlation_id,state,assignment_group,short_description,description,close_code,close_notes 
+    # + sysparmQueryNoDomain - Flag that indicates whether to restrict the record search to only the domains for which the logged in user is configured. 
+    # + sysparmView - UI view for which to render the data. Determines the fields returned in the response. 
+    # + accept - Data format of the response body. 
+    # + returnType - The payload, which is expected to be returned after data binding.
+    # + return - If successful, returns a JSON object that includes specified record of the table. Otherwise returns the relevant error. 
+    remote isolated function getById(string tableName, string sysId, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), typedesc<record {}> returnType = <>)returns returnType|error = @java:Method {
+        'class: "io.ballerinax.servicenow.ReadOperationExecutor"
+    } external;
+
+    private isolated function processGetById(typedesc<record {}> returnType, string tableName, string sysId, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = ()) returns record{}|error {
+        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"Accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        map<json> response = check self.clientEp->get(resourcePath, httpHeaders);
+        return response.get("result").cloneWithType(returnType);
+    }
+
+    # Updates the specified record with the request body.
+    #
+    # + tableName - Name of the table in which the record is located. 
+    # + sysId - Unique identifier of the record to update. 
+    # + sysparmDisplayValue - Data retrieval operation for reference and choice fields. 
+    # + sysparmExcludeReferenceLink - Flag that indicates whether to exclude Table API links for reference fields 
+    # + sysparmFields - Comma-separated list of fields to return in the response. 
+    # + sysparmInputDisplayValue - Flag that indicates whether to set field values using the display value or the actual value. 
+    # + sysparmQueryNoDomain - Flag that indicates whether to restrict the record search to only the domains for which the logged in user is configured. 
+    # + sysparmView - UI view for which to render the data. Determines the fields returned in the response. 
+    # + accept - Data format of the response body. 
+    # + contentType - Data format of the request body. Supported types   - application/json   - application/xml. 
+    # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
+    # + payload - Name-value pairs for the field(s) to update in the associated table in JSON format.
+    # + returnType - The payload, which is expected to be returned after data binding. 
+    # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
+    remote isolated function update(string tableName, string sysId, record{} payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = (), typedesc<record {}> returnType = <>)returns returnType|error = @java:Method {
+        'class: "io.ballerinax.servicenow.ReadOperationExecutor"
+    } external;
+
+    private isolated function processUpdate(typedesc<record {}> returnType, string tableName, string sysId, record{} payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns record{}|error {
+        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        request.setPayload(payload.toJson(), "application/json");
+        if xNoResponseBody == "true" {
+            return {};
+        }
+        map<json> response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        return response.get("result").cloneWithType(returnType);
+    }
+
+    # Updates the specified record with the name-value pairs included in the request body.
+    #
+    # + tableName - Name of the table in which to the specified record is located. 
+    # + sysId - Sys_id of the record to update. 
+    # + sysparmDisplayValue - Data retrieval operation for reference and choice fields. 
+    # + sysparmFields - Comma-separated list of fields to return in the response. 
+    # + sysparmInputDisplayValue - Flag that indicates whether to set field values using the display value or the actual value. 
+    # + sysparmQueryNoDomain - Flag that indicates whether to restrict the record search to only the domains for which the logged in user is configured. 
+    # + sysparmView - UI view for which to render the data. Determines the fields returned in the response. 
+    # + accept - Data format of the response body. 
+    # + contentType - Data format of the request body. Supported types   - application/json   - application/xml. 
+    # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
+    # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format.
+    # + returnType - The payload, which is expected to be returned after data binding. 
+    # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
+    remote isolated function patch(string tableName, string sysId, record{} payload, string? sysparmDisplayValue = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = (), typedesc<record {}> returnType = <>)returns returnType|error = @java:Method {
+        'class: "io.ballerinax.servicenow.ReadOperationExecutor"
+    } external;
+
+    private isolated function processPatch(typedesc<record {}> returnType, string tableName, string sysId, record{} payload, string? sysparmDisplayValue = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns record{}|error {
+        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        http:Request request = new;
+        request.setPayload(payload.toJson(), "application/json");
+        if xNoResponseBody == "true" {
+            return {};
+        }
+        map<json> response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        return response.get("result").cloneWithType(returnType);
+    }
+
+    # Deletes the specified record from the specified table.
+    #
+    # + tableName - Name of the table from which to delete the specified record, such as "incident" or "asset". 
+    # + sysId - Sys_id of the record to delete. 
+    # + sysparmQueryNoDomain - Flag that indicates whether to restrict the record search to only the domains for which the logged in user is configured. 
+    # + accept - Data format of the response body. 
+    # + return - **HTTP Status Code:** `204`. Meeting updated. 
+    remote isolated function delete(string tableName, string sysId, boolean? sysparmQueryNoDomain = (), string? accept = ()) returns error? {
+        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        map<anydata> queryParam = {"sysparm_query_no_domain": sysparmQueryNoDomain};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        map<any> headerValues = {"Accept": accept};
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
+        return check self.clientEp->delete(resourcePath, httpHeaders);
+    } 
+
+    /////////////////////////////////////////////////DEPRECATED/////////////////////////////////////////////////////////
+
     # Retrieves multiple records for the specified table.
     #
     # + tableName - Name of the table from which to retrieve the record.  <i>Example&#58; Incident 
@@ -106,6 +253,11 @@ public isolated client class Client {
     # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
     # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
     # + return - If successful, returns a JSON object that includes created record of the table. Otherwise returns the relevant error. 
+    # 
+    # # Deprecated
+    # This function is deprecated.
+    # Use the `create` function in `servicenow` client instead.
+    @deprecated
     remote isolated function createRecord(string tableName, json payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
         string resourcePath = string `/api/now/table/${tableName}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_view": sysparmView};
@@ -128,6 +280,11 @@ public isolated client class Client {
     # + sysparmView - UI view for which to render the data. Determines the fields returned in the response. 
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object that includes specified record of the table. Otherwise returns the relevant error. 
+    # 
+    # # Deprecated
+    # This function is deprecated.
+    # Use the `getById` function in `servicenow` client instead.
+    @deprecated
     remote isolated function getRecordById(string tableName, string sysId, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = ()) returns json|error {
         string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
@@ -152,6 +309,11 @@ public isolated client class Client {
     # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
     # + payload - Name-value pairs for the field(s) to update in the associated table in JSON format. 
     # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
+    # 
+    # # Deprecated
+    # This function is deprecated.
+    # Use the `update` function in `servicenow` client instead.
+    @deprecated
     remote isolated function updateRecord(string tableName, string sysId, json payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
         string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
@@ -169,7 +331,12 @@ public isolated client class Client {
     # + sysId - Sys_id of the record to delete. 
     # + sysparmQueryNoDomain - Flag that indicates whether to restrict the record search to only the domains for which the logged in user is configured. 
     # + accept - Data format of the response body. 
-    # + return - **HTTP Status Code:** `204`. Meeting updated. 
+    # + return - **HTTP Status Code:** `204`. Meeting updated.
+    #  
+    # # Deprecated
+    # This function is deprecated.
+    # Use the `delete` function in `servicenow` client instead.
+    @deprecated
     remote isolated function deleteRecord(string tableName, string sysId, boolean? sysparmQueryNoDomain = (), string? accept = ()) returns http:Response|error {
         string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
         map<anydata> queryParam = {"sysparm_query_no_domain": sysparmQueryNoDomain};
@@ -192,7 +359,12 @@ public isolated client class Client {
     # + contentType - Data format of the request body. Supported types   - application/json   - application/xml. 
     # + xNoResponseBody - By default, responses include body content detailing the new record. Set this header to true in the request to suppress the response body. 
     # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
-    # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
+    # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error.
+    # 
+    # # Deprecated
+    # This function is deprecated.
+    # Use the `patch` function in `servicenow` client instead.
+    @deprecated 
     remote isolated function patchRecordById(string tableName, string sysId, json payload, string? sysparmDisplayValue = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
         string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
@@ -204,6 +376,8 @@ public isolated client class Client {
         json response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
         return response;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     # Retrieves records for the specified table and performs aggregate functions on the returned values.
     #
     # + tableName - Name of the table for which to retrieve records. 

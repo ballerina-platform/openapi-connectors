@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
     string httpVersion = "1.1";
     # Configurations related to HTTP/1.x protocol
@@ -50,14 +50,24 @@ public type ClientConfig record {|
     http:ClientSecureSocket? secureSocket = ();
 |};
 
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer";
+|};
+
 # This is a generated connector for [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.  
-# The QuickBooks Online Accounting API utilizes the REST architecture. It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
+# The QuickBooks Online Accounting API utilizes the REST architecture. 
+# It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
 @display {label: "QuickBooks Online", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
-    # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials.
-    # Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and obtain tokens by following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
+    # Gets invoked to initialize the connector. During initialization you can pass either http:BearerTokenConfig if you have a bearer
+    # token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
+    # Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and 
+    # obtain credentials following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
+    # Tokens can be obtained by using [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -74,7 +84,7 @@ public isolated client class Client {
     # + payload - Account creation data 
     # + return - Success 
     remote isolated function createOrUpdateAccount(string realmId, AccountCreateObject payload, string accept = "application/json") returns AccountResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/account`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/account`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -90,7 +100,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readAccount(string realmId, string accountId, string accept = "application/json") returns AccountResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/account/${accountId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/account/${getEncodedUri(accountId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -104,7 +114,7 @@ public isolated client class Client {
     # + payload - Bill creation data 
     # + return - Success 
     remote isolated function createOrUpdateBill(string realmId, BillCreateObject payload, string? operation = (), string accept = "application/json") returns BillResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/bill`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/bill`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"accept": accept};
@@ -122,7 +132,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readBill(string realmId, string billId, string accept = "application/json") returns BillResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/bill/${billId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/bill/${getEncodedUri(billId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         BillResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -135,7 +145,7 @@ public isolated client class Client {
     # + payload - Customer creation data 
     # + return - Success 
     remote isolated function createOrUpdateCustomer(string realmId, CustomerCreateObject payload, string accept = "application/json") returns CustomerResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/customer`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/customer`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -151,7 +161,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readCustomer(string realmId, string customerId, string accept = "application/json") returns CustomerResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/customer/${customerId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/customer/${getEncodedUri(customerId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CustomerResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -165,7 +175,7 @@ public isolated client class Client {
     # + payload - Payment creation data 
     # + return - Success 
     remote isolated function createOrUpdatePayment(string realmId, PaymentCreateObject payload, string? operation = (), string accept = "application/json") returns PaymentResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/payment`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/payment`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"accept": accept};
@@ -183,7 +193,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readPayment(string realmId, string paymentId, string accept = "application/json") returns PaymentResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/payment/${paymentId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/payment/${getEncodedUri(paymentId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         PaymentResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -197,7 +207,7 @@ public isolated client class Client {
     # + payload - Estimate creation data 
     # + return - Success 
     remote isolated function createOrUpdateEstimate(string realmId, EstimateCreateObject payload, string? operation = (), string accept = "application/json") returns EstimateResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/estimate`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/estimate`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"accept": accept};
@@ -215,7 +225,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readEstimate(string realmId, string estimateId, string accept = "application/json") returns EstimateResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/estimate/${estimateId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/estimate/${getEncodedUri(estimateId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         EstimateResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -229,7 +239,7 @@ public isolated client class Client {
     # + payload - Invoice creation data 
     # + return - Success 
     remote isolated function createOrUpdateInvoice(string realmId, InvoiceCreateObject payload, string? operation = (), string accept = "application/json") returns InvoiceResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/invoice`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/invoice`;
         map<anydata> queryParam = {"operation": operation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"accept": accept};
@@ -247,7 +257,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readInvoice(string realmId, string invoiceId, string accept = "application/json") returns InvoiceResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/invoice/${invoiceId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/invoice/${getEncodedUri(invoiceId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InvoiceResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -260,7 +270,7 @@ public isolated client class Client {
     # + payload - Vendor creation data 
     # + return - Success 
     remote isolated function createOrUpdateVendor(string realmId, VendorCreateObject payload, string accept = "application/json") returns VendorResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/vendor`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/vendor`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
@@ -276,7 +286,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function readVendor(string realmId, string vendorId, string accept = "application/json") returns VendorResponse|error {
-        string resourcePath = string `/v3/company/${realmId}/vendor/${vendorId}`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/vendor/${getEncodedUri(vendorId)}`;
         map<any> headerValues = {"accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         VendorResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -289,7 +299,7 @@ public isolated client class Client {
     # + accept - Accept header 
     # + return - Success 
     remote isolated function queryEntity(string realmId, string query, string accept = "application/json") returns json|error {
-        string resourcePath = string `/v3/company/${realmId}/query`;
+        string resourcePath = string `/v3/company/${getEncodedUri(realmId)}/query`;
         map<anydata> queryParam = {"query": query};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"accept": accept};

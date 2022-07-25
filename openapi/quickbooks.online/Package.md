@@ -4,10 +4,10 @@ Connects to [QuickBooks API v3](https://developer.intuit.com/app/developer/qbo/d
 The `ballerinax/quickbooks.online` is a [Ballerina](https://ballerina.io/) connector connecting to QuickBooks API.
 
 ### Compatibility
-|                           | Version                    |
-|---------------------------|----------------------------|
-| Ballerina Language        | Ballerina Swan Lake 2201.0.0 | 
-| QuickBooks Online API     | v3                         |
+|                           | Version                      |
+|---------------------------|------------------------------|
+| Ballerina Language        | Ballerina Swan Lake 2201.1.1 | 
+| QuickBooks Online API     | v3                           |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

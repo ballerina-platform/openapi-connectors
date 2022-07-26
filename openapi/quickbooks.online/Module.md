@@ -8,7 +8,7 @@ The QuickBooks Online Accounting API utilizes the REST architecture. It lets you
 Before using this connector in your Ballerina application, complete the following:
 
 * Create a [QuickBooks account](https://quickbooks.intuit.com/global/).
-* Obtain credentials by following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app). Tokens can be obtained by using [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
+Obtain credentials by following [Intuit Developer Documentation - Create and start developing your app](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app). You can obtain tokens via the [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
 
 ## Quickstart
 

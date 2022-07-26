@@ -8,7 +8,7 @@ The QuickBooks Online Accounting API utilizes the REST architecture. It lets you
 Before using this connector in your Ballerina application, complete the following:
 
 * Create a [QuickBooks account](https://quickbooks.intuit.com/global/).
-Obtain credentials by following [Intuit Developer Documentation - Create and start developing your app](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app). You can obtain tokens via the [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
+* Obtain credentials by following [Intuit Developer Documentation - Create and start developing your app](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app). You can obtain tokens via the [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
 
 ## Quickstart
 
@@ -21,8 +21,7 @@ Import the `ballerinax/quickbooks.online` module into the Ballerina project.
 ```
 
 ### Step 2: Create a new connector instance
-Add the configuration file by creating a `Config.toml` file. Config file should have following configurations. Add the tokens obtained in the previous step to the `Config.toml` file.
-
+Create a configuration file named `Config.toml` and add the tokens obtained through the OAuth 2.0 Playground to it as follows:
 ```ballerina
     [authConfig]
     clientId: <CLIENT_ID>,
@@ -30,6 +29,7 @@ Add the configuration file by creating a `Config.toml` file. Config file should 
     refreshToken: <REFRESH_TOKEN>
 ```
 
+Create a quickbooks:ClientConfig and initialize the connector with it.
 ```ballerina
     configurable quickbooks:OAuth2RefreshTokenGrantConfig & readonly authConfig = ?;
     quickbooks:ClientConfig clientConfig = {auth : authConfig};
@@ -39,11 +39,9 @@ Add the configuration file by creating a `Config.toml` file. Config file should 
 ```
 
 ### Step 3: Invoke connector operation
-1. Now you can use the operations available within the connector. Note that they are in the form of remote operations.
+Now you can use the operations available within the connector. Note that they are available as remote operations.
 
-    Following is an example on how to get a customer using the connector.
-
-    Get a quickbooks customer with given customer id
+For example, you can fetch a quickbook customer by ID as follows:
 
     ```ballerina
     public function main() returns error? {
@@ -52,4 +50,4 @@ Add the configuration file by creating a `Config.toml` file. Config file should 
     }
     ```
 
-2. Use `bal run` command to compile and run the Ballerina program. 
+Use `bal run` command to compile and run the Ballerina program. 

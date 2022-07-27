@@ -24,9 +24,9 @@ Import the `ballerinax/quickbooks.online` module into the Ballerina project.
 Create a configuration file named `Config.toml` and add the tokens obtained through the OAuth 2.0 Playground to it as follows:
 ```ballerina
     [authConfig]
-    clientId: <CLIENT_ID>,
-    clientSecret: <CLIENT_SECRET>,
-    refreshToken: <REFRESH_TOKEN>
+    clientId=<CLIENT_ID>
+    clientSecret=<CLIENT_SECRET>
+    refreshToken=<REFRESH_TOKEN>
 ```
 
 Create a quickbooks:ClientConfig and initialize the connector with it.
@@ -35,7 +35,7 @@ Create a quickbooks:ClientConfig and initialize the connector with it.
     quickbooks:ClientConfig clientConfig = {auth : authConfig};
 
     quickbooks:Client baseClient = 
-            check new Client(clientConfig, "https://sandbox-quickbooks.api.intuit.com");
+            check new(clientConfig, "https://sandbox-quickbooks.api.intuit.com");
 ```
 
 ### Step 3: Invoke connector operation

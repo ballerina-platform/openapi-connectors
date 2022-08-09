@@ -7,13 +7,12 @@ jobs:
   container:
     runs-on: ubuntu-latest
     container:
-      image: ballerina/ballerina:nightly
+      image: ballerina/ballerina:2201.1.1
       options: --user root
     steps:
       - uses: actions/checkout@v2
       - name: Build with Gradle
         env:
-          BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           GRADLE_USER_HOME: ~/.gradle
         run: |

@@ -15,7 +15,6 @@ jobs:
       - uses: actions/checkout@v2   
       - name: Build with Gradle
         env:
-          BALLERINA_CENTRAL_ACCESS_TOKEN: ${{ secrets.BALLERINA_CENTRAL_ACCESS_TOKEN }}
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           GRADLE_USER_HOME: ~/.gradle
         run: |

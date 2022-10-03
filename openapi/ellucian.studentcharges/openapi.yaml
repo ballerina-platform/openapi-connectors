@@ -1,0 +1,873 @@
+openapi: 3.0.0
+info:
+  title: Student Charges
+  description: >
+    Use the students Charges API to retrieve details about students charges recorded in
+    Colleague.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+
+    Please create a [Ellucian Account](https://xedocs.ellucian.com/) and obtain tokens by following [this guide](https://xedocs.ellucian.com/xe-colleague-api/rest-api/index.html).
+  x-ballerina-display:
+   label: Ellucian Student Charges
+   iconPath: "icon.png"
+  version: 16.0.0
+servers:
+  - url: https://integrate.elluciancloud.com
+    description: Ethos Integration API U.S.
+  - url: https://integrate.elluciancloud.ca
+    description: Ethos Integration API Canada
+  - url: https://integrate.elluciancloud.ie
+    description: Ethos Integration API Europe
+  - url: https://integrate.elluciancloud.com.au
+    description: Ethos Integration API Asia-Pacific
+  - url: "{server_url}"
+    description: Custom server url
+    variables:
+      server_url:
+        default: localhost
+paths:
+  /api/student-charges:
+    get:
+      operationId: GetStudentCharges
+      summary: Returns resources from AR.INV.ITEMS.INTG
+      description: |
+        Returns a paged listing of all AR.INV.ITEMS.INTG.
+      security:
+        - BearerAuth: []
+      tags:
+        - student-charges
+      parameters:
+        - name: accept
+          in: header
+          description: >
+            The version of the resource requested. Prefer to use only the whole
+            MAJOR version.  See the semantic versioning topic in the API
+            Standards from more information.
+
+            ```
+
+            application/vnd.hedtech.integration.v16+json
+
+            ```
+          schema:
+            type: string
+            default: application/vnd.hedtech.integration.v16+json
+        - name: limit
+          in: query
+          required: false
+          description: The maximum number of resources requesting for this result set.
+            Default page limit is 100 and upper limit is 100.
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          required: false
+          description: The 0 based index for a collection of resources for the page
+            requested.
+          schema:
+            type: integer
+        - name: criteria
+          in: query
+          required: false
+          schema:
+            type: object
+          description: >
+            ### Student  
+
+            The person (student) who incurred the charge.
+
+            ```
+
+            /student-charges?criteria={"student":{"id":"e8f67fc1-37b9-4304-84c2-67e0e5c88e68"}}
+
+            ```
+
+            ### Funding Source  
+
+            The accounting code of the funding source associated with the student charge.
+
+            ```
+
+            /student-charges?criteria={"fundingSource":{"id":"0f12b05d-34e9-4817-b68a-80baf4736d3e"}}
+
+            ```
+
+            ### Funding Destination  
+
+            The accounting code of the funding destination associated with the student charge.
+
+            ```
+
+            /student-charges?criteria={"fundingDestination":{"id":"44223c6f-0218-4505-99ec-b913c57e3df3"}}
+
+            ```
+
+            ### Academic Period  
+
+            The term in which charges were incurred.
+
+            ```
+
+            /student-charges?criteria={"academicPeriod":{"id":"fdd87b6d-1d66-469c-8b66-e5f22e4992c1"}}
+
+            ```
+
+            ### Usage  
+
+            The usage associated with the charge (i.e. tax reporting only).
+
+            ```
+
+            /student-charges?criteria={"reportingDetail":{"usage":"taxReportingOnly"}}
+
+            ```
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/StudentCharges"
+          headers:
+            X-Media-Type:
+              description: application/vnd.hedtech.integration.v16.0.0+json
+              schema:
+                type: string
+            X-Total-Count:
+              description: Specifies the total number of resources that satisfy the query.
+              schema:
+                type: integer
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Permission Denied
+        "404":
+          description: Resource not found
+        "500":
+          description: Server error, unexpected configuration or data
+    post:
+      summary: Create a new resource in AR.INV.ITEMS.INTG
+      operationId: CreateStudent
+      description: >
+        POST requests must include a nil GUID value
+        ("00000000-0000-0000-0000-000000000000") for the root id property.
+
+
+        In addition to the required properties defined in the data model, the following are required for a POST request: fundingDestination.id
+
+
+        Creates a new AR.INV.ITEMS.INTG record.  A new record will also be created in AR.INVOICES and AR.INVOICE.ITEMS.
+
+
+        In Colleague data integration parameters you must define whether the GL Import (GLIM) process is used to import student charges and payments to the General Ledger or if posting to the General Ledger will be performed by Colleague (LDMD.CHECK.POSTING.PERFORMED).  See "Define Colleague data integration parameters" on resources.elluciancloud.com for information about Ethos Integration parameters.
+
+
+        The fundingSource.id must be an accounting-codes resource with a categoryUsage of "accountsReceivableType" (AR.TYPES).  If fundingSource.id is not provided, there is a Colleague data integration parameter for the default AR Type to use (LDMD.DEFAULT.AR.TYPE).
+
+
+        The fundingDestination.id must be an accounting-codes with a categoryUsage of "accountsReceivableCode" (AR.CODES).
+
+
+        The chargeableOn is used to set the invoice due date and cannot be earlier than the current date.  The invoice date is defaulted to the current date unless the reportingDetail.originatedOn is provided.
+
+
+        If the reportingDetail.activityDates are provided, they will be used to set the invoice billing dates (INV.BILLING.START.DATE and INV.BILLING.END.DATE).  Otherwise the start and end dates for the academicPeriod.id (TERMS) will be used to set the invoice billing dates.  The invoice billing dates are used by tax reporting for 1098T and T2202A.
+      security:
+        - BearerAuth: []
+      tags:
+        - student-charges
+      parameters:
+        - name: accept
+          in: header
+          description: >
+            The version of the resource requested. Please refer to the API
+            source documentation for detailed support information. Prefer to use
+            only the whole MAJOR version. 
+
+            ```
+
+            application/vnd.hedtech.integration.v16+json
+
+            ```
+          schema:
+            type: string
+            default: application/vnd.hedtech.integration.v16+json
+        - name: content type
+          in: header
+          description: >
+            The version of the resource supplied in the request. Please refer to
+            the API source documentation for detailed support information.
+            Prefer to use only the whole MAJOR version. 
+
+            ```
+
+            application/vnd.hedtech.integration.v16+json
+
+            ```
+          schema:
+            type: string
+            default: application/vnd.hedtech.integration.v16+json
+      responses:
+        "200":
+          description: Success
+          headers:
+            X-Media-Type:
+              description: application/vnd.hedtech.integration.v16.0.0+json
+              schema:
+                type: string
+          content:
+            application/vnd.hedtech.integration.v16.0.0+json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/StudentCharges"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Permission Denied
+        "404":
+          description: Resource not found
+        "500":
+          description: Server error, unexpected configuration or data
+      requestBody:
+        required: true
+        description: Student object as Payload
+        content:
+          application/vnd.hedtech.integration.v16+json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/StudentCharges"
+  /api/student-charges/{id}:
+    get:
+      operationId: GetStudentChargesById
+      summary: Return the requested resource from AR.INV.ITEMS.INTG
+      description: >
+        Returns the one AR.INV.ITEMS.INTG resource with the passed in identifier.
+      security:
+        - BearerAuth: []
+      tags:
+        - student-charges
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: A global identifier of the resource for use in all external
+            references
+          schema:
+            type: string
+            format: GUID
+            minimum: 1
+        - name: accept
+          in: header
+          description: >
+            The version of the resource requested. Please refer to the API
+            source documentation for detailed support information. Prefer to use
+            only the whole MAJOR version. 
+
+            ```
+
+            application/vnd.hedtech.integration.v16+json
+
+            ```
+          schema:
+            type: string
+            default: application/vnd.hedtech.integration.v16+json
+      responses:
+        "200":
+          description: Success
+          headers:
+            X-Media-Type:
+              description: application/vnd.hedtech.integration.v16.0.0+json
+              schema:
+                type: string
+          content:
+            application/vnd.hedtech.integration.v16.0.0+json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/StudentCharges"
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "403":
+          description: Permission Denied
+        "404":
+          description: Resource not found
+        "500":
+          description: Server error, unexpected configuration or data
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    StudentCharges:
+      title: Student Charges
+      description: Charges incurred by a student.
+      type: object
+      properties:
+        metadata:
+          title: Metadata
+          description: Metadata about the JSON payload
+          type: object
+          properties:
+            createdBy:
+              title: Created By
+              description: The name of the originator (user or system) of the data. This is
+                informational only, do not use in business logic!
+              type: string
+            createdOn:
+              title: Created On
+              description: The date and time when the entity instance was created
+              oneOf:
+                - type: string
+                  format: date-time
+                  pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])T(2[0-3]|[0-1][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[0-1][0-9]):[0-5][0-9])?$
+                - type: string
+                  maxLength: 0
+            modifiedBy:
+              title: Modified By
+              description: The name of the modifier (user or system) of the data. This is
+                informational only, do not use in business logic!
+              type: string
+            modifiedOn:
+              title: Modified On
+              description: The date and time when the entity instance was last modified
+              oneOf:
+                - type: string
+                  format: date-time
+                  pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])T(2[0-3]|[0-1][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[0-1][0-9]):[0-5][0-9])?$
+                - type: string
+                  maxLength: 0
+          additionalProperties: false
+        id:
+          title: ID
+          description: The global identifier of the student charge.
+          type: string
+          format: guid
+          pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+        student:
+          title: Student
+          description: The person (student) who incurred the charge.
+          type: object
+          properties:
+            id:
+              title: ID
+              description: The global identifier for the Student.
+              type: string
+              format: guid
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+          additionalProperties: false
+          required:
+            - id
+        fundingSource:
+          title: Funding Source
+          description: The accounting code of the funding source associated with the
+            student charge.
+          oneOf:
+            - type: object
+              properties:
+                id:
+                  title: ID
+                  description: The global identifier for the Funding Source.
+                  type: string
+                  format: guid
+                  pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+              additionalProperties: false
+              required:
+                - id
+            - type: object
+              maxProperties: 0
+        fundingDestination:
+          title: Funding Destination
+          description: The accounting code of the funding destination associated with the
+            student charge.
+          type: object
+          properties:
+            id:
+              title: ID
+              description: The global identifier for the Funding Destination.
+              type: string
+              format: guid
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+          additionalProperties: false
+          required:
+            - id
+        academicPeriod:
+          title: Academic Period
+          description: The term in which charges were incurred.
+          type: object
+          properties:
+            id:
+              title: ID
+              description: The global identifier for the Academic Period.
+              type: string
+              format: guid
+              pattern: ^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$
+          additionalProperties: false
+          required:
+            - id
+        chargeableOn:
+          title: Chargeable On
+          description: The date when the student becomes liable for the charge.
+          type: string
+          format: date-time
+          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])T(2[0-3]|[0-1][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[0-1][0-9]):[0-5][0-9])?$
+        chargedAmount:
+          title: Charged Amount
+          description: The amount of the charge.
+          oneOf:
+            - title: Amount
+              description: The amount of the charge.
+              type: object
+              properties:
+                amount:
+                  title: Amount
+                  description: The amount of the charge.
+                  format: currency
+                  type: object
+                  properties:
+                    value:
+                      title: Value
+                      description: The monetary value
+                      type: number
+                    currency:
+                      title: Currency
+                      description: The ISO 4217 currency code
+                      enum:
+                        - AED
+                        - AFN
+                        - ALL
+                        - AMD
+                        - ANG
+                        - AOA
+                        - ARS
+                        - AUD
+                        - AWG
+                        - AZN
+                        - BAM
+                        - BBD
+                        - BDT
+                        - BGN
+                        - BHD
+                        - BIF
+                        - BMD
+                        - BND
+                        - BOB
+                        - BRL
+                        - BSD
+                        - BTN
+                        - BWP
+                        - BYR
+                        - BZD
+                        - CAD
+                        - CDF
+                        - CHF
+                        - CLP
+                        - CNY
+                        - COP
+                        - CRC
+                        - CUC
+                        - CUP
+                        - CVE
+                        - CZK
+                        - DJF
+                        - DKK
+                        - DOP
+                        - DZD
+                        - EGP
+                        - ERN
+                        - ETB
+                        - EUR
+                        - FJD
+                        - FKP
+                        - GBP
+                        - GEL
+                        - GHS
+                        - GIP
+                        - GMD
+                        - GNF
+                        - GTQ
+                        - GYD
+                        - HKD
+                        - HNL
+                        - HRK
+                        - HTG
+                        - HUF
+                        - IDR
+                        - ILS
+                        - INR
+                        - IQD
+                        - IRR
+                        - ISK
+                        - JMD
+                        - JOD
+                        - JPY
+                        - KES
+                        - KGS
+                        - KHR
+                        - KMF
+                        - KPW
+                        - KRW
+                        - KWD
+                        - KYD
+                        - KZT
+                        - LAK
+                        - LBP
+                        - LKR
+                        - LRD
+                        - LSL
+                        - LYD
+                        - MAD
+                        - MDL
+                        - MGA
+                        - MKD
+                        - MMK
+                        - MNT
+                        - MOP
+                        - MRO
+                        - MUR
+                        - MVR
+                        - MWK
+                        - MXN
+                        - MYR
+                        - MZN
+                        - NAD
+                        - NGN
+                        - NIO
+                        - NOK
+                        - NPR
+                        - NZD
+                        - OMR
+                        - PAB
+                        - PEN
+                        - PGK
+                        - PHP
+                        - PKR
+                        - PLN
+                        - PYG
+                        - QAR
+                        - RON
+                        - RSD
+                        - RUB
+                        - RWF
+                        - SAR
+                        - SBD
+                        - SCR
+                        - SDG
+                        - SEK
+                        - SGD
+                        - SHP
+                        - SLL
+                        - SOS
+                        - SRD
+                        - SSP
+                        - STD
+                        - SVC
+                        - SYP
+                        - SZL
+                        - THB
+                        - TJS
+                        - TMT
+                        - TND
+                        - TOP
+                        - TRY
+                        - TTD
+                        - TWD
+                        - TZS
+                        - UAH
+                        - UGX
+                        - USD
+                        - UYU
+                        - UZS
+                        - VEF
+                        - VND
+                        - VUV
+                        - WST
+                        - XAF
+                        - XCD
+                        - XOF
+                        - XPF
+                        - YER
+                        - ZAR
+                        - ZMW
+                        - ZWL
+                      type: string
+                  additionalProperties: false
+                  required:
+                    - value
+                    - currency
+              additionalProperties: false
+              required:
+                - amount
+            - title: Unit Cost
+              description: The amount of the charge.
+              type: object
+              properties:
+                unitCost:
+                  title: Unit Cost
+                  description: The amount of the charge.
+                  type: object
+                  properties:
+                    quantity:
+                      title: Quantity
+                      description: The quantity being charged.
+                      type: number
+                    cost:
+                      title: Cost
+                      description: Cost of each unit being charged.
+                      format: currency
+                      type: object
+                      properties:
+                        value:
+                          title: Value
+                          description: The monetary value
+                          type: number
+                        currency:
+                          title: Currency
+                          description: The ISO 4217 currency code
+                          enum:
+                            - AED
+                            - AFN
+                            - ALL
+                            - AMD
+                            - ANG
+                            - AOA
+                            - ARS
+                            - AUD
+                            - AWG
+                            - AZN
+                            - BAM
+                            - BBD
+                            - BDT
+                            - BGN
+                            - BHD
+                            - BIF
+                            - BMD
+                            - BND
+                            - BOB
+                            - BRL
+                            - BSD
+                            - BTN
+                            - BWP
+                            - BYR
+                            - BZD
+                            - CAD
+                            - CDF
+                            - CHF
+                            - CLP
+                            - CNY
+                            - COP
+                            - CRC
+                            - CUC
+                            - CUP
+                            - CVE
+                            - CZK
+                            - DJF
+                            - DKK
+                            - DOP
+                            - DZD
+                            - EGP
+                            - ERN
+                            - ETB
+                            - EUR
+                            - FJD
+                            - FKP
+                            - GBP
+                            - GEL
+                            - GHS
+                            - GIP
+                            - GMD
+                            - GNF
+                            - GTQ
+                            - GYD
+                            - HKD
+                            - HNL
+                            - HRK
+                            - HTG
+                            - HUF
+                            - IDR
+                            - ILS
+                            - INR
+                            - IQD
+                            - IRR
+                            - ISK
+                            - JMD
+                            - JOD
+                            - JPY
+                            - KES
+                            - KGS
+                            - KHR
+                            - KMF
+                            - KPW
+                            - KRW
+                            - KWD
+                            - KYD
+                            - KZT
+                            - LAK
+                            - LBP
+                            - LKR
+                            - LRD
+                            - LSL
+                            - LYD
+                            - MAD
+                            - MDL
+                            - MGA
+                            - MKD
+                            - MMK
+                            - MNT
+                            - MOP
+                            - MRO
+                            - MUR
+                            - MVR
+                            - MWK
+                            - MXN
+                            - MYR
+                            - MZN
+                            - NAD
+                            - NGN
+                            - NIO
+                            - NOK
+                            - NPR
+                            - NZD
+                            - OMR
+                            - PAB
+                            - PEN
+                            - PGK
+                            - PHP
+                            - PKR
+                            - PLN
+                            - PYG
+                            - QAR
+                            - RON
+                            - RSD
+                            - RUB
+                            - RWF
+                            - SAR
+                            - SBD
+                            - SCR
+                            - SDG
+                            - SEK
+                            - SGD
+                            - SHP
+                            - SLL
+                            - SOS
+                            - SRD
+                            - SSP
+                            - STD
+                            - SVC
+                            - SYP
+                            - SZL
+                            - THB
+                            - TJS
+                            - TMT
+                            - TND
+                            - TOP
+                            - TRY
+                            - TTD
+                            - TWD
+                            - TZS
+                            - UAH
+                            - UGX
+                            - USD
+                            - UYU
+                            - UZS
+                            - VEF
+                            - VND
+                            - VUV
+                            - WST
+                            - XAF
+                            - XCD
+                            - XOF
+                            - XPF
+                            - YER
+                            - ZAR
+                            - ZMW
+                            - ZWL
+                          type: string
+                      additionalProperties: false
+                      required:
+                        - value
+                        - currency
+                  additionalProperties: false
+                  required:
+                    - quantity
+                    - cost
+              additionalProperties: false
+              required:
+                - unitCost
+        reportingDetail:
+          title: Reporting Detail
+          description: Attributes specific to the transaction when identified for tax
+            reporting only.
+          oneOf:
+            - type: object
+              properties:
+                usage:
+                  title: Usage
+                  description: The usage associated with the charge (i.e. tax reporting only).
+                  enum:
+                    - taxReportingOnly
+                  type: string
+                originatedOn:
+                  title: Originated On
+                  description: The date the charge originated for consideration in tax report
+                    generation.
+                  type: string
+                  format: date-time
+                  pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])T(2[0-3]|[0-1][0-9]):([0-5][0-9]):([0-5][0-9])(\.[0-9]+)?(Z|[+-](?:2[0-3]|[0-1][0-9]):[0-5][0-9])?$
+                activityDates:
+                  title: Activity Dates
+                  description: The activity dates (e.g., section start and end date) associated
+                    with the charge for tax reporting purposes.
+                  oneOf:
+                    - type: object
+                      properties:
+                        startOn:
+                          title: Start On
+                          description: The start date of the activity associated with the charge.
+                          type: string
+                          format: date
+                          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])$
+                        endOn:
+                          title: End On
+                          description: The end date of the activity associated with the charge.
+                          type: string
+                          format: date
+                          pattern: ^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[0-1]|0[1-9]|[1-2][0-9])$
+                      additionalProperties: false
+                      required:
+                        - startOn
+                        - endOn
+                    - type: object
+                      maxProperties: 0
+              additionalProperties: false
+              required:
+                - usage
+                - originatedOn
+            - type: object
+              maxProperties: 0
+        overrideDescription:
+          title: Override Description
+          description: The override description associated with the charge.
+          type: string
+        comments:
+          title: Comments
+          description: The comments associated with the charge.
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - student
+        - fundingDestination
+        - academicPeriod
+        - chargeableOn
+        - chargedAmount
+      additionalProperties: false
+

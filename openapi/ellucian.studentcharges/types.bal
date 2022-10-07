@@ -50,7 +50,7 @@ public type StudentCharges record {
     record {
         # The global identifier for the Funding Source.
         string id;
-    }|record {} fundingSource?;
+    } fundingSource?;
     # The accounting code of the funding destination associated with the student charge.
     FundingDestination fundingDestination;
     # The term in which charges were incurred.
@@ -92,8 +92,8 @@ public type StudentCharges record {
             string startOn;
             # The end date of the activity associated with the charge.
             string endOn;
-        }|record {} activityDates?;
-    }|record {} reportingDetail?;
+        } activityDates?;
+    } reportingDetail?;
     # The override description associated with the charge.
     string overrideDescription?;
     # The comments associated with the charge.

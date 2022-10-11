@@ -7,7 +7,7 @@ This package provides the capability to access SugarCRM instance.
 ### Compatibility
 |                             | Version                        |
 |-----------------------------|--------------------------------|
-| Ballerina Language          | Ballerina Swan Lake 2201.0.3   | 
+| Ballerina Language          | Ballerina Swan Lake 2201.2.1   | 
 | SugarCRM API                | v12.0                          |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability of cloud-based sales and use tax calculatio
 ### Compatibility
 |                     | Version                   |
 |---------------------|---------------------------|
-| Ballerina Language  | Ballerina Swan Lake 2201.0.0| 
+| Ballerina Language  | Ballerina Swan Lake 2201.2.1| 
 | Avalara AvaTax API  | v2                        |
 
 ## Report issues

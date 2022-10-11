@@ -7,7 +7,7 @@ This package provides the capability to search and obtain icons.
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.0.0| 
+| Ballerina Language | Swan Lake 2201.2.1| 
 | Icons8 API         | v3.0            |
 
 ## Report issues

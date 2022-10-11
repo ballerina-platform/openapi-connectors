@@ -7,7 +7,7 @@ This package provides the capability to access Shipwire Containers API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.0.0      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
 | Shipwire Containers API           | 3.0                             |
 
 ## Report issues

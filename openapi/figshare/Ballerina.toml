@@ -4,8 +4,8 @@ keywords = ["Content & Files/Documents", "Cost/Freemium"]
 org = "ballerinax"
 name = "figshare"
 icon = "icon.png"
-distribution = "2201.0.0"
-version = "1.2.1"
+distribution = "2201.2.1"
+version = "1.3.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

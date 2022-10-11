@@ -7,7 +7,7 @@ This package provides the capability to search for the cheapest flight for a giv
 ### Compatibility
 |                                 | Version                        |
 |---------------------------------|--------------------------------|
-| Ballerina Language              | Ballerina Swan Lake 2201.0.3   |
+| Ballerina Language              | Ballerina Swan Lake 2201.2.1   |
 | Amadeus Flight Offers Search API| V2.5                           | 
 
 ## Report issues

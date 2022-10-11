@@ -6,7 +6,7 @@ The `ballerinax/siemens.iotandstorage.iotfileservice` is a [Ballerina](https://b
 ### Compatibility
 |                                   | Version                   |
 |-----------------------------------|---------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language                | Ballerina Swan Lake 2201.2.1|
 | Siemens IoT File Service  API     | 3.2.4                     |
 
 ## Report issues

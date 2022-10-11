@@ -7,7 +7,7 @@ The Files API provides access to the files, folders, and the association of file
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0| 
+| Ballerina Language | Ballerina Swan Lake 2201.2.1| 
 | Xero Files API     | 2.16.1                    |
 
 ## Report issues

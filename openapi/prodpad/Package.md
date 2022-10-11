@@ -6,7 +6,7 @@ The `ballerinax/prodpad` is a [Ballerina](https://ballerina.io/) connector conne
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake 2201.0.0    | 
+| Ballerina Language    | Ballerina Swan Lake 2201.2.1    | 
 | ProdPad API           | v1.0                          |
 
 ## Report issues

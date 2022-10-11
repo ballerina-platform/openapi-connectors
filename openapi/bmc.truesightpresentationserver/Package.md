@@ -8,7 +8,7 @@ This package provides the capability to access the operations related to your Ha
 ### Compatibility
 |                                                   | Version               |
 |---------------------------------------------------|-----------------------|
-| Ballerina Language Version                        | Swan Lake 2201.0.0      |
+| Ballerina Language Version                        | Swan Lake 2201.2.1      |
 | Hardware Sentry TrueSight Presentation Server API | V11.1.00              |
 
 ## Report issues

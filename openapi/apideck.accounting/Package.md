@@ -8,7 +8,7 @@ The `apideck.accounting` is a [Ballerina](https://ballerina.io/) connector for c
 #### Compatibility
 |                        | Version                  |
 |------------------------|--------------------------|
-| Ballerina Language     | Balerina Swan Lake 2201.0.0|
+| Ballerina Language     | Balerina Swan Lake 2201.2.1|
 | Apideck Accounting API | v5.3.0                   |
 
 ## Report issues

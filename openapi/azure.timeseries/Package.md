@@ -8,7 +8,7 @@ The `azure.timeseries` is a [Ballerina](https://ballerina.io/) connector for con
 #### Compatibility
 |                                   | Version                  |
 |-----------------------------------|--------------------------|
-| Ballerina Language                | Balerina Swan Lake 2201.0.0|
+| Ballerina Language                | Balerina Swan Lake 2201.2.1|
 | Azure Time Series Insights API    | 2020-07-31               |
 
 ## Report issues

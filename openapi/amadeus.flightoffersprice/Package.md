@@ -7,7 +7,7 @@ This package provides the capability to confirm the availability and final price
 ### Compatibility
 |                                 | Version                        |
 |---------------------------------|--------------------------------|
-| Ballerina Language              | Ballerina Swan Lake 2201.0.3   |
+| Ballerina Language              | Ballerina Swan Lake 2201.2.1   |
 | Amadeus Flight Offers Price API | V1.2                           | 
 
 ## Report issues

@@ -7,7 +7,7 @@ The `ballerinax/cloudmersive.virusscan` is a [Ballerina](https://ballerina.io/) 
 ### Compatibility
 |                          | Version                    |
 |--------------------------|----------------------------|
-| Ballerina Language       | Ballerina Swan Lake 2201.0.0 |
+| Ballerina Language       | Ballerina Swan Lake 2201.2.1 |
 | Cloudmersive API         | v1                         |
 
 

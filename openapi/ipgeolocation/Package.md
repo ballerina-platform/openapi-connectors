@@ -9,7 +9,7 @@ The IP Geolocation connector allows you to look up the location, timezone, count
 #### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake 2201.0.0    |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.2.1    |
 | IP Geolocation API Version    | v1                            |
 
 ## Report issues

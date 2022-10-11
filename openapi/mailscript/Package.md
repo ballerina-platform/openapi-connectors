@@ -9,7 +9,7 @@ This package provides the capability to manage emails.
 ### Compatibility
 |                    |  Version        |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.0.0|
+| Ballerina Language | Swan Lake 2201.2.1|
 | Mailscript API     | v2              |
  
 ## Report issues

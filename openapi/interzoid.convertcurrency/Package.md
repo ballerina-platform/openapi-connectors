@@ -7,7 +7,7 @@ The `ballerinax/interzoid.convertcurrency` is a [Ballerina](https://ballerina.io
 ### Compatibility
 |                                | Version                   |
 |--------------------------------|---------------------------|
-| Ballerina Language             | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language             | Ballerina Swan Lake 2201.2.1|
 | Interzoid Convert Currency API | 1.0.0                     |
 
 ## Report issues

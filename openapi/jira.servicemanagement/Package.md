@@ -7,7 +7,7 @@ This package provides the capability to access Jira related operations and curre
 ### Compatibility
 |                             | Version                   |
 |-----------------------------|---------------------------|
-| Ballerina Language          | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language          | Ballerina Swan Lake 2201.2.1|
 | Jira Service Management API | V2                        |
 
 ## Report issues

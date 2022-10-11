@@ -8,7 +8,7 @@ This package provides the capability to easily access  HubSpot Marketing.
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake 2201.0.0 |
+| Ballerina Language   | Ballerina Swan Lake 2201.2.1 |
 | HubSpot REST API     | V3                         | 
 
 ## Report issues

@@ -9,7 +9,7 @@ This package provides the capability to easily access Workday common service rel
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake 2201.0.0 |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.2.1 |
 | API Version                   | v1                         |
 
 ## Report issues

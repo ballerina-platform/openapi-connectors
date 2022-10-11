@@ -6,7 +6,7 @@ The `ballerinax/chaingateway` is a [Ballerina](https://ballerina.io/) connector 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language | Ballerina Swan Lake 2201.2.1|
 | Chaingateway API   | 1.0                       |
 
 ## Report issues

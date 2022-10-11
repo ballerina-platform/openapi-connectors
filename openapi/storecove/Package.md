@@ -9,7 +9,7 @@ This package provides the capability to perform e-invoicing solutions through [S
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.0.0|
+| Ballerina Language | Swan Lake 2201.2.1|
 | Storecove API      | 2               |
 
 ## Report issues

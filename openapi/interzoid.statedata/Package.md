@@ -7,7 +7,7 @@ The `ballerinax/interzoid.statedata` is a [Ballerina](https://ballerina.io/) con
 ### Compatibility
 |                             | Version                   |
 |-----------------------------|---------------------------|
-| Ballerina Language          | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language          | Ballerina Swan Lake 2201.2.1|
 | Interzoid State Data API    | 1.0.0                     |
 
 ## Report issues

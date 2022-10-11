@@ -6,7 +6,7 @@ The `ballerinax/elasticsearch` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                    | Version          |
 |--------------------|------------------|
-| Ballerina Language | Swan Lake 2201.0.0 |
+| Ballerina Language | Swan Lake 2201.2.1 |
 | Elasticsearch API  | v1               |
 
 ## Report issues

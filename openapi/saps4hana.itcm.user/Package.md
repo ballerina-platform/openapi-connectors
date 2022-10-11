@@ -6,7 +6,7 @@ The `ballerinax/saps4hana.itcm.user` is a [Ballerina](https://ballerina.io/) con
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language | Ballerina Swan Lake 2201.2.1|
 | SAPS4HANA ITCM API | 1.0.0                     |
 
 ## Report issues

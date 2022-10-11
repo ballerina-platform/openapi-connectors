@@ -7,7 +7,7 @@ This package provides the capability to access Paypal Payments API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.0.0      | 
+| Ballerina Language            | Ballerina Swan Lake 2201.2.1      | 
 | Paypal Payments API           | v2                              |
 
 ## Report issues

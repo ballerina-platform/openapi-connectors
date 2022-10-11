@@ -7,7 +7,7 @@ This package provides the capability to access Shippit API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.0.0      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
 | Shippit API                       | 3.0.20201008                    |
 
 ## Report issues

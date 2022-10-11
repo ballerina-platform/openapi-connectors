@@ -4,7 +4,7 @@ The GoDaddy Countries is a [Ballerina](https://ballerina.io/) connector for GoDa
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language           | Ballerina Swan Lake 2201.2.1|
 | GoDaddy Countries API        | v1                        |
 
 ## Report issues

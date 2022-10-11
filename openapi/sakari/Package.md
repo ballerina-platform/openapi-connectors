@@ -7,7 +7,7 @@ This package provides the capability to businesses to send SMS reminders, alerts
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake 2201.0.0     |
+| Ballerina Language Version    | Swan Lake 2201.2.1     |
 | API Version                   | 1.0.1                 |
 
 ## Report issues

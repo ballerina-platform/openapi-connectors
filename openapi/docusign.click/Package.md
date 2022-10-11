@@ -6,7 +6,7 @@ The `ballerinax/docusign.click` is a [Ballerina](https://ballerina.io/) connecto
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake 2201.0.0    | 
+| Ballerina Language    | Ballerina Swan Lake 2201.2.1    | 
 | DocuSign Click API    | v1                            |
 
 ## Report issues

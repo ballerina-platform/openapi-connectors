@@ -7,7 +7,7 @@ This package provides the capability to access Vimeo API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.0.0      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
 | Vimeo API                         | v3.4                            |
 
 ## Report issues

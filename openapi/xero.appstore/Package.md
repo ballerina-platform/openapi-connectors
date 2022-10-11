@@ -6,7 +6,7 @@ The `ballerinax/xero.appstore` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                    | Version                     |
 |--------------------|-----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.0.0|
+| Ballerina Language | Ballerina Swan Lake 2201.2.1|
 | Xero AppStore API  | 2.18.0                      |
 
 ## Report issues

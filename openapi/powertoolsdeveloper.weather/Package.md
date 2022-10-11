@@ -7,7 +7,7 @@ This package provides the capability to access Apptigent Powertools Developer We
 ### Compatibility
 |                                     | Version                         |
 |-------------------------------------|---------------------------------|
-| Ballerina Language                  | Ballerina Swan Lake 2201.0.0      | 
+| Ballerina Language                  | Ballerina Swan Lake 2201.2.1      | 
 | Apptigent Powertools Developer API  | 2021.3.01                       |
 
 ## Report issues

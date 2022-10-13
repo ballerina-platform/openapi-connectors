@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Alfresco API](https://docs.alfresco.com/content-services) OpenAPI Specification.
@@ -75,7 +79,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listComments(string nodeId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns CommentPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/comments`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/comments`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + payload - The comment text. Note that you can also provide a list of comments. 
     # + return - Successful response 
     remote isolated function createComment(string nodeId, CommentBody payload, string[]? fields = ()) returns CommentEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/comments`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/comments`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -107,7 +111,7 @@ public isolated client class Client {
     # + payload - The JSON representing the comment to be updated. 
     # + return - Successful response 
     remote isolated function updateComment(string nodeId, string commentId, CommentBody payload, string[]? fields = ()) returns CommentEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/comments/${commentId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -123,8 +127,8 @@ public isolated client class Client {
     # + commentId - The identifier of a comment. 
     # + return - Successful response 
     remote isolated function deleteComment(string nodeId, string commentId) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/comments/${commentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/comments/${getEncodedUri(commentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List ratings
@@ -135,7 +139,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listRatings(string nodeId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns RatingPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/ratings`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/ratings`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -149,7 +153,7 @@ public isolated client class Client {
     # + payload - For "myRating" the type is specific to the rating scheme, boolean for the likes and an integer for the fiveStar. 
     # + return - Successful response 
     remote isolated function createRating(string nodeId, RatingBody payload, string[]? fields = ()) returns RatingEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/ratings`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/ratings`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -166,7 +170,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getRating(string nodeId, string ratingId, string[]? fields = ()) returns RatingEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/ratings/${ratingId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/ratings/${getEncodedUri(ratingId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -179,8 +183,8 @@ public isolated client class Client {
     # + ratingId - The identifier of a rating. 
     # + return - Successful response 
     remote isolated function deleteRating(string nodeId, string ratingId) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/ratings/${ratingId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/ratings/${getEncodedUri(ratingId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List tags for a node
@@ -191,7 +195,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listTagsForNode(string nodeId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns TagPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/tags`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/tags`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -205,7 +209,7 @@ public isolated client class Client {
     # + payload - The new tag 
     # + return - Successful response 
     remote isolated function createTagForNode(string nodeId, TagBody payload, string[]? fields = ()) returns TagEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/tags`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/tags`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -221,8 +225,8 @@ public isolated client class Client {
     # + tagId - The identifier of a tag. 
     # + return - Successful response 
     remote isolated function deleteTagFromNode(string nodeId, string tagId) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/tags/${tagId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/tags/${getEncodedUri(tagId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a node
@@ -233,7 +237,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getNode(string nodeId, string[]? include = (), string? relativePath = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}`;
         map<anydata> queryParam = {"include": include, "relativePath": relativePath, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -248,7 +252,7 @@ public isolated client class Client {
     # + payload - The node information to update. 
     # + return - Successful response 
     remote isolated function updateNode(string nodeId, NodeBodyUpdate payload, string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -264,10 +268,10 @@ public isolated client class Client {
     # + permanent - If **true** then the node is deleted permanently, without moving to the trashcan. Only the owner of the node or an admin can permanently delete the node. 
     # + return - Successful response 
     remote isolated function deleteNode(string nodeId, boolean permanent = false) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}`;
         map<anydata> queryParam = {"permanent": permanent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List node children
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listNodeChildren(string nodeId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string? 'where = (), string[]? include = (), string? relativePath = (), boolean? includeSource = (), string[]? fields = ()) returns NodeChildAssociationPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/children`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/children`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "where": 'where, "include": include, "relativePath": relativePath, "includeSource": includeSource, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -301,7 +305,7 @@ public isolated client class Client {
     # + payload - The node information to create. 
     # + return - Successful response 
     remote isolated function createNode(string nodeId, NodeBodyCreate payload, boolean? autoRename = (), boolean? majorVersion = (), boolean? versioningEnabled = (), string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/children`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/children`;
         map<anydata> queryParam = {"autoRename": autoRename, "majorVersion": majorVersion, "versioningEnabled": versioningEnabled, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -319,7 +323,7 @@ public isolated client class Client {
     # + payload - The targetParentId and, optionally, a new name which should include the fileÂ extension. 
     # + return - Successful response 
     remote isolated function copyNode(string nodeId, NodeBodyCopy payload, string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/copy`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/copy`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -337,7 +341,7 @@ public isolated client class Client {
     # + payload - Lock details. 
     # + return - Successful response 
     remote isolated function lockNode(string nodeId, NodeBodyLock payload, string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/lock`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/lock`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -354,7 +358,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function unlockNode(string nodeId, string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/unlock`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/unlock`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -371,7 +375,7 @@ public isolated client class Client {
     # + payload - The targetParentId and, optionally, a new name which should include the fileÂ extension. 
     # + return - Successful response 
     remote isolated function moveNode(string nodeId, NodeBodyMove payload, string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/move`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/move`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -389,7 +393,7 @@ public isolated client class Client {
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
     remote isolated function getNodeContent(string nodeId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
-        string resourcePath = string `/nodes/${nodeId}/content`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -408,7 +412,7 @@ public isolated client class Client {
     # + payload - The binary content 
     # + return - Successful response 
     remote isolated function updateNodeContent(string nodeId, byte[] payload, boolean majorVersion = false, string? comment = (), string? name = (), string[]? include = (), string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/content`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/content`;
         map<anydata> queryParam = {"majorVersion": majorVersion, "comment": comment, "name": name, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -423,7 +427,7 @@ public isolated client class Client {
     # + 'where - A string to restrict the returned objects by using a predicate. 
     # + return - Successful response 
     remote isolated function listRenditions(string nodeId, string? 'where = ()) returns RenditionPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/renditions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/renditions`;
         map<anydata> queryParam = {"where": 'where};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RenditionPaging response = check self.clientEp->get(resourcePath);
@@ -435,7 +439,7 @@ public isolated client class Client {
     # + payload - The rendition "id". 
     # + return - Request accepted 
     remote isolated function createRendition(string nodeId, RenditionBodyCreate payload) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/renditions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/renditions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -448,7 +452,7 @@ public isolated client class Client {
     # + renditionId - The name of a thumbnail rendition, for example *doclib*, or *pdf*. 
     # + return - Successful response 
     remote isolated function getRendition(string nodeId, string renditionId) returns RenditionEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/renditions/${renditionId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/renditions/${getEncodedUri(renditionId)}`;
         RenditionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -462,7 +466,7 @@ public isolated client class Client {
     # + placeholder - If **true** and there is no rendition for this **nodeId** and **renditionId**, then the placeholder image for the mime type of this rendition is returned, rather than a 404 response. 
     # + return - Successful response 
     remote isolated function getRenditionContent(string nodeId, string renditionId, boolean attachment = true, string? ifModifiedSince = (), string? range = (), boolean placeholder = false) returns string|error? {
-        string resourcePath = string `/nodes/${nodeId}/renditions/${renditionId}/content`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/renditions/${getEncodedUri(renditionId)}/content`;
         map<anydata> queryParam = {"attachment": attachment, "placeholder": placeholder};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -481,7 +485,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listSecondaryChildren(string nodeId, string? 'where = (), string[]? include = (), int skipCount = 0, int maxItems = 100, boolean? includeSource = (), string[]? fields = ()) returns NodeChildAssociationPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/secondary-children`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/secondary-children`;
         map<anydata> queryParam = {"where": 'where, "include": include, "skipCount": skipCount, "maxItems": maxItems, "includeSource": includeSource, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -495,7 +499,7 @@ public isolated client class Client {
     # + payload - The child node id and assoc type. 
     # + return - Successful response 
     remote isolated function createSecondaryChildAssociation(string nodeId, ChildAssociationBody payload, string[]? fields = ()) returns ChildAssociationEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/secondary-children`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/secondary-children`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -512,10 +516,10 @@ public isolated client class Client {
     # + assocType - Only delete associations of this type. 
     # + return - Successful response 
     remote isolated function deleteSecondaryChildAssociation(string nodeId, string childId, string? assocType = ()) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/secondary-children/${childId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/secondary-children/${getEncodedUri(childId)}`;
         map<anydata> queryParam = {"assocType": assocType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List parents
@@ -529,7 +533,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listParents(string nodeId, string? 'where = (), string[]? include = (), int skipCount = 0, int maxItems = 100, boolean? includeSource = (), string[]? fields = ()) returns NodeAssociationPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/parents`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/parents`;
         map<anydata> queryParam = {"where": 'where, "include": include, "skipCount": skipCount, "maxItems": maxItems, "includeSource": includeSource, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -544,7 +548,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listTargetAssociations(string nodeId, string? 'where = (), string[]? include = (), string[]? fields = ()) returns NodeAssociationPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/targets`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/targets`;
         map<anydata> queryParam = {"where": 'where, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -558,7 +562,7 @@ public isolated client class Client {
     # + payload - The target node id and assoc type. 
     # + return - Successful response 
     remote isolated function createAssociation(string nodeId, AssociationBody payload, string[]? fields = ()) returns AssociationEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/targets`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/targets`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -575,10 +579,10 @@ public isolated client class Client {
     # + assocType - Only delete associations of this type. 
     # + return - Successful response 
     remote isolated function deleteAssociation(string nodeId, string targetId, string? assocType = ()) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/targets/${targetId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/targets/${getEncodedUri(targetId)}`;
         map<anydata> queryParam = {"assocType": assocType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List source associations
@@ -589,7 +593,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listSourceAssociations(string nodeId, string? 'where = (), string[]? include = (), string[]? fields = ()) returns NodeAssociationPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/sources`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/sources`;
         map<anydata> queryParam = {"where": 'where, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -605,7 +609,7 @@ public isolated client class Client {
     # + maxItems - The maximum number of items to return in the list. If not supplied then the default value is 100. 
     # + return - Successful response 
     remote isolated function listVersionHistory(string nodeId, string[]? include = (), string[]? fields = (), int skipCount = 0, int maxItems = 100) returns VersionPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/versions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions`;
         map<anydata> queryParam = {"include": include, "fields": fields, "skipCount": skipCount, "maxItems": maxItems};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -618,7 +622,7 @@ public isolated client class Client {
     # + versionId - The identifier of a version, ie. version label, within the version history of a node. 
     # + return - Successful response 
     remote isolated function getVersion(string nodeId, string versionId) returns VersionEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}`;
         VersionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -628,8 +632,8 @@ public isolated client class Client {
     # + versionId - The identifier of a version, ie. version label, within the version history of a node. 
     # + return - Successful response 
     remote isolated function deleteVersion(string nodeId, string versionId) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get version content
@@ -641,7 +645,7 @@ public isolated client class Client {
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
     remote isolated function getVersionContent(string nodeId, string versionId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/content`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -657,7 +661,7 @@ public isolated client class Client {
     # + payload - Optionally, specify a version comment and whether this should be a major version, or not. 
     # + return - Successful response 
     remote isolated function revertVersion(string nodeId, string versionId, RevertBody payload, string[]? fields = ()) returns VersionEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/revert`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/revert`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -674,7 +678,7 @@ public isolated client class Client {
     # + 'where - A string to restrict the returned objects by using a predicate. 
     # + return - Successful response 
     remote isolated function listVersionRenditions(string nodeId, string versionId, string? 'where = ()) returns RenditionPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/renditions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/renditions`;
         map<anydata> queryParam = {"where": 'where};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RenditionPaging response = check self.clientEp->get(resourcePath);
@@ -687,7 +691,7 @@ public isolated client class Client {
     # + payload - The rendition "id". 
     # + return - Request accepted 
     remote isolated function createVersionRendition(string nodeId, string versionId, RenditionBodyCreate payload) returns http:Response|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/renditions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/renditions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -701,7 +705,7 @@ public isolated client class Client {
     # + renditionId - The name of a thumbnail rendition, for example *doclib*, or *pdf*. 
     # + return - Successful response 
     remote isolated function getVersionRendition(string nodeId, string versionId, string renditionId) returns RenditionEntry|error {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/renditions/${renditionId}`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/renditions/${getEncodedUri(renditionId)}`;
         RenditionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -716,7 +720,7 @@ public isolated client class Client {
     # + placeholder - If **true** and there is no rendition for this **nodeId** and **renditionId**, then the placeholder image for the mime type of this rendition is returned, rather than a 404 response. 
     # + return - Successful response 
     remote isolated function getVersionRenditionContent(string nodeId, string versionId, string renditionId, boolean attachment = true, string? ifModifiedSince = (), string? range = (), boolean placeholder = false) returns string|error? {
-        string resourcePath = string `/nodes/${nodeId}/versions/${versionId}/renditions/${renditionId}/content`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/versions/${getEncodedUri(versionId)}/renditions/${getEncodedUri(renditionId)}/content`;
         map<anydata> queryParam = {"attachment": attachment, "placeholder": placeholder};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -733,7 +737,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function nodeActions(string nodeId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string[]? fields = ()) returns ActionDefinitionList|error {
-        string resourcePath = string `/nodes/${nodeId}/action-definitions`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/action-definitions`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -760,7 +764,7 @@ public isolated client class Client {
     # + include - Returns additional information about the node. The following optional fields can be requested: * allowableOperations * association * isLink * isFavorite * isLocked * path * permissions * definition 
     # + return - Successful response 
     remote isolated function getDeletedNode(string nodeId, string[]? include = ()) returns DeletedNodeEntry|error {
-        string resourcePath = string `/deleted-nodes/${nodeId}`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}`;
         map<anydata> queryParam = {"include": include};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -772,8 +776,8 @@ public isolated client class Client {
     # + nodeId - The identifier of a node. 
     # + return - Successful response 
     remote isolated function deleteDeletedNode(string nodeId) returns http:Response|error {
-        string resourcePath = string `/deleted-nodes/${nodeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get deleted node content
@@ -784,7 +788,7 @@ public isolated client class Client {
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
     remote isolated function getDeletedNodeContent(string nodeId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
-        string resourcePath = string `/deleted-nodes/${nodeId}/content`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -799,7 +803,7 @@ public isolated client class Client {
     # + payload - The targetParentId if the node is restored to a new location. 
     # + return - Successful response 
     remote isolated function restoreDeletedNode(string nodeId, DeletedNodeBodyRestore payload, string[]? fields = ()) returns NodeEntry|error {
-        string resourcePath = string `/deleted-nodes/${nodeId}/restore`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}/restore`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -815,7 +819,7 @@ public isolated client class Client {
     # + 'where - A string to restrict the returned objects by using a predicate. 
     # + return - Successful response 
     remote isolated function listDeletedNodeRenditions(string nodeId, string? 'where = ()) returns RenditionPaging|error {
-        string resourcePath = string `/deleted-nodes/${nodeId}/renditions`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}/renditions`;
         map<anydata> queryParam = {"where": 'where};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RenditionPaging response = check self.clientEp->get(resourcePath);
@@ -827,7 +831,7 @@ public isolated client class Client {
     # + renditionId - The name of a thumbnail rendition, for example *doclib*, or *pdf*. 
     # + return - Successful response 
     remote isolated function getArchivedNodeRendition(string nodeId, string renditionId) returns RenditionEntry|error {
-        string resourcePath = string `/deleted-nodes/${nodeId}/renditions/${renditionId}`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}/renditions/${getEncodedUri(renditionId)}`;
         RenditionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -841,7 +845,7 @@ public isolated client class Client {
     # + placeholder - If **true** and there is no rendition for this **nodeId** and **renditionId**, then the placeholder image for the mime type of this rendition is returned, rather than a 404 response. 
     # + return - Successful response 
     remote isolated function getArchivedNodeRenditionContent(string nodeId, string renditionId, boolean attachment = true, string? ifModifiedSince = (), string? range = (), boolean placeholder = false) returns string|error? {
-        string resourcePath = string `/deleted-nodes/${nodeId}/renditions/${renditionId}/content`;
+        string resourcePath = string `/deleted-nodes/${getEncodedUri(nodeId)}/renditions/${getEncodedUri(renditionId)}/content`;
         map<anydata> queryParam = {"attachment": attachment, "placeholder": placeholder};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -871,7 +875,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Download node information 
     remote isolated function getDownload(string downloadId, string[]? fields = ()) returns DownloadEntry|error {
-        string resourcePath = string `/downloads/${downloadId}`;
+        string resourcePath = string `/downloads/${getEncodedUri(downloadId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -883,8 +887,8 @@ public isolated client class Client {
     # + downloadId - The identifier of a download node. 
     # + return - The request to cancel a download was accepted 
     remote isolated function cancelDownload(string downloadId) returns http:Response|error {
-        string resourcePath = string `/downloads/${downloadId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/downloads/${getEncodedUri(downloadId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List people
@@ -925,7 +929,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getPerson(string personId, string[]? fields = ()) returns PersonEntry|error {
-        string resourcePath = string `/people/${personId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -939,7 +943,7 @@ public isolated client class Client {
     # + payload - The person details. 
     # + return - Successful response 
     remote isolated function updatePerson(string personId, PersonBodyUpdate payload, string[]? fields = ()) returns PersonEntry|error {
-        string resourcePath = string `/people/${personId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -959,7 +963,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listActivitiesForPerson(string personId, int skipCount = 0, int maxItems = 100, string? who = (), string? siteId = (), string[]? fields = ()) returns ActivityPaging|error {
-        string resourcePath = string `/people/${personId}/activities`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/activities`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "who": who, "siteId": siteId, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -977,7 +981,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function listFavoriteSitesForPerson(string personId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns SitePaging|error {
-        string resourcePath = string `/people/${personId}/favorite-sites`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorite-sites`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -994,7 +998,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function createSiteFavorite(string personId, FavoriteSiteBodyCreate payload, string[]? fields = ()) returns FavoriteSiteEntry|error {
-        string resourcePath = string `/people/${personId}/favorite-sites`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorite-sites`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1014,7 +1018,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getFavoriteSite(string personId, string siteId, string[]? fields = ()) returns SiteEntry|error {
-        string resourcePath = string `/people/${personId}/favorite-sites/${siteId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorite-sites/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1030,8 +1034,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function deleteSiteFavorite(string personId, string siteId) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/favorite-sites/${siteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorite-sites/${getEncodedUri(siteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List favorites
@@ -1045,7 +1049,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listFavorites(string personId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string? 'where = (), string[]? include = (), string[]? fields = ()) returns FavoritePaging|error {
-        string resourcePath = string `/people/${personId}/favorites`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorites`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "where": 'where, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1060,7 +1064,7 @@ public isolated client class Client {
     # + payload - An object identifying the entity to be favorited. 
     # + return - Successful response 
     remote isolated function createFavorite(string personId, FavoriteBodyCreate payload, string[]? include = (), string[]? fields = ()) returns FavoriteEntry|error {
-        string resourcePath = string `/people/${personId}/favorites`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorites`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1078,7 +1082,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getFavorite(string personId, string favoriteId, string[]? include = (), string[]? fields = ()) returns FavoriteEntry|error {
-        string resourcePath = string `/people/${personId}/favorites/${favoriteId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorites/${getEncodedUri(favoriteId)}`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1091,8 +1095,8 @@ public isolated client class Client {
     # + favoriteId - The identifier of a favorite. 
     # + return - Successful response 
     remote isolated function deleteFavorite(string personId, string favoriteId) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/favorites/${favoriteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/people/${getEncodedUri(personId)}/favorites/${getEncodedUri(favoriteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List network membership
@@ -1103,7 +1107,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listNetworksForPerson(string personId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns PersonNetworkPaging|error {
-        string resourcePath = string `/people/${personId}/networks`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/networks`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1117,7 +1121,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getNetworkForPerson(string personId, string networkId, string[]? fields = ()) returns PersonNetworkEntry|error {
-        string resourcePath = string `/people/${personId}/networks/${networkId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/networks/${getEncodedUri(networkId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1132,7 +1136,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listPreferences(string personId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns PreferencePaging|error {
-        string resourcePath = string `/people/${personId}/preferences`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/preferences`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1146,7 +1150,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getPreference(string personId, string preferenceName, string[]? fields = ()) returns PreferenceEntry|error {
-        string resourcePath = string `/people/${personId}/preferences/${preferenceName}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/preferences/${getEncodedUri(preferenceName)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1161,7 +1165,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listSiteMembershipRequestsForPerson(string personId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns SiteMembershipRequestPaging|error {
-        string resourcePath = string `/people/${personId}/site-membership-requests`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/site-membership-requests`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1175,7 +1179,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSiteMembershipRequestForPerson(string personId, string siteId, string[]? fields = ()) returns SiteMembershipRequestEntry|error {
-        string resourcePath = string `/people/${personId}/site-membership-requests/${siteId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/site-membership-requests/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1190,7 +1194,7 @@ public isolated client class Client {
     # + payload - The new message to display 
     # + return - Successful response 
     remote isolated function updateSiteMembershipRequestForPerson(string personId, string siteId, SiteMembershipRequestBodyUpdate payload, string[]? fields = ()) returns SiteMembershipRequestEntry|error {
-        string resourcePath = string `/people/${personId}/site-membership-requests/${siteId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/site-membership-requests/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1206,8 +1210,8 @@ public isolated client class Client {
     # + siteId - The identifier of a site. 
     # + return - Successful response 
     remote isolated function deleteSiteMembershipRequestForPerson(string personId, string siteId) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/site-membership-requests/${siteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/people/${getEncodedUri(personId)}/site-membership-requests/${getEncodedUri(siteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List site memberships
@@ -1221,7 +1225,7 @@ public isolated client class Client {
     # + 'where - A string to restrict the returned objects by using a predicate. 
     # + return - Successful response 
     remote isolated function listSiteMembershipsForPerson(string personId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string[]? relations = (), string[]? fields = (), string? 'where = ()) returns SiteRolePaging|error {
-        string resourcePath = string `/people/${personId}/sites`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/sites`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "relations": relations, "fields": fields, "where": 'where};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "relations": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1234,7 +1238,7 @@ public isolated client class Client {
     # + siteId - The identifier of a site. 
     # + return - Successful response 
     remote isolated function getSiteMembershipForPerson(string personId, string siteId) returns SiteRoleEntry|error {
-        string resourcePath = string `/people/${personId}/sites/${siteId}`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/sites/${getEncodedUri(siteId)}`;
         SiteRoleEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1244,8 +1248,8 @@ public isolated client class Client {
     # + siteId - The identifier of a site. 
     # + return - Successful response 
     remote isolated function deleteSiteMembershipForPerson(string personId, string siteId) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/sites/${siteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/people/${getEncodedUri(personId)}/sites/${getEncodedUri(siteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List group memberships
@@ -1259,7 +1263,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listGroupMembershipsForPerson(string personId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string[]? include = (), string? 'where = (), string[]? fields = ()) returns GroupPaging|error {
-        string resourcePath = string `/people/${personId}/groups`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/groups`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "include": include, "where": 'where, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1272,7 +1276,7 @@ public isolated client class Client {
     # + payload - The client name to send email with app-specific url. 
     # + return - Successful response or even when the **personId** does not exist or the user is disabled by an Administrator 
     remote isolated function requestPasswordReset(string personId, ClientBody payload) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/request-password-reset`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/request-password-reset`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1285,7 +1289,7 @@ public isolated client class Client {
     # + payload - The reset password details 
     # + return - Successful response or even when no workflow instance is found with the given **id** or the workflow instance is invalid (already been used or expired) or the given **personId** does not match the person's id requesting the password reset or the given workflow **key** does not match the recovered key. 
     remote isolated function resetPassword(string personId, PasswordResetBody payload) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/reset-password`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/reset-password`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1300,7 +1304,7 @@ public isolated client class Client {
     # + placeholder - If **true** and there is no avatar for this **personId** then the placeholder image is returned, rather than a 404 response. 
     # + return - Successful response 
     remote isolated function getAvatarImage(string personId, boolean attachment = true, string? ifModifiedSince = (), boolean placeholder = true) returns string|error {
-        string resourcePath = string `/people/${personId}/avatar`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/avatar`;
         map<anydata> queryParam = {"attachment": attachment, "placeholder": placeholder};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince};
@@ -1314,7 +1318,7 @@ public isolated client class Client {
     # + payload - The binary content 
     # + return - Successful response 
     remote isolated function updateAvatarImage(string personId, byte[] payload) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/avatar`;
+        string resourcePath = string `/people/${getEncodedUri(personId)}/avatar`;
         http:Request request = new;
         request.setPayload(payload, "application/octet-stream");
         http:Response response = check self.clientEp->put(resourcePath, request);
@@ -1325,8 +1329,8 @@ public isolated client class Client {
     # + personId - The identifier of a person. 
     # + return - Successful response 
     remote isolated function deleteAvatarImage(string personId) returns http:Response|error {
-        string resourcePath = string `/people/${personId}/avatar`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/people/${getEncodedUri(personId)}/avatar`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List sites
@@ -1371,7 +1375,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSite(string siteId, string[]? relations = (), string[]? fields = ()) returns SiteEntry|error {
-        string resourcePath = string `/sites/${siteId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"relations": relations, "fields": fields};
         map<Encoding> queryParamEncoding = {"relations": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1385,7 +1389,7 @@ public isolated client class Client {
     # + payload - The site information to update. 
     # + return - Successful response 
     remote isolated function updateSite(string siteId, SiteBodyUpdate payload, string[]? fields = ()) returns SiteEntry|error {
-        string resourcePath = string `/sites/${siteId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1401,10 +1405,10 @@ public isolated client class Client {
     # + permanent - Flag to indicate whether the site should be permanently deleted i.e. bypass the trashcan. 
     # + return - Successful response 
     remote isolated function deleteSite(string siteId, boolean permanent = false) returns http:Response|error {
-        string resourcePath = string `/sites/${siteId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}`;
         map<anydata> queryParam = {"permanent": permanent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List site containers
@@ -1415,7 +1419,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listSiteContainers(string siteId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns SiteContainerPaging|error {
-        string resourcePath = string `/sites/${siteId}/containers`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/containers`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1429,7 +1433,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSiteContainer(string siteId, string containerId, string[]? fields = ()) returns SiteContainerEntry|error {
-        string resourcePath = string `/sites/${siteId}/containers/${containerId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/containers/${getEncodedUri(containerId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1458,7 +1462,7 @@ public isolated client class Client {
     # + payload - Accepting a request to join, optionally, allows assignment of a role to the user. 
     # + return - Successful response 
     remote isolated function approveSiteMembershipRequest(string siteId, string inviteeId, SiteMembershipApprovalBody payload) returns http:Response|error {
-        string resourcePath = string `/sites/${siteId}/site-membership-requests/${inviteeId}/approve`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/site-membership-requests/${getEncodedUri(inviteeId)}/approve`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1472,7 +1476,7 @@ public isolated client class Client {
     # + payload - Rejecting a request to join, optionally, allows the inclusion of comment. 
     # + return - Successful response 
     remote isolated function rejectSiteMembershipRequest(string siteId, string inviteeId, SiteMembershipRejectionBody payload) returns http:Response|error {
-        string resourcePath = string `/sites/${siteId}/site-membership-requests/${inviteeId}/reject`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/site-membership-requests/${getEncodedUri(inviteeId)}/reject`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1488,7 +1492,7 @@ public isolated client class Client {
     # + 'where - Optionally filter the list. *   ```where=(isMemberOfGroup=false|true)``` 
     # + return - Successful response 
     remote isolated function listSiteMemberships(string siteId, int skipCount = 0, int maxItems = 100, string[]? fields = (), string? 'where = ()) returns SiteMemberPaging|error {
-        string resourcePath = string `/sites/${siteId}/members`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/members`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields, "where": 'where};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1502,7 +1506,7 @@ public isolated client class Client {
     # + payload - The person to add and their role 
     # + return - Successful response 
     remote isolated function createSiteMembership(string siteId, SiteMembershipBodyCreate payload, string[]? fields = ()) returns SiteMemberEntry|error {
-        string resourcePath = string `/sites/${siteId}/members`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/members`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1519,7 +1523,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSiteMembership(string siteId, string personId, string[]? fields = ()) returns SiteMemberEntry|error {
-        string resourcePath = string `/sites/${siteId}/members/${personId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/members/${getEncodedUri(personId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1534,7 +1538,7 @@ public isolated client class Client {
     # + payload - The persons new role 
     # + return - Successful response 
     remote isolated function updateSiteMembership(string siteId, string personId, SiteMembershipBodyUpdate payload, string[]? fields = ()) returns SiteMemberEntry|error {
-        string resourcePath = string `/sites/${siteId}/members/${personId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/members/${getEncodedUri(personId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1550,8 +1554,8 @@ public isolated client class Client {
     # + personId - The identifier of a person. 
     # + return - Successful response 
     remote isolated function deleteSiteMembership(string siteId, string personId) returns http:Response|error {
-        string resourcePath = string `/sites/${siteId}/members/${personId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/members/${getEncodedUri(personId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List group membership for site
@@ -1562,7 +1566,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listSiteGroups(string siteId, int skipCount = 0, int maxItems = 100, string[]? fields = ()) returns SiteGroupPaging|error {
-        string resourcePath = string `/sites/${siteId}/group-members`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/group-members`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1576,7 +1580,7 @@ public isolated client class Client {
     # + payload - The group to add and their role 
     # + return - Successful response 
     remote isolated function createSiteGroupMembership(string siteId, SiteMembershipBodyCreate payload, string[]? fields = ()) returns SiteGroupEntry|error {
-        string resourcePath = string `/sites/${siteId}/group-members`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/group-members`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1593,7 +1597,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSiteGroupMembership(string siteId, string groupId, string[]? fields = ()) returns SiteGroupEntry|error {
-        string resourcePath = string `/sites/${siteId}/group-members/${groupId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/group-members/${getEncodedUri(groupId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1608,7 +1612,7 @@ public isolated client class Client {
     # + payload - The groupId new role 
     # + return - Successful response 
     remote isolated function updateSiteGroupMembership(string siteId, string groupId, SiteMembershipBodyUpdate payload, string[]? fields = ()) returns SiteGroupEntry|error {
-        string resourcePath = string `/sites/${siteId}/group-members/${groupId}`;
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/group-members/${getEncodedUri(groupId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1624,8 +1628,8 @@ public isolated client class Client {
     # + groupId - The identifier of a group. 
     # + return - Successful response 
     remote isolated function deleteSiteGroupMembership(string siteId, string groupId) returns http:Response|error {
-        string resourcePath = string `/sites/${siteId}/group-members/${groupId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/sites/${getEncodedUri(siteId)}/group-members/${getEncodedUri(groupId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List tags
@@ -1649,7 +1653,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getTag(string tagId, string[]? fields = ()) returns TagEntry|error {
-        string resourcePath = string `/tags/${tagId}`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1663,7 +1667,7 @@ public isolated client class Client {
     # + payload - The updated tag 
     # + return - Successful response 
     remote isolated function updateTag(string tagId, TagBody payload, string[]? fields = ()) returns TagEntry|error {
-        string resourcePath = string `/tags/${tagId}`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1679,7 +1683,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getNetwork(string networkId, string[]? fields = ()) returns PersonNetworkEntry|error {
-        string resourcePath = string `/networks/${networkId}`;
+        string resourcePath = string `/networks/${getEncodedUri(networkId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1725,7 +1729,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getSharedLink(string sharedId, string[]? fields = ()) returns SharedLinkEntry|error {
-        string resourcePath = string `/shared-links/${sharedId}`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1737,8 +1741,8 @@ public isolated client class Client {
     # + sharedId - The identifier of a shared link to a file. 
     # + return - Successful response 
     remote isolated function deleteSharedLink(string sharedId) returns http:Response|error {
-        string resourcePath = string `/shared-links/${sharedId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get shared link content
@@ -1749,7 +1753,7 @@ public isolated client class Client {
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
     remote isolated function getSharedLinkContent(string sharedId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
-        string resourcePath = string `/shared-links/${sharedId}/content`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -1762,7 +1766,7 @@ public isolated client class Client {
     # + sharedId - The identifier of a shared link to a file. 
     # + return - Successful response 
     remote isolated function listSharedLinkRenditions(string sharedId) returns RenditionPaging|error {
-        string resourcePath = string `/shared-links/${sharedId}/renditions`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}/renditions`;
         RenditionPaging response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1772,7 +1776,7 @@ public isolated client class Client {
     # + renditionId - The name of a thumbnail rendition, for example *doclib*, or *pdf*. 
     # + return - Successful response 
     remote isolated function getSharedLinkRendition(string sharedId, string renditionId) returns RenditionEntry|error {
-        string resourcePath = string `/shared-links/${sharedId}/renditions/${renditionId}`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}/renditions/${getEncodedUri(renditionId)}`;
         RenditionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1785,7 +1789,7 @@ public isolated client class Client {
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
     remote isolated function getSharedLinkRenditionContent(string sharedId, string renditionId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
-        string resourcePath = string `/shared-links/${sharedId}/renditions/${renditionId}/content`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}/renditions/${getEncodedUri(renditionId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
@@ -1799,7 +1803,7 @@ public isolated client class Client {
     # + payload - The shared link email to send. 
     # + return - Successful response 
     remote isolated function emailSharedLink(string sharedId, SharedLinkBodyEmail payload) returns http:Response|error {
-        string resourcePath = string `/shared-links/${sharedId}/email`;
+        string resourcePath = string `/shared-links/${getEncodedUri(sharedId)}/email`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1811,7 +1815,7 @@ public isolated client class Client {
     # + probeId - The name of the probe: * -ready- * -live- 
     # + return - Successful response 
     remote isolated function getProbe(string probeId) returns ProbeEntry|error {
-        string resourcePath = string `/probes/${probeId}`;
+        string resourcePath = string `/probes/${getEncodedUri(probeId)}`;
         ProbeEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1907,7 +1911,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getGroup(string groupId, string[]? include = (), string[]? fields = ()) returns GroupEntry|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1922,7 +1926,7 @@ public isolated client class Client {
     # + payload - The group information to update. 
     # + return - Successful response 
     remote isolated function updateGroup(string groupId, GroupBodyUpdate payload, string[]? include = (), string[]? fields = ()) returns GroupEntry|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         map<anydata> queryParam = {"include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1938,10 +1942,10 @@ public isolated client class Client {
     # + cascade - If **true** then the delete will be applied in cascade to sub-groups. 
     # + return - Successful response 
     remote isolated function deleteGroup(string groupId, boolean cascade = false) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         map<anydata> queryParam = {"cascade": cascade};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List memberships of a group
@@ -1954,7 +1958,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listGroupMemberships(string groupId, int skipCount = 0, int maxItems = 100, string[]? orderBy = (), string? 'where = (), string[]? fields = ()) returns GroupMemberPaging|error {
-        string resourcePath = string `/groups/${groupId}/members`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/members`;
         map<anydata> queryParam = {"skipCount": skipCount, "maxItems": maxItems, "orderBy": orderBy, "where": 'where, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1968,7 +1972,7 @@ public isolated client class Client {
     # + payload - The group membership to add (person or sub-group). 
     # + return - Successful response 
     remote isolated function createGroupMembership(string groupId, GroupMembershipBodyCreate payload, string[]? fields = ()) returns GroupMemberEntry|error {
-        string resourcePath = string `/groups/${groupId}/members`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/members`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1984,8 +1988,8 @@ public isolated client class Client {
     # + groupMemberId - The identifier of a person or group. 
     # + return - Successful response 
     remote isolated function deleteGroupMembership(string groupId, string groupMemberId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/members/${groupMemberId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/members/${getEncodedUri(groupMemberId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List audit applications
@@ -2009,7 +2013,7 @@ public isolated client class Client {
     # + include - Also include the current minimum and/or maximum audit entry ids for the application. The following optional fields can be requested: * max * min 
     # + return - Successful response 
     remote isolated function getAuditApp(string auditApplicationId, string[]? fields = (), string[]? include = ()) returns AuditApp|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}`;
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}`;
         map<anydata> queryParam = {"fields": fields, "include": include};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2023,7 +2027,7 @@ public isolated client class Client {
     # + payload - The audit application to update. 
     # + return - Successful response 
     remote isolated function updateAuditApp(string auditApplicationId, AuditBodyUpdate payload, string[]? fields = ()) returns AuditApp|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}`;
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2045,7 +2049,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listAuditEntriesForAuditApp(string auditApplicationId, int skipCount = 0, boolean omitTotalItems = false, string[]? orderBy = (), int maxItems = 100, string? 'where = (), string[]? include = (), string[]? fields = ()) returns AuditEntryPaging|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}/audit-entries`;
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}/audit-entries`;
         map<anydata> queryParam = {"skipCount": skipCount, "omitTotalItems": omitTotalItems, "orderBy": orderBy, "maxItems": maxItems, "where": 'where, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2058,10 +2062,10 @@ public isolated client class Client {
     # + 'where - Audit entries to permanently delete for an audit application, given an inclusive time period or range of ids. For example: *   ```where=(createdAt BETWEEN ('2017-06-02T12:13:51.593+01:00' , '2017-06-04T10:05:16.536+01:00')``` *   ```where=(id BETWEEN ('1234', '4321')``` 
     # + return - Successful response 
     remote isolated function deleteAuditEntriesForAuditApp(string auditApplicationId, string 'where) returns http:Response|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}/audit-entries`;
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}/audit-entries`;
         map<anydata> queryParam = {"where": 'where};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get audit entry
@@ -2071,7 +2075,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function getAuditEntry(string auditApplicationId, string auditEntryId, string[]? fields = ()) returns AuditEntryEntry|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}/audit-entries/${auditEntryId}`;
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}/audit-entries/${getEncodedUri(auditEntryId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2084,8 +2088,8 @@ public isolated client class Client {
     # + auditEntryId - The identifier of an audit entry. 
     # + return - Successful response 
     remote isolated function deleteAuditEntry(string auditApplicationId, string auditEntryId) returns http:Response|error {
-        string resourcePath = string `/audit-applications/${auditApplicationId}/audit-entries/${auditEntryId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/audit-applications/${getEncodedUri(auditApplicationId)}/audit-entries/${getEncodedUri(auditEntryId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List audit entries for a node
@@ -2099,7 +2103,7 @@ public isolated client class Client {
     # + fields - A list of field names. You can use this parameter to restrict the fields returned within a response if, for example, you want to save on overall bandwidth. The list applies to a returned individual entity or entries within a collection. If the API method also supports the **include** parameter, then the fields specified in the **include** parameter are returned in addition to those specified in the **fields** parameter. 
     # + return - Successful response 
     remote isolated function listAuditEntriesForNode(string nodeId, int skipCount = 0, string[]? orderBy = (), int maxItems = 100, string? 'where = (), string[]? include = (), string[]? fields = ()) returns AuditEntryPaging|error {
-        string resourcePath = string `/nodes/${nodeId}/audit-entries`;
+        string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/audit-entries`;
         map<anydata> queryParam = {"skipCount": skipCount, "orderBy": orderBy, "maxItems": maxItems, "where": 'where, "include": include, "fields": fields};
         map<Encoding> queryParamEncoding = {"orderBy": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2126,7 +2130,7 @@ public isolated client class Client {
     # + actionDefinitionId - The identifier of an action definition. 
     # + return - Successful response 
     remote isolated function actionDetails(string actionDefinitionId) returns ActionDefinitionEntry|error {
-        string resourcePath = string `/action-definitions/${actionDefinitionId}`;
+        string resourcePath = string `/action-definitions/${getEncodedUri(actionDefinitionId)}`;
         ActionDefinitionEntry response = check self.clientEp->get(resourcePath);
         return response;
     }

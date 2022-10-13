@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type AccountModelArr AccountModel[];
 
@@ -120,6 +122,7 @@ public type CreateMultiDocumentModel record {
     # All individual transactions within this MultiDocument object will have this code as a prefix.
     #             
     # If you leave the `code` field blank, a GUID will be assigned.
+    @constraint:String {maxLength: 45}
     string code?;
     # Lines that will appear on the invoice.
     #             
@@ -140,6 +143,7 @@ public type CreateMultiDocumentModel record {
     string 'type?;
     # Company Code - Specify the code of the company creating this transaction here.  If you leave this value null,
     # your account's default company will be used instead.
+    @constraint:String {maxLength: 50}
     string companyCode?;
     # Transaction Date - The date on the invoice, purchase order, etc.
     #             
@@ -147,24 +151,29 @@ public type CreateMultiDocumentModel record {
     # different date to calculate tax rates, please specify a `taxOverride` of type `taxDate`.
     string date;
     # Salesperson Code - The client application salesperson reference code.
+    @constraint:String {maxLength: 25}
     string salespersonCode?;
     # Customer Code - The client application customer reference code.
     # Note: This field is case sensitive. To have exemption certificates apply, this value should
     # be the same as the one passed to create a customer.
+    @constraint:String {maxLength: 50}
     string customerCode;
     # DEPRECATED - Date: 10/16/2017, Version: 17.11, Message: Please use entityUseCode instead.
     # Customer Usage Type - The client application customer or usage type.
+    @constraint:String {maxLength: 25}
     string customerUsageType?;
     # Entity Use Code - The client application customer or usage type.  For a list of
     # available usage types, use [ListEntityUseCodes](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListEntityUseCodes/) API.
+    @constraint:String {maxLength: 25}
     string entityUseCode?;
     # Discount - The discount amount to apply to the document.  This value will be applied only to lines
     # that have the `discounted` flag set to true.  If no lines have `discounted` set to true, this discount
     # cannot be applied.
-    float discount?;
+    decimal discount?;
     # Purchase Order Number for this document.
     #             
     # This is required for single use exemption certificates to match the order and invoice with the certificate.
+    @constraint:String {maxLength: 50}
     string purchaseOrderNo?;
     # Exemption Number for this document.
     #             
@@ -172,6 +181,7 @@ public type CreateMultiDocumentModel record {
     # may be asked to provide proof of this exemption certificate in the event that you are asked by an auditor
     # to verify your exemptions.
     # Note: This is same as 'exemptNo' in TransactionModel.
+    @constraint:String {maxLength: 25}
     string exemptionNo?;
     # Information about all the addresses involved in this transaction.
     #             
@@ -199,20 +209,24 @@ public type CreateMultiDocumentModel record {
     #             
     # This field could be used to reference the original document for a return invoice, or for any other
     # reference purpose.
+    @constraint:String {maxLength: 1024}
     string referenceCode?;
     # Sets the sale location code (Outlet ID) for reporting this document to the tax authority.
     #             
     # This value is used by Avalara Managed Returns to group documents together by reporting locations
     # for tax authorities that require location-based reporting.
+    @constraint:String {maxLength: 50}
     string reportingLocationCode?;
     # Causes the document to be committed if true.  This option is only applicable for invoice document
     # types, not orders.
     boolean 'commit?;
     # BatchCode for batch operations.
+    @constraint:String {maxLength: 25}
     string batchCode?;
     # Represents a tax override for a transaction
     TaxOverrideModel taxOverride?;
     # The three-character ISO 4217 currency code for this transaction.
+    @constraint:String {maxLength: 3}
     string currencyCode?;
     # Specifies whether the tax calculation is handled Local, Remote, or Automatic (default).  This only
     # applies when using an AvaLocal server.
@@ -221,12 +235,14 @@ public type CreateMultiDocumentModel record {
     #             
     # This only needs to be set if the transaction currency is different than the company base currency.
     # It defaults to 1.0.
-    float exchangeRate?;
+    decimal exchangeRate?;
     # Effective date of the exchange rate.
     string exchangeRateEffectiveDate?;
     # Optional three-character ISO 4217 reporting exchange rate currency code for this transaction. The default value is USD.
+    @constraint:String {maxLength: 3}
     string exchangeRateCurrencyCode?;
     # Sets the Point of Sale Lane Code sent by the User for this document.
+    @constraint:String {maxLength: 50}
     string posLaneCode?;
     # VAT business identification number for the customer for this transaction.  This number will be used for all lines
     # in the transaction, except for those lines where you have defined a different business identification number.
@@ -234,6 +250,7 @@ public type CreateMultiDocumentModel record {
     # If you specify a VAT business identification number for the customer in this transaction and you have also set up
     # a business identification number for your company during company setup, this transaction will be treated as a
     # business-to-business transaction for VAT purposes and it will be calculated according to VAT tax rules.
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
     # Specifies if the transaction should have value-added and cross-border taxes calculated with the seller as the importer of record.
     #             
@@ -246,14 +263,17 @@ public type CreateMultiDocumentModel record {
     # This value may also be set at the Nexus level.  See `NexusModel` for more information.
     boolean isSellerImporterOfRecord?;
     # User-supplied description for this transaction.
+    @constraint:String {maxLength: 2048}
     string description?;
     # User-supplied email address relevant for this transaction.
+    @constraint:String {maxLength: 50}
     string email?;
     # If the user wishes to request additional debug information from this transaction, specify a level higher than `normal`.
     string debugLevel?;
     # The name of the supplier / exporter / seller.
     # For sales doctype enter the name of your own company for which you are reporting.
     # For purchases doctype enter the name of the supplier you have purchased from.
+    @constraint:String {maxLength: 200}
     string customerSupplierName?;
     # The Id of the datasource from which this transaction originated.
     # This value will be overridden by the system to take the datasource Id from the call header.
@@ -270,6 +290,7 @@ public type SubscriptionTypeModel record {
     # The unique ID number of this subscription type.
     int id?;
     # The friendly name of the service this subscription type represents.
+    @constraint:String {maxLength: 255}
     string description;
 };
 
@@ -403,15 +424,15 @@ public type TransactionModel record {
     # If a tax override was applied to this transaction, indicates what type of tax override was applied.
     string taxOverrideType?;
     # If a tax override was applied to this transaction, indicates the amount of tax that was requested by the customer.
-    float taxOverrideAmount?;
+    decimal taxOverrideAmount?;
     # If a tax override was applied to this transaction, indicates the reason for the tax override.
     string taxOverrideReason?;
     # The total amount of this transaction.
-    float totalAmount?;
+    decimal totalAmount?;
     # The amount of this transaction that was exempt.
-    float totalExempt?;
+    decimal totalExempt?;
     # The total amount of discounts applied to all lines within this transaction.
-    float totalDiscount?;
+    decimal totalDiscount?;
     # The total tax for all lines in this transaction.
     #             
     # If you used a `taxOverride` of type `taxAmount` for any lines in this transaction, this value
@@ -421,9 +442,9 @@ public type TransactionModel record {
     #             
     # You can compare the `totalTax` and `totalTaxCalculated` fields to check for any discrepancies
     # between an external tax calculation provider and the calculation performed by AvaTax.
-    float totalTax?;
+    decimal totalTax?;
     # The portion of the total amount of this transaction that was taxable.
-    float totalTaxable?;
+    decimal totalTaxable?;
     # The amount of tax that AvaTax calculated for the transaction.
     #             
     # If you used a `taxOverride` of type `taxAmount` for any lines in this transaction, this value
@@ -432,7 +453,7 @@ public type TransactionModel record {
     #             
     # You can compare the `totalTax` and `totalTaxCalculated` fields to check for any discrepancies
     # between an external tax calculation provider and the calculation performed by AvaTax.
-    float totalTaxCalculated?;
+    decimal totalTaxCalculated?;
     # If this transaction was adjusted, indicates the unique ID number of the reason why the transaction was adjusted.
     string adjustmentReason?;
     # If this transaction was adjusted, indicates a description of the reason why the transaction was adjusted.
@@ -442,6 +463,7 @@ public type TransactionModel record {
     # The two-or-three character ISO region code of the region for this transaction.
     string region?;
     # The two-character ISO 3166 code of the country for this transaction.
+    @constraint:String {maxLength: 2, minLength: 2}
     string country?;
     # If this transaction was adjusted, this indicates the version number of this transaction.  Incremented each time the transaction
     # is adjusted.
@@ -455,7 +477,7 @@ public type TransactionModel record {
     # If this transaction included foreign currency exchange, this is the date as of which the exchange rate was calculated.
     string exchangeRateEffectiveDate?;
     # If this transaction included foreign currency exchange, this is the exchange rate that was used.
-    float exchangeRate?;
+    decimal exchangeRate?;
     # By default, the value is null, when the value is null, the value can be set at nexus level and used.
     # If the value is not null, it will override the value at nexus level.
     #             
@@ -522,10 +544,12 @@ public type AdvancedRuleLookupFileModel record {
     # CompanyLookupFile unique identifier
     string id?;
     # Name of lookup file
+    @constraint:String {maxLength: 100}
     string name;
     # Content of the lookup file.
     string content;
     # File extension (e.g. CSV).
+    @constraint:String {maxLength: 10}
     string fileExtension;
     # Is this a lookup file created for testing
     boolean isTest?;
@@ -601,14 +625,17 @@ public type JurisdictionRateTypeTaxTypeMappingModel record {
     string endDate?;
 };
 
+# 
 public type CompanyUserDefinedFieldModel record {
     # The id of the datasource.
     int id?;
     # The id of the company to which the datasource belongs to.
     int companyId?;
     # The extractor/connector id.
+    @constraint:String {maxLength: 50}
     string name;
     # The unique ID number of this connection.
+    @constraint:String {maxLength: 4096}
     string friendlyName;
     # The unique ID number of this connection.
     string dataType?;
@@ -637,12 +664,16 @@ public type AddressLocationInfo record {
     # on the [CreateTransactionModel](https://developer.avalara.com/api-reference/avatax/rest/v2/models/CreateTransactionModel/) element.
     string locationCode?;
     # First line of the street address
+    @constraint:String {maxLength: 100}
     string line1?;
     # Second line of the street address
+    @constraint:String {maxLength: 100}
     string line2?;
     # Third line of the street address
+    @constraint:String {maxLength: 100}
     string line3?;
     # City component of the address
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -664,11 +695,12 @@ public type AddressLocationInfo record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # Postal Code / Zip Code component of the address.
+    @constraint:String {maxLength: 11}
     string postalCode?;
     # Geospatial latitude measurement, in Decimal Degrees floating point format.
-    float latitude?;
+    decimal latitude?;
     # Geospatial longitude measurement, in Decimal Degrees floating point format.
-    float longitude?;
+    decimal longitude?;
 };
 
 # The tax rate model.
@@ -676,7 +708,7 @@ public type ComplianceTaxRateModel record {
     # The unique id of the rate.
     int id?;
     # The tax rate.
-    float rate?;
+    decimal rate?;
     # The id of the jurisdiction.
     int jurisdictionId?;
     # The id of the tax region.
@@ -743,14 +775,18 @@ public type DeclareNexusByAddressModel record {
     # your company has no plans to stop doing business at this address.
     string endDate?;
     # First line of the street address
+    @constraint:String {maxLength: 50}
     string line1?;
     # Specify the text case for the validated address result.  If not specified, will return uppercase.
     string textCase?;
     # Second line of the street address
+    @constraint:String {maxLength: 100}
     string line2?;
     # Third line of the street address
+    @constraint:String {maxLength: 100}
     string line3?;
     # City component of the address
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -772,11 +808,12 @@ public type DeclareNexusByAddressModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # Postal Code / Zip Code component of the address.
+    @constraint:String {maxLength: 11}
     string postalCode?;
     # Geospatial latitude measurement, in Decimal Degrees floating point format.
-    float latitude?;
+    decimal latitude?;
     # Geospatial longitude measurement, in Decimal Degrees floating point format.
-    float longitude?;
+    decimal longitude?;
 };
 
 # Informational or warning messages returned by AvaTax with a transaction
@@ -835,7 +872,7 @@ public type FilingsCheckupAuthorityModel record {
     # Jurisdiction Id of the tax authority
     int jurisdictionId?;
     # Amount of tax collected in this tax authority
-    float tax?;
+    decimal tax?;
     # Tax Type collected in the tax authority
     string taxTypeId?;
     # Suggested forms to file due to tax collected
@@ -857,6 +894,7 @@ public type ErrorCodeOutputModel record {
     int count?;
 };
 
+# 
 public type EcmsDetailTaxCodeModel record {
     # Id of the exempt certificate detail tax code
     int exemptCertDetailTaxCodeId?;
@@ -966,6 +1004,7 @@ public type EcmsDetailModel record {
     # The calc_id associated with a certificate in CertCapture.
     int exemptCertId;
     # State FIPS
+    @constraint:String {maxLength: 2}
     string stateFips;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -977,6 +1016,7 @@ public type EcmsDetailModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region;
     # The customer Tax Id Number (tax_number) associated with a certificate. This is same as exemptionNo in Transactions.
+    @constraint:String {maxLength: 100}
     string idNo?;
     # Name or ISO 3166 code identifying the country.
     #             
@@ -992,6 +1032,7 @@ public type EcmsDetailModel record {
     string endDate?;
     # The type of idNo (tax_number) associated with a certificate.
     # Example: Driver's Licence Number, Permit Number.
+    @constraint:String {maxLength: 50}
     string idType?;
     # Is the tax code list an exculsion list?
     int isTaxCodeListExclusionList?;
@@ -1026,7 +1067,7 @@ public type NoticeRootCauseModel record {
 public type TaxRateModel record {
     # The total sales tax rate for general tangible personal property sold at a retail point of presence
     # in this jurisdiction on this date.
-    float totalRate?;
+    decimal totalRate?;
     # The list of individual rate elements for general tangible personal property sold at a retail
     # point of presence in this jurisdiction on this date.
     RateModel[] rates?;
@@ -1073,11 +1114,11 @@ public type TransactionLineModel record {
     int originAddressId?;
     # The amount of discount that was applied to this line item.  This represents the difference between list price and sale price of the item.
     # In general, a discount represents money that did not change hands; tax is calculated on only the amount of money that changed hands.
-    float discountAmount?;
+    decimal discountAmount?;
     # The type of discount, if any, that was applied to this line item.
     int discountTypeId?;
     # The amount of this line item that was exempt.
-    float exemptAmount?;
+    decimal exemptAmount?;
     # The unique ID number of the exemption certificate that applied to this line item. It is the calc_id associated with a certificate in CertCapture.
     int exemptCertId?;
     # The CertCapture Certificate ID
@@ -1095,9 +1136,9 @@ public type TransactionLineModel record {
     string itemCode?;
     # The total amount of the transaction, including both taxable and exempt.  This is the total price for all items.
     # To determine the individual item price, divide this by quantity.
-    float lineAmount?;
+    decimal lineAmount?;
     # The quantity of products sold on this line item.
-    float quantity?;
+    decimal quantity?;
     # A user-defined reference identifier for this transaction line item.
     string ref1?;
     # A user-defined reference identifier for this transaction line item.
@@ -1117,9 +1158,9 @@ public type TransactionLineModel record {
     #             
     # You can compare the `tax` and `taxCalculated` fields to check for any discrepancies
     # between an external tax calculation provider and the calculation performed by AvaTax.
-    float tax?;
+    decimal tax?;
     # The taxable amount of this line item.
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The amount of tax that AvaTax calculated for the transaction.
     #             
     # If you used a `taxOverride` of type `taxAmount`, there may be a difference between
@@ -1128,7 +1169,7 @@ public type TransactionLineModel record {
     #             
     # You can compare the `tax` and `taxCalculated` fields to check for any discrepancies
     # between an external tax calculation provider and the calculation performed by AvaTax.
-    float taxCalculated?;
+    decimal taxCalculated?;
     # The code string for the tax code that was used to calculate this line item.
     string taxCode?;
     # The unique ID number for the tax code that was used to calculate this line item.
@@ -1144,7 +1185,7 @@ public type TransactionLineModel record {
     # VAT business identification number used for this transaction.
     string businessIdentificationNo?;
     # If a tax override was specified, this indicates the amount of tax that was requested.
-    float taxOverrideAmount?;
+    decimal taxOverrideAmount?;
     # If a tax override was specified, represents the reason for the tax override.
     string taxOverrideReason?;
     # Indicates whether the `amount` for this line already includes tax.
@@ -1186,7 +1227,7 @@ public type TransactionLineModel record {
     # For a full list of HS codes, see `ListCrossBorderCodes()`.
     string hsCode?;
     # Indicates the cost of insurance and freight for this line.
-    float costInsuranceFreight?;
+    decimal costInsuranceFreight?;
     # Indicates the VAT code for this line item.
     string vatCode?;
     # Indicates the VAT number type for this line item.
@@ -1230,7 +1271,7 @@ public type ErrorTransactionOutputModel record {
     # The date that this ErrorTransaction will be automatically purged from the detabase.
     string expiresAt?;
     # The amount of the transaction.
-    float amount?;
+    decimal amount?;
     # The Datasource source of the transaction creation call.
     string datasourceSource?;
     # The country of the ship to address for the transaction creation call.
@@ -1240,6 +1281,7 @@ public type ErrorTransactionOutputModel record {
     # Type of transaction of the error transaction
     string documentType;
     # The internal reference code (used by the client application) of the error transaction
+    @constraint:String {maxLength: 50}
     string documentCode;
 };
 
@@ -1274,9 +1316,9 @@ public type FilingFrequencyModel record {
 # Coordinate Info
 public type CoordinateInfo record {
     # Latitude
-    float latitude?;
+    decimal latitude?;
     # Longitude
-    float longitude?;
+    decimal longitude?;
 };
 
 # Marketplace Location Output model
@@ -1315,6 +1357,7 @@ public type ErrorTransactionModelBase record {
     # Type of transaction of the error transaction
     string documentType;
     # The internal reference code (used by the client application) of the error transaction
+    @constraint:String {maxLength: 50}
     string documentCode;
 };
 
@@ -1350,14 +1393,17 @@ public type BatchFileModel record {
     # The unique ID number of the batch that this file belongs to.
     int batchId?;
     # Logical Name of file (e.g. "Input" or "Error").
+    @constraint:String {maxLength: 50}
     string name?;
     # Content of the batch file.
     string content;
     # Size of content, in bytes.
     int contentLength?;
     # Content mime type (e.g. text/csv).  This is used for HTTP downloading.
+    @constraint:String {maxLength: 100}
     string contentType?;
     # File extension (e.g. CSV).
+    @constraint:String {maxLength: 10}
     string fileExtension?;
     # Path to the file - name/S3 key
     string filePath?;
@@ -1365,6 +1411,7 @@ public type BatchFileModel record {
     int errorCount?;
 };
 
+# 
 public type CompanyReturnSettingModel record {
     # The unique ID of this CompanyReturnsSetting
     int id?;
@@ -1373,6 +1420,7 @@ public type CompanyReturnSettingModel record {
     # The TaxFormCatalog filingQuestionId.
     int filingQuestionId;
     # Filing question code as defined in TaxFormCatalog.
+    @constraint:String {maxLength: 255}
     string filingQuestionCode?;
     # The value of this setting
     string value?;
@@ -1393,7 +1441,7 @@ public type FilingAdjustmentModel record {
     # The filing return id that this applies too
     int filingId?;
     # The adjustment amount.
-    float amount;
+    decimal amount;
     # The filing period the adjustment is applied to.
     string period;
     # The type of the adjustment.
@@ -1414,6 +1462,7 @@ public type FilingAdjustmentModel record {
     int modifiedUserId?;
 };
 
+# 
 public type UnitOfBasisModel record {
     # UnitOfBasisId
     int unitOfBasisId?;
@@ -1463,6 +1512,7 @@ public type CoverLetterModel record {
     int 'version?;
 };
 
+# 
 public type FilingAnswerModel record {
     # The ID number for a filing question
     int filingQuestionId;
@@ -1475,6 +1525,7 @@ public type FilingAnswerModel record {
 # You may also optionally change the transaction's code by specifying the "newTransactionCode" value.
 public type ChangeTransactionCodeModel record {
     # To change the transaction code for this transaction, specify the new transaction code here.
+    @constraint:String {maxLength: 50}
     string newCode;
 };
 
@@ -1525,79 +1576,79 @@ public type FilingReturnModel record {
     # The end date of this return
     string endPeriod?;
     # The sales amount.
-    float salesAmount?;
+    decimal salesAmount?;
     # The filing type of the return.
     string filingType?;
     # The name of the form.
     string formName?;
     # The remittance amount of the return.
-    float remitAmount?;
+    decimal remitAmount?;
     # The unique code of the form.
     string formCode?;
     # A description for the return.
     string description?;
     # The taxable amount.
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The tax amount.
-    float taxAmount?;
+    decimal taxAmount?;
     # The amount collected by avalara for this return
-    float collectAmount?;
+    decimal collectAmount?;
     # The tax due amount.
-    float taxDueAmount?;
+    decimal taxDueAmount?;
     # The non-taxable amount.
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # The non-taxable due amount.
-    float nonTaxableDueAmount?;
+    decimal nonTaxableDueAmount?;
     # Consumer use tax liability during the period.
-    float consumerUseTaxAmount?;
+    decimal consumerUseTaxAmount?;
     # Consumer use tax liability accrued during the period.
-    float consumerUseTaxDueAmount?;
+    decimal consumerUseTaxDueAmount?;
     # Consumer use non-taxable amount.
-    float consumerUseNonTaxableAmount?;
+    decimal consumerUseNonTaxableAmount?;
     # Consumer use taxable amount.
-    float consumerUseTaxableAmount?;
+    decimal consumerUseTaxableAmount?;
     # Total amount of adjustments on this return
-    float totalAdjustments?;
+    decimal totalAdjustments?;
     # The amount of sales excluded from the liability calculation
-    float excludedSalesAmount?;
+    decimal excludedSalesAmount?;
     # The amount of non-taxable sales excluded from the liability calculation
-    float excludedNonTaxableAmount?;
+    decimal excludedNonTaxableAmount?;
     # The amount of tax excluded from the liability calculation
-    float excludedTaxAmount?;
+    decimal excludedTaxAmount?;
     # The amount of carry over sales applied to the liability calculation
-    float carryOverSalesAmount?;
+    decimal carryOverSalesAmount?;
     # The amount of carry over non taxable sales applied to the liability calculation
-    float carryOverNonTaxableAmount?;
+    decimal carryOverNonTaxableAmount?;
     # The amount of carry over sales tax applied to the liability calculation
-    float carryOverTaxAmount?;
+    decimal carryOverTaxAmount?;
     # The amount of carry over consumer use tax applied to the liability calculation
-    float carryOverConsumerUseTaxAmount?;
+    decimal carryOverConsumerUseTaxAmount?;
     # The total amount of total tax accrued in the current active period
-    float taxAccrualAmount?;
+    decimal taxAccrualAmount?;
     # The total amount of sales accrued in the current active period
-    float salesAccrualAmount?;
+    decimal salesAccrualAmount?;
     # The total amount of nontaxable sales accrued in the current active period
-    float nonTaxableAccrualAmount?;
+    decimal nonTaxableAccrualAmount?;
     # The total amount of taxable sales accrued in the current active period
-    float taxableAccrualAmount?;
+    decimal taxableAccrualAmount?;
     # The total amount of sales tax accrued in the current active period
-    float salesTaxAccrualAmount?;
+    decimal salesTaxAccrualAmount?;
     # The total amount of sellers use tax accrued in the current active period
-    float sellersUseTaxAccrualAmount?;
+    decimal sellersUseTaxAccrualAmount?;
     # The total amount of consumer use tax accrued in the current active period
-    float consumerUseTaxAccrualAmount?;
+    decimal consumerUseTaxAccrualAmount?;
     # The total amount of consumer use taxable sales accrued in the current active period
-    float consumerUseTaxableAccrualAmount?;
+    decimal consumerUseTaxableAccrualAmount?;
     # The total amount of consumer use non taxable sales accrued in the current active period
-    float consumerUseNonTaxableAccrualAmount?;
+    decimal consumerUseNonTaxableAccrualAmount?;
     # The Adjustments for this return.
     FilingAdjustmentModel[] adjustments?;
     # Total amount of augmentations on this return
-    float totalAugmentations?;
+    decimal totalAugmentations?;
     # The Augmentations for this return.
     FilingAugmentationModel[] augmentations?;
     # Total amount of payments on this return
-    float totalPayments?;
+    decimal totalPayments?;
     # The payments for this return.
     FilingPaymentModel[] payments?;
     # Accrual type of the return
@@ -1689,10 +1740,13 @@ public type NoticeResponsibilityModelFetchResult record {
 # Free trial accounts are only available on the Sandbox environment.
 public type FreeTrialRequestModel record {
     # The first or given name of the user requesting a free trial.
+    @constraint:String {maxLength: 50}
     string firstName;
     # The last or family name of the user requesting a free trial.
+    @constraint:String {maxLength: 50}
     string lastName;
     # The email address of the user requesting a free trial.
+    @constraint:String {maxLength: 50}
     string email;
     # The company or organizational name for this free trial.  If this account is for personal use, it is acceptable
     # to use your full name here.
@@ -1704,6 +1758,7 @@ public type FreeTrialRequestModel record {
     # Company Address Information
     CompanyAddress companyAddress;
     # Website of the company or user requesting a free trial
+    @constraint:String {maxLength: 50}
     string website?;
     # Read Avalara's terms and conditions is necessary for a free trial account
     boolean haveReadAvalaraTermsAndConditions;
@@ -1835,6 +1890,7 @@ public type HsCodeModel record {
     # the most detailed code available to identify it.
     #             
     # Top level sections do not have HS Codes.
+    @constraint:String {maxLength: 25}
     string hsCode?;
     # A unique identifier for this harmonized tariff system code.
     #             
@@ -1868,8 +1924,10 @@ public type AccountModel record {
     # The unique ID number assigned to this account.
     int id;
     # For system registrar use only.
+    @constraint:String {maxLength: 100}
     string crmid?;
     # The name of this account.
+    @constraint:String {maxLength: 50}
     string name;
     # The earliest date on which this account may be used.
     string effectiveDate?;
@@ -1900,10 +1958,12 @@ public type TaxAuthorityInfo record {
     # A unique ID number assigned by Avalara to this tax authority.
     string avalaraId?;
     # The friendly jurisdiction name for this tax authority.
+    @constraint:String {maxLength: 128}
     string jurisdictionName;
     # The type of jurisdiction referenced by this tax authority.
     string jurisdictionType?;
     # An Avalara-assigned signature code for this tax authority.
+    @constraint:String {maxLength: 4}
     string signatureCode?;
 };
 
@@ -1955,6 +2015,7 @@ public type NotificationModel record {
     #             
     # For example, if this notification was related to a nexus declaration, the `referenceObject` field would
     # be  `Nexus` and the `referenceId` field would be the unique ID number of that nexus.
+    @constraint:String {maxLength: 20}
     string referenceObject?;
     # The unique reference Id number of the object referred to by this notification, if any.
     #             
@@ -1971,6 +2032,7 @@ public type NotificationModel record {
     # over time.
     #             
     # For Example: "Backdated Transactions" or "Nexus Jurisdiction Alerts", or "Certificate Expiration".
+    @constraint:String {maxLength: 50}
     string category?;
     # The topic of this notification.
     #             
@@ -1978,6 +2040,7 @@ public type NotificationModel record {
     # help you decide what type of action to take.
     #             
     # For Example: "Backdated Transactions" or "Nexus Jurisdiction Alerts", or "Certificate Expiration".
+    @constraint:String {maxLength: 250}
     string topic?;
     # The message for this notification.  This is a friendly description of the notification and any relevant
     # information that can help you decide what kind of action, if any, to take in response.
@@ -1989,12 +2052,14 @@ public type NotificationModel record {
     # An action is a suggested next step such as "Review Your Tax Profile."  If an action is suggested,
     # you should give the viewer a hyperlink to the location referred to by `actionLink` and give the
     # hyperlink the name `actionName`.
+    @constraint:String {maxLength: 250}
     string actionName?;
     # If there is a specific action suggested by this notification, this is the URL of the action.
     #             
     # An action is a suggested next step such as "Review Your Tax Profile."  If an action is suggested,
     # you should give the viewer a hyperlink to the location referred to by `actionLink` and give the
     # hyperlink the name `actionName`.
+    @constraint:String {maxLength: 250}
     string actionLink?;
     # If there is a specific action suggested by this notification, and if this action is requested
     # by a specific due date, this value will be the due date for the action.
@@ -2045,8 +2110,10 @@ public type CustomFieldModel record {
 # Company Address Information
 public type CompanyAddress record {
     # Address Line1
+    @constraint:String {maxLength: 100}
     string line;
     # City
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -2068,6 +2135,7 @@ public type CompanyAddress record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country;
     # Postal Code
+    @constraint:String {maxLength: 10}
     string postalCode;
 };
 
@@ -2082,12 +2150,16 @@ public type ValidatedAddressInfo record {
     # * Street or residential address
     string addressType?;
     # First line of the street address
+    @constraint:String {maxLength: 50}
     string line1?;
     # Second line of the street address
+    @constraint:String {maxLength: 100}
     string line2?;
     # Third line of the street address
+    @constraint:String {maxLength: 100}
     string line3?;
     # City component of the address
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -2109,11 +2181,12 @@ public type ValidatedAddressInfo record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # Postal Code / Zip Code component of the address.
+    @constraint:String {maxLength: 11}
     string postalCode?;
     # Geospatial latitude measurement, in Decimal Degrees floating point format.
-    float latitude?;
+    decimal latitude?;
     # Geospatial longitude measurement, in Decimal Degrees floating point format.
-    float longitude?;
+    decimal longitude?;
 };
 
 public type LocationParameterModelFetchResult record {
@@ -2217,7 +2290,7 @@ public type ComplianceJurisdictionRateModel record {
     # The type of the jurisdiction, indicating whether it is a country, state/region, city, for example.
     string jurisdictionTypeId?;
     # The compontent rate.
-    float rate?;
+    decimal rate?;
     # The rate type.
     string rateTypeId?;
     # The tax type.
@@ -2317,8 +2390,10 @@ public type LocationQuestionModelFetchResult record {
 # Represents a classification for a given item.
 public type ClassificationModel record {
     # The product code of an item in a given system.
+    @constraint:String {maxLength: 25}
     string productCode;
     # The system code in which the product belongs.
+    @constraint:String {maxLength: 25}
     string systemCode?;
 };
 
@@ -2379,17 +2454,18 @@ public type MultiDocumentLineItemModel record {
     # If you leave this value `null`, the `reportingLocationCode` at the root level will be used instead.
     string reportingLocationCode?;
     # The line number of this line within the document.  This can be any text that is useful to you, such as numeric line numbers, alphabetic line numbers, or other text.
+    @constraint:String {maxLength: 50}
     string number?;
     # Quantity of items in this line.  This quantity value should always be a positive value representing the quantity of product that changed hands, even when handling returns or refunds.
     #             
     # If not provided, or if set to zero, the quantity value is assumed to be one (1).
-    float quantity?;
+    decimal quantity?;
     # Total amount for this line.  The amount represents the net currency value that changed hands from the customer (represented by the `customerCode` field) to the company (represented by the `companyCode`) field.
     #             
     # For sale transactions, this value must be positive.  It indicates the amount of money paid by the customer to the company.
     #             
     # For refund or return transactions, this value must be negative.
-    float amount;
+    decimal amount;
     # Information about all the addresses involved in this transaction.
     #             
     # For a physical in-person transaction at a retail point-of-sale location, please specify only one address using
@@ -2409,16 +2485,20 @@ public type MultiDocumentLineItemModel record {
     # Tax Code - System or Custom Tax Code.
     #             
     # You can use your own tax code mapping or standard Avalara tax codes.  For a full list of tax codes, see `ListTaxCodes`.
+    @constraint:String {maxLength: 25}
     string taxCode?;
     # DEPRECATED - Date: 10/16/2017, Version: 17.11, Message: Please use `entityUseCode` instead.
+    @constraint:String {maxLength: 25}
     string customerUsageType?;
     # Entity Use Code - The client application customer or usage type.  This field allows you to designate a type of usage that
     # may make this transaction considered exempt by reason of exempt usage.
     #             
     # For a list of entity use codes, see the Definitions API `ListEntityUseCodes`.
+    @constraint:String {maxLength: 25}
     string entityUseCode?;
     # Item Code (SKU).  If you provide an `itemCode` field, the AvaTax API will look up the item you created with the `CreateItems` API call
     # and use all the information available about that item for this transaction.
+    @constraint:String {maxLength: 50}
     string itemCode?;
     # The customer Tax Id Number (tax_number) associated with a certificate - Sales tax calculation requests first determine if there is an applicable
     # ECMS entry available, and will utilize it for exemption processing. If no applicable ECMS entry is available, the AvaTax service
@@ -2438,18 +2518,22 @@ public type MultiDocumentLineItemModel record {
     # Revenue Account (Customer Defined Field).
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 50}
     string revenueAccount?;
     # Ref1 (Customer Defined Field)
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 250}
     string ref1?;
     # Ref2 (Customer Defined Field)
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 250}
     string ref2?;
     # Item description.
     #             
     # For Streamlined Sales Tax (SST) customers, this field is required if an unmapped `itemCode` is used.
+    @constraint:String {maxLength: 2096}
     string description?;
     # VAT business identification number for the customer for this line item.  If you leave this field empty,
     # this line item will use whatever business identification number you provided at the transaction level.
@@ -2457,6 +2541,7 @@ public type MultiDocumentLineItemModel record {
     # If you specify a VAT business identification number for the customer in this transaction and you have also set up
     # a business identification number for your company during company setup, this transaction will be treated as a
     # business-to-business transaction for VAT purposes and it will be calculated according to VAT tax rules.
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
     # Represents a tax override for a transaction
     TaxOverrideModel taxOverride?;
@@ -2470,21 +2555,27 @@ public type MultiDocumentLineItemModel record {
     # Harmonized Tariff System code for this transaction.
     #             
     # For a list of harmonized tariff codes, see the Definitions API for harmonized tariff codes.
+    @constraint:String {maxLength: 25}
     string hsCode?;
     # DEPRECATED - Date: 04/15/2021, Version: 21.4, Message: Please use merchantSellerIdentifier instead.
     # ID of the merchant selling on the Marketplace. This field must be populated by Marketplace.
     int merchantSellerId?;
     # ID of the merchant selling on the Marketplace. This field must be populated by Marketplace.
+    @constraint:String {maxLength: 100}
     string merchantSellerIdentifier?;
     # This field will identify who is remitting Marketplace or Seller. This field must be populated by Marketplace.
     string marketplaceLiabilityType?;
     # The transaction's original ID in its origination system
+    @constraint:String {maxLength: 50}
     string originationDocumentId?;
     # Synonym of Marketplace Origination. Name of the Marketplace where the transaction originated from.
+    @constraint:String {maxLength: 60}
     string originationSite?;
     # Product category breadcrumbs. This is the full path to the category where item is included. Categories should be separated by “ > “.  Multiple category paths per item are accepted. In this case, category paths should be separated by “;”.
+    @constraint:String {maxLength: 4000}
     string category?;
     # A long description of the product.
+    @constraint:String {maxLength: 4000}
     string summary?;
 };
 
@@ -2560,10 +2651,16 @@ public type CustomerSupplierCountryParamModel record {
     int companyId?;
     # Identifier for company parameter
     int customerId?;
+    # 
     string customerCode?;
+    # 
     string country;
+    # 
     boolean isEstablished?;
+    # 
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
+    # 
     boolean isRegisteredThroughFiscalRep?;
 };
 
@@ -2669,7 +2766,7 @@ public type TaxOverrideModel record {
     #             
     # Tax will be distributed on a best effort basis.  It may not always be possible to override all taxes.  Please consult
     # your account manager for information about overrides.
-    float taxAmount?;
+    decimal taxAmount?;
     # The override tax date to use
     #             
     # This is used when the tax has been previously calculated
@@ -2781,10 +2878,13 @@ public type AccountConfigurationModel record {
     # The unique ID number of the account to which this setting applies
     int accountId?;
     # The category of the configuration setting.  Avalara-defined categories include `AddressServiceConfig` and `TaxServiceConfig`.  Customer-defined categories begin with `X-`.
+    @constraint:String {maxLength: 25}
     string category;
     # The name of the configuration setting
+    @constraint:String {maxLength: 50}
     string name;
     # The current value of the configuration setting
+    @constraint:String {maxLength: 200}
     string value?;
     # The date when this record was created.
     string createdDate?;
@@ -2819,10 +2919,13 @@ public type SettingModel record {
     # We recommend that you choose a set name that clearly identifies your application, and then
     # store data within name/value pairs within that set.  For example, if you were creating an
     # application called MyApp, you might choose to create a set named `X-MyCompany-MyApp`.
+    @constraint:String {maxLength: 25}
     string set;
     # A user-defined "name" for this name-value pair.
+    @constraint:String {maxLength: 50}
     string name;
     # The value of this name-value pair.
+    @constraint:String {maxLength: 200}
     string value?;
     # The value when the entry was last modified.
     string modifiedDate?;
@@ -2879,7 +2982,7 @@ public type LinkCustomersModel record {
 # Indicates one element of a sales tax rate.
 public type RateModel record {
     # The sales tax rate for general tangible personal property in this jurisdiction.
-    float rate?;
+    decimal rate?;
     # A readable name of the tax or taxing jurisdiction related to this tax rate.
     string name?;
     # The type of jurisdiction associated with this tax rate.
@@ -2927,11 +3030,13 @@ public type NewAccountRequestModel record {
     # You should leave this value `null` unless specifically requested by your Avalara business development manager.
     string endDate?;
     # The name of the account to create
+    @constraint:String {maxLength: 50}
     string accountName;
     # Website of the new customer whose account is being created.
     #             
     # It is strongly recommended to provide the customer's website URL, as this will help our support representatives better
     # assist customers.
+    @constraint:String {maxLength: 255}
     string website?;
     # Payment Method to be associated with the account.
     #             
@@ -2939,17 +3044,23 @@ public type NewAccountRequestModel record {
     # while attempting to create an account.
     string paymentMethodId?;
     # First name of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string firstName;
     # Last name of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string lastName;
     # Title of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string title?;
     # Phone number of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string phoneNumber?;
     # Email of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string email;
     # The username to be associated with the user created.
     # If this is not provided, email address will be used as the username.
+    @constraint:String {maxLength: 50}
     string username?;
     # If instructed by your Avalara business development manager, set this value to a temporary password to permit the user to continue their onboarding process.
     #             
@@ -2968,6 +3079,7 @@ public type NewAccountRequestModel record {
     # Company code to be assigned to the company created for this account.
     #             
     # If no company code is provided, this will be defaulted to "DEFAULT" company code.
+    @constraint:String {maxLength: 50}
     string companyCode?;
     # Properties of the primary contact person for this account
     string[] properties?;
@@ -2986,6 +3098,7 @@ public type NewAccountRequestModel record {
     # United States Taxpayer ID number, usually your Employer Identification Number if you are a business or your
     # Social Security Number if you are an individual.
     # This value is required if the address provided is inside the US and if you subscribed to the Avalara Managed Returns or SST Certified Service Provider service. Otherwise it is optional.
+    @constraint:String {maxLength: 11}
     string taxPayerIdNumber?;
 };
 
@@ -2996,6 +3109,7 @@ public type ItemModel record {
     # The unique ID number of the company that owns this item.
     int companyId?;
     # A unique code representing this item.
+    @constraint:String {maxLength: 50}
     string itemCode;
     # DEPRECATED - Date: 11/13/2018, Version: 18.12, Message: For identifying an `Item` with `Avalara TaxCode`, please call the [CreateItemClassification API] with your ItemCode and the Avalara TaxCode.
     # The unique ID number of the tax code that is applied when selling this item.
@@ -3004,12 +3118,16 @@ public type ItemModel record {
     # DEPRECATED - Date: 11/13/2018, Version: 18.12, Message: For identifying an `Item` with `Avalara TaxCode`, please call the [CreateItemClassification API] with your ItemCode and the Avalara TaxCode.
     # The unique code string of the Tax Code that is applied when selling this item.
     # When creating or updating an item, you can either specify the Tax Code ID number or the Tax Code string; you do not need to specify both values.
+    @constraint:String {maxLength: 25}
     string taxCode?;
     # A friendly description of this item in your product catalog.
+    @constraint:String {maxLength: 255}
     string description;
     # A way to group similar items.
+    @constraint:String {maxLength: 50}
     string itemGroup?;
     # A category of product
+    @constraint:String {maxLength: 4000}
     string category?;
     # The date when this record was created.
     string createdDate?;
@@ -3031,10 +3149,10 @@ public type ItemModel record {
 public type WorksheetDocumentLine record {
     string reportingDate?;
     string lineNo?;
-    float lineAmount?;
-    float exemptAmount?;
-    float taxableAmount?;
-    float taxAmount?;
+    decimal lineAmount?;
+    decimal exemptAmount?;
+    decimal taxableAmount?;
+    decimal taxAmount?;
     Message[] messages?;
     string resultCode?;
     string transactionId?;
@@ -3165,6 +3283,7 @@ public type VerifyMultiDocumentModel record {
     # Represents the unique code of this MultiDocument transaction.
     #             
     # A MultiDocument transaction is uniquely identified by its `accountId`, `code`, and `type`.
+    @constraint:String {maxLength: 45}
     string code;
     # Represents the document type of this MultiDocument transaction.  For more information about
     # document types, see [DocumentType](https://developer.avalara.com/api-reference/avatax/rest/v2/models/enums/DocumentType/).
@@ -3180,12 +3299,12 @@ public type VerifyMultiDocumentModel record {
     # the `totalAmount` value on the transaction recorded in AvaTax.
     #             
     # If you leave this field empty, we will skip verification for this field.
-    float verifyTotalAmount?;
+    decimal verifyTotalAmount?;
     # Set this value if you wish to verify a match between `verifyTotalTax` and
     # the `totalTax` value on the transaction recorded in AvaTax.
     #             
     # If you leave this field empty, we will skip verification for this field.
-    float verifyTotalTax?;
+    decimal verifyTotalTax?;
 };
 
 # A model for displaying report task metadata
@@ -3349,7 +3468,7 @@ public type FilingAugmentationModel record {
     # The filing return id that this applies too
     int filingId?;
     # The field amount.
-    float fieldAmount;
+    decimal fieldAmount;
     # The field name.
     string fieldName;
     # The date when this record was created.
@@ -3365,6 +3484,7 @@ public type FilingAugmentationModel record {
 # Represents a create transaction batch request model.
 public type CreateTransactionBatchRequestModel record {
     # The user-friendly readable name for this batch.
+    @constraint:String {maxLength: 194}
     string name;
     # The list of transactions contained in this batch.
     TransactionBatchItemModel[] transactions;
@@ -3466,24 +3586,32 @@ public type NoticeReasonModelFetchResult record {
 # Company Initialization Model
 public type CompanyInitializationModel record {
     # Company Name
+    @constraint:String {maxLength: 50}
     string name;
     # Company Code - used to distinguish between companies within your accounting system
+    @constraint:String {maxLength: 25}
     string companyCode?;
     # Vat Registration Id - leave blank if not known.
+    @constraint:String {maxLength: 25}
     string vatRegistrationId?;
     # United States Taxpayer ID number, usually your Employer Identification Number if you are a business or your
     # Social Security Number if you are an individual.
     # This value is required if the address provided is inside the US and if you subscribed to the Avalara Managed Returns or SST Certified Service Provider service. Otherwise it is optional.
+    @constraint:String {maxLength: 11}
     string taxpayerIdNumber?;
     # Set this field to true if the taxPayerIdNumber is a FEIN.
     boolean isFein?;
     # Address Line1
+    @constraint:String {maxLength: 50}
     string line1;
     # Line2
+    @constraint:String {maxLength: 50}
     string line2?;
     # Line3
+    @constraint:String {maxLength: 50}
     string line3?;
     # City
+    @constraint:String {maxLength: 50}
     string city;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -3495,6 +3623,7 @@ public type CompanyInitializationModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region;
     # Postal Code
+    @constraint:String {maxLength: 10}
     string postalCode;
     # Name or ISO 3166 code identifying the country.
     #             
@@ -3507,18 +3636,25 @@ public type CompanyInitializationModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country;
     # First Name
+    @constraint:String {maxLength: 50}
     string firstName;
     # Last Name
+    @constraint:String {maxLength: 50}
     string lastName;
     # Title
+    @constraint:String {maxLength: 50}
     string title?;
     # Email
+    @constraint:String {maxLength: 50}
     string email;
     # Phone Number
+    @constraint:String {maxLength: 25}
     string phoneNumber;
     # Mobile Number
+    @constraint:String {maxLength: 25}
     string mobileNumber?;
     # Fax Number
+    @constraint:String {maxLength: 25}
     string faxNumber?;
     # Parent Company ID
     int parentCompanyId?;
@@ -3592,11 +3728,11 @@ public type TransactionSummary record {
     # Indicates the code of the rate type.  Use [ListRateTypesByCountry](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListRateTypesByCountry/) API for a full list of rate type codes.
     string rateTypeCode?;
     # Tax Base - The adjusted taxable amount.
-    float taxable?;
+    decimal taxable?;
     # Tax Rate - The rate of taxation, as a fraction of the amount.
-    float rate?;
+    decimal rate?;
     # Tax amount - The calculated tax (Base * Rate).
-    float tax?;
+    decimal tax?;
     # The amount of tax that AvaTax calculated for the transaction.
     #             
     # If you used a `taxOverride` of type `taxAmount`, there may be a difference between
@@ -3604,11 +3740,11 @@ public type TransactionSummary record {
     # represents the amount of tax that AvaTax calculated for this transaction without override.
     #             
     # You can use this for comparison.
-    float taxCalculated?;
+    decimal taxCalculated?;
     # The amount of the transaction that was non-taxable.
-    float nonTaxable?;
+    decimal nonTaxable?;
     # The amount of the transaction that was exempt.
-    float exemption?;
+    decimal exemption?;
 };
 
 # Point-of-Sale Data Request Model
@@ -3765,10 +3901,13 @@ public type CompanyConfigurationModel record {
     # The unique ID number of the account to which this setting applies
     int companyId?;
     # The category of the configuration setting.  Avalara-defined categories include `AddressServiceConfig` and `TaxServiceConfig`.  Customer-defined categories begin with `X-`.
+    @constraint:String {maxLength: 25}
     string category;
     # The name of the configuration setting
+    @constraint:String {maxLength: 50}
     string name;
     # The current value of the configuration setting
+    @constraint:String {maxLength: 1000}
     string value?;
     # The date when this record was created.
     string createdDate?;
@@ -3819,15 +3958,15 @@ public type MultiTaxFilingReturnModel record {
     # An attachment associated with a filing return
     FilingReturnCreditModel appliedCarryOverCredits?;
     # Total amount of adjustments on this return
-    float totalAdjustments?;
+    decimal totalAdjustments?;
     # The Adjustments for this return.
     FilingAdjustmentModel[] adjustments?;
     # Total amount of augmentations on this return
-    float totalAugmentations?;
+    decimal totalAugmentations?;
     # The Augmentations for this return.
     FilingAugmentationModel[] augmentations?;
     # Total amount of payments on this return
-    float totalPayments?;
+    decimal totalPayments?;
     # The payments for this return.
     FilingPaymentModel[] payments?;
     # The attachments for this return.
@@ -3837,9 +3976,9 @@ public type MultiTaxFilingReturnModel record {
 public type WorksheetDocument record {
     string docCode?;
     string docDate?;
-    float totalExempt?;
-    float totalTaxable?;
-    float totalTax?;
+    decimal totalExempt?;
+    decimal totalTaxable?;
+    decimal totalTax?;
     WorksheetDocumentLine[] lines?;
     Message[] messages?;
     string resultCode?;
@@ -3925,6 +4064,7 @@ public type NoticeTypeModel record {
 public type CreateTransactionModel record {
     # The internal reference code used by the client application.  This is used for operations such as
     # Get, Adjust, Settle, and Void.  If you leave the transaction code blank, a GUID will be assigned to each transaction.
+    @constraint:String {maxLength: 50}
     string code?;
     # A list of line items that will appear on this transaction.
     LineItemModel[] lines;
@@ -3936,6 +4076,7 @@ public type CreateTransactionModel record {
     string 'type?;
     # Company Code - Specify the code of the company creating this transaction here.  If you leave this value null,
     # your account's default company will be used instead.
+    @constraint:String {maxLength: 50}
     string companyCode?;
     # Transaction Date - The date on the invoice, purchase order, etc.
     #             
@@ -3943,24 +4084,29 @@ public type CreateTransactionModel record {
     # different date to calculate tax rates, please specify a `taxOverride` of type `taxDate`.
     string date;
     # Salesperson Code - The client application salesperson reference code.
+    @constraint:String {maxLength: 25}
     string salespersonCode?;
     # Customer Code - The client application customer reference code.
     # Note: This field is case sensitive. To have exemption certificates apply, this value should
     # be the same as the one passed to create a customer.
+    @constraint:String {maxLength: 50}
     string customerCode;
     # DEPRECATED - Date: 10/16/2017, Version: 17.11, Message: Please use entityUseCode instead.
     # Customer Usage Type - The client application customer or usage type.
+    @constraint:String {maxLength: 25}
     string customerUsageType?;
     # Entity Use Code - The client application customer or usage type.  For a list of
     # available usage types, use [ListEntityUseCodes](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListEntityUseCodes/) API.
+    @constraint:String {maxLength: 25}
     string entityUseCode?;
     # Discount - The discount amount to apply to the document.  This value will be applied only to lines
     # that have the `discounted` flag set to true.  If no lines have `discounted` set to true, this discount
     # cannot be applied.
-    float discount?;
+    decimal discount?;
     # Purchase Order Number for this document.
     #             
     # This is required for single use exemption certificates to match the order and invoice with the certificate.
+    @constraint:String {maxLength: 50}
     string purchaseOrderNo?;
     # Exemption Number for this document.
     #             
@@ -3968,6 +4114,7 @@ public type CreateTransactionModel record {
     # may be asked to provide proof of this exemption certificate in the event that you are asked by an auditor
     # to verify your exemptions.
     # Note: This is same as 'exemptNo' in TransactionModel.
+    @constraint:String {maxLength: 25}
     string exemptionNo?;
     # Information about all the addresses involved in this transaction.
     #             
@@ -3995,20 +4142,24 @@ public type CreateTransactionModel record {
     #             
     # This field could be used to reference the original document for a return invoice, or for any other
     # reference purpose.
+    @constraint:String {maxLength: 1024}
     string referenceCode?;
     # Sets the sale location code (Outlet ID) for reporting this document to the tax authority.
     #             
     # This value is used by Avalara Managed Returns to group documents together by reporting locations
     # for tax authorities that require location-based reporting.
+    @constraint:String {maxLength: 50}
     string reportingLocationCode?;
     # Causes the document to be committed if true.  This option is only applicable for invoice document
     # types, not orders.
     boolean 'commit?;
     # BatchCode for batch operations.
+    @constraint:String {maxLength: 25}
     string batchCode?;
     # Represents a tax override for a transaction
     TaxOverrideModel taxOverride?;
     # The three-character ISO 4217 currency code for this transaction.
+    @constraint:String {maxLength: 3}
     string currencyCode?;
     # Specifies whether the tax calculation is handled Local, Remote, or Automatic (default).  This only
     # applies when using an AvaLocal server.
@@ -4017,12 +4168,14 @@ public type CreateTransactionModel record {
     #             
     # This only needs to be set if the transaction currency is different than the company base currency.
     # It defaults to 1.0.
-    float exchangeRate?;
+    decimal exchangeRate?;
     # Effective date of the exchange rate.
     string exchangeRateEffectiveDate?;
     # Optional three-character ISO 4217 reporting exchange rate currency code for this transaction. The default value is USD.
+    @constraint:String {maxLength: 3}
     string exchangeRateCurrencyCode?;
     # Sets the Point of Sale Lane Code sent by the User for this document.
+    @constraint:String {maxLength: 50}
     string posLaneCode?;
     # VAT business identification number for the customer for this transaction.  This number will be used for all lines
     # in the transaction, except for those lines where you have defined a different business identification number.
@@ -4030,6 +4183,7 @@ public type CreateTransactionModel record {
     # If you specify a VAT business identification number for the customer in this transaction and you have also set up
     # a business identification number for your company during company setup, this transaction will be treated as a
     # business-to-business transaction for VAT purposes and it will be calculated according to VAT tax rules.
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
     # Specifies if the transaction should have value-added and cross-border taxes calculated with the seller as the importer of record.
     #             
@@ -4042,14 +4196,17 @@ public type CreateTransactionModel record {
     # This value may also be set at the Nexus level.  See `NexusModel` for more information.
     boolean isSellerImporterOfRecord?;
     # User-supplied description for this transaction.
+    @constraint:String {maxLength: 2048}
     string description?;
     # User-supplied email address relevant for this transaction.
+    @constraint:String {maxLength: 50}
     string email?;
     # If the user wishes to request additional debug information from this transaction, specify a level higher than `normal`.
     string debugLevel?;
     # The name of the supplier / exporter / seller.
     # For sales doctype enter the name of your own company for which you are reporting.
     # For purchases doctype enter the name of the supplier you have purchased from.
+    @constraint:String {maxLength: 200}
     string customerSupplierName?;
     # The Id of the datasource from which this transaction originated.
     # This value will be overridden by the system to take the datasource Id from the call header.
@@ -4097,12 +4254,15 @@ public type BatchModel record {
     # The type of this batch.
     string 'type;
     # The agent used to create this batch
+    @constraint:String {maxLength: 50}
     string batchAgent?;
     # Any optional flags provided for this batch
+    @constraint:String {maxLength: 200}
     string options?;
     # The unique ID number of this batch.
     int id?;
     # The user-friendly readable name for this batch.
+    @constraint:String {maxLength: 194}
     string name;
     # The Account ID number of the account that owns this batch.
     int accountId?;
@@ -4138,6 +4298,7 @@ public type NexusTaxTypeGroupCountModel record {
     int count?;
 };
 
+# 
 public type FundingInitiateModel record {
     # Set this value to true to request an email to the recipient
     boolean requestEmail?;
@@ -4156,6 +4317,7 @@ public type TaxAuthorityFormModel record {
     # The unique ID number of the tax authority.
     int taxAuthorityId;
     # The form name of the form for this tax authority.
+    @constraint:String {maxLength: 50}
     string formName;
 };
 
@@ -4195,6 +4357,7 @@ public type UomModel record {
 # Refund a committed transaction
 public type RefundTransactionModel record {
     # The transaction code for the refund.  This code will be saved to the `ReturnInvoice` transaction, and does not need to match the code of the original sale.
+    @constraint:String {maxLength: 50}
     string refundTransactionCode?;
     # The date of the refund.  For customers using Avalara's Managed Returns Service, this date controls the month in which the refund
     # transaction will be reported on a tax filing.
@@ -4212,7 +4375,7 @@ public type RefundTransactionModel record {
     # The percentage for refund.
     #             
     # This value only applies if you choose `refundType = Percentage` or `refundType = Partial`.
-    float refundPercentage?;
+    decimal refundPercentage?;
     # If you chose a refund of type `Partial`, this indicates which lines from the original transaction are being refunded.
     string[] refundLines?;
     # A user-defined reference field containing information about this refund.
@@ -4269,7 +4432,7 @@ public type CertificateModel record {
     # is considered exempt?
     #             
     # For a fully exempt certificate, this percentage should be 100.
-    float exemptPercentage?;
+    decimal exemptPercentage?;
     # This value is true if this certificate is a single (or standalone) certificate.  This value is set
     # during the audit stage of the certificate validation process.
     boolean isSingleCertificate?;
@@ -4412,26 +4575,34 @@ public type MarketplaceLocationModelFetchResult record {
 # Represents a request for a new account with Avalara for a new Firm client.
 public type NewFirmClientAccountRequestModel record {
     # The name of the account to create
+    @constraint:String {maxLength: 50}
     string accountName;
     # First name of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string firstName;
     # Last name of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string lastName;
     # Title of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string title?;
     # Phone number of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string phoneNumber?;
     # Email of the primary contact person for this account
+    @constraint:String {maxLength: 50}
     string email;
     # Company code to be assigned to the company created for this account.
     #             
     # If no company code is provided, this will be defaulted to "DEFAULT" company code.
+    @constraint:String {maxLength: 50}
     string companyCode?;
     # Company Address Information
     CompanyAddress companyAddress;
     # United States Taxpayer ID number, usually your Employer Identification Number if you are a business or your
     # Social Security Number if you are an individual.
     # This value is required if the address provided is inside the US. Otherwise it is optional.
+    @constraint:String {maxLength: 11}
     string taxPayerIdNumber?;
     # Properties of the primary contact person for this account
     string[] properties?;
@@ -4452,12 +4623,12 @@ public type VerifyTransactionModel record {
     # the `totalAmount` value on the transaction recorded in AvaTax.
     #             
     # If you leave this field empty, we will skip verification for this field.
-    float verifyTotalAmount?;
+    decimal verifyTotalAmount?;
     # Set this value if you wish to verify a match between `verifyTotalTax` and
     # the `totalTax` value on the transaction recorded in AvaTax.
     #             
     # If you leave this field empty, we will skip verification for this field.
-    float verifyTotalTax?;
+    decimal verifyTotalTax?;
 };
 
 # An abridged item model used for syncing product catalogs with AvaTax.
@@ -4628,13 +4799,16 @@ public type LocationQuestionModel record {
     boolean required?;
     # Data type of the answer
     string dataType?;
+    # 
     string staticOptions?;
+    # 
     boolean unique?;
 };
 
 # Replace an existing transaction recorded in AvaTax with a new one.
 public type BatchAdjustTransactionModel record {
     # Specifies the code of the company for this transaction.
+    @constraint:String {maxLength: 50}
     string companyCode;
     # Please specify the transaction code of the transacion to void.
     string transactionCode;
@@ -4688,6 +4862,7 @@ public type TransactionLineDetailModel record {
     # The unique ID number of the address used for this tax detail.
     int addressId?;
     # The two character ISO 3166 country code of the country where this tax detail is assigned.
+    @constraint:String {maxLength: 2, minLength: 2}
     string country?;
     # The two-or-three character ISO region code for the region where this tax detail is assigned.
     string region?;
@@ -4696,7 +4871,7 @@ public type TransactionLineDetailModel record {
     # For U.S. transactions, the Federal Information Processing Standard (FIPS) code for the state where this tax detail is assigned.
     string stateFIPS?;
     # The amount of this line that was considered exempt in this tax detail.
-    float exemptAmount?;
+    decimal exemptAmount?;
     # The unique ID number of the exemption reason for this tax detail.
     int exemptReasonId?;
     # True if this detail element represented an in-state transaction.
@@ -4717,13 +4892,13 @@ public type TransactionLineDetailModel record {
     # The type of the jurisdiction in which this tax detail applies.
     string jurisdictionType?;
     # The amount of this line item that was considered nontaxable in this tax detail.
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # The rule according to which portion of this detail was considered nontaxable.
     int nonTaxableRuleId?;
     # The type of nontaxability that was applied to this tax detail.
     string nonTaxableType?;
     # The rate at which this tax detail was calculated.
-    float rate?;
+    decimal rate?;
     # The unique ID number of the rule according to which this tax detail was calculated.
     int rateRuleId?;
     # The unique ID number of the source of the rate according to which this tax detail was calculated.
@@ -4733,9 +4908,9 @@ public type TransactionLineDetailModel record {
     # Indicates whether this tax detail applies to the origin or destination of the transaction.
     string sourcing?;
     # The amount of tax for this tax detail.
-    float tax?;
+    decimal tax?;
     # The taxable amount of this tax detail.
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The type of tax that was calculated.  Depends on the company's nexus settings as well as the jurisdiction's tax laws.
     string taxType?;
     # The id of the tax subtype.
@@ -4751,20 +4926,21 @@ public type TransactionLineDetailModel record {
     # The amount of tax that AvaTax calculated.
     # If an override for tax amount is used, there may be a difference between the tax
     # field which applies your override, and the this amount that is calculated without override.
-    float taxCalculated?;
+    decimal taxCalculated?;
     # The amount of tax override that was specified for this tax line.
-    float taxOverride?;
+    decimal taxOverride?;
     # DEPRECATED - Date: 12/20/2017, Version: 18.1, Message: Please use rateTypeCode instead.
     # The rate type for this tax detail.
     string rateType?;
     # Indicates the code of the rate type that was used to calculate this tax detail.  Use [ListRateTypesByCountry](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListRateTypesByCountry/) API for a full list of rate type codes.
+    @constraint:String {maxLength: 25}
     string rateTypeCode?;
     # Number of units in this line item that were calculated to be taxable according to this rate detail.
-    float taxableUnits?;
+    decimal taxableUnits?;
     # Number of units in this line item that were calculated to be nontaxable according to this rate detail.
-    float nonTaxableUnits?;
+    decimal nonTaxableUnits?;
     # Number of units in this line item that were calculated to be exempt according to this rate detail.
-    float exemptUnits?;
+    decimal exemptUnits?;
     # When calculating units, what basis of measurement did we use for calculating the units?
     string unitOfBasis?;
     # True if this value is a non-passthrough tax.
@@ -4774,17 +4950,17 @@ public type TransactionLineDetailModel record {
     # The Taxes/Fee component. True if the fee is applied.
     boolean isFee?;
     # Number of units in this line item that were calculated to be taxable according to this rate detail in the reporting currency.
-    float reportingTaxableUnits?;
+    decimal reportingTaxableUnits?;
     # Number of units in this line item that were calculated to be nontaxable according to this rate detail in the reporting currency.
-    float reportingNonTaxableUnits?;
+    decimal reportingNonTaxableUnits?;
     # Number of units in this line item that were calculated to be exempt according to this rate detail in the reporting currency.
-    float reportingExemptUnits?;
+    decimal reportingExemptUnits?;
     # The amount of tax for this tax detail in the reporting currency.
-    float reportingTax?;
+    decimal reportingTax?;
     # The amount of tax that AvaTax calculated in the reporting currency.
     # If an override for tax amount is used, there may be a difference between the tax
     # field which applies your override, and the this amount that is calculated without override.
-    float reportingTaxCalculated?;
+    decimal reportingTaxCalculated?;
     # LiabilityType identifies the party liable to file the tax. This field is used to filter taxes from reports and tax filings as appropriate.
     string liabilityType?;
 };
@@ -4869,10 +5045,12 @@ public type NexusModel record {
     # The code identifying the jurisdiction in which this company declared nexus.
     #             
     # This field is defined by Avalara.  All Avalara-defined fields must match an Avalara-defined nexus object found by calling `ListNexus`.
+    @constraint:String {maxLength: 10}
     string jurisCode;
     # The common name of the jurisdiction in which this company declared nexus.
     #             
     # This field is defined by Avalara.  All Avalara-defined fields must match an Avalara-defined nexus object found by calling `ListNexus`.
+    @constraint:String {maxLength: 200}
     string jurisName;
     # The date when this nexus began.  If not known, set to null.
     #             
@@ -4885,14 +5063,17 @@ public type NexusModel record {
     # The short name of the jurisdiction.
     #             
     # This field is defined by Avalara.  All Avalara-defined fields must match an Avalara-defined nexus object found by calling `ListNexus`.
+    @constraint:String {maxLength: 15}
     string shortName?;
     # The signature code of the boundary region as defined by Avalara.
     #             
     # This field is defined by Avalara.  All Avalara-defined fields must match an Avalara-defined nexus object found by calling `ListNexus`.
+    @constraint:String {maxLength: 4}
     string signatureCode?;
     # The state assigned number of this jurisdiction.
     #             
     # This field is defined by Avalara.  All Avalara-defined fields must match an Avalara-defined nexus object found by calling `ListNexus`.
+    @constraint:String {maxLength: 50}
     string stateAssignedNo?;
     # The type of nexus that this company is declaring.
     #             
@@ -4930,6 +5111,7 @@ public type NexusModel record {
     # Optional - the tax identification number under which you declared nexus.
     #             
     # This field is user-selectable and should be provided when creating or updating a nexus object.
+    @constraint:String {maxLength: 25}
     string taxId?;
     # DEPRECATED - Date: 4/29/2017, Version: 19.4, Message: Please use isSSTActive instead.
     # For the United States, this flag indicates whether this particular nexus falls within a U.S. State that participates
@@ -5040,6 +5222,7 @@ public type TaxAuthorityModel record {
     # The unique ID number of this tax authority.
     int id;
     # The friendly name of this tax authority.
+    @constraint:String {maxLength: 128}
     string name;
     # The type of this tax authority.
     int taxAuthorityTypeId?;
@@ -5086,13 +5269,13 @@ public type TaxDetailsByTaxSubType record {
     # Tax subtype
     string taxSubType?;
     # Total taxable amount by tax type
-    float totalTaxable?;
+    decimal totalTaxable?;
     # Total exempt by tax type
-    float totalExempt?;
+    decimal totalExempt?;
     # Total non taxable by tax type
-    float totalNonTaxable?;
+    decimal totalNonTaxable?;
     # Total tax by tax type
-    float totalTax?;
+    decimal totalTax?;
 };
 
 # Information about a previously created transaction
@@ -5153,6 +5336,7 @@ public type SubscriptionModel record {
     int subscriptionTypeId?;
     # A friendly description of the service that the account is subscribed to. You can either provide the subscription type Id or this but not both. If
     # subscription type Id is provided, then this information is ignored and this field will be updated with the information from subscription type id.
+    @constraint:String {maxLength: 25}
     string subscriptionDescription?;
     # The date when the subscription began.
     string effectiveDate?;
@@ -5252,6 +5436,7 @@ public type LicenseKeyModel record {
 # Password Change Model
 public type PasswordChangeModel record {
     # Old Password
+    @constraint:String {maxLength: 50}
     string oldPassword;
     # New Password
     string newPassword;
@@ -5363,21 +5548,21 @@ public type NoticeFinanceModel record {
     # The sequential number of the notice
     string noticeNumber?;
     # The amount of tax due on the notice
-    float taxDue?;
+    decimal taxDue?;
     # The amound of penalty listed on the notice
-    float penalty?;
+    decimal penalty?;
     # The amount of interest listed on the notice
-    float interest?;
+    decimal interest?;
     # The amount of credits listed on the notice
-    float credits?;
+    decimal credits?;
     # The amount of tax abated on the notice
-    float taxAbated?;
+    decimal taxAbated?;
     # The amount of customer penalty on the notice
-    float customerPenalty?;
+    decimal customerPenalty?;
     # The amount of customer interest on the notice
-    float customerInterest?;
+    decimal customerInterest?;
     # The amount of CSP Fee Refund on the notice
-    float cspFeeRefund?;
+    decimal cspFeeRefund?;
     # The name of the file attached to the finance detail
     string fileName?;
     # The ResourceFileId of the finance detail attachment
@@ -5417,6 +5602,7 @@ public type FilingCalendarModel record {
     int companyId;
     # DEPRECATED - Date: 9/13/2018, Version: 18.10, Message: Please use `taxFormCode` instead.
     # The legacy return name of the tax form to file.
+    @constraint:String {maxLength: 50}
     string returnName?;
     # Name or ISO 3166 code identifying the country that issued the tax form for this filing calendar.
     #             
@@ -5443,47 +5629,61 @@ public type FilingCalendarModel record {
     # The start period of a fiscal year for this form/company
     int fiscalYearStartMonth?;
     # If this calendar is for a location-specific tax return, specify the location code here.  To file for all locations, leave this value NULL.
+    @constraint:String {maxLength: 50}
     string locationCode?;
     # DEPRECATED - Date: 9/17/2021, Version: 21.9.0, Message: Field will be no longer be available after the 21.9.0 release.
     # If this calendar is for a location-specific tax return, specify the location-specific behavior here.
     string outletTypeId?;
     # Specify the ISO 4217 currency code for the currency to remit for this tax return.  For all tax returns in the United States, specify "USD".
+    @constraint:String {maxLength: 3}
     string paymentCurrency?;
     # The frequency on which this tax form is filed.
     string filingFrequencyId;
     # A 16-bit bitmap containing a 1 for each month when the return should be filed.
     int months?;
     # Tax Registration ID for this Region - in the U.S., this is for your state.
+    @constraint:String {maxLength: 50}
     string stateRegistrationId?;
     # Tax Registration ID for the local jurisdiction, if any.
+    @constraint:String {maxLength: 50}
     string localRegistrationId?;
     # The Employer Identification Number or Taxpayer Identification Number that is to be used when filing this return.
+    @constraint:String {maxLength: 50}
     string employerIdentificationNumber?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The first line of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 50}
     string line1?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The second line of the mailing address that will be used when filling out this tax return.
     # Please note that some tax forms do not support multiple address lines.
+    @constraint:String {maxLength: 50}
     string line2?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The city name of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 50}
     string city?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The state, region, or province of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 3}
     string region?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The postal code or zip code of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 25}
     string postalCode?;
     # DEPRECATED - Date: 9/1/2017, Version: 17.9, Message: Field will be no longer be available after the 17.9 release.
     # The two character ISO-3166 country code of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 2}
     string country?;
     # The first line of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 50}
     string mailingAddressLine1?;
     # The second line of the mailing address that will be used when filling out this tax return.
     # Please note that some tax forms do not support multiple address lines.
+    @constraint:String {maxLength: 50}
     string mailingAddressLine2?;
     # The city name of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 50}
     string mailingAddressCity?;
     # Name or ISO 3166 code identifying the region of the mailing address that will be used when filling out this tax return.
     #             
@@ -5495,6 +5695,7 @@ public type FilingCalendarModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string mailingAddressRegion?;
     # The postal code or zip code of the mailing address that will be used when filling out this tax return.
+    @constraint:String {maxLength: 25}
     string mailingAddressPostalCode?;
     # Name or ISO 3166 code identifying the country of the mailing address that will be used when filling out this tax return.
     #             
@@ -5507,12 +5708,15 @@ public type FilingCalendarModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string mailingAddressCountry?;
     # The phone number to be used when filing this return.
+    @constraint:String {maxLength: 50}
     string phone?;
     # DEPRECATED - Date: 9/17/2021, Version: 21.9.0, Message: Field will be no longer be available after the 21.9.0 release.
     # Special filing instructions to be used when filing this return.
     # Please note that requesting special filing instructions may incur additional costs.
+    @constraint:String {maxLength: 1000}
     string customerFilingInstructions?;
     # The legal entity name to be used when filing this return.
+    @constraint:String {maxLength: 75}
     string legalEntityName?;
     # The earliest date for the tax period when this return should be filed.
     # This date specifies the earliest date for tax transactions that should be reported on this filing calendar.
@@ -5525,8 +5729,10 @@ public type FilingCalendarModel record {
     # The method to be used when filing this return.
     string filingTypeId?;
     # If you file electronically, this is the username you use to log in to the tax authority's website.
+    @constraint:String {maxLength: 254}
     string eFileUsername?;
     # If you file electronically, this is the password or pass code you use to log in to the tax authority's website.
+    @constraint:String {maxLength: 40}
     string eFilePassword?;
     # If you are required to prepay a percentage of taxes for future periods, please specify the percentage in whole numbers;
     # for example, the value 90 would indicate 90%.
@@ -5534,7 +5740,7 @@ public type FilingCalendarModel record {
     # Determines if a prepayment is required for this filing calendar
     boolean prePaymentRequired?;
     # If your company is required to make a prepayment that is designated by a fixed amount each period, please specify the amount here.
-    float fixedPrepaymentAmount?;
+    decimal fixedPrepaymentAmount?;
     # DEPRECATED - Date: , Version: , Message: The 'taxTypes' list field should be used going forward.
     # The type of tax to report on this return.
     string taxTypeId;
@@ -5542,28 +5748,40 @@ public type FilingCalendarModel record {
     string[] taxTypes?;
     # DEPRECATED - Date: 9/17/2021, Version: 21.9.0, Message: Field will be no longer be available after the 21.9.0 release.
     # Internal filing notes.
+    @constraint:String {maxLength: 1000}
     string internalNotes?;
     # Custom filing information field for Alabama.
+    @constraint:String {maxLength: 25}
     string alSignOn?;
     # Custom filing information field for Alabama.
+    @constraint:String {maxLength: 25}
     string alAccessCode?;
     # Custom filing information field for Maine.
+    @constraint:String {maxLength: 50}
     string meBusinessCode?;
     # Custom filing information field for Iowa.
+    @constraint:String {maxLength: 50}
     string iaBen?;
     # Custom filing information field for Connecticut.
+    @constraint:String {maxLength: 50}
     string ctReg?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other1Name?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other1Value?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other2Name?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other2Value?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other3Name?;
     # Custom filing information field.  Leave blank.
+    @constraint:String {maxLength: 50}
     string other3Value?;
     # The unique ID of the tax authority of this return.
     int taxAuthorityId?;
@@ -5606,7 +5824,7 @@ public type NoticeModel record {
     # The closed date of the notice
     string closedDate?;
     # The total remmitance amount for the notice
-    float totalRemit?;
+    decimal totalRemit?;
     # NoticeCustomerTypeID can be retrieved from the definitions API
     string customerTypeId;
     # Name or ISO 3166 code identifying the country that sent this notice.
@@ -5744,6 +5962,7 @@ public type AuditMultiDocumentModel record {
 # An account user who is permitted to use AvaTax.
 public type AccountLicenseKeyModel record {
     # The unique name for license key per account
+    @constraint:String {maxLength: 30}
     string name;
     # AccountId for required license key
     int accountId;
@@ -5783,10 +6002,13 @@ public type CompanyModel record {
     # If this company is fully owned by another company, this is the unique identity of the parent company.
     int parentCompanyId?;
     # If this company files Streamlined Sales Tax, this is the PID of this company as defined by the Streamlined Sales Tax governing board.
+    @constraint:String {maxLength: 9}
     string sstPid?;
     # A unique code that references this company within your account.
+    @constraint:String {maxLength: 25}
     string companyCode?;
     # The name of this company, as shown to customers.
+    @constraint:String {maxLength: 50}
     string name;
     # This flag is true if this company is the default company for this account.  Only one company may be set as the default.
     boolean isDefault?;
@@ -5798,6 +6020,7 @@ public type CompanyModel record {
     # This is a nine digit number that is usually called an EIN for an Employer Identification Number if this company is a corporation,
     # or SSN for a Social Security Number if this company is a person.
     # This value is required if the address provided is inside the US and if you subscribed to the Avalara Managed Returns or SST Certified Service Provider service. Otherwise it is optional.
+    @constraint:String {maxLength: 11}
     string taxpayerIdNumber?;
     # Set this field to true if the taxPayerIdNumber is a FEIN.
     boolean isFein?;
@@ -5811,8 +6034,10 @@ public type CompanyModel record {
     # If this company participates in Streamlined Sales Tax, this is the date when the company joined the SST program.
     string sstEffectiveDate?;
     # The two character ISO-3166 country code of the default country for this company.
+    @constraint:String {maxLength: 2, minLength: 2}
     string defaultCountry;
     # This is the three character ISO-4217 currency code of the default currency used by this company.
+    @constraint:String {maxLength: 3}
     string baseCurrencyCode?;
     # Indicates whether this company prefers to round amounts at the document level or line level.
     string roundingLevelId?;
@@ -5827,6 +6052,7 @@ public type CompanyModel record {
     # While this value is true, no tax reporting will occur and the company will not be usable for transactions.
     boolean inProgress?;
     # Business Identification No
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
     # The date when this record was created.
     string createdDate?;
@@ -5881,8 +6107,10 @@ public type CompanyModel record {
     # DEPRECATED - Date: 9/15/2017, Version: 17.10, Message: Please use the `ListCertificates` API.
     EcmsModel[] exemptCerts?;
     # The unique identifier of the mini-one-stop-shop used for Value Added Tax (VAT) processing.
+    @constraint:String {maxLength: 25}
     string mossId?;
     # The country code of the mini-one-stop-shop used for Value Added Tax (VAT) processing.
+    @constraint:String {maxLength: 2}
     string mossCountry?;
     # The parameters of a company
     CompanyParameterDetailModel[] parameters?;
@@ -6028,25 +6256,25 @@ public type FilingRegionModel record {
     # The two or three character region code for the region.
     string region?;
     # The sales amount.
-    float salesAmount?;
+    decimal salesAmount?;
     # The taxable amount.
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The tax amount.
-    float taxAmount?;
+    decimal taxAmount?;
     # The tax amount due.
-    float taxDueAmount?;
+    decimal taxDueAmount?;
     # The amount collected by Avalara for this region
-    float collectAmount?;
+    decimal collectAmount?;
     # Total remittance amount of all returns in region
-    float totalRemittanceAmount?;
+    decimal totalRemittanceAmount?;
     # The non-taxable amount.
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # Consumer use tax liability.
-    float consumerUseTaxAmount?;
+    decimal consumerUseTaxAmount?;
     # Consumer use non-taxable amount.
-    float consumerUseNonTaxableAmount?;
+    decimal consumerUseNonTaxableAmount?;
     # Consumer use taxable amount.
-    float consumerUseTaxableAmount?;
+    decimal consumerUseTaxableAmount?;
     # The date the filing region was approved.
     string approveDate?;
     # The start date for the filing cycle.
@@ -6162,6 +6390,7 @@ public type DeleteErrorTransactionResponseModel record {
     # Type of transaction of the error transaction
     string documentType;
     # The internal reference code (used by the client application) of the error transaction
+    @constraint:String {maxLength: 50}
     string documentCode;
 };
 
@@ -6233,17 +6462,18 @@ public type ExposureZoneModel record {
 # Represents one line item in a transaction
 public type LineItemModel record {
     # The line number of this line within the document.  This can be any text that is useful to you, such as numeric line numbers, alphabetic line numbers, or other text.
+    @constraint:String {maxLength: 50}
     string number?;
     # Quantity of items in this line.  This quantity value should always be a positive value representing the quantity of product that changed hands, even when handling returns or refunds.
     #             
     # If not provided, or if set to zero, the quantity value is assumed to be one (1).
-    float quantity?;
+    decimal quantity?;
     # Total amount for this line.  The amount represents the net currency value that changed hands from the customer (represented by the `customerCode` field) to the company (represented by the `companyCode`) field.
     #             
     # For sale transactions, this value must be positive.  It indicates the amount of money paid by the customer to the company.
     #             
     # For refund or return transactions, this value must be negative.
-    float amount;
+    decimal amount;
     # Information about all the addresses involved in this transaction.
     #             
     # For a physical in-person transaction at a retail point-of-sale location, please specify only one address using
@@ -6263,16 +6493,20 @@ public type LineItemModel record {
     # Tax Code - System or Custom Tax Code.
     #             
     # You can use your own tax code mapping or standard Avalara tax codes.  For a full list of tax codes, see `ListTaxCodes`.
+    @constraint:String {maxLength: 25}
     string taxCode?;
     # DEPRECATED - Date: 10/16/2017, Version: 17.11, Message: Please use `entityUseCode` instead.
+    @constraint:String {maxLength: 25}
     string customerUsageType?;
     # Entity Use Code - The client application customer or usage type.  This field allows you to designate a type of usage that
     # may make this transaction considered exempt by reason of exempt usage.
     #             
     # For a list of entity use codes, see the Definitions API `ListEntityUseCodes`.
+    @constraint:String {maxLength: 25}
     string entityUseCode?;
     # Item Code (SKU).  If you provide an `itemCode` field, the AvaTax API will look up the item you created with the `CreateItems` API call
     # and use all the information available about that item for this transaction.
+    @constraint:String {maxLength: 50}
     string itemCode?;
     # The customer Tax Id Number (tax_number) associated with a certificate - Sales tax calculation requests first determine if there is an applicable
     # ECMS entry available, and will utilize it for exemption processing. If no applicable ECMS entry is available, the AvaTax service
@@ -6292,18 +6526,22 @@ public type LineItemModel record {
     # Revenue Account (Customer Defined Field).
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 50}
     string revenueAccount?;
     # Ref1 (Customer Defined Field)
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 250}
     string ref1?;
     # Ref2 (Customer Defined Field)
     #             
     # This field is available for you to use to provide whatever information your implementation requires.  It does not affect tax calculation.
+    @constraint:String {maxLength: 250}
     string ref2?;
     # Item description.
     #             
     # For Streamlined Sales Tax (SST) customers, this field is required if an unmapped `itemCode` is used.
+    @constraint:String {maxLength: 2096}
     string description?;
     # VAT business identification number for the customer for this line item.  If you leave this field empty,
     # this line item will use whatever business identification number you provided at the transaction level.
@@ -6311,6 +6549,7 @@ public type LineItemModel record {
     # If you specify a VAT business identification number for the customer in this transaction and you have also set up
     # a business identification number for your company during company setup, this transaction will be treated as a
     # business-to-business transaction for VAT purposes and it will be calculated according to VAT tax rules.
+    @constraint:String {maxLength: 25}
     string businessIdentificationNo?;
     # Represents a tax override for a transaction
     TaxOverrideModel taxOverride?;
@@ -6324,21 +6563,27 @@ public type LineItemModel record {
     # Harmonized Tariff System code for this transaction.
     #             
     # For a list of harmonized tariff codes, see the Definitions API for harmonized tariff codes.
+    @constraint:String {maxLength: 25}
     string hsCode?;
     # DEPRECATED - Date: 04/15/2021, Version: 21.4, Message: Please use merchantSellerIdentifier instead.
     # ID of the merchant selling on the Marketplace. This field must be populated by Marketplace.
     int merchantSellerId?;
     # ID of the merchant selling on the Marketplace. This field must be populated by Marketplace.
+    @constraint:String {maxLength: 100}
     string merchantSellerIdentifier?;
     # This field will identify who is remitting Marketplace or Seller. This field must be populated by Marketplace.
     string marketplaceLiabilityType?;
     # The transaction's original ID in its origination system
+    @constraint:String {maxLength: 50}
     string originationDocumentId?;
     # Synonym of Marketplace Origination. Name of the Marketplace where the transaction originated from.
+    @constraint:String {maxLength: 60}
     string originationSite?;
     # Product category breadcrumbs. This is the full path to the category where item is included. Categories should be separated by “ > “.  Multiple category paths per item are accepted. In this case, category paths should be separated by “;”.
+    @constraint:String {maxLength: 4000}
     string category?;
     # A long description of the product.
+    @constraint:String {maxLength: 4000}
     string summary?;
 };
 
@@ -6356,6 +6601,7 @@ public type LocationSettingModel record {
     # The name of the question
     string questionName?;
     # The answer the user provided.
+    @constraint:String {maxLength: 50}
     string value?;
 };
 
@@ -6420,6 +6666,7 @@ public type NoticeCommentModel record {
     # TaxNoticeCommentLink
     string commentLink?;
     # TaxNoticeFileName
+    @constraint:String {maxLength: 300}
     string taxNoticeFileName?;
     # resourceFileId
     int resourceFileId?;
@@ -6564,6 +6811,7 @@ public type CustomerModel record {
     # Two and three character ISO 3166 region codes.
     #             
     # For a full list of all supported codes, please see the Definitions API `ListRegions`.
+    @constraint:String {maxLength: 3}
     string region;
     # True if this customer record is specifically used for bill-to purposes.
     boolean isBill?;
@@ -6605,8 +6853,10 @@ public type CustomerModel record {
 # Product classification input model.
 public type ItemClassificationInputModel record {
     # The product code of an item in a given system.
+    @constraint:String {maxLength: 50}
     string productCode;
     # The system code in which the product belongs.
+    @constraint:String {maxLength: 50}
     string systemCode?;
 };
 
@@ -6624,33 +6874,33 @@ public type CycleExpireModel record {
 # Represents a listing of all tax calculation data for filings and for accruing to future filings.
 public type FilingsTaxSummaryModel record {
     # The total sales amount
-    float salesAmount?;
+    decimal salesAmount?;
     # The taxable amount
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The nontaxable amount
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # The tax amount
-    float taxAmount?;
+    decimal taxAmount?;
     # The remittance amount
-    float remittanceAmount?;
+    decimal remittanceAmount?;
     # The collect amount
-    float collectAmount?;
+    decimal collectAmount?;
     # The sales accrual amount
-    float salesAccrualAmount?;
+    decimal salesAccrualAmount?;
     # The taxable sales accrual amount
-    float taxableAccrualAmount?;
+    decimal taxableAccrualAmount?;
     # The nontaxable accrual amount
-    float nonTaxableAccrualAmount?;
+    decimal nonTaxableAccrualAmount?;
     # The tax accrual amount
-    float taxAccrualAmount?;
+    decimal taxAccrualAmount?;
     # reportableSalesAmount
-    float reportableSalesAmount?;
+    decimal reportableSalesAmount?;
     # reportableNonTaxableAmount
-    float reportableNonTaxableAmount?;
+    decimal reportableNonTaxableAmount?;
     # reportableTaxableAmount
-    float reportableTaxableAmount?;
+    decimal reportableTaxableAmount?;
     # reportableTaxAmount
-    float reportableTaxAmount?;
+    decimal reportableTaxAmount?;
 };
 
 # Represents a create transaction batch response model.
@@ -6658,6 +6908,7 @@ public type CreateTransactionBatchResponseModel record {
     # The unique ID number of this batch.
     int id?;
     # The user-friendly readable name for this batch.
+    @constraint:String {maxLength: 194}
     string name;
     # The Account ID number of the account that owns this batch.
     int accountId?;
@@ -6711,6 +6962,7 @@ public type FiledReturnModel record {
 # A request to void a previously created transaction.
 public type BatchVoidTransactionModel record {
     # Company Code - Specify the code of the company for this transaction.
+    @constraint:String {maxLength: 50}
     string companyCode;
     # Please specify the transaction code of the transacion to void.
     string transactionCode;
@@ -6737,9 +6989,9 @@ public type JurisdictionModel record {
     # The type of the jurisdiction, indicating whether it is a country, state/region, city, for example.
     string 'type;
     # The base rate of tax specific to this jurisdiction.
-    float rate?;
+    decimal rate?;
     # The "Sales" tax rate specific to this jurisdiction.
-    float salesRate?;
+    decimal salesRate?;
     # The Avalara-supplied signature code for this jurisdiction.
     string signatureCode;
     # Name or ISO 3166 code identifying the region within the country.
@@ -6752,7 +7004,7 @@ public type JurisdictionModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region?;
     # The "Seller's Use" tax rate specific to this jurisdiction.
-    float useRate?;
+    decimal useRate?;
     # The city name of this jurisdiction
     string city?;
     # The county name of this jurisdiction
@@ -6788,13 +7040,13 @@ public type TaxDetailsByTaxType record {
     # Tax Type
     string taxType?;
     # Total taxable amount by tax type
-    float totalTaxable?;
+    decimal totalTaxable?;
     # Total exempt by tax type
-    float totalExempt?;
+    decimal totalExempt?;
     # Total non taxable by tax type
-    float totalNonTaxable?;
+    decimal totalNonTaxable?;
     # Total tax by tax type
-    float totalTax?;
+    decimal totalTax?;
     # Tax subtype details
     TaxDetailsByTaxSubType[] taxSubTypeDetails?;
 };
@@ -6804,7 +7056,7 @@ public type TransactionLineTaxAmountByTaxTypeModel record {
     # The name of the TaxType.
     string taxTypeId?;
     # The value of the TaxOverrideAmount.
-    float taxAmount?;
+    decimal taxAmount?;
 };
 
 # Represents information about a tax form known to Avalara
@@ -6868,7 +7120,7 @@ public type FormMasterModel record {
     # Unused
     int roundingMethodId?;
     # Total amount of discounts that can be received by a vendor each year
-    float vendorDiscountAnnualMax?;
+    decimal vendorDiscountAnnualMax?;
     # Unused
     boolean versionsRequireAuthorityApproval?;
     # Type of outlet reporting for this form
@@ -7091,14 +7343,19 @@ public type UserModel record {
     # If this user is locked to one company (and its children), this is the unique ID number of the company to which this user belongs.
     int companyId?;
     # The username which is used to log on to the AvaTax website, or to authenticate against API calls.
+    @constraint:String {maxLength: 50, minLength: 5}
     string userName;
     # The first or given name of the user.
+    @constraint:String {maxLength: 50}
     string firstName;
     # The last or family name of the user.
+    @constraint:String {maxLength: 50}
     string lastName;
     # The email address to be used to contact this user.  If the user has forgotten a password, an email can be sent to this email address with information on how to reset this password.
+    @constraint:String {maxLength: 50}
     string email;
     # The postal code in which this user resides.
+    @constraint:String {maxLength: 10}
     string postalCode?;
     # The security level for this user.
     string securityRoleId;
@@ -7111,6 +7368,7 @@ public type UserModel record {
     # The date/time when this record was last modified.
     string modifiedDate?;
     # Matches the subjectId of corresponding user record in AI.
+    @constraint:String {maxLength: 32}
     string subjectId?;
     # Suppress new user email
     boolean suppressNewUserEmail?;
@@ -7152,18 +7410,23 @@ public type TaxCodeModel record {
     # The unique ID number of the company that owns this tax code.
     int companyId?;
     # A code string that identifies this tax code.
+    @constraint:String {maxLength: 25}
     string taxCode;
     # The type of this tax code.
+    @constraint:String {maxLength: 2}
     string taxCodeTypeId;
     # A friendly description of this tax code.
+    @constraint:String {maxLength: 255}
     string description?;
     # If this tax code is a subset of a different tax code, this identifies the parent code.
+    @constraint:String {maxLength: 25}
     string parentTaxCode?;
     # True if this tax code type refers to a physical object.  Read only field.
     boolean isPhysical?;
     # The Avalara Goods and Service Code represented by this tax code.
     int goodsServiceCode?;
     # The Avalara Entity Use Code represented by this tax code.
+    @constraint:String {maxLength: 40}
     string entityUseCode?;
     # True if this tax code is active and can be used in transactions.
     boolean isActive?;
@@ -7231,11 +7494,13 @@ public type TaxRuleModel record {
     #             
     # The `ProductTaxabilityRule` rule must be associated with a tax code.  If you attempt to create a product taxability rule
     # without a tax code, you will get an error message.
+    @constraint:String {maxLength: 25}
     string taxCode?;
     # For U.S. tax rules, this is the state's Federal Information Processing Standard (FIPS) code.
     #             
     # This field is required for rules that apply to specific jurisdictions in the United States.  It is not required
     # if you set the `isAllJuris` flag to true.
+    @constraint:String {maxLength: 2}
     string stateFIPS?;
     # The name of the jurisdiction to which this tax rule applies.
     #             
@@ -7246,6 +7511,7 @@ public type TaxRuleModel record {
     #             
     # Once you have determined which jurisdiction you wish to assign to the tax rule, you should fill in the `jurisName`, `jurisCode`, and
     # `jurisdictionTypeId` fields using the information you retrieved from the API above.
+    @constraint:String {maxLength: 200}
     string jurisName?;
     # The code of the jurisdiction to which this tax rule applies.
     #             
@@ -7255,6 +7521,7 @@ public type TaxRuleModel record {
     #             
     # Once you have determined which jurisdiction you wish to assign to the tax rule, you should fill in the `jurisName`, `jurisCode`, and
     # `jurisdictionTypeId` fields using the information you retrieved from the API above.
+    @constraint:String {maxLength: 10}
     string jurisCode;
     # DEPRECATED - Date: 12/20/2017, Version: 18.1, Message: Please use `jurisdictionTypeId` instead.
     string jurisTypeId?;
@@ -7271,6 +7538,7 @@ public type TaxRuleModel record {
     # field for more information.
     string jurisdictionTypeId?;
     # DEPRECATED - Date: 10/16/2017, Version: 17.11, Message: Please use `entityUseCode` instead.
+    @constraint:String {maxLength: 25}
     string customerUsageType?;
     # The entity use code to which this rule applies.
     #             
@@ -7278,6 +7546,7 @@ public type TaxRuleModel record {
     # the behavior of Avalara's system-defined entity use codes.
     #             
     # For a full list of Avalara-defined entity use codes, see the [ListEntityUseCodes API](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListEntityUseCodes/).
+    @constraint:String {maxLength: 25}
     string entityUseCode?;
     # DEPRECATED - Date: 09/30/2021, Version: 21.9.0, Message: Please use `taxTypeCode` instead.
     # Some tax type groups contain multiple different types of tax.  To create a rule that affects only one
@@ -7314,11 +7583,11 @@ public type TaxRuleModel record {
     #             
     # * For a product taxability rule, this value is either 1 or 0, indicating taxable or non-taxable.
     # * For a rate override rule, this value is the corrected rate stored as a decimal, for example, a rate of 5% would be stored as 0.05 decimal.  If you use the special value of 1.0, only the cap and threshold values will be applied and the rate will be left alone.
-    float value?;
+    decimal value?;
     # The maximum cap for the price of this item according to this rule.  Any amount above this cap will not be subject to this rule.
     #             
     # For example, if you must pay 5% of a product's value up to a maximum value of $1000, you would set the `cap` to `1000.00` and the `value` to `0.05`.
-    float cap?;
+    decimal cap?;
     # The per-unit threshold that must be met before this rule applies.
     #             
     # For example, if your product is nontaxable unless it is above $100 per product, you would set the `threshold` value to `100`.  In this case, the rate
@@ -7326,22 +7595,25 @@ public type TaxRuleModel record {
     #             
     # You can also create rules that make the entire product taxable if it exceeds a threshold, but is nontaxable
     # if it is below the threshold.  To choose this, set the `options` field to the value `TaxAll`.
-    float threshold?;
+    decimal threshold?;
     # Supports custom options for your tax rule.
     #             
     # Supported options include:
     # * `TaxAll` - This value indicates that the entire amount of the line becomes taxable when the line amount exceeds the `threshold`.
+    @constraint:String {maxLength: 100}
     string options?;
     # The first date at which this rule applies.  If `null`, this rule will apply to all dates prior to the end date.
     string effectiveDate?;
     # The last date for which this rule applies.  If `null`, this rule will apply to all dates after the effective date.
     string endDate?;
     # A friendly name for this tax rule.
+    @constraint:String {maxLength: 255}
     string description?;
     # For U.S. tax rules, this is the county's Federal Information Processing Standard (FIPS) code.
     #             
     # This field is required for rules that apply to specific jurisdictions in the United States.  It is not required
     # if you set the `isAllJuris` flag to true.
+    @constraint:String {maxLength: 3}
     string countyFIPS?;
     # DEPRECATED - Date: 8/27/2018, Version: 18.9, Message: This field is no longer required.
     boolean isSTPro?;
@@ -7382,10 +7654,12 @@ public type TaxRuleModel record {
     # Refer to `ListTaxSubtypes` for a list of tax sub types supported by AvaTax.
     string taxSubType?;
     # Reserved for Avalara internal usage.  Leave this field null.
+    @constraint:String {maxLength: 500}
     string nonPassthroughExpression?;
     # The currency code to use for this rule.
     #             
     # For a list of currencies supported by AvaTax, use the [ListCurrencies API](https://developer.avalara.com/api-reference/avatax/rest/v2/methods/Definitions/ListCurrencies/).
+    @constraint:String {maxLength: 3}
     string currencyCode?;
     # Reserved for Avalara internal usage.  Leave this field null.
     int preferredProgramId?;
@@ -7486,6 +7760,7 @@ public type CompanyDistanceThresholdModel record {
     # Indicates the distance threshold type.
     #             
     # This value can be either `Sale` or `Purchase`.
+    @constraint:String {maxLength: 20}
     string 'type;
 };
 
@@ -7500,6 +7775,7 @@ public type ECommerceTokenOutputModelFetchResult record {
 # Only one child transaction model should contain data.
 public type TransactionBatchItemModel record {
     # Represents a transaction memo.
+    @constraint:String {maxLength: 50000}
     string memo?;
     # Create a transaction
     CreateTransactionModel createTransactionModel?;
@@ -7558,41 +7834,41 @@ public type FilingReturnModelBasic record {
     # The date the return was filed by Avalara.
     string filedDate?;
     # The sales amount.
-    float salesAmount?;
+    decimal salesAmount?;
     # The filing type of the return.
     string filingType?;
     # The name of the form.
     string formName?;
     # The remittance amount of the return.
-    float remitAmount?;
+    decimal remitAmount?;
     # The unique code of the form.
     string formCode?;
     # A description for the return.
     string description?;
     # The taxable amount.
-    float taxableAmount?;
+    decimal taxableAmount?;
     # The tax amount.
-    float taxAmount?;
+    decimal taxAmount?;
     # The amount collected by avalara for this return
-    float collectAmount?;
+    decimal collectAmount?;
     # The tax due amount.
-    float taxDueAmount?;
+    decimal taxDueAmount?;
     # The non-taxable amount.
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # The non-taxable due amount.
-    float nonTaxableDueAmount?;
+    decimal nonTaxableDueAmount?;
     # Consumer use tax liability.
-    float consumerUseTaxAmount?;
+    decimal consumerUseTaxAmount?;
     # Consumer use non-taxable amount.
-    float consumerUseNonTaxableAmount?;
+    decimal consumerUseNonTaxableAmount?;
     # Consumer use taxable amount.
-    float consumerUseTaxableAmount?;
+    decimal consumerUseTaxableAmount?;
     # The amount of sales excluded from the liability calculation
-    float excludedSalesAmount?;
+    decimal excludedSalesAmount?;
     # The amount of non-taxable sales excluded from the liability calculation
-    float excludedNonTaxableAmount?;
+    decimal excludedNonTaxableAmount?;
     # The amount of tax excluded from the liability calculation
-    float excludedTaxAmount?;
+    decimal excludedTaxAmount?;
     # Accrual type of the return
     string accrualType?;
     # The attachments for this return.
@@ -7612,10 +7888,13 @@ public type UPCModel record {
     # The unique ID number of the company to which this UPC belongs.
     int companyId?;
     # The 12-14 character Universal Product Code, European Article Number, or Global Trade Identification Number.
+    @constraint:String {maxLength: 18, minLength: 12}
     string upc;
     # Legacy Tax Code applied to any product sold with this UPC.
+    @constraint:String {maxLength: 50}
     string legacyTaxCode?;
     # Description of the product to which this UPC applies.
+    @constraint:String {maxLength: 255}
     string description;
     # If this UPC became effective on a certain date, this contains the first date on which the UPC was effective.
     string effectiveDate?;
@@ -7653,10 +7932,13 @@ public type JurisdictionOverrideModel record {
     # The unique ID number assigned to this account.
     int accountId?;
     # A description of why this jurisdiction override was created.
+    @constraint:String {maxLength: 50}
     string description;
     # The street address of the physical location affected by this override.
+    @constraint:String {maxLength: 50}
     string line1?;
     # The city address of the physical location affected by this override.
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country to be affected by this override.
     #             
@@ -7674,6 +7956,7 @@ public type JurisdictionOverrideModel record {
     # Note that only United States addresses are affected by the jurisdiction override system.
     string country?;
     # The postal code of the physical location affected by this override.
+    @constraint:String {maxLength: 11}
     string postalCode;
     # The date when this override first takes effect.  Set this value to null to affect all dates up to the end date.
     string effectiveDate?;
@@ -7881,16 +8164,22 @@ public type EcmsModel record {
     # Company ID
     int companyId;
     # Customer code
+    @constraint:String {maxLength: 50}
     string customerCode;
     # Customer name
+    @constraint:String {maxLength: 100}
     string customerName?;
     # Address line 1
+    @constraint:String {maxLength: 50}
     string address1?;
     # Address line 2
+    @constraint:String {maxLength: 50}
     string address2?;
     # Address line 3
+    @constraint:String {maxLength: 50}
     string address3?;
     # City
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -7902,6 +8191,7 @@ public type EcmsModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region;
     # Postal code / zip code
+    @constraint:String {maxLength: 10}
     string postalCode?;
     # Name or ISO 3166 code identifying the country.
     #             
@@ -7916,21 +8206,26 @@ public type EcmsModel record {
     # The type of exemption certificate. Permitted values are: Blanket and Single.
     string exemptCertTypeId;
     # Document Reference Number, in the case of single-use exemption certificates, the DocumentCode or PurchaseOrderNo to which the certificate should apply.
+    @constraint:String {maxLength: 50}
     string documentRefNo?;
     # Business type the customer belongs to.
     int businessTypeId;
     # Other description for this business type
+    @constraint:String {maxLength: 255}
     string businessTypeOtherDescription?;
     # Exempt reason associated with the certificate, coded by CustomerUsageType.
     # Example: A - Federal Government.
+    @constraint:String {maxLength: 1}
     string exemptReasonId?;
     # Other description for exempt reason i.e. Populated on if exemptReasonId is 'L' - Other.
+    @constraint:String {maxLength: 255}
     string exemptReasonOtherDescription?;
     # Effective date for this exempt certificate
     string effectiveDate?;
     # A list of applicable regions for this exempt certificate.
     #             
     # To list more than one applicable region, separate the list of region codes with commas.
+    @constraint:String {maxLength: 200}
     string regionsApplicable;
     # Status for this exempt certificate
     string exemptCertStatusId;
@@ -7958,6 +8253,7 @@ public type EcmsModel record {
     string countryIssued;
     # If the certificate record was synced from an AvaTax Certs account(as opposed to being entered in ECMS directly),
     # the unique AvaTax Certs identifier for the certificate record. Usually same as the Id of a Certificate.
+    @constraint:String {maxLength: 10}
     string avaCertId?;
     # Review status for this exempt certificate
     string exemptCertReviewStatusId?;
@@ -8138,9 +8434,9 @@ public type IdAttachmentBody record {
 # A model for aggregated rates.
 public type ComplianceAggregatedTaxRateModel record {
     # The compontent rate.
-    float rate?;
+    decimal rate?;
     # The stack rate based on the aggregation method.
-    float stackRate?;
+    decimal stackRate?;
     # The date this rate is starts to take effect.
     string effectiveDate?;
     # The date this rate is no longer active.
@@ -8230,8 +8526,10 @@ public type LocationModel record {
     # The unique ID number of the company that operates at this location.
     int companyId?;
     # A code that identifies this location.  Must be unique within your company.
+    @constraint:String {maxLength: 50}
     string locationCode;
     # A friendly name for this location.
+    @constraint:String {maxLength: 255}
     string description?;
     # Indicates whether this location is a physical place of business or a temporary salesperson location.
     string addressTypeId;
@@ -8240,14 +8538,19 @@ public type LocationModel record {
     # Indicates whether the Marketplace is outside or in USA
     boolean isMarketplaceOutsideUsa?;
     # The first line of the physical address of this location.
+    @constraint:String {maxLength: 50}
     string line1;
     # The second line of the physical address of this location.
+    @constraint:String {maxLength: 50}
     string line2?;
     # The third line of the physical address of this location.
+    @constraint:String {maxLength: 50}
     string line3?;
     # The city of the physical address of this location.
+    @constraint:String {maxLength: 50}
     string city?;
     # The county name of the physical address of this location.  Not required.
+    @constraint:String {maxLength: 50}
     string county?;
     # Name or ISO 3166 code identifying the region within the country of the physical address of this location.
     #             
@@ -8259,6 +8562,7 @@ public type LocationModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region?;
     # The postal code or zip code of the physical address of this location.
+    @constraint:String {maxLength: 10}
     string postalCode;
     # Name or ISO 3166 code identifying the country of the physical address of this location.
     #             
@@ -8275,8 +8579,10 @@ public type LocationModel record {
     # Set this flag to true to indicate that this location has been registered with a tax authority.
     boolean isRegistered?;
     # If this location has a different business name from its legal entity name, specify the "Doing Business As" name for this location.
+    @constraint:String {maxLength: 100}
     string dbaName?;
     # A friendly name for this location.
+    @constraint:String {maxLength: 100}
     string outletName?;
     # The date when this location was opened for business, or null if not known.
     string effectiveDate?;
@@ -8351,10 +8657,13 @@ public type AddressInfo record {
     # First line of the street address
     string line1?;
     # Second line of the street address
+    @constraint:String {maxLength: 100}
     string line2?;
     # Third line of the street address
+    @constraint:String {maxLength: 100}
     string line3?;
     # City component of the address
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -8376,11 +8685,12 @@ public type AddressInfo record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # Postal Code / Zip Code component of the address.
+    @constraint:String {maxLength: 11}
     string postalCode?;
     # Geospatial latitude measurement, in Decimal Degrees floating point format.
-    float latitude?;
+    decimal latitude?;
     # Geospatial longitude measurement, in Decimal Degrees floating point format.
-    float longitude?;
+    decimal longitude?;
 };
 
 # An extra property that can change the behavior of tax transactions.
@@ -8433,7 +8743,7 @@ public type FilingPaymentModel record {
     # The filing return id that this applies too
     int filingId;
     # The payment amount.
-    float paymentAmount;
+    decimal paymentAmount;
     # The type of the payment.
     string 'type;
     # Whether or not the payment has been calculated.
@@ -8518,11 +8828,11 @@ public type FilingsTaxDetailsModel record {
     # The tax type associated with the summary
     string taxType?;
     # The total sales amount
-    float salesAmount?;
+    decimal salesAmount?;
     # The nontaxable amount
-    float nonTaxableAmount?;
+    decimal nonTaxableAmount?;
     # The tax amount
-    float taxAmount?;
+    decimal taxAmount?;
     # The number of nights
     int numberOfNights?;
 };
@@ -8530,13 +8840,13 @@ public type FilingsTaxDetailsModel record {
 # An attachment associated with a filing return
 public type FilingReturnCreditModel record {
     # The resourceFileId used to retrieve the attachment
-    float totalSales?;
+    decimal totalSales?;
     # The resourceFileId used to retrieve the attachment
-    float totalExempt?;
+    decimal totalExempt?;
     # The resourceFileId used to retrieve the attachment
-    float totalTaxable?;
+    decimal totalTaxable?;
     # The resourceFileId used to retrieve the attachment
-    float totalTax?;
+    decimal totalTax?;
     # The excluded carry over credit documents
     WorksheetDocument[] transactionDetails?;
 };
@@ -8544,14 +8854,18 @@ public type FilingReturnCreditModel record {
 # TextCase info for input address
 public type AddressValidationInfo record {
     # First line of the street address
+    @constraint:String {maxLength: 50}
     string line1?;
     # Specify the text case for the validated address result.  If not specified, will return uppercase.
     string textCase?;
     # Second line of the street address
+    @constraint:String {maxLength: 100}
     string line2?;
     # Third line of the street address
+    @constraint:String {maxLength: 100}
     string line3?;
     # City component of the address
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -8573,11 +8887,12 @@ public type AddressValidationInfo record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # Postal Code / Zip Code component of the address.
+    @constraint:String {maxLength: 11}
     string postalCode?;
     # Geospatial latitude measurement, in Decimal Degrees floating point format.
-    float latitude?;
+    decimal latitude?;
     # Geospatial longitude measurement, in Decimal Degrees floating point format.
-    float longitude?;
+    decimal longitude?;
 };
 
 # A contact person for a company.
@@ -8587,22 +8902,31 @@ public type ContactModel record {
     # The unique ID number of the company to which this contact belongs.
     int companyId?;
     # A unique code for this contact.
+    @constraint:String {maxLength: 25}
     string contactCode;
     # The first or given name of this contact.
+    @constraint:String {maxLength: 50}
     string firstName?;
     # The middle name of this contact.
+    @constraint:String {maxLength: 50}
     string middleName?;
     # The last or family name of this contact.
+    @constraint:String {maxLength: 50}
     string lastName?;
     # Professional title of this contact.
+    @constraint:String {maxLength: 50}
     string title?;
     # The first line of the postal mailing address of this contact.
+    @constraint:String {maxLength: 50}
     string line1?;
     # The second line of the postal mailing address of this contact.
+    @constraint:String {maxLength: 50}
     string line2?;
     # The third line of the postal mailing address of this contact.
+    @constraint:String {maxLength: 50}
     string line3?;
     # The city of the postal mailing address of this contact.
+    @constraint:String {maxLength: 50}
     string city?;
     # Name or ISO 3166 code identifying the region within the country.
     #             
@@ -8614,6 +8938,7 @@ public type ContactModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListRegions`.
     string region?;
     # The postal code or zip code of the postal mailing address of this contact.
+    @constraint:String {maxLength: 10}
     string postalCode?;
     # Name or ISO 3166 code identifying the country.
     #             
@@ -8626,12 +8951,16 @@ public type ContactModel record {
     # For a full list of all supported codes and names, please see the Definitions API `ListCountries`.
     string country?;
     # The email address of this contact.
+    @constraint:String {maxLength: 50}
     string email?;
     # The main phone number for this contact.
+    @constraint:String {maxLength: 25}
     string phone?;
     # The mobile phone number for this contact.
+    @constraint:String {maxLength: 25}
     string mobile?;
     # The facsimile phone number for this contact.
+    @constraint:String {maxLength: 25}
     string fax?;
     # The date when this record was created.
     string createdDate?;

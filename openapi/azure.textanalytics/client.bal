@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -52,7 +52,7 @@ public isolated client class Client {
     # + showStats - (Optional) if set to true, response will contain request and document level statistics. 
     # + return - OK 
     remote isolated function healthStatus(string jobId, int top = 20, int skip = 0, boolean? showStats = ()) returns HealthcareJobState|error {
-        string resourcePath = string `/entities/health/jobs/${jobId}`;
+        string resourcePath = string `/entities/health/jobs/${getEncodedUri(jobId)}`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "showStats": showStats, "subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -65,12 +65,12 @@ public isolated client class Client {
     # + jobId - Format - uuid. Job ID 
     # + return - Cancel Job request has been received. 
     remote isolated function cancelHealthJob(string jobId) returns http:Response|error {
-        string resourcePath = string `/entities/health/jobs/${jobId}`;
+        string resourcePath = string `/entities/health/jobs/${getEncodedUri(jobId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Detect Language
@@ -89,7 +89,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LanguageResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LanguageResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Entities containing personal information
@@ -112,7 +112,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PiiResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PiiResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get analysis status and results
@@ -123,7 +123,7 @@ public isolated client class Client {
     # + skip - (Optional) Set the number of elements to offset in the response. When both $top and $skip are specified, $skip is applied first. 
     # + return - Analysis job status and metadata. 
     remote isolated function analyzeStatus(string jobId, boolean? showStats = (), int top = 20, int skip = 0) returns AnalyzeJobState|error {
-        string resourcePath = string `/analyze/jobs/${jobId}`;
+        string resourcePath = string `/analyze/jobs/${getEncodedUri(jobId)}`;
         map<anydata> queryParam = {"showStats": showStats, "$top": top, "$skip": skip, "subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -147,7 +147,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KeyPhraseResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KeyPhraseResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Linked entities from a well known knowledge base
@@ -167,7 +167,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EntityLinkingResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EntityLinkingResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Named Entity Recognition
@@ -187,7 +187,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EntitiesResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EntitiesResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sentiment
@@ -208,7 +208,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SentimentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SentimentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Submit analysis job
@@ -224,7 +224,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Submit healthcare analysis job
@@ -243,7 +243,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

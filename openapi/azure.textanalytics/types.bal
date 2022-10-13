@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -43,7 +43,7 @@ public type Entity record {
     # Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
     int length;
     # Confidence score between 0 and 1 of the extracted entity.
-    float confidenceScore;
+    decimal confidenceScore;
 };
 
 public type StringIndexType string;
@@ -104,7 +104,7 @@ public type HealthcareEntity record {
     # Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
     int length;
     # Confidence score between 0 and 1 of the extracted entity.
-    float confidenceScore;
+    decimal confidenceScore;
     *HealthcareLinkingProperties;
 };
 
@@ -167,11 +167,11 @@ public type MultiLanguageBatchInput record {
 # Represents the confidence scores between 0 and 1 across all sentiment classes: positive, neutral, negative.
 public type SentimentConfidenceScorePerLabel record {
     # Positive value
-    float positive;
+    decimal positive;
     # Nuetral value
-    float neutral;
+    decimal neutral;
     # Negative value
-    float negative;
+    decimal negative;
 };
 
 public type JobManifest record {
@@ -200,9 +200,9 @@ public type AnalyzeJobMetadata record {
 # Represents the confidence scores across all sentiment classes: positive, neutral, negative.
 public type TargetConfidenceScoreLabel record {
     # Positive
-    float positive;
+    decimal positive;
     # Negative
-    float negative;
+    decimal negative;
 };
 
 public type HealthcareTaskResult record {
@@ -227,7 +227,7 @@ public type DetectedLanguage record {
     # A two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
     string iso6391Name;
     # A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is true.
-    float confidenceScore;
+    decimal confidenceScore;
 };
 
 public type TasksState record {
@@ -243,7 +243,7 @@ public type AnalyzeJobErrorsAndStatistics record {
 public type DocumentError record {
     # Document Id.
     string id;
-    TextAnalyticsError _error;
+    TextAnalyticsError 'error;
 };
 
 public type TextAnalyticsError record {
@@ -369,7 +369,7 @@ public type EntitiesTask record {
 
 public type Match record {
     # If a well known item is recognized, a decimal number denoting the confidence level between 0 and 1 will be returned.
-    float confidenceScore;
+    decimal confidenceScore;
     # Entity text as appears in the request.
     string text;
     # Start position for the entity match text.
@@ -540,7 +540,7 @@ public type SentimentAnalysisTask record {
 };
 
 public type ErrorResponse record {
-    TextAnalyticsError _error;
+    TextAnalyticsError 'error;
 };
 
 public type SentenceAssessment record {

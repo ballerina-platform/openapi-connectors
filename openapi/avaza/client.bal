@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification.
@@ -131,7 +135,7 @@ public isolated client class Client {
     # + id - Company ID Number 
     # + return - Success 
     remote isolated function companyGetbyid(int id) returns Company|error {
-        string resourcePath = string `/api/Company/${id}`;
+        string resourcePath = string `/api/Company/${getEncodedUri(id)}`;
         Company response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -167,7 +171,7 @@ public isolated client class Client {
     # + id - Contact ID number 
     # + return - Success 
     remote isolated function contactGetbyid(int id) returns CompanyContact|error {
-        string resourcePath = string `/api/Contact/${id}`;
+        string resourcePath = string `/api/Contact/${getEncodedUri(id)}`;
         CompanyContact response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -189,7 +193,7 @@ public isolated client class Client {
     # + id - Credit Note ID Number 
     # + return - Success 
     remote isolated function creditnoteGetbyid(int id) returns CreditNote|error {
-        string resourcePath = string `/api/CreditNote/${id}`;
+        string resourcePath = string `/api/CreditNote/${getEncodedUri(id)}`;
         CreditNote response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -233,7 +237,7 @@ public isolated client class Client {
     # + id - Estimate Estimate ID number 
     # + return - Unauthorized 
     remote isolated function estimateGetbyid(int id) returns http:Response|error {
-        string resourcePath = string `/api/Estimate/${id}`;
+        string resourcePath = string `/api/Estimate/${getEncodedUri(id)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -321,7 +325,7 @@ public isolated client class Client {
     # + return - OK 
     remote isolated function expenseDelete() returns ExpenseDeleteResultSet|error {
         string resourcePath = string `/api/Expense`;
-        ExpenseDeleteResultSet response = check self.clientEp->delete(resourcePath);
+        ExpenseDeleteResultSet response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets an Expense Entry by Expense ID
@@ -329,7 +333,7 @@ public isolated client class Client {
     # + id - Expense ID number 
     # + return - Success 
     remote isolated function expenseGetbyid(int id) returns ExpenseDetails|error {
-        string resourcePath = string `/api/Expense/${id}`;
+        string resourcePath = string `/api/Expense/${getEncodedUri(id)}`;
         ExpenseDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -431,7 +435,7 @@ public isolated client class Client {
     # + id - InventoryItem ID number 
     # + return - Unauthorized 
     remote isolated function inventoryGetbyid(int id) returns http:Response|error {
-        string resourcePath = string `/api/Inventory/${id}`;
+        string resourcePath = string `/api/Inventory/${getEncodedUri(id)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -467,7 +471,7 @@ public isolated client class Client {
     # + id - Invoice Transaction ID number 
     # + return - Unauthorized 
     remote isolated function invoiceGetbyid(int id) returns http:Response|error {
-        string resourcePath = string `/api/Invoice/${id}`;
+        string resourcePath = string `/api/Invoice/${getEncodedUri(id)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -501,7 +505,7 @@ public isolated client class Client {
     # + id - Invoice Transaction ID Number 
     # + return - Success 
     remote isolated function paymentGetbyid(int id) returns Payment|error {
-        string resourcePath = string `/api/Payment/${id}`;
+        string resourcePath = string `/api/Payment/${getEncodedUri(id)}`;
         Payment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -565,7 +569,7 @@ public isolated client class Client {
     # + id - Project ID number 
     # + return - Success 
     remote isolated function projectGetbyid(int id) returns ProjectDetails|error {
-        string resourcePath = string `/api/Project/${id}`;
+        string resourcePath = string `/api/Project/${getEncodedUri(id)}`;
         ProjectDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -715,7 +719,7 @@ public isolated client class Client {
         string resourcePath = string `/api/Section`;
         map<anydata> queryParam = {"SectionID": sectionID};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->delete(resourcePath);
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets minimal list of Tasks for the current user
@@ -781,7 +785,7 @@ public isolated client class Client {
         string resourcePath = string `/api/Task`;
         map<anydata> queryParam = {"TaskID": taskID};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->delete(resourcePath);
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets Task by Task ID
@@ -789,7 +793,7 @@ public isolated client class Client {
     # + id - Task ID number 
     # + return - Success 
     remote isolated function taskGetbyid(int id) returns TaskDetails|error {
-        string resourcePath = string `/api/Task/${id}`;
+        string resourcePath = string `/api/Task/${getEncodedUri(id)}`;
         TaskDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -869,7 +873,7 @@ public isolated client class Client {
     # + id - Timesheet ID number 
     # + return - Success 
     remote isolated function timesheetGetbyid(int id) returns TimesheetDetails|error {
-        string resourcePath = string `/api/Timesheet/${id}`;
+        string resourcePath = string `/api/Timesheet/${getEncodedUri(id)}`;
         TimesheetDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -878,8 +882,8 @@ public isolated client class Client {
     # + id - The id of the timesheet entry to be deleted 
     # + return - OK 
     remote isolated function timesheetDelete(int id) returns json|error {
-        string resourcePath = string `/api/Timesheet/${id}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/Timesheet/${getEncodedUri(id)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Submit Timesheets for Approval.
@@ -933,7 +937,7 @@ public isolated client class Client {
     # + userID - Optional - User ID number if impersonating a different user. Otherwise assumes the current user. Only users with certain security roles have permission to impersonate other users 
     # + return - Success 
     remote isolated function timesheettimerStarttimer(int id, int? userID = ()) returns json|error {
-        string resourcePath = string `/api/TimesheetTimer/${id}`;
+        string resourcePath = string `/api/TimesheetTimer/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"UserID": userID};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -947,10 +951,10 @@ public isolated client class Client {
     # + userID - Optional - User ID number if impersonating a different user. Otherwise assumes the current user. Only users with certain security roles have permission to impersonate other users 
     # + return - Success 
     remote isolated function timesheettimerStoptimer(int id, int? userID = ()) returns json|error {
-        string resourcePath = string `/api/TimesheetTimer/${id}`;
+        string resourcePath = string `/api/TimesheetTimer/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"UserID": userID};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->delete(resourcePath);
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Collection of Users who have roles in the current Avaza account.
@@ -995,7 +999,7 @@ public isolated client class Client {
         string resourcePath = string `/api/Webhook`;
         map<anydata> queryParam = {"target_url": targetUrl};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        json response = check self.clientEp->delete(resourcePath);
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Webhook Subscription by SubscriptionID
@@ -1003,7 +1007,7 @@ public isolated client class Client {
     # + id - Subscription Id 
     # + return - OK 
     remote isolated function webhookGetbyid(int id) returns WebhookList|error {
-        string resourcePath = string `/api/Webhook/${id}`;
+        string resourcePath = string `/api/Webhook/${getEncodedUri(id)}`;
         WebhookList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1012,8 +1016,8 @@ public isolated client class Client {
     # + id - Subscription id to be deleted 
     # + return - Subscription deleted ok 
     remote isolated function webhookDelete(int id) returns json|error {
-        string resourcePath = string `/api/Webhook/${id}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/Webhook/${getEncodedUri(id)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

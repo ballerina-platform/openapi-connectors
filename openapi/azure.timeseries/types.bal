@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Definition of whether to expand hierarchy nodes in the same search instances call.
 public type HierarchiesExpandParameter record {
@@ -31,7 +33,7 @@ public type SearchInstancesResponsePage record {
 # Information about an API error.
 public type TsiError record {
     # A particular API error with an error code and a message.
-    TsiErrorBody _error?;
+    TsiErrorBody 'error?;
 };
 
 # Time series instance that is returned by instances search call. Returned instance matched the search request and contains highlighted text to be displayed to the user if it is set to 'true'.
@@ -192,7 +194,7 @@ public type InstanceOrError record {
     # Time series instances are the time series themselves. In most cases, the deviceId or assetId is the unique identifier of the asset in the environment. Instances have descriptive information associated with them called instance fields. At a minimum, instance fields include hierarchy information. They can also include useful, descriptive data like the manufacturer, operator, or the last service date.
     TimeSeriesInstance instance?;
     # A particular API error with an error code and a message.
-    TsiErrorBody _error?;
+    TsiErrorBody 'error?;
 };
 
 # Partial list of time series types returned in a single request.
@@ -376,7 +378,7 @@ public type TimeSeriesHierarchyOrError record {
     # Time series hierarchy organizes time series instances into a tree.
     TimeSeriesHierarchy hierarchy?;
     # A particular API error with an error code and a message.
-    TsiErrorBody _error?;
+    TsiErrorBody 'error?;
 };
 
 # Property of an event that is either stored or computed. Properties are identified by both name and type. Different events can have properties with same name, but different type.
@@ -388,6 +390,7 @@ public type EventProperty record {
 };
 
 # A single Time Series ID value that is an array of primitive values that uniquely identifies a time series instance (e.g. a single device). Note that a single Time Series ID can be composite if multiple properties are specified as Time Series ID at environment creation time. The position and type of values must match Time Series ID properties specified on the environment and returned by Get Model Setting API. Cannot be empty.
+@constraint:Array {minLength: 1}
 public type TimeSeriesId record {}[];
 
 # The hierarchy node which contains the instances matching the query based on the input. May be empty or null.
@@ -514,6 +517,7 @@ public type AggregateVariable record {
 };
 
 # Time series ID properties defined during environment creation.
+@constraint:Array {minLength: 1}
 public type TimeSeriesIdProperties TimeSeriesIdProperty[];
 
 # The interpolation operation to be performed on the raw data points. Currently, only sampling of interpolated time series is allowed. Allowed aggregate function - eg: left($value). Can be null if no interpolation needs to be applied.
@@ -535,7 +539,7 @@ public type TimeSeriesTypeOrError record {
     # Time series type defines variables or formulas for doing computation on events associated with time series instances. Each time series instance is associated with exactly one type. A type can have one or more variables. For example, a time series instance might be of type Temperature Sensor, which consists of the variables avg temperature, min temperature, and max temperature.
     TimeSeriesType timeSeriesType?;
     # A particular API error with an error code and a message.
-    TsiErrorBody _error?;
+    TsiErrorBody 'error?;
 };
 
 # A particular API error with an error code and a message.
@@ -574,7 +578,7 @@ public type QueryResultPage record {
     # Collection of time series properties and values for each of the timestamps.  Can be null if server was unable to fill the page in this request, or can be empty if there are no more objects when continuation token is null.
     PropertyValues[] properties?;
     # Approximate progress of the query in percentage. It can be between 0 and 100. When the continuation token in the response is null, the progress is expected to be 100.
-    float progress?;
+    decimal progress?;
 };
 
 # Response of a single operation on a batch of instances. Only one of "get", "put", "update" or "delete" will be set based on the request.

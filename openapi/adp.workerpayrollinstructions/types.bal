@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -84,7 +84,7 @@ public type StringType record {
     # Indicates the maximum length supported for a property
     int maxLength?;
     # Indicates the default value which should be populated by default
-    string 'default?;
+    string default?;
     # Indicates a regular expression on the required pattern for the value
     string pattern?;
     MaskingRuleType masking?;
@@ -120,7 +120,7 @@ public type CommunicationtypeV02 record {
     # A list of internet URIs
     InternetAddressWithItemID[] internetAddresses?;
     # A list of instant messages URIs
-    SocialNetworkContactCommunicationType[] instantMessages?;
+    CommunicationtypeV02Instantmessages[] instantMessages?;
 };
 
 # The simple (string) identifier of an object
@@ -271,6 +271,34 @@ public type WorkergeneraldeductioninstructionstarteventActorGeocoordinate record
     decimal latitude?;
     # The angle, in degrees, of a position on Earth around the equator from the Greenwich Meridian specified in decimal degrees
     decimal longitude?;
+};
+
+# A single query parameter
+public type WorkergeneralDeductionInstructionchangeQueryCriterion record {
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 queryOptionCode?;
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 obligationCode?;
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 queryOptionTypeCode?;
+    # The default number value
+    decimal defaultNumberValue?;
+    # The default string value
+    string defaultStringValue?;
+    # Maximum number of resource paths supported
+    int resourcePathMax?;
+    # Indicates a regular expression on the required pattern for the value
+    string pattern?;
+    # A collection of acceptable resource paths to pass to the query option
+    string[] resourcePaths?;
+    # A collection of resource paths which may not be passed to the query option.  An example use of this is where you allow all paths except 1 or 2.  You would want to only specify those which are excluded
+    string[] excludedResourcePaths?;
+    # A reference to the codeList which returns the possible values for the query option
+    CodelisttypeV03 queryValueCodeList?;
+    # A collection of logical operators
+    WorkergeneraldeductioninstructionstarteventmetaMetaLogicaloperators[] logicalOperators?;
+    # The unique identifier of the object in a collection
+    ItemidtypeV01 itemID?;
 };
 
 # This identifies the status of the event. An event that has been created, either by the system of record or as the result of a user, will have an event status code of Created. An event that is saved in a work in progress state (as determined by the permissable state codes), will have an event status code of InProgress. An event that has been recorded, will have an event status code of Complete. This value is set by the system of record
@@ -722,7 +750,7 @@ public type StringCodeListType record {
     # Indicates the maximum length supported for a property
     int maxLength?;
     # Indicates the default value which should be populated by default
-    string 'default?;
+    string default?;
     # Indicates a regular expression on the required pattern for the value
     string pattern?;
     MaskingRuleType masking?;
@@ -1117,6 +1145,34 @@ public type WorkergeneralDeductionInstructionstartQueryCriterion record {
 
 public type SimpleIDType string;
 
+# A single query parameter
+public type WorkergeneralDeductionInstructionstopQueryCriterion record {
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 queryOptionCode?;
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 obligationCode?;
+    # A simple (string) code.  Can have a code list reference
+    SimplecodetypeV02 queryOptionTypeCode?;
+    # The default number value
+    decimal defaultNumberValue?;
+    # The default string value
+    string defaultStringValue?;
+    # Maximum number of resource paths supported
+    int resourcePathMax?;
+    # Indicates a regular expression on the required pattern for the value
+    string pattern?;
+    # A collection of acceptable resource paths to pass to the query option
+    string[] resourcePaths?;
+    # A collection of resource paths which may not be passed to the query option.  An example use of this is where you allow all paths except 1 or 2.  You would want to only specify those which are excluded
+    string[] excludedResourcePaths?;
+    # A reference to the codeList which returns the possible values for the query option
+    CodelisttypeV03 queryValueCodeList?;
+    # A collection of logical operators
+    WorkergeneraldeductioninstructionstarteventmetaMetaLogicaloperators[] logicalOperators?;
+    # The unique identifier of the object in a collection
+    ItemidtypeV01 itemID?;
+};
+
 public type WorkergeneraldeductioninstructionstarteventmetaMetaDatatransforms record {
     # The unique identifier of the collection.
     string itemID?;
@@ -1331,7 +1387,7 @@ public type WorkergeneraldeductioninstructionchangeeventmetaMeta record {
     # This is the canonical name of the event, e.g. dependent.add, worker.hire. This field is always present and valued based on a standard codelist.
     string '\/eventNameCode\/codeValue;
     # A collection of query criteria
-    WorkergeneralDeductionInstructionstartQueryCriterion[] queryCriteria?;
+    WorkergeneralDeductionInstructionchangeQueryCriterion[] queryCriteria?;
     WorkergeneraldeductioninstructionchangeeventmetaMetaDataeventcontext '\/data\/eventContext?;
     # A collection of transform rules
     WorkergeneraldeductioninstructionchangeeventmetaMetaDatatransforms[] '\/data\/transforms?;
@@ -1420,7 +1476,7 @@ public type AmountValueType record {
     # Indicates that the value must be a multiple of this value or divisible by this value.
     decimal multipleOf?;
     # Indicates the default value which should be populated by default
-    decimal 'default?;
+    decimal default?;
     # Indicates a regular expression on the required pattern for the value
     string pattern?;
     MaskingRuleType masking?;
@@ -1578,7 +1634,7 @@ public type WorkergeneraldeductioninstructionstopeventmetaMeta record {
     # This is the canonical name of the event, e.g. dependent.add, worker.hire. This field is always present and valued based on a standard codelist.
     string '\/eventNameCode\/codeValue;
     # A collection of query criteria
-    WorkergeneralDeductionInstructionstartQueryCriterion[] queryCriteria?;
+    WorkergeneralDeductionInstructionstopQueryCriterion[] queryCriteria?;
     WorkergeneraldeductioninstructionchangeeventmetaMetaDataeventcontext '\/data\/eventContext?;
     # A collection of transform rules
     WorkergeneraldeductioninstructionstopeventmetaMetaDatatransforms[] '\/data\/transforms?;
@@ -1824,6 +1880,16 @@ public type WorkergeneraldeductioninstructionchangeeventDataOutput record {
     Payrollinstructionoutput1 payrollInstruction?;
 };
 
+public type CommunicationtypeV02Instantmessages record {
+    # The code for the related entity.  If this is a coded value, codeValue and shortName should be used. If this is just a string value, only shortName is necessary
+    CodetypeV02 nameCode?;
+    # The URI of the related entity
+    UritypeV01 uri?;
+    # The unique identifier of the object in a collection
+    ItemidtypeV01 itemID?;
+    boolean notificationIndicator?;
+};
+
 # This allows for further refinement of the associated event. For example, for a worker.maritalStatus.change event, the reason code could be used to describe whether it is a Marriage vs. Divorce vs. Separation
 public type WorkergeneraldeductioninstructionstarteventDataTransformEventreasoncode record {
     # The code for the related entity
@@ -1998,7 +2064,7 @@ public type NumberType record {
     # Indicates that the value must be a multiple of this value or divisible by this value.
     decimal multipleOf?;
     # Indicates the default value which should be populated by default
-    decimal 'default?;
+    decimal default?;
     # Indicates a regular expression on the required pattern for the value
     string pattern?;
     MaskingRuleType masking?;
@@ -2231,7 +2297,7 @@ public type BooleanType record {
     # Provides a client defined UI long label for the property
     string longLabelName?;
     # Indicates the default value which should be populated by default
-    boolean 'default?;
+    boolean default?;
     # Provides 1 to many properties which the value of this property must be equal to.  If the property is equal to any of the value of the properties then the validation is successful.
     string[] 'equals?;
     # List conditional dependencies of supported properties (readOnly, pattern, hidden, disallow etc.) of an attribute or an object. Dependencies can be defined using oneOf (OR) / allOf (AND) object. oneOf - successful if one of the conditions satisfies, allOf - successful if all the conditions satisfies. Refer API specification for dependencies context object syntax and rules. Dependencies context cannot be validated against context schema if dependencies is defined context JSON, because the dependencies JSON structure is dynamically defined for attributes and the not defined in the context schema. Attribute level properties and dependencies properties are mutually exclusive, example - readOnly property can be set either at attribute level or inside dependencies. If both hidden and disallow properties are set inside dependencies or at attribute level, hidden property takes precedence.

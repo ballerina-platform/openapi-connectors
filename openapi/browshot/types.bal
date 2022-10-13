@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ScreenshotArr Screenshot[];
 
 public type ScreenshotListArr ScreenshotList[];
@@ -28,8 +30,10 @@ public type Account record {
     # number of free screenshots available for the current month
     int free_screenshots_left;
     # 1 is your account is authorized to create and use private instances, 0 otherwise (default)
+    @constraint:Int {maxValue: 1}
     int private_instances;
     # 1 is your account is authorized to request hosting on Browshot, 0 otherwise (default)
+    @constraint:Int {maxValue: 1}
     int hosting_browshot;
     # list of private instances as returned by /api/v1/instance/list
     Instance[] instances?;
@@ -41,7 +45,7 @@ public type Account record {
 
 public type ScreenshotError record {
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - "in_queue", "processing", "finished", "error"
     string status?;
     # priority given to the screenshot - high (1) to low (3)
@@ -75,7 +79,7 @@ public type Instance record {
 
 public type BatchError record {
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - "in_queue", "processing", "finished", "error"
     string status?;
 };
@@ -93,25 +97,25 @@ public type ScreenshotInfoError record {
     # screenshot ID
     int id?;
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - "in_queue", "processing", "finished", "error"
     string status?;
 };
 
 public type ScreenshotList record {
-    decimal 'default?;
+    decimal default?;
 };
 
 public type AccountError record {
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - error
     string status?;
 };
 
 public type BrowserError record {
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - error
     string status?;
 };
@@ -136,7 +140,7 @@ public type Batch record {
 };
 
 public type BrowserList record {
-    int 'default?;
+    int default?;
 };
 
 public type ScreenshotShort record {
@@ -154,8 +158,9 @@ public type Screenshot record {
     # URL to download the screenshot
     record {} screenshot_url?;
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # priority given to the screenshot: high (1) to low (3)
+    @constraint:Int {minValue: 1, maxValue: 3}
     int priority?;
     # original URL requested
     string url;
@@ -168,7 +173,7 @@ public type Screenshot record {
     # URL of the screenshot (redirections can occur)
     string final_url?;
     # image scale. Always 1 for desktop browsers; mobiles may change the scale (zoom in or zoom out) to fit the page on the screen
-    float scale?;
+    decimal scale?;
     # instance ID used for the screenshot
     int instance_id;
     # number of credits spent for the screenshot
@@ -184,6 +189,7 @@ public type Screenshot record {
     # number of seconds to wait after page load if Flash elements are present
     int flash_delay?;
     # level of details about the screenshot and the page
+    @constraint:Int {maxValue: 3}
     int details?;
     # URL of optional javascript file executed after the page load event
     string script?;
@@ -193,7 +199,7 @@ public type Screenshot record {
 
 public type InstanceError record {
     # description of the problem that occurred
-    string _error?;
+    string 'error?;
     # status of the request - error
     string status?;
 };
@@ -210,9 +216,12 @@ public type Browser record {
     # browser name and version: Firefox 45, etc.
     string name?;
     # JavaScript support: 1 if enabled, 0 if disabled
+    @constraint:Int {maxValue: 1}
     int javascript?;
     # Flash support: 1 if enabled, 0 if disabled
+    @constraint:Int {maxValue: 1}
     int flash?;
     # Mobile browser: 1 if true, 0 if false
+    @constraint:Int {maxValue: 1}
     int mobile?;
 };

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,8 +14,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type CreateLocationRequest record {
     # Name of the location
+    @constraint:String {minLength: 1}
     string name;
     # Description of the location
     string? description?;
@@ -65,6 +68,7 @@ public type CardStatus string;
 public type UserStatus string;
 
 public type LocationResponse record {
+    # 
     string id;
     # Name of the location
     string name;
@@ -73,6 +77,7 @@ public type LocationResponse record {
 };
 
 public type DepartmentResponse record {
+    # 
     string id;
     # Name of the department
     string name;
@@ -238,6 +243,7 @@ public type PageLocationresponse record {
 
 public type CreateDepartmentRequest record {
     # Name of the department
+    @constraint:String {minLength: 1}
     string name;
     # Description of the department
     string? description?;
@@ -263,8 +269,10 @@ public type UpdateUserStatus string;
 
 public type CreateUserRequest record {
     # First name
+    @constraint:String {minLength: 1}
     string first_name;
     # Last name
+    @constraint:String {minLength: 1}
     string last_name;
     # Email address
     string email;
@@ -281,6 +289,7 @@ public type CreateCardRequest record {
     # Card owner information.
     CardOwner owner;
     # Card name.
+    @constraint:String {minLength: 1}
     string card_name;
     # Card type
     CardType card_type;

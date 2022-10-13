@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://bitbucket.org/site/oauth2/access_token";
 |};
 
 # This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
@@ -75,7 +86,7 @@ public isolated client class Client {
     # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
     # + return - The repositories owned by the specified account. 
     remote isolated function listWorkspaces(string workspace, string? role = (), string? q = (), string? sort = ()) returns PaginatedRepositories|error {
-        string resourcePath = string `/repositories/${workspace}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}`;
         map<anydata> queryParam = {"role": role, "q": q, "sort": sort};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PaginatedRepositories response = check self.clientEp->get(resourcePath);
@@ -88,7 +99,7 @@ public isolated client class Client {
     # + state - Only return pull requests that are in this state. This parameter can be repeated. 
     # + return - All pull requests on the specified repository. 
     remote isolated function listPullrequets(string repoSlug, string workspace, string? state = ()) returns PaginatedPullrequests|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/pullrequests`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/pullrequests`;
         map<anydata> queryParam = {"state": state};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PaginatedPullrequests response = check self.clientEp->get(resourcePath);
@@ -101,7 +112,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - The pull request object 
     remote isolated function getPullRequestByID(int pullRequestId, string repoSlug, string workspace) returns Pullrequest|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/pullrequests/${pullRequestId}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/pullrequests/${getEncodedUri(pullRequestId)}`;
         Pullrequest response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -111,7 +122,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: {workspace UUID} 
     # + return - The repository object 
     remote isolated function getRepositoryDetail(string repoSlug, string workspace) returns Repository|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}`;
         Repository response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -122,7 +133,7 @@ public isolated client class Client {
     # + payload - The repository that is to be created. Note that most object elements are optional. Elements "owner" and "full_name" are ignored as the URL implies them 
     # + return - The newly created repository. 
     remote isolated function createNewRepository(string repoSlug, string workspace, Repository payload) returns Repository|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -135,8 +146,8 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - Indicates successful deletion 
     remote isolated function deleteRepository(string repoSlug, string workspace) returns http:Response|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the specified issue
@@ -146,7 +157,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - The issue object 
     remote isolated function getIssueByID(string issueId, string repoSlug, string workspace) returns Issue|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}`;
         Issue response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -157,8 +168,8 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - The issue object 
     remote isolated function deleteIssue(string issueId, string repoSlug, string workspace) returns http:Response|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the issues in the issue tracker
@@ -169,7 +180,7 @@ public isolated client class Client {
     # + sort - Field by which the results should be sorted as https://developer.atlassian.com/bitbucket/api/2/reference/meta/filtering 
     # + return - A paginated list of the issues matching any filter criteria that were provided 
     remote isolated function listIssues(string repoSlug, string workspace, string? q = (), string? sort = ()) returns PaginatedIssues|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues`;
         map<anydata> queryParam = {"q": q, "sort": sort};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PaginatedIssues response = check self.clientEp->get(resourcePath);
@@ -182,7 +193,7 @@ public isolated client class Client {
     # + payload - The new issue. The only required element is `title`. All other elements can be omitted from the body 
     # + return - The newly created issue 
     remote isolated function createIssue(string repoSlug, string workspace, Issue payload) returns Issue|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -196,7 +207,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - A paginated list of issue comments 
     remote isolated function listComments(string issueId, string repoSlug, string workspace) returns PaginatedIssueComments|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}/comments`;
         PaginatedIssueComments response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -208,7 +219,7 @@ public isolated client class Client {
     # + payload - The new issue comment object 
     # + return - The newly created comment 
     remote isolated function createNewIssueComment(string issueId, string repoSlug, string workspace, IssueComment payload) returns http:Response|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}/comments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -223,7 +234,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - The issue comment 
     remote isolated function getCommentByID(int commentId, string issueId, string repoSlug, string workspace) returns IssueComment|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}/comments/${getEncodedUri(commentId)}`;
         IssueComment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -236,7 +247,7 @@ public isolated client class Client {
     # + payload - The updated comment 
     # + return - The updated issue comment 
     remote isolated function updateComment(int commentId, string issueId, string repoSlug, string workspace, IssueComment payload) returns IssueComment|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}/comments/${getEncodedUri(commentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -251,8 +262,8 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
     # + return - Indicates successful deletion 
     remote isolated function deleteComment(int commentId, string issueId, string repoSlug, string workspace) returns http:Response|error {
-        string resourcePath = string `/repositories/${workspace}/${repoSlug}/issues/${issueId}/comments/${commentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/repositories/${getEncodedUri(workspace)}/${getEncodedUri(repoSlug)}/issues/${getEncodedUri(issueId)}/comments/${getEncodedUri(commentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the requested workspace
@@ -260,7 +271,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
     # + return - The workspace. 
     remote isolated function getWorkSpaceByID(string workspace) returns Workspace|error {
-        string resourcePath = string `/workspaces/${workspace}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspace)}`;
         Workspace response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -270,7 +281,7 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID 
     # + return - The project that is part of a workspace 
     remote isolated function getProjectByProjectKey(string projectKey, string workspace) returns Project|error {
-        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspace)}/projects/${getEncodedUri(projectKey)}`;
         Project response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -281,7 +292,7 @@ public isolated client class Client {
     # + payload - The project object 
     # + return - The existing project is has been updated 
     remote isolated function createOrUpdateProject(string projectKey, string workspace, Project payload) returns Project|error {
-        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspace)}/projects/${getEncodedUri(projectKey)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -294,8 +305,8 @@ public isolated client class Client {
     # + workspace - This can either be the workspace ID (slug) or the workspace UUID surrounded by curly-braces, for example: `{workspace UUID}` 
     # + return - Successful deletion. 
     remote isolated function deleteProject(string projectKey, string workspace) returns http:Response|error {
-        string resourcePath = string `/workspaces/${workspace}/projects/${projectKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/workspaces/${getEncodedUri(workspace)}/projects/${getEncodedUri(projectKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

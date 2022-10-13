@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        AvailableCurrencyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AvailableCurrencyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Converts a price from the source currency into the destination currency
@@ -61,13 +61,13 @@ public isolated client class Client {
     # + payload - Input price, such as 19.99 in source currency 
     # + return - OK 
     remote isolated function currencyExchangeConvertCurrency(string 'source, string destination, decimal payload) returns ConvertedCurrencyResult|error {
-        string resourcePath = string `/currency/exchange-rates/convert/${'source}/to/${destination}`;
+        string resourcePath = string `/currency/exchange-rates/convert/${getEncodedUri('source)}/to/${getEncodedUri(destination)}`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ConvertedCurrencyResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ConvertedCurrencyResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets the exchange rate from the source currency into the destination currency
@@ -76,12 +76,12 @@ public isolated client class Client {
     # + destination - Destination currency three-digit code (ISO 4217), e.g. USD, EUR, etc. 
     # + return - OK 
     remote isolated function currencyExchangeGetExchangeRate(string 'source, string destination) returns ExchangeRateResult|error {
-        string resourcePath = string `/currency/exchange-rates/get/${'source}/to/${destination}`;
+        string resourcePath = string `/currency/exchange-rates/get/${getEncodedUri('source)}/to/${getEncodedUri(destination)}`;
         map<any> headerValues = {"Apikey": self.apiKeyConfig.apikey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ExchangeRateResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ExchangeRateResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -41,13 +41,13 @@ public type AvailableCurrencyResponse record {
 # Result of performing a get exchange rate operation
 public type ExchangeRateResult record {
     # The exchange rate from the source to the destination currency
-    float ExchangeRate?;
+    decimal ExchangeRate?;
 };
 
 # Result of performing a Convert Currency operation
 public type ConvertedCurrencyResult record {
     # The converted price in the destination currency
-    float ConvertedPrice?;
+    decimal ConvertedPrice?;
     # ISO 4217 currency three-letter code of destination price
     string ISOCurrencyCode?;
     # Destination currency symbol

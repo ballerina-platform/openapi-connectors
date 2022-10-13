@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -209,7 +209,7 @@ public type QueryPredicate string;
 public type CartScoreTier record {
     *ShippingRatePriceTier;
     ShippingRateTierType 'type?;
-    float score?;
+    decimal score?;
     Money price?;
     PriceFunction priceFunction?;
     boolean isMatching?;
@@ -1167,7 +1167,7 @@ public type MatchingPriceNotFoundError record {
     string currency?;
     string country?;
     CustomerGroupReference customerGroup?;
-    ChannelReference 'channel?;
+    ChannelReference channel?;
 };
 
 public type ExternalLineItemTotalPrice record {
@@ -1969,7 +1969,7 @@ public type StagedOrderAddCustomLineItemAction record {
     string action?;
     Money money?;
     LocalizedString name?;
-    float quantity?;
+    decimal quantity?;
     string slug?;
     TaxCategoryResourceIdentifier taxCategory?;
     CustomFieldsDraft custom?;
@@ -1984,7 +1984,7 @@ public type ShoppingListSetCustomerAction record {
 
 public type ExternalTaxRateDraft record {
     string name?;
-    float amount?;
+    decimal amount?;
     string country?;
     string state?;
     SubRate[] subRates?;
@@ -2594,7 +2594,7 @@ public type MyShoppingListChangeTextLineItemsOrderAction record {
 };
 
 public type SyncInfo record {
-    ChannelReference 'channel?;
+    ChannelReference channel?;
     string externalId?;
     string syncedAt?;
 };
@@ -2804,7 +2804,7 @@ public type OrderPaymentAddedMessagePayload record {
 };
 
 public type ItemState record {
-    float quantity?;
+    decimal quantity?;
     StateReference state?;
 };
 
@@ -2961,7 +2961,7 @@ public type StagedOrderRemoveLineItemAction record {
     *StagedOrderUpdateAction;
     string action?;
     string lineItemId?;
-    float quantity?;
+    decimal quantity?;
     Money externalPrice?;
     ExternalLineItemTotalPrice externalTotalPrice?;
     ItemShippingDetailsDraft shippingDetailsToRemove?;
@@ -3180,7 +3180,7 @@ public type QueryPrice record {
     Money value?;
     CountryCode country?;
     CustomerGroupReference customerGroup?;
-    ChannelReference 'channel?;
+    ChannelReference channel?;
     string validFrom?;
     string validUntil?;
     DiscountedPriceDraft discounted?;
@@ -3434,16 +3434,16 @@ public type ProductDiscount record {
 };
 
 public type FacetResultRange record {
-    float 'from?;
+    decimal 'from?;
     string fromStr?;
-    float to?;
+    decimal to?;
     string toStr?;
     int count?;
     int productCount?;
-    float total?;
-    float min?;
-    float max?;
-    float mean?;
+    decimal total?;
+    decimal min?;
+    decimal max?;
+    decimal mean?;
 };
 
 public type ProductChangeNameAction record {
@@ -3510,13 +3510,13 @@ public type OrderLineItemRemovedMessagePayload record {
 };
 
 public type DiscountedLineItemPriceForQuantity record {
-    float quantity?;
+    decimal quantity?;
     DiscountedLineItemPrice discountedPrice?;
 };
 
 public type TaxPortion record {
     string name?;
-    float rate?;
+    decimal rate?;
     TypedMoney amount?;
 };
 
@@ -3677,7 +3677,7 @@ public type ParcelItemsUpdatedMessagePayload record {
 public type OrderUpdateSyncInfoAction record {
     *OrderUpdateAction;
     string action?;
-    ChannelResourceIdentifier 'channel?;
+    ChannelResourceIdentifier channel?;
     string externalId?;
     string syncedAt?;
 };
@@ -4231,7 +4231,7 @@ public type StagedOrderChangeLineItemQuantityAction record {
     *StagedOrderUpdateAction;
     string action?;
     string lineItemId?;
-    float quantity?;
+    decimal quantity?;
     Money externalPrice?;
     ExternalLineItemTotalPrice externalTotalPrice?;
 };
@@ -4239,7 +4239,7 @@ public type StagedOrderChangeLineItemQuantityAction record {
 public type GeoJsonPoint record {
     *GeoJson;
     string 'type?;
-    float[] coordinates?;
+    decimal[] coordinates?;
 };
 
 public type QueryComplexityLimitExceededError record {
@@ -4419,7 +4419,7 @@ public type CustomerPagedQueryResponse record {
 public type StagedOrderUpdateSyncInfoAction record {
     *StagedOrderUpdateAction;
     string action?;
-    ChannelResourceIdentifier 'channel?;
+    ChannelResourceIdentifier channel?;
     string externalId?;
     string syncedAt?;
 };
@@ -4504,7 +4504,7 @@ public type ShoppingListUpdateAction record {
 
 public type TaxRateDraft record {
     string name?;
-    float amount?;
+    decimal amount?;
     boolean includedInPrice?;
     CountryCode country?;
     string state?;
@@ -4558,7 +4558,7 @@ public type ProductSelectionUpdate record {
 public type Hit record {
     string id?;
     int 'version?;
-    float relevance?;
+    decimal relevance?;
 };
 
 public type Type record {
@@ -5856,7 +5856,7 @@ public type MissingRoleOnChannelError record {
     *ErrorObject;
     string code?;
     string message?;
-    ChannelResourceIdentifier 'channel?;
+    ChannelResourceIdentifier channel?;
     ChannelRoleEnum missingRole?;
 };
 
@@ -5966,7 +5966,7 @@ public type CategoryChangeParentAction record {
 public type ErrorResponse record {
     int statusCode?;
     string message?;
-    string _error?;
+    string 'error?;
     string error_description?;
     ErrorObject[] errors?;
 };
@@ -6208,7 +6208,7 @@ public type OrderSetItemShippingAddressCustomFieldAction record {
 public type ScoreShippingRateInputDraft record {
     *ShippingRateInputDraft;
     string 'type?;
-    float score?;
+    decimal score?;
 };
 
 public type MyCustomerUpdate record {
@@ -6549,7 +6549,7 @@ public type CartDiscountValueGiftLineItemDraft record {
 public type TaxRate record {
     string id?;
     string name?;
-    float amount?;
+    decimal amount?;
     boolean includedInPrice?;
     CountryCode country?;
     string state?;
@@ -6712,7 +6712,7 @@ public type OrderReturnInfoAddedMessagePayload record {
 
 public type SubRate record {
     string name?;
-    float amount?;
+    decimal amount?;
 };
 
 public type Delivery record {
@@ -6951,7 +6951,7 @@ public type StagedOrderAddLineItemAction record {
     string productId?;
     int variantId?;
     string sku?;
-    float quantity?;
+    decimal quantity?;
     string addedAt?;
     ChannelResourceIdentifier supplyChannel?;
     Money externalPrice?;
@@ -7565,7 +7565,7 @@ public type Price record {
     TypedMoney value?;
     CountryCode country?;
     CustomerGroupReference customerGroup?;
-    ChannelReference 'channel?;
+    ChannelReference channel?;
     string validFrom?;
     string validUntil?;
     DiscountedPrice discounted?;
@@ -7619,8 +7619,8 @@ public type ReviewRatingSetMessage record {
     int resourceVersion?;
     string 'type?;
     UserProvidedIdentifiers resourceUserProvidedIdentifiers?;
-    float oldRating?;
-    float newRating?;
+    decimal oldRating?;
+    decimal newRating?;
     boolean includedInStatistics?;
     Reference target?;
 };
@@ -7884,7 +7884,7 @@ public type FieldType record {
 public type ScoreShippingRateInput record {
     *ShippingRateInput;
     string 'type?;
-    float score?;
+    decimal score?;
 };
 
 public type MyShoppingListSetDeleteDaysAfterLastModificationAction record {
@@ -7945,9 +7945,9 @@ public type PaymentDraft record {
 };
 
 public type ReviewRatingStatistics record {
-    float averageRating?;
-    float highestRating?;
-    float lowestRating?;
+    decimal averageRating?;
+    decimal highestRating?;
+    decimal lowestRating?;
     int count?;
     record {} ratingsDistribution?;
 };
@@ -8583,7 +8583,7 @@ public type AttributeDefinitionDraft record {
 
 public type TaxPortionDraft record {
     string name?;
-    float rate?;
+    decimal rate?;
     Money amount?;
 };
 
@@ -8769,7 +8769,7 @@ public type ScopedPrice record {
     TypedMoney currentValue?;
     CountryCode country?;
     CustomerGroupReference customerGroup?;
-    ChannelReference 'channel?;
+    ChannelReference channel?;
     string validFrom?;
     string validUntil?;
     DiscountedPrice discounted?;
@@ -9107,7 +9107,7 @@ public type ProductSetTaxCategoryAction record {
 
 public type ItemShippingTarget record {
     string addressKey?;
-    float quantity?;
+    decimal quantity?;
 };
 
 public type AssetSource record {
@@ -9597,7 +9597,7 @@ public type StagedOrderChangeCustomLineItemQuantityAction record {
     *StagedOrderUpdateAction;
     string action?;
     string customLineItemId?;
-    float quantity?;
+    decimal quantity?;
 };
 
 public type DeliveryItem record {
@@ -10254,10 +10254,10 @@ public type MyShoppingListAddTextLineItemAction record {
 };
 
 public type ParcelMeasurements record {
-    float heightInMillimeter?;
-    float lengthInMillimeter?;
-    float widthInMillimeter?;
-    float weightInGram?;
+    decimal heightInMillimeter?;
+    decimal lengthInMillimeter?;
+    decimal widthInMillimeter?;
+    decimal weightInGram?;
 };
 
 public type PagedQueryResponse record {
@@ -10447,8 +10447,8 @@ public type OrderCustomLineItemDiscountSetMessage record {
 public type ReviewRatingSetMessagePayload record {
     *MessagePayload;
     string 'type?;
-    float oldRating?;
-    float newRating?;
+    decimal oldRating?;
+    decimal newRating?;
     boolean includedInStatistics?;
     Reference target?;
 };
@@ -10545,7 +10545,7 @@ public type PriceDraft record {
     Money value?;
     CountryCode country?;
     CustomerGroupResourceIdentifier customerGroup?;
-    ChannelResourceIdentifier 'channel?;
+    ChannelResourceIdentifier channel?;
     string validFrom?;
     string validUntil?;
     CustomFieldsDraft custom?;

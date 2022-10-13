@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://app.asana.com/-/oauth_token";
 |};
 
 # This is a generated connector for [Asana API v1.0](https://developers.asana.com/docs) OpenAPI specification.
@@ -76,7 +87,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the record for a single attachment. 
     remote isolated function getAttachment(string attachmentGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse200|error {
-        string resourcePath = string `/attachments/${attachmentGid}`;
+        string resourcePath = string `/attachments/${getEncodedUri(attachmentGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -90,11 +101,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified attachment. 
     remote isolated function deleteAttachment(string attachmentGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/attachments/${attachmentGid}`;
+        string resourcePath = string `/attachments/${getEncodedUri(attachmentGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Submit parallel requests
@@ -140,7 +151,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the complete definition of a custom field’s metadata. 
     remote isolated function getCustomField(string customFieldGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
-        string resourcePath = string `/custom_fields/${customFieldGid}`;
+        string resourcePath = string `/custom_fields/${getEncodedUri(customFieldGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -155,7 +166,7 @@ public isolated client class Client {
     # + payload - The custom field object with all updated properties. 
     # + return - The custom field was successfully updated. 
     remote isolated function updateCustomField(string customFieldGid, CustomFieldsCustomFieldGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse201|error {
-        string resourcePath = string `/custom_fields/${customFieldGid}`;
+        string resourcePath = string `/custom_fields/${getEncodedUri(customFieldGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -172,11 +183,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - The custom field was successfully deleted. 
     remote isolated function deleteCustomField(string customFieldGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/custom_fields/${customFieldGid}`;
+        string resourcePath = string `/custom_fields/${getEncodedUri(customFieldGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create an enum option
@@ -189,7 +200,7 @@ public isolated client class Client {
     # + payload - The enum option object to create. 
     # + return - Custom field enum option successfully created. 
     remote isolated function createEnumOptionForCustomField(string customFieldGid, CustomFieldGidEnumOptionsBody payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2011|error {
-        string resourcePath = string `/custom_fields/${customFieldGid}/enum_options`;
+        string resourcePath = string `/custom_fields/${getEncodedUri(customFieldGid)}/enum_options`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + payload - The enum option object to create. 
     # + return - Custom field enum option successfully reordered. 
     remote isolated function insertEnumOptionForCustomField(string customFieldGid, EnumOptionsInsertBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
-        string resourcePath = string `/custom_fields/${customFieldGid}/enum_options/insert`;
+        string resourcePath = string `/custom_fields/${getEncodedUri(customFieldGid)}/enum_options/insert`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -225,7 +236,7 @@ public isolated client class Client {
     # + payload - The enum option object to update 
     # + return - Successfully updated the specified custom field enum. 
     remote isolated function updateEnumOption(string enumOptionGid, EnumOptionsEnumOptionGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2011|error {
-        string resourcePath = string `/enum_options/${enumOptionGid}`;
+        string resourcePath = string `/enum_options/${getEncodedUri(enumOptionGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -257,7 +268,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved Job. 
     remote isolated function getJob(string jobGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/jobs/${jobGid}`;
+        string resourcePath = string `/jobs/${getEncodedUri(jobGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -290,7 +301,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved organization export object. 
     remote isolated function getOrganizationExport(string organizationExportGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2012|error {
-        string resourcePath = string `/organization_exports/${organizationExportGid}`;
+        string resourcePath = string `/organization_exports/${getEncodedUri(organizationExportGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -306,7 +317,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Returns the team records for all teams in the organization or workspace accessible to the authenticated user. 
     remote isolated function getTeamsForOrganization(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/organizations/${workspaceGid}/teams`;
+        string resourcePath = string `/organizations/${getEncodedUri(workspaceGid)}/teams`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -338,7 +349,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested portfolio membership. 
     remote isolated function getPortfolioMembership(string portfolioMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2007|error {
-        string resourcePath = string `/portfolio_memberships/${portfolioMembershipGid}`;
+        string resourcePath = string `/portfolio_memberships/${getEncodedUri(portfolioMembershipGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -386,7 +397,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested portfolio. 
     remote isolated function getPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
-        string resourcePath = string `/portfolios/${portfolioGid}`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -401,7 +412,7 @@ public isolated client class Client {
     # + payload - The updated fields for the portfolio. 
     # + return - Successfully updated the portfolio. 
     remote isolated function updatePortfolio(string portfolioGid, PortfoliosPortfolioGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2013|error {
-        string resourcePath = string `/portfolios/${portfolioGid}`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -418,11 +429,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified portfolio. 
     remote isolated function deletePortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add a custom field to a portfolio
@@ -432,7 +443,7 @@ public isolated client class Client {
     # + payload - Information about the custom field setting. 
     # + return - Successfully added the custom field to the portfolio. 
     remote isolated function addCustomFieldSettingForPortfolio(string portfolioGid, PortfolioGidAddcustomfieldsettingBody payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/addCustomFieldSetting`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/addCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -449,7 +460,7 @@ public isolated client class Client {
     # + payload - Information about the item being inserted. 
     # + return - Successfully added the item to the portfolio. 
     remote isolated function addItemForPortfolio(string portfolioGid, PortfolioGidAdditemBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/addItem`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/addItem`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -467,7 +478,7 @@ public isolated client class Client {
     # + payload - Information about the members being added. 
     # + return - Successfully added members to the portfolio. 
     remote isolated function addMembersForPortfolio(string portfolioGid, PortfolioGidAddmembersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/addMembers`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/addMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -486,7 +497,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved custom field settings objects for a portfolio. 
     remote isolated function getCustomFieldSettingsForPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/custom_field_settings`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/custom_field_settings`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -502,7 +513,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested portfolio's items. 
     remote isolated function getItemsForPortfolio(string portfolioGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/items`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/items`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -519,7 +530,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested portfolio's memberships. 
     remote isolated function getPortfolioMembershipsForPortfolio(string portfolioGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2006|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/portfolio_memberships`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/portfolio_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -533,7 +544,7 @@ public isolated client class Client {
     # + payload - Information about the custom field setting being removed. 
     # + return - Successfully removed the custom field from the portfolio. 
     remote isolated function removeCustomFieldSettingForPortfolio(string portfolioGid, PortfolioGidRemovecustomfieldsettingBody payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/removeCustomFieldSetting`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/removeCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -550,7 +561,7 @@ public isolated client class Client {
     # + payload - Information about the item being removed. 
     # + return - Successfully removed the item from the portfolio. 
     remote isolated function removeItemForPortfolio(string portfolioGid, PortfolioGidRemoveitemBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/removeItem`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/removeItem`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -568,7 +579,7 @@ public isolated client class Client {
     # + payload - Information about the members being removed. 
     # + return - Successfully removed the members from the portfolio. 
     remote isolated function removeMembersForPortfolio(string portfolioGid, PortfolioGidRemovemembersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/portfolios/${portfolioGid}/removeMembers`;
+        string resourcePath = string `/portfolios/${getEncodedUri(portfolioGid)}/removeMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -585,7 +596,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested project membership. 
     remote isolated function getProjectMembership(string projectMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20011|error {
-        string resourcePath = string `/project_memberships/${projectMembershipGid}`;
+        string resourcePath = string `/project_memberships/${getEncodedUri(projectMembershipGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -599,7 +610,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the specified project's status updates. 
     remote isolated function getProjectStatus(string projectStatusGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
-        string resourcePath = string `/project_statuses/${projectStatusGid}`;
+        string resourcePath = string `/project_statuses/${getEncodedUri(projectStatusGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -613,11 +624,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified project status. 
     remote isolated function deleteProjectStatus(string projectStatusGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/project_statuses/${projectStatusGid}`;
+        string resourcePath = string `/project_statuses/${getEncodedUri(projectStatusGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get multiple projects
@@ -662,7 +673,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested project. 
     remote isolated function getProject(string projectGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string resourcePath = string `/projects/${projectGid}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -677,7 +688,7 @@ public isolated client class Client {
     # + payload - The updated fields for the project. 
     # + return - Successfully updated the project. 
     remote isolated function updateProject(string projectGid, ProjectsProjectGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string resourcePath = string `/projects/${projectGid}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -694,11 +705,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified project. 
     remote isolated function deleteProject(string projectGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add a custom field to a project
@@ -708,7 +719,7 @@ public isolated client class Client {
     # + payload - Information about the custom field setting. 
     # + return - Successfully added the custom field to the project. 
     remote isolated function addCustomFieldSettingForProject(string projectGid, ProjectGidAddcustomfieldsettingBody payload, boolean? optPretty = ()) returns InlineResponse20013|error {
-        string resourcePath = string `/projects/${projectGid}/addCustomFieldSetting`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/addCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -725,7 +736,7 @@ public isolated client class Client {
     # + payload - Information about the followers being added. 
     # + return - Successfully added followers to the project. 
     remote isolated function addFollowersForProject(string projectGid, ProjectGidAddfollowersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/addFollowers`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/addFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -743,7 +754,7 @@ public isolated client class Client {
     # + payload - Information about the members being added. 
     # + return - Successfully added members to the project. 
     remote isolated function addMembersForProject(string projectGid, ProjectGidAddmembersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/addMembers`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/addMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -762,7 +773,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved custom field settings objects for a project. 
     remote isolated function getCustomFieldSettingsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2009|error {
-        string resourcePath = string `/projects/${projectGid}/custom_field_settings`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/custom_field_settings`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -777,7 +788,7 @@ public isolated client class Client {
     # + payload - Describes the duplicate's name and the elements that will be duplicated. 
     # + return - Successfully created the job to handle duplication. 
     remote isolated function duplicateProject(string projectGid, ProjectGidDuplicateBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/projects/${projectGid}/duplicate`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/duplicate`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -797,7 +808,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested project's memberships. 
     remote isolated function getProjectMembershipsForProject(string projectGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20014|error {
-        string resourcePath = string `/projects/${projectGid}/project_memberships`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/project_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -813,7 +824,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified project's status updates. 
     remote isolated function getProjectStatusesForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20015|error {
-        string resourcePath = string `/projects/${projectGid}/project_statuses`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/project_statuses`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -828,7 +839,7 @@ public isolated client class Client {
     # + payload - The project status to create. 
     # + return - Successfully created a new story. 
     remote isolated function createProjectStatusForProject(string projectGid, ProjectGidProjectStatusesBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20012|error {
-        string resourcePath = string `/projects/${projectGid}/project_statuses`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/project_statuses`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -845,7 +856,7 @@ public isolated client class Client {
     # + payload - Information about the custom field setting being removed. 
     # + return - Successfully removed the custom field from the project. 
     remote isolated function removeCustomFieldSettingForProject(string projectGid, ProjectGidRemovecustomfieldsettingBody payload, boolean? optPretty = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/removeCustomFieldSetting`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/removeCustomFieldSetting`;
         map<anydata> queryParam = {"opt_pretty": optPretty};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -862,7 +873,7 @@ public isolated client class Client {
     # + payload - Information about the followers being removed. 
     # + return - Successfully removed followers from the project. 
     remote isolated function removeFollowersForProject(string projectGid, ProjectGidRemovefollowersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/removeFollowers`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/removeFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -880,7 +891,7 @@ public isolated client class Client {
     # + payload - Information about the members being removed. 
     # + return - Successfully removed the members from the project. 
     remote isolated function removeMembersForProject(string projectGid, ProjectGidRemovemembersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/removeMembers`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/removeMembers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -899,7 +910,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved sections in project. 
     remote isolated function getSectionsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20016|error {
-        string resourcePath = string `/projects/${projectGid}/sections`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/sections`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -914,7 +925,7 @@ public isolated client class Client {
     # + payload - The section to create. 
     # + return - Successfully created the specified section. 
     remote isolated function createSectionForProject(string projectGid, ProjectGidSectionsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string resourcePath = string `/projects/${projectGid}/sections`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/sections`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -932,7 +943,7 @@ public isolated client class Client {
     # + payload - The section's move action. 
     # + return - Successfully moved the specified section. 
     remote isolated function insertSectionForProject(string projectGid, SectionsInsertBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/projects/${projectGid}/sections/insert`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/sections/insert`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -951,7 +962,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested project's task counts. 
     remote isolated function getTaskCountsForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20017|error {
-        string resourcePath = string `/projects/${projectGid}/task_counts`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/task_counts`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -967,7 +978,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested project's tasks. 
     remote isolated function getTasksForProject(string projectGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/projects/${projectGid}/tasks`;
+        string resourcePath = string `/projects/${getEncodedUri(projectGid)}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -981,7 +992,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved section. 
     remote isolated function getSection(string sectionGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string resourcePath = string `/sections/${sectionGid}`;
+        string resourcePath = string `/sections/${getEncodedUri(sectionGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -996,7 +1007,7 @@ public isolated client class Client {
     # + payload - The section to create. 
     # + return - Successfully updated the specified section. 
     remote isolated function updateSection(string sectionGid, SectionsSectionGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2015|error {
-        string resourcePath = string `/sections/${sectionGid}`;
+        string resourcePath = string `/sections/${getEncodedUri(sectionGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1013,11 +1024,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified section. 
     remote isolated function deleteSection(string sectionGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/sections/${sectionGid}`;
+        string resourcePath = string `/sections/${getEncodedUri(sectionGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add task to section
@@ -1028,7 +1039,7 @@ public isolated client class Client {
     # + payload - The task and optionally the insert location. 
     # + return - Successfully added the task. 
     remote isolated function addTaskForSection(string sectionGid, SectionGidAddtaskBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/sections/${sectionGid}/addTask`;
+        string resourcePath = string `/sections/${getEncodedUri(sectionGid)}/addTask`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1047,7 +1058,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the section's tasks. 
     remote isolated function getTasksForSection(string sectionGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/sections/${sectionGid}/tasks`;
+        string resourcePath = string `/sections/${getEncodedUri(sectionGid)}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1063,7 +1074,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified story. 
     remote isolated function getStory(string storyGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20019|error {
-        string resourcePath = string `/stories/${storyGid}`;
+        string resourcePath = string `/stories/${getEncodedUri(storyGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1078,7 +1089,7 @@ public isolated client class Client {
     # + payload - The comment story to update. 
     # + return - Successfully retrieved the specified story. 
     remote isolated function updateStory(string storyGid, StoriesStoryGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
-        string resourcePath = string `/stories/${storyGid}`;
+        string resourcePath = string `/stories/${getEncodedUri(storyGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1095,11 +1106,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified story. 
     remote isolated function deleteStory(string storyGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/stories/${storyGid}`;
+        string resourcePath = string `/stories/${getEncodedUri(storyGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get multiple tags
@@ -1144,7 +1155,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified tag. 
     remote isolated function getTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
-        string resourcePath = string `/tags/${tagGid}`;
+        string resourcePath = string `/tags/${getEncodedUri(tagGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1160,7 +1171,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully updated the specified tag. 
     remote isolated function updateTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2016|error {
-        string resourcePath = string `/tags/${tagGid}`;
+        string resourcePath = string `/tags/${getEncodedUri(tagGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1178,11 +1189,11 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully deleted the specified tag. 
     remote isolated function deleteTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tags/${tagGid}`;
+        string resourcePath = string `/tags/${getEncodedUri(tagGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get tasks from a tag
@@ -1194,7 +1205,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the tasks associated with the specified tag. 
     remote isolated function getTasksForTag(string tagGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/tags/${tagGid}/tasks`;
+        string resourcePath = string `/tags/${getEncodedUri(tagGid)}/tasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1246,7 +1257,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the specified task. 
     remote isolated function getTask(string taskGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string resourcePath = string `/tasks/${taskGid}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1261,7 +1272,7 @@ public isolated client class Client {
     # + payload - The task to update. 
     # + return - Successfully updated the specified task. 
     remote isolated function updateTask(string taskGid, TasksTaskGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string resourcePath = string `/tasks/${taskGid}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1278,11 +1289,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully deleted the specified task. 
     remote isolated function deleteTask(string taskGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Set dependencies for a task
@@ -1293,7 +1304,7 @@ public isolated client class Client {
     # + payload - The list of tasks to set as dependencies. 
     # + return - Successfully set the specified dependencies on the task. 
     remote isolated function addDependenciesForTask(string taskGid, TaskGidAdddependenciesBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/addDependencies`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/addDependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1311,7 +1322,7 @@ public isolated client class Client {
     # + payload - The list of tasks to add as dependents. 
     # + return - Successfully set the specified dependents on the given task. 
     remote isolated function addDependentsForTask(string taskGid, TaskGidAdddependentsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/tasks/${taskGid}/addDependents`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/addDependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1329,7 +1340,7 @@ public isolated client class Client {
     # + payload - The followers to add to the task. 
     # + return - Successfully added the specified followers to the task. 
     remote isolated function addFollowersForTask(string taskGid, TaskGidAddfollowersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/addFollowers`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/addFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1347,7 +1358,7 @@ public isolated client class Client {
     # + payload - The project to add the task to. 
     # + return - Successfully added the specified project to the task. 
     remote isolated function addProjectForTask(string taskGid, TaskGidAddprojectBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/addProject`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/addProject`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1365,7 +1376,7 @@ public isolated client class Client {
     # + payload - The tag to add to the task. 
     # + return - Successfully added the specified tag to the task. 
     remote isolated function addTagForTask(string taskGid, TaskGidAddtagBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/addTag`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/addTag`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1384,7 +1395,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the compact records for all attachments on the task. 
     remote isolated function getAttachmentsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20021|error {
-        string resourcePath = string `/tasks/${taskGid}/attachments`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/attachments`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1401,7 +1412,7 @@ public isolated client class Client {
     # + payload - The file you want to upload. 
     # + return - Successfully uploaded the attachment to the task. 
     remote isolated function createAttachmentForTask(string taskGid, AttachmentRequest payload, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse200|error {
-        string resourcePath = string `/tasks/${taskGid}/attachments`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/attachments`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1420,7 +1431,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified task's dependencies. 
     remote isolated function getDependenciesForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/tasks/${taskGid}/dependencies`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/dependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1436,7 +1447,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified dependents of the task. 
     remote isolated function getDependentsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/tasks/${taskGid}/dependents`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/dependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1451,7 +1462,7 @@ public isolated client class Client {
     # + payload - Describes the duplicate's name and the fields that will be duplicated. 
     # + return - Successfully created the job to handle duplication. 
     remote isolated function duplicateTask(string taskGid, TaskGidDuplicateBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/tasks/${taskGid}/duplicate`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/duplicate`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1470,7 +1481,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the projects for the given task. 
     remote isolated function getProjectsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/tasks/${taskGid}/projects`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1485,7 +1496,7 @@ public isolated client class Client {
     # + payload - The list of tasks to unlink as dependencies. 
     # + return - Successfully unlinked the dependencies from the specified task. 
     remote isolated function removeDependenciesForTask(string taskGid, TaskGidRemovedependenciesBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
-        string resourcePath = string `/tasks/${taskGid}/removeDependencies`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/removeDependencies`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1503,7 +1514,7 @@ public isolated client class Client {
     # + payload - The list of tasks to remove as dependents. 
     # + return - Successfully unlinked the specified tasks as dependents. 
     remote isolated function removeDependentsForTask(string taskGid, TaskGidRemovedependentsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20022|error {
-        string resourcePath = string `/tasks/${taskGid}/removeDependents`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/removeDependents`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1521,7 +1532,7 @@ public isolated client class Client {
     # + payload - The followers to remove from the task. 
     # + return - Successfully removed the specified followers from the task. 
     remote isolated function removeFollowerForTask(string taskGid, TaskGidRemovefollowersBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/removeFollowers`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/removeFollowers`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1539,7 +1550,7 @@ public isolated client class Client {
     # + payload - The project to remove the task from. 
     # + return - Successfully removed the specified project from the task. 
     remote isolated function removeProjectForTask(string taskGid, TaskGidRemoveprojectBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/removeProject`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/removeProject`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1557,7 +1568,7 @@ public isolated client class Client {
     # + payload - The tag to remove from the task. 
     # + return - Successfully removed the specified tag from the task. 
     remote isolated function removeTagForTask(string taskGid, TaskGidRemovetagBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/tasks/${taskGid}/removeTag`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/removeTag`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1575,7 +1586,7 @@ public isolated client class Client {
     # + payload - The new parent of the subtask. 
     # + return - Successfully changed the parent of the specified subtask. 
     remote isolated function setParentForTask(string taskGid, TaskGidSetparentBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string resourcePath = string `/tasks/${taskGid}/setParent`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/setParent`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1594,7 +1605,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified task's stories. 
     remote isolated function getStoriesForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20023|error {
-        string resourcePath = string `/tasks/${taskGid}/stories`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/stories`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1609,7 +1620,7 @@ public isolated client class Client {
     # + payload - The story to create. 
     # + return - Successfully created a new story. 
     remote isolated function createStoryForTask(string taskGid, TaskGidStoriesBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20019|error {
-        string resourcePath = string `/tasks/${taskGid}/stories`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/stories`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1628,7 +1639,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified task's subtasks. 
     remote isolated function getSubtasksForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/tasks/${taskGid}/subtasks`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/subtasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1643,7 +1654,7 @@ public isolated client class Client {
     # + payload - The new subtask to create. 
     # + return - Successfully created the specified subtask. 
     remote isolated function createSubtaskForTask(string taskGid, TaskGidSubtasksBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2017|error {
-        string resourcePath = string `/tasks/${taskGid}/subtasks`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/subtasks`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1662,7 +1673,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the tags for the given task. 
     remote isolated function getTagsForTask(string taskGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
-        string resourcePath = string `/tasks/${taskGid}/tags`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskGid)}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1694,7 +1705,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested team membership. 
     remote isolated function getTeamMembership(string teamMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20025|error {
-        string resourcePath = string `/team_memberships/${teamMembershipGid}`;
+        string resourcePath = string `/team_memberships/${getEncodedUri(teamMembershipGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1729,7 +1740,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successsfully retrieved the record for a single team. 
     remote isolated function getTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2018|error {
-        string resourcePath = string `/teams/${teamGid}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1744,7 +1755,7 @@ public isolated client class Client {
     # + payload - The user to add to the team. 
     # + return - Returns the full user record for the added user. 
     remote isolated function addUserForTeam(string teamGid, TeamGidAdduserBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string resourcePath = string `/teams/${teamGid}/addUser`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/addUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1764,7 +1775,7 @@ public isolated client class Client {
     # + archived - Only return projects whose `archived` field takes on the value of this parameter. 
     # + return - Successfully retrieved the requested team's projects. 
     remote isolated function getProjectsForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/teams/${teamGid}/projects`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "archived": archived};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1779,7 +1790,7 @@ public isolated client class Client {
     # + payload - The new project to create. 
     # + return - Successfully created the specified project. 
     remote isolated function createProjectForTeam(string teamGid, TeamGidProjectsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string resourcePath = string `/teams/${teamGid}/projects`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1797,7 +1808,7 @@ public isolated client class Client {
     # + payload - The user to remove from the team. 
     # + return - Returns an empty data record 
     remote isolated function removeUserForTeam(string teamGid, TeamGidRemoveuserBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/teams/${teamGid}/removeUser`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/removeUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1816,7 +1827,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested team's memberships. 
     remote isolated function getTeamMembershipsForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
-        string resourcePath = string `/teams/${teamGid}/team_memberships`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/team_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1831,7 +1842,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Returns the user records for all the members of the team, including guests and limited access users 
     remote isolated function getUsersForTeam(string teamGid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
-        string resourcePath = string `/teams/${teamGid}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(teamGid)}/users`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1845,7 +1856,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the user task list. 
     remote isolated function getUserTaskList(string userTaskListGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
-        string resourcePath = string `/user_task_lists/${userTaskListGid}`;
+        string resourcePath = string `/user_task_lists/${getEncodedUri(userTaskListGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1862,7 +1873,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the user task list's tasks. 
     remote isolated function getTasksForUserTaskList(string userTaskListGid, string? completedSince = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20018|error {
-        string resourcePath = string `/user_task_lists/${userTaskListGid}/tasks`;
+        string resourcePath = string `/user_task_lists/${getEncodedUri(userTaskListGid)}/tasks`;
         map<anydata> queryParam = {"completed_since": completedSince, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1893,7 +1904,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Returns the user specified. 
     remote isolated function getUser(string userGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string resourcePath = string `/users/${userGid}`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1909,7 +1920,7 @@ public isolated client class Client {
     # + workspace - The workspace in which to get favorites. 
     # + return - Returns the specified user's favorites. 
     remote isolated function getFavoritesForUser(string userGid, string resourceType, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20029|error {
-        string resourcePath = string `/users/${userGid}/favorites`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}/favorites`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "resource_type": resourceType, "workspace": workspace};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1926,7 +1937,7 @@ public isolated client class Client {
     # + workspace - Globally unique identifier for the workspace. 
     # + return - Successfully retrieved the requested users's memberships. 
     remote isolated function getTeamMembershipsForUser(string userGid, string workspace, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20024|error {
-        string resourcePath = string `/users/${userGid}/team_memberships`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}/team_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "workspace": workspace};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1943,7 +1954,7 @@ public isolated client class Client {
     # + organization - The workspace or organization to filter teams on. 
     # + return - Returns the team records for all teams in the organization or workspace to which the given user is assigned. 
     remote isolated function getTeamsForUser(string userGid, string organization, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/users/${userGid}/teams`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}/teams`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "organization": organization};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1958,7 +1969,7 @@ public isolated client class Client {
     # + workspace - The workspace in which to get the user task list. 
     # + return - Successfully retrieved the user's task list. 
     remote isolated function getUserTaskListForUser(string userGid, string workspace, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20028|error {
-        string resourcePath = string `/users/${userGid}/user_task_list`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}/user_task_list`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "workspace": workspace};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1974,7 +1985,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested user's workspace memberships. 
     remote isolated function getWorkspaceMembershipsForUser(string userGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
-        string resourcePath = string `/users/${userGid}/workspace_memberships`;
+        string resourcePath = string `/users/${getEncodedUri(userGid)}/workspace_memberships`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2022,7 +2033,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested webhook. 
     remote isolated function getWebhook(string webhookGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2019|error {
-        string resourcePath = string `/webhooks/${webhookGid}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(webhookGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2036,11 +2047,11 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested webhook. 
     remote isolated function deleteWebhook(string webhookGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/webhooks/${webhookGid}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(webhookGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a workspace membership
@@ -2050,7 +2061,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved the requested workspace membership. 
     remote isolated function getWorkspaceMembership(string workspaceMembershipGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20032|error {
-        string resourcePath = string `/workspace_memberships/${workspaceMembershipGid}`;
+        string resourcePath = string `/workspace_memberships/${getEncodedUri(workspaceMembershipGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2079,7 +2090,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Return the full workspace record. 
     remote isolated function getWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
-        string resourcePath = string `/workspaces/${workspaceGid}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2094,7 +2105,7 @@ public isolated client class Client {
     # + payload - The workspace object with all updated properties. 
     # + return - Update for the workspace was successful. 
     remote isolated function updateWorkspace(string workspaceGid, WorkspacesWorkspaceGidBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20034|error {
-        string resourcePath = string `/workspaces/${workspaceGid}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2112,7 +2123,7 @@ public isolated client class Client {
     # + payload - The user to add to the workspace. 
     # + return - The user was added successfully to the workspace or organization. 
     remote isolated function addUserForWorkspace(string workspaceGid, WorkspaceGidAdduserBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20026|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/addUser`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/addUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2131,7 +2142,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved all custom fields for the given workspace. 
     remote isolated function getCustomFieldsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20035|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/custom_fields`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/custom_fields`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2148,7 +2159,7 @@ public isolated client class Client {
     # + archived - Only return projects whose `archived` field takes on the value of this parameter. 
     # + return - Successfully retrieved the requested workspace's projects. 
     remote isolated function getProjectsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = (), boolean? archived = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/projects`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset, "archived": archived};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2163,7 +2174,7 @@ public isolated client class Client {
     # + payload - The new project to create. 
     # + return - Successfully created a new project in the specified workspace. 
     remote isolated function createProjectForWorkspace(string workspaceGid, WorkspaceGidProjectsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2014|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/projects`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/projects`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2181,7 +2192,7 @@ public isolated client class Client {
     # + payload - The user to remove from the workspace. 
     # + return - The user was removed successfully to the workspace or organization. 
     remote isolated function removeUserForWorkspace(string workspaceGid, WorkspaceGidRemoveuserBody payload, boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/removeUser`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/removeUser`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2200,7 +2211,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the specified set of tags. 
     remote isolated function getTagsForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20020|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/tags`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2215,7 +2226,7 @@ public isolated client class Client {
     # + payload - The tag to create. 
     # + return - Successfully created the newly specified tag. 
     remote isolated function createTagForWorkspace(string workspaceGid, WorkspaceGidTagsBody payload, boolean? optPretty = (), string[]? optFields = ()) returns WorkspaceGidTagsBody|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/tags`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/tags`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2287,7 +2298,7 @@ public isolated client class Client {
     # + sortAscending - Default `false` 
     # + return - Successfully retrieved the section's tasks. 
     remote isolated function searchTasksForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), string? text = (), string resourceSubtype = "milestone", string? assigneeAny = (), string? assigneeNot = (), string? portfoliosAny = (), string? projectsAny = (), string? projectsNot = (), string? projectsAll = (), string? sectionsAny = (), string? sectionsNot = (), string? sectionsAll = (), string? tagsAny = (), string? tagsNot = (), string? tagsAll = (), string? teamsAny = (), string? followersAny = (), string? followersNot = (), string? createdByAny = (), string? createdByNot = (), string? assignedByAny = (), string? assignedByNot = (), string? likedByAny = (), string? likedByNot = (), string? commentedOnByAny = (), string? commentedOnByNot = (), string? dueOnBefore = (), string? dueOnAfter = (), string? dueOn = (), string? dueAtBefore = (), string? dueAtAfter = (), string? startOnBefore = (), string? startOnAfter = (), string? startOn = (), string? createdOnBefore = (), string? createdOnAfter = (), string? createdOn = (), string? createdAtBefore = (), string? createdAtAfter = (), string? completedOnBefore = (), string? completedOnAfter = (), string? completedOn = (), string? completedAtBefore = (), string? completedAtAfter = (), string? modifiedOnBefore = (), string? modifiedOnAfter = (), string? modifiedOn = (), string? modifiedAtBefore = (), string? modifiedAtAfter = (), boolean? isBlocking = (), boolean? isBlocked = (), boolean? hasAttachment = (), boolean? completed = (), boolean? isSubtask = (), string sortBy = "modified_at", boolean sortAscending = false) returns InlineResponse20018|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/tasks/search`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/tasks/search`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "text": text, "resource_subtype": resourceSubtype, "assignee.any": assigneeAny, "assignee.not": assigneeNot, "portfolios.any": portfoliosAny, "projects.any": projectsAny, "projects.not": projectsNot, "projects.all": projectsAll, "sections.any": sectionsAny, "sections.not": sectionsNot, "sections.all": sectionsAll, "tags.any": tagsAny, "tags.not": tagsNot, "tags.all": tagsAll, "teams.any": teamsAny, "followers.any": followersAny, "followers.not": followersNot, "created_by.any": createdByAny, "created_by.not": createdByNot, "assigned_by.any": assignedByAny, "assigned_by.not": assignedByNot, "liked_by.any": likedByAny, "liked_by.not": likedByNot, "commented_on_by.any": commentedOnByAny, "commented_on_by.not": commentedOnByNot, "due_on.before": dueOnBefore, "due_on.after": dueOnAfter, "due_on": dueOn, "due_at.before": dueAtBefore, "due_at.after": dueAtAfter, "start_on.before": startOnBefore, "start_on.after": startOnAfter, "start_on": startOn, "created_on.before": createdOnBefore, "created_on.after": createdOnAfter, "created_on": createdOn, "created_at.before": createdAtBefore, "created_at.after": createdAtAfter, "completed_on.before": completedOnBefore, "completed_on.after": completedOnAfter, "completed_on": completedOn, "completed_at.before": completedAtBefore, "completed_at.after": completedAtAfter, "modified_on.before": modifiedOnBefore, "modified_on.after": modifiedOnAfter, "modified_on": modifiedOn, "modified_at.before": modifiedAtBefore, "modified_at.after": modifiedAtAfter, "is_blocking": isBlocking, "is_blocked": isBlocked, "has_attachment": hasAttachment, "completed": completed, "is_subtask": isSubtask, "sort_by": sortBy, "sort_ascending": sortAscending};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2305,7 +2316,7 @@ public isolated client class Client {
     # + optFields - Defines fields to return. Some requests return *compact* representations of objects in order to conserve resources and complete the request more efficiently. Other times requests return more information than you may need. This option allows you to list the exact set of fields that the API should be sure to return for the objects. The field names should be provided as paths, described below. The id of included objects will always be returned, regardless of the field options. 
     # + return - Successfully retrieved objects via a typeahead search algorithm. 
     remote isolated function typeaheadForWorkspace(string workspaceGid, string resourceType, string 'type = "user", string? query = (), int? count = (), boolean? optPretty = (), string[]? optFields = ()) returns InlineResponse20036|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/typeahead`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/typeahead`;
         map<anydata> queryParam = {"resource_type": resourceType, "type": 'type, "query": query, "count": count, "opt_pretty": optPretty, "opt_fields": optFields};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2320,7 +2331,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Return the users in the specified workspace or org. 
     remote isolated function getUsersForWorkspace(string workspaceGid, boolean? optPretty = (), string[]? optFields = (), string? offset = ()) returns InlineResponse20027|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/users`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/users`;
         map<anydata> queryParam = {"opt_pretty": optPretty, "opt_fields": optFields, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2337,7 +2348,7 @@ public isolated client class Client {
     # + offset - Offset token. An offset to the next page returned by the API. A pagination request will return an offset token, which can be used as an input parameter to the next request. If an offset is not passed in, the API will return the first page of results. 'Note: You can only pass in an offset that was returned to you via a previously paginated request.' 
     # + return - Successfully retrieved the requested workspace's memberships. 
     remote isolated function getWorkspaceMembershipsForWorkspace(string workspaceGid, string? user = (), boolean? optPretty = (), string[]? optFields = (), int? 'limit = (), string? offset = ()) returns InlineResponse20030|error {
-        string resourcePath = string `/workspaces/${workspaceGid}/workspace_memberships`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceGid)}/workspace_memberships`;
         map<anydata> queryParam = {"user": user, "opt_pretty": optPretty, "opt_fields": optFields, "limit": 'limit, "offset": offset};
         map<Encoding> queryParamEncoding = {"opt_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

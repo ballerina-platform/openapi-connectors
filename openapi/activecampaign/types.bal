@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -255,7 +255,7 @@ public type BounceLog record {
     string messageid?;
     string codeid?;
     string email?;
-    string _error?;
+    string 'error?;
     string 'source?;
     string created_timestamp?;
     string updated_timestamp?;
@@ -274,7 +274,7 @@ public type Deal record {
     string owner?;
     string contact?;
     string organization?;
-    string 'group?;
+    string group?;
     string title?;
     string nexttaskid?;
     string currency?;
@@ -285,6 +285,7 @@ public type Deal record {
 };
 
 public type BulkImportRequest record {
+    # 
     BulkContactData[] contacts;
     string? callback?;
 };

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type NodeAssociationPaging record {
     NodeassociationpagingList list?;
@@ -58,7 +60,7 @@ public type Node record {
     string nodeType;
     boolean isFolder;
     boolean isFile;
-    boolean isLocked?;
+    boolean isLocked = false;
     string modifiedAt;
     UserInfo modifiedByUser;
     string createdAt;
@@ -116,7 +118,7 @@ public type NodebodycreateAssociation record {
 
 public type SiteGroup record {
     string id;
-    GroupMember 'group;
+    GroupMember group;
     string role;
 };
 
@@ -301,7 +303,7 @@ public type Person record {
     string statusUpdatedAt?;
     string userStatus?;
     boolean enabled;
-    boolean emailNotificationsEnabled?;
+    boolean emailNotificationsEnabled = true;
     string[] aspectNames?;
     record {} properties?;
     Capabilities capabilities?;
@@ -451,7 +453,7 @@ public type Property record {
 public type AuditApp record {
     string id;
     string name?;
-    boolean isEnabled?;
+    boolean isEnabled = true;
     int maxEntryId?;
     int minEntryId?;
 };
@@ -518,6 +520,7 @@ public type SharedLink record {
 public type DirectAccessUrlBodyCreate record {
     string expiresAt?;
     # The length of time in seconds that the url is valid for.
+    @constraint:Int {minValue: 1}
     int validFor?;
 };
 
@@ -806,8 +809,8 @@ public type PersonBodyCreate record {
     string mobile?;
     string telephone?;
     string userStatus?;
-    boolean enabled?;
-    boolean emailNotificationsEnabled?;
+    boolean enabled = true;
+    boolean emailNotificationsEnabled = true;
     string password;
     string[] aspectNames?;
     record {} properties?;
@@ -1062,7 +1065,7 @@ public type ErrorError record {
 };
 
 public type Error record {
-    ErrorError _error;
+    ErrorError 'error;
 };
 
 public type GroupmemberpagingList record {

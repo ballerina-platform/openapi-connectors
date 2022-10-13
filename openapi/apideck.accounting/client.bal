@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -94,7 +94,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateCompanyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateCompanyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Company
@@ -106,7 +106,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Companies 
     remote isolated function companiesOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns GetCompanyResponse|error {
-        string resourcePath = string `/accounting/companies/${id}`;
+        string resourcePath = string `/accounting/companies/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -123,12 +123,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Companies 
     remote isolated function companiesDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns DeleteCompanyResponse|error {
-        string resourcePath = string `/accounting/companies/${id}`;
+        string resourcePath = string `/accounting/companies/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteCompanyResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteCompanyResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Company
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + payload - A record of type `Company` which contains details to update company. 
     # + return - Companies 
     remote isolated function companiesUpdate(string id, string xApideckConsumerId, string xApideckAppId, Company payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateCompanyResponse|error {
-        string resourcePath = string `/accounting/companies/${id}`;
+        string resourcePath = string `/accounting/companies/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -149,7 +149,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateCompanyResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateCompanyResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List Contacts
@@ -187,7 +187,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateContactResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateContactResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Contact
@@ -199,7 +199,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Contacts 
     remote isolated function contactsOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns GetContactResponse|error {
-        string resourcePath = string `/accounting/contacts/${id}`;
+        string resourcePath = string `/accounting/contacts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -216,12 +216,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Contacts 
     remote isolated function contactsDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns DeleteContactResponse|error {
-        string resourcePath = string `/accounting/contacts/${id}`;
+        string resourcePath = string `/accounting/contacts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteContactResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteContactResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Contact
@@ -234,7 +234,7 @@ public isolated client class Client {
     # + payload - A record of type `Contact` which contains details to update contact. 
     # + return - Contacts 
     remote isolated function contactsUpdate(string id, string xApideckConsumerId, string xApideckAppId, Contact payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateContactResponse|error {
-        string resourcePath = string `/accounting/contacts/${id}`;
+        string resourcePath = string `/accounting/contacts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -242,7 +242,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateContactResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateContactResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List Invoices
@@ -280,7 +280,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateInvoiceResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateInvoiceResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Invoice
@@ -292,7 +292,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Invoices 
     remote isolated function invoicesOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns GetInvoiceResponse|error {
-        string resourcePath = string `/accounting/invoices/${id}`;
+        string resourcePath = string `/accounting/invoices/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -309,12 +309,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Invoices 
     remote isolated function invoicesDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns DeleteInvoiceResponse|error {
-        string resourcePath = string `/accounting/invoices/${id}`;
+        string resourcePath = string `/accounting/invoices/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteInvoiceResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteInvoiceResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Invoice
@@ -327,7 +327,7 @@ public isolated client class Client {
     # + payload - A record of type `Invoice` which contains details to update invoice. 
     # + return - Invoices 
     remote isolated function invoicesUpdate(string id, string xApideckConsumerId, string xApideckAppId, Invoice payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateInvoiceResponse|error {
-        string resourcePath = string `/accounting/invoices/${id}`;
+        string resourcePath = string `/accounting/invoices/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -335,7 +335,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateInvoiceResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateInvoiceResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List Ledger Accounts
@@ -373,7 +373,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateLedgerAccountResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateLedgerAccountResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Ledger Account
@@ -385,7 +385,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - LedgerAccounts 
     remote isolated function ledgerAccountsOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns GetLedgerAccountResponse|error {
-        string resourcePath = string `/accounting/ledger-accounts/${id}`;
+        string resourcePath = string `/accounting/ledger-accounts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -402,12 +402,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - LedgerAccounts 
     remote isolated function ledgerAccountsDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns DeleteLedgerAccountResponse|error {
-        string resourcePath = string `/accounting/ledger-accounts/${id}`;
+        string resourcePath = string `/accounting/ledger-accounts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteLedgerAccountResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteLedgerAccountResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Ledger Account
@@ -420,7 +420,7 @@ public isolated client class Client {
     # + payload - A record of type `LedgerAccount` which contains details to update ledger account. 
     # + return - LedgerAccounts 
     remote isolated function ledgerAccountsUpdate(string id, string xApideckConsumerId, string xApideckAppId, LedgerAccount payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateLedgerAccountResponse|error {
-        string resourcePath = string `/accounting/ledger-accounts/${id}`;
+        string resourcePath = string `/accounting/ledger-accounts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -428,7 +428,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateLedgerAccountResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateLedgerAccountResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List Tax Rates
@@ -466,7 +466,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateTaxRateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateTaxRateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Tax Rate
@@ -478,7 +478,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - TaxRates 
     remote isolated function taxRatesOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns GetTaxRateResponse|error {
-        string resourcePath = string `/accounting/tax-rates/${id}`;
+        string resourcePath = string `/accounting/tax-rates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -495,12 +495,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - TaxRates 
     remote isolated function taxRatesDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns DeleteTaxRateResponse|error {
-        string resourcePath = string `/accounting/tax-rates/${id}`;
+        string resourcePath = string `/accounting/tax-rates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteTaxRateResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteTaxRateResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Tax Rate
@@ -513,7 +513,7 @@ public isolated client class Client {
     # + payload - A record of type `TaxRate` which contains details to update tax rate. 
     # + return - TaxRates 
     remote isolated function taxRatesUpdate(string id, string xApideckConsumerId, string xApideckAppId, TaxRate payload, string? xApideckServiceId = (), boolean raw = true) returns UpdateTaxRateResponse|error {
-        string resourcePath = string `/accounting/tax-rates/${id}`;
+        string resourcePath = string `/accounting/tax-rates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -521,7 +521,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateTaxRateResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateTaxRateResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
 }

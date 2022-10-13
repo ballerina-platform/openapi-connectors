@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,17 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
+
+@constraint:String {maxLength: 25}
+public type PaystatementemployeremployerlocationFormattedaddresslinesItemsString string;
+
+@constraint:String {maxLength: 25}
+public type ProjectedpaystatementpaystatementemployeremployerlocationFormattedaddresslinesItemsString string;
+
+@constraint:String {maxLength: 25}
+public type ProjectedpaystatementpaystatementworkerworkerlocationFormattedaddresslinesItemsString string;
 
 # The pay distribution (transfer) purpose,e.g. Salary, Travel Expenses, Pension Plan, etc.  Client should provide specific code list.  If no value is provided, Salary (payroll) distribution should be assumed
 public type PaystatementDistributionpurposecode record {
@@ -90,6 +101,7 @@ public type PaystatementDepositaccountFinancialpartyAddressStreettypecode record
 
 public type ProjectedpaystatementPaystatementOtherpaydetail record {
     # The label to be shown on the UI for the section
+    @constraint:String {maxLength: 25}
     string labelName;
     # The amount to show in the main window.  If this amount is not passed then the default property is used
     AmountFormulaType payAmount?;
@@ -100,7 +112,7 @@ public type ProjectedpaystatementPaystatementOtherpaydetail record {
     # The amount an individual is paid over time
     RateFormulaType payRate?;
     # Indicates whether amoun is taken pre tax
-    boolean preTaxIndicator?;
+    boolean preTaxIndicator = false;
     # Identifies the percentage
     decimal percentage?;
     # To indicate if a given pay item represents an adjustment.  The regular item is assumed if the indicator is omitted
@@ -114,7 +126,7 @@ public type PaystatementEmployerEmployerlocation record {
     # The name of the location
     string locationName?;
     # A list of formatted address lines which will be shown on the UI in the order of the array items.  This is mutually exclusive to the component parts of the the address.  If this is returned in the JSON it will be used to present on the UI
-    string[] formattedAddressLines?;
+    PaystatementemployeremployerlocationFormattedaddresslinesItemsString[] formattedAddressLines?;
 };
 
 public type ProjectedpaystatementPaystatementEarnings record {
@@ -133,7 +145,7 @@ public type ProjectedpaystatementPaystatementEarnings record {
     # The amount an individual is paid over time
     RateFormulaType payRate?;
     # Indicates whether deduction is taken pre tax. If there is no current period earning and only a year to date amount the pre tax indicator is irrelevant and should not be passed
-    boolean preTaxIndicator?;
+    boolean preTaxIndicator = false;
     # To indicate if a given earning item represents an adjustment.  The regular item is assumed if the indicator is omitted
     boolean adjustmentIndicator?;
 };
@@ -345,6 +357,7 @@ public type PaystatementDepositaccountFinancialpartyFinancialpartyid record {
 
 public type PaystatementOtherpaydetail record {
     # The label to be shown on the UI for the section
+    @constraint:String {maxLength: 25}
     string labelName?;
     # The amount of the current Pay
     PaystatementPayamount payAmount?;
@@ -395,7 +408,7 @@ public type ProjectedpaystatementPaystatementEmployerEmployerlocation record {
     # The name of the location
     string locationName?;
     # A list of formatted address lines which will be shown on the UI in the order of the array items.  This is mutually exclusive to the component parts of the the address. If this is returned in the JSON it will be used to present on the UI
-    string[] formattedAddressLines?;
+    ProjectedpaystatementpaystatementemployeremployerlocationFormattedaddresslinesItemsString[] formattedAddressLines?;
 };
 
 # The URI to the image of the pay statement e.g. pdf. This should be the relative uri
@@ -432,7 +445,7 @@ public type ProjectedpaystatementPaystatementDeductions record {
     # The amount to show in the main window.  If this amount is not passed then the default property is used
     AmountFormulaType deductionYTDAmount?;
     # Indicates whether deduction is taken pre tax on the current period deduction.  If there is no current period deduction and only a year to date amount the pre tax indicator is irrelevant and should not be passed
-    boolean preTaxIndicator?;
+    boolean preTaxIndicator = false;
     # Identifies the percentage
     decimal percentage?;
     # To indicate if a given deduction item represents an adjustment.  The regular item is assumed if the indicator is omitted
@@ -815,6 +828,7 @@ public type ProjectedpaystatementPaystatementEmployerEmployerdetails record {
     # The label which describes the related property. This is user visible and should be in the requested language
     string labelName?;
     # A set of values to be shown on a line.  Both properties are optional, but a minimum of 1 is required if the statementValue is passed
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementEmployerDetailvalues[] detailValues?;
 };
 
@@ -827,8 +841,10 @@ public type ProjectedpaystatementPaystatementWorker record {
     # Worker location
     ProjectedpaystatementPaystatementWorkerWorkerlocation workerLocation?;
     # A list of tax ids fro a given worker
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementWorkerTaxids[] taxIDs?;
     # Additional details related to the worker
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementWorkerWorkerdetails[] workerDetails?;
 };
 
@@ -932,7 +948,7 @@ public type ProjectedpaystatementPaystatementWorkerWorkerlocation record {
     # The label to be shown on the UI
     string labelName?;
     # A list of formatted address lines which will be shown on the UI in the order of the array items.  This is mutually exclusive to the component parts of the the address. If this is returned in the JSON it will be used to present on the UI
-    string[] formattedAddressLines?;
+    ProjectedpaystatementpaystatementworkerworkerlocationFormattedaddresslinesItemsString[] formattedAddressLines?;
 };
 
 public type PayStatement record {
@@ -1000,8 +1016,10 @@ public type PaystatementDepositaccountFinancialpartyAddressNamecode record {
 
 public type PaystatementOtherpay record {
     # The label to be shown on the UI for the section
+    @constraint:String {maxLength: 25}
     string sectionLabelName?;
     # The details of other pay or remuneration
+    @constraint:Array {minLength: 1}
     PaystatementOtherpaydetail[] otherPayDetail?;
 };
 
@@ -1057,8 +1075,10 @@ public type ProjectedpaystatementPaystatementEmployer record {
     # Employer location
     ProjectedpaystatementPaystatementEmployerEmployerlocation employerLocation?;
     # A list of tax ids
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementEmployerTaxids[] taxIDs?;
     # Details related to the employer
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementEmployerEmployerdetails[] employerDetails?;
 };
 
@@ -1110,6 +1130,7 @@ public type PaystatementEmployerEmployerdetails record {
     # The label which describes the related property. This is user visible and should be in the requested language.
     string labelName?;
     # A set of values to be shown on a line.  Both properties are optional, but a minimum of 1 is required if the statementValue is passed.
+    @constraint:Array {minLength: 1}
     PaystatementEmployerDetailvalues[] detailValues?;
 };
 
@@ -1300,6 +1321,7 @@ public type ProjectedpaystatementPaystatementWorkerWorkerdetails record {
     # The label which describes the related property. This is user visible and should be in the requested language
     string labelName?;
     # A set of values to be shown on a line.  Both properties are optional, but a minimum of 1 is required if the statementValue is passed
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementWorkerDetailvalues[] detailValues?;
 };
 
@@ -1364,8 +1386,10 @@ public type ProjectedpaystatementPaystatementWorkerDetailvalues record {
 
 public type ProjectedpaystatementPaystatementOtherpay record {
     # The label to be shown on the UI for the section
+    @constraint:String {maxLength: 25}
     string sectionLabelName;
     # The details of other pay or remuneration
+    @constraint:Array {minLength: 1}
     ProjectedpaystatementPaystatementOtherpaydetail[] otherPayDetail;
 };
 
@@ -1398,7 +1422,9 @@ public type PaystatementEmployer record {
     # Employer location
     PaystatementEmployerEmployerlocation employerLocation?;
     # A list of tax ids
+    @constraint:Array {minLength: 1}
     PaystatementEmployerTaxids[] taxIDs?;
     # Details related to the Employer
+    @constraint:Array {minLength: 1}
     PaystatementEmployerEmployerdetails[] employerDetails?;
 };

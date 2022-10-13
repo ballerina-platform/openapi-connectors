@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector from [Azure Analysis Services API v2017-08-01](https://azure.microsoft.com/en-us/services/analysis-services/) OpenAPI specification.
@@ -75,7 +79,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. The operation was successful. 
     remote isolated function serversGetdetails(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns AnalysisServicesServer|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AnalysisServicesServer response = check self.clientEp->get(resourcePath);
@@ -90,7 +94,7 @@ public isolated client class Client {
     # + payload - Contains the information used to provision the Analysis Services server. 
     # + return - OK. The operation completed successfully. 
     remote isolated function serversCreate(string resourceGroupName, string serverName, string apiVersion, string subscriptionId, AnalysisServicesServer payload) returns AnalysisServicesServer|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -107,10 +111,10 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. 
     remote isolated function serversDelete(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates the current state of the specified Analysis Services server.
@@ -122,7 +126,7 @@ public isolated client class Client {
     # + payload - Request object that contains the updated information for the server. 
     # + return - OK 
     remote isolated function serversUpdate(string resourceGroupName, string serverName, string apiVersion, string subscriptionId, AnalysisServicesServerUpdateParameters payload) returns AnalysisServicesServer|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -139,7 +143,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. 
     remote isolated function serversSuspend(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}/suspend`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}/suspend`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -155,7 +159,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK 
     remote isolated function serversResume(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}/resume`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}/resume`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK 
     remote isolated function serversListbyresourcegroup(string resourceGroupName, string apiVersion, string subscriptionId) returns AnalysisServicesServers|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AnalysisServicesServers response = check self.clientEp->get(resourcePath);
@@ -182,7 +186,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK 
     remote isolated function serversList(string apiVersion, string subscriptionId) returns AnalysisServicesServers|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.AnalysisServices/servers`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.AnalysisServices/servers`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AnalysisServicesServers response = check self.clientEp->get(resourcePath);
@@ -194,7 +198,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK 
     remote isolated function serversListskusfornew(string apiVersion, string subscriptionId) returns SkuEnumerationForNewResourceResult|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.AnalysisServices/skus`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.AnalysisServices/skus`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SkuEnumerationForNewResourceResult response = check self.clientEp->get(resourcePath);
@@ -208,7 +212,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK 
     remote isolated function serversListskusforexisting(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns SkuEnumerationForExistingResourceResult|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}/skus`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}/skus`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SkuEnumerationForExistingResourceResult response = check self.clientEp->get(resourcePath);
@@ -222,7 +226,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. 
     remote isolated function serversListgatewaystatus(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns GatewayListStatusLive|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}/listGatewayStatus`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}/listGatewayStatus`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -238,7 +242,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. 
     remote isolated function serversDissociategateway(string resourceGroupName, string serverName, string apiVersion, string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.AnalysisServices/servers/${serverName}/dissociateGateway`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.AnalysisServices/servers/${getEncodedUri(serverName)}/dissociateGateway`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -254,7 +258,7 @@ public isolated client class Client {
     # + payload - Contains the information used to provision the Analysis Services server. 
     # + return - OK. The request has succeeded. 
     remote isolated function serversChecknameavailability(string location, string apiVersion, string subscriptionId, CheckServerNameAvailabilityParameters payload) returns CheckServerNameAvailabilityResult|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.AnalysisServices/locations/${location}/checkNameAvailability`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.AnalysisServices/locations/${getEncodedUri(location)}/checkNameAvailability`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -271,7 +275,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. The operation completed. 
     remote isolated function serversListoperationresults(string location, string operationId, string apiVersion, string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.AnalysisServices/locations/${location}/operationresults/${operationId}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.AnalysisServices/locations/${getEncodedUri(location)}/operationresults/${getEncodedUri(operationId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -285,7 +289,7 @@ public isolated client class Client {
     # + subscriptionId - A unique identifier for a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. 
     # + return - OK. The operation completed. 
     remote isolated function serversListoperationstatuses(string location, string operationId, string apiVersion, string subscriptionId) returns OperationStatus|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.AnalysisServices/locations/${location}/operationstatuses/${operationId}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.AnalysisServices/locations/${getEncodedUri(location)}/operationstatuses/${getEncodedUri(operationId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OperationStatus response = check self.clientEp->get(resourcePath);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ public isolated client class Client {
     # + kbId - Knowledgebase id. 
     # + return - Details of the knowledgebase. 
     remote isolated function getKnowledgebaseDetail(string kbId) returns KnowledgebaseDTO|error {
-        string resourcePath = string `/knowledgebases/${kbId}`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -64,7 +64,7 @@ public isolated client class Client {
     # + payload - An instance of ReplaceKbDTO which contains list of qnas to be uploaded 
     # + return - HTTP 204 No content. 
     remote isolated function replaceKnowledgebase(string kbId, ReplaceKbDTO payload) returns http:Response|error {
-        string resourcePath = string `/knowledgebases/${kbId}`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -72,7 +72,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Publish Knowledgebase
@@ -80,14 +80,14 @@ public isolated client class Client {
     # + kbId - Knowledgebase id 
     # + return - HTTP 204 No content. 
     remote isolated function publishKnowledgebase(string kbId) returns http:Response|error {
-        string resourcePath = string `/knowledgebases/${kbId}`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Knowledgebase
@@ -95,22 +95,21 @@ public isolated client class Client {
     # + kbId - Knowledgebase id. 
     # + return - HTTP 204 No content. 
     remote isolated function deleteKnowledgebase(string kbId) returns http:Response|error {
-        string resourcePath = string `/knowledgebases/${kbId}`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update Knowledgebase
     #
     # + kbId - Knowledgebase id 
-    # + payload - Post body of the request.
- 
+    # + payload - Post body of the request. 
     # + return - Details of the asynchronous operation. 
     remote isolated function updateKnowledgebase(string kbId, UpdateKbOperationDTO payload) returns Operation|error {
-        string resourcePath = string `/knowledgebases/${kbId}`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -118,7 +117,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Operation response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        Operation response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Download Knowledgebase
@@ -127,7 +126,7 @@ public isolated client class Client {
     # + environment - Specifies whether environment is Test or Prod. 
     # + return - Collection of all Q-A in the knowledgebase. 
     remote isolated function downloadKnowledgebase(string kbId, string environment) returns QnADocumentsDTO|error {
-        string resourcePath = string `/knowledgebases/${kbId}/${environment}/qna`;
+        string resourcePath = string `/knowledgebases/${getEncodedUri(kbId)}/${getEncodedUri(environment)}/qna`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -164,7 +163,7 @@ public isolated client class Client {
     # + operationId - Operation id. 
     # + return - Details of the long running operation. 
     remote isolated function getOperationDetails(string operationId) returns Operation|error {
-        string resourcePath = string `/operations/${operationId}`;
+        string resourcePath = string `/operations/${getEncodedUri(operationId)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
@@ -177,14 +176,14 @@ public isolated client class Client {
     # + keyType - type of Key 
     # + return - Details of the endpoint keys generated. 
     remote isolated function refreshEndpointKeys(string keyType) returns EndpointKeysDTO|error {
-        string resourcePath = string `/endpointkeys/${keyType}`;
+        string resourcePath = string `/endpointkeys/${getEncodedUri(keyType)}`;
         map<anydata> queryParam = {"subscription-key": self.apiKeyConfig.subscriptionKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Ocp-Apim-Subscription-Key": self.apiKeyConfig.ocpApimSubscriptionKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        EndpointKeysDTO response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        EndpointKeysDTO response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Download Alterations
@@ -212,13 +211,12 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Knowledgebase
     #
-    # + payload - Post body of the request.
- 
+    # + payload - Post body of the request. 
     # + return - Details of the asynchronous operation. 
     remote isolated function createKnowledgebase(CreateKbDTO payload) returns Operation|error {
         string resourcePath = string `/knowledgebases/create`;
@@ -229,7 +227,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Operation response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Operation response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Endpoint Settings
@@ -257,7 +255,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
 }

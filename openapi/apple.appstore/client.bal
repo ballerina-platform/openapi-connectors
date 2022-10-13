@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
@@ -72,7 +76,7 @@ public isolated client class Client {
     # + payload - AgeRatingDeclaration representation 
     # + return - Single AgeRatingDeclaration 
     remote isolated function ageratingdeclarationsUpdateInstance(string id, AgeRatingDeclarationUpdateRequest payload) returns AgeRatingDeclarationResponse|error {
-        string resourcePath = string `/v1/ageRatingDeclarations/${id}`;
+        string resourcePath = string `/v1/ageRatingDeclarations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -102,7 +106,7 @@ public isolated client class Client {
     # + limitSubcategories - maximum number of related subcategories returned (when they are included) 
     # + return - Single AppCategory 
     remote isolated function appcategoriesGetInstance(string id, string[]? fieldsAppcategories = (), string[]? include = (), int? limitSubcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appCategories/${id}`;
+        string resourcePath = string `/v1/appCategories/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories, "include": include, "limit[subcategories]": limitSubcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -133,7 +137,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Single AppEncryptionDeclaration 
     remote isolated function appencryptiondeclarationsGetInstance(string id, string[]? fieldsAppencryptiondeclarations = (), string[]? include = (), string[]? fieldsApps = ()) returns AppEncryptionDeclarationResponse|error {
-        string resourcePath = string `/v1/appEncryptionDeclarations/${id}`;
+        string resourcePath = string `/v1/appEncryptionDeclarations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appEncryptionDeclarations]": fieldsAppencryptiondeclarations, "include": include, "fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[appEncryptionDeclarations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -157,7 +161,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppInfoLocalization 
     remote isolated function appinfolocalizationsGetInstance(string id, string[]? fieldsAppinfolocalizations = (), string[]? include = ()) returns AppInfoLocalizationResponse|error {
-        string resourcePath = string `/v1/appInfoLocalizations/${id}`;
+        string resourcePath = string `/v1/appInfoLocalizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appInfoLocalizations]": fieldsAppinfolocalizations, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appInfoLocalizations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -168,8 +172,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appinfolocalizationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appInfoLocalizations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appInfoLocalizations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -177,7 +181,7 @@ public isolated client class Client {
     # + payload - AppInfoLocalization representation 
     # + return - Single AppInfoLocalization 
     remote isolated function appinfolocalizationsUpdateInstance(string id, AppInfoLocalizationUpdateRequest payload) returns AppInfoLocalizationResponse|error {
-        string resourcePath = string `/v1/appInfoLocalizations/${id}`;
+        string resourcePath = string `/v1/appInfoLocalizations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -194,7 +198,7 @@ public isolated client class Client {
     # + limitAppinfolocalizations - maximum number of related appInfoLocalizations returned (when they are included) 
     # + return - Single AppInfo 
     remote isolated function appinfosGetInstance(string id, string[]? fieldsAppinfos = (), string[]? include = (), string[]? fieldsAgeratingdeclarations = (), string[]? fieldsAppcategories = (), string[]? fieldsAppinfolocalizations = (), int? limitAppinfolocalizations = ()) returns AppInfoResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appInfos]": fieldsAppinfos, "include": include, "fields[ageRatingDeclarations]": fieldsAgeratingdeclarations, "fields[appCategories]": fieldsAppcategories, "fields[appInfoLocalizations]": fieldsAppinfolocalizations, "limit[appInfoLocalizations]": limitAppinfolocalizations};
         map<Encoding> queryParamEncoding = {"fields[appInfos]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[ageRatingDeclarations]": {style: FORM, explode: false}, "fields[appCategories]": {style: FORM, explode: false}, "fields[appInfoLocalizations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -206,7 +210,7 @@ public isolated client class Client {
     # + payload - AppInfo representation 
     # + return - Single AppInfo 
     remote isolated function appinfosUpdateInstance(string id, AppInfoUpdateRequest payload) returns AppInfoResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -230,7 +234,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppPreOrder 
     remote isolated function apppreordersGetInstance(string id, string[]? fieldsApppreorders = (), string[]? include = ()) returns AppPreOrderResponse|error {
-        string resourcePath = string `/v1/appPreOrders/${id}`;
+        string resourcePath = string `/v1/appPreOrders/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPreOrders]": fieldsApppreorders, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appPreOrders]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -241,8 +245,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function apppreordersDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appPreOrders/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appPreOrders/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -250,7 +254,7 @@ public isolated client class Client {
     # + payload - AppPreOrder representation 
     # + return - Single AppPreOrder 
     remote isolated function apppreordersUpdateInstance(string id, AppPreOrderUpdateRequest payload) returns AppPreOrderResponse|error {
-        string resourcePath = string `/v1/appPreOrders/${id}`;
+        string resourcePath = string `/v1/appPreOrders/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -276,7 +280,7 @@ public isolated client class Client {
     # + limitApppreviews - maximum number of related appPreviews returned (when they are included) 
     # + return - Single AppPreviewSet 
     remote isolated function apppreviewsetsGetInstance(string id, string[]? fieldsApppreviewsets = (), string[]? include = (), string[]? fieldsApppreviews = (), int? limitApppreviews = ()) returns AppPreviewSetResponse|error {
-        string resourcePath = string `/v1/appPreviewSets/${id}`;
+        string resourcePath = string `/v1/appPreviewSets/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPreviewSets]": fieldsApppreviewsets, "include": include, "fields[appPreviews]": fieldsApppreviews, "limit[appPreviews]": limitApppreviews};
         map<Encoding> queryParamEncoding = {"fields[appPreviewSets]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appPreviews]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -287,8 +291,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function apppreviewsetsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appPreviewSets/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appPreviewSets/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -308,7 +312,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppPreview 
     remote isolated function apppreviewsGetInstance(string id, string[]? fieldsApppreviews = (), string[]? include = ()) returns AppPreviewResponse|error {
-        string resourcePath = string `/v1/appPreviews/${id}`;
+        string resourcePath = string `/v1/appPreviews/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPreviews]": fieldsApppreviews, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appPreviews]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -319,8 +323,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function apppreviewsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appPreviews/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appPreviews/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -328,7 +332,7 @@ public isolated client class Client {
     # + payload - AppPreview representation 
     # + return - Single AppPreview 
     remote isolated function apppreviewsUpdateInstance(string id, AppPreviewUpdateRequest payload) returns AppPreviewResponse|error {
-        string resourcePath = string `/v1/appPreviews/${id}`;
+        string resourcePath = string `/v1/appPreviews/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -358,7 +362,7 @@ public isolated client class Client {
     # + fieldsTerritories - the fields to include for returned resources of type territories 
     # + return - Single AppPricePoint 
     remote isolated function apppricepointsGetInstance(string id, string[]? fieldsApppricepoints = (), string[]? include = (), string[]? fieldsTerritories = ()) returns AppPricePointResponse|error {
-        string resourcePath = string `/v1/appPricePoints/${id}`;
+        string resourcePath = string `/v1/appPricePoints/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPricePoints]": fieldsApppricepoints, "include": include, "fields[territories]": fieldsTerritories};
         map<Encoding> queryParamEncoding = {"fields[appPricePoints]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[territories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -389,7 +393,7 @@ public isolated client class Client {
     # + limitPricepoints - maximum number of related pricePoints returned (when they are included) 
     # + return - Single AppPriceTier 
     remote isolated function apppricetiersGetInstance(string id, string[]? fieldsApppricetiers = (), string[]? include = (), string[]? fieldsApppricepoints = (), int? limitPricepoints = ()) returns AppPriceTierResponse|error {
-        string resourcePath = string `/v1/appPriceTiers/${id}`;
+        string resourcePath = string `/v1/appPriceTiers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPriceTiers]": fieldsApppricetiers, "include": include, "fields[appPricePoints]": fieldsApppricepoints, "limit[pricePoints]": limitPricepoints};
         map<Encoding> queryParamEncoding = {"fields[appPriceTiers]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appPricePoints]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -402,7 +406,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppPrice 
     remote isolated function apppricesGetInstance(string id, string[]? fieldsAppprices = (), string[]? include = ()) returns AppPriceResponse|error {
-        string resourcePath = string `/v1/appPrices/${id}`;
+        string resourcePath = string `/v1/appPrices/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appPrices]": fieldsAppprices, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appPrices]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -428,7 +432,7 @@ public isolated client class Client {
     # + limitAppscreenshots - maximum number of related appScreenshots returned (when they are included) 
     # + return - Single AppScreenshotSet 
     remote isolated function appscreenshotsetsGetInstance(string id, string[]? fieldsAppscreenshotsets = (), string[]? include = (), string[]? fieldsAppscreenshots = (), int? limitAppscreenshots = ()) returns AppScreenshotSetResponse|error {
-        string resourcePath = string `/v1/appScreenshotSets/${id}`;
+        string resourcePath = string `/v1/appScreenshotSets/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appScreenshotSets]": fieldsAppscreenshotsets, "include": include, "fields[appScreenshots]": fieldsAppscreenshots, "limit[appScreenshots]": limitAppscreenshots};
         map<Encoding> queryParamEncoding = {"fields[appScreenshotSets]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appScreenshots]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -439,8 +443,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appscreenshotsetsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appScreenshotSets/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appScreenshotSets/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -460,7 +464,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppScreenshot 
     remote isolated function appscreenshotsGetInstance(string id, string[]? fieldsAppscreenshots = (), string[]? include = ()) returns AppScreenshotResponse|error {
-        string resourcePath = string `/v1/appScreenshots/${id}`;
+        string resourcePath = string `/v1/appScreenshots/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appScreenshots]": fieldsAppscreenshots, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appScreenshots]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -471,8 +475,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appscreenshotsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appScreenshots/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appScreenshots/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -480,7 +484,7 @@ public isolated client class Client {
     # + payload - AppScreenshot representation 
     # + return - Single AppScreenshot 
     remote isolated function appscreenshotsUpdateInstance(string id, AppScreenshotUpdateRequest payload) returns AppScreenshotResponse|error {
-        string resourcePath = string `/v1/appScreenshots/${id}`;
+        string resourcePath = string `/v1/appScreenshots/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -504,7 +508,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single AppStoreReviewAttachment 
     remote isolated function appstorereviewattachmentsGetInstance(string id, string[]? fieldsAppstorereviewattachments = (), string[]? include = ()) returns AppStoreReviewAttachmentResponse|error {
-        string resourcePath = string `/v1/appStoreReviewAttachments/${id}`;
+        string resourcePath = string `/v1/appStoreReviewAttachments/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appStoreReviewAttachments]": fieldsAppstorereviewattachments, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appStoreReviewAttachments]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -515,8 +519,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appstorereviewattachmentsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreReviewAttachments/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appStoreReviewAttachments/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -524,7 +528,7 @@ public isolated client class Client {
     # + payload - AppStoreReviewAttachment representation 
     # + return - Single AppStoreReviewAttachment 
     remote isolated function appstorereviewattachmentsUpdateInstance(string id, AppStoreReviewAttachmentUpdateRequest payload) returns AppStoreReviewAttachmentResponse|error {
-        string resourcePath = string `/v1/appStoreReviewAttachments/${id}`;
+        string resourcePath = string `/v1/appStoreReviewAttachments/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -550,7 +554,7 @@ public isolated client class Client {
     # + limitAppstorereviewattachments - maximum number of related appStoreReviewAttachments returned (when they are included) 
     # + return - Single AppStoreReviewDetail 
     remote isolated function appstorereviewdetailsGetInstance(string id, string[]? fieldsAppstorereviewdetails = (), string[]? include = (), string[]? fieldsAppstorereviewattachments = (), int? limitAppstorereviewattachments = ()) returns AppStoreReviewDetailResponse|error {
-        string resourcePath = string `/v1/appStoreReviewDetails/${id}`;
+        string resourcePath = string `/v1/appStoreReviewDetails/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appStoreReviewDetails]": fieldsAppstorereviewdetails, "include": include, "fields[appStoreReviewAttachments]": fieldsAppstorereviewattachments, "limit[appStoreReviewAttachments]": limitAppstorereviewattachments};
         map<Encoding> queryParamEncoding = {"fields[appStoreReviewDetails]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appStoreReviewAttachments]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -562,7 +566,7 @@ public isolated client class Client {
     # + payload - AppStoreReviewDetail representation 
     # + return - Single AppStoreReviewDetail 
     remote isolated function appstorereviewdetailsUpdateInstance(string id, AppStoreReviewDetailUpdateRequest payload) returns AppStoreReviewDetailResponse|error {
-        string resourcePath = string `/v1/appStoreReviewDetails/${id}`;
+        string resourcePath = string `/v1/appStoreReviewDetails/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -590,7 +594,7 @@ public isolated client class Client {
     # + limitAppscreenshotsets - maximum number of related appScreenshotSets returned (when they are included) 
     # + return - Single AppStoreVersionLocalization 
     remote isolated function appstoreversionlocalizationsGetInstance(string id, string[]? fieldsAppstoreversionlocalizations = (), string[]? include = (), string[]? fieldsAppscreenshotsets = (), string[]? fieldsApppreviewsets = (), int? limitApppreviewsets = (), int? limitAppscreenshotsets = ()) returns AppStoreVersionLocalizationResponse|error {
-        string resourcePath = string `/v1/appStoreVersionLocalizations/${id}`;
+        string resourcePath = string `/v1/appStoreVersionLocalizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "include": include, "fields[appScreenshotSets]": fieldsAppscreenshotsets, "fields[appPreviewSets]": fieldsApppreviewsets, "limit[appPreviewSets]": limitApppreviewsets, "limit[appScreenshotSets]": limitAppscreenshotsets};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersionLocalizations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appScreenshotSets]": {style: FORM, explode: false}, "fields[appPreviewSets]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -601,8 +605,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appstoreversionlocalizationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreVersionLocalizations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appStoreVersionLocalizations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -610,7 +614,7 @@ public isolated client class Client {
     # + payload - AppStoreVersionLocalization representation 
     # + return - Single AppStoreVersionLocalization 
     remote isolated function appstoreversionlocalizationsUpdateInstance(string id, AppStoreVersionLocalizationUpdateRequest payload) returns AppStoreVersionLocalizationResponse|error {
-        string resourcePath = string `/v1/appStoreVersionLocalizations/${id}`;
+        string resourcePath = string `/v1/appStoreVersionLocalizations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -632,8 +636,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appstoreversionphasedreleasesDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreVersionPhasedReleases/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appStoreVersionPhasedReleases/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -641,7 +645,7 @@ public isolated client class Client {
     # + payload - AppStoreVersionPhasedRelease representation 
     # + return - Single AppStoreVersionPhasedRelease 
     remote isolated function appstoreversionphasedreleasesUpdateInstance(string id, AppStoreVersionPhasedReleaseUpdateRequest payload) returns AppStoreVersionPhasedReleaseResponse|error {
-        string resourcePath = string `/v1/appStoreVersionPhasedReleases/${id}`;
+        string resourcePath = string `/v1/appStoreVersionPhasedReleases/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -663,8 +667,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appstoreversionsubmissionsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreVersionSubmissions/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appStoreVersionSubmissions/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -695,7 +699,7 @@ public isolated client class Client {
     # + fieldsAgeratingdeclarations -
     # + return - Single AppStoreVersion 
     remote isolated function appstoreversionsGetInstance(string id, string[]? fieldsAppstoreversions = (), string[]? include = (), string[]? fieldsAppstoreversionlocalizations = (), string[]? fieldsIdfadeclarations = (), string[]? fieldsRoutingappcoverages = (), string[]? fieldsAppstoreversionphasedreleases = (), @deprecated string[]? fieldsAgeratingdeclarations = (), string[]? fieldsAppstorereviewdetails = (), string[]? fieldsBuilds = (), string[]? fieldsAppstoreversionsubmissions = (), int? limitAppstoreversionlocalizations = ()) returns AppStoreVersionResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[appStoreVersions]": fieldsAppstoreversions, "include": include, "fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "fields[idfaDeclarations]": fieldsIdfadeclarations, "fields[routingAppCoverages]": fieldsRoutingappcoverages, "fields[appStoreVersionPhasedReleases]": fieldsAppstoreversionphasedreleases, "fields[ageRatingDeclarations]": fieldsAgeratingdeclarations, "fields[appStoreReviewDetails]": fieldsAppstorereviewdetails, "fields[builds]": fieldsBuilds, "fields[appStoreVersionSubmissions]": fieldsAppstoreversionsubmissions, "limit[appStoreVersionLocalizations]": limitAppstoreversionlocalizations};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersions]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appStoreVersionLocalizations]": {style: FORM, explode: false}, "fields[idfaDeclarations]": {style: FORM, explode: false}, "fields[routingAppCoverages]": {style: FORM, explode: false}, "fields[appStoreVersionPhasedReleases]": {style: FORM, explode: false}, "fields[ageRatingDeclarations]": {style: FORM, explode: false}, "fields[appStoreReviewDetails]": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[appStoreVersionSubmissions]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -706,8 +710,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appstoreversionsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -715,7 +719,7 @@ public isolated client class Client {
     # + payload - AppStoreVersion representation 
     # + return - Single AppStoreVersion 
     remote isolated function appstoreversionsUpdateInstance(string id, AppStoreVersionUpdateRequest payload) returns AppStoreVersionResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -800,7 +804,7 @@ public isolated client class Client {
     # + limitPrices - maximum number of related prices returned (when they are included) 
     # + return - Single App 
     remote isolated function appsGetInstance(string id, string[]? fieldsApps = (), string[]? include = (), string[]? fieldsBetagroups = (), string[]? fieldsPerfpowermetrics = (), string[]? fieldsAppinfos = (), string[]? fieldsApppreorders = (), string[]? fieldsPrereleaseversions = (), string[]? fieldsAppprices = (), string[]? fieldsInapppurchases = (), string[]? fieldsBetaappreviewdetails = (), string[]? fieldsTerritories = (), string[]? fieldsGamecenterenabledversions = (), string[]? fieldsAppstoreversions = (), string[]? fieldsBuilds = (), string[]? fieldsBetaapplocalizations = (), string[]? fieldsBetalicenseagreements = (), string[]? fieldsEnduserlicenseagreements = (), int? limitAppinfos = (), int? limitAppstoreversions = (), int? limitAvailableterritories = (), int? limitBetaapplocalizations = (), int? limitBetagroups = (), int? limitBuilds = (), int? limitGamecenterenabledversions = (), int? limitInapppurchases = (), int? limitPrereleaseversions = (), int? limitPrices = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/apps/${id}`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps, "include": include, "fields[betaGroups]": fieldsBetagroups, "fields[perfPowerMetrics]": fieldsPerfpowermetrics, "fields[appInfos]": fieldsAppinfos, "fields[appPreOrders]": fieldsApppreorders, "fields[preReleaseVersions]": fieldsPrereleaseversions, "fields[appPrices]": fieldsAppprices, "fields[inAppPurchases]": fieldsInapppurchases, "fields[betaAppReviewDetails]": fieldsBetaappreviewdetails, "fields[territories]": fieldsTerritories, "fields[gameCenterEnabledVersions]": fieldsGamecenterenabledversions, "fields[appStoreVersions]": fieldsAppstoreversions, "fields[builds]": fieldsBuilds, "fields[betaAppLocalizations]": fieldsBetaapplocalizations, "fields[betaLicenseAgreements]": fieldsBetalicenseagreements, "fields[endUserLicenseAgreements]": fieldsEnduserlicenseagreements, "limit[appInfos]": limitAppinfos, "limit[appStoreVersions]": limitAppstoreversions, "limit[availableTerritories]": limitAvailableterritories, "limit[betaAppLocalizations]": limitBetaapplocalizations, "limit[betaGroups]": limitBetagroups, "limit[builds]": limitBuilds, "limit[gameCenterEnabledVersions]": limitGamecenterenabledversions, "limit[inAppPurchases]": limitInapppurchases, "limit[preReleaseVersions]": limitPrereleaseversions, "limit[prices]": limitPrices};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[betaGroups]": {style: FORM, explode: false}, "fields[perfPowerMetrics]": {style: FORM, explode: false}, "fields[appInfos]": {style: FORM, explode: false}, "fields[appPreOrders]": {style: FORM, explode: false}, "fields[preReleaseVersions]": {style: FORM, explode: false}, "fields[appPrices]": {style: FORM, explode: false}, "fields[inAppPurchases]": {style: FORM, explode: false}, "fields[betaAppReviewDetails]": {style: FORM, explode: false}, "fields[territories]": {style: FORM, explode: false}, "fields[gameCenterEnabledVersions]": {style: FORM, explode: false}, "fields[appStoreVersions]": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[betaAppLocalizations]": {style: FORM, explode: false}, "fields[betaLicenseAgreements]": {style: FORM, explode: false}, "fields[endUserLicenseAgreements]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -812,7 +816,7 @@ public isolated client class Client {
     # + payload - App representation 
     # + return - Single App 
     remote isolated function appsUpdateInstance(string id, AppUpdateRequest payload) returns AppResponse|error {
-        string resourcePath = string `/v1/apps/${id}`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -853,7 +857,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Single BetaAppLocalization 
     remote isolated function betaapplocalizationsGetInstance(string id, string[]? fieldsBetaapplocalizations = (), string[]? include = (), string[]? fieldsApps = ()) returns BetaAppLocalizationResponse|error {
-        string resourcePath = string `/v1/betaAppLocalizations/${id}`;
+        string resourcePath = string `/v1/betaAppLocalizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaAppLocalizations]": fieldsBetaapplocalizations, "include": include, "fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[betaAppLocalizations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -864,8 +868,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betaapplocalizationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaAppLocalizations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaAppLocalizations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -873,7 +877,7 @@ public isolated client class Client {
     # + payload - BetaAppLocalization representation 
     # + return - Single BetaAppLocalization 
     remote isolated function betaapplocalizationsUpdateInstance(string id, BetaAppLocalizationUpdateRequest payload) returns BetaAppLocalizationResponse|error {
-        string resourcePath = string `/v1/betaAppLocalizations/${id}`;
+        string resourcePath = string `/v1/betaAppLocalizations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -902,7 +906,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Single BetaAppReviewDetail 
     remote isolated function betaappreviewdetailsGetInstance(string id, string[]? fieldsBetaappreviewdetails = (), string[]? include = (), string[]? fieldsApps = ()) returns BetaAppReviewDetailResponse|error {
-        string resourcePath = string `/v1/betaAppReviewDetails/${id}`;
+        string resourcePath = string `/v1/betaAppReviewDetails/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaAppReviewDetails]": fieldsBetaappreviewdetails, "include": include, "fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[betaAppReviewDetails]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -914,7 +918,7 @@ public isolated client class Client {
     # + payload - BetaAppReviewDetail representation 
     # + return - Single BetaAppReviewDetail 
     remote isolated function betaappreviewdetailsUpdateInstance(string id, BetaAppReviewDetailUpdateRequest payload) returns BetaAppReviewDetailResponse|error {
-        string resourcePath = string `/v1/betaAppReviewDetails/${id}`;
+        string resourcePath = string `/v1/betaAppReviewDetails/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -955,7 +959,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Single BetaAppReviewSubmission 
     remote isolated function betaappreviewsubmissionsGetInstance(string id, string[]? fieldsBetaappreviewsubmissions = (), string[]? include = (), string[]? fieldsBuilds = ()) returns BetaAppReviewSubmissionResponse|error {
-        string resourcePath = string `/v1/betaAppReviewSubmissions/${id}`;
+        string resourcePath = string `/v1/betaAppReviewSubmissions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaAppReviewSubmissions]": fieldsBetaappreviewsubmissions, "include": include, "fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[betaAppReviewSubmissions]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -996,7 +1000,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Single BetaBuildLocalization 
     remote isolated function betabuildlocalizationsGetInstance(string id, string[]? fieldsBetabuildlocalizations = (), string[]? include = (), string[]? fieldsBuilds = ()) returns BetaBuildLocalizationResponse|error {
-        string resourcePath = string `/v1/betaBuildLocalizations/${id}`;
+        string resourcePath = string `/v1/betaBuildLocalizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaBuildLocalizations]": fieldsBetabuildlocalizations, "include": include, "fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[betaBuildLocalizations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1007,8 +1011,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betabuildlocalizationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaBuildLocalizations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaBuildLocalizations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1016,7 +1020,7 @@ public isolated client class Client {
     # + payload - BetaBuildLocalization representation 
     # + return - Single BetaBuildLocalization 
     remote isolated function betabuildlocalizationsUpdateInstance(string id, BetaBuildLocalizationUpdateRequest payload) returns BetaBuildLocalizationResponse|error {
-        string resourcePath = string `/v1/betaBuildLocalizations/${id}`;
+        string resourcePath = string `/v1/betaBuildLocalizations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1072,7 +1076,7 @@ public isolated client class Client {
     # + limitBuilds - maximum number of related builds returned (when they are included) 
     # + return - Single BetaGroup 
     remote isolated function betagroupsGetInstance(string id, string[]? fieldsBetagroups = (), string[]? include = (), string[]? fieldsBuilds = (), string[]? fieldsBetatesters = (), string[]? fieldsApps = (), int? limitBetatesters = (), int? limitBuilds = ()) returns BetaGroupResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaGroups]": fieldsBetagroups, "include": include, "fields[builds]": fieldsBuilds, "fields[betaTesters]": fieldsBetatesters, "fields[apps]": fieldsApps, "limit[betaTesters]": limitBetatesters, "limit[builds]": limitBuilds};
         map<Encoding> queryParamEncoding = {"fields[betaGroups]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[betaTesters]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1083,8 +1087,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betagroupsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaGroups/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1092,7 +1096,7 @@ public isolated client class Client {
     # + payload - BetaGroup representation 
     # + return - Single BetaGroup 
     remote isolated function betagroupsUpdateInstance(string id, BetaGroupUpdateRequest payload) returns BetaGroupResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1121,7 +1125,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Single BetaLicenseAgreement 
     remote isolated function betalicenseagreementsGetInstance(string id, string[]? fieldsBetalicenseagreements = (), string[]? include = (), string[]? fieldsApps = ()) returns BetaLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/betaLicenseAgreements/${id}`;
+        string resourcePath = string `/v1/betaLicenseAgreements/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaLicenseAgreements]": fieldsBetalicenseagreements, "include": include, "fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[betaLicenseAgreements]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1133,7 +1137,7 @@ public isolated client class Client {
     # + payload - BetaLicenseAgreement representation 
     # + return - Single BetaLicenseAgreement 
     remote isolated function betalicenseagreementsUpdateInstance(string id, BetaLicenseAgreementUpdateRequest payload) returns BetaLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/betaLicenseAgreements/${id}`;
+        string resourcePath = string `/v1/betaLicenseAgreements/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1201,7 +1205,7 @@ public isolated client class Client {
     # + limitBuilds - maximum number of related builds returned (when they are included) 
     # + return - Single BetaTester 
     remote isolated function betatestersGetInstance(string id, string[]? fieldsBetatesters = (), string[]? include = (), string[]? fieldsBetagroups = (), string[]? fieldsBuilds = (), string[]? fieldsApps = (), int? limitApps = (), int? limitBetagroups = (), int? limitBuilds = ()) returns BetaTesterResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[betaTesters]": fieldsBetatesters, "include": include, "fields[betaGroups]": fieldsBetagroups, "fields[builds]": fieldsBuilds, "fields[apps]": fieldsApps, "limit[apps]": limitApps, "limit[betaGroups]": limitBetagroups, "limit[builds]": limitBuilds};
         map<Encoding> queryParamEncoding = {"fields[betaTesters]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[betaGroups]": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1212,8 +1216,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betatestersDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1239,7 +1243,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Single BuildBetaDetail 
     remote isolated function buildbetadetailsGetInstance(string id, string[]? fieldsBuildbetadetails = (), string[]? include = (), string[]? fieldsBuilds = ()) returns BuildBetaDetailResponse|error {
-        string resourcePath = string `/v1/buildBetaDetails/${id}`;
+        string resourcePath = string `/v1/buildBetaDetails/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[buildBetaDetails]": fieldsBuildbetadetails, "include": include, "fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[buildBetaDetails]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1251,7 +1255,7 @@ public isolated client class Client {
     # + payload - BuildBetaDetail representation 
     # + return - Single BuildBetaDetail 
     remote isolated function buildbetadetailsUpdateInstance(string id, BuildBetaDetailUpdateRequest payload) returns BuildBetaDetailResponse|error {
-        string resourcePath = string `/v1/buildBetaDetails/${id}`;
+        string resourcePath = string `/v1/buildBetaDetails/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1329,7 +1333,7 @@ public isolated client class Client {
     # + limitIndividualtesters - maximum number of related individualTesters returned (when they are included) 
     # + return - Single Build 
     remote isolated function buildsGetInstance(string id, string[]? fieldsBuilds = (), string[]? include = (), string[]? fieldsAppencryptiondeclarations = (), string[]? fieldsBetaappreviewsubmissions = (), string[]? fieldsBuildbetadetails = (), string[]? fieldsBuildicons = (), string[]? fieldsPerfpowermetrics = (), string[]? fieldsPrereleaseversions = (), string[]? fieldsAppstoreversions = (), string[]? fieldsDiagnosticsignatures = (), string[]? fieldsBetatesters = (), string[]? fieldsBetabuildlocalizations = (), string[]? fieldsApps = (), int? limitBetabuildlocalizations = (), int? limitIcons = (), int? limitIndividualtesters = ()) returns BuildResponse|error {
-        string resourcePath = string `/v1/builds/${id}`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds, "include": include, "fields[appEncryptionDeclarations]": fieldsAppencryptiondeclarations, "fields[betaAppReviewSubmissions]": fieldsBetaappreviewsubmissions, "fields[buildBetaDetails]": fieldsBuildbetadetails, "fields[buildIcons]": fieldsBuildicons, "fields[perfPowerMetrics]": fieldsPerfpowermetrics, "fields[preReleaseVersions]": fieldsPrereleaseversions, "fields[appStoreVersions]": fieldsAppstoreversions, "fields[diagnosticSignatures]": fieldsDiagnosticsignatures, "fields[betaTesters]": fieldsBetatesters, "fields[betaBuildLocalizations]": fieldsBetabuildlocalizations, "fields[apps]": fieldsApps, "limit[betaBuildLocalizations]": limitBetabuildlocalizations, "limit[icons]": limitIcons, "limit[individualTesters]": limitIndividualtesters};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[appEncryptionDeclarations]": {style: FORM, explode: false}, "fields[betaAppReviewSubmissions]": {style: FORM, explode: false}, "fields[buildBetaDetails]": {style: FORM, explode: false}, "fields[buildIcons]": {style: FORM, explode: false}, "fields[perfPowerMetrics]": {style: FORM, explode: false}, "fields[preReleaseVersions]": {style: FORM, explode: false}, "fields[appStoreVersions]": {style: FORM, explode: false}, "fields[diagnosticSignatures]": {style: FORM, explode: false}, "fields[betaTesters]": {style: FORM, explode: false}, "fields[betaBuildLocalizations]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1341,7 +1345,7 @@ public isolated client class Client {
     # + payload - Build representation 
     # + return - Single Build 
     remote isolated function buildsUpdateInstance(string id, BuildUpdateRequest payload) returns BuildResponse|error {
-        string resourcePath = string `/v1/builds/${id}`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1363,8 +1367,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function bundleidcapabilitiesDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/bundleIdCapabilities/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/bundleIdCapabilities/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1372,7 +1376,7 @@ public isolated client class Client {
     # + payload - BundleIdCapability representation 
     # + return - Single BundleIdCapability 
     remote isolated function bundleidcapabilitiesUpdateInstance(string id, BundleIdCapabilityUpdateRequest payload) returns BundleIdCapabilityResponse|error {
-        string resourcePath = string `/v1/bundleIdCapabilities/${id}`;
+        string resourcePath = string `/v1/bundleIdCapabilities/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1425,7 +1429,7 @@ public isolated client class Client {
     # + limitProfiles - maximum number of related profiles returned (when they are included) 
     # + return - Single BundleId 
     remote isolated function bundleidsGetInstance(string id, string[]? fieldsBundleids = (), string[]? include = (), string[]? fieldsBundleidcapabilities = (), string[]? fieldsProfiles = (), string[]? fieldsApps = (), int? limitBundleidcapabilities = (), int? limitProfiles = ()) returns BundleIdResponse|error {
-        string resourcePath = string `/v1/bundleIds/${id}`;
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[bundleIds]": fieldsBundleids, "include": include, "fields[bundleIdCapabilities]": fieldsBundleidcapabilities, "fields[profiles]": fieldsProfiles, "fields[apps]": fieldsApps, "limit[bundleIdCapabilities]": limitBundleidcapabilities, "limit[profiles]": limitProfiles};
         map<Encoding> queryParamEncoding = {"fields[bundleIds]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[bundleIdCapabilities]": {style: FORM, explode: false}, "fields[profiles]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1436,8 +1440,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function bundleidsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/bundleIds/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1445,7 +1449,7 @@ public isolated client class Client {
     # + payload - BundleId representation 
     # + return - Single BundleId 
     remote isolated function bundleidsUpdateInstance(string id, BundleIdUpdateRequest payload) returns BundleIdResponse|error {
-        string resourcePath = string `/v1/bundleIds/${id}`;
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1485,7 +1489,7 @@ public isolated client class Client {
     # + fieldsCertificates - the fields to include for returned resources of type certificates 
     # + return - Single Certificate 
     remote isolated function certificatesGetInstance(string id, string[]? fieldsCertificates = ()) returns CertificateResponse|error {
-        string resourcePath = string `/v1/certificates/${id}`;
+        string resourcePath = string `/v1/certificates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[certificates]": fieldsCertificates};
         map<Encoding> queryParamEncoding = {"fields[certificates]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1496,8 +1500,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function certificatesDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/certificates/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/certificates/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1534,7 +1538,7 @@ public isolated client class Client {
     # + fieldsDevices - the fields to include for returned resources of type devices 
     # + return - Single Device 
     remote isolated function devicesGetInstance(string id, string[]? fieldsDevices = ()) returns DeviceResponse|error {
-        string resourcePath = string `/v1/devices/${id}`;
+        string resourcePath = string `/v1/devices/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[devices]": fieldsDevices};
         map<Encoding> queryParamEncoding = {"fields[devices]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1546,7 +1550,7 @@ public isolated client class Client {
     # + payload - Device representation 
     # + return - Single Device 
     remote isolated function devicesUpdateInstance(string id, DeviceUpdateRequest payload) returns DeviceResponse|error {
-        string resourcePath = string `/v1/devices/${id}`;
+        string resourcePath = string `/v1/devices/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1572,7 +1576,7 @@ public isolated client class Client {
     # + limitTerritories - maximum number of related territories returned (when they are included) 
     # + return - Single EndUserLicenseAgreement 
     remote isolated function enduserlicenseagreementsGetInstance(string id, string[]? fieldsEnduserlicenseagreements = (), string[]? include = (), string[]? fieldsTerritories = (), int? limitTerritories = ()) returns EndUserLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/endUserLicenseAgreements/${id}`;
+        string resourcePath = string `/v1/endUserLicenseAgreements/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[endUserLicenseAgreements]": fieldsEnduserlicenseagreements, "include": include, "fields[territories]": fieldsTerritories, "limit[territories]": limitTerritories};
         map<Encoding> queryParamEncoding = {"fields[endUserLicenseAgreements]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[territories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1583,8 +1587,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function enduserlicenseagreementsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/endUserLicenseAgreements/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/endUserLicenseAgreements/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1592,7 +1596,7 @@ public isolated client class Client {
     # + payload - EndUserLicenseAgreement representation 
     # + return - Single EndUserLicenseAgreement 
     remote isolated function enduserlicenseagreementsUpdateInstance(string id, EndUserLicenseAgreementUpdateRequest payload) returns EndUserLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/endUserLicenseAgreements/${id}`;
+        string resourcePath = string `/v1/endUserLicenseAgreements/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1628,8 +1632,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function idfadeclarationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/idfaDeclarations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/idfaDeclarations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1637,7 +1641,7 @@ public isolated client class Client {
     # + payload - IdfaDeclaration representation 
     # + return - Single IdfaDeclaration 
     remote isolated function idfadeclarationsUpdateInstance(string id, IdfaDeclarationUpdateRequest payload) returns IdfaDeclarationResponse|error {
-        string resourcePath = string `/v1/idfaDeclarations/${id}`;
+        string resourcePath = string `/v1/idfaDeclarations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1651,7 +1655,7 @@ public isolated client class Client {
     # + limitApps - maximum number of related apps returned (when they are included) 
     # + return - Single InAppPurchase 
     remote isolated function inapppurchasesGetInstance(string id, string[]? fieldsInapppurchases = (), string[]? include = (), int? limitApps = ()) returns InAppPurchaseResponse|error {
-        string resourcePath = string `/v1/inAppPurchases/${id}`;
+        string resourcePath = string `/v1/inAppPurchases/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[inAppPurchases]": fieldsInapppurchases, "include": include, "limit[apps]": limitApps};
         map<Encoding> queryParamEncoding = {"fields[inAppPurchases]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1690,7 +1694,7 @@ public isolated client class Client {
     # + limitBuilds - maximum number of related builds returned (when they are included) 
     # + return - Single PrereleaseVersion 
     remote isolated function prereleaseversionsGetInstance(string id, string[]? fieldsPrereleaseversions = (), string[]? include = (), string[]? fieldsBuilds = (), string[]? fieldsApps = (), int? limitBuilds = ()) returns PrereleaseVersionResponse|error {
-        string resourcePath = string `/v1/preReleaseVersions/${id}`;
+        string resourcePath = string `/v1/preReleaseVersions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[preReleaseVersions]": fieldsPrereleaseversions, "include": include, "fields[builds]": fieldsBuilds, "fields[apps]": fieldsApps, "limit[builds]": limitBuilds};
         map<Encoding> queryParamEncoding = {"fields[preReleaseVersions]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1742,7 +1746,7 @@ public isolated client class Client {
     # + limitDevices - maximum number of related devices returned (when they are included) 
     # + return - Single Profile 
     remote isolated function profilesGetInstance(string id, string[]? fieldsProfiles = (), string[]? include = (), string[]? fieldsCertificates = (), string[]? fieldsDevices = (), string[]? fieldsBundleids = (), int? limitCertificates = (), int? limitDevices = ()) returns ProfileResponse|error {
-        string resourcePath = string `/v1/profiles/${id}`;
+        string resourcePath = string `/v1/profiles/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[profiles]": fieldsProfiles, "include": include, "fields[certificates]": fieldsCertificates, "fields[devices]": fieldsDevices, "fields[bundleIds]": fieldsBundleids, "limit[certificates]": limitCertificates, "limit[devices]": limitDevices};
         map<Encoding> queryParamEncoding = {"fields[profiles]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[certificates]": {style: FORM, explode: false}, "fields[devices]": {style: FORM, explode: false}, "fields[bundleIds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1753,8 +1757,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function profilesDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/profiles/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/profiles/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1774,7 +1778,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Single RoutingAppCoverage 
     remote isolated function routingappcoveragesGetInstance(string id, string[]? fieldsRoutingappcoverages = (), string[]? include = ()) returns RoutingAppCoverageResponse|error {
-        string resourcePath = string `/v1/routingAppCoverages/${id}`;
+        string resourcePath = string `/v1/routingAppCoverages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[routingAppCoverages]": fieldsRoutingappcoverages, "include": include};
         map<Encoding> queryParamEncoding = {"fields[routingAppCoverages]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1785,8 +1789,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function routingappcoveragesDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/routingAppCoverages/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/routingAppCoverages/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1794,7 +1798,7 @@ public isolated client class Client {
     # + payload - RoutingAppCoverage representation 
     # + return - Single RoutingAppCoverage 
     remote isolated function routingappcoveragesUpdateInstance(string id, RoutingAppCoverageUpdateRequest payload) returns RoutingAppCoverageResponse|error {
-        string resourcePath = string `/v1/routingAppCoverages/${id}`;
+        string resourcePath = string `/v1/routingAppCoverages/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1867,7 +1871,7 @@ public isolated client class Client {
     # + limitVisibleapps - maximum number of related visibleApps returned (when they are included) 
     # + return - Single UserInvitation 
     remote isolated function userinvitationsGetInstance(string id, string[]? fieldsUserinvitations = (), string[]? include = (), string[]? fieldsApps = (), int? limitVisibleapps = ()) returns UserInvitationResponse|error {
-        string resourcePath = string `/v1/userInvitations/${id}`;
+        string resourcePath = string `/v1/userInvitations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[userInvitations]": fieldsUserinvitations, "include": include, "fields[apps]": fieldsApps, "limit[visibleApps]": limitVisibleapps};
         map<Encoding> queryParamEncoding = {"fields[userInvitations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1878,8 +1882,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function userinvitationsDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/userInvitations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/userInvitations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1909,7 +1913,7 @@ public isolated client class Client {
     # + limitVisibleapps - maximum number of related visibleApps returned (when they are included) 
     # + return - Single User 
     remote isolated function usersGetInstance(string id, string[]? fieldsUsers = (), string[]? include = (), string[]? fieldsApps = (), int? limitVisibleapps = ()) returns UserResponse|error {
-        string resourcePath = string `/v1/users/${id}`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields[users]": fieldsUsers, "include": include, "fields[apps]": fieldsApps, "limit[visibleApps]": limitVisibleapps};
         map<Encoding> queryParamEncoding = {"fields[users]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1920,8 +1924,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function usersDeleteInstance(string id) returns http:Response|error {
-        string resourcePath = string `/v1/users/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -1929,7 +1933,7 @@ public isolated client class Client {
     # + payload - User representation 
     # + return - Single User 
     remote isolated function usersUpdateInstance(string id, UserUpdateRequest payload) returns UserResponse|error {
-        string resourcePath = string `/v1/users/${id}`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1941,7 +1945,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appcategoriesParentGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appCategories/${id}/parent`;
+        string resourcePath = string `/v1/appCategories/${getEncodedUri(id)}/parent`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1954,7 +1958,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appcategoriesSubcategoriesGetToManyRelated(string id, string[]? fieldsAppcategories = (), int? 'limit = ()) returns AppCategoriesResponse|error {
-        string resourcePath = string `/v1/appCategories/${id}/subcategories`;
+        string resourcePath = string `/v1/appCategories/${getEncodedUri(id)}/subcategories`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1966,7 +1970,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function appencryptiondeclarationsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/appEncryptionDeclarations/${id}/app`;
+        string resourcePath = string `/v1/appEncryptionDeclarations/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1978,7 +1982,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function appencryptiondeclarationsBuildsCreateToManyRelationship(string id, AppEncryptionDeclarationBuildsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/appEncryptionDeclarations/${id}/relationships/builds`;
+        string resourcePath = string `/v1/appEncryptionDeclarations/${getEncodedUri(id)}/relationships/builds`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1990,7 +1994,7 @@ public isolated client class Client {
     # + fieldsAgeratingdeclarations - the fields to include for returned resources of type ageRatingDeclarations 
     # + return - Related resource 
     remote isolated function appinfosAgeratingdeclarationGetToOneRelated(string id, string[]? fieldsAgeratingdeclarations = ()) returns AgeRatingDeclarationResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/ageRatingDeclaration`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/ageRatingDeclaration`;
         map<anydata> queryParam = {"fields[ageRatingDeclarations]": fieldsAgeratingdeclarations};
         map<Encoding> queryParamEncoding = {"fields[ageRatingDeclarations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2006,7 +2010,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appinfosAppinfolocalizationsGetToManyRelated(string id, string[]? filterLocale = (), string[]? fieldsAppinfos = (), string[]? fieldsAppinfolocalizations = (), int? 'limit = (), string[]? include = ()) returns AppInfoLocalizationsResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/appInfoLocalizations`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/appInfoLocalizations`;
         map<anydata> queryParam = {"filter[locale]": filterLocale, "fields[appInfos]": fieldsAppinfos, "fields[appInfoLocalizations]": fieldsAppinfolocalizations, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[locale]": {style: FORM, explode: false}, "fields[appInfos]": {style: FORM, explode: false}, "fields[appInfoLocalizations]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2018,7 +2022,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosPrimarycategoryGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/primaryCategory`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/primaryCategory`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2030,7 +2034,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosPrimarysubcategoryoneGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/primarySubcategoryOne`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/primarySubcategoryOne`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2042,7 +2046,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosPrimarysubcategorytwoGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/primarySubcategoryTwo`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/primarySubcategoryTwo`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2054,7 +2058,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosSecondarycategoryGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/secondaryCategory`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/secondaryCategory`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2066,7 +2070,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosSecondarysubcategoryoneGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/secondarySubcategoryOne`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/secondarySubcategoryOne`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2078,7 +2082,7 @@ public isolated client class Client {
     # + fieldsAppcategories - the fields to include for returned resources of type appCategories 
     # + return - Related resource 
     remote isolated function appinfosSecondarysubcategorytwoGetToOneRelated(string id, string[]? fieldsAppcategories = ()) returns AppCategoryResponse|error {
-        string resourcePath = string `/v1/appInfos/${id}/secondarySubcategoryTwo`;
+        string resourcePath = string `/v1/appInfos/${getEncodedUri(id)}/secondarySubcategoryTwo`;
         map<anydata> queryParam = {"fields[appCategories]": fieldsAppcategories};
         map<Encoding> queryParamEncoding = {"fields[appCategories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2090,7 +2094,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function apppreviewsetsApppreviewsGetToManyRelationship(string id, int? 'limit = ()) returns AppPreviewSetAppPreviewsLinkagesResponse|error {
-        string resourcePath = string `/v1/appPreviewSets/${id}/relationships/appPreviews`;
+        string resourcePath = string `/v1/appPreviewSets/${getEncodedUri(id)}/relationships/appPreviews`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AppPreviewSetAppPreviewsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2101,7 +2105,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function apppreviewsetsApppreviewsReplaceToManyRelationship(string id, AppPreviewSetAppPreviewsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/appPreviewSets/${id}/relationships/appPreviews`;
+        string resourcePath = string `/v1/appPreviewSets/${getEncodedUri(id)}/relationships/appPreviews`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2116,7 +2120,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function apppreviewsetsApppreviewsGetToManyRelated(string id, string[]? fieldsApppreviews = (), string[]? fieldsApppreviewsets = (), int? 'limit = (), string[]? include = ()) returns AppPreviewsResponse|error {
-        string resourcePath = string `/v1/appPreviewSets/${id}/appPreviews`;
+        string resourcePath = string `/v1/appPreviewSets/${getEncodedUri(id)}/appPreviews`;
         map<anydata> queryParam = {"fields[appPreviews]": fieldsApppreviews, "fields[appPreviewSets]": fieldsApppreviewsets, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appPreviews]": {style: FORM, explode: false}, "fields[appPreviewSets]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2128,7 +2132,7 @@ public isolated client class Client {
     # + fieldsTerritories - the fields to include for returned resources of type territories 
     # + return - Related resource 
     remote isolated function apppricepointsTerritoryGetToOneRelated(string id, string[]? fieldsTerritories = ()) returns TerritoryResponse|error {
-        string resourcePath = string `/v1/appPricePoints/${id}/territory`;
+        string resourcePath = string `/v1/appPricePoints/${getEncodedUri(id)}/territory`;
         map<anydata> queryParam = {"fields[territories]": fieldsTerritories};
         map<Encoding> queryParamEncoding = {"fields[territories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2141,7 +2145,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function apppricetiersPricepointsGetToManyRelated(string id, string[]? fieldsApppricepoints = (), int? 'limit = ()) returns AppPricePointsResponse|error {
-        string resourcePath = string `/v1/appPriceTiers/${id}/pricePoints`;
+        string resourcePath = string `/v1/appPriceTiers/${getEncodedUri(id)}/pricePoints`;
         map<anydata> queryParam = {"fields[appPricePoints]": fieldsApppricepoints, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[appPricePoints]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2153,7 +2157,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function appscreenshotsetsAppscreenshotsGetToManyRelationship(string id, int? 'limit = ()) returns AppScreenshotSetAppScreenshotsLinkagesResponse|error {
-        string resourcePath = string `/v1/appScreenshotSets/${id}/relationships/appScreenshots`;
+        string resourcePath = string `/v1/appScreenshotSets/${getEncodedUri(id)}/relationships/appScreenshots`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AppScreenshotSetAppScreenshotsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2164,7 +2168,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function appscreenshotsetsAppscreenshotsReplaceToManyRelationship(string id, AppScreenshotSetAppScreenshotsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/appScreenshotSets/${id}/relationships/appScreenshots`;
+        string resourcePath = string `/v1/appScreenshotSets/${getEncodedUri(id)}/relationships/appScreenshots`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2179,7 +2183,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appscreenshotsetsAppscreenshotsGetToManyRelated(string id, string[]? fieldsAppscreenshotsets = (), string[]? fieldsAppscreenshots = (), int? 'limit = (), string[]? include = ()) returns AppScreenshotsResponse|error {
-        string resourcePath = string `/v1/appScreenshotSets/${id}/appScreenshots`;
+        string resourcePath = string `/v1/appScreenshotSets/${getEncodedUri(id)}/appScreenshots`;
         map<anydata> queryParam = {"fields[appScreenshotSets]": fieldsAppscreenshotsets, "fields[appScreenshots]": fieldsAppscreenshots, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appScreenshotSets]": {style: FORM, explode: false}, "fields[appScreenshots]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2194,7 +2198,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appstorereviewdetailsAppstorereviewattachmentsGetToManyRelated(string id, string[]? fieldsAppstorereviewdetails = (), string[]? fieldsAppstorereviewattachments = (), int? 'limit = (), string[]? include = ()) returns AppStoreReviewAttachmentsResponse|error {
-        string resourcePath = string `/v1/appStoreReviewDetails/${id}/appStoreReviewAttachments`;
+        string resourcePath = string `/v1/appStoreReviewDetails/${getEncodedUri(id)}/appStoreReviewAttachments`;
         map<anydata> queryParam = {"fields[appStoreReviewDetails]": fieldsAppstorereviewdetails, "fields[appStoreReviewAttachments]": fieldsAppstorereviewattachments, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appStoreReviewDetails]": {style: FORM, explode: false}, "fields[appStoreReviewAttachments]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2211,7 +2215,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appstoreversionlocalizationsApppreviewsetsGetToManyRelated(string id, string[]? filterPreviewtype = (), string[]? fieldsAppstoreversionlocalizations = (), string[]? fieldsApppreviews = (), string[]? fieldsApppreviewsets = (), int? 'limit = (), string[]? include = ()) returns AppPreviewSetsResponse|error {
-        string resourcePath = string `/v1/appStoreVersionLocalizations/${id}/appPreviewSets`;
+        string resourcePath = string `/v1/appStoreVersionLocalizations/${getEncodedUri(id)}/appPreviewSets`;
         map<anydata> queryParam = {"filter[previewType]": filterPreviewtype, "fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "fields[appPreviews]": fieldsApppreviews, "fields[appPreviewSets]": fieldsApppreviewsets, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[previewType]": {style: FORM, explode: false}, "fields[appStoreVersionLocalizations]": {style: FORM, explode: false}, "fields[appPreviews]": {style: FORM, explode: false}, "fields[appPreviewSets]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2228,7 +2232,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appstoreversionlocalizationsAppscreenshotsetsGetToManyRelated(string id, string[]? filterScreenshotdisplaytype = (), string[]? fieldsAppstoreversionlocalizations = (), string[]? fieldsAppscreenshotsets = (), string[]? fieldsAppscreenshots = (), int? 'limit = (), string[]? include = ()) returns AppScreenshotSetsResponse|error {
-        string resourcePath = string `/v1/appStoreVersionLocalizations/${id}/appScreenshotSets`;
+        string resourcePath = string `/v1/appStoreVersionLocalizations/${getEncodedUri(id)}/appScreenshotSets`;
         map<anydata> queryParam = {"filter[screenshotDisplayType]": filterScreenshotdisplaytype, "fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "fields[appScreenshotSets]": fieldsAppscreenshotsets, "fields[appScreenshots]": fieldsAppscreenshots, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[screenshotDisplayType]": {style: FORM, explode: false}, "fields[appStoreVersionLocalizations]": {style: FORM, explode: false}, "fields[appScreenshotSets]": {style: FORM, explode: false}, "fields[appScreenshots]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2245,7 +2249,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function appstoreversionsAgeratingdeclarationGetToOneRelated(string id, @deprecated string[]? fieldsAgeratingdeclarations = ()) returns AgeRatingDeclarationResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/ageRatingDeclaration`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/ageRatingDeclaration`;
         map<anydata> queryParam = {"fields[ageRatingDeclarations]": fieldsAgeratingdeclarations};
         map<Encoding> queryParamEncoding = {"fields[ageRatingDeclarations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2260,7 +2264,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Related resource 
     remote isolated function appstoreversionsAppstorereviewdetailGetToOneRelated(string id, string[]? fieldsAppstorereviewdetails = (), string[]? fieldsAppstoreversions = (), string[]? fieldsAppstorereviewattachments = (), string[]? include = ()) returns AppStoreReviewDetailResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/appStoreReviewDetail`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/appStoreReviewDetail`;
         map<anydata> queryParam = {"fields[appStoreReviewDetails]": fieldsAppstorereviewdetails, "fields[appStoreVersions]": fieldsAppstoreversions, "fields[appStoreReviewAttachments]": fieldsAppstorereviewattachments, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appStoreReviewDetails]": {style: FORM, explode: false}, "fields[appStoreVersions]": {style: FORM, explode: false}, "fields[appStoreReviewAttachments]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2273,7 +2277,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appstoreversionsAppstoreversionlocalizationsGetToManyRelated(string id, string[]? fieldsAppstoreversionlocalizations = (), int? 'limit = ()) returns AppStoreVersionLocalizationsResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/appStoreVersionLocalizations`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/appStoreVersionLocalizations`;
         map<anydata> queryParam = {"fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersionLocalizations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2285,7 +2289,7 @@ public isolated client class Client {
     # + fieldsAppstoreversionphasedreleases - the fields to include for returned resources of type appStoreVersionPhasedReleases 
     # + return - Related resource 
     remote isolated function appstoreversionsAppstoreversionphasedreleaseGetToOneRelated(string id, string[]? fieldsAppstoreversionphasedreleases = ()) returns AppStoreVersionPhasedReleaseResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/appStoreVersionPhasedRelease`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/appStoreVersionPhasedRelease`;
         map<anydata> queryParam = {"fields[appStoreVersionPhasedReleases]": fieldsAppstoreversionphasedreleases};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersionPhasedReleases]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2299,7 +2303,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - Related resource 
     remote isolated function appstoreversionsAppstoreversionsubmissionGetToOneRelated(string id, string[]? fieldsAppstoreversions = (), string[]? fieldsAppstoreversionsubmissions = (), string[]? include = ()) returns AppStoreVersionSubmissionResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/appStoreVersionSubmission`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/appStoreVersionSubmission`;
         map<anydata> queryParam = {"fields[appStoreVersions]": fieldsAppstoreversions, "fields[appStoreVersionSubmissions]": fieldsAppstoreversionsubmissions, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersions]": {style: FORM, explode: false}, "fields[appStoreVersionSubmissions]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2310,7 +2314,7 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Related linkage 
     remote isolated function appstoreversionsBuildGetToOneRelationship(string id) returns AppStoreVersionBuildLinkageResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/relationships/build`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/relationships/build`;
         AppStoreVersionBuildLinkageResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2319,7 +2323,7 @@ public isolated client class Client {
     # + payload - Related linkage 
     # + return - Success (no content) 
     remote isolated function appstoreversionsBuildUpdateToOneRelationship(string id, AppStoreVersionBuildLinkageRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/relationships/build`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/relationships/build`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2331,7 +2335,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Related resource 
     remote isolated function appstoreversionsBuildGetToOneRelated(string id, string[]? fieldsBuilds = ()) returns BuildResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/build`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/build`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2343,7 +2347,7 @@ public isolated client class Client {
     # + fieldsIdfadeclarations - the fields to include for returned resources of type idfaDeclarations 
     # + return - Related resource 
     remote isolated function appstoreversionsIdfadeclarationGetToOneRelated(string id, string[]? fieldsIdfadeclarations = ()) returns IdfaDeclarationResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/idfaDeclaration`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/idfaDeclaration`;
         map<anydata> queryParam = {"fields[idfaDeclarations]": fieldsIdfadeclarations};
         map<Encoding> queryParamEncoding = {"fields[idfaDeclarations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2355,7 +2359,7 @@ public isolated client class Client {
     # + fieldsRoutingappcoverages - the fields to include for returned resources of type routingAppCoverages 
     # + return - Related resource 
     remote isolated function appstoreversionsRoutingappcoverageGetToOneRelated(string id, string[]? fieldsRoutingappcoverages = ()) returns RoutingAppCoverageResponse|error {
-        string resourcePath = string `/v1/appStoreVersions/${id}/routingAppCoverage`;
+        string resourcePath = string `/v1/appStoreVersions/${getEncodedUri(id)}/routingAppCoverage`;
         map<anydata> queryParam = {"fields[routingAppCoverages]": fieldsRoutingappcoverages};
         map<Encoding> queryParamEncoding = {"fields[routingAppCoverages]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2373,7 +2377,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appsAppinfosGetToManyRelated(string id, string[]? fieldsAgeratingdeclarations = (), string[]? fieldsAppinfos = (), string[]? fieldsAppcategories = (), string[]? fieldsAppinfolocalizations = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns AppInfosResponse|error {
-        string resourcePath = string `/v1/apps/${id}/appInfos`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/appInfos`;
         map<anydata> queryParam = {"fields[ageRatingDeclarations]": fieldsAgeratingdeclarations, "fields[appInfos]": fieldsAppinfos, "fields[appCategories]": fieldsAppcategories, "fields[appInfoLocalizations]": fieldsAppinfolocalizations, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"fields[ageRatingDeclarations]": {style: FORM, explode: false}, "fields[appInfos]": {style: FORM, explode: false}, "fields[appCategories]": {style: FORM, explode: false}, "fields[appInfoLocalizations]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2400,7 +2404,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appsAppstoreversionsGetToManyRelated(string id, string[]? filterAppstorestate = (), string[]? filterPlatform = (), string[]? filterVersionstring = (), string[]? filterId = (), string[]? fieldsIdfadeclarations = (), string[]? fieldsAppstoreversionlocalizations = (), string[]? fieldsRoutingappcoverages = (), string[]? fieldsAppstoreversionphasedreleases = (), string[]? fieldsAgeratingdeclarations = (), string[]? fieldsAppstorereviewdetails = (), string[]? fieldsAppstoreversions = (), string[]? fieldsBuilds = (), string[]? fieldsAppstoreversionsubmissions = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns AppStoreVersionsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/appStoreVersions`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/appStoreVersions`;
         map<anydata> queryParam = {"filter[appStoreState]": filterAppstorestate, "filter[platform]": filterPlatform, "filter[versionString]": filterVersionstring, "filter[id]": filterId, "fields[idfaDeclarations]": fieldsIdfadeclarations, "fields[appStoreVersionLocalizations]": fieldsAppstoreversionlocalizations, "fields[routingAppCoverages]": fieldsRoutingappcoverages, "fields[appStoreVersionPhasedReleases]": fieldsAppstoreversionphasedreleases, "fields[ageRatingDeclarations]": fieldsAgeratingdeclarations, "fields[appStoreReviewDetails]": fieldsAppstorereviewdetails, "fields[appStoreVersions]": fieldsAppstoreversions, "fields[builds]": fieldsBuilds, "fields[appStoreVersionSubmissions]": fieldsAppstoreversionsubmissions, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[appStoreState]": {style: FORM, explode: false}, "filter[platform]": {style: FORM, explode: false}, "filter[versionString]": {style: FORM, explode: false}, "filter[id]": {style: FORM, explode: false}, "fields[idfaDeclarations]": {style: FORM, explode: false}, "fields[appStoreVersionLocalizations]": {style: FORM, explode: false}, "fields[routingAppCoverages]": {style: FORM, explode: false}, "fields[appStoreVersionPhasedReleases]": {style: FORM, explode: false}, "fields[ageRatingDeclarations]": {style: FORM, explode: false}, "fields[appStoreReviewDetails]": {style: FORM, explode: false}, "fields[appStoreVersions]": {style: FORM, explode: false}, "fields[builds]": {style: FORM, explode: false}, "fields[appStoreVersionSubmissions]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2413,7 +2417,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appsAvailableterritoriesGetToManyRelated(string id, string[]? fieldsTerritories = (), int? 'limit = ()) returns TerritoriesResponse|error {
-        string resourcePath = string `/v1/apps/${id}/availableTerritories`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/availableTerritories`;
         map<anydata> queryParam = {"fields[territories]": fieldsTerritories, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[territories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2426,7 +2430,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appsBetaapplocalizationsGetToManyRelated(string id, string[]? fieldsBetaapplocalizations = (), int? 'limit = ()) returns BetaAppLocalizationsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/betaAppLocalizations`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/betaAppLocalizations`;
         map<anydata> queryParam = {"fields[betaAppLocalizations]": fieldsBetaapplocalizations, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaAppLocalizations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2438,7 +2442,7 @@ public isolated client class Client {
     # + fieldsBetaappreviewdetails - the fields to include for returned resources of type betaAppReviewDetails 
     # + return - Related resource 
     remote isolated function appsBetaappreviewdetailGetToOneRelated(string id, string[]? fieldsBetaappreviewdetails = ()) returns BetaAppReviewDetailResponse|error {
-        string resourcePath = string `/v1/apps/${id}/betaAppReviewDetail`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/betaAppReviewDetail`;
         map<anydata> queryParam = {"fields[betaAppReviewDetails]": fieldsBetaappreviewdetails};
         map<Encoding> queryParamEncoding = {"fields[betaAppReviewDetails]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2451,7 +2455,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appsBetagroupsGetToManyRelated(string id, string[]? fieldsBetagroups = (), int? 'limit = ()) returns BetaGroupsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/betaGroups`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/betaGroups`;
         map<anydata> queryParam = {"fields[betaGroups]": fieldsBetagroups, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaGroups]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2463,7 +2467,7 @@ public isolated client class Client {
     # + fieldsBetalicenseagreements - the fields to include for returned resources of type betaLicenseAgreements 
     # + return - Related resource 
     remote isolated function appsBetalicenseagreementGetToOneRelated(string id, string[]? fieldsBetalicenseagreements = ()) returns BetaLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/apps/${id}/betaLicenseAgreement`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/betaLicenseAgreement`;
         map<anydata> queryParam = {"fields[betaLicenseAgreements]": fieldsBetalicenseagreements};
         map<Encoding> queryParamEncoding = {"fields[betaLicenseAgreements]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2474,8 +2478,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function appsBetatestersDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/apps/${id}/relationships/betaTesters`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/relationships/betaTesters`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2484,7 +2488,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appsBuildsGetToManyRelated(string id, string[]? fieldsBuilds = (), int? 'limit = ()) returns BuildsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/builds`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/builds`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2496,7 +2500,7 @@ public isolated client class Client {
     # + fieldsEnduserlicenseagreements - the fields to include for returned resources of type endUserLicenseAgreements 
     # + return - Related resource 
     remote isolated function appsEnduserlicenseagreementGetToOneRelated(string id, string[]? fieldsEnduserlicenseagreements = ()) returns EndUserLicenseAgreementResponse|error {
-        string resourcePath = string `/v1/apps/${id}/endUserLicenseAgreement`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/endUserLicenseAgreement`;
         map<anydata> queryParam = {"fields[endUserLicenseAgreements]": fieldsEnduserlicenseagreements};
         map<Encoding> queryParamEncoding = {"fields[endUserLicenseAgreements]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2515,7 +2519,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appsGamecenterenabledversionsGetToManyRelated(string id, string[]? filterPlatform = (), string[]? filterVersionstring = (), string[]? filterId = (), string[]? sort = (), string[]? fieldsGamecenterenabledversions = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns GameCenterEnabledVersionsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/gameCenterEnabledVersions`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/gameCenterEnabledVersions`;
         map<anydata> queryParam = {"filter[platform]": filterPlatform, "filter[versionString]": filterVersionstring, "filter[id]": filterId, "sort": sort, "fields[gameCenterEnabledVersions]": fieldsGamecenterenabledversions, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[platform]": {style: FORM, explode: false}, "filter[versionString]": {style: FORM, explode: false}, "filter[id]": {style: FORM, explode: false}, "sort": {style: FORM, explode: false}, "fields[gameCenterEnabledVersions]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2533,7 +2537,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appsInapppurchasesGetToManyRelated(string id, string[]? filterInapppurchasetype = (), string[]? filterCanbesubmitted = (), string[]? sort = (), string[]? fieldsInapppurchases = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns InAppPurchasesResponse|error {
-        string resourcePath = string `/v1/apps/${id}/inAppPurchases`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/inAppPurchases`;
         map<anydata> queryParam = {"filter[inAppPurchaseType]": filterInapppurchasetype, "filter[canBeSubmitted]": filterCanbesubmitted, "sort": sort, "fields[inAppPurchases]": fieldsInapppurchases, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[inAppPurchaseType]": {style: FORM, explode: false}, "filter[canBeSubmitted]": {style: FORM, explode: false}, "sort": {style: FORM, explode: false}, "fields[inAppPurchases]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2547,7 +2551,7 @@ public isolated client class Client {
     # + filterPlatform - filter by attribute 'platform' 
     # + return - List of related resources 
     remote isolated function appsPerfpowermetricsGetToManyRelated(string id, string[]? filterDevicetype = (), string[]? filterMetrictype = (), string[]? filterPlatform = ()) returns PerfPowerMetricsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/perfPowerMetrics`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/perfPowerMetrics`;
         map<anydata> queryParam = {"filter[deviceType]": filterDevicetype, "filter[metricType]": filterMetrictype, "filter[platform]": filterPlatform};
         map<Encoding> queryParamEncoding = {"filter[deviceType]": {style: FORM, explode: false}, "filter[metricType]": {style: FORM, explode: false}, "filter[platform]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2559,7 +2563,7 @@ public isolated client class Client {
     # + fieldsApppreorders - the fields to include for returned resources of type appPreOrders 
     # + return - Related resource 
     remote isolated function appsPreorderGetToOneRelated(string id, string[]? fieldsApppreorders = ()) returns AppPreOrderResponse|error {
-        string resourcePath = string `/v1/apps/${id}/preOrder`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/preOrder`;
         map<anydata> queryParam = {"fields[appPreOrders]": fieldsApppreorders};
         map<Encoding> queryParamEncoding = {"fields[appPreOrders]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2572,7 +2576,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function appsPrereleaseversionsGetToManyRelated(string id, string[]? fieldsPrereleaseversions = (), int? 'limit = ()) returns PreReleaseVersionsResponse|error {
-        string resourcePath = string `/v1/apps/${id}/preReleaseVersions`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/preReleaseVersions`;
         map<anydata> queryParam = {"fields[preReleaseVersions]": fieldsPrereleaseversions, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[preReleaseVersions]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2588,7 +2592,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function appsPricesGetToManyRelated(string id, string[]? fieldsAppprices = (), string[]? fieldsApppricetiers = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns AppPricesResponse|error {
-        string resourcePath = string `/v1/apps/${id}/prices`;
+        string resourcePath = string `/v1/apps/${getEncodedUri(id)}/prices`;
         map<anydata> queryParam = {"fields[appPrices]": fieldsAppprices, "fields[appPriceTiers]": fieldsApppricetiers, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"fields[appPrices]": {style: FORM, explode: false}, "fields[appPriceTiers]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2600,7 +2604,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function betaapplocalizationsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/betaAppLocalizations/${id}/app`;
+        string resourcePath = string `/v1/betaAppLocalizations/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2612,7 +2616,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function betaappreviewdetailsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/betaAppReviewDetails/${id}/app`;
+        string resourcePath = string `/v1/betaAppReviewDetails/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2624,7 +2628,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Related resource 
     remote isolated function betaappreviewsubmissionsBuildGetToOneRelated(string id, string[]? fieldsBuilds = ()) returns BuildResponse|error {
-        string resourcePath = string `/v1/betaAppReviewSubmissions/${id}/build`;
+        string resourcePath = string `/v1/betaAppReviewSubmissions/${getEncodedUri(id)}/build`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2636,7 +2640,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Related resource 
     remote isolated function betabuildlocalizationsBuildGetToOneRelated(string id, string[]? fieldsBuilds = ()) returns BuildResponse|error {
-        string resourcePath = string `/v1/betaBuildLocalizations/${id}/build`;
+        string resourcePath = string `/v1/betaBuildLocalizations/${getEncodedUri(id)}/build`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2648,7 +2652,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function betagroupsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}/app`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2660,7 +2664,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function betagroupsBetatestersGetToManyRelationship(string id, int? 'limit = ()) returns BetaGroupBetaTestersLinkagesResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/betaTesters`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/betaTesters`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BetaGroupBetaTestersLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2671,7 +2675,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function betagroupsBetatestersCreateToManyRelationship(string id, BetaGroupBetaTestersLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/betaTesters`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/betaTesters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2682,8 +2686,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betagroupsBetatestersDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/betaTesters`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/betaTesters`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2692,7 +2696,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function betagroupsBetatestersGetToManyRelated(string id, string[]? fieldsBetatesters = (), int? 'limit = ()) returns BetaTestersResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}/betaTesters`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/betaTesters`;
         map<anydata> queryParam = {"fields[betaTesters]": fieldsBetatesters, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaTesters]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2704,7 +2708,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function betagroupsBuildsGetToManyRelationship(string id, int? 'limit = ()) returns BetaGroupBuildsLinkagesResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/builds`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/builds`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BetaGroupBuildsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2715,7 +2719,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function betagroupsBuildsCreateToManyRelationship(string id, BetaGroupBuildsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/builds`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/builds`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2726,8 +2730,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betagroupsBuildsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaGroups/${id}/relationships/builds`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/relationships/builds`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2736,7 +2740,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function betagroupsBuildsGetToManyRelated(string id, string[]? fieldsBuilds = (), int? 'limit = ()) returns BuildsResponse|error {
-        string resourcePath = string `/v1/betaGroups/${id}/builds`;
+        string resourcePath = string `/v1/betaGroups/${getEncodedUri(id)}/builds`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2748,7 +2752,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function betalicenseagreementsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/betaLicenseAgreements/${id}/app`;
+        string resourcePath = string `/v1/betaLicenseAgreements/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2760,7 +2764,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function betatestersAppsGetToManyRelationship(string id, int? 'limit = ()) returns BetaTesterAppsLinkagesResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/apps`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/apps`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BetaTesterAppsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2770,8 +2774,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betatestersAppsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/apps`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/apps`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2780,7 +2784,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function betatestersAppsGetToManyRelated(string id, string[]? fieldsApps = (), int? 'limit = ()) returns AppsResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/apps`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/apps`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2792,7 +2796,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function betatestersBetagroupsGetToManyRelationship(string id, int? 'limit = ()) returns BetaTesterBetaGroupsLinkagesResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/betaGroups`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/betaGroups`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BetaTesterBetaGroupsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2803,7 +2807,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function betatestersBetagroupsCreateToManyRelationship(string id, BetaTesterBetaGroupsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/betaGroups`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/betaGroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2814,8 +2818,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betatestersBetagroupsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/betaGroups`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/betaGroups`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2824,7 +2828,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function betatestersBetagroupsGetToManyRelated(string id, string[]? fieldsBetagroups = (), int? 'limit = ()) returns BetaGroupsResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/betaGroups`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/betaGroups`;
         map<anydata> queryParam = {"fields[betaGroups]": fieldsBetagroups, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaGroups]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2836,7 +2840,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function betatestersBuildsGetToManyRelationship(string id, int? 'limit = ()) returns BetaTesterBuildsLinkagesResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/builds`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/builds`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BetaTesterBuildsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -2847,7 +2851,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function betatestersBuildsCreateToManyRelationship(string id, BetaTesterBuildsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/builds`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/builds`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2858,8 +2862,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function betatestersBuildsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/betaTesters/${id}/relationships/builds`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/relationships/builds`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2868,7 +2872,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function betatestersBuildsGetToManyRelated(string id, string[]? fieldsBuilds = (), int? 'limit = ()) returns BuildsResponse|error {
-        string resourcePath = string `/v1/betaTesters/${id}/builds`;
+        string resourcePath = string `/v1/betaTesters/${getEncodedUri(id)}/builds`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2880,7 +2884,7 @@ public isolated client class Client {
     # + fieldsBuilds - the fields to include for returned resources of type builds 
     # + return - Related resource 
     remote isolated function buildbetadetailsBuildGetToOneRelated(string id, string[]? fieldsBuilds = ()) returns BuildResponse|error {
-        string resourcePath = string `/v1/buildBetaDetails/${id}/build`;
+        string resourcePath = string `/v1/buildBetaDetails/${getEncodedUri(id)}/build`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2892,7 +2896,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function buildsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/builds/${id}/app`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2903,7 +2907,7 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Related linkage 
     remote isolated function buildsAppencryptiondeclarationGetToOneRelationship(string id) returns BuildAppEncryptionDeclarationLinkageResponse|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/appEncryptionDeclaration`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/appEncryptionDeclaration`;
         BuildAppEncryptionDeclarationLinkageResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2912,7 +2916,7 @@ public isolated client class Client {
     # + payload - Related linkage 
     # + return - Success (no content) 
     remote isolated function buildsAppencryptiondeclarationUpdateToOneRelationship(string id, BuildAppEncryptionDeclarationLinkageRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/appEncryptionDeclaration`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/appEncryptionDeclaration`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2924,7 +2928,7 @@ public isolated client class Client {
     # + fieldsAppencryptiondeclarations - the fields to include for returned resources of type appEncryptionDeclarations 
     # + return - Related resource 
     remote isolated function buildsAppencryptiondeclarationGetToOneRelated(string id, string[]? fieldsAppencryptiondeclarations = ()) returns AppEncryptionDeclarationResponse|error {
-        string resourcePath = string `/v1/builds/${id}/appEncryptionDeclaration`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/appEncryptionDeclaration`;
         map<anydata> queryParam = {"fields[appEncryptionDeclarations]": fieldsAppencryptiondeclarations};
         map<Encoding> queryParamEncoding = {"fields[appEncryptionDeclarations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2936,7 +2940,7 @@ public isolated client class Client {
     # + fieldsAppstoreversions - the fields to include for returned resources of type appStoreVersions 
     # + return - Related resource 
     remote isolated function buildsAppstoreversionGetToOneRelated(string id, string[]? fieldsAppstoreversions = ()) returns AppStoreVersionResponse|error {
-        string resourcePath = string `/v1/builds/${id}/appStoreVersion`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/appStoreVersion`;
         map<anydata> queryParam = {"fields[appStoreVersions]": fieldsAppstoreversions};
         map<Encoding> queryParamEncoding = {"fields[appStoreVersions]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2948,7 +2952,7 @@ public isolated client class Client {
     # + fieldsBetaappreviewsubmissions - the fields to include for returned resources of type betaAppReviewSubmissions 
     # + return - Related resource 
     remote isolated function buildsBetaappreviewsubmissionGetToOneRelated(string id, string[]? fieldsBetaappreviewsubmissions = ()) returns BetaAppReviewSubmissionResponse|error {
-        string resourcePath = string `/v1/builds/${id}/betaAppReviewSubmission`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/betaAppReviewSubmission`;
         map<anydata> queryParam = {"fields[betaAppReviewSubmissions]": fieldsBetaappreviewsubmissions};
         map<Encoding> queryParamEncoding = {"fields[betaAppReviewSubmissions]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2961,7 +2965,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function buildsBetabuildlocalizationsGetToManyRelated(string id, string[]? fieldsBetabuildlocalizations = (), int? 'limit = ()) returns BetaBuildLocalizationsResponse|error {
-        string resourcePath = string `/v1/builds/${id}/betaBuildLocalizations`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/betaBuildLocalizations`;
         map<anydata> queryParam = {"fields[betaBuildLocalizations]": fieldsBetabuildlocalizations, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaBuildLocalizations]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2973,7 +2977,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function buildsBetagroupsCreateToManyRelationship(string id, BuildBetaGroupsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/betaGroups`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/betaGroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2984,8 +2988,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function buildsBetagroupsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/betaGroups`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/betaGroups`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -2993,7 +2997,7 @@ public isolated client class Client {
     # + fieldsBuildbetadetails - the fields to include for returned resources of type buildBetaDetails 
     # + return - Related resource 
     remote isolated function buildsBuildbetadetailGetToOneRelated(string id, string[]? fieldsBuildbetadetails = ()) returns BuildBetaDetailResponse|error {
-        string resourcePath = string `/v1/builds/${id}/buildBetaDetail`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/buildBetaDetail`;
         map<anydata> queryParam = {"fields[buildBetaDetails]": fieldsBuildbetadetails};
         map<Encoding> queryParamEncoding = {"fields[buildBetaDetails]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3007,7 +3011,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function buildsDiagnosticsignaturesGetToManyRelated(string id, string[]? filterDiagnostictype = (), string[]? fieldsDiagnosticsignatures = (), int? 'limit = ()) returns DiagnosticSignaturesResponse|error {
-        string resourcePath = string `/v1/builds/${id}/diagnosticSignatures`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/diagnosticSignatures`;
         map<anydata> queryParam = {"filter[diagnosticType]": filterDiagnostictype, "fields[diagnosticSignatures]": fieldsDiagnosticsignatures, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"filter[diagnosticType]": {style: FORM, explode: false}, "fields[diagnosticSignatures]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3020,7 +3024,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function buildsIconsGetToManyRelated(string id, string[]? fieldsBuildicons = (), int? 'limit = ()) returns BuildIconsResponse|error {
-        string resourcePath = string `/v1/builds/${id}/icons`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/icons`;
         map<anydata> queryParam = {"fields[buildIcons]": fieldsBuildicons, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[buildIcons]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3032,7 +3036,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function buildsIndividualtestersGetToManyRelationship(string id, int? 'limit = ()) returns BuildIndividualTestersLinkagesResponse|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/individualTesters`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/individualTesters`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BuildIndividualTestersLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -3043,7 +3047,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function buildsIndividualtestersCreateToManyRelationship(string id, BuildIndividualTestersLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/individualTesters`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/individualTesters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3054,8 +3058,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function buildsIndividualtestersDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/builds/${id}/relationships/individualTesters`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/relationships/individualTesters`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -3064,7 +3068,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function buildsIndividualtestersGetToManyRelated(string id, string[]? fieldsBetatesters = (), int? 'limit = ()) returns BetaTestersResponse|error {
-        string resourcePath = string `/v1/builds/${id}/individualTesters`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/individualTesters`;
         map<anydata> queryParam = {"fields[betaTesters]": fieldsBetatesters, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[betaTesters]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3078,7 +3082,7 @@ public isolated client class Client {
     # + filterPlatform - filter by attribute 'platform' 
     # + return - List of related resources 
     remote isolated function buildsPerfpowermetricsGetToManyRelated(string id, string[]? filterDevicetype = (), string[]? filterMetrictype = (), string[]? filterPlatform = ()) returns PerfPowerMetricsResponse|error {
-        string resourcePath = string `/v1/builds/${id}/perfPowerMetrics`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/perfPowerMetrics`;
         map<anydata> queryParam = {"filter[deviceType]": filterDevicetype, "filter[metricType]": filterMetrictype, "filter[platform]": filterPlatform};
         map<Encoding> queryParamEncoding = {"filter[deviceType]": {style: FORM, explode: false}, "filter[metricType]": {style: FORM, explode: false}, "filter[platform]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3090,7 +3094,7 @@ public isolated client class Client {
     # + fieldsPrereleaseversions - the fields to include for returned resources of type preReleaseVersions 
     # + return - Related resource 
     remote isolated function buildsPrereleaseversionGetToOneRelated(string id, string[]? fieldsPrereleaseversions = ()) returns PrereleaseVersionResponse|error {
-        string resourcePath = string `/v1/builds/${id}/preReleaseVersion`;
+        string resourcePath = string `/v1/builds/${getEncodedUri(id)}/preReleaseVersion`;
         map<anydata> queryParam = {"fields[preReleaseVersions]": fieldsPrereleaseversions};
         map<Encoding> queryParamEncoding = {"fields[preReleaseVersions]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3102,7 +3106,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function bundleidsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/bundleIds/${id}/app`;
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3115,7 +3119,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function bundleidsBundleidcapabilitiesGetToManyRelated(string id, string[]? fieldsBundleidcapabilities = (), int? 'limit = ()) returns BundleIdCapabilitiesResponse|error {
-        string resourcePath = string `/v1/bundleIds/${id}/bundleIdCapabilities`;
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}/bundleIdCapabilities`;
         map<anydata> queryParam = {"fields[bundleIdCapabilities]": fieldsBundleidcapabilities, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[bundleIdCapabilities]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3128,7 +3132,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function bundleidsProfilesGetToManyRelated(string id, string[]? fieldsProfiles = (), int? 'limit = ()) returns ProfilesResponse|error {
-        string resourcePath = string `/v1/bundleIds/${id}/profiles`;
+        string resourcePath = string `/v1/bundleIds/${getEncodedUri(id)}/profiles`;
         map<anydata> queryParam = {"fields[profiles]": fieldsProfiles, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[profiles]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3140,7 +3144,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function diagnosticsignaturesLogsGetToManyRelated(string id, int? 'limit = ()) returns DiagnosticLogsResponse|error {
-        string resourcePath = string `/v1/diagnosticSignatures/${id}/logs`;
+        string resourcePath = string `/v1/diagnosticSignatures/${getEncodedUri(id)}/logs`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DiagnosticLogsResponse response = check self.clientEp->get(resourcePath);
@@ -3152,7 +3156,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function enduserlicenseagreementsTerritoriesGetToManyRelated(string id, string[]? fieldsTerritories = (), int? 'limit = ()) returns TerritoriesResponse|error {
-        string resourcePath = string `/v1/endUserLicenseAgreements/${id}/territories`;
+        string resourcePath = string `/v1/endUserLicenseAgreements/${getEncodedUri(id)}/territories`;
         map<anydata> queryParam = {"fields[territories]": fieldsTerritories, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[territories]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3164,7 +3168,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function gamecenterenabledversionsCompatibleversionsGetToManyRelationship(string id, int? 'limit = ()) returns GameCenterEnabledVersionCompatibleVersionsLinkagesResponse|error {
-        string resourcePath = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
+        string resourcePath = string `/v1/gameCenterEnabledVersions/${getEncodedUri(id)}/relationships/compatibleVersions`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GameCenterEnabledVersionCompatibleVersionsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -3175,7 +3179,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function gamecenterenabledversionsCompatibleversionsCreateToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
+        string resourcePath = string `/v1/gameCenterEnabledVersions/${getEncodedUri(id)}/relationships/compatibleVersions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3186,8 +3190,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function gamecenterenabledversionsCompatibleversionsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/gameCenterEnabledVersions/${getEncodedUri(id)}/relationships/compatibleVersions`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -3195,7 +3199,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function gamecenterenabledversionsCompatibleversionsReplaceToManyRelationship(string id, GameCenterEnabledVersionCompatibleVersionsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/gameCenterEnabledVersions/${id}/relationships/compatibleVersions`;
+        string resourcePath = string `/v1/gameCenterEnabledVersions/${getEncodedUri(id)}/relationships/compatibleVersions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3215,7 +3219,7 @@ public isolated client class Client {
     # + include - comma-separated list of relationships to include 
     # + return - List of related resources 
     remote isolated function gamecenterenabledversionsCompatibleversionsGetToManyRelated(string id, string[]? filterPlatform = (), string[]? filterVersionstring = (), string[]? filterApp = (), string[]? filterId = (), string[]? sort = (), string[]? fieldsGamecenterenabledversions = (), string[]? fieldsApps = (), int? 'limit = (), string[]? include = ()) returns GameCenterEnabledVersionsResponse|error {
-        string resourcePath = string `/v1/gameCenterEnabledVersions/${id}/compatibleVersions`;
+        string resourcePath = string `/v1/gameCenterEnabledVersions/${getEncodedUri(id)}/compatibleVersions`;
         map<anydata> queryParam = {"filter[platform]": filterPlatform, "filter[versionString]": filterVersionstring, "filter[app]": filterApp, "filter[id]": filterId, "sort": sort, "fields[gameCenterEnabledVersions]": fieldsGamecenterenabledversions, "fields[apps]": fieldsApps, "limit": 'limit, "include": include};
         map<Encoding> queryParamEncoding = {"filter[platform]": {style: FORM, explode: false}, "filter[versionString]": {style: FORM, explode: false}, "filter[app]": {style: FORM, explode: false}, "filter[id]": {style: FORM, explode: false}, "sort": {style: FORM, explode: false}, "fields[gameCenterEnabledVersions]": {style: FORM, explode: false}, "fields[apps]": {style: FORM, explode: false}, "include": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3227,7 +3231,7 @@ public isolated client class Client {
     # + fieldsApps - the fields to include for returned resources of type apps 
     # + return - Related resource 
     remote isolated function prereleaseversionsAppGetToOneRelated(string id, string[]? fieldsApps = ()) returns AppResponse|error {
-        string resourcePath = string `/v1/preReleaseVersions/${id}/app`;
+        string resourcePath = string `/v1/preReleaseVersions/${getEncodedUri(id)}/app`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3240,7 +3244,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function prereleaseversionsBuildsGetToManyRelated(string id, string[]? fieldsBuilds = (), int? 'limit = ()) returns BuildsResponse|error {
-        string resourcePath = string `/v1/preReleaseVersions/${id}/builds`;
+        string resourcePath = string `/v1/preReleaseVersions/${getEncodedUri(id)}/builds`;
         map<anydata> queryParam = {"fields[builds]": fieldsBuilds, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[builds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3252,7 +3256,7 @@ public isolated client class Client {
     # + fieldsBundleids - the fields to include for returned resources of type bundleIds 
     # + return - Related resource 
     remote isolated function profilesBundleidGetToOneRelated(string id, string[]? fieldsBundleids = ()) returns BundleIdResponse|error {
-        string resourcePath = string `/v1/profiles/${id}/bundleId`;
+        string resourcePath = string `/v1/profiles/${getEncodedUri(id)}/bundleId`;
         map<anydata> queryParam = {"fields[bundleIds]": fieldsBundleids};
         map<Encoding> queryParamEncoding = {"fields[bundleIds]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3265,7 +3269,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function profilesCertificatesGetToManyRelated(string id, string[]? fieldsCertificates = (), int? 'limit = ()) returns CertificatesResponse|error {
-        string resourcePath = string `/v1/profiles/${id}/certificates`;
+        string resourcePath = string `/v1/profiles/${getEncodedUri(id)}/certificates`;
         map<anydata> queryParam = {"fields[certificates]": fieldsCertificates, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[certificates]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3278,7 +3282,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function profilesDevicesGetToManyRelated(string id, string[]? fieldsDevices = (), int? 'limit = ()) returns DevicesResponse|error {
-        string resourcePath = string `/v1/profiles/${id}/devices`;
+        string resourcePath = string `/v1/profiles/${getEncodedUri(id)}/devices`;
         map<anydata> queryParam = {"fields[devices]": fieldsDevices, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[devices]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3291,7 +3295,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function userinvitationsVisibleappsGetToManyRelated(string id, string[]? fieldsApps = (), int? 'limit = ()) returns AppsResponse|error {
-        string resourcePath = string `/v1/userInvitations/${id}/visibleApps`;
+        string resourcePath = string `/v1/userInvitations/${getEncodedUri(id)}/visibleApps`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3303,7 +3307,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related linkages 
     remote isolated function usersVisibleappsGetToManyRelationship(string id, int? 'limit = ()) returns UserVisibleAppsLinkagesResponse|error {
-        string resourcePath = string `/v1/users/${id}/relationships/visibleApps`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}/relationships/visibleApps`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserVisibleAppsLinkagesResponse response = check self.clientEp->get(resourcePath);
@@ -3314,7 +3318,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function usersVisibleappsCreateToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/users/${id}/relationships/visibleApps`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}/relationships/visibleApps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3325,8 +3329,8 @@ public isolated client class Client {
     # + id - the id of the requested resource 
     # + return - Success (no content) 
     remote isolated function usersVisibleappsDeleteToManyRelationship(string id) returns http:Response|error {
-        string resourcePath = string `/v1/users/${id}/relationships/visibleApps`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}/relationships/visibleApps`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -3334,7 +3338,7 @@ public isolated client class Client {
     # + payload - List of related linkages 
     # + return - Success (no content) 
     remote isolated function usersVisibleappsReplaceToManyRelationship(string id, UserVisibleAppsLinkagesRequest payload) returns http:Response|error {
-        string resourcePath = string `/v1/users/${id}/relationships/visibleApps`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}/relationships/visibleApps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3347,7 +3351,7 @@ public isolated client class Client {
     # + 'limit - maximum resources per page 
     # + return - List of related resources 
     remote isolated function usersVisibleappsGetToManyRelated(string id, string[]? fieldsApps = (), int? 'limit = ()) returns AppsResponse|error {
-        string resourcePath = string `/v1/users/${id}/visibleApps`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}/visibleApps`;
         map<anydata> queryParam = {"fields[apps]": fieldsApps, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"fields[apps]": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

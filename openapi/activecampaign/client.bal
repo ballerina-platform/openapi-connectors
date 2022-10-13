@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 import ballerina/http;
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
@@ -45,7 +46,7 @@ public isolated client class Client {
     # + id - Account's ID 
     # + return - Account data 
     remote isolated function retrieveAccount(string id) returns AccountData|error {
-        string resourcePath = string `/api/3/accounts/${id}`;
+        string resourcePath = string `/api/3/accounts/${getEncodedUri(id)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountData response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -57,13 +58,13 @@ public isolated client class Client {
     # + payload - Update account payload 
     # + return - Account data 
     remote isolated function updateAccount(string id, UpdateAccountRequest payload) returns AccountData|error {
-        string resourcePath = string `/api/3/accounts/${id}`;
+        string resourcePath = string `/api/3/accounts/${getEncodedUri(id)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountData response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AccountData response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an account
@@ -71,10 +72,10 @@ public isolated client class Client {
     # + id - Account's ID 
     # + return - Deletion response 
     remote isolated function deleteAccount(string id) returns http:Response|error {
-        string resourcePath = string `/api/3/accounts/${id}`;
+        string resourcePath = string `/api/3/accounts/${getEncodedUri(id)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List all accounts
@@ -102,7 +103,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountData response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountData response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a new note for an account
@@ -111,13 +112,13 @@ public isolated client class Client {
     # + payload - Create Account Note payload 
     # + return - Account Note data 
     remote isolated function createAccountNote(string id, CreateAccountNoteRequest payload) returns AccountNoteData|error {
-        string resourcePath = string `/api/3/accounts/${id}/notes`;
+        string resourcePath = string `/api/3/accounts/${getEncodedUri(id)}/notes`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountNoteData response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountNoteData response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update an account note
@@ -127,13 +128,13 @@ public isolated client class Client {
     # + payload - Update Account Note payload 
     # + return - Account Note data 
     remote isolated function updateAccoutNote(string id, string noteId, UpdateAccountNoteRequest payload) returns AccountNoteData|error {
-        string resourcePath = string `/api/3/accounts/${id}/notes/${noteId}`;
+        string resourcePath = string `/api/3/accounts/${getEncodedUri(id)}/notes/${getEncodedUri(noteId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountNoteData response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AccountNoteData response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List, search, and filter contacts
@@ -184,7 +185,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactReadResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactReadResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an existing contact
@@ -192,7 +193,7 @@ public isolated client class Client {
     # + contactId - ID of the contact 
     # + return - Contact data 
     remote isolated function getContactById(string contactId) returns ContactReadResponse|error {
-        string resourcePath = string `/api/3/contacts/${contactId}`;
+        string resourcePath = string `/api/3/contacts/${getEncodedUri(contactId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ContactReadResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -203,10 +204,10 @@ public isolated client class Client {
     # + contactId - Delete an existing contact 
     # + return - No content 
     remote isolated function deleteContact(int contactId) returns http:Response|error {
-        string resourcePath = string `/api/3/contacts/${contactId}`;
+        string resourcePath = string `/api/3/contacts/${getEncodedUri(contactId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a contact's data
@@ -214,7 +215,7 @@ public isolated client class Client {
     # + contactId - ID of the contact 
     # + return - Contact data 
     remote isolated function getContactData(int contactId) returns ContactDataResponse|error {
-        string resourcePath = string `/api/3/contacts/${contactId}/contactData`;
+        string resourcePath = string `/api/3/contacts/${getEncodedUri(contactId)}/contactData`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ContactDataResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -225,7 +226,7 @@ public isolated client class Client {
     # + contactId - ID of the contact 
     # + return - Bounce Log data 
     remote isolated function getContactBounceLogs(int contactId) returns BounceLogResponse|error {
-        string resourcePath = string `/api/3/contacts/${contactId}/bounceLogs`;
+        string resourcePath = string `/api/3/contacts/${getEncodedUri(contactId)}/bounceLogs`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         BounceLogResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -236,7 +237,7 @@ public isolated client class Client {
     # + contactId - ID of the contact 
     # + return - Contact Goals data 
     remote isolated function getContactDataGoals(int contactId) returns ContactGoalResponse|error {
-        string resourcePath = string `/api/3/contacts/${contactId}/contactGoals`;
+        string resourcePath = string `/api/3/contacts/${getEncodedUri(contactId)}/contactGoals`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ContactGoalResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -263,7 +264,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactAutomationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactAutomationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an automation a contact is in
@@ -271,12 +272,12 @@ public isolated client class Client {
     # + contactAutomationId - ID of the contactAutomation to retrieve 
     # + return - Contact Automation data 
     remote isolated function getContactAutomation(int contactAutomationId) returns ContactAutomationResponse|error {
-        string resourcePath = string `/api/3/contactAutomations/${contactAutomationId}`;
+        string resourcePath = string `/api/3/contactAutomations/${getEncodedUri(contactAutomationId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ContactAutomationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactAutomationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a contact from an automation
@@ -284,10 +285,10 @@ public isolated client class Client {
     # + contactAutomationId - ID of the contactAutomation to delete 
     # + return - No content 
     remote isolated function deleteContactAutomation(int contactAutomationId) returns http:Response|error {
-        string resourcePath = string `/api/3/contactAutomations/${contactAutomationId}`;
+        string resourcePath = string `/api/3/contactAutomations/${getEncodedUri(contactAutomationId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List all email activities
@@ -315,7 +316,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactReadResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactReadResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Subscribe a contact to a list or unsubscribe a contact from a list.
@@ -329,7 +330,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SubscribeOrUnsubscribeContactResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SubscribeOrUnsubscribeContactResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Bulk import status list. After using the POST endpoint to send bulk data, you can use this endpoint to monitor progress.
@@ -353,7 +354,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BulkImportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BulkImportResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # This endpoint returns a specific bulk import's status including the contact IDs of any newly created contacts, and emails of any contacts that failed to be created.
@@ -389,7 +390,7 @@ public isolated client class Client {
     # + campaignId - ID of campaign to retrieve 
     # + return - Campaign data 
     remote isolated function getCampaignById(int campaignId) returns CampaignReadResponse|error {
-        string resourcePath = string `/api/3/campaigns/${campaignId}`;
+        string resourcePath = string `/api/3/campaigns/${getEncodedUri(campaignId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CampaignReadResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -416,7 +417,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactTagReadResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactTagReadResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a tag from a contact
@@ -424,10 +425,10 @@ public isolated client class Client {
     # + tagId - The contactTag id 
     # + return - No Content 
     remote isolated function removeTagFromContact(string tagId) returns http:Response|error {
-        string resourcePath = string `/api/3/contactTags/${tagId}`;
+        string resourcePath = string `/api/3/contactTags/${getEncodedUri(tagId)}`;
         map<any> headerValues = {"Api-Token": self.apiKeyConfig.apiToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all lists
@@ -454,7 +455,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ListCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ListCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

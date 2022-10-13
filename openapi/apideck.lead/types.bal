@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type UnifiedId record {
     # Unified ID
@@ -77,7 +79,7 @@ public type PaymentRequired record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -106,6 +108,7 @@ public type Website record {
     # ID
     string? id?;
     # Website URL
+    @constraint:String {minLength: 1}
     string url;
     # Type
     string 'type?;
@@ -115,7 +118,7 @@ public type NotImplemented record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -161,7 +164,7 @@ public type BadRequest record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -176,7 +179,7 @@ public type UnexpectedError record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -191,6 +194,7 @@ public type Lead record {
     # Lead ID
     string id?;
     # Lead name
+    @constraint:String {minLength: 1}
     string name;
     # Company name
     string? company_name;
@@ -245,7 +249,7 @@ public type CustomField record {
     # ID
     string id;
     # Custom value
-    string|decimal|boolean|string[]? value?;
+    string?|decimal?|boolean?|string[] value?;
 };
 
 public type InlineResponse2001 record {
@@ -266,6 +270,7 @@ public type PhoneNumber record {
     # ID
     string? id?;
     # Phone number
+    @constraint:String {minLength: 1}
     string number;
     # Type
     string 'type?;
@@ -285,7 +290,7 @@ public type Unauthorized record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -300,6 +305,7 @@ public type SocialLink record {
     # ID
     string? id?;
     # Social link
+    @constraint:String {minLength: 1}
     string url;
     # Type
     string? 'type?;
@@ -311,7 +317,7 @@ public type Unprocessable record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.
@@ -326,7 +332,7 @@ public type NotFoundResponse record {
     # HTTP status code
     decimal status_code?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # The type of error returned
     string type_name?;
     # A human-readable message providing more details about the error.

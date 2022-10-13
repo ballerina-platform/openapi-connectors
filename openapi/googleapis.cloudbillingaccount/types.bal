@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -111,11 +111,11 @@ public type PricingExpression record {
     # The base unit for the SKU which is the unit used in usage exports. Example: "By"
     string baseUnit?;
     # Conversion factor for converting from price per usage_unit to price per base_unit, and start_usage_amount to start_usage_amount in base_unit. unit_price / base_unit_conversion_factor = price per base_unit. start_usage_amount * base_unit_conversion_factor = start_usage_amount in base_unit.
-    float baseUnitConversionFactor?;
+    decimal baseUnitConversionFactor?;
     # The base unit in human readable form. Example: "byte".
     string baseUnitDescription?;
     # The recommended quantity of units for displaying pricing info. When displaying pricing info it is recommended to display: (unit_price * display_quantity) per display_quantity usage_unit. This field does not affect the pricing formula and is for display purposes only. Example: If the unit_price is "0.0001 USD", the usage_unit is "GB" and the display_quantity is "1000" then the recommended way of displaying the pricing info is "0.10 USD per 1000 GB"
-    float displayQuantity?;
+    decimal displayQuantity?;
     # The list of tiered rates for this pricing. The total cost is computed by applying each of the tiered rates on usage. This repeated list is sorted by ascending order of start_usage_amount.
     TierRate[] tieredRates?;
     # The short hand for unit of usage this pricing is specified in. Example: usage_unit of "GiBy" means that usage is specified in "Gibi Byte".
@@ -167,7 +167,7 @@ public type TestIamPermissionsResponse record {
 # The price rate indicating starting usage and its corresponding price.
 public type TierRate record {
     # Usage is priced at this rate only after this amount. Example: start_usage_amount of 10 indicates that the usage will be priced at the unit_price after the first 10 usage_units.
-    float startUsageAmount?;
+    decimal startUsageAmount?;
     # Represents an amount of money with its currency type.
     Money unitPrice?;
 };
@@ -197,7 +197,7 @@ public type PricingInfo record {
     # Represents the aggregation level and interval for pricing of a single SKU.
     AggregationInfo aggregationInfo?;
     # Conversion rate used for currency conversion, from USD to the currency specified in the request. This includes any surcharge collected for billing in non USD currency. If a currency is not specified in the request this defaults to 1.0. Example: USD * currency_conversion_rate = JPY
-    float currencyConversionRate?;
+    decimal currencyConversionRate?;
     # The timestamp from which this pricing was effective within the requested time range. This is guaranteed to be greater than or equal to the start_time field in the request and less than the end_time field in the request. If a time range was not specified in the request this field will be equivalent to a time within the last 12 hours, indicating the latest pricing info.
     string effectiveTime?;
     # Expresses a mathematical pricing formula. For Example:- `usage_unit: GBy` `tiered_rates:` `[start_usage_amount: 20, unit_price: $10]` `[start_usage_amount: 100, unit_price: $5]` The above expresses a pricing formula where the first 20GB is free, the next 80GB is priced at $10 per GB followed by $5 per GB for additional usage.

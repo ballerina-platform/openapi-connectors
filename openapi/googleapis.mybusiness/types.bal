@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -279,9 +279,9 @@ public type VerificationOption record {
 # An object that represents a latitude/longitude pair. This is expressed as a pair of doubles to represent degrees latitude and degrees longitude. Unless specified otherwise, this must conform to the WGS84 standard. Values must be within normalized ranges.
 public type LatLng record {
     # The latitude in degrees. It must be in the range [-90.0, +90.0].
-    float latitude?;
+    decimal latitude?;
     # The longitude in degrees. It must be in the range [-180.0, +180.0].
-    float longitude?;
+    decimal longitude?;
 };
 
 # Views available from the guest unit itself.
@@ -827,7 +827,7 @@ public type VerifyLocationResponse record {
 # Response message for Reviews.ListReviews.
 public type ListReviewsResponse record {
     # The average star rating of all reviews for this location on a scale of 1 to 5, where 5 is the highest rating.
-    float averageRating?;
+    decimal averageRating?;
     # If the number of reviews exceeded the requested page size, this field is populated with a token to fetch the next page of reviews on a subsequent call to ListReviews. If there are no more reviews, this field is not present in the response.
     string nextPageToken?;
     # The reviews.
@@ -1455,11 +1455,11 @@ public type LivingAreaSleeping record {
 # This message denotes nutrition information with an upper bound and lower bound range and can be represented by mass unit. Lower amount must be specified. Both lower and upper amounts are non-negative numbers.
 public type NutritionFact record {
     # Required. Lower amount of nutrition
-    float lowerAmount?;
+    decimal lowerAmount?;
     # Required. Unit of the given nutrition information.
     string unit?;
     # Optional. Upper amount of nutrition
-    float upperAmount?;
+    decimal upperAmount?;
 };
 
 # Item of a Section. It can be the dish itself, or can contain multiple FoodMenuItemOption.

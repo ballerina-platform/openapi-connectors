@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -61,9 +61,9 @@ public type DataSourceParameter record {
     # Cannot be changed after initial creation.
     boolean immutable?;
     # For integer and double values specifies maxminum allowed value.
-    float maxValue?;
+    decimal maxValue?;
     # For integer and double values specifies minimum allowed value.
-    float minValue?;
+    decimal minValue?;
     # Parameter identifier.
     string paramId?;
     # Deprecated. This field has no effect.

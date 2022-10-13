@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2PasswordGrantConfig|http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    OAuth2PasswordGrantConfig|http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,24 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Password Grant Configs
+public type OAuth2PasswordGrantConfig record {|
+    *http:OAuth2PasswordGrantConfig;
+    # Token URL
+    string tokenUrl = "https://api.getgo.com/oauth/v2/token";
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.getgo.com/oauth/v2/token";
 |};
 
 # This is a generated connector for [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
@@ -76,7 +94,7 @@ public isolated client class Client {
     # + size - The size of the page. 
     # + return - OK 
     remote isolated function getAllAccountWebinars(int accountKey, string fromTime, string toTime, int? page = (), int? size = ()) returns ReportingWebinarsResponse|error {
-        string resourcePath = string `/accounts/${accountKey}/webinars`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountKey)}/webinars`;
         map<anydata> queryParam = {"fromTime": fromTime, "toTime": toTime, "page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReportingWebinarsResponse response = check self.clientEp->get(resourcePath);
@@ -91,7 +109,7 @@ public isolated client class Client {
     # + size - The size of the page. 
     # + return - OK 
     remote isolated function getOrganizerSessions(int organizerKey, string fromTime, string toTime, int? page = (), int? size = ()) returns ReportingSessionsResponse|error {
-        string resourcePath = string `/organizers/${organizerKey}/sessions`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/sessions`;
         map<anydata> queryParam = {"fromTime": fromTime, "toTime": toTime, "page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReportingSessionsResponse response = check self.clientEp->get(resourcePath);
@@ -106,7 +124,7 @@ public isolated client class Client {
     # + size - The size of the page. 
     # + return - OK 
     remote isolated function getWebinars(int organizerKey, string fromTime, string toTime, int? page = (), int? size = ()) returns ReportingWebinarsResponse|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars`;
         map<anydata> queryParam = {"fromTime": fromTime, "toTime": toTime, "page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReportingWebinarsResponse response = check self.clientEp->get(resourcePath);
@@ -118,7 +136,7 @@ public isolated client class Client {
     # + payload - The webinar details 
     # + return - Created 
     remote isolated function createWebinar(int organizerKey, WebinarReqCreate payload) returns CreatedWebinar|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -132,7 +150,7 @@ public isolated client class Client {
     # + toTime - End of the datetime range in ISO8601 UTC format 
     # + return - OK 
     remote isolated function getInSessionWebinars(int organizerKey, string toTime, string? fromTime = ()) returns BrokerWebinar[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/insessionWebinars`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/insessionWebinars`;
         map<anydata> queryParam = {"fromTime": fromTime, "toTime": toTime};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BrokerWebinar[] response = check self.clientEp->get(resourcePath);
@@ -144,7 +162,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getWebinar(int organizerKey, int webinarKey) returns WebinarByKey|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}`;
         WebinarByKey response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -156,7 +174,7 @@ public isolated client class Client {
     # + payload - The webinar details 
     # + return - Accepted 
     remote isolated function updateWebinar(int organizerKey, int webinarKey, WebinarReqUpdate payload, boolean? notifyParticipants = ()) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}`;
         map<anydata> queryParam = {"notifyParticipants": notifyParticipants};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -172,10 +190,10 @@ public isolated client class Client {
     # + sendCancellationEmails - Indicates whether cancellation notice emails should be sent. The default value is false 
     # + return - No Content 
     remote isolated function cancelWebinar(int organizerKey, int webinarKey, boolean? sendCancellationEmails = ()) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}`;
         map<anydata> queryParam = {"sendCancellationEmails": sendCancellationEmails};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get attendees for all webinar sessions
@@ -186,7 +204,7 @@ public isolated client class Client {
     # + size - The size of the page. 
     # + return - OK 
     remote isolated function getAttendeesForAllWebinarSessions(int organizerKey, int webinarKey, int? page = (), int? size = ()) returns ReportingAttendeeResponse|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/attendees`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/attendees`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReportingAttendeeResponse response = check self.clientEp->get(resourcePath);
@@ -198,7 +216,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getCoorganizers(int organizerKey, int webinarKey) returns Coorganizer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/coorganizers`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/coorganizers`;
         Coorganizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -209,7 +227,7 @@ public isolated client class Client {
     # + payload - The co-organizer details 
     # + return - Created 
     remote isolated function createCoorganizers(int organizerKey, int webinarKey, CoorganizerReqCreate[] payload) returns Coorganizer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/coorganizers`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/coorganizers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -224,10 +242,10 @@ public isolated client class Client {
     # + 'external - By default only internal co-organizers (with a GoToWebinar account) can be deleted. If you want to use this call for external co-organizers you have to set this parameter to 'true'. 
     # + return - No Content (Co-organizer was deleted) 
     remote isolated function deleteCoorganizer(int organizerKey, int webinarKey, int coorganizerKey, boolean? 'external = ()) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/coorganizers/${coorganizerKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/coorganizers/${getEncodedUri(coorganizerKey)}`;
         map<anydata> queryParam = {"external": 'external};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Resend invitation
@@ -238,7 +256,7 @@ public isolated client class Client {
     # + 'external - By default only internal co-organizers (with a GoToWebinar account) will retrieve the resent invitation email. If you want to use this call for external co-organizers you have to set this parameter to 'true'. 
     # + return - No Content (Invitation email was sent) 
     remote isolated function resendCoorganizerInvitation(int organizerKey, int webinarKey, int coorganizerKey, boolean? 'external = ()) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/coorganizers/${coorganizerKey}/resendInvitation`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/coorganizers/${getEncodedUri(coorganizerKey)}/resendInvitation`;
         map<anydata> queryParam = {"external": 'external};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -252,7 +270,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getWebinarMeetingTimes(int organizerKey, int webinarKey) returns DateTimeRange[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/meetingtimes`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/meetingtimes`;
         DateTimeRange[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -262,7 +280,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getPanelists(int organizerKey, int webinarKey) returns Panelist[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/panelists`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/panelists`;
         Panelist[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -273,7 +291,7 @@ public isolated client class Client {
     # + payload - Array of panelists 
     # + return - Created 
     remote isolated function createPanelists(int organizerKey, int webinarKey, PanelistReqCreate[] payload) returns CreatedPanelist[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/panelists`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/panelists`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -286,7 +304,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getAudioInformation(int organizerKey, int webinarKey) returns Audio|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/audio`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/audio`;
         Audio response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -298,7 +316,7 @@ public isolated client class Client {
     # + payload - The audio/conferencing settings 
     # + return - No Content 
     remote isolated function updateAudioInformation(int organizerKey, int webinarKey, AudioUpdate payload, boolean? notifyParticipants = ()) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/audio`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/audio`;
         map<anydata> queryParam = {"notifyParticipants": notifyParticipants};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -313,7 +331,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getPerformanceForAllWebinarSessions(int organizerKey, int webinarKey) returns json|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/performance`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/performance`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -322,7 +340,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getStartUrl(int webinarKey) returns WebinarStartUrlResponse|error {
-        string resourcePath = string `/webinars/${webinarKey}/startUrl`;
+        string resourcePath = string `/webinars/${getEncodedUri(webinarKey)}/startUrl`;
         WebinarStartUrlResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -332,7 +350,7 @@ public isolated client class Client {
     # + payload - Provide a webinar details to be copied 
     # + return - Copied 
     remote isolated function copyWebinar(int webinarKey, CopyWebinar payload) returns CopiedWebinar|error {
-        string resourcePath = string `/webinars/${webinarKey}/copy`;
+        string resourcePath = string `/webinars/${getEncodedUri(webinarKey)}/copy`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -345,7 +363,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getAllRegistrantsForWebinar(int organizerKey, int webinarKey) returns Registrant[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/registrants`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/registrants`;
         Registrant[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -358,7 +376,7 @@ public isolated client class Client {
     # + payload - The registrant details. To get all possible values run the API call 'Get registration fields' which is also part of this documentation. 
     # + return - Created 
     remote isolated function createRegistrant(int organizerKey, int webinarKey, RegistrantFields payload, string? accept = (), boolean? resendConfirmation = ()) returns RegistrantCreated|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/registrants`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/registrants`;
         map<anydata> queryParam = {"resendConfirmation": resendConfirmation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -366,7 +384,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RegistrantCreated response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RegistrantCreated response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get registrant
@@ -376,7 +394,7 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getRegistrant(int organizerKey, int webinarKey, int registrantKey) returns RegistrantDetailed|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/registrants/${registrantKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/registrants/${getEncodedUri(registrantKey)}`;
         RegistrantDetailed response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -387,8 +405,8 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - No content 
     remote isolated function deleteRegistrant(int organizerKey, int webinarKey, int registrantKey) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/registrants/${registrantKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/registrants/${getEncodedUri(registrantKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get registration fields
@@ -397,7 +415,7 @@ public isolated client class Client {
     # + webinarKey - The key of the webinar 
     # + return - OK 
     remote isolated function getRegistrationFields(int organizerKey, int webinarKey) returns RegistrationFields|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/registrants/fields`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/registrants/fields`;
         RegistrationFields response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -409,7 +427,7 @@ public isolated client class Client {
     # + size - The size of the page. 
     # + return - OK 
     remote isolated function getAllSessions(int organizerKey, int webinarKey, int? page = (), int? size = ()) returns ReportingSessionsResponse|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReportingSessionsResponse response = check self.clientEp->get(resourcePath);
@@ -422,7 +440,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getWebinarSession(int organizerKey, int webinarKey, int sessionKey) returns Attendee[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}`;
         Attendee[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -433,7 +451,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getAttendees(int organizerKey, int webinarKey, int sessionKey) returns Attendee[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/attendees`;
         Attendee[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -445,7 +463,7 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getAttendee(int organizerKey, int webinarKey, int sessionKey, int registrantKey) returns Registrant|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees/${registrantKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/attendees/${getEncodedUri(registrantKey)}`;
         Registrant response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -457,7 +475,7 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getAttendeePollAnswers(int organizerKey, int webinarKey, int sessionKey, int registrantKey) returns PollAnswer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees/${registrantKey}/polls`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/attendees/${getEncodedUri(registrantKey)}/polls`;
         PollAnswer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -469,7 +487,7 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getAttendeeQuestions(int organizerKey, int webinarKey, int sessionKey, int registrantKey) returns AttendeeQuestion[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees/${registrantKey}/questions`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/attendees/${getEncodedUri(registrantKey)}/questions`;
         AttendeeQuestion[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -481,7 +499,7 @@ public isolated client class Client {
     # + registrantKey - The key of the registrant 
     # + return - OK 
     remote isolated function getAttendeeSurveyAnswers(int organizerKey, int webinarKey, int sessionKey, int registrantKey) returns PollAnswer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/attendees/${registrantKey}/surveys`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/attendees/${getEncodedUri(registrantKey)}/surveys`;
         PollAnswer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -492,7 +510,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getPerformance(int organizerKey, int webinarKey, int sessionKey) returns SessionPerformance|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/performance`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/performance`;
         SessionPerformance response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -503,7 +521,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getPolls(int organizerKey, int webinarKey, int sessionKey) returns Poll[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/polls`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/polls`;
         Poll[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -514,7 +532,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getQuestions(int organizerKey, int webinarKey, int sessionKey) returns AttendeeQuestion[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/questions`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/questions`;
         AttendeeQuestion[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -525,7 +543,7 @@ public isolated client class Client {
     # + sessionKey - The key of the webinar session 
     # + return - OK 
     remote isolated function getSurveys(int organizerKey, int webinarKey, int sessionKey) returns Poll[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/sessions/${sessionKey}/surveys`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/sessions/${getEncodedUri(sessionKey)}/surveys`;
         Poll[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -536,7 +554,7 @@ public isolated client class Client {
     # + panelistKey - The key of the webinar panelist 
     # + return - No Content 
     remote isolated function resendPanelistInvitation(int organizerKey, int webinarKey, int panelistKey) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/panelists/${panelistKey}/resendInvitation`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/panelists/${getEncodedUri(panelistKey)}/resendInvitation`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -549,8 +567,8 @@ public isolated client class Client {
     # + panelistKey - The key of the webinar panelist 
     # + return - No content 
     remote isolated function deleteWebinarPanelist(int organizerKey, int webinarKey, int panelistKey) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/webinars/${webinarKey}/panelists/${panelistKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/webinars/${getEncodedUri(webinarKey)}/panelists/${getEncodedUri(panelistKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Search for completed recording assets
@@ -623,7 +641,7 @@ public isolated client class Client {
     # + return - Accepted 
     remote isolated function deleteWebhooks() returns http:Response|error {
         string resourcePath = string `/webhooks`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get webhook
@@ -631,7 +649,7 @@ public isolated client class Client {
     # + webhookKey - The unique identifier for a webhook. 
     # + return - OK 
     remote isolated function getWebhook(string webhookKey) returns Webhook|error {
-        string resourcePath = string `/webhooks/${webhookKey}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(webhookKey)}`;
         Webhook response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -675,7 +693,7 @@ public isolated client class Client {
     # + return - Accepted 
     remote isolated function deleteUserSubscriptions() returns http:Response|error {
         string resourcePath = string `/userSubscriptions`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get user subscription
@@ -683,7 +701,7 @@ public isolated client class Client {
     # + userSubscriptionsKey - The unique identifier for a user subscription. 
     # + return - OK 
     remote isolated function getUserSubscription(string userSubscriptionsKey) returns UserSubscription|error {
-        string resourcePath = string `/userSubscriptions/${userSubscriptionsKey}`;
+        string resourcePath = string `/userSubscriptions/${getEncodedUri(userSubscriptionsKey)}`;
         UserSubscription response = check self.clientEp->get(resourcePath);
         return response;
     }

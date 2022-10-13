@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -46,9 +46,9 @@ public type PostPerUserInfo record {
 # The location for geotagged posts.
 public type PostLocation record {
     # Location's latitude.
-    float lat?;
+    decimal lat?;
     # Location's longitude.
-    float lng?;
+    decimal lng?;
     # Location name.
     string name?;
     # Location's viewport span. Can be used when rendering a map preview.

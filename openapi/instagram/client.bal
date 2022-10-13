@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,7 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getMedia(string mediaId, string[]? fields = ()) returns MediaFieldsObject|error {
-        string resourcePath = string `/${mediaId}`;
+        string resourcePath = string `/${getEncodedUri(mediaId)}`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -61,7 +61,7 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getAlbumMedia(string albumId, string[]? fields = ()) returns Media|error {
-        string resourcePath = string `/${albumId}/children`;
+        string resourcePath = string `/${getEncodedUri(albumId)}/children`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -77,7 +77,7 @@ public isolated client class Client {
     # + until - A Unix timestamp or strtotime data value that points to the end of a range of time-based data. 
     # + return - Success 
     remote isolated function getUserMedia(string apiVersion, string userId, string[]? fields = (), string? since = (), string? until = ()) returns Media|error {
-        string resourcePath = string `/${apiVersion}/${userId}/media`;
+        string resourcePath = string `/${getEncodedUri(apiVersion)}/${getEncodedUri(userId)}/media`;
         map<anydata> queryParam = {"fields": fields, "since": since, "until": until, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -103,7 +103,7 @@ public isolated client class Client {
     # + fields - A list of fields and edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getUserFields(string apiVersion, string userId, string[]? fields = ()) returns UserFieldsObject|error {
-        string resourcePath = string `/${apiVersion}/${userId}`;
+        string resourcePath = string `/${getEncodedUri(apiVersion)}/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -108,7 +108,7 @@ public isolated client class Client {
     # + gifId - Filters results by specified GIF ID. 
     # + return - Sticker or an error 
     remote isolated function getGifById(int gifId) returns Response|error {
-        string resourcePath = string `/gifs/${gifId}`;
+        string resourcePath = string `/gifs/${getEncodedUri(gifId)}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Response response = check self.clientEp->get(resourcePath);

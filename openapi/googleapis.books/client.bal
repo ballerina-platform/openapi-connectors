@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Books API v1](https://developers.google.com/books) OpenAPI specification.
@@ -416,7 +427,7 @@ public isolated client class Client {
     # + payload - Annotation request 
     # + return - Successful response 
     remote isolated function updateMylibraryAnnotations(string annotationId, Annotation payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Annotation|error {
-        string resourcePath = string `/books/v1/mylibrary/annotations/${annotationId}`;
+        string resourcePath = string `/books/v1/mylibrary/annotations/${getEncodedUri(annotationId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -438,10 +449,10 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function deleteMylibraryAnnotations(string annotationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/annotations/${annotationId}`;
+        string resourcePath = string `/books/v1/mylibrary/annotations/${getEncodedUri(annotationId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves a list of bookshelves belonging to the authenticated user.
@@ -475,7 +486,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function getMylibraryBookshelves(string shelf, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Bookshelf|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Bookshelf response = check self.clientEp->get(resourcePath);
@@ -496,7 +507,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function addvolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}/addVolume`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}/addVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "reason": reason, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -517,7 +528,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function clearvolumesMylibraryBookshelves(string shelf, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}/clearVolumes`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}/clearVolumes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -540,7 +551,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function movevolumeMylibraryBookshelves(string shelf, string volumeId, int volumePosition, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}/moveVolume`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}/moveVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "volumePosition": volumePosition, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -563,7 +574,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function removevolumeMylibraryBookshelves(string shelf, string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? reason = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}/removeVolume`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}/removeVolume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "volumeId": volumeId, "reason": reason, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -590,7 +601,7 @@ public isolated client class Client {
     # + startIndex - Index of the first element to return (starts at 0) 
     # + return - Successful response 
     remote isolated function listMylibraryBookshelvesVolumes(string shelf, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? country = (), int? maxResults = (), string? projection = (), string? q = (), boolean? showPreorders = (), string? 'source = (), int? startIndex = ()) returns Volumes|error {
-        string resourcePath = string `/books/v1/mylibrary/bookshelves/${shelf}/volumes`;
+        string resourcePath = string `/books/v1/mylibrary/bookshelves/${getEncodedUri(shelf)}/volumes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "country": country, "maxResults": maxResults, "projection": projection, "q": q, "showPreorders": showPreorders, "source": 'source, "startIndex": startIndex};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volumes response = check self.clientEp->get(resourcePath);
@@ -610,7 +621,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function getMylibraryReadingpositions(string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? contentVersion = (), string? 'source = ()) returns ReadingPosition|error {
-        string resourcePath = string `/books/v1/mylibrary/readingpositions/${volumeId}`;
+        string resourcePath = string `/books/v1/mylibrary/readingpositions/${getEncodedUri(volumeId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReadingPosition response = check self.clientEp->get(resourcePath);
@@ -634,7 +645,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function setpositionMylibraryReadingpositions(string volumeId, string position, string timestamp, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? action = (), string? contentVersion = (), string? deviceCookie = (), string? 'source = ()) returns http:Response|error {
-        string resourcePath = string `/books/v1/mylibrary/readingpositions/${volumeId}/setPosition`;
+        string resourcePath = string `/books/v1/mylibrary/readingpositions/${getEncodedUri(volumeId)}/setPosition`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "position": position, "timestamp": timestamp, "action": action, "contentVersion": contentVersion, "deviceCookie": deviceCookie, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -851,7 +862,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function listBookshelves(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Bookshelves|error {
-        string resourcePath = string `/books/v1/users/${userId}/bookshelves`;
+        string resourcePath = string `/books/v1/users/${getEncodedUri(userId)}/bookshelves`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Bookshelves response = check self.clientEp->get(resourcePath);
@@ -871,7 +882,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function getBookshelves(string userId, string shelf, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? 'source = ()) returns Bookshelf|error {
-        string resourcePath = string `/books/v1/users/${userId}/bookshelves/${shelf}`;
+        string resourcePath = string `/books/v1/users/${getEncodedUri(userId)}/bookshelves/${getEncodedUri(shelf)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Bookshelf response = check self.clientEp->get(resourcePath);
@@ -894,7 +905,7 @@ public isolated client class Client {
     # + startIndex - Index of the first element to return (starts at 0) 
     # + return - Successful response 
     remote isolated function listBookshelvesVolumes(string userId, string shelf, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxResults = (), boolean? showPreorders = (), string? 'source = (), int? startIndex = ()) returns Volumes|error {
-        string resourcePath = string `/books/v1/users/${userId}/bookshelves/${shelf}/volumes`;
+        string resourcePath = string `/books/v1/users/${getEncodedUri(userId)}/bookshelves/${getEncodedUri(shelf)}/volumes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxResults": maxResults, "showPreorders": showPreorders, "source": 'source, "startIndex": startIndex};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volumes response = check self.clientEp->get(resourcePath);
@@ -1041,7 +1052,7 @@ public isolated client class Client {
     # + userLibraryConsistentRead - user library consistent read status 
     # + return - Successful response 
     remote isolated function getVolumes(string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? country = (), boolean? includeNonComicsSeries = (), string? partner = (), string? projection = (), string? 'source = (), boolean? userLibraryConsistentRead = ()) returns Volume|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "country": country, "includeNonComicsSeries": includeNonComicsSeries, "partner": partner, "projection": projection, "source": 'source, "user_library_consistent_read": userLibraryConsistentRead};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volume response = check self.clientEp->get(resourcePath);
@@ -1063,7 +1074,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function listVolumesAssociated(string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? association = (), string? locale = (), string? maxAllowedMaturityRating = (), string? 'source = ()) returns Volumes|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/associated`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/associated`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "association": association, "locale": locale, "maxAllowedMaturityRating": maxAllowedMaturityRating, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volumes response = check self.clientEp->get(resourcePath);
@@ -1095,7 +1106,7 @@ public isolated client class Client {
     # + volumeAnnotationsVersion - The version of the volume annotations that you are requesting. 
     # + return - Successful response 
     remote isolated function listLayersVolumeannotations(string volumeId, string layerId, string contentVersion, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endOffset = (), string? endPosition = (), string? locale = (), int? maxResults = (), string? pageToken = (), boolean? showDeleted = (), string? 'source = (), string? startOffset = (), string? startPosition = (), string? updatedMax = (), string? updatedMin = (), string? volumeAnnotationsVersion = ()) returns Volumeannotations|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layers/${layerId}`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layers/${getEncodedUri(layerId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "endOffset": endOffset, "endPosition": endPosition, "locale": locale, "maxResults": maxResults, "pageToken": pageToken, "showDeleted": showDeleted, "source": 'source, "startOffset": startOffset, "startPosition": startPosition, "updatedMax": updatedMax, "updatedMin": updatedMin, "volumeAnnotationsVersion": volumeAnnotationsVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volumeannotations response = check self.clientEp->get(resourcePath);
@@ -1117,7 +1128,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function getLayersVolumeannotations(string volumeId, string layerId, string annotationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? locale = (), string? 'source = ()) returns Volumeannotation|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layers/${layerId}/annotations/${annotationId}`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layers/${getEncodedUri(layerId)}/annotations/${getEncodedUri(annotationId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "locale": locale, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Volumeannotation response = check self.clientEp->get(resourcePath);
@@ -1147,7 +1158,7 @@ public isolated client class Client {
     # + w - The requested pixel width for any images. If width is provided height must also be provided. 
     # + return - Successful response 
     remote isolated function listLayersAnnotationdata(string volumeId, string layerId, string contentVersion, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? annotationDataId = (), int? h = (), string? locale = (), int? maxResults = (), string? pageToken = (), int? scale = (), string? 'source = (), string? updatedMax = (), string? updatedMin = (), int? w = ()) returns Annotationsdata|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layers/${layerId}/data`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layers/${getEncodedUri(layerId)}/data`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "annotationDataId": annotationDataId, "h": h, "locale": locale, "maxResults": maxResults, "pageToken": pageToken, "scale": scale, "source": 'source, "updatedMax": updatedMax, "updatedMin": updatedMin, "w": w};
         map<Encoding> queryParamEncoding = {"annotationDataId": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1175,7 +1186,7 @@ public isolated client class Client {
     # + w - The requested pixel width for any images. If width is provided height must also be provided. 
     # + return - Successful response 
     remote isolated function getLayersAnnotationdata(string volumeId, string layerId, string annotationDataId, string contentVersion, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? allowWebDefinitions = (), int? h = (), string? locale = (), int? scale = (), string? 'source = (), int? w = ()) returns DictionaryAnnotationdata|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layers/${layerId}/data/${annotationDataId}`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layers/${getEncodedUri(layerId)}/data/${getEncodedUri(annotationDataId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "allowWebDefinitions": allowWebDefinitions, "h": h, "locale": locale, "scale": scale, "source": 'source, "w": w};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DictionaryAnnotationdata response = check self.clientEp->get(resourcePath);
@@ -1197,7 +1208,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function listLayers(string volumeId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? contentVersion = (), int? maxResults = (), string? pageToken = (), string? 'source = ()) returns Layersummaries|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layersummary`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layersummary`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "maxResults": maxResults, "pageToken": pageToken, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Layersummaries response = check self.clientEp->get(resourcePath);
@@ -1218,7 +1229,7 @@ public isolated client class Client {
     # + 'source - String to identify the originator of this request. 
     # + return - Successful response 
     remote isolated function getLayers(string volumeId, string summaryId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? contentVersion = (), string? 'source = ()) returns Layersummary|error {
-        string resourcePath = string `/books/v1/volumes/${volumeId}/layersummary/${summaryId}`;
+        string resourcePath = string `/books/v1/volumes/${getEncodedUri(volumeId)}/layersummary/${getEncodedUri(summaryId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "contentVersion": contentVersion, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Layersummary response = check self.clientEp->get(resourcePath);

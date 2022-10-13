@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google BigQuery Data Transfer API v2.0](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
@@ -78,7 +89,7 @@ public isolated client class Client {
     # + name - Required. The field will contain name of the resource requested, for example: `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}` 
     # + return - Successful response 
     remote isolated function getTransferRun(string name, string? xgafv = (), string? alt = (), string? callback = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TransferRun|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TransferRun response = check self.clientEp->get(resourcePath);
@@ -95,10 +106,10 @@ public isolated client class Client {
     # + name - Required. The field will contain name of the resource requested, for example: `projects/{project_id}/transferConfigs/{config_id}/runs/{run_id}` or `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}/runs/{run_id}` 
     # + return - Successful response 
     remote isolated function deleteTransferRun(string name, string? xgafv = (), string? alt = (), string? callback = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a data transfer configuration. All fields must be set, even if they are not updated.
@@ -116,7 +127,7 @@ public isolated client class Client {
     # + versionInfo - Optional version info. If users want to find a very recent access token, that is, immediately after approving access, users have to set the version_info claim in the token request. To obtain the version_info, users must use the "none+gsession" response type. which be return a version_info back in the authorization response which be be put in a JWT claim in the token request. 
     # + return - Successful response 
     remote isolated function updateTransferRun(string name, TransferConfig payload, string? xgafv = (), string? alt = (), string? callback = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? authorizationCode = (), string? serviceAccountName = (), string? updateMask = (), string? versionInfo = ()) returns TransferConfig|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "authorizationCode": authorizationCode, "serviceAccountName": serviceAccountName, "updateMask": updateMask, "versionInfo": versionInfo};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -140,7 +151,7 @@ public isolated client class Client {
     # + pageToken - A page token received from the `next_page_token` field in the response. Send that page token to receive the subsequent page. 
     # + return - Successful response 
     remote isolated function listProjectLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v1/${name}/locations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -158,7 +169,7 @@ public isolated client class Client {
     # + name - Required. The data source in the form: `projects/{project_id}/dataSources/{data_source_id}` or `projects/{project_id}/locations/{location_id}/dataSources/{data_source_id}`. 
     # + return - Successful response 
     remote isolated function checkValidCreds(string name, CheckValidCredsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CheckValidCredsResponse|error {
-        string resourcePath = string `/v1/${name}:checkValidCreds`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:checkValidCreds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -181,7 +192,7 @@ public isolated client class Client {
     # + pageToken - Pagination token, which can be used to request a specific page of `ListDataSourcesRequest` list results. For multiple-page results, `ListDataSourcesResponse` outputs a `next_page` token, which can be used as the `page_token` value to request the next page of list results. 
     # + return - Successful response 
     remote isolated function listDataSources(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListDataSourcesResponse|error {
-        string resourcePath = string `/v1/${parent}/dataSources`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/dataSources`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListDataSourcesResponse response = check self.clientEp->get(resourcePath);
@@ -203,7 +214,7 @@ public isolated client class Client {
     # + states - When specified, only transfer runs with requested states are returned. 
     # + return - Successful response 
     remote isolated function listJobs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), string? runAttempt = (), string[]? states = ()) returns ListTransferRunsResponse|error {
-        string resourcePath = string `/v1/${parent}/runs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/runs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "runAttempt": runAttempt, "states": states};
         map<Encoding> queryParamEncoding = {"states": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -225,7 +236,7 @@ public isolated client class Client {
     # + pageToken - Pagination token, which can be used to request a specific page of `ListTransfersRequest` list results. For multiple-page results, `ListTransfersResponse` outputs a `next_page` token, which can be used as the `page_token` value to request the next page of list results. 
     # + return - Successful response 
     remote isolated function listTransferConfigs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? dataSourceIds = (), int? pageSize = (), string? pageToken = ()) returns ListTransferConfigsResponse|error {
-        string resourcePath = string `/v1/${parent}/transferConfigs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/transferConfigs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "dataSourceIds": dataSourceIds, "pageSize": pageSize, "pageToken": pageToken};
         map<Encoding> queryParamEncoding = {"dataSourceIds": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -247,7 +258,7 @@ public isolated client class Client {
     # + versionInfo - Optional version info. If users want to find a very recent access token, that is, immediately after approving access, users have to set the version_info claim in the token request. To obtain the version_info, users must use the "none+gsession" response type. which be return a version_info back in the authorization response which be be put in a JWT claim in the token request. 
     # + return - Successful response 
     remote isolated function createTransferConfigs(string parent, TransferConfig payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? authorizationCode = (), string? serviceAccountName = (), string? versionInfo = ()) returns TransferConfig|error {
-        string resourcePath = string `/v1/${parent}/transferConfigs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/transferConfigs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "authorizationCode": authorizationCode, "serviceAccountName": serviceAccountName, "versionInfo": versionInfo};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -271,7 +282,7 @@ public isolated client class Client {
     # + pageToken - Pagination token, which can be used to request a specific page of `ListTransferLogsRequest` list results. For multiple-page results, `ListTransferLogsResponse` outputs a `next_page` token, which can be used as the `page_token` value to request the next page of list results. 
     # + return - Successful response 
     remote isolated function getTransferLogs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? messageTypes = (), int? pageSize = (), string? pageToken = ()) returns ListTransferLogsResponse|error {
-        string resourcePath = string `/v1/${parent}/transferLogs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/transferLogs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "messageTypes": messageTypes, "pageSize": pageSize, "pageToken": pageToken};
         map<Encoding> queryParamEncoding = {"messageTypes": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -290,7 +301,7 @@ public isolated client class Client {
     # + parent - Required. Transfer configuration name in the form: `projects/{project_id}/transferConfigs/{config_id}` or `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`. 
     # + return - Successful response 
     remote isolated function createScheduleRun(string parent, ScheduleTransferRunsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ScheduleTransferRunsResponse|error {
-        string resourcePath = string `/v1/${parent}:scheduleRuns`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}:scheduleRuns`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -311,7 +322,7 @@ public isolated client class Client {
     # + parent - Transfer configuration name in the form: `projects/{project_id}/transferConfigs/{config_id}` or `projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}`. 
     # + return - Successful response 
     remote isolated function startManualRuns(string parent, StartManualTransferRunsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns StartManualTransferRunsResponse|error {
-        string resourcePath = string `/v1/${parent}:startManualRuns`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}:startManualRuns`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

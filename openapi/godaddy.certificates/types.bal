@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type CertificateArr Certificate[];
 
@@ -94,14 +96,14 @@ public type CertificateCreate record {
     # Certificate Signing Request
     string csr;
     # Only used for OV
-    boolean intelVPro?;
+    boolean intelVPro = false;
     CertificateOrganizationCreate organization?;
     # Number of years for certificate validity period
     int period;
     # Type of product requesting a certificate. Only required non-renewal
     string productType;
     # Root Type. Depending on certificate expiration date, SHA_1 not be allowed. Will default to SHA_2 if expiration date exceeds sha1 allowed date
-    string rootType?;
+    string rootType = "STARFIELD_SHA_2";
     # Number of subject alternative names(SAN) to be included in certificate 
     string slotSize?;
     # Subject Alternative names. Collection of subjectAlternativeNames to be included in certificate.
@@ -173,6 +175,7 @@ public type CertificateReissue record {
     # Certificate Signing Request.
     string csr?;
     # In hours, time to delay revoking existing certificate after issuance of new certificate. If revokeExistingCertOnIssuance is enabled, this value will be ignored
+    @constraint:Int {maxValue: 168}
     int delayExistingRevoke?;
     # Root Type. Depending on certificate expiration date, SHA_1 not be allowed. Will default to SHA_2 if expiration date exceeds sha1 allowed date
     string rootType?;

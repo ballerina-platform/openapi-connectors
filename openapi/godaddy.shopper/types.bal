@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type ErrorField record {
     # Short identifier for the error, suitable for indicating the specific error within client code
@@ -54,6 +56,7 @@ public type ShopperId record {
 public type ShopperUpdate record {
     string email?;
     int externalId?;
+    @constraint:String {maxLength: 50}
     string marketId?;
     string nameFirst?;
     string nameLast?;
@@ -96,7 +99,8 @@ public type Shopper record {
 public type SubaccountCreate record {
     string email;
     int externalId?;
-    string marketId?;
+    @constraint:String {maxLength: 50}
+    string marketId = "en-US";
     string nameFirst;
     string nameLast;
     string password;

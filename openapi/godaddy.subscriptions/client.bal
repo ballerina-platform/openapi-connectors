@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -80,7 +80,7 @@ public isolated client class Client {
     # + subscriptionId - Unique identifier of the Subscription to retrieve 
     # + return - Request was successful 
     remote isolated function getSubscription(string subscriptionId, string? xShopperId = (), string xMarketId = "en-US") returns Subscription|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "X-Market-Id": xMarketId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Subscription response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -92,10 +92,10 @@ public isolated client class Client {
     # + subscriptionId - Unique identifier of the Subscription to cancel 
     # + return - Request was successful 
     remote isolated function cancelSubscription(string subscriptionId, string? xShopperId = ()) returns http:Response|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update details for the specified Subscription
@@ -104,7 +104,7 @@ public isolated client class Client {
     # + payload - Details of the Subscription to change 
     # + return - Request was successful 
     remote isolated function updateSubscription(string subscriptionId, SubscriptionUpdate payload) returns http:Response|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

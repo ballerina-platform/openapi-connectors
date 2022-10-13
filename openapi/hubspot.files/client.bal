@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.hubapi.com/oauth/v1/token";
 |};
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
@@ -98,7 +109,7 @@ public isolated client class Client {
     # + taskId - Import by URL task ID 
     # + return - successful operation 
     remote isolated function checkImportStatus(string taskId) returns FileActionResponse|error {
-        string resourcePath = string `/files/v3/files/import-from-url/async/tasks/${taskId}/status`;
+        string resourcePath = string `/files/v3/files/import-from-url/async/tasks/${getEncodedUri(taskId)}/status`;
         FileActionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -143,7 +154,7 @@ public isolated client class Client {
     # + properties - File properties 
     # + return - successful operation 
     remote isolated function filesGetById(string fileId, string[]? properties = ()) returns File|error {
-        string resourcePath = string `/files/v3/files/${fileId}`;
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -156,7 +167,7 @@ public isolated client class Client {
     # + payload - File data 
     # + return - successful operation 
     remote isolated function filesReplace(string fileId, FilesFileidBody payload) returns File|error {
-        string resourcePath = string `/files/v3/files/${fileId}`;
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -168,8 +179,8 @@ public isolated client class Client {
     # + fileId - File ID to delete 
     # + return - No content 
     remote isolated function deleteFiles(string fileId) returns http:Response|error {
-        string resourcePath = string `/files/v3/files/${fileId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # update file properties
@@ -178,7 +189,7 @@ public isolated client class Client {
     # + payload - Options to update 
     # + return - successful operation 
     remote isolated function updateFileProperties(string fileId, FileUpdateInput payload) returns File|error {
-        string resourcePath = string `/files/v3/files/${fileId}`;
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -190,8 +201,8 @@ public isolated client class Client {
     # + fileId - ID of file to GDPR delete 
     # + return - No content 
     remote isolated function deleteArchiveGdpr(string fileId) returns http:Response|error {
-        string resourcePath = string `/files/v3/files/${fileId}/gdpr-delete`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}/gdpr-delete`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get signed URL to access private file.
@@ -202,7 +213,7 @@ public isolated client class Client {
     # + upscale - If size is provided, this will upscale the image to fit the size dimensions. 
     # + return - successful operation 
     remote isolated function getSignedUrl(string fileId, string? size = (), int? expirationSeconds = (), boolean? upscale = ()) returns SignedUrl|error {
-        string resourcePath = string `/files/v3/files/${fileId}/signed-url`;
+        string resourcePath = string `/files/v3/files/${getEncodedUri(fileId)}/signed-url`;
         map<anydata> queryParam = {"size": size, "expirationSeconds": expirationSeconds, "upscale": upscale};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SignedUrl response = check self.clientEp->get(resourcePath);
@@ -263,7 +274,7 @@ public isolated client class Client {
     # + taskId - Task ID of folder update 
     # + return - successful operation 
     remote isolated function checkUpdateStatus(string taskId) returns FolderActionResponse|error {
-        string resourcePath = string `/files/v3/folders/update/async/tasks/${taskId}/status`;
+        string resourcePath = string `/files/v3/folders/update/async/tasks/${getEncodedUri(taskId)}/status`;
         FolderActionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -273,7 +284,7 @@ public isolated client class Client {
     # + properties - Properties to set on returned folder. 
     # + return - successful operation 
     remote isolated function foldersGetById(string folderId, string[]? properties = ()) returns Folder|error {
-        string resourcePath = string `/files/v3/folders/${folderId}`;
+        string resourcePath = string `/files/v3/folders/${getEncodedUri(folderId)}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -285,8 +296,8 @@ public isolated client class Client {
     # + folderId - ID of folder to delete. 
     # + return - No content 
     remote isolated function deleteFolders(string folderId) returns http:Response|error {
-        string resourcePath = string `/files/v3/folders/${folderId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/v3/folders/${getEncodedUri(folderId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get folder.
@@ -295,7 +306,7 @@ public isolated client class Client {
     # + properties - Properties to set on returned folder. 
     # + return - successful operation 
     remote isolated function foldersGetByPath(string folderPath, string[]? properties = ()) returns Folder|error {
-        string resourcePath = string `/files/v3/folders/${folderPath}`;
+        string resourcePath = string `/files/v3/folders/${getEncodedUri(folderPath)}`;
         map<anydata> queryParam = {"properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -307,8 +318,8 @@ public isolated client class Client {
     # + folderPath - Path of folder to delete 
     # + return - No content 
     remote isolated function foldersArchiveByPath(string folderPath) returns http:Response|error {
-        string resourcePath = string `/files/v3/folders/${folderPath}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/v3/folders/${getEncodedUri(folderPath)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

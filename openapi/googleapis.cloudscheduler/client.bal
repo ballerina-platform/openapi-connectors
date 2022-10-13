@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Scheduler REST API v1](https://cloud.google.com/scheduler/docs/reference/rest) OpenAPI specification.
@@ -79,7 +90,7 @@ public isolated client class Client {
     # + name - Required. The job name. For example: `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`. 
     # + return - Successful response 
     remote isolated function getJob(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Job response = check self.clientEp->get(resourcePath);
@@ -97,10 +108,10 @@ public isolated client class Client {
     # + name - Required. The job name. For example: `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`. 
     # + return - Successful response 
     remote isolated function deleteJob(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a job. If successful, the updated Job is returned. If the job does not exist, `NOT_FOUND` is returned. If UpdateJob does not successfully return, it is possible for the job to be in an Job.State.UPDATE_FAILED state. A job in this state may not be executed. If this happens, retry the UpdateJob request until a successful response is received.
@@ -117,7 +128,7 @@ public isolated client class Client {
     # + payload - Job to be updated 
     # + return - Successful response 
     remote isolated function updateJob(string name, Job payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Job|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -141,7 +152,7 @@ public isolated client class Client {
     # + pageToken - A page token received from the `next_page_token` field in the response. Send that page token to receive the subsequent page. 
     # + return - Successful response 
     remote isolated function listLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v1/${name}/locations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -159,7 +170,7 @@ public isolated client class Client {
     # + name - Required. The job name. For example: `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`. 
     # + return - Successful response 
     remote isolated function pauseJob(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v1/${name}:pause`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:pause`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -179,7 +190,7 @@ public isolated client class Client {
     # + name - Required. The job name. For example: `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`. 
     # + return - Successful response 
     remote isolated function resumeJob(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v1/${name}:resume`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:resume`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -199,7 +210,7 @@ public isolated client class Client {
     # + name - Required. The job name. For example: `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`. 
     # + return - Successful response 
     remote isolated function runJob(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v1/${name}:run`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:run`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -221,7 +232,7 @@ public isolated client class Client {
     # + pageToken - A token identifying a page of results the server will return. To request the first page results, page_token must be empty. To request the next page of results, page_token must be the value of next_page_token returned from the previous call to ListJobs. It is an error to switch the value of filter or order_by while iterating through pages. 
     # + return - Successful response 
     remote isolated function listJobs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListJobsResponse|error {
-        string resourcePath = string `/v1/${parent}/jobs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/jobs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListJobsResponse response = check self.clientEp->get(resourcePath);
@@ -240,7 +251,7 @@ public isolated client class Client {
     # + payload - Job to be created 
     # + return - Successful response 
     remote isolated function createJob(string parent, Job payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v1/${parent}/jobs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/jobs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

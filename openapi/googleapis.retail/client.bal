@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Retail API v2](https://cloud.google.com/retail/docs/overview) OpenAPI specification.
@@ -85,7 +96,7 @@ public isolated client class Client {
     # + visitorId - A unique identifier for tracking visitors. For example, this could be implemented with an HTTP cookie, which should be able to uniquely identify a visitor on a single device. This unique identifier should not change if the visitor logs in or out of the website. The field must be a UTF-8 encoded string with a length limit of 128 characters. Otherwise, an INVALID_ARGUMENT error is returned. 
     # + return - Successful response 
     remote isolated function completeQuery(string catalog, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? dataset = (), string? deviceType = (), string[]? languageCodes = (), int? maxSuggestions = (), string? query = (), string? visitorId = ()) returns GoogleCloudRetailV2CompleteQueryResponse|error {
-        string resourcePath = string `/v2/${catalog}:completeQuery`;
+        string resourcePath = string `/v2/${getEncodedUri(catalog)}:completeQuery`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "dataset": dataset, "deviceType": deviceType, "languageCodes": languageCodes, "maxSuggestions": maxSuggestions, "query": query, "visitorId": visitorId};
         map<Encoding> queryParamEncoding = {"languageCodes": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -104,7 +115,7 @@ public isolated client class Client {
     # + catalog - The parent catalog resource name, such as `projects/*/locations/global/catalogs/default_catalog`. 
     # + return - Successful response 
     remote isolated function getDefaultBranch(string catalog, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleCloudRetailV2GetDefaultBranchResponse|error {
-        string resourcePath = string `/v2/${catalog}:getDefaultBranch`;
+        string resourcePath = string `/v2/${getEncodedUri(catalog)}:getDefaultBranch`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleCloudRetailV2GetDefaultBranchResponse response = check self.clientEp->get(resourcePath);
@@ -123,7 +134,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2SetDefaultBranchRequest record 
     # + return - Successful response 
     remote isolated function setDefaultBranch(string catalog, GoogleCloudRetailV2SetDefaultBranchRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v2/${catalog}:setDefaultBranch`;
+        string resourcePath = string `/v2/${getEncodedUri(catalog)}:setDefaultBranch`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -144,7 +155,7 @@ public isolated client class Client {
     # + name - The name of the operation resource. 
     # + return - Successful response 
     remote isolated function getOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${name}`;
+        string resourcePath = string `/v2/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleLongrunningOperation response = check self.clientEp->get(resourcePath);
@@ -162,10 +173,10 @@ public isolated client class Client {
     # + name - Required. Full resource name of Product, such as `projects/*/locations/global/catalogs/default_catalog/branches/default_branch/products/some_product_id`. If the caller does not have permission to delete the Product, regardless of whether or not it exists, a PERMISSION_DENIED error is returned. If the Product to delete does not exist, a NOT_FOUND error is returned. The Product to delete can neither be a Product.Type.COLLECTION Product member nor a Product.Type.PRIMARY Product with more than one variants. Otherwise, an INVALID_ARGUMENT error is returned. All inventory information for the named Product will be deleted. 
     # + return - Successful response 
     remote isolated function deleteProduct(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v2/${name}`;
+        string resourcePath = string `/v2/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a Product.
@@ -183,7 +194,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2Product record 
     # + return - Successful response 
     remote isolated function updateProduct(string name, GoogleCloudRetailV2Product payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? allowMissing = (), string? updateMask = ()) returns GoogleCloudRetailV2Product|error {
-        string resourcePath = string `/v2/${name}`;
+        string resourcePath = string `/v2/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "allowMissing": allowMissing, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function listOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns GoogleLongrunningListOperationsResponse|error {
-        string resourcePath = string `/v2/${name}/operations`;
+        string resourcePath = string `/v2/${getEncodedUri(name)}/operations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleLongrunningListOperationsResponse response = check self.clientEp->get(resourcePath);
@@ -226,7 +237,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2SetInventoryRequest record 
     # + return - Successful response 
     remote isolated function setInventory(string name, GoogleCloudRetailV2SetInventoryRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${name}:setInventory`;
+        string resourcePath = string `/v2/${getEncodedUri(name)}:setInventory`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -249,7 +260,7 @@ public isolated client class Client {
     # + pageToken - A page token ListCatalogsResponse.next_page_token, received from a previous CatalogService.ListCatalogs call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to CatalogService.ListCatalogs must match the call that provided the page token. Otherwise, an INVALID_ARGUMENT error is returned. 
     # + return - Successful response 
     remote isolated function listCatalogs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns GoogleCloudRetailV2ListCatalogsResponse|error {
-        string resourcePath = string `/v2/${parent}/catalogs`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/catalogs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleCloudRetailV2ListCatalogsResponse response = check self.clientEp->get(resourcePath);
@@ -268,7 +279,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2ImportCompletionDataRequest record 
     # + return - Successful response 
     remote isolated function importCompletionData(string parent, GoogleCloudRetailV2ImportCompletionDataRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${parent}/completionData:import`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/completionData:import`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -293,7 +304,7 @@ public isolated client class Client {
     # + readMask - The fields of Product to return in the responses. If not set or empty, the following fields are returned: * Product.name * Product.id * Product.title * Product.uri * Product.images * Product.price_info * Product.brands If "*" is provided, all fields are returned. Product.name is always returned no matter what mask is set. If an unsupported or unknown field is provided, an INVALID_ARGUMENT error is returned. 
     # + return - Successful response 
     remote isolated function listProducts(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = (), string? readMask = ()) returns GoogleCloudRetailV2ListProductsResponse|error {
-        string resourcePath = string `/v2/${parent}/products`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken, "readMask": readMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleCloudRetailV2ListProductsResponse response = check self.clientEp->get(resourcePath);
@@ -313,7 +324,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2Product record 
     # + return - Successful response 
     remote isolated function createProduct(string parent, GoogleCloudRetailV2Product payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? productId = ()) returns GoogleCloudRetailV2Product|error {
-        string resourcePath = string `/v2/${parent}/products`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "productId": productId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -335,7 +346,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2ImportProductsRequest record 
     # + return - Successful response 
     remote isolated function importProducts(string parent, GoogleCloudRetailV2ImportProductsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${parent}/products:import`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/products:import`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -359,7 +370,7 @@ public isolated client class Client {
     # + userEvent - Required. URL encoded UserEvent proto with a length limit of 2,000,000 characters. 
     # + return - Successful response 
     remote isolated function userEventsCollect(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? ets = (), string? uri = (), string? userEvent = ()) returns GoogleApiHttpBody|error {
-        string resourcePath = string `/v2/${parent}/userEvents:collect`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/userEvents:collect`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "ets": ets, "uri": uri, "userEvent": userEvent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleApiHttpBody response = check self.clientEp->get(resourcePath);
@@ -378,7 +389,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2ImportUserEventsRequest record 
     # + return - Successful response 
     remote isolated function importUserEvents(string parent, GoogleCloudRetailV2ImportUserEventsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${parent}/userEvents:import`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/userEvents:import`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -400,7 +411,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2PurgeUserEventsRequest record 
     # + return - Successful response 
     remote isolated function purgeUserEvents(string parent, GoogleCloudRetailV2PurgeUserEventsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${parent}/userEvents:purge`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/userEvents:purge`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -422,7 +433,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2RejoinUserEventsRequest record 
     # + return - Successful response 
     remote isolated function userEventsRejoin(string parent, GoogleCloudRetailV2RejoinUserEventsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${parent}/userEvents:rejoin`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/userEvents:rejoin`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -444,7 +455,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2UserEvent record 
     # + return - Successful response 
     remote isolated function writeUserEvents(string parent, GoogleCloudRetailV2UserEvent payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleCloudRetailV2UserEvent|error {
-        string resourcePath = string `/v2/${parent}/userEvents:write`;
+        string resourcePath = string `/v2/${getEncodedUri(parent)}/userEvents:write`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -466,7 +477,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2PredictRequest record 
     # + return - Successful response 
     remote isolated function predict(string placement, GoogleCloudRetailV2PredictRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleCloudRetailV2PredictResponse|error {
-        string resourcePath = string `/v2/${placement}:predict`;
+        string resourcePath = string `/v2/${getEncodedUri(placement)}:predict`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -488,7 +499,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2SearchRequest record 
     # + return - Successful response 
     remote isolated function search(string placement, GoogleCloudRetailV2SearchRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleCloudRetailV2SearchResponse|error {
-        string resourcePath = string `/v2/${placement}:search`;
+        string resourcePath = string `/v2/${getEncodedUri(placement)}:search`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -510,7 +521,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2AddFulfillmentPlacesRequest record 
     # + return - Successful response 
     remote isolated function addFulfillmentPlaces(string product, GoogleCloudRetailV2AddFulfillmentPlacesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${product}:addFulfillmentPlaces`;
+        string resourcePath = string `/v2/${getEncodedUri(product)}:addFulfillmentPlaces`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -532,7 +543,7 @@ public isolated client class Client {
     # + payload - A GoogleCloudRetailV2RemoveFulfillmentPlacesRequest record 
     # + return - Successful response 
     remote isolated function removeFulfillmentPlaces(string product, GoogleCloudRetailV2RemoveFulfillmentPlacesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v2/${product}:removeFulfillmentPlaces`;
+        string resourcePath = string `/v2/${getEncodedUri(product)}:removeFulfillmentPlaces`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

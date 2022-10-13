@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Dropbox API v2](https://www.dropbox.com/developers/documentation/http/overview) OpenAPI specification. 
@@ -79,7 +83,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RelocationResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RelocationResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a folder at a given path.
@@ -94,7 +98,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateFolderResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateFolderResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete the file or folder at a given path.
@@ -109,7 +113,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DeleteResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DeleteResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Move a file or folder to a different location in the user's Dropbox.
@@ -124,7 +128,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RelocationResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RelocationResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Restore a file to a specific revision.
@@ -139,7 +143,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FileMetadata response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Shared Link With Settings
@@ -154,7 +158,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SharedLinkMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SharedLinkMetadata response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a temporary link to stream content of a file.
@@ -181,7 +185,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FileMetadata response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns revisions for files based on a file path or a file id.
@@ -196,7 +200,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ListRevisionsResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ListRevisionsResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Searches for files and folders.
@@ -222,7 +226,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FileMetadata response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FileMetadata response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

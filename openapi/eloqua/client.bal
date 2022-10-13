@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Eloqua Marketing Cloud Service API Version 2021.08.12](https://www.oracle.com/cx/marketing/automation/) OpenAPI Specification.
@@ -117,7 +121,7 @@ public isolated client class Client {
     # + id - The email address import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getEmailAddressImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -127,7 +131,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the email address import definition. 
     # + return - OK. 
     remote isolated function putEmailAddressImportIndividual(int id, Emailaddressimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -139,8 +143,8 @@ public isolated client class Client {
     # + id - The email address import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEmailAddressImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Submit data for an email address import
@@ -149,7 +153,7 @@ public isolated client class Client {
     # + payload - The request body contains the list of email addresses to be unsubscribed. 
     # + return - Success. 
     remote isolated function postEmailAddressImportData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -161,8 +165,8 @@ public isolated client class Client {
     # + id - The email address import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEmailAddressImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/emailAddresses/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an email group
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + id - The unique resource identifier of the email group. 
     # + return - OK. 
     remote isolated function getEmailGroupIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/emailGroups/${id}`;
+        string resourcePath = string `/api/bulk/2.0/emailGroups/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -223,7 +227,7 @@ public isolated client class Client {
     # + id - Id of the sync. 
     # + return - OK. 
     remote isolated function getSyncIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/syncs/${id}`;
+        string resourcePath = string `/api/bulk/2.0/syncs/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -236,7 +240,7 @@ public isolated client class Client {
     # + totalResults - Total number of sync results found. 
     # + return - OK 
     remote isolated function getSyncDataQuery(int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/syncs/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/syncs/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -247,8 +251,8 @@ public isolated client class Client {
     # + id - Id of the sync. 
     # + return - No Content. 
     remote isolated function deleteSyncDataQuery(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/syncs/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/syncs/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a sync's logs
@@ -262,7 +266,7 @@ public isolated client class Client {
     # + totalResults - This captures the total number of records that satisfy the request. This is not the count returned in the current response, but total count on the server side. Example: ?totalResults=true. 
     # + return - OK. 
     remote isolated function getSyncLogSearch(int id, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/syncs/${id}/logs`;
+        string resourcePath = string `/api/bulk/2.0/syncs/${getEncodedUri(id)}/logs`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -279,7 +283,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getSyncRejectSearch(int id, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/syncs/${id}/rejects`;
+        string resourcePath = string `/api/bulk/2.0/syncs/${getEncodedUri(id)}/rejects`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -298,7 +302,7 @@ public isolated client class Client {
     # + id - The unique resource identifier. 
     # + return - OK. 
     remote isolated function getImportPriorityIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/imports/priorities/${id}`;
+        string resourcePath = string `/api/bulk/2.0/imports/priorities/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -363,7 +367,7 @@ public isolated client class Client {
     # + id - The event's resource identification number. 
     # + return - OK. 
     remote isolated function getEventIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -378,7 +382,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getEventExportSearch(int id, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${id}/exports`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(id)}/exports`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -395,7 +399,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getEventFieldSearch(int id, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${id}/fields`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(id)}/fields`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -412,7 +416,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getEventImportSearch(int id, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${id}/imports`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(id)}/imports`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -424,7 +428,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the event export definition. 
     # + return - Success. 
     remote isolated function postEventExportIndividual(int parentId, EventExportIndividual payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -437,7 +441,7 @@ public isolated client class Client {
     # + id - The event export definition's resource identification number. 
     # + return - OK. 
     remote isolated function getEventExportIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -448,7 +452,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the event export definition. 
     # + return - OK. 
     remote isolated function putEventExportIndividual(int parentId, int id, Eventexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -461,8 +465,8 @@ public isolated client class Client {
     # + id - The event export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEventExportIndividual(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve the synced data for an event export definition
@@ -475,7 +479,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getEventExportDataQuery(int parentId, int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -487,8 +491,8 @@ public isolated client class Client {
     # + id - The event export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEventExportDataQuery(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an event field definition
@@ -497,7 +501,7 @@ public isolated client class Client {
     # + id - The event field's resource identification number. 
     # + return - OK. 
     remote isolated function getEventFieldIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -507,7 +511,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the event import definition. 
     # + return - Success. 
     remote isolated function postEventImportIndividual(int parentId, EventImportIndividual payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -520,7 +524,7 @@ public isolated client class Client {
     # + id - The event import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getEventImportIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -531,7 +535,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the event import definition. 
     # + return - OK. 
     remote isolated function putEventImportIndividual(int parentId, int id, Eventimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -544,8 +548,8 @@ public isolated client class Client {
     # + id - The event import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEventImportIndividual(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for an event import definition
@@ -555,7 +559,7 @@ public isolated client class Client {
     # + payload - The request body contains data to be uploaded to the event import definition. 
     # + return - Success. 
     remote isolated function postEventImportData(int parentId, int id, record {}[] payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -568,8 +572,8 @@ public isolated client class Client {
     # + id - The event import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteEventImportData(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/events/${parentId}/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/events/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of events
@@ -621,7 +625,7 @@ public isolated client class Client {
     # + id - The campaign response export definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCampaignResponseExportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -631,7 +635,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the campaign response export definition. 
     # + return - OK. 
     remote isolated function putCampaignResponseExportIndividual(int id, Campaignresponseexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -643,8 +647,8 @@ public isolated client class Client {
     # + id - The campaign response export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCampaignResponseExportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve the synced data for a campaign response export definition
@@ -656,7 +660,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCampaignResponseExportDataQuery(int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -667,8 +671,8 @@ public isolated client class Client {
     # + id - The campaign response export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCampaignResponseExportDataQuery(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a campaign response field definition
@@ -676,7 +680,7 @@ public isolated client class Client {
     # + id - The campaign response field's resource identification number. 
     # + return - OK. 
     remote isolated function getCampaignResponseFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -729,7 +733,7 @@ public isolated client class Client {
     # + id - The campaign response import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCampaignResponseImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -739,7 +743,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the campaign response import definition. 
     # + return - OK. 
     remote isolated function putCampaignResponseImportIndividual(int id, Campaignresponseimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -751,8 +755,8 @@ public isolated client class Client {
     # + id - The campaign response import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCampaignResponseImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for a campaign response import definition
@@ -761,7 +765,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the campaign response data. 
     # + return - OK. 
     remote isolated function postCampaignResponseImportData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -773,8 +777,8 @@ public isolated client class Client {
     # + id - The campaign response import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCampaignResponseImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/campaignResponses/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a campaign field definition
@@ -782,7 +786,7 @@ public isolated client class Client {
     # + id - The campaign field definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCampaignFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/campaigns/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/campaigns/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -835,7 +839,7 @@ public isolated client class Client {
     # + id - The opportunity contact linkage import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getOpportunityContactLinkageImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -845,7 +849,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the opportunity contact linkage import definition. 
     # + return - OK. 
     remote isolated function putOpportunityContactLinkageImportIndividual(int id, Opportunitycontactlinkageimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -857,8 +861,8 @@ public isolated client class Client {
     # + id - The opportunity contact linkage import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteOpportunityContactLinkageImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for an opportunity contact linkage import definition
@@ -867,7 +871,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the opportunity contact linkage import data. 
     # + return - OK. 
     remote isolated function postOpportunityContactLinkageImportData(int id, record {}[] payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -879,8 +883,8 @@ public isolated client class Client {
     # + id - The opportunity contact linkage import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteOpportunityContactLinkageImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/opportunities/contacts/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an opportunity field definition
@@ -888,7 +892,7 @@ public isolated client class Client {
     # + id - The opportunity field definition's resource identification number. 
     # + return - OK. 
     remote isolated function getOpportunityFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -941,7 +945,7 @@ public isolated client class Client {
     # + id - The opportunity import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getOpportunityImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -951,7 +955,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the opportunity import definition. 
     # + return - OK. 
     remote isolated function putOpportunityImportIndividual(int id, Opportunityimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -963,8 +967,8 @@ public isolated client class Client {
     # + id - The opportunity import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteOpportunityImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for an opportunity import definition
@@ -973,7 +977,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the opportunity data. 
     # + return - OK. 
     remote isolated function postOpportunityImportData(int id, record {}[] payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -985,8 +989,8 @@ public isolated client class Client {
     # + id - The opportunity import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteOpportunityImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/opportunities/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a user
@@ -995,7 +999,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualUser(int id, string? depth = ()) returns UserRest10|error {
-        string resourcePath = string `/api/REST/1.0/system/user/${id}`;
+        string resourcePath = string `/api/REST/1.0/system/user/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserRest10 response = check self.clientEp->get(resourcePath);
@@ -1007,7 +1011,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the user to be updated. 
     # + return - OK. 
     remote isolated function updateUser(int id, UserRest10 payload) returns UserRest10|error {
-        string resourcePath = string `/api/REST/1.0/system/user/${id}`;
+        string resourcePath = string `/api/REST/1.0/system/user/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1049,7 +1053,7 @@ public isolated client class Client {
     # + viewId - Id of the account view. 
     # + return - OK 
     remote isolated function readIndividualAccount(int id, string? depth = (), int? viewId = ()) returns AccountRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/account/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/account/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth, "viewId": viewId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AccountRest10 response = check self.clientEp->get(resourcePath);
@@ -1061,7 +1065,7 @@ public isolated client class Client {
     # + payload - List of account fields. 
     # + return - OK 
     remote isolated function updateAccount(int id, AccountRest10 payload) returns AccountRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/account/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/account/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1073,8 +1077,8 @@ public isolated client class Client {
     # + id - Id of the account. 
     # + return - OK. 
     remote isolated function deleteAccounts(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/data/account/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/data/account/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of accounts
@@ -1104,7 +1108,7 @@ public isolated client class Client {
     # + endAt - The latest date time for which the request will retrieve data, expressed in Unix time. 
     # + return - OK. 
     remote isolated function searchFormData(int id, int? count = (), int? page = (), int? startAt = (), int? endAt = ()) returns QueryResultFormSubmissionRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/form/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/form/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"count": count, "page": page, "startAt": startAt, "endAt": endAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueryResultFormSubmissionRest10 response = check self.clientEp->get(resourcePath);
@@ -1116,7 +1120,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form data to be created. 
     # + return - Success. 
     remote isolated function createFormData(int id, FormDataRest10 payload) returns FormDataRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/form/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/form/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1129,7 +1133,7 @@ public isolated client class Client {
     # + formSubmitJobId - ID of the asynchronous form submission job. 
     # + return - Bad request. See <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=HTTPStatusCodes'>Status Codes</a> for information about other possible HTTP status codes. 
     remote isolated function getAsyncFormSubmissionGETRest10(string formId, string formSubmitJobId) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/data/form/${formId}/formData/${formSubmitJobId}`;
+        string resourcePath = string `/api/REST/1.0/data/form/${getEncodedUri(formId)}/formData/${getEncodedUri(formSubmitJobId)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1142,7 +1146,7 @@ public isolated client class Client {
     # + startAt - The earliest date time for which the request will retrieve data, expressed in Unix time. 
     # + return - Bad request. See <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=HTTPStatusCodes'>Status Codes</a> for information about other possible HTTP status codes. 
     remote isolated function searchAsyncFormSubmissionGETRest10(string formId, string? count = (), string? page = (), string? search = (), int? startAt = ()) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/data/form/${formId}/formData`;
+        string resourcePath = string `/api/REST/1.0/data/form/${getEncodedUri(formId)}/formData`;
         map<anydata> queryParam = {"count": count, "page": page, "search": search, "startAt": startAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1166,7 +1170,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualLandingPage(int id, string? depth = ()) returns LandingPageRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/landingPage/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/landingPage/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         LandingPageRest10 response = check self.clientEp->get(resourcePath);
@@ -1178,7 +1182,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the landing page to be updated. 
     # + return - OK. 
     remote isolated function updateLandingPage(int id, LandingPageRest10 payload) returns LandingPageRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/landingPage/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/landingPage/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1190,8 +1194,8 @@ public isolated client class Client {
     # + id - Id of the landing page to delete. 
     # + return - OK. 
     remote isolated function deleteLandingPageREST10(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/landingPage/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/landingPage/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of landing pages
@@ -1228,7 +1232,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualEmail(int id, string? depth = ()) returns EmailRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailRest10 response = check self.clientEp->get(resourcePath);
@@ -1240,7 +1244,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email to be updated. 
     # + return - OK 
     remote isolated function updateEmail(int id, EmailRest10 payload) returns EmailRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1252,8 +1256,8 @@ public isolated client class Client {
     # + id - Id of the email. 
     # + return - OK 
     remote isolated function deleteEmail(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/email/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of emails
@@ -1278,7 +1282,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the custom object data to be created. 
     # + return - Success. 
     remote isolated function createIndividualObjectDataPOSTRest20(int parentId, CustomObjectDataRest20 payload) returns CustomObjectDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/customObject/${parentId}/instance`;
+        string resourcePath = string `/api/REST/2.0/data/customObject/${getEncodedUri(parentId)}/instance`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1292,7 +1296,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualCustomObjectDataGETRest20(int parentId, int id, string? depth = ()) returns CustomObjectDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/customObject/${parentId}/instance/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/customObject/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomObjectDataRest20 response = check self.clientEp->get(resourcePath);
@@ -1305,7 +1309,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the custom object data to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualCustomObjectPUTRest20(int parentId, int id, CustomObjectDataRest20 payload) returns CustomObjectDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/customObject/${parentId}/instance/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/customObject/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1318,8 +1322,8 @@ public isolated client class Client {
     # + id - Id of the custom object data. 
     # + return - OK. 
     remote isolated function deleteCustomObjectData(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/customObject/${parentId}/instance/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/data/customObject/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of custom object data
@@ -1332,7 +1336,7 @@ public isolated client class Client {
     # + orderBy - Specifies the field by which list results are ordered. 
     # + return - OK. 
     remote isolated function searchListOfCustomObjectDataGETRest20(int parentId, string? depth = (), int? count = (), int? page = (), string? search = (), string? orderBy = ()) returns QueryResultCustomObjectDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/customObject/${parentId}/instances`;
+        string resourcePath = string `/api/REST/2.0/data/customObject/${getEncodedUri(parentId)}/instances`;
         map<anydata> queryParam = {"depth": depth, "count": count, "page": page, "search": search, "orderBy": orderBy};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueryResultCustomObjectDataRest20 response = check self.clientEp->get(resourcePath);
@@ -1347,7 +1351,7 @@ public isolated client class Client {
     # + endAt - The latest date time for which the request will retrieve data, expressed in Unix time. 
     # + return - OK. 
     remote isolated function searchFormDataGETRest20(int id, int? count = (), int? page = (), int? startAt = (), int? endAt = ()) returns QueryResultFormSubmissionRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"count": count, "page": page, "startAt": startAt, "endAt": endAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueryResultFormSubmissionRest20 response = check self.clientEp->get(resourcePath);
@@ -1359,7 +1363,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form data to be created. 
     # + return - Success. 
     remote isolated function createIndividualFormPOSTRest20(int id, FormDataRest20 payload) returns FormDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1372,8 +1376,8 @@ public isolated client class Client {
     # + rowId - The ID of the form data 
     # + return - Success 
     remote isolated function deleteFormData(int id, int rowId) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${id}/datarow/${rowId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(id)}/datarow/${getEncodedUri(rowId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a single form submit job
@@ -1382,7 +1386,7 @@ public isolated client class Client {
     # + formSubmitJobId - The ID of the asynchronous form submission job 
     # + return - Bad request. See <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=HTTPStatusCodes'>Status Codes</a> for information about other possible HTTP status codes. 
     remote isolated function getAsyncFormSubmissionGETRest20(string formId, string formSubmitJobId) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${formId}/formData/${formSubmitJobId}`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(formId)}/formData/${getEncodedUri(formSubmitJobId)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1395,7 +1399,7 @@ public isolated client class Client {
     # + startAt - The earliest date time for which the request will retrieve data, expressed in Unix time. 
     # + return - Bad request. See <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=HTTPStatusCodes'>Status Codes</a> for information about other possible HTTP status codes. 
     remote isolated function searchAsyncFormSubmissionGETRest20(string formId, string? count = (), string? page = (), string? search = (), int? startAt = ()) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${formId}/formData`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(formId)}/formData`;
         map<anydata> queryParam = {"count": count, "page": page, "search": search, "startAt": startAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1410,7 +1414,7 @@ public isolated client class Client {
     # + startAt - The earliest date time for which the request will retrieve data, expressed in Unix time. 
     # + return - Bad request. See <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=HTTPStatusCodes'>Status Codes</a> for information about other possible HTTP status codes. 
     remote isolated function searchFormSpamSubmissionGETRest20(string formId, int? count = (), int? page = (), string? search = (), int? startAt = ()) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${formId}/formSpamData`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(formId)}/formSpamData`;
         map<anydata> queryParam = {"count": count, "page": page, "search": search, "startAt": startAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1423,7 +1427,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form data in a batch to be created. 
     # + return - Success. 
     remote isolated function createBatchRequestPOSTRest20(int id, AsyncFormSubmissionBatchRest20 payload, string? depth = ()) returns AsyncFormSubmissionBatchRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${id}/batch`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(id)}/batch`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1439,7 +1443,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function getAsyncFormSubmissionBatchByBatchIdGETRest20(int formId, string batchId, string? depth = ()) returns AsyncFormSubmissionBatchRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${formId}/batch/formData/${batchId}`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(formId)}/batch/formData/${getEncodedUri(batchId)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AsyncFormSubmissionBatchRest20 response = check self.clientEp->get(resourcePath);
@@ -1452,7 +1456,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function getAsyncFormSubmissionBatchByBatchCorrelationIdGETRest20(int formId, string batchCorrelationId, string? depth = ()) returns AsyncFormSubmissionBatchRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/form/${formId}/batchCorrelation/formData/${batchCorrelationId}`;
+        string resourcePath = string `/api/REST/2.0/data/form/${getEncodedUri(formId)}/batchCorrelation/formData/${getEncodedUri(batchCorrelationId)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AsyncFormSubmissionBatchRest20 response = check self.clientEp->get(resourcePath);
@@ -1463,7 +1467,7 @@ public isolated client class Client {
     # + id - Id of the contact to retrieve. 
     # + return - OK. 
     remote isolated function listGroupMembershipForContactGETRest20(int id) returns ContactListRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/contact/${id}/membership`;
+        string resourcePath = string `/api/REST/2.0/data/contact/${getEncodedUri(id)}/membership`;
         ContactListRest20 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1479,7 +1483,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactRest20 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactRest20 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a form
@@ -1500,7 +1504,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualFormGETRest20(int id, string? depth = ()) returns FormRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FormRest20 response = check self.clientEp->get(resourcePath);
@@ -1512,7 +1516,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualFormPUTRest20(int id, FormRest20 payload) returns FormRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1524,8 +1528,8 @@ public isolated client class Client {
     # + id - Id of the form. 
     # + return - OK. 
     remote isolated function deleteFormRest20(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Partially update a form
@@ -1534,7 +1538,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form for which properties are to be updated. 
     # + return - OK. 
     remote isolated function patchContentPATCHRest20(int id, FormRest20 payload) returns FormRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1547,7 +1551,7 @@ public isolated client class Client {
     # + payload - The request body defines the parameters for archiving the form. 
     # + return - Success. 
     remote isolated function archiveIndividualFormPOSTRest20(int id, ArchiveParameterRest20 payload) returns FormRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}/archive`;
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1560,7 +1564,7 @@ public isolated client class Client {
     # + payload - The request body defines the parameters for unarchiving the form. 
     # + return - Success. 
     remote isolated function unarchiveIndividualFormPOSTRest20(int id, ArchiveParameterRest20 payload) returns FormRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/form/${id}/unarchive`;
+        string resourcePath = string `/api/REST/2.0/assets/form/${getEncodedUri(id)}/unarchive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1603,7 +1607,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualCampaignGETRest20(int id, string? depth = ()) returns CampaignRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/campaign/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/campaign/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CampaignRest20 response = check self.clientEp->get(resourcePath);
@@ -1615,7 +1619,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the campaign to be updated. 
     # + return - OK 
     remote isolated function updateIndividualCampaignPUTRest20(string id, CampaignRest20 payload) returns CampaignRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/campaign/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/campaign/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1627,8 +1631,8 @@ public isolated client class Client {
     # + id - Id of the campaign. 
     # + return - OK 
     remote isolated function deleteCampaign(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/campaign/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/campaign/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Activate a campaign
@@ -1639,7 +1643,7 @@ public isolated client class Client {
     # + activateNow - Whether or not to activate the campaign immediately. 
     # + return - Success 
     remote isolated function activateCampaignPOSTRest20(int id, string? scheduledFor = (), int? runAsUserId = (), boolean? activateNow = ()) returns CampaignRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/campaign/active/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/campaign/active/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"scheduledFor": scheduledFor, "runAsUserId": runAsUserId, "activateNow": activateNow};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1652,7 +1656,7 @@ public isolated client class Client {
     # + id - Id of the campaign. 
     # + return - Success 
     remote isolated function deactivateCampaignPOSTRest20(int id) returns CampaignRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/campaign/draft/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/campaign/draft/${getEncodedUri(id)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CampaignRest20 response = check self.clientEp-> post(resourcePath, request);
@@ -1692,7 +1696,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualAccountGroupGETRest20(int id, string? depth = ()) returns AccountGroupRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/account/group/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/account/group/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AccountGroupRest20 response = check self.clientEp->get(resourcePath);
@@ -1704,7 +1708,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the account group to be updated. 
     # + return - OK 
     remote isolated function updateIndividualAccountGroupPUTRest20(int id, AccountGroupRest20 payload) returns AccountGroupRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/account/group/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/account/group/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1716,8 +1720,8 @@ public isolated client class Client {
     # + id - Id of the account group. 
     # + return - OK 
     remote isolated function deleteAccountGroup(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/account/group/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/account/group/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of account groups
@@ -1757,7 +1761,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. Any other values passed are reset to complete by default. 
     # + return - OK 
     remote isolated function readIndividualEmailDeploymentGETRest20(int id, string? depth = ()) returns EmailDeploymentRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/deployment/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/email/deployment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailDeploymentRest20 response = check self.clientEp->get(resourcePath);
@@ -1783,7 +1787,7 @@ public isolated client class Client {
     # + noMergeContent - Whether email components are dynamically populated upon retrieve. If set to true, email components are populated. If set to false, the default content of the email component will be returned. The default is true. 
     # + return - OK 
     remote isolated function readIndividualEmailGETRest20(int id, string? depth = (), boolean? preMerge = (), boolean? noMergeContent = ()) returns EmailRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/email/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth, "preMerge": preMerge, "noMergeContent": noMergeContent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailRest20 response = check self.clientEp->get(resourcePath);
@@ -1795,7 +1799,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email to be updated. 
     # + return - OK 
     remote isolated function updateIndividualEmailPUTRest20(int id, EmailRest20 payload) returns EmailRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/email/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1807,8 +1811,8 @@ public isolated client class Client {
     # + id - Id of the email. 
     # + return - OK 
     remote isolated function deleteEmailRest20(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/email/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of emails
@@ -1835,7 +1839,7 @@ public isolated client class Client {
     # + payload - The request body defines the parameters for archiving the email. 
     # + return - Success. 
     remote isolated function archiveIndividualEmailPOSTRest20(int id, ArchiveParameterRest20 payload) returns EmailRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/${id}/archive`;
+        string resourcePath = string `/api/REST/2.0/assets/email/${getEncodedUri(id)}/archive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1848,7 +1852,7 @@ public isolated client class Client {
     # + payload - The request body defines the parameters for unarchiving the email. 
     # + return - Success. 
     remote isolated function unarchiveIndividualEmailPOSTRest20(int id, ArchiveParameterRest20 payload) returns EmailRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/email/${id}/unarchive`;
+        string resourcePath = string `/api/REST/2.0/assets/email/${getEncodedUri(id)}/unarchive`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1865,7 +1869,7 @@ public isolated client class Client {
     # + lastUpdatedAt - Unix timestamp for the date and time the custom object was last updated. This is a read-only property. 
     # + return - OK. 
     remote isolated function searchCustomObjectData(int id, int? count = (), int? page = (), string? search = (), string? orderBy = (), int? lastUpdatedAt = ()) returns QueryResultCustomObjectDataRest10|error? {
-        string resourcePath = string `/api/REST/1.0/data/customObject/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/customObject/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"count": count, "page": page, "search": search, "orderBy": orderBy, "lastUpdatedAt": lastUpdatedAt};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueryResultCustomObjectDataRest10? response = check self.clientEp->get(resourcePath);
@@ -1877,7 +1881,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the custom object data to be created. 
     # + return - Success. 
     remote isolated function createCustomObject(int id, CustomObjectDataRest10 payload) returns CustomObjectDataRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/customObject/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/customObject/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1903,7 +1907,7 @@ public isolated client class Client {
     # + viewId - Id of the contact view. 
     # + return - OK 
     remote isolated function readIndividualContact(int id, string? depth = (), int? viewId = ()) returns ContactRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/contact/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/contact/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth, "viewId": viewId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactRest10 response = check self.clientEp->get(resourcePath);
@@ -1915,7 +1919,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the contact to be updated. 
     # + return - OK 
     remote isolated function updateContact(int id, ContactRest10 payload) returns ContactRest10|error {
-        string resourcePath = string `/api/REST/1.0/data/contact/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/contact/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1927,8 +1931,8 @@ public isolated client class Client {
     # + id - Id of the contact 
     # + return - No matching contacts were found in the search 
     remote isolated function deleteContact(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/data/contact/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/data/contact/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of contacts
@@ -1957,7 +1961,7 @@ public isolated client class Client {
     # + count - Maximum number of entities to return. Must be less than or equal to 1000 and greater than or equal to 1. 
     # + return - OK 
     remote isolated function getActivitiesGETRest10(int id, string 'type, int startDate, int endDate, int? count = ()) returns ActivityRest10|error? {
-        string resourcePath = string `/api/REST/1.0/data/activities/contact/${id}`;
+        string resourcePath = string `/api/REST/1.0/data/activities/contact/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"type": 'type, "startDate": startDate, "endDate": endDate, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ActivityRest10? response = check self.clientEp->get(resourcePath);
@@ -1981,7 +1985,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualUserGETRest20(int id, string? depth = ()) returns UserRest20|error {
-        string resourcePath = string `/api/REST/2.0/system/user/${id}`;
+        string resourcePath = string `/api/REST/2.0/system/user/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserRest20 response = check self.clientEp->get(resourcePath);
@@ -1993,7 +1997,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the user to be updated 
     # + return - OK 
     remote isolated function updateIndividualUserPUTRest20(int id, UserRest20 payload) returns UserRest20|error {
-        string resourcePath = string `/api/REST/2.0/system/user/${id}`;
+        string resourcePath = string `/api/REST/2.0/system/user/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2005,8 +2009,8 @@ public isolated client class Client {
     # + id - The user ID to delete 
     # + return - OK 
     remote isolated function deleteUser(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/system/user/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/system/user/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve the current user
@@ -2026,7 +2030,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the request 
     # + return - OK 
     remote isolated function updatePasswordPUTRest20(int id, UserPasswordRest20 payload) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/system/user/${id}/password`;
+        string resourcePath = string `/api/REST/2.0/system/user/${getEncodedUri(id)}/password`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2039,7 +2043,7 @@ public isolated client class Client {
     # + payload - The request body defines whether to enable or disable the user with the specified ID 
     # + return - OK 
     remote isolated function updateEnabledPUTRest20(int id, UserEnabledRest20 payload) returns UserEnabledRest20|error {
-        string resourcePath = string `/api/REST/2.0/system/user/${id}/enabled`;
+        string resourcePath = string `/api/REST/2.0/system/user/${getEncodedUri(id)}/enabled`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2080,7 +2084,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualContactSegment(int id, string? depth = ()) returns ContactSegmentRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactSegmentRest10 response = check self.clientEp->get(resourcePath);
@@ -2092,7 +2096,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the contact segment to be update. 
     # + return - OK 
     remote isolated function updateContactSegment(int id, ContactSegmentRest10 payload) returns ContactSegmentRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2104,8 +2108,8 @@ public isolated client class Client {
     # + id - Id of the contact segment. 
     # + return - OK 
     remote isolated function deleteContactSegment(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/contact/segment/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of contact segments
@@ -2142,7 +2146,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readContactList(int id, string? depth = ()) returns ContactListRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/list/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/list/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactListRest10 response = check self.clientEp->get(resourcePath);
@@ -2154,7 +2158,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the contact list to be updated. 
     # + return - OK 
     remote isolated function updateContactList(int id, ContactListRest10 payload) returns ContactListRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/list/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/list/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2166,8 +2170,8 @@ public isolated client class Client {
     # + id - Id of the contact list. 
     # + return - OK 
     remote isolated function deleteContactList(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/list/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/contact/list/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of contact lists
@@ -2192,7 +2196,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readOptionList(int id, string? depth = ()) returns OptionListRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/optionList/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/optionList/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OptionListRest10 response = check self.clientEp->get(resourcePath);
@@ -2204,7 +2208,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the option list to be updated. 
     # + return - OK. 
     remote isolated function updateOptionList(int id, OptionListRest10 payload) returns OptionListRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/optionList/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/optionList/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2216,8 +2220,8 @@ public isolated client class Client {
     # + id - Id of the option list 
     # + return - OK. 
     remote isolated function deleteOptionList(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/optionList/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/optionList/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of option lists
@@ -2266,7 +2270,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readMicrosite(int id, string? depth = ()) returns MicrositeRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/microsite/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/microsite/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MicrositeRest10 response = check self.clientEp->get(resourcePath);
@@ -2278,7 +2282,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the microsite to be created. 
     # + return - OK. 
     remote isolated function updateMicrosite(int id, MicrositeRest10 payload) returns MicrositeRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/microsite/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/microsite/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2290,8 +2294,8 @@ public isolated client class Client {
     # + id - Id of the microsite. This is a read-only property. 
     # + return - OK. 
     remote isolated function deleteMicrosite(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/microsite/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/microsite/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of microsites
@@ -2316,7 +2320,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readImage(int id, string? depth = ()) returns ImageFileRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/image/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/image/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ImageFileRest10 response = check self.clientEp->get(resourcePath);
@@ -2328,7 +2332,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the image to be created. 
     # + return - OK. 
     remote isolated function updateImage(int id, ImageFileRest10 payload) returns ImageFileRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/image/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/image/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2340,8 +2344,8 @@ public isolated client class Client {
     # + id - Id of the image to delete. 
     # + return - OK. 
     remote isolated function deleteImage(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/image/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/image/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload an image
@@ -2388,7 +2392,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readForm(int id, string? depth = ()) returns FormRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/form/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/form/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FormRest10 response = check self.clientEp->get(resourcePath);
@@ -2400,7 +2404,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the form to be updated. 
     # + return - OK. 
     remote isolated function updateForm(int id, FormRest10 payload) returns FormRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/form/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/form/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2412,8 +2416,8 @@ public isolated client class Client {
     # + id - Id of the form. 
     # + return - OK. 
     remote isolated function deleteForm(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/form/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/form/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of forms
@@ -2450,7 +2454,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readEmailAsset(int id, string? depth = ()) returns FolderRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/folder/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/folder/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FolderRest10 response = check self.clientEp->get(resourcePath);
@@ -2462,7 +2466,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email folder to be updated. 
     # + return - OK. 
     remote isolated function updateEmailFolder(int id, FolderRest10 payload) returns FolderRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/folder/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/folder/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2474,8 +2478,8 @@ public isolated client class Client {
     # + id - Id of the email folder to delete. 
     # + return - OK. 
     remote isolated function deleteEmailFolder(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/folder/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/email/folder/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of email folders
@@ -2512,7 +2516,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readEmailHeaders(int id, string? depth = ()) returns EmailHeaderRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/header/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/header/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailHeaderRest10 response = check self.clientEp->get(resourcePath);
@@ -2524,7 +2528,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email header to be created. 
     # + return - OK. 
     remote isolated function updateEmailHeader(int id, EmailHeaderRest10 payload) returns EmailHeaderRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/header/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/header/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2536,8 +2540,8 @@ public isolated client class Client {
     # + id - Id of the email header to be deleted. 
     # + return - OK. 
     remote isolated function deleteEmailHeaders(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/header/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/email/header/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of email headers
@@ -2574,7 +2578,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readEmailGroup(int id, string? depth = ()) returns EmailGroupRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/group/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/group/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailGroupRest10 response = check self.clientEp->get(resourcePath);
@@ -2586,7 +2590,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email group to be updated. 
     # + return - OK. 
     remote isolated function updateEmailGroup(int id, EmailGroupRest10 payload) returns EmailGroupRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/group/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/group/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2598,8 +2602,8 @@ public isolated client class Client {
     # + id - Id of the email group to delete. 
     # + return - OK. 
     remote isolated function deleteEmailGroups(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/group/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/email/group/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of email groups
@@ -2636,7 +2640,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readEmailFooter(int id, string? depth = ()) returns EmailFooterRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/footer/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/footer/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailFooterRest10 response = check self.clientEp->get(resourcePath);
@@ -2648,7 +2652,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the email footer to be updated. 
     # + return - OK. 
     remote isolated function updateEmailFooter(int id, EmailFooterRest10 payload) returns EmailFooterRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/footer/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/email/footer/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2660,8 +2664,8 @@ public isolated client class Client {
     # + id - Id of the email footer to delete. 
     # + return - OK. 
     remote isolated function deleteEmailFooters(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/email/footer/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/email/footer/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of email footers
@@ -2698,7 +2702,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readCustomObjects(int id, string? depth = ()) returns CustomObjectRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/customObject/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/customObject/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomObjectRest10 response = check self.clientEp->get(resourcePath);
@@ -2710,7 +2714,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the custom object to be updated. 
     # + return - OK. 
     remote isolated function updateCustomObject(int id, CustomObjectRest10 payload) returns CustomObjectRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/customObject/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/customObject/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2722,8 +2726,8 @@ public isolated client class Client {
     # + id - Id of the custom object. 
     # + return - No matching custom objects were found in the search. 
     remote isolated function deleteCustomObjectSyncActionOperationData(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/customObject/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/customObject/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of custom objects
@@ -2760,7 +2764,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readContentSections(int id, string? depth = ()) returns ContentSectionRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contentSection/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contentSection/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContentSectionRest10 response = check self.clientEp->get(resourcePath);
@@ -2772,7 +2776,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the content section to be updated. 
     # + return - OK 
     remote isolated function updateContentSection(int id, ContentSectionRest10 payload) returns ContentSectionRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contentSection/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contentSection/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2784,8 +2788,8 @@ public isolated client class Client {
     # + id - Id of the content section. 
     # + return - OK 
     remote isolated function deleteContentSection(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/contentSection/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/contentSection/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of content sections
@@ -2810,7 +2814,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readContactFields(int id, string? depth = ()) returns ContactFieldRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/field/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/field/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactFieldRest10 response = check self.clientEp->get(resourcePath);
@@ -2822,7 +2826,7 @@ public isolated client class Client {
     # + payload - List of contact fields. 
     # + return - OK 
     remote isolated function updateContactField(int id, ContactFieldRest10 payload) returns ContactFieldRest10|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/field/${id}`;
+        string resourcePath = string `/api/REST/1.0/assets/contact/field/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2834,8 +2838,8 @@ public isolated client class Client {
     # + id - Id of the contact field to delete. 
     # + return - No matching contact fields were found in the search. 
     remote isolated function deleteContactFields(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/1.0/assets/contact/field/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/1.0/assets/contact/field/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a contact field
@@ -2887,7 +2891,7 @@ public isolated client class Client {
     # + id - The security group id, from which you want to retrieve users 
     # + return - OK 
     remote isolated function getUsersGETRest20(int id) returns QueryResultSecurityGroupUserRest20|error {
-        string resourcePath = string `/api/REST/2.0/system/security/group/${id}/users`;
+        string resourcePath = string `/api/REST/2.0/system/security/group/${getEncodedUri(id)}/users`;
         QueryResultSecurityGroupUserRest20 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2918,7 +2922,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        QueryResultVisitorViewDataRest20 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        QueryResultVisitorViewDataRest20 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Initiate an audit log export
@@ -2938,7 +2942,7 @@ public isolated client class Client {
     # + id - Id of the account to retrieve. 
     # + return - OK. 
     remote isolated function listGroupMembershipForAccountGETRest20(int id) returns AccountGroupRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/account/${id}/membership`;
+        string resourcePath = string `/api/REST/2.0/data/account/${getEncodedUri(id)}/membership`;
         AccountGroupRest20 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2954,7 +2958,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountRest20 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountRest20 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create an external activity
@@ -2974,7 +2978,7 @@ public isolated client class Client {
     # + id - Id of the external activity to retrieve. 
     # + return - OK. 
     remote isolated function readIndividualExternalActivityGETRest20(int id) returns ExternalActivitiesRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/activity/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/activity/${getEncodedUri(id)}`;
         ExternalActivitiesRest20 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2984,7 +2988,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the event registrant to be created. 
     # + return - Success. 
     remote isolated function createIndividualEventRegistrantsPOSTRest20(int parentId, EventRegistrationDataRest20 payload) returns EventRegistrationDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${parentId}/instance`;
+        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${getEncodedUri(parentId)}/instance`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2998,7 +3002,7 @@ public isolated client class Client {
     # + depth - This parameter is not used for this endpoint. 
     # + return - OK. 
     remote isolated function readIndividualEventRegistrantGETRest20(int parentId, int id, string? depth = ()) returns EventRegistrationDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${parentId}/instance/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EventRegistrationDataRest20 response = check self.clientEp->get(resourcePath);
@@ -3011,7 +3015,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the event registrant to be updated. Note: Only <code>fieldValues</code> and <code>contactId</code> can be updated. <code>fieldValues</code> is required, even if not updating any fields. To update <code>contactId</code>, include <code>fieldValues</code> with an empty array. 
     # + return - OK. 
     remote isolated function updateIndividualEventRegistrantPUTRest20(int parentId, int id, EventRegistrationDataRest20 payload) returns EventRegistrationDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${parentId}/instance/${id}`;
+        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3024,8 +3028,8 @@ public isolated client class Client {
     # + id - Id of the event registrant. 
     # + return - OK. 
     remote isolated function deleteEvent(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${parentId}/instance/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${getEncodedUri(parentId)}/instance/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of event registrants
@@ -3038,7 +3042,7 @@ public isolated client class Client {
     # + orderBy - Specifies the field by which list results are ordered. 
     # + return - OK. 
     remote isolated function searchListOfEventRegistrantsGETRest20(int parentId, string? depth = (), int? count = (), int? page = (), string? search = (), string? orderBy = ()) returns QueryResultEventRegistrationDataRest20|error {
-        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${parentId}/instances`;
+        string resourcePath = string `/api/REST/2.0/data/eventRegistration/${getEncodedUri(parentId)}/instances`;
         map<anydata> queryParam = {"depth": depth, "count": count, "page": page, "search": search, "orderBy": orderBy};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueryResultEventRegistrationDataRest20 response = check self.clientEp->get(resourcePath);
@@ -3063,7 +3067,7 @@ public isolated client class Client {
     # + noMergeContent - Whether landing page components are dynamically populated upon retrieve. If set to true, landing page components are populated. If set to false, the default content of the landing page component will be returned. The default is true. 
     # + return - OK. 
     remote isolated function readIndividualLandingPageGETRest20(int id, string? depth = (), boolean? noMergeContent = ()) returns LandingPageRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/landingPage/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/landingPage/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth, "noMergeContent": noMergeContent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         LandingPageRest20 response = check self.clientEp->get(resourcePath);
@@ -3075,7 +3079,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the landing page to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualLandingPagePUTRest20(int id, LandingPageRest20 payload) returns LandingPageRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/landingPage/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/landingPage/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3087,8 +3091,8 @@ public isolated client class Client {
     # + id - Id of the landing page to delete. 
     # + return - OK. 
     remote isolated function deleteLandingPage(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/landingPage/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/landingPage/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of landing pages
@@ -3125,7 +3129,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualEventGETRest20(int id, string? depth = ()) returns EventRegistrationRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EventRegistrationRest20 response = check self.clientEp->get(resourcePath);
@@ -3137,7 +3141,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the event to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualEventPUTRest20(int id, EventRegistrationRest20 payload) returns EventRegistrationRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3149,8 +3153,8 @@ public isolated client class Client {
     # + id - Id of the event. 
     # + return - OK. 
     remote isolated function deleteEventRest20(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/eventRegistration/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of events
@@ -3187,7 +3191,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualExternalAssetGETRest20(int id, string? depth = ()) returns ExternalAssetRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/external/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExternalAssetRest20 response = check self.clientEp->get(resourcePath);
@@ -3199,7 +3203,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the external asset to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualExternalAssetPUTRest20(int id, ExternalAssetRest20 payload) returns ExternalAssetRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/external/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3211,8 +3215,8 @@ public isolated client class Client {
     # + id - Id of the external asset to delete. 
     # + return - OK. 
     remote isolated function deleteExternalAsset(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/external/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of external assets
@@ -3249,7 +3253,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualExternalAssetTypeGETRest20(int id, string? depth = ()) returns ExternalAssetTypeRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/type/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/external/type/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExternalAssetTypeRest20 response = check self.clientEp->get(resourcePath);
@@ -3261,7 +3265,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the external asset type to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualExternalAssetTypesPUTRest20(int id, ExternalAssetTypeRest20 payload) returns ExternalAssetTypeRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/type/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/external/type/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3273,8 +3277,8 @@ public isolated client class Client {
     # + id - Id of the external asset type. 
     # + return - OK. 
     remote isolated function deleteExternalAssetType(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/external/type/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/external/type/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of external asset types
@@ -3311,7 +3315,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK. 
     remote isolated function readIndividualCustomObjectGETRest20(int id, string? depth = ()) returns CustomObjectRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/customObject/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/customObject/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomObjectRest20 response = check self.clientEp->get(resourcePath);
@@ -3323,7 +3327,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the custom object to be updated. 
     # + return - OK. 
     remote isolated function updateIndividualCustomObjectsPUTRest20(int id, CustomObjectRest20 payload) returns CustomObjectRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/customObject/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/customObject/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3335,8 +3339,8 @@ public isolated client class Client {
     # + id - Id of the custom object 
     # + return - OK. 
     remote isolated function deleteCustomObject(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/customObject/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/customObject/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of custom objects
@@ -3385,7 +3389,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualProgramGETRest20(int id, string? depth = ()) returns ProgramRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/program/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ProgramRest20 response = check self.clientEp->get(resourcePath);
@@ -3397,7 +3401,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the program to be updated. 
     # + return - OK 
     remote isolated function updateIndividualProgramsPUTRest20(int id, ProgramRest20 payload) returns ProgramRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/program/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3409,8 +3413,8 @@ public isolated client class Client {
     # + id - Id of the program to delete. 
     # + return - OK 
     remote isolated function deleteProgram(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/program/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Activate a program
@@ -3420,7 +3424,7 @@ public isolated client class Client {
     # + runAsUserId - The username to activate the program 
     # + return - Created 
     remote isolated function activateProgramPOSTRest20(int id, string? scheduledFor = (), int? runAsUserId = ()) returns ProgramRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/active/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/program/active/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"scheduledFor": scheduledFor, "runAsUserId": runAsUserId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3433,7 +3437,7 @@ public isolated client class Client {
     # + id - Id of the program to deactivate. 
     # + return - Created 
     remote isolated function deactivateProgramPOSTRest20(int id) returns ProgramRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/draft/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/program/draft/${getEncodedUri(id)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         ProgramRest20 response = check self.clientEp-> post(resourcePath, request);
@@ -3444,7 +3448,7 @@ public isolated client class Client {
     # + id - Id of the program to pause. 
     # + return - Success 
     remote isolated function pauseIndividualPOSTRest20(int id) returns ProgramRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/program/pause/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/program/pause/${getEncodedUri(id)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         ProgramRest20 response = check self.clientEp-> post(resourcePath, request);
@@ -3484,7 +3488,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the contact segment to be created from the source contact segment. 
     # + return - Created 
     remote isolated function createCopyPOSTRest20(int id, ContactSegmentRest20 payload) returns ContactSegmentRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${id}/copy`;
+        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${getEncodedUri(id)}/copy`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3497,7 +3501,7 @@ public isolated client class Client {
     # + depth - Level of detail returned by the request. Eloqua APIs can retrieve entities at three different levels of depth: <code>minimal</code>, <code>partial</code>, and <code>complete</code>. Any other values passed are reset to <code>complete</code> by default. For more information, see <a href='https://docs.oracle.com/cloud/latest/marketingcs_gs/OMCAB/index.html#CSHID=RequestDepth'>Request depth</a>. 
     # + return - OK 
     remote isolated function readIndividualContactGETRest20(int id, string? depth = ()) returns ContactSegmentRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"depth": depth};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactSegmentRest20 response = check self.clientEp->get(resourcePath);
@@ -3509,7 +3513,7 @@ public isolated client class Client {
     # + payload - The request body defines the details of the contact segment to be update. 
     # + return - OK 
     remote isolated function updateIndividualContactSegmentsPUTRest20(int id, ContactSegmentRest20 payload) returns ContactSegmentRest20|error {
-        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${id}`;
+        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3521,8 +3525,8 @@ public isolated client class Client {
     # + id - Id of the contact segment. 
     # + return - OK 
     remote isolated function deleteContactSegmentRest20(int id) returns http:Response|error {
-        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/REST/2.0/assets/contact/segment/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of contact segments
@@ -3574,7 +3578,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact export. 
     # + return - OK. 
     remote isolated function getContactExportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3584,7 +3588,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the contact export definition. 
     # + return - OK. 
     remote isolated function putContactExportIndividual(int id, Contactexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3596,8 +3600,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact export. 
     # + return - No Content. 
     remote isolated function deleteContactExportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a contact export definition's synced data
@@ -3609,7 +3613,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getContactExportDataQuery(int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/contacts/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -3620,8 +3624,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact export. 
     # + return - No Content. 
     remote isolated function deleteContactExportDataQuery(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a contact field definition
@@ -3629,7 +3633,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact field. 
     # + return - OK. 
     remote isolated function getContactFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3654,7 +3658,7 @@ public isolated client class Client {
     # + id - Number of results returned in the request. 
     # + return - OK. 
     remote isolated function getContactFilterIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/filters/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/filters/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3707,7 +3711,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact import. 
     # + return - OK. 
     remote isolated function getContactImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3717,7 +3721,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the contact import definition. 
     # + return - OK. 
     remote isolated function putContactImportIndividual(int id, Contactimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3729,8 +3733,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact import. 
     # + return - No Content. 
     remote isolated function deleteContactImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for a contact import definition
@@ -3739,7 +3743,7 @@ public isolated client class Client {
     # + payload - The request body contains data to be uploaded to the contact import definition. 
     # + return - Success. 
     remote isolated function postContactImportData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/contacts/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/contacts/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3751,8 +3755,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact import. 
     # + return - No Content. 
     remote isolated function deleteContactImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a contact list
@@ -3760,7 +3764,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact list. 
     # + return - OK. 
     remote isolated function getContactListIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/lists/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/lists/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3785,7 +3789,7 @@ public isolated client class Client {
     # + id - Id of the lead scoring model. 
     # + return - OK. 
     remote isolated function getLeadScoreModelIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/scoring/models/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/scoring/models/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3810,7 +3814,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the contact segment. 
     # + return - OK. 
     remote isolated function getContactSegmentIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/segments/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/segments/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3863,7 +3867,7 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - OK. 
     remote isolated function getContactSyncActionOperationIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3873,7 +3877,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the contact sync action definition. 
     # + return - OK. 
     remote isolated function putContactSyncActionOperationIndividual(int id, Contactsyncactionoperationindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3885,8 +3889,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteContactSyncActionOperationIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload contact sync action data
@@ -3895,7 +3899,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the contact sync action data. 
     # + return - Success. 
     remote isolated function postContactSyncActionOperationData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3907,8 +3911,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteContactSyncActionOperationData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/contacts/syncActions/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of account export definitions
@@ -3944,7 +3948,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account export. 
     # + return - OK. 
     remote isolated function getAccountExportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -3954,7 +3958,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the account export definition. 
     # + return - OK. 
     remote isolated function putAccountExportIndividual(int id, Accountexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -3966,8 +3970,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account export. 
     # + return - No Content. 
     remote isolated function deleteAccountExportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an account export definition's synced data
@@ -3979,7 +3983,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getAccountExportDataQuery(int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/accounts/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -3990,8 +3994,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account export. 
     # + return - No Content. 
     remote isolated function deleteAccountExportDataQuery(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an account field definition
@@ -3999,7 +4003,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account field. 
     # + return - OK. 
     remote isolated function getAccountFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4052,7 +4056,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account import. 
     # + return - OK. 
     remote isolated function getAccountImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4062,7 +4066,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the account import definition. 
     # + return - OK. 
     remote isolated function putAccountImportIndividual(int id, Accountimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4074,8 +4078,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account import. 
     # + return - No Content. 
     remote isolated function deleteAccountImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for a specified account import definition
@@ -4084,7 +4088,7 @@ public isolated client class Client {
     # + payload - The request body contains data to be uploaded to the account import definition. 
     # + return - Success. 
     remote isolated function postAccountImportData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/accounts/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/accounts/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4096,8 +4100,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the account import. 
     # + return - No Content. 
     remote isolated function deleteAccountImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an account list definition
@@ -4105,7 +4109,7 @@ public isolated client class Client {
     # + id - The account field definition's unique resource identifier. 
     # + return - OK. 
     remote isolated function getAccountListIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/lists/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/lists/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4158,7 +4162,7 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - Success. 
     remote isolated function getAccountSyncActionOperationIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4168,7 +4172,7 @@ public isolated client class Client {
     # + payload - The request body defines details of the account sync action definition. 
     # + return - Success. 
     remote isolated function putAccountSyncActionOperationIndividual(int id, Accountsyncactionoperationindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4180,8 +4184,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteAccountSyncActionOperationIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload account sync action data
@@ -4190,7 +4194,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the account sync action data. 
     # + return - Success. 
     remote isolated function postAccountSyncActionOperationData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4202,8 +4206,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteAccountSyncActionOperationData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/accounts/syncActions/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of activity export definitions
@@ -4239,7 +4243,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the activity export. 
     # + return - OK. 
     remote isolated function getActivityExportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/activities/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4249,7 +4253,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the activity export definition. 
     # + return - OK. 
     remote isolated function putActivityExportIndividual(int id, Activityexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/activities/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4261,8 +4265,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the activity export. 
     # + return - No Content. 
     remote isolated function deleteActivityExportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/activities/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/activities/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an activity export's synced data
@@ -4274,7 +4278,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getActivityExportDataQuery(int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/activities/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4285,8 +4289,8 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the activity export. 
     # + return - No Content. 
     remote isolated function deleteActivityExportDataQuery(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/activities/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/activities/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve an activity field definition
@@ -4294,7 +4298,7 @@ public isolated client class Client {
     # + id - Part of the uri used to identify the activity field. 
     # + return - OK. 
     remote isolated function getActivityFieldIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/activities/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4348,7 +4352,7 @@ public isolated client class Client {
     # + id - The activity import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getActivityImportIndividual(int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/activities/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4358,7 +4362,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the activity import defintion. 
     # + return - OK. 
     remote isolated function putActivityImportIndividual(int id, Activityimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/activities/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/activities/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4370,8 +4374,8 @@ public isolated client class Client {
     # + id - The activity import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteActivityImportIndividual(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/activities/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/activities/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for a specified activity import definition
@@ -4380,7 +4384,7 @@ public isolated client class Client {
     # + payload - The request body contains data to be uploaded to the activity import definition. 
     # + return - OK. 
     remote isolated function postActivityImportData(int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/activities/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/activities/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4392,8 +4396,8 @@ public isolated client class Client {
     # + id - The activity import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteActivityImportData(int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/activities/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/activities/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a custom object
@@ -4401,7 +4405,7 @@ public isolated client class Client {
     # + parentId - The sync action definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCustomObjectIndividual(int parentId) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4416,7 +4420,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCustomObjectExportSearch(int parentId, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4428,7 +4432,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object export definition. 
     # + return - Success. 
     remote isolated function postCustomObjectExportIndividual(int parentId, CustomObjectExportIndividual payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4446,7 +4450,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCustomObjectFieldSearch(int parentId, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/fields`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/fields`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4463,7 +4467,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCustomObjectImportSearch(int parentId, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4475,7 +4479,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object import definition. 
     # + return - Success. 
     remote isolated function postCustomObjectImportIndividual(int parentId, CustomObjectImportIndividual payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4493,7 +4497,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCustomObjectSyncActionOperationSearch(int parentId, int? 'limit = (), string? links = (), int? offset = (), string? orderBy = (), string? q = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "orderBy": orderBy, "q": q, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4505,7 +4509,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object sync action definition. 
     # + return - Success. 
     remote isolated function postCustomObjectSyncActionOperationIndividual(int parentId, CustomObjectSyncActionOperationIndividual payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4518,7 +4522,7 @@ public isolated client class Client {
     # + id - The custom object export definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCustomObjectExportIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4529,7 +4533,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object export definition. 
     # + return - OK. 
     remote isolated function putCustomObjectExportIndividual(int parentId, int id, Customobjectexportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4542,8 +4546,8 @@ public isolated client class Client {
     # + id - The custom object export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCustomObjectExportIndividual(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve the synced data for a custom object export definition
@@ -4556,7 +4560,7 @@ public isolated client class Client {
     # + totalResults - Whether or not the total results are shown, and factored into the <code>hasMore</code> property in the response. When set to <code>false</code>, the <code>totalResults</code> property will not be returned, and the <code>hasMore</code> property will be determined based on returned events that match the criteria specified in the URL parameters. If not specified, the default is <code>true</code>. 
     # + return - OK. 
     remote isolated function getCustomObjectExportDataQuery(int parentId, int id, int? 'limit = (), string? links = (), int? offset = (), boolean? totalResults = ()) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}/data`;
         map<anydata> queryParam = {"limit": 'limit, "links": links, "offset": offset, "totalResults": totalResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -4568,8 +4572,8 @@ public isolated client class Client {
     # + id - The custom object export definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCustomObjectExportDataQuery(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/exports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/exports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a custom object field definition
@@ -4578,7 +4582,7 @@ public isolated client class Client {
     # + id - The custom object's resource identification number. 
     # + return - OK. 
     remote isolated function getCustomObjectFieldIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/fields/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/fields/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4588,7 +4592,7 @@ public isolated client class Client {
     # + id - The import definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCustomObjectImportIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4599,7 +4603,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object import definition. 
     # + return - OK. 
     remote isolated function putCustomObjectImportIndividual(int parentId, int id, Customobjectimportindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4612,8 +4616,8 @@ public isolated client class Client {
     # + id - The import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCustomObjectImportIndividual(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload data for a custom object import definition
@@ -4623,7 +4627,7 @@ public isolated client class Client {
     # + payload - The request body contains data to be uploaded to the custom object import definition. 
     # + return - Success. 
     remote isolated function postCustomObjectImportData(int parentId, int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4636,8 +4640,8 @@ public isolated client class Client {
     # + id - The import definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCustomObjectImportData(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/imports/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/imports/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a custom object sync action definition for a custom object
@@ -4646,7 +4650,7 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - OK. 
     remote isolated function getCustomObjectSyncActionOperationIndividual(int parentId, int id) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -4657,7 +4661,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object sync action definition. 
     # + return - OK. 
     remote isolated function putCustomObjectSyncActionOperationIndividual(int parentId, int id, Customobjectsyncactionoperationindividual2 payload) returns json|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions/${id}`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4670,8 +4674,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteCustomObjectSyncActionOperationIndividual(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Upload custom object sync action data
@@ -4681,7 +4685,7 @@ public isolated client class Client {
     # + payload - The request body contains details of the custom object sync action definition. 
     # + return - Success. 
     remote isolated function postCustomObjectSyncActionOperationData(int parentId, int id, record {}[] payload) returns json|error? {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions/${id}/data`;
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions/${getEncodedUri(id)}/data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -4694,8 +4698,8 @@ public isolated client class Client {
     # + id - The sync action definition's resource identification number. 
     # + return - No Content. 
     remote isolated function deleteRest20CustomObjectSyncActionOperationData(int parentId, int id) returns http:Response|error {
-        string resourcePath = string `/api/bulk/2.0/customObjects/${parentId}/syncActions/${id}/data`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/bulk/2.0/customObjects/${getEncodedUri(parentId)}/syncActions/${getEncodedUri(id)}/data`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of custom objects

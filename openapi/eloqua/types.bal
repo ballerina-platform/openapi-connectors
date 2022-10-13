@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -1569,6 +1569,7 @@ public type EmailRest20 record {
     DynamicContentRest20[] dynamicContents?;
     # A list of imported files.
     ImportedFileRest20[] files?;
+    # 
     CloudComponentInstanceRest20[] contentServiceInstances?;
     # Id of the email header.
     string emailHeaderId?;
@@ -3232,8 +3233,11 @@ public type FormDataRest10 record {
 public type InterfacePermissionRest20 record {
     # The asset's type in Eloqua. This is a read-only property.
     string 'type?;
+    # 
     string interfaceCode?;
+    # 
     InterfacePermissionRest20[] nestedInterfacePermissions?;
+    # 
     string name?;
 };
 
@@ -3526,6 +3530,7 @@ public type Activityexportindividual1 record {
 public type TypePermissionRest20 record {
     # The asset's type in Eloqua. This is a read-only property.
     string 'type?;
+    # 
     string objectType?;
     TypePermissionsRest20 permissions?;
 };
@@ -4904,6 +4909,7 @@ public type LandingPageRest20 record {
     DynamicContentRest20[] dynamicContents?;
     # A list of files contained within the landing page.
     ImportedFileRest20[] files?;
+    # 
     CloudComponentInstanceRest20[] contentServiceInstances?;
     # The URL to redirect window used with <code>autoRedirectWaitFor</code>.
     string autoRedirectUrl?;
@@ -5784,15 +5790,20 @@ public type ActivityRest10 record {
 public type CrmUserNamesRest20 record {
     # The asset's type in Eloqua. This is a read-only property.
     string 'type?;
+    # 
     string SFDCUserName?;
+    # 
     string MSDUserName?;
+    # 
     string OSCUserName?;
+    # 
     string SODUserName?;
 };
 
 public type ProductPermissionRest20 record {
     # The asset's type in Eloqua. This is a read-only property.
     string 'type?;
+    # 
     string productCode?;
 };
 

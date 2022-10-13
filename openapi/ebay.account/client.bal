@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.ebay.com/identity/v1/oauth2/token";
 |};
 
 # This is a generated connector for [eBay Account API v1.6.3](https://developer.ebay.com/api-docs/sell/account/overview.html)   OpenAPI Specification. The Account API provide capability to access configure their eBay seller accounts, including the seller''s policies  (the Fulfillment Policy, Payment Policy, and Return Policy), opt in and out of eBay seller programs, configure sales tax tables,  and get account information. 
@@ -93,7 +104,7 @@ public isolated client class Client {
     # + fulfillmentPolicyId - This path parameter specifies the ID of the fulfillment policy you want to retrieve. 
     # + return - Success 
     remote isolated function getFulfillmentPolicy(string fulfillmentPolicyId) returns FulfillmentPolicy|error {
-        string resourcePath = string `/fulfillment_policy/${fulfillmentPolicyId}`;
+        string resourcePath = string `/fulfillment_policy/${getEncodedUri(fulfillmentPolicyId)}`;
         FulfillmentPolicy response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -103,7 +114,7 @@ public isolated client class Client {
     # + payload - Fulfillment policy request 
     # + return - OK 
     remote isolated function updateFulfillmentPolicy(string fulfillmentPolicyId, FulfillmentPolicyRequest payload) returns SetFulfillmentPolicyResponse|error {
-        string resourcePath = string `/fulfillment_policy/${fulfillmentPolicyId}`;
+        string resourcePath = string `/fulfillment_policy/${getEncodedUri(fulfillmentPolicyId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -115,8 +126,8 @@ public isolated client class Client {
     # + fulfillmentPolicyId - This path parameter specifies the ID of the fulfillment policy to delete. 
     # + return - No Content 
     remote isolated function deleteFulfillmentPolicy(string fulfillmentPolicyId) returns http:Response|error {
-        string resourcePath = string `/fulfillment_policy/${fulfillmentPolicyId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/fulfillment_policy/${getEncodedUri(fulfillmentPolicyId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This method retrieves the complete details for a single fulfillment policy. In the request, supply both the policy name and its associated marketplace_id as query parameters. Marketplaces and locales Get the correct policy for a marketplace that supports multiple locales using the Content-Language request header. For example, get a policy for the French locale of the Canadian marketplace by specifying fr-CA for the Content-Language header. Likewise, target the Dutch locale of the Belgium marketplace by setting Content-Language: nl-BE. For details on header values, see HTTP request headers.
@@ -159,7 +170,7 @@ public isolated client class Client {
     # + paymentPolicyId - This path parameter specifies the ID of the payment policy you want to retrieve. 
     # + return - Success 
     remote isolated function getPaymentPolicy(string paymentPolicyId) returns PaymentPolicy|error {
-        string resourcePath = string `/payment_policy/${paymentPolicyId}`;
+        string resourcePath = string `/payment_policy/${getEncodedUri(paymentPolicyId)}`;
         PaymentPolicy response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -169,7 +180,7 @@ public isolated client class Client {
     # + payload - Payment policy request 
     # + return - OK 
     remote isolated function updatePaymentPolicy(string paymentPolicyId, PaymentPolicyRequest payload) returns SetPaymentPolicyResponse|error {
-        string resourcePath = string `/payment_policy/${paymentPolicyId}`;
+        string resourcePath = string `/payment_policy/${getEncodedUri(paymentPolicyId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -181,8 +192,8 @@ public isolated client class Client {
     # + paymentPolicyId - This path parameter specifies the ID of the payment policy you want to delete. 
     # + return - No Content 
     remote isolated function deletePaymentPolicy(string paymentPolicyId) returns http:Response|error {
-        string resourcePath = string `/payment_policy/${paymentPolicyId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/payment_policy/${getEncodedUri(paymentPolicyId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This method retrieves the complete details of a single payment policy. Supply both the policy name and its associated marketplace_id in the request query parameters. Marketplaces and locales Get the correct policy for a marketplace that supports multiple locales using the Content-Language request header. For example, get a policy for the French locale of the Canadian marketplace by specifying fr-CA for the Content-Language header. Likewise, target the Dutch locale of the Belgium marketplace by setting Content-Language: nl-BE. For details on header values, see HTTP request headers.
@@ -203,7 +214,7 @@ public isolated client class Client {
     # + paymentsProgramType - This path parameter specifies the payments program whose status is returned by the call. Currently the only supported payments program is EBAY_PAYMENTS. For details on the program, see Payments Terms of Use. 
     # + return - Success 
     remote isolated function getPaymentsProgram(string marketplaceId, string paymentsProgramType) returns PaymentsProgramResponse|error {
-        string resourcePath = string `/payments_program/${marketplaceId}/${paymentsProgramType}`;
+        string resourcePath = string `/payments_program/${getEncodedUri(marketplaceId)}/${getEncodedUri(paymentsProgramType)}`;
         PaymentsProgramResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -213,7 +224,7 @@ public isolated client class Client {
     # + paymentsProgramType - The type of payments program whose status is returned by the call. Presently, the only supported payments program is EBAY_PAYMENTS. For details on the program, see Payments Terms of Use. 
     # + return - Success 
     remote isolated function getPaymentsProgramOnboarding(string marketplaceId, string paymentsProgramType) returns PaymentsProgramOnboardingResponse|error {
-        string resourcePath = string `/payments_program/${marketplaceId}/${paymentsProgramType}/onboarding`;
+        string resourcePath = string `/payments_program/${getEncodedUri(marketplaceId)}/${getEncodedUri(paymentsProgramType)}/onboarding`;
         PaymentsProgramOnboardingResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -296,7 +307,7 @@ public isolated client class Client {
     # + returnPolicyId - This path parameter specifies the of the return policy you want to retrieve. 
     # + return - Success 
     remote isolated function getReturnPolicy(string returnPolicyId) returns ReturnPolicy|error {
-        string resourcePath = string `/return_policy/${returnPolicyId}`;
+        string resourcePath = string `/return_policy/${getEncodedUri(returnPolicyId)}`;
         ReturnPolicy response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -306,7 +317,7 @@ public isolated client class Client {
     # + payload - Container for a return policy request. 
     # + return - OK 
     remote isolated function updateReturnPolicy(string returnPolicyId, ReturnPolicyRequest payload) returns SetReturnPolicyResponse|error {
-        string resourcePath = string `/return_policy/${returnPolicyId}`;
+        string resourcePath = string `/return_policy/${getEncodedUri(returnPolicyId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -318,8 +329,8 @@ public isolated client class Client {
     # + returnPolicyId - This path parameter specifies the ID of the return policy you want to delete. 
     # + return - No Content 
     remote isolated function deleteReturnPolicy(string returnPolicyId) returns http:Response|error {
-        string resourcePath = string `/return_policy/${returnPolicyId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/return_policy/${getEncodedUri(returnPolicyId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This method retrieves the complete details of a single return policy. Supply both the policy name and its associated marketplace_id in the request query parameters. Marketplaces and locales Get the correct policy for a marketplace that supports multiple locales using the Content-Language request header. For example, get a policy for the French locale of the Canadian marketplace by specifying fr-CA for the Content-Language header. Likewise, target the Dutch locale of the Belgium marketplace by setting Content-Language: nl-BE. For details on header values, see HTTP request headers.
@@ -340,7 +351,7 @@ public isolated client class Client {
     # + jurisdictionId - This path parameter specifies the ID of the sales tax jurisdiction for the tax table entry you want to retrieve. 
     # + return - Success 
     remote isolated function getSalesTax(string countryCode, string jurisdictionId) returns SalesTax|error? {
-        string resourcePath = string `/sales_tax/${countryCode}/${jurisdictionId}`;
+        string resourcePath = string `/sales_tax/${getEncodedUri(countryCode)}/${getEncodedUri(jurisdictionId)}`;
         SalesTax? response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -351,7 +362,7 @@ public isolated client class Client {
     # + payload - A container that describes the how the sales tax is calculated. 
     # + return - No Content 
     remote isolated function createOrReplaceSalesTax(string countryCode, string jurisdictionId, SalesTaxBase payload) returns http:Response|error {
-        string resourcePath = string `/sales_tax/${countryCode}/${jurisdictionId}`;
+        string resourcePath = string `/sales_tax/${getEncodedUri(countryCode)}/${getEncodedUri(jurisdictionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -364,8 +375,8 @@ public isolated client class Client {
     # + jurisdictionId - This path parameter specifies the ID of the sales tax jurisdiction whose table entry you want to delete. 
     # + return - Success 
     remote isolated function deleteSalesTax(string countryCode, string jurisdictionId) returns http:Response|error {
-        string resourcePath = string `/sales_tax/${countryCode}/${jurisdictionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/sales_tax/${getEncodedUri(countryCode)}/${getEncodedUri(jurisdictionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Use this call to retrieve a sales tax table that the seller established for a specific country. Specify the tax table to retrieve using the country_code query parameter.

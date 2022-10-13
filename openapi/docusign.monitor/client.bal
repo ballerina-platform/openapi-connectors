@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# This is a generated connector for [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification. DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking. The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats. It also provides the flexibility security teams need to customize dashboards and alerts to meet specific business needs.
+# This is a generated connector for [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification. DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking.  The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization  tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats.  It also provides the flexibility security teams need to customize dashboards and alerts to meet specific business needs.
 @display {label: "DocuSign Monitor", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
@@ -74,7 +78,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of records to return. 
     # + return - Success 
     remote isolated function getDatasetsByDataSetName(string dataSetName, string 'version, string? cursor = (), int 'limit = 1000) returns CursoredResult|error {
-        string resourcePath = string `/api/v${'version}/datasets/${dataSetName}/stream`;
+        string resourcePath = string `/api/v${getEncodedUri('version)}/datasets/${getEncodedUri(dataSetName)}/stream`;
         map<anydata> queryParam = {"cursor": cursor, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CursoredResult response = check self.clientEp->get(resourcePath);

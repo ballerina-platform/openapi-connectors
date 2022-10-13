@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://account-d.docusign.com/oauth/token";
 |};
 
 # This is a generated connector for [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification. An API for an organization administrator to manage organizations, accounts and users which enables you to automate user management with your existing systems while ensuring governance and compliance.
@@ -84,7 +95,7 @@ public isolated client class Client {
     # + accountId - The account ID Guid 
     # + return - OK 
     remote isolated function getAccountsPermissionProfiles(string organizationId, string accountId) returns PermissionsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/accounts/${accountId}/permissions`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/permissions`;
         PermissionsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -97,7 +108,7 @@ public isolated client class Client {
     # + end - Index of the last item to include in the response. Ignored if `take` parameter is specified. 
     # + return - OK 
     remote isolated function getGroupsInAccount(string organizationId, string accountId, int? 'start = (), int? take = (), int? end = ()) returns MemberGroupsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/accounts/${accountId}/groups`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/groups`;
         map<anydata> queryParam = {"start": 'start, "take": take, "end": end};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MemberGroupsResponse response = check self.clientEp->get(resourcePath);
@@ -108,7 +119,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getOrganizationExportRequests(string organizationId) returns OrganizationExportsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/user_list`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/user_list`;
         OrganizationExportsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -118,7 +129,7 @@ public isolated client class Client {
     # + payload - Enables you to specify the kind of export request. 
     # + return - OK 
     remote isolated function createUserListExportRequest(string organizationId, OrganizationExportRequest payload) returns OrganizationExportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/user_list`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/user_list`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -130,7 +141,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getAccountSettingExportRequests(string organizationId) returns OrganizationExportsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/account_settings`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/account_settings`;
         OrganizationExportsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -140,7 +151,7 @@ public isolated client class Client {
     # + payload - Organization account request. 
     # + return - OK 
     remote isolated function createAccountSettingsExportRequest(string organizationId, OrganizationAccountsRequest payload) returns OrganizationExportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/account_settings`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/account_settings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -153,7 +164,7 @@ public isolated client class Client {
     # + exportId - The export ID GUID for the request. 
     # + return - OK 
     remote isolated function getUserListExportRequestByExportId(string organizationId, string exportId) returns OrganizationExportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/user_list/${exportId}`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/user_list/${getEncodedUri(exportId)}`;
         OrganizationExportResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -163,8 +174,8 @@ public isolated client class Client {
     # + exportId - The export ID GUID for the request. 
     # + return - OK 
     remote isolated function deleteUserListExpotByExportId(string organizationId, string exportId) returns json|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/user_list/${exportId}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/user_list/${getEncodedUri(exportId)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the results for a single account settings export request.
@@ -173,7 +184,7 @@ public isolated client class Client {
     # + exportId - The export ID GUID for the request. 
     # + return - OK 
     remote isolated function getAccountSettingsExportByExportId(string organizationId, string exportId) returns OrganizationExportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/account_settings/${exportId}`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/account_settings/${getEncodedUri(exportId)}`;
         OrganizationExportResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -183,8 +194,8 @@ public isolated client class Client {
     # + exportId - The export ID GUID for the request. 
     # + return - OK 
     remote isolated function deleteAccountSettingsExportByExportId(string organizationId, string exportId) returns json|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/exports/account_settings/${exportId}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/exports/account_settings/${getEncodedUri(exportId)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the details and metadata for Bulk Account Settings Import requests in the organization.
@@ -192,7 +203,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getOrganizationImportAccountSettingsRequests(string organizationId) returns OrganizationAccountSettingsImportResponse[]|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/account_settings`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/account_settings`;
         OrganizationAccountSettingsImportResponse[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -202,7 +213,7 @@ public isolated client class Client {
     # + payload - CSV file containing the account settings 
     # + return - OK 
     remote isolated function createImportAccountSettingsRequest(string organizationId, ImportsAccountSettingsBody payload) returns OrganizationAccountSettingsImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/account_settings`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/account_settings`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -215,7 +226,7 @@ public isolated client class Client {
     # + importId - The import ID GUID for the request. 
     # + return - OK 
     remote isolated function getBulkAccountSettingsImportRequestById(string organizationId, string importId) returns OrganizationAccountSettingsImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/account_settings/${importId}`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/account_settings/${getEncodedUri(importId)}`;
         OrganizationAccountSettingsImportResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -225,8 +236,8 @@ public isolated client class Client {
     # + importId - The import ID GUID for the request. 
     # + return - OK 
     remote isolated function deleteAccountSettingsImportRequestById(string organizationId, string importId) returns json|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/account_settings/${importId}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/account_settings/${getEncodedUri(importId)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Creates a request to import new users into an account.
@@ -235,7 +246,7 @@ public isolated client class Client {
     # + payload - The bulk user data as a CSV content 
     # + return - OK 
     remote isolated function createImportUsersRequest(string organizationId, BulkUsersAddBody payload) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/add`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/add`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -249,7 +260,7 @@ public isolated client class Client {
     # + payload - The bulk user data as a CSV content 
     # + return - OK 
     remote isolated function createImportSingleAccountUsersInsertRequest(string organizationId, string accountId, BulkUsersAddBody1 payload) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/accounts/${accountId}/imports/bulk_users/add`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/imports/bulk_users/add`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -262,7 +273,7 @@ public isolated client class Client {
     # + payload - The bulk user data as a CSV content 
     # + return - OK 
     remote isolated function updateImportedUsers(string organizationId, BulkUsersUpdateBody payload) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/update`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/update`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -277,7 +288,7 @@ public isolated client class Client {
     # + payload - The bulk user data as a CSV content 
     # + return - OK 
     remote isolated function updateSingleAccountUsersInOrganization(string organizationId, string accountId, BulkUsersUpdateBody1 payload) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/accounts/${accountId}/imports/bulk_users/update`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/imports/bulk_users/update`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -289,7 +300,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function createImportUsersAccountCloseRequest(string organizationId) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/close`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/close`;
         http:Request request = new;
         //TODO: Update the request as needed;
         OrganizationImportResponse response = check self.clientEp-> post(resourcePath, request);
@@ -300,7 +311,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function closeExtenalMemberships(string organizationId) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/close_external`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/close_external`;
         http:Request request = new;
         //TODO: Update the request as needed;
         OrganizationImportResponse response = check self.clientEp-> post(resourcePath, request);
@@ -311,7 +322,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getImportUsersRequests(string organizationId) returns OrganizationImportsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users`;
         OrganizationImportsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -321,7 +332,7 @@ public isolated client class Client {
     # + importId - The import ID GUID for the request. 
     # + return - OK 
     remote isolated function getImportUserRequestById(string organizationId, string importId) returns OrganizationImportResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/${importId}`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/${getEncodedUri(importId)}`;
         OrganizationImportResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -331,8 +342,8 @@ public isolated client class Client {
     # + importId - The import ID GUID for the request. 
     # + return - OK 
     remote isolated function deleteImportUserRequestById(string organizationId, string importId) returns json|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/${importId}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/${getEncodedUri(importId)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Given the ID of a user import request,
@@ -342,7 +353,7 @@ public isolated client class Client {
     # + importId - The import ID GUID for the request. 
     # + return - OK 
     remote isolated function getCsvResultsOfUserImportRequest(string organizationId, string importId) returns json|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/imports/bulk_users/${importId}/results_csv`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/imports/bulk_users/${getEncodedUri(importId)}/results_csv`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -351,7 +362,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getIdentityProvidersOfOrganization(string organizationId) returns IdentityProvidersResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/identity_providers`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/identity_providers`;
         IdentityProvidersResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -360,7 +371,7 @@ public isolated client class Client {
     # + organizationId - The organization ID Guid 
     # + return - OK 
     remote isolated function getReservedDomainsOfOrganization(string organizationId) returns DomainsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/reserved_domains`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/reserved_domains`;
         DomainsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -370,7 +381,7 @@ public isolated client class Client {
     # + payload - A list of users whose information you want to change. 
     # + return - OK 
     remote isolated function updateUser(string organizationId, UpdateUsersRequest payload) returns UsersUpdateResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/profiles`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/profiles`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -383,7 +394,7 @@ public isolated client class Client {
     # + payload - A change email request. 
     # + return - OK 
     remote isolated function upateUserEmailAddress(string organizationId, UpdateUsersEmailRequest payload) returns UsersUpdateResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/email_addresses`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/email_addresses`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -396,8 +407,8 @@ public isolated client class Client {
     # + userId - The user ID Guid 
     # + return - OK 
     remote isolated function closeUserMemberships(string organizationId, string userId) returns DeleteMembershipsResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/${userId}/accounts`;
-        DeleteMembershipsResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/${getEncodedUri(userId)}/accounts`;
+        DeleteMembershipsResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns information about the users in an organization.
@@ -415,7 +426,7 @@ public isolated client class Client {
     # + lastModifiedSince - Select users whose data have been modified since the date specified. `account_id` or `organization_reserved_domain_id` must be specified. 
     # + return - OK 
     remote isolated function getUsersInOrganization(string organizationId, int? 'start = (), int? take = (), int? end = (), string? email = (), string? emailUserNameLike = (), string? status = (), string? membershipStatus = (), string? accountId = (), string? organizationReservedDomainId = (), string? lastModifiedSince = ()) returns OrganizationUsersResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users`;
         map<anydata> queryParam = {"start": 'start, "take": take, "end": end, "email": email, "email_user_name_like": emailUserNameLike, "status": status, "membership_status": membershipStatus, "account_id": accountId, "organization_reserved_domain_id": organizationReservedDomainId, "last_modified_since": lastModifiedSince};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OrganizationUsersResponse response = check self.clientEp->get(resourcePath);
@@ -427,7 +438,7 @@ public isolated client class Client {
     # + payload - Information about a new user. 
     # + return - OK 
     remote isolated function createUser(string organizationId, NewUserRequest payload) returns NewUserResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -442,7 +453,7 @@ public isolated client class Client {
     # + payload - Data to ctivate user memership 
     # + return - OK 
     remote isolated function activateUserMembership(string organizationId, string userId, string membershipId, ForceActivateMembershipRequest payload) returns UpdateResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/${userId}/memberships/${membershipId}`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/${getEncodedUri(userId)}/memberships/${getEncodedUri(membershipId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -455,7 +466,7 @@ public isolated client class Client {
     # + email - The email address associated with the users you want to retrieve. 
     # + return - OK 
     remote isolated function getRecentlyModifiedUsers(string organizationId, string? email = ()) returns UsersDrilldownResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/profile`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/profile`;
         map<anydata> queryParam = {"email": email};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UsersDrilldownResponse response = check self.clientEp->get(resourcePath);
@@ -467,8 +478,8 @@ public isolated client class Client {
     # + userId - The user ID Guid 
     # + return - OK 
     remote isolated function deleteUserIdentities(string organizationId, string userId) returns DeleteResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/users/${userId}/identities`;
-        DeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/users/${getEncodedUri(userId)}/identities`;
+        DeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds users to an account.
@@ -478,7 +489,7 @@ public isolated client class Client {
     # + payload - A new user request. 
     # + return - OK 
     remote isolated function createAccountUsers(string organizationId, string accountId, NewAccountUserRequest payload) returns NewUserResponse|error {
-        string resourcePath = string `/v2/organizations/${organizationId}/accounts/${accountId}/users`;
+        string resourcePath = string `/v2/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -493,7 +504,7 @@ public isolated client class Client {
     # + pageSize - Page size of DSGroups. 
     # + return - OK 
     remote isolated function getDsGroups(string organizationId, string accountId, int? page = (), int? pageSize = ()) returns DSGroupListResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DSGroupListResponse response = check self.clientEp->get(resourcePath);
@@ -506,7 +517,7 @@ public isolated client class Client {
     # + payload - DS Group add data 
     # + return - OK 
     remote isolated function createDsGroup(string organizationId, string accountId, DSGroupAddRequest payload) returns DSGroupResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -520,7 +531,7 @@ public isolated client class Client {
     # + dsGroupId - The DSGroup's ID GUID 
     # + return - OK 
     remote isolated function getDsGroup(string organizationId, string accountId, string dsGroupId) returns DSGroupResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups/${dsGroupId}`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups/${getEncodedUri(dsGroupId)}`;
         DSGroupResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -531,8 +542,8 @@ public isolated client class Client {
     # + dsGroupId - The DSGroup's GUID. 
     # + return - No Content 
     remote isolated function deleteDsGroup(string organizationId, string accountId, string dsGroupId) returns http:Response|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups/${dsGroupId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups/${getEncodedUri(dsGroupId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets a list of users in a DSGroup.
@@ -544,7 +555,7 @@ public isolated client class Client {
     # + pageSize - Page size of DSGroups. 
     # + return - OK 
     remote isolated function getDsGroupUsers(string organizationId, string accountId, string dsGroupId, int? page = (), int? pageSize = ()) returns DSGroupAndUsersResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups/${dsGroupId}/users`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups/${getEncodedUri(dsGroupId)}/users`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DSGroupAndUsersResponse response = check self.clientEp->get(resourcePath);
@@ -558,7 +569,7 @@ public isolated client class Client {
     # + payload - DG Group user data 
     # + return - OK 
     remote isolated function addDsGroupUsers(string organizationId, string accountId, string dsGroupId, DSGroupUsersAddRequest payload) returns AddDSGroupAndUsersResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups/${dsGroupId}/users`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups/${getEncodedUri(dsGroupId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -572,8 +583,8 @@ public isolated client class Client {
     # + dsGroupId - The DSGroup's GUID. 
     # + return - OK 
     remote isolated function removeDsGroupUsers(string organizationId, string accountId, string dsGroupId) returns RemoveDSGroupUsersResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/dsgroups/${dsGroupId}/users`;
-        RemoveDSGroupUsersResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/dsgroups/${getEncodedUri(dsGroupId)}/users`;
+        RemoveDSGroupUsersResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets products associated with the account and the available permission profiles.
@@ -582,7 +593,7 @@ public isolated client class Client {
     # + accountId - The account ID GUID. 
     # + return - OK 
     remote isolated function getProductPermissionProfiles(string organizationId, string accountId) returns ProductPermissionProfilesResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/products/permission_profiles`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/products/permission_profiles`;
         ProductPermissionProfilesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -593,7 +604,7 @@ public isolated client class Client {
     # + userId - The user ID GUID. 
     # + return - OK 
     remote isolated function getUserProductPermissionProfilesOfProduct(string organizationId, string accountId, string userId) returns ProductPermissionProfilesResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/products/users/${userId}/permission_profiles`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/products/users/${getEncodedUri(userId)}/permission_profiles`;
         ProductPermissionProfilesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -605,7 +616,7 @@ public isolated client class Client {
     # + payload - Product permission profile data 
     # + return - OK 
     remote isolated function assignUserToProductPermissionProfiles(string organizationId, string accountId, string userId, ProductPermissionProfilesRequest payload) returns UserProductPermissionProfilesResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/products/users/${userId}/permission_profiles`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/products/users/${getEncodedUri(userId)}/permission_profiles`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -619,7 +630,7 @@ public isolated client class Client {
     # + payload - Multi product user data 
     # + return - OK 
     remote isolated function createOrUpdateMultiProductUsers(string organizationId, string accountId, NewMultiProductUserAddRequest payload) returns AddUserResponse|error {
-        string resourcePath = string `/v2.1/organizations/${organizationId}/accounts/${accountId}/users`;
+        string resourcePath = string `/v2.1/organizations/${getEncodedUri(organizationId)}/accounts/${getEncodedUri(accountId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

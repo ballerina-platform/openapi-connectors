@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # File-Version-Legal-Hold is an entity representing all holds on a File Version.
 public type FileVersionLegalHold record {
@@ -34,6 +36,7 @@ public type FoldersFolderIdBody record {
     # The optional new name for this folder.
     string name?;
     # The optional description of this folder
+    @constraint:String {maxLength: 256}
     string description?;
     # Specifies whether a folder should be synced to a user's device or not. This is used by Box Sync (discontinued) and is not used by Box Drive.
     string sync_state?;
@@ -61,7 +64,8 @@ public type FoldersFolderIdBody record {
         string access?;
     } folder_upload_email?;
     # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
-    string[100] tags?;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    string[] tags?;
     # Specifies if new invites to this folder are restricted to users within the enterprise. This does not affect existing collaborations.
     boolean is_collaboration_restricted_to_enterprise?;
     # An array of collections to make this folder a member of. Currently we only support the `favorites` collection.  To get the ID for a collection, use the [List all collections][1] endpoint.  Passing an empty array `[]` or `null` will remove the folder from all collections.  [1]: ../advanced-files-and-folders/#get-collections
@@ -473,7 +477,8 @@ public type ClassificationTemplate record {
     # Classifications are always copied along when the file or folder is copied.
     boolean copyInstanceOnItemCopy?;
     # A list of fields for this classification template. This includes only one field, the `Box__Security__Classification__Key`, which defines the different classifications available in this enterprise.
-    ClassificationtemplateFields[1] fields?;
+    @constraint:Array {maxLength: 1, minLength: 1}
+    ClassificationtemplateFields[] fields?;
 };
 
 # A chunk of a file uploaded as part of an upload session, as returned by some endpoints.
@@ -665,10 +670,12 @@ public type KeywordskillcardSkillCardTitle record {
 public type GroupFull record {
     *Group;
     # Keeps track of which external source this group is coming from (e.g. "Active Directory", "Google Groups", "Facebook Groups").  Setting this will also prevent Box users from editing the group name and its members directly via the Box web application. This is desirable for one-way syncing of groups.
+    @constraint:String {maxLength: 255}
     string provenance?;
     # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group. Example values of this field could be an Active Directory Object ID or a Google Group ID.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
     string external_sync_identifier?;
     # Human readable description of the group.
+    @constraint:String {maxLength: 255}
     string description?;
     # Specifies who can invite the group to collaborate on items.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
     string invitability_level?;
@@ -682,10 +689,13 @@ public type GroupFull record {
 
 public type LegalHoldPoliciesLegalHoldPolicyIdBody record {
     # The name of the policy.
+    @constraint:String {maxLength: 254}
     string policy_name?;
     # A description for the policy.
+    @constraint:String {maxLength: 500}
     string description?;
     # Notes around why the policy was released.
+    @constraint:String {maxLength: 500}
     string release_notes?;
 };
 
@@ -711,6 +721,7 @@ public type FilesFileIdBody record {
     # An optional different name for the file. This can be used to rename the file.
     string name?;
     # The description for a file. This can be seen in the right-hand sidebar panel when viewing a file in the Box web app. Additionally, this index is used in the search index of the file, allowing users to find the file by the content in the description.
+    @constraint:String {maxLength: 256}
     string description?;
     # The parent for this item
     FilesfileIdParent parent?;
@@ -721,7 +732,8 @@ public type FilesFileIdBody record {
     # Defines who can download a file.
     FilesfileIdPermissions permissions?;
     # The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.  To add or remove a tag, retrieve the item's current tags, modify them, and then update this field.  There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.
-    string[100] tags?;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    string[] tags?;
 };
 
 public type FilesFileIdremoveSharedLinkBody record {
@@ -832,6 +844,7 @@ public type UsersUserIdBody record {
     # Whether the user should receive an email when they are rolled out of an enterprise
     boolean notify?;
     # The name of the user
+    @constraint:String {maxLength: 50}
     string name?;
     # The email address the user uses to log in
     string login?;
@@ -842,10 +855,13 @@ public type UsersUserIdBody record {
     # Whether the user can use Box Sync
     boolean is_sync_enabled?;
     # The user’s job title
+    @constraint:String {maxLength: 100}
     string job_title?;
     # The user’s phone number
+    @constraint:String {maxLength: 100}
     string phone?;
     # The user’s address
+    @constraint:String {maxLength: 255}
     string address?;
     # Tracking codes allow an admin to generate reports from the admin console and assign an attribute to a specific group of users. This setting must be enabled for an enterprise before it can be used.
     string[] tracking_codes?;
@@ -873,7 +889,7 @@ public type GroupMembershipsBody record {
     # The user to add to the group.
     GroupMembershipsUser user;
     # The group to add the user to.
-    GroupMembershipsGroup 'group;
+    GroupMembershipsGroup group;
     # The role of the user in the group.
     string role?;
     # Custom configuration for the permissions an admin if a group will receive. This option has no effect on members with a role of `member`.  Setting these permissions overwrites the default access levels of an admin.  Specifying a value of "null" for this object will disable all configurable permissions. Specifying permissions will set them accordingly, omitted permissions will be enabled by default.
@@ -1039,6 +1055,7 @@ public type UploadUrl record {
 # The status of a `zip` archive being downloaded.
 public type ZipDownloadStatus record {
     # The total number of files in the archive.
+    @constraint:Int {maxValue: 10000}
     int total_file_count?;
     # The number of files that have already been downloaded.
     int downloaded_file_count?;
@@ -1077,7 +1094,7 @@ public type SessionEndpoint record {
     # The URL used to commit the file
     string 'commit?;
     # The URL for used to abort the session.
-    string 'abort?;
+    string abort?;
     # The URL users to list all parts.
     string list_parts?;
     # The URL used to get the status of the upload.
@@ -1387,7 +1404,7 @@ public type GroupMembership record {
     # A mini representation of a user, as can be returned when nested within other resources.
     UserMini user?;
     # Mini representation of a group, including id and name of group.
-    GroupMini 'group?;
+    GroupMini group?;
     # The role of the user in the group.
     string role?;
     # The time this membership was created.
@@ -1447,13 +1464,13 @@ public type TasksBody record {
     # The file to attach the task to.
     TasksItem item;
     # The action the task assignee will be prompted to do. Must be  * `review` defines an approval task that can be approved or rejected * `complete` defines a general task which can be completed
-    string action?;
+    string action = "review";
     # An optional message to include with the task.
-    string message?;
+    string message = "";
     # Defines when the task is due. Defaults to `null` if not provided.
     string due_at?;
     # Defines which assignees need to complete this task before the task is considered completed.  * `all_assignees` (default) requires all assignees to review or approve the the task in order for it to be considered completed. * `any_assignee` accepts any one assignee to review or approve the the task in order for it to be considered completed.
-    string completion_rule?;
+    string completion_rule = "all_assignees";
 };
 
 # An item to add to the `zip` archive. This can be a file or a folder.
@@ -1508,6 +1525,7 @@ public type SkillinvocationTokenRead record {
 public type UserMini record {
     *UserBase;
     # The display name of this user
+    @constraint:String {maxLength: 50}
     string name?;
     # The primary email address of this user
     string login?;
@@ -1515,6 +1533,7 @@ public type UserMini record {
 
 public type UsersBody record {
     # The name of the user
+    @constraint:String {maxLength: 50}
     string name;
     # The email address the user uses to log in  Required, unless `is_platform_access_only` is set to `true`.
     string login?;
@@ -1527,10 +1546,13 @@ public type UsersBody record {
     # Whether the user can use Box Sync
     boolean is_sync_enabled?;
     # The user’s job title
+    @constraint:String {maxLength: 100}
     string job_title?;
     # The user’s phone number
+    @constraint:String {maxLength: 100}
     string phone?;
     # The user’s address
+    @constraint:String {maxLength: 255}
     string address?;
     # The user’s total available space in bytes. Set this to `-1` to indicate unlimited storage.
     int space_amount?;
@@ -1605,13 +1627,14 @@ public type TermsOfServicesTermsOfServiceIdBody record {
 # An OAuth 2.0 error
 public type OAuth2Error record {
     # The type of the error returned.
-    string _error?;
+    string 'error?;
     # The type of the error returned.
     string error_description?;
 };
 
 public type FolderIdCopyBody record {
     # An optional new name for the copied folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name?;
     # The destination folder to copy the folder to.
     FoldersfolderIdcopyParent parent;
@@ -1768,6 +1791,7 @@ public type SkillInvocationsskillIdUsage record {
 
 public type FileIdCopyBody record {
     # An optional new name for the copied file.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), and protected names like `.` and `..` are automatically sanitized by removing the non-allowed characters.
+    @constraint:String {maxLength: 255}
     string name?;
     # An optional ID of the specific file version to copy.
     string 'version?;
@@ -2115,8 +2139,10 @@ public type WebLink record {
 public type LegalHoldPolicy record {
     *LegalholdpolicyMini;
     # Name of the legal hold policy.
+    @constraint:String {maxLength: 254}
     string policy_name?;
     # Description of the legal hold policy. Optional property with a 500 character limit.
+    @constraint:String {maxLength: 500}
     string description?;
     # * 'active' - the policy is not in a transition state * 'applying' - that the policy is in the process of   being applied * 'releasing' - that the process is in the process   of being released * 'released' - the policy is no longer active
     string status?;
@@ -2134,6 +2160,7 @@ public type LegalHoldPolicy record {
     # User-specified, optional date filter applies to Custodian assignments only
     string filter_ended_at?;
     # Optional notes about why the policy was created.
+    @constraint:String {maxLength: 500}
     string release_notes?;
 };
 
@@ -2266,10 +2293,12 @@ public type GroupsGroupIdBody record {
     # The name of the new group to be created. Must be unique within the enterprise.
     string name?;
     # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
+    @constraint:String {maxLength: 255}
     string provenance?;
     # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
     string external_sync_identifier?;
     # A human readable description of the group.
+    @constraint:String {maxLength: 255}
     string description?;
     # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
     string invitability_level?;
@@ -2469,8 +2498,10 @@ public type RetentionPoliciesRetentionPolicyIdBody record {
 
 public type LegalHoldPoliciesBody record {
     # The name of the policy.
+    @constraint:String {maxLength: 254}
     string policy_name;
     # A description for the policy.
+    @constraint:String {maxLength: 500}
     string description?;
     # The filter start date.  When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.  Required if `is_ongoing` is set to `false`.
     string filter_started_at?;
@@ -2847,6 +2878,7 @@ public type StoragePolicyAssignmentsStoragePolicyAssignmentIdBody record {
 public type File record {
     *FileMini;
     # The optional description of this file
+    @constraint:String {maxLength: 256}
     string description?;
     # The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.
     int size?;
@@ -2944,10 +2976,13 @@ public type User record {
     # The user's account status
     string status?;
     # The user’s job title
+    @constraint:String {maxLength: 100}
     string job_title?;
     # The user’s phone number
+    @constraint:String {maxLength: 100}
     string phone?;
     # The user’s address
+    @constraint:String {maxLength: 255}
     string address?;
     # URL of the user’s avatar image
     string avatar_url?;
@@ -3050,11 +3085,13 @@ public type ClassificationtemplateFields record {
     # Classifications are always visible to web and mobile users.
     boolean hidden?;
     # A list of classifications available in this enterprise.
+    @constraint:Array {minLength: 1}
     ClassificationtemplateOptions[] options?;
 };
 
 public type FoldersBody record {
     # The name for the new folder.  There are some restrictions to the file name. Names containing non-printable ASCII characters, forward and backward slashes (`/`, `\`), as well as names with trailing spaces are prohibited.  Additionally, the names `.` and `..` are not allowed either.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name;
     # The parent folder to create the new folder within.
     FoldersParent parent;
@@ -3157,10 +3194,12 @@ public type GroupsBody record {
     # The name of the new group to be created. This name must be unique within the enterprise.
     string name;
     # Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.  Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.  This is desirable for one-way syncing of groups.
+    @constraint:String {maxLength: 255}
     string provenance?;
     # An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.  Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.  We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
     string external_sync_identifier?;
     # A human readable description of the group.
+    @constraint:String {maxLength: 255}
     string description?;
     # Specifies who can invite the group to collaborate on folders.  When set to `admins_only` the enterprise admin, co-admins, and the group's admin can invite the group.  When set to `admins_and_members` all the admins listed above and group members can invite the group.  When set to `all_managed_users` all managed users in the enterprise can invite the group.
     string invitability_level?;

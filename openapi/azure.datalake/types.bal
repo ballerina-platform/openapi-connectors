@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -29,7 +29,7 @@ public type Path record {
     # The name of the owner
     string owner?;
     # The name of a group
-    string 'group?;
+    string group?;
     # Permissions set to the file/folder
     string permissions?;
 };
@@ -37,7 +37,7 @@ public type Path record {
 # The service error response object.
 public type DataLakeStorageError record {
     # The service error response object.
-    DatalakestorageerrorError _error?;
+    DatalakestorageerrorError 'error?;
 };
 
 public type FilesystemList record {

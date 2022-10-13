@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -94,7 +94,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get lead
@@ -106,7 +106,7 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Lead 
     remote isolated function leadsOne(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse2001|error {
-        string resourcePath = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -123,12 +123,12 @@ public isolated client class Client {
     # + raw - Include raw response. Mostly used for debugging purposes 
     # + return - Lead deleted 
     remote isolated function leadsDelete(string id, string xApideckConsumerId, string xApideckAppId, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse201|error {
-        string resourcePath = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse201 response = check self.clientEp->delete(resourcePath, httpHeaders);
+        InlineResponse201 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update lead
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + payload - Lead information 
     # + return - Lead updated 
     remote isolated function leadsUpdate(string id, string xApideckConsumerId, string xApideckAppId, Lead payload, string? xApideckServiceId = (), boolean raw = true) returns InlineResponse201|error {
-        string resourcePath = string `/lead/leads/${id}`;
+        string resourcePath = string `/lead/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"raw": raw};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-apideck-consumer-id": xApideckConsumerId, "x-apideck-app-id": xApideckAppId, "x-apideck-service-id": xApideckServiceId, "Authorization": self.apiKeyConfig.authorization};
@@ -149,7 +149,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
 }

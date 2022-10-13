@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Collection of knowledgebases owned by a user.
 public type KnowledgebasesDTO record {
@@ -57,8 +59,10 @@ public type ActiveLearningSettingsDTO record {
 # Name - value pair of metadata.
 public type MetadataDTO record {
     # Metadata name.
+    @constraint:String {maxLength: 100, minLength: 1}
     string name;
     # Metadata value.
+    @constraint:String {maxLength: 100, minLength: 1}
     string value;
 };
 
@@ -101,6 +105,7 @@ public type UpdateMetadataDTO record {
 # Post body schema for CreateKb operation.
 public type CreateKbDTO record {
     # Friendly name for the knowledgebase.
+    @constraint:String {maxLength: 100, minLength: 1}
     string name;
     # List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
     QnADTO[] qnaList?;
@@ -129,10 +134,13 @@ public type EndpointSettingsDTO record {
 # PATCH Body schema for Update Qna List
 public type UpdateQnaDTO record {
     # Unique id for the Q-A
+    @constraint:Int {maxValue: 2147483647}
     int id?;
     # Answer text
+    @constraint:String {maxLength: 25000, minLength: 1}
     string answer?;
     # Source from which Q-A was indexed. eg. https://docs.microsoft.com/en-us/azure/cognitive-services/QnAMaker/FAQs
+    @constraint:String {maxLength: 300}
     string 'source?;
     # PATCH Body schema for Update Kb which contains list of questions to be added and deleted
     UpdateQuestionsDTO questions?;
@@ -153,6 +161,7 @@ public type DeleteKbContentsDTO record {
 # DTO to hold details of uploaded files.
 public type FileDTO record {
     # File name. Supported file types are ".tsv", ".pdf", ".txt", ".docx", ".xlsx".
+    @constraint:String {maxLength: 200, minLength: 1}
     string fileName;
     # Public URI of the file.
     string fileUri;
@@ -170,6 +179,7 @@ public type PromptDTO record {
     # Q-A object.
     QnADTO qna?;
     # Text displayed to represent a follow up question prompt
+    @constraint:String {maxLength: 200}
     string displayText?;
 };
 
@@ -228,7 +238,7 @@ public type EndpointKeysDTO record {
 # Error response. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
 public type ErrorResponse record {
     # The error object. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
-    Error _error?;
+    Error 'error?;
 };
 
 # Post body schema for Replace KB operation.
@@ -244,7 +254,8 @@ public type ContextDTO record {
     # false - ignores context and includes this QnA in search result
     boolean isContextOnly?;
     # List of prompts associated with the answer.
-    PromptDTO[20] prompts?;
+    @constraint:Array {maxLength: 20}
+    PromptDTO[] prompts?;
 };
 
 # Human readable error code.
@@ -267,10 +278,13 @@ public type UpdateQuestionsDTO record {
 # Q-A object.
 public type QnADTO record {
     # Unique id for the Q-A.
+    @constraint:Int {maxValue: 2147483647}
     int id?;
     # Answer text
+    @constraint:String {maxLength: 25000, minLength: 1}
     string answer;
     # Source from which Q-A was indexed. eg. https://docs.microsoft.com/en-us/azure/cognitive-services/QnAMaker/FAQs
+    @constraint:String {maxLength: 300, minLength: 1}
     string 'source?;
     # List of questions associated with the answer.
     string[] questions;

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://account-d.docusign.com/oauth/token";
 |};
 
 # The Adobe Analytics 2.0 APIs allow you to directly call Adobe's servers to perform almost any action that you can perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics.
@@ -126,7 +137,7 @@ public isolated client class Client {
     # + locale - Locale 
     # + return - successful operation 
     remote isolated function getCalculatedMetricFunction(string id, string locale = "en_US") returns CalcMetricFunction|error {
-        string resourcePath = string `/calculatedmetrics/functions/${id}`;
+        string resourcePath = string `/calculatedmetrics/functions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CalcMetricFunction response = check self.clientEp->get(resourcePath);
@@ -155,7 +166,7 @@ public isolated client class Client {
     # + expansion - Comma-delimited list of additional calculated metric metadata fields to include on response. 
     # + return - successful operation 
     remote isolated function findOneCalculatedMetric(string id, string locale = "en_US", string[]? expansion = ()) returns AnalyticsCalculatedMetric|error {
-        string resourcePath = string `/calculatedmetrics/${id}`;
+        string resourcePath = string `/calculatedmetrics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -170,7 +181,7 @@ public isolated client class Client {
     # + payload - JSON-formatted Object containing key/value pairs to be updated. 
     # + return - successful operation 
     remote isolated function updateCalculatedMetric(string id, AnalyticsCalculatedMetric payload, string locale = "en_US", string[]? expansion = ()) returns AnalyticsCalculatedMetric|error {
-        string resourcePath = string `/calculatedmetrics/${id}`;
+        string resourcePath = string `/calculatedmetrics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -186,10 +197,10 @@ public isolated client class Client {
     # + locale - Locale 
     # + return - successful operation 
     remote isolated function deleteCalculatedMetric(string id, string locale = "en_US") returns DeleteResponse|error {
-        string resourcePath = string `/calculatedmetrics/${id}`;
+        string resourcePath = string `/calculatedmetrics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteResponse response = check self.clientEp->delete(resourcePath);
+        DeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves report suites that match the given filters.
@@ -214,7 +225,7 @@ public isolated client class Client {
     # + expansion - Comma-delimited list of additional metadata fields to include on response. 
     # + return - successful operation 
     remote isolated function getReportSuite(string rsid, string[]? expansion = ()) returns SuiteCollectionItem|error {
-        string resourcePath = string `/collections/suites/${rsid}`;
+        string resourcePath = string `/collections/suites/${getEncodedUri(rsid)}`;
         map<anydata> queryParam = {"expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -270,7 +281,7 @@ public isolated client class Client {
         string resourcePath = string `/componentmetadata/tags`;
         map<anydata> queryParam = {"componentIds": componentIds, "componentType": componentType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        record {}[] response = check self.clientEp->delete(resourcePath);
+        record {}[] response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves a tags for a given component by componentId and componentType
@@ -302,7 +313,7 @@ public isolated client class Client {
     # + id - Tag ID to be retrieved 
     # + return - successful operation 
     remote isolated function getTagById(int id) returns Tag|error {
-        string resourcePath = string `/componentmetadata/tags/${id}`;
+        string resourcePath = string `/componentmetadata/tags/${getEncodedUri(id)}`;
         Tag response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -311,8 +322,8 @@ public isolated client class Client {
     # + id - The tagId to be deleted 
     # + return - successful operation 
     remote isolated function deleteTag(int id) returns record {}[]|error {
-        string resourcePath = string `/componentmetadata/tags/${id}`;
-        record {}[] response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/componentmetadata/tags/${getEncodedUri(id)}`;
+        record {}[] response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves component ids associated with the given tag names
@@ -394,7 +405,7 @@ public isolated client class Client {
     # + id - Share ID to be retrieved 
     # + return - successful operation 
     remote isolated function getShareById(int id) returns Share|error {
-        string resourcePath = string `/componentmetadata/shares/${id}`;
+        string resourcePath = string `/componentmetadata/shares/${getEncodedUri(id)}`;
         Share response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -403,8 +414,8 @@ public isolated client class Client {
     # + id - The shareId to be deleted 
     # + return - successful operation 
     remote isolated function deleteShare(int id) returns InlineResponse200|error {
-        string resourcePath = string `/componentmetadata/shares/${id}`;
-        InlineResponse200 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/componentmetadata/shares/${getEncodedUri(id)}`;
+        InlineResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of dateranges for the user
@@ -447,7 +458,7 @@ public isolated client class Client {
     # + expansion - Comma-delimited list of additional date range metadata fields to include on response. 
     # + return - successful operation 
     remote isolated function getDateRange(string dateRangeId, string locale = "en_US", string[]? expansion = ()) returns AnalyticsDateRange|error {
-        string resourcePath = string `/dateranges/${dateRangeId}`;
+        string resourcePath = string `/dateranges/${getEncodedUri(dateRangeId)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -462,7 +473,7 @@ public isolated client class Client {
     # + payload - JSON-formatted array of Date Range objects containing key-value pairs 
     # + return - successful operation 
     remote isolated function updateDateRange(string dateRangeId, byte[] payload, string locale = "en_US", string[]? expansion = ()) returns AnalyticsDateRange|error {
-        string resourcePath = string `/dateranges/${dateRangeId}`;
+        string resourcePath = string `/dateranges/${getEncodedUri(dateRangeId)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -476,8 +487,8 @@ public isolated client class Client {
     # + dateRangeId - The id of the date range to delete 
     # + return - successful operation 
     remote isolated function deleteDateRange(string dateRangeId) returns InlineResponse2001|error {
-        string resourcePath = string `/dateranges/${dateRangeId}`;
-        InlineResponse2001 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/dateranges/${getEncodedUri(dateRangeId)}`;
+        InlineResponse2001 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of dimensions for a given report suite.
@@ -505,7 +516,7 @@ public isolated client class Client {
     # + expansion - Add extra metadata to items (comma-delimited list) 
     # + return - successful operation 
     remote isolated function getDimensionForReportSuite(string dimensionId, string rsid, string locale = "en_US", string[]? expansion = ()) returns AnalyticsDimension|error {
-        string resourcePath = string `/dimensions/${dimensionId}`;
+        string resourcePath = string `/dimensions/${getEncodedUri(dimensionId)}`;
         map<anydata> queryParam = {"rsid": rsid, "locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -535,7 +546,7 @@ public isolated client class Client {
     # + expansion - Add extra metadata to items (comma-delimited list) 
     # + return - successful operation 
     remote isolated function getMetricForReportSuite(string id, string rsid, string locale = "en_US", string[]? expansion = ()) returns AnalyticsMetric|error {
-        string resourcePath = string `/metrics/${id}`;
+        string resourcePath = string `/metrics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"rsid": rsid, "locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -549,7 +560,7 @@ public isolated client class Client {
     # + locale - Locale 
     # + return - successful operation 
     remote isolated function getProjectConfiguration(string projectId, string[]? expansion = (), string locale = "en_US") returns AnalyticsProject|error {
-        string resourcePath = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}`;
         map<anydata> queryParam = {"expansion": expansion, "locale": locale};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -564,7 +575,7 @@ public isolated client class Client {
     # + payload - JSON-formatted Object containing project keys/value pairs to be updated. 
     # + return - successful operation 
     remote isolated function updateProjectConfiguration(string projectId, byte[] payload, string[]? expansion = (), string locale = "en_US") returns AnalyticsProject|error {
-        string resourcePath = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}`;
         map<anydata> queryParam = {"expansion": expansion, "locale": locale};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -579,10 +590,10 @@ public isolated client class Client {
     # + locale - Locale 
     # + return - successful operation 
     remote isolated function deleteProject(string projectId, string locale = "en_US") returns DeleteResponse|error {
-        string resourcePath = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}`;
         map<anydata> queryParam = {"locale": locale};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteResponse response = check self.clientEp->delete(resourcePath);
+        DeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Validates a Project definition
@@ -733,7 +744,7 @@ public isolated client class Client {
     # + expansion - Comma-delimited list of additional segment metadata fields to include on response. 
     # + return - successful operation 
     remote isolated function getSegment(string id, string locale = "en_US", string[]? expansion = ()) returns AnalyticsSegmentResponseItem|error {
-        string resourcePath = string `/segments/${id}`;
+        string resourcePath = string `/segments/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -748,7 +759,7 @@ public isolated client class Client {
     # + payload - JSON-formatted Object containing key/value pairs to be updated. 
     # + return - successful operation 
     remote isolated function updateSegment(string id, json payload, string locale = "en_US", string[]? expansion = ()) returns AnalyticsSegmentResponseItem|error {
-        string resourcePath = string `/segments/${id}`;
+        string resourcePath = string `/segments/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale, "expansion": expansion};
         map<Encoding> queryParamEncoding = {"expansion": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -764,10 +775,10 @@ public isolated client class Client {
     # + locale - Locale 
     # + return - successful operation 
     remote isolated function deleteSegment(string id, string locale = "en_US") returns string|error {
-        string resourcePath = string `/segments/${id}`;
+        string resourcePath = string `/segments/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"locale": locale};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp->delete(resourcePath);
+        string response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of users for the current user's login company

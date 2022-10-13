@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Avalara AvaTax API v2](https://developer.avalara.com/api-reference/avatax/rest/v2/) OpenAPI specification.
@@ -98,7 +102,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AccountModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single account
@@ -108,7 +112,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getAccount(int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -123,13 +127,13 @@ public isolated client class Client {
     # + payload - The account object you wish to update. 
     # + return - Success 
     remote isolated function updateAccount(int id, AccountModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AccountModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AccountModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single account
@@ -138,10 +142,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteAccount(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/accounts/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Activate an account by accepting terms and conditions
@@ -151,13 +155,13 @@ public isolated client class Client {
     # + payload - The activation request 
     # + return - Success 
     remote isolated function activateAccount(int id, ActivateAccountModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}/activate`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/activate`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AccountModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve audit history for an account.
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function auditAccount(int id, string? 'start = (), string? end = (), int top = 10, int skip = 0, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AuditModelFetchResult|error {
-        string resourcePath = string `/api/v2/accounts/${id}/audit`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/audit`;
         map<anydata> queryParam = {"start": 'start, "end": end, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -183,7 +187,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getAccountConfiguration(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountConfigurationModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${id}/configuration`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/configuration`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountConfigurationModel[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -194,13 +198,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function setAccountConfiguration(int id, AccountConfigurationModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountConfigurationModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${id}/configuration`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/configuration`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AccountConfigurationModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountConfigurationModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create license key for this account
@@ -209,13 +213,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function createLicenseKey(int id, AccountLicenseKeyModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LicenseKeyModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}/licensekey`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/licensekey`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LicenseKeyModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LicenseKeyModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve license key by license key name
@@ -225,7 +229,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLicenseKey(int id, string licensekeyname, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountLicenseKeyModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}/licensekey/${licensekeyname}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/licensekey/${getEncodedUri(licensekeyname)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountLicenseKeyModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -238,10 +242,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteLicenseKey(int id, string licensekeyname, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/accounts/${id}/licensekey/${licensekeyname}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/licensekey/${getEncodedUri(licensekeyname)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all license keys for this account
@@ -250,7 +254,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLicenseKeys(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountLicenseKeyModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${id}/licensekeys`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/licensekeys`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountLicenseKeyModel[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -263,13 +267,13 @@ public isolated client class Client {
     # + payload - A request confirming that you wish to reset the license key of this account. 
     # + return - Success 
     remote isolated function accountResetLicenseKey(int id, ResetLicenseKeyModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LicenseKeyModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}/resetlicensekey`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/resetlicensekey`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LicenseKeyModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LicenseKeyModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve geolocation information for a specified address
@@ -305,7 +309,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AddressResolutionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AddressResolutionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the lookup files for a company
@@ -315,7 +319,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCompanyLookupFiles(int accountId, int companyId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AdvancedRuleLookupFileModelFetchResult|error {
-        string resourcePath = string `/api/v2/advancedrules/accounts/${accountId}/companies/${companyId}/lookupFiles`;
+        string resourcePath = string `/api/v2/advancedrules/accounts/${getEncodedUri(accountId)}/companies/${getEncodedUri(companyId)}/lookupFiles`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AdvancedRuleLookupFileModelFetchResult response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -329,13 +333,13 @@ public isolated client class Client {
     # + payload - The lookup file you wish to create 
     # + return - Success 
     remote isolated function createCompanyLookupFile(int accountId, int companyId, AdvancedRuleLookupFileModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AdvancedRuleLookupFileModel|error {
-        string resourcePath = string `/api/v2/advancedrules/accounts/${accountId}/companies/${companyId}/lookupFiles`;
+        string resourcePath = string `/api/v2/advancedrules/accounts/${getEncodedUri(accountId)}/companies/${getEncodedUri(companyId)}/lookupFiles`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AdvancedRuleLookupFileModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AdvancedRuleLookupFileModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a lookup file for an accountId and companyLookupFileId
@@ -345,7 +349,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLookupFile(int accountId, string id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AdvancedRuleLookupFileModel|error {
-        string resourcePath = string `/api/v2/advancedrules/accounts/${accountId}/lookupFiles/${id}`;
+        string resourcePath = string `/api/v2/advancedrules/accounts/${getEncodedUri(accountId)}/lookupFiles/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AdvancedRuleLookupFileModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -359,13 +363,13 @@ public isolated client class Client {
     # + payload - The new values to update the lookup file 
     # + return - Success 
     remote isolated function updateLookupFile(int accountId, string id, AdvancedRuleLookupFileModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AdvancedRuleLookupFileModel|error {
-        string resourcePath = string `/api/v2/advancedrules/accounts/${accountId}/lookupFiles/${id}`;
+        string resourcePath = string `/api/v2/advancedrules/accounts/${getEncodedUri(accountId)}/lookupFiles/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AdvancedRuleLookupFileModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AdvancedRuleLookupFileModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a lookup file
@@ -375,10 +379,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteLookupFile(int accountId, string id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/advancedrules/accounts/${accountId}/lookupFiles/${id}`;
+        string resourcePath = string `/api/v2/advancedrules/accounts/${getEncodedUri(accountId)}/lookupFiles/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all AvaFileForms
@@ -410,7 +414,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AvaFileFormModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AvaFileFormModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single AvaFileForm
@@ -419,7 +423,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getAvaFileForm(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AvaFileFormModel|error {
-        string resourcePath = string `/api/v2/avafileforms/${id}`;
+        string resourcePath = string `/api/v2/avafileforms/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AvaFileFormModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -432,13 +436,13 @@ public isolated client class Client {
     # + payload - The AvaFileForm model you wish to update. 
     # + return - Success 
     remote isolated function updateAvaFileForm(int id, AvaFileFormModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AvaFileFormModel|error {
-        string resourcePath = string `/api/v2/avafileforms/${id}`;
+        string resourcePath = string `/api/v2/avafileforms/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        AvaFileFormModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AvaFileFormModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single AvaFileForm
@@ -447,10 +451,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteAvaFileForm(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/avafileforms/${id}`;
+        string resourcePath = string `/api/v2/avafileforms/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all batches
@@ -482,7 +486,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listBatchesByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns BatchModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -497,13 +501,13 @@ public isolated client class Client {
     # + payload - The batch you wish to create. 
     # + return - Success 
     remote isolated function createBatches(int companyId, BatchModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns BatchModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        BatchModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BatchModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Download a single batch file
@@ -514,7 +518,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - OK 
     remote isolated function downloadBatch(int companyId, int batchId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches/${batchId}/files/${id}/attachment`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches/${getEncodedUri(batchId)}/files/${getEncodedUri(id)}/attachment`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -527,7 +531,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getBatch(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns BatchModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         BatchModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -540,10 +544,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteBatch(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Cancel an in progress batch
@@ -553,12 +557,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function cancelBatch(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns BatchModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches/${id}/cancel`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches/${getEncodedUri(id)}/cancel`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        BatchModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BatchModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a new transaction batch
@@ -568,13 +572,13 @@ public isolated client class Client {
     # + payload - The transaction batch you wish to create. 
     # + return - Success 
     remote isolated function createTransactionBatch(int companyId, CreateTransactionBatchRequestModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CreateTransactionBatchResponseModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/batches/transactions`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/batches/transactions`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CreateTransactionBatchResponseModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateTransactionBatchResponseModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List CertExpress invitations
@@ -588,7 +592,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCertExpressInvitations(int companyId, string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertExpressInvitationModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certexpressinvites`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certexpressinvites`;
         map<anydata> queryParam = {"$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -604,13 +608,13 @@ public isolated client class Client {
     # + payload - the requests to send out to customers 
     # + return - Success 
     remote isolated function createCertExpressInvitation(int companyId, string customerCode, CreateCertExpressInvitationModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertExpressInvitationStatusModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certexpressinvites`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certexpressinvites`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertExpressInvitationStatusModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertExpressInvitationStatusModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single CertExpress invitation
@@ -622,7 +626,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCertExpressInvitation(int companyId, string customerCode, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertExpressInvitationModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certexpressinvites/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certexpressinvites/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -641,7 +645,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function queryCertificates(int companyId, string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates`;
         map<anydata> queryParam = {"$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -657,7 +661,7 @@ public isolated client class Client {
     # + payload - Certificates to be created 
     # + return - Success 
     remote isolated function createCertificates(int companyId, CertificateModel[] payload, boolean? prevalidatedexemptionreason = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates`;
         map<anydata> queryParam = {"$preValidatedExemptionReason": prevalidatedexemptionreason};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -665,7 +669,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertificateModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single certificate
@@ -676,7 +680,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCertificate(int companyId, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -692,13 +696,13 @@ public isolated client class Client {
     # + payload - The new certificate object that will replace the existing one 
     # + return - Success 
     remote isolated function updateCertificate(int companyId, int id, CertificateModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CertificateModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Revoke and delete a certificate
@@ -708,10 +712,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteCertificate(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Download an image for this certificate
@@ -723,7 +727,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - OK 
     remote isolated function downloadCertificateImage(int companyId, int id, int? page = (), string 'type = "Pdf", string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/attachment`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/attachment`;
         map<anydata> queryParam = {"$page": page, "$type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -738,13 +742,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function uploadCertificateImage(int companyId, int id, IdAttachmentBody payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/attachment`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/attachment`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List all attributes applied to this certificate
@@ -754,7 +758,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listAttributesForCertificate(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/attributes`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/attributes`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CertificateAttributeModelFetchResult response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -768,13 +772,13 @@ public isolated client class Client {
     # + payload - The list of attributes to link to this certificate. 
     # + return - Success 
     remote isolated function linkAttributesToCertificate(int companyId, int id, CertificateAttributeModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/attributes/link`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/attributes/link`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateAttributeModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertificateAttributeModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unlink attributes from a certificate
@@ -785,13 +789,13 @@ public isolated client class Client {
     # + payload - The list of attributes to unlink from this certificate. 
     # + return - Success 
     remote isolated function unlinkAttributesFromCertificate(int companyId, int id, CertificateAttributeModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/attributes/unlink`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/attributes/unlink`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateAttributeModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertificateAttributeModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List customers linked to this certificate
@@ -802,7 +806,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCustomersForCertificate(int companyId, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/customers`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/customers`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -818,13 +822,13 @@ public isolated client class Client {
     # + payload - The list of customers needed be added to the Certificate for exemption 
     # + return - Success 
     remote isolated function linkCustomersToCertificate(int companyId, int id, LinkCustomersModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/customers/link`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/customers/link`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CustomerModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unlink customers from a certificate
@@ -835,13 +839,13 @@ public isolated client class Client {
     # + payload - The list of customers to unlink from this certificate 
     # + return - Success 
     remote isolated function unlinkCustomersFromCertificate(int companyId, int id, LinkCustomersModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/${id}/customers/unlink`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/${getEncodedUri(id)}/customers/unlink`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CustomerModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a company's exemption certificate status.
@@ -850,7 +854,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCertificateSetup(int companyId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ProvisionStatusModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/setup`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/setup`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ProvisionStatusModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -861,12 +865,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function requestCertificateSetup(int companyId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ProvisionStatusModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/certificates/setup`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/certificates/setup`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ProvisionStatusModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProvisionStatusModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve all companies
@@ -899,7 +903,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check the funding configuration of a company
@@ -908,7 +912,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function fundingConfigurationByCompany(int companyId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingConfigurationModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/funding/configuration`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/funding/configuration`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FundingConfigurationModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -921,7 +925,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function fundingConfigurationsByCompanyAndCurrency(int companyId, string? currency = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingConfigurationModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/funding/configurations`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/funding/configurations`;
         map<anydata> queryParam = {"currency": currency};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -939,7 +943,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCompanyParameterDetails(int companyId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyParameterDetailModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/parameters`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -954,13 +958,13 @@ public isolated client class Client {
     # + payload - The company parameters you wish to create. 
     # + return - Success 
     remote isolated function createCompanyParameters(int companyId, CompanyParameterDetailModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyParameterDetailModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyParameterDetailModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyParameterDetailModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single company parameter
@@ -968,7 +972,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCompanyParameterDetail(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyParameterDetailModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CompanyParameterDetailModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -982,13 +986,13 @@ public isolated client class Client {
     # + payload - The company parameter object you wish to update. 
     # + return - Success 
     remote isolated function updateCompanyParameterDetail(int companyId, int id, CompanyParameterDetailModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyParameterDetailModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyParameterDetailModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CompanyParameterDetailModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single company parameter
@@ -998,10 +1002,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteCompanyParameter(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a single company
@@ -1011,7 +1015,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCompany(int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyModel|error {
-        string resourcePath = string `/api/v2/companies/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1026,13 +1030,13 @@ public isolated client class Client {
     # + payload - The company object you wish to update. 
     # + return - Success 
     remote isolated function updateCompany(int id, CompanyModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyModel|error {
-        string resourcePath = string `/api/v2/companies/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CompanyModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single company
@@ -1041,10 +1045,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteCompany(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Checks whether the integration being used to set up this company and run transactions onto this company is compliant to all requirements.
@@ -1053,7 +1057,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function certifyIntegration(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${id}/certify`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/certify`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1064,7 +1068,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCompanyConfiguration(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyConfigurationModel[]|error {
-        string resourcePath = string `/api/v2/companies/${id}/configuration`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/configuration`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CompanyConfigurationModel[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1075,13 +1079,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function setCompanyConfiguration(int id, CompanyConfigurationModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyConfigurationModel[]|error {
-        string resourcePath = string `/api/v2/companies/${id}/configuration`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/configuration`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyConfigurationModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyConfigurationModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get this company's filing status
@@ -1089,7 +1093,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getFilingStatus(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${id}/filingstatus`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/filingstatus`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1100,13 +1104,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function changeFilingStatus(int id, FilingStatusChangeModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${id}/filingstatus`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/filingstatus`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check managed returns funding status for a company
@@ -1115,7 +1119,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listFundingRequestsByCompany(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingStatusModel[]|error {
-        string resourcePath = string `/api/v2/companies/${id}/funding`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/funding`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FundingStatusModel[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1128,13 +1132,13 @@ public isolated client class Client {
     # + payload - The funding initialization request 
     # + return - Success 
     remote isolated function createFundingRequest(int id, FundingInitiateModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingStatusModel|error {
-        string resourcePath = string `/api/v2/companies/${id}/funding/setup`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(id)}/funding/setup`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        FundingStatusModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FundingStatusModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Quick setup for a company with a single physical address
@@ -1149,7 +1153,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a list of MRS Companies with account
@@ -1194,7 +1198,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listContactsByCompany(int companyId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ContactModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/contacts`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/contacts`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1209,13 +1213,13 @@ public isolated client class Client {
     # + payload - The contacts you wish to create. 
     # + return - Success 
     remote isolated function createContacts(int companyId, ContactModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ContactModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/contacts`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/contacts`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ContactModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single contact
@@ -1225,7 +1229,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getContact(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ContactModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/contacts/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ContactModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1239,13 +1243,13 @@ public isolated client class Client {
     # + payload - The contact you wish to update. 
     # + return - Success 
     remote isolated function updateContact(int companyId, int id, ContactModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ContactModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/contacts/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ContactModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ContactModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single contact
@@ -1255,10 +1259,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteContact(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/contacts/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all contacts
@@ -1289,7 +1293,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function queryCustomers(int companyId, string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers`;
         map<anydata> queryParam = {"$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1304,13 +1308,13 @@ public isolated client class Client {
     # + payload - The list of customer objects to be created 
     # + return - Success 
     remote isolated function createCustomers(int companyId, CustomerModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CustomerModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single customer
@@ -1321,7 +1325,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCustomer(int companyId, string customerCode, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1337,13 +1341,13 @@ public isolated client class Client {
     # + payload - The new customer model that will replace the existing record at this URL 
     # + return - Success 
     remote isolated function updateCustomer(int companyId, string customerCode, CustomerModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CustomerModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a customer record
@@ -1353,10 +1357,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteCustomer(int companyId, string customerCode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        CustomerModel response = check self.clientEp->delete(resourcePath, httpHeaders);
+        CustomerModel response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a customer's attributes
@@ -1366,7 +1370,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listAttributesForCustomer(int companyId, string customerCode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/attributes`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/attributes`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CustomerAttributeModelFetchResult response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1380,13 +1384,13 @@ public isolated client class Client {
     # + payload - The list of attributes to link to the customer. 
     # + return - Success 
     remote isolated function linkAttributesToCustomer(int companyId, string customerCode, CustomerAttributeModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/attributes/link`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/attributes/link`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerAttributeModelFetchResult response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CustomerAttributeModelFetchResult response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Unlink attributes from a customer
@@ -1397,13 +1401,13 @@ public isolated client class Client {
     # + payload - The list of attributes to unlink from the customer. 
     # + return - Success 
     remote isolated function unlinkAttributesFromCustomer(int companyId, string customerCode, CustomerAttributeModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerAttributeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/attributes/unlink`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/attributes/unlink`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerAttributeModelFetchResult response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CustomerAttributeModelFetchResult response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List certificates linked to a customer
@@ -1418,7 +1422,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCertificatesForCustomer(int companyId, string customerCode, string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certificates`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certificates`;
         map<anydata> queryParam = {"$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1435,7 +1439,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listValidCertificatesForCustomer(int companyId, string customerCode, string country, string region, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ExemptionStatusModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certificates/${country}/${region}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certificates/${getEncodedUri(country)}/${getEncodedUri(region)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ExemptionStatusModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1449,13 +1453,13 @@ public isolated client class Client {
     # + payload - The list of certificates to link to this customer 
     # + return - Success 
     remote isolated function linkCertificatesToCustomer(int companyId, string customerCode, LinkCertificatesModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certificates/link`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certificates/link`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertificateModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unlink certificates from a customer
@@ -1466,13 +1470,13 @@ public isolated client class Client {
     # + payload - The list of certificates to link to this customer 
     # + return - Success 
     remote isolated function unlinkCertificatesFromCustomer(int companyId, string customerCode, LinkCertificatesModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CertificateModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/${customerCode}/certificates/unlink`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/${getEncodedUri(customerCode)}/certificates/unlink`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CertificateModelFetchResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CertificateModelFetchResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Link two customer records together
@@ -1483,13 +1487,13 @@ public isolated client class Client {
     # + payload - A list of information about ship-to customers to link to this bill-to customer. 
     # + return - Success 
     remote isolated function linkShipToCustomersToBillCustomer(int companyId, string code, LinkCustomersModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CustomerModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/customers/billto/${code}/shipto/link`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/customers/billto/${getEncodedUri(code)}/shipto/link`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CustomerModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CustomerModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve all datasources for this company
@@ -1502,7 +1506,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listDataSources(int companyId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns DataSourceModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/datasources`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/datasources`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1516,13 +1520,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function createDataSources(int companyId, DataSourceModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns DataSourceModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/datasources`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/datasources`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        DataSourceModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DataSourceModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get data source by data source id
@@ -1531,7 +1535,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getDataSourceById(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns DataSourceModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/datasources/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/datasources/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         DataSourceModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1544,13 +1548,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function updateDataSource(int companyId, int id, DataSourceModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns DataSourceModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/datasources/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/datasources/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        DataSourceModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        DataSourceModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a datasource by datasource id for a company.
@@ -1560,10 +1564,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteDataSource(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/datasources/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/datasources/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all datasources
@@ -1696,7 +1700,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCommunicationsServiceTypes(int id, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CommunicationsTSPairModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/communications/transactiontypes/${id}/servicetypes`;
+        string resourcePath = string `/api/v2/definitions/communications/transactiontypes/${getEncodedUri(id)}/servicetypes`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1748,7 +1752,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listRateTypesByCountry(string country, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns RateTypeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/countries/${country}/ratetypes`;
+        string resourcePath = string `/api/v2/definitions/countries/${getEncodedUri(country)}/ratetypes`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1766,7 +1770,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listRegionsByCountry(string country, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns IsoRegionModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/countries/${country}/regions`;
+        string resourcePath = string `/api/v2/definitions/countries/${getEncodedUri(country)}/regions`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1786,7 +1790,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listRateTypesByCountryTaxTypeTaxSubType(string country, string taxTypeId, string taxSubTypeId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns RateTypesModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/countries/${country}/taxtypes/${taxTypeId}/taxsubtypes/${taxSubTypeId}/ratetypes`;
+        string resourcePath = string `/api/v2/definitions/countries/${getEncodedUri(country)}/taxtypes/${getEncodedUri(taxTypeId)}/taxsubtypes/${getEncodedUri(taxSubTypeId)}/ratetypes`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1822,7 +1826,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listCrossBorderCodes(string country, string hsCode, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns HsCodeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/crossborder/${country}/${hsCode}`;
+        string resourcePath = string `/api/v2/definitions/crossborder/${getEncodedUri(country)}/${getEncodedUri(hsCode)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1837,7 +1841,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getCrossBorderCode(string country, string hsCode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns HsCodeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/crossborder/${country}/${hsCode}/hierarchy`;
+        string resourcePath = string `/api/v2/definitions/crossborder/${getEncodedUri(country)}/${getEncodedUri(hsCode)}/hierarchy`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         HsCodeModelFetchResult response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1915,7 +1919,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLoginVerifierByForm(string form, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SkyscraperStatusModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/filingcalendars/loginverifiers/${form}`;
+        string resourcePath = string `/api/v2/definitions/filingcalendars/loginverifiers/${getEncodedUri(form)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -1971,7 +1975,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listJurisdictionsByRateTypeTaxTypeMapping(string country, string region, string taxTypeId, string taxSubTypeId, string rateTypeId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns JurisdictionRateTypeTaxTypeMappingModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/jurisdictions/countries/${country}/regions/${region}/taxtypes/${taxTypeId}/taxsubtypes/${taxSubTypeId}`;
+        string resourcePath = string `/api/v2/definitions/jurisdictions/countries/${getEncodedUri(country)}/regions/${getEncodedUri(region)}/taxtypes/${getEncodedUri(taxTypeId)}/taxsubtypes/${getEncodedUri(taxSubTypeId)}`;
         map<anydata> queryParam = {"rateTypeId": rateTypeId, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2037,7 +2041,7 @@ public isolated client class Client {
     # + orderby - A comma separated list of sort statements in the format `(fieldname) [ASC|DESC]`, for example `id ASC`. 
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
-    remote isolated function listLocationQuestionsByAddress(string? line1 = (), string? line2 = (), string? line3 = (), string? city = (), string? region = (), string? postalCode = (), string? country = (), float? latitude = (), float? longitude = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationQuestionModelFetchResult|error {
+    remote isolated function listLocationQuestionsByAddress(string? line1 = (), string? line2 = (), string? line3 = (), string? city = (), string? region = (), string? postalCode = (), string? country = (), decimal? latitude = (), decimal? longitude = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationQuestionModelFetchResult|error {
         string resourcePath = string `/api/v2/definitions/locationquestions`;
         map<anydata> queryParam = {"line1": line1, "line2": line2, "line3": line3, "city": city, "region": region, "postalCode": postalCode, "country": country, "latitude": latitude, "longitude": longitude, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -2090,7 +2094,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByCountry(string country, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/nexus/${country}`;
+        string resourcePath = string `/api/v2/definitions/nexus/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2109,7 +2113,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByCountryAndRegion(string country, string region, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/nexus/${country}/${region}`;
+        string resourcePath = string `/api/v2/definitions/nexus/${getEncodedUri(country)}/${getEncodedUri(region)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2147,7 +2151,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByFormCode(string formCode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusByTaxFormModel|error {
-        string resourcePath = string `/api/v2/definitions/nexus/byform/${formCode}`;
+        string resourcePath = string `/api/v2/definitions/nexus/byform/${getEncodedUri(formCode)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         NexusByTaxFormModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2163,7 +2167,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByTaxTypeGroup(string taxTypeGroup, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/nexus/bytaxtypegroup/${taxTypeGroup}`;
+        string resourcePath = string `/api/v2/definitions/nexus/bytaxtypegroup/${getEncodedUri(taxTypeGroup)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2369,7 +2373,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listParametersByItem(string companyCode, string itemCode, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ParameterModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/parameters/byitem/${companyCode}/${itemCode}`;
+        string resourcePath = string `/api/v2/definitions/parameters/byitem/${getEncodedUri(companyCode)}/${getEncodedUri(itemCode)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2472,7 +2476,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listProductClassificationSystemsByCompany(string companyCode, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string? countrycode = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ProductClassificationSystemModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/productclassificationsystems/bycompany/${companyCode}`;
+        string resourcePath = string `/api/v2/definitions/productclassificationsystems/bycompany/${getEncodedUri(companyCode)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby, "$countryCode": countrycode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2710,7 +2714,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTaxSubTypesByJurisdictionAndRegion(string jurisdictionCode, string region, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxSubTypeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/taxsubtypes/${jurisdictionCode}/${region}`;
+        string resourcePath = string `/api/v2/definitions/taxsubtypes/${getEncodedUri(jurisdictionCode)}/${getEncodedUri(region)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2729,7 +2733,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTaxSubTypesByCountryAndTaxType(string country, string taxTypeId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxSubTypeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/taxsubtypes/countries/${country}/taxtypes/${taxTypeId}`;
+        string resourcePath = string `/api/v2/definitions/taxsubtypes/countries/${getEncodedUri(country)}/taxtypes/${getEncodedUri(taxTypeId)}`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2764,7 +2768,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTaxTypesByNexusAndCountry(string country, int companyId, int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxTypeModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/taxtypes/countries/${country}`;
+        string resourcePath = string `/api/v2/definitions/taxtypes/countries/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"companyId": companyId, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2784,7 +2788,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listUnitOfBasisByCountryAndTaxTypeAndTaxSubTypeAndRateType(string country, string taxTypeId, string taxSubTypeId, string rateTypeId, int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UnitOfBasisModelFetchResult|error {
-        string resourcePath = string `/api/v2/definitions/unitofbasis/countries/${country}/taxtypes/${taxTypeId}/taxsubtypes/${taxSubTypeId}`;
+        string resourcePath = string `/api/v2/definitions/unitofbasis/countries/${getEncodedUri(country)}/taxtypes/${getEncodedUri(taxTypeId)}/taxsubtypes/${getEncodedUri(taxSubTypeId)}`;
         map<anydata> queryParam = {"rateTypeId": rateTypeId, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2820,7 +2824,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listDistanceThresholds(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyDistanceThresholdModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/distancethresholds`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/distancethresholds`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2835,13 +2839,13 @@ public isolated client class Client {
     # + payload - The DistanceThreshold object or objects you wish to create. 
     # + return - Success 
     remote isolated function createDistanceThreshold(int companyId, CompanyDistanceThresholdModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyDistanceThresholdModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/distancethresholds`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/distancethresholds`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyDistanceThresholdModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyDistanceThresholdModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single DistanceThreshold
@@ -2851,7 +2855,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getDistanceThreshold(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyDistanceThresholdModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/distancethresholds/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/distancethresholds/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CompanyDistanceThresholdModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2865,13 +2869,13 @@ public isolated client class Client {
     # + payload - The new DistanceThreshold object to store. 
     # + return - Success 
     remote isolated function updateDistanceThreshold(int companyId, int id, CompanyDistanceThresholdModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyDistanceThresholdModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/distancethresholds/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/distancethresholds/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyDistanceThresholdModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        CompanyDistanceThresholdModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single DistanceThreshold object
@@ -2881,10 +2885,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteDistanceThreshold(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/distancethresholds/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/distancethresholds/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all DistanceThreshold objects
@@ -2911,13 +2915,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function refreshECommerceToken(int companyId, RefreshECommerceTokenInputModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ECommerceTokenOutputModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/ecommercetokens`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/ecommercetokens`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ECommerceTokenOutputModelFetchResult response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ECommerceTokenOutputModelFetchResult response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a new eCommerce token.
@@ -2926,13 +2930,13 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function createECommerceToken(int companyId, CreateECommerceTokenInputModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ECommerceTokenOutputModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/ecommercetokens`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/ecommercetokens`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ECommerceTokenOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ECommerceTokenOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a company return setting
@@ -2943,10 +2947,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteCompanyReturnSettings(int companyId, int filingCalendarId, int companyReturnSettingId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyReturnSettingModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/filingcalendars/${filingCalendarId}/setting/${companyReturnSettingId}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/filingcalendars/${getEncodedUri(filingCalendarId)}/setting/${getEncodedUri(companyReturnSettingId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        CompanyReturnSettingModel[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        CompanyReturnSettingModel[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Add or Edit options
@@ -2956,13 +2960,13 @@ public isolated client class Client {
     # + payload - Cycle Safe Options Request 
     # + return - Success 
     remote isolated function cycleSafeOptions(int companyId, CycleSafeEditRequestModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CycleSafeOptionResultModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/filingcalendars/edit/cycleSafeOptions`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/filingcalendars/edit/cycleSafeOptions`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CycleSafeOptionResultModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CycleSafeOptionResultModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve all legacy filing calendars for this company
@@ -2977,7 +2981,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function legacyFilingCalendars(int companyId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string? returnCountry = (), string? returnRegion = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FilingCalendarModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/filingcalendars/Legacy`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/filingcalendars/Legacy`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby, "returnCountry": returnCountry, "returnRegion": returnRegion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -2992,7 +2996,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getAccrualFilings(int companyId, int filingReturnId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiTaxFilingModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/filings/accrual/${filingReturnId}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/filings/accrual/${getEncodedUri(filingReturnId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         MultiTaxFilingModelFetchResult response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3012,7 +3016,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getFiledReturns(int companyId, int? endPeriodMonth = (), int? endPeriodYear = (), string? frequency = (), string? status = (), string? country = (), string? region = (), int? filingCalendarId = (), string? taxformCode = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FiledReturnModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/filings/returns/filed`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/filings/returns/filed`;
         map<anydata> queryParam = {"endPeriodMonth": endPeriodMonth, "endPeriodYear": endPeriodYear, "frequency": frequency, "status": status, "country": country, "region": region, "filingCalendarId": filingCalendarId, "taxformCode": taxformCode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3046,7 +3050,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get linkage between a firm and client by id
@@ -3054,7 +3058,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FirmClientLinkageOutputModel|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FirmClientLinkageOutputModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3065,10 +3069,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Approves linkage to a firm for a client account
@@ -3076,12 +3080,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function approveFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FirmClientLinkageOutputModel|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}/approve`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}/approve`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Rejects linkage to a firm for a client account
@@ -3089,12 +3093,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function rejectFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FirmClientLinkageOutputModel|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}/reject`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}/reject`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reset linkage status between a client and firm back to requested
@@ -3102,12 +3106,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function resetFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FirmClientLinkageOutputModel|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}/reset`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}/reset`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Revokes previously approved linkage to a firm for a client account
@@ -3115,12 +3119,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function revokeFirmClientLinkage(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FirmClientLinkageOutputModel|error {
-        string resourcePath = string `/api/v2/firmclientlinkages/${id}/revoke`;
+        string resourcePath = string `/api/v2/firmclientlinkages/${getEncodedUri(id)}/revoke`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Request a new FirmClient account and create an approved linkage to it
@@ -3135,7 +3139,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirmClientLinkageOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # FREE API - Request a free trial of AvaTax
@@ -3156,7 +3160,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function fundingRequestStatus(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingStatusModel|error {
-        string resourcePath = string `/api/v2/fundingrequests/${id}`;
+        string resourcePath = string `/api/v2/fundingrequests/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FundingStatusModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3168,7 +3172,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function activateFundingRequest(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns FundingStatusModel|error {
-        string resourcePath = string `/api/v2/fundingrequests/${id}/widget`;
+        string resourcePath = string `/api/v2/fundingrequests/${getEncodedUri(id)}/widget`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FundingStatusModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3186,7 +3190,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listItemsByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string? tagName = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby, "tagName": tagName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3201,13 +3205,13 @@ public isolated client class Client {
     # + payload - The item you wish to create. 
     # + return - Success 
     remote isolated function createItems(int companyId, ItemModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single item
@@ -3218,7 +3222,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getItem(int companyId, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3234,13 +3238,13 @@ public isolated client class Client {
     # + payload - The item object you wish to update. 
     # + return - Success 
     remote isolated function updateItem(int companyId, int id, ItemModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ItemModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single item
@@ -3250,10 +3254,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteItem(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve classifications for an item.
@@ -3267,7 +3271,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listItemClassifications(int companyId, int itemId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemClassificationOutputModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3283,13 +3287,13 @@ public isolated client class Client {
     # + payload - The item classifications you wish to create. 
     # + return - Success 
     remote isolated function createItemClassifications(int companyId, int itemId, ItemClassificationInputModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemClassificationOutputModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemClassificationOutputModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemClassificationOutputModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete all classifications for an item
@@ -3299,10 +3303,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function batchDeleteItemClassifications(int companyId, int itemId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a single item classification.
@@ -3313,7 +3317,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getItemClassification(int companyId, int itemId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemClassificationOutputModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ItemClassificationOutputModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3328,13 +3332,13 @@ public isolated client class Client {
     # + payload - The item object you wish to update. 
     # + return - Success 
     remote isolated function updateItemClassification(int companyId, int itemId, int id, ItemClassificationInputModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemClassificationOutputModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemClassificationOutputModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ItemClassificationOutputModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single item classification.
@@ -3345,10 +3349,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteItemClassification(int companyId, int itemId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/classifications/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/classifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve parameters for an item
@@ -3362,7 +3366,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listItemParameters(int companyId, int itemId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemParameterModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3378,13 +3382,13 @@ public isolated client class Client {
     # + payload - The item parameters you wish to create. 
     # + return - Success 
     remote isolated function createItemParameters(int companyId, int itemId, ItemParameterModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemParameterModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemParameterModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemParameterModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete all parameters for an item
@@ -3394,10 +3398,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function batchDeleteItemParameters(int companyId, int itemId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a single item parameter
@@ -3408,7 +3412,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getItemParameter(int companyId, int itemId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemParameterModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ItemParameterModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3423,13 +3427,13 @@ public isolated client class Client {
     # + payload - The item object you wish to update. 
     # + return - Success 
     remote isolated function updateItemParameter(int companyId, int itemId, int id, ItemParameterModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemParameterModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemParameterModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ItemParameterModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single item parameter
@@ -3440,10 +3444,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteItemParameter(int companyId, int itemId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve tags for an item
@@ -3456,7 +3460,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getItemTags(int companyId, int itemId, string? filter = (), int? top = (), int? skip = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemTagDetailModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/tags`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/tags`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3472,13 +3476,13 @@ public isolated client class Client {
     # + payload - Tags you wish to associate with the Item 
     # + return - Success 
     remote isolated function createItemTags(int companyId, int itemId, ItemTagDetailModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemTagDetailModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/tags`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/tags`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemTagDetailModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemTagDetailModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete all item tags
@@ -3488,10 +3492,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteItemTags(int companyId, int itemId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/tags`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/tags`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Delete item tag by id
@@ -3502,10 +3506,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteItemTag(int companyId, int itemId, int itemTagDetailId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/${itemId}/tags/${itemTagDetailId}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/${getEncodedUri(itemId)}/tags/${getEncodedUri(itemTagDetailId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all items associated with given tag
@@ -3520,7 +3524,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function queryItemsByTag(int companyId, string tag, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/bytags/${tag}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/bytags/${getEncodedUri(tag)}`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3535,13 +3539,13 @@ public isolated client class Client {
     # + payload - The request object. 
     # + return - Success 
     remote isolated function syncItems(int companyId, SyncItemsRequestModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SyncItemsResponseModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/sync`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/sync`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        SyncItemsResponseModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SyncItemsResponseModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Bulk upload items from a product catalog
@@ -3551,13 +3555,13 @@ public isolated client class Client {
     # + payload - The items you wish to upload. 
     # + return - Success 
     remote isolated function bulkUploadItems(int companyId, ItemBulkUploadInputModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ItemBulkUploadOutputModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/items/upload`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/items/upload`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ItemBulkUploadOutputModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemBulkUploadOutputModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve all items
@@ -3589,7 +3593,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listJurisdictionOverridesByAccount(int accountId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns JurisdictionOverrideModelFetchResult|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/jurisdictionoverrides`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/jurisdictionoverrides`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3604,13 +3608,13 @@ public isolated client class Client {
     # + payload - The jurisdiction override objects to create 
     # + return - Success 
     remote isolated function createJurisdictionOverrides(int accountId, JurisdictionOverrideModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns JurisdictionOverrideModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/jurisdictionoverrides`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/jurisdictionoverrides`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        JurisdictionOverrideModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        JurisdictionOverrideModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single override
@@ -3620,7 +3624,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getJurisdictionOverride(int accountId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns JurisdictionOverrideModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/jurisdictionoverrides/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/jurisdictionoverrides/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         JurisdictionOverrideModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3634,13 +3638,13 @@ public isolated client class Client {
     # + payload - The jurisdictionoverride object you wish to update. 
     # + return - Success 
     remote isolated function updateJurisdictionOverride(int accountId, int id, JurisdictionOverrideModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns JurisdictionOverrideModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/jurisdictionoverrides/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/jurisdictionoverrides/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        JurisdictionOverrideModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        JurisdictionOverrideModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single override
@@ -3650,10 +3654,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteJurisdictionOverride(int accountId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/jurisdictionoverrides/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/jurisdictionoverrides/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all overrides
@@ -3685,7 +3689,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listLocationsByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3700,13 +3704,13 @@ public isolated client class Client {
     # + payload - The location you wish to create. 
     # + return - Success 
     remote isolated function createLocations(int companyId, LocationModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LocationModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LocationModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single location
@@ -3717,7 +3721,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLocation(int companyId, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3733,13 +3737,13 @@ public isolated client class Client {
     # + payload - The location you wish to update. 
     # + return - Success 
     remote isolated function updateLocation(int companyId, int id, LocationModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LocationModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        LocationModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single location
@@ -3749,10 +3753,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteLocation(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Validate the location against local requirements
@@ -3762,7 +3766,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function validateLocation(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationValidationModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${id}/validate`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(id)}/validate`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         LocationValidationModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3779,7 +3783,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listLocationParameters(int companyId, int locationId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationParameterModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${locationId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(locationId)}/parameters`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3795,13 +3799,13 @@ public isolated client class Client {
     # + payload - The location parameters you wish to create. 
     # + return - Success 
     remote isolated function createLocationParameters(int companyId, int locationId, LocationParameterModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationParameterModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${locationId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(locationId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LocationParameterModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LocationParameterModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single company location parameter
@@ -3812,7 +3816,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getLocationParameter(int companyId, int locationId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationParameterModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${locationId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(locationId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         LocationParameterModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3827,13 +3831,13 @@ public isolated client class Client {
     # + payload - The location parameter object you wish to update. 
     # + return - Success 
     remote isolated function updateLocationParameter(int companyId, int locationId, int id, LocationParameterModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns LocationParameterModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${locationId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(locationId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        LocationParameterModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        LocationParameterModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single location parameter
@@ -3844,10 +3848,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteLocationParameter(int companyId, int locationId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${locationId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(locationId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all locations
@@ -3901,7 +3905,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a MultiDocument transaction
@@ -3912,7 +3916,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getMultiDocumentTransactionByCodeAndType(string code, string 'type, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${code}/type/${'type}`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(code)}/type/${getEncodedUri('type)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3929,7 +3933,7 @@ public isolated client class Client {
     # + payload - The adjust request you wish to execute 
     # + return - Success 
     remote isolated function adjustMultiDocumentTransaction(string code, string 'type, AdjustMultiDocumentModel payload, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${code}/type/${'type}/adjust`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(code)}/type/${getEncodedUri('type)}/adjust`;
         map<anydata> queryParam = {"include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3937,7 +3941,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get audit information about a MultiDocument transaction
@@ -3947,7 +3951,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function auditMultiDocumentTransaction(string code, string 'type, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AuditMultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${code}/type/${'type}/audit`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(code)}/type/${getEncodedUri('type)}/audit`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AuditMultiDocumentModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3962,7 +3966,7 @@ public isolated client class Client {
     # + payload - Information about the refund to create 
     # + return - Success 
     remote isolated function refundMultiDocumentTransaction(string code, string 'type, RefundTransactionModel payload, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${code}/type/${'type}/refund`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(code)}/type/${getEncodedUri('type)}/refund`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -3970,7 +3974,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Void a MultiDocument transaction
@@ -3981,13 +3985,13 @@ public isolated client class Client {
     # + payload - The void request you wish to execute 
     # + return - Success 
     remote isolated function voidMultiDocumentTransaction(string code, string 'type, VoidTransactionModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${code}/type/${'type}/void`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(code)}/type/${getEncodedUri('type)}/void`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a MultiDocument transaction by ID
@@ -3997,7 +4001,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getMultiDocumentTransactionById(int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns MultiDocumentModel|error {
-        string resourcePath = string `/api/v2/transactions/multidocument/${id}`;
+        string resourcePath = string `/api/v2/transactions/multidocument/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4017,7 +4021,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Verify a MultiDocument transaction
@@ -4032,7 +4036,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MultiDocumentModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve nexus for this company
@@ -4046,7 +4050,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4061,13 +4065,13 @@ public isolated client class Client {
     # + payload - The nexus you wish to create. 
     # + return - Success 
     remote isolated function createNexus(int companyId, NexusModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NexusModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NexusModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single nexus
@@ -4077,7 +4081,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getNexus(int companyId, int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4093,13 +4097,13 @@ public isolated client class Client {
     # + payload - The nexus object you wish to update. 
     # + return - Success 
     remote isolated function updateNexus(int companyId, int id, NexusModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NexusModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        NexusModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single nexus
@@ -4110,12 +4114,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNexus(int companyId, int id, boolean? cascadeDelete = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"cascadeDelete": cascadeDelete};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve parameters for a nexus
@@ -4129,7 +4133,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusParameters(int companyId, int nexusId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusParameterDetailModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4145,13 +4149,13 @@ public isolated client class Client {
     # + payload - The nexus parameters you wish to create. 
     # + return - Success 
     remote isolated function createNexusParameters(int companyId, int nexusId, NexusParameterDetailModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusParameterDetailModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NexusParameterDetailModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NexusParameterDetailModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete all parameters for an nexus
@@ -4161,10 +4165,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNexusParameters(int companyId, int nexusId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve a single nexus parameter
@@ -4175,7 +4179,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getNexusParameter(int companyId, int nexusId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusParameterDetailModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         NexusParameterDetailModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4190,13 +4194,13 @@ public isolated client class Client {
     # + payload - The nexus object you wish to update. 
     # + return - Success 
     remote isolated function updateNexusParameter(int companyId, int nexusId, int id, NexusParameterDetailModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusParameterDetailModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NexusParameterDetailModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        NexusParameterDetailModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single nexus parameter
@@ -4207,10 +4211,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNexusParameter(int companyId, int nexusId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/${nexusId}/parameters/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/${getEncodedUri(nexusId)}/parameters/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Creates nexus for a list of addresses.
@@ -4220,13 +4224,13 @@ public isolated client class Client {
     # + payload - The nexus you wish to create. 
     # + return - Success 
     remote isolated function declareNexusByAddress(int companyId, DeclareNexusByAddressModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusByAddressModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/byaddress`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/byaddress`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NexusByAddressModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NexusByAddressModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List company nexus related to a tax form
@@ -4236,7 +4240,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getNexusByFormCode(int companyId, string formCode, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusByTaxFormModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/byform/${formCode}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/byform/${getEncodedUri(formCode)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4256,7 +4260,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listNexusByCompanyAndTaxTypeGroup(int companyId, string taxTypeGroup, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NexusModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/nexus/byTaxTypeGroup/${taxTypeGroup}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/nexus/byTaxTypeGroup/${getEncodedUri(taxTypeGroup)}`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4294,7 +4298,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NoticeResponsibilityModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NoticeResponsibilityModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a tax notice responsibility type.
@@ -4303,10 +4307,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNoticeResponsibilityType(int responsibilityId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/notices/responsibilities/${responsibilityId}`;
+        string resourcePath = string `/api/v2/notices/responsibilities/${getEncodedUri(responsibilityId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Creates a new tax notice root cause type.
@@ -4321,7 +4325,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NoticeRootCauseModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NoticeRootCauseModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a tax notice root cause type.
@@ -4330,10 +4334,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNoticeRootCauseType(int rootCauseId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/notices/rootcauses/${rootCauseId}`;
+        string resourcePath = string `/api/v2/notices/rootcauses/${getEncodedUri(rootCauseId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List all notifications.
@@ -4365,7 +4369,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NotificationModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NotificationModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single notification.
@@ -4374,7 +4378,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getNotification(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NotificationModel|error {
-        string resourcePath = string `/api/v2/notifications/${id}`;
+        string resourcePath = string `/api/v2/notifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         NotificationModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4387,13 +4391,13 @@ public isolated client class Client {
     # + payload - The notification object you wish to update. 
     # + return - Success 
     remote isolated function updateNotification(int id, NotificationModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NotificationModel|error {
-        string resourcePath = string `/api/v2/notifications/${id}`;
+        string resourcePath = string `/api/v2/notifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NotificationModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        NotificationModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single notification.
@@ -4402,10 +4406,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteNotification(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/notifications/${id}`;
+        string resourcePath = string `/api/v2/notifications/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Mark a single notification as dismissed.
@@ -4414,12 +4418,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function dismissNotification(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns NotificationModel|error {
-        string resourcePath = string `/api/v2/notifications/${id}/dismiss`;
+        string resourcePath = string `/api/v2/notifications/${getEncodedUri(id)}/dismiss`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        NotificationModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        NotificationModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Request a new entitilement to an existing customer
@@ -4429,12 +4433,12 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function requestNewEntitlement(int id, string offer, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns OfferModel|error {
-        string resourcePath = string `/api/v2/accounts/${id}/entitlements/${offer}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(id)}/entitlements/${getEncodedUri(offer)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        OfferModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OfferModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Request a new Avalara account
@@ -4449,7 +4453,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        NewAccountModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NewAccountModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve List of Accounts by Account Migration Status
@@ -4457,7 +4461,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listAccountsByTssWriteMode(string writeMode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AccountMigrationStatusModel|error {
-        string resourcePath = string `/api/v2/accounts/ListAccountsByTssWriteMode/${writeMode}`;
+        string resourcePath = string `/api/v2/accounts/ListAccountsByTssWriteMode/${getEncodedUri(writeMode)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AccountMigrationStatusModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4471,7 +4475,7 @@ public isolated client class Client {
     # + payload - The new password for this user 
     # + return - Success 
     remote isolated function resetPassword(int userId, SetPasswordModel payload, boolean unmigrateFromAi = false, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/passwords/${userId}/reset`;
+        string resourcePath = string `/api/v2/passwords/${getEncodedUri(userId)}/reset`;
         map<anydata> queryParam = {"unmigrateFromAi": unmigrateFromAi};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4479,7 +4483,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Initiate an ExportDocumentLine report task
@@ -4489,13 +4493,13 @@ public isolated client class Client {
     # + payload - Options that may be configured to customize the report. 
     # + return - Success 
     remote isolated function initiateExportDocumentLineReport(int companyId, ExportDocumentLineModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ReportModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/reports/exportdocumentline/initiate`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/reports/exportdocumentline/initiate`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        ReportModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ReportModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List all report tasks for account
@@ -4521,7 +4525,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getReport(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ReportModel|error {
-        string resourcePath = string `/api/v2/reports/${id}`;
+        string resourcePath = string `/api/v2/reports/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ReportModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4533,7 +4537,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - OK 
     remote isolated function downloadReport(int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/reports/${id}/attachment`;
+        string resourcePath = string `/api/v2/reports/${getEncodedUri(id)}/attachment`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4550,7 +4554,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listSettingsByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SettingModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/settings`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/settings`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4565,13 +4569,13 @@ public isolated client class Client {
     # + payload - The setting you wish to create. 
     # + return - Success 
     remote isolated function createSettings(int companyId, SettingModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SettingModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/settings`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/settings`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        SettingModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SettingModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single setting
@@ -4581,7 +4585,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getSetting(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SettingModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/settings/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/settings/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SettingModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4595,13 +4599,13 @@ public isolated client class Client {
     # + payload - The setting you wish to update. 
     # + return - Success 
     remote isolated function updateSetting(int companyId, int id, SettingModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SettingModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/settings/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/settings/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        SettingModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        SettingModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single setting
@@ -4611,10 +4615,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteSetting(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/settings/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/settings/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all settings
@@ -4645,7 +4649,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listSubscriptionsByAccount(int accountId, string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SubscriptionModelFetchResult|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/subscriptions`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/subscriptions`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4660,13 +4664,13 @@ public isolated client class Client {
     # + payload - The subscription you wish to create. 
     # + return - Success 
     remote isolated function createSubscriptions(int accountId, SubscriptionModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SubscriptionModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/subscriptions`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/subscriptions`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        SubscriptionModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SubscriptionModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single subscription
@@ -4676,7 +4680,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getSubscription(int accountId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SubscriptionModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/subscriptions/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SubscriptionModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4690,13 +4694,13 @@ public isolated client class Client {
     # + payload - The subscription you wish to update. 
     # + return - Success 
     remote isolated function updateSubscription(int accountId, int id, SubscriptionModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SubscriptionModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/subscriptions/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        SubscriptionModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        SubscriptionModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single subscription
@@ -4706,10 +4710,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteSubscription(int accountId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/subscriptions/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all subscriptions
@@ -4740,7 +4744,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTaxCodesByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxCodeModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxcodes`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxcodes`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4755,13 +4759,13 @@ public isolated client class Client {
     # + payload - The tax code you wish to create. 
     # + return - Success 
     remote isolated function createTaxCodes(int companyId, TaxCodeModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxCodeModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxcodes`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxcodes`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TaxCodeModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TaxCodeModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single tax code
@@ -4771,7 +4775,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getTaxCode(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxCodeModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxcodes/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxcodes/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TaxCodeModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4785,13 +4789,13 @@ public isolated client class Client {
     # + payload - The tax code you wish to update. 
     # + return - Success 
     remote isolated function updateTaxCode(int companyId, int id, TaxCodeModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxCodeModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxcodes/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxcodes/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TaxCodeModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TaxCodeModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single tax code
@@ -4801,10 +4805,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteTaxCode(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxcodes/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxcodes/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all tax codes
@@ -4836,7 +4840,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - OK 
     remote isolated function buildTaxContentFileForLocation(int companyId, int id, string? date = (), string? format = (), string? partnerId = (), boolean? includeJurisCodes = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/locations/${id}/pointofsaledata`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/locations/${getEncodedUri(id)}/pointofsaledata`;
         map<anydata> queryParam = {"date": date, "format": format, "partnerId": partnerId, "includeJurisCodes": includeJurisCodes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4856,7 +4860,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sales tax rates for a specified address
@@ -4901,7 +4905,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - OK 
     remote isolated function downloadTaxRatesByZipCode(string date, string? region = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns string|error {
-        string resourcePath = string `/api/v2/taxratesbyzipcode/download/${date}`;
+        string resourcePath = string `/api/v2/taxratesbyzipcode/download/${getEncodedUri(date)}`;
         map<anydata> queryParam = {"region": region};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4920,7 +4924,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTaxRules(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxRuleModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxrules`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxrules`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -4935,13 +4939,13 @@ public isolated client class Client {
     # + payload - The tax rule you wish to create. 
     # + return - Success 
     remote isolated function createTaxRules(int companyId, TaxRuleModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxRuleModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxrules`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxrules`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TaxRuleModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TaxRuleModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single tax rule
@@ -4951,7 +4955,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getTaxRule(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxRuleModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxrules/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxrules/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TaxRuleModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -4965,13 +4969,13 @@ public isolated client class Client {
     # + payload - The tax rule you wish to update. 
     # + return - Success 
     remote isolated function updateTaxRule(int companyId, int id, TaxRuleModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TaxRuleModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxrules/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxrules/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TaxRuleModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TaxRuleModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single tax rule
@@ -4981,10 +4985,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteTaxRule(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/taxrules/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/taxrules/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all tax rules
@@ -5017,7 +5021,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listTransactionsByCompany(string companyCode, int? dataSourceId = (), string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions`;
         map<anydata> queryParam = {"dataSourceId": dataSourceId, "$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5034,7 +5038,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getTransactionByCode(string companyCode, string transactionCode, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5052,7 +5056,7 @@ public isolated client class Client {
     # + payload - The adjustment you wish to make 
     # + return - Success 
     remote isolated function adjustTransaction(string companyCode, string transactionCode, AdjustTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/adjust`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/adjust`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5060,7 +5064,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get audit information about a transaction
@@ -5070,7 +5074,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function auditTransaction(string companyCode, string transactionCode, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AuditTransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/audit`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/audit`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AuditTransactionModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -5086,7 +5090,7 @@ public isolated client class Client {
     # + payload - The code change request you wish to execute 
     # + return - Success 
     remote isolated function changeTransactionCode(string companyCode, string transactionCode, ChangeTransactionCodeModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/changecode`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/changecode`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5094,7 +5098,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Commit a transaction for reporting
@@ -5107,7 +5111,7 @@ public isolated client class Client {
     # + payload - The commit request you wish to execute 
     # + return - Success 
     remote isolated function commitTransaction(string companyCode, string transactionCode, CommitTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/commit`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/commit`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5115,7 +5119,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Lock a single transaction
@@ -5128,7 +5132,7 @@ public isolated client class Client {
     # + payload - The lock request you wish to execute 
     # + return - Success 
     remote isolated function lockTransaction(string companyCode, string transactionCode, LockTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/lock`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/lock`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5136,7 +5140,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a refund for a transaction
@@ -5150,7 +5154,7 @@ public isolated client class Client {
     # + payload - Information about the refund to create 
     # + return - Success 
     remote isolated function refundTransaction(string companyCode, string transactionCode, RefundTransactionModel payload, string? include = (), string? documentType = (), boolean useTaxDateOverride = false, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/refund`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/refund`;
         map<anydata> queryParam = {"$include": include, "documentType": documentType, "useTaxDateOverride": useTaxDateOverride};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5158,7 +5162,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform multiple actions on a transaction
@@ -5171,7 +5175,7 @@ public isolated client class Client {
     # + payload - The data from an external system to reconcile against AvaTax 
     # + return - Success 
     remote isolated function settleTransaction(string companyCode, string transactionCode, SettleTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/settle`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/settle`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5179,7 +5183,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single transaction by code
@@ -5191,7 +5195,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getTransactionByCodeAndType(string companyCode, string transactionCode, string documentType, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/types/${documentType}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/types/${getEncodedUri(documentType)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5207,7 +5211,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function auditTransactionWithType(string companyCode, string transactionCode, string documentType, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns AuditTransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/types/${documentType}/audit`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/types/${getEncodedUri(documentType)}/audit`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AuditTransactionModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -5222,14 +5226,14 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function uncommitTransaction(string companyCode, string transactionCode, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/uncommit`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/uncommit`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unvoids a transaction
@@ -5241,14 +5245,14 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function unvoidTransaction(string companyCode, string transactionCode, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/unvoid`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/unvoid`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Verify a transaction
@@ -5261,7 +5265,7 @@ public isolated client class Client {
     # + payload - The data from an external system to reconcile against AvaTax 
     # + return - Success 
     remote isolated function verifyTransaction(string companyCode, string transactionCode, VerifyTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/verify`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/verify`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5269,7 +5273,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Void a transaction
@@ -5282,7 +5286,7 @@ public isolated client class Client {
     # + payload - The void request you wish to execute. To void a transaction the code must be set to 'DocVoided' 
     # + return - Success 
     remote isolated function voidTransaction(string companyCode, string transactionCode, VoidTransactionModel payload, string? documentType = (), string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/companies/${companyCode}/transactions/${transactionCode}/void`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyCode)}/transactions/${getEncodedUri(transactionCode)}/void`;
         map<anydata> queryParam = {"documentType": documentType, "$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5290,7 +5294,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Add lines to an existing unlocked transaction
@@ -5308,7 +5312,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove lines from an existing unlocked transaction
@@ -5326,7 +5330,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single transaction by ID
@@ -5336,7 +5340,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getTransactionById(int id, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns TransactionModel|error {
-        string resourcePath = string `/api/v2/transactions/${id}`;
+        string resourcePath = string `/api/v2/transactions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5359,7 +5363,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create or adjust a transaction
@@ -5377,7 +5381,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        TransactionModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Lock a set of documents
@@ -5392,7 +5396,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        BulkLockTransactionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BulkLockTransactionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve UPCs for this company
@@ -5406,7 +5410,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listUPCsByCompany(int companyId, string? filter = (), string? include = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UPCModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/upcs`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/upcs`;
         map<anydata> queryParam = {"$filter": filter, "$include": include, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5421,13 +5425,13 @@ public isolated client class Client {
     # + payload - The UPC you wish to create. 
     # + return - Success 
     remote isolated function createUPCs(int companyId, UPCModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UPCModel[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/upcs`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/upcs`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        UPCModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UPCModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single UPC
@@ -5437,7 +5441,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getUPC(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UPCModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/upcs/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/upcs/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         UPCModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -5451,13 +5455,13 @@ public isolated client class Client {
     # + payload - The UPC you wish to update. 
     # + return - Success 
     remote isolated function updateUPC(int companyId, int id, UPCModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UPCModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/upcs/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/upcs/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        UPCModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UPCModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single UPC
@@ -5467,10 +5471,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteUPC(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/upcs/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/upcs/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all UPCs
@@ -5503,7 +5507,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listUserDefinedFieldsByCompanyId(int companyId, string udfType = "Document", boolean allowDefaults = true, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyUserDefinedFieldModelFetchResult|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/userdefinedfields`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/userdefinedfields`;
         map<anydata> queryParam = {"udfType": udfType, "allowDefaults": allowDefaults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5517,7 +5521,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function updateUserDefinedField(int companyId, CompanyUserDefinedFieldModel payload, int? id = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns CompanyUserDefinedFieldModel|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/userdefinedfields`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/userdefinedfields`;
         map<anydata> queryParam = {"id": id};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5525,7 +5529,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        CompanyUserDefinedFieldModel response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CompanyUserDefinedFieldModel response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a User Defined Field by User Defined Field id for a company.
@@ -5535,10 +5539,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteUserDefinedField(int companyId, int id, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/companies/${companyId}/userdefinedfields/${id}`;
+        string resourcePath = string `/api/v2/companies/${getEncodedUri(companyId)}/userdefinedfields/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve users for this account
@@ -5552,7 +5556,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function listUsersByAccount(int accountId, string? include = (), string? filter = (), int? top = (), int? skip = (), string? orderby = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UserModelFetchResult|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users`;
         map<anydata> queryParam = {"$include": include, "$filter": filter, "$top": top, "$skip": skip, "$orderBy": orderby};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5567,13 +5571,13 @@ public isolated client class Client {
     # + payload - The user or array of users you wish to create. 
     # + return - Success 
     remote isolated function createUsers(int accountId, UserModel[] payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UserModel[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        UserModel[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserModel[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a single user
@@ -5584,7 +5588,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getUser(int id, int accountId, string? include = (), string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UserModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
@@ -5600,13 +5604,13 @@ public isolated client class Client {
     # + payload - The user object you wish to update. 
     # + return - Success 
     remote isolated function updateUser(int id, int accountId, UserModel payload, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UserModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        UserModel response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UserModel response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a single user
@@ -5616,10 +5620,10 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function deleteUser(int id, int accountId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns ErrorDetail[]|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users/${id}`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        ErrorDetail[] response = check self.clientEp->delete(resourcePath, httpHeaders);
+        ErrorDetail[] response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieve all entitlements for a single user
@@ -5629,7 +5633,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getUserEntitlements(int id, int accountId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns UserEntitlementModel|error {
-        string resourcePath = string `/api/v2/accounts/${accountId}/users/${id}/entitlements`;
+        string resourcePath = string `/api/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(id)}/entitlements`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         UserEntitlementModel response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -5647,7 +5651,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
-        string response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve all users
@@ -5696,7 +5700,7 @@ public isolated client class Client {
     # + xAvalaraClient - Identifies the software you are using to call this API.  For more information on the client header, see [Client Headers](https://developer.avalara.com/avatax/client-headers/) . 
     # + return - Success 
     remote isolated function getMySubscription(string serviceTypeId, string xAvalaraClient = "Swagger UI; 21.12.0; Custom; 1.0") returns SubscriptionModel|error {
-        string resourcePath = string `/api/v2/utilities/subscriptions/${serviceTypeId}`;
+        string resourcePath = string `/api/v2/utilities/subscriptions/${getEncodedUri(serviceTypeId)}`;
         map<any> headerValues = {"X-Avalara-Client": xAvalaraClient};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SubscriptionModel response = check self.clientEp->get(resourcePath, httpHeaders);

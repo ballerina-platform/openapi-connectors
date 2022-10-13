@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Reponse metadata
 public type Meta record {
@@ -47,6 +49,7 @@ public type Company record {
     string? industry?;
     int? interaction_count?;
     string? last_activity_at?;
+    @constraint:String {minLength: 1}
     string name;
     # Number of employees
     string? number_of_employees?;
@@ -102,6 +105,7 @@ public type Invoice record {
     decimal? sub_total?;
     decimal? total?;
     decimal? total_tax?;
+    # 
     string? 'type?;
     UpdatedAt updated_at?;
     UpdatedBy? updated_by?;
@@ -201,7 +205,7 @@ public type InlineResponse422 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -253,7 +257,7 @@ public type InlineResponseDefault record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string|record {} detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -439,6 +443,7 @@ public type DeleteInvoiceResponse record {
 public type SocialLink record {
     string? id?;
     string? 'type?;
+    @constraint:String {minLength: 1}
     string url;
 };
 
@@ -484,6 +489,7 @@ public type User record {
 
 public type TaxrateComponents record {
     boolean? compound?;
+    @constraint:String {minLength: 1}
     string name?;
     decimal? rate?;
 };
@@ -509,6 +515,7 @@ public type GetCompaniesResponse record {
 public type Website record {
     string? id?;
     string 'type?;
+    @constraint:String {minLength: 1}
     string url;
 };
 
@@ -516,7 +523,7 @@ public type InlineResponse401 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -531,7 +538,7 @@ public type InlineResponse400 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string|record {} detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -546,7 +553,7 @@ public type InlineResponse402 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -561,7 +568,7 @@ public type InlineResponse404 record {
     # Contains parameter or domain specific information related to the error and why it occured.
     string|record {} detail?;
     # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string _error?;
+    string 'error?;
     # A human-readable message providing more details about the error.
     string message?;
     # Link to documentation of error type
@@ -658,6 +665,7 @@ public type Opportunity record {
     string? status?;
     string? status_id?;
     Tags tags?;
+    @constraint:String {minLength: 1}
     string title;
     string? 'type?;
     string updated_at?;
@@ -685,6 +693,7 @@ public type Lead record {
     string? last_name?;
     string? lead_source?;
     decimal? monetary_amount?;
+    @constraint:String {minLength: 1}
     string name;
     string owner_id?;
     PhoneNumber[] phone_numbers?;
@@ -707,6 +716,7 @@ public type TaxRate record {
     decimal? effective_tax_rate?;
     # The unique Id.
     Id id?;
+    @constraint:String {minLength: 1}
     string name?;
     # ID of the original tax rate from which the new tax rate is derived. Helps to understand the relationship between corresponding tax rate entities.
     string? original_tax_rate_id?;
@@ -801,6 +811,7 @@ public type Contact record {
     string? lead_id?;
     string? lead_source?;
     string? middle_name?;
+    @constraint:String {minLength: 1}
     string name;
     string? owner_id?;
     PhoneNumber[] phone_numbers?;
@@ -821,6 +832,7 @@ public type Pipeline record {
     string currency?;
     int display_order?;
     string id?;
+    @constraint:String {minLength: 1}
     string name;
     PipelineStages[] stages?;
     string updated_at?;
@@ -856,7 +868,7 @@ public type CreateCompanyResponse record {
 
 public type CustomField record {
     string id;
-    string|decimal|boolean|string[]? value?;
+    string?|decimal?|boolean?|string[] value?;
 };
 
 # Links to navigate to previous or next pages through the API
@@ -871,6 +883,7 @@ public type Links record {
 
 public type PhoneNumber record {
     string? id?;
+    @constraint:String {minLength: 1}
     string number;
     string 'type?;
 };

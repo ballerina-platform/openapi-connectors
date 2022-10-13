@@ -2924,7 +2924,7 @@ components:
               type: "array"
               additionalProperties: false
               items:
-                title: "workergeneralDeductionInstruction.changeQueryCriterion"
+                title: "workergeneralDeductionInstructionchangeQueryCriterion"
                 description: "A single query parameter"
                 type: "object"
                 additionalProperties: false
@@ -3497,7 +3497,7 @@ components:
               type: "array"
               additionalProperties: false
               items:
-                title: "workergeneralDeductionInstruction.stopQueryCriterion"
+                title: "workergeneralDeductionInstructionstopQueryCriterion"
                 description: "A single query parameter"
                 type: "object"
                 additionalProperties: false

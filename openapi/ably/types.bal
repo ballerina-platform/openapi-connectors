@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -195,12 +195,12 @@ public type PushApns record {
 
 public type PushChannelsubscriptionsBody2 record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when clientId is empty, cannot be used with clientId.
     string deviceId?;
 }|record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when deviceId is empty, cannot be used with deviceId.
     string clientId?;
 };
@@ -213,24 +213,24 @@ public type PushWeb record {
 
 public type PushChannelsubscriptionsBody record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when clientId is empty, cannot be used with clientId.
     string deviceId?;
 }|record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when deviceId is empty, cannot be used with deviceId.
     string clientId?;
 };
 
 public type PushChannelsubscriptionsBody1 record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when clientId is empty, cannot be used with clientId.
     string deviceId?;
 }|record {
     # Channel name.
-    string 'channel?;
+    string channel?;
     # Must be set when deviceId is empty, cannot be used with deviceId.
     string clientId?;
 };
@@ -281,7 +281,7 @@ public type Recipient record {
 };
 
 public type InlineResponse2xx1 record {
-    string 'channel?;
+    string channel?;
     string messageId?;
 };
 

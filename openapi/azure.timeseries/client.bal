@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector from [Azure Time Series Insights API 2020-07-31 version](https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.
@@ -100,7 +104,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EventSchema response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EventSchema response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the model settings which includes model display name, Time Series ID properties and default type ID. Every Gen2 environment has a model that is automatically created.
@@ -134,7 +138,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ModelSettingsResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        ModelSettingsResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Executes Time Series Query in pages of results - Get Events, Get Series or Aggregate Series.
@@ -155,7 +159,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        QueryResultPage response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        QueryResultPage response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets time series instances in pages.
@@ -190,7 +194,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstancesBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstancesBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Suggests keywords based on time series instance attributes to be later used in Search Instances.
@@ -209,7 +213,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstancesSuggestResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstancesSuggestResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Partial list of hits on search for time series instances based on instance attributes.
@@ -229,7 +233,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SearchInstancesResponsePage response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SearchInstancesResponsePage response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets time series types in pages.
@@ -264,7 +268,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TypesBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TypesBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns time series hierarchies definitions in pages.
@@ -299,7 +303,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        HierarchiesBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        HierarchiesBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

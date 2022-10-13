@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector from [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.
@@ -84,7 +88,7 @@ public isolated client class Client {
     # + tokenId - Unique ID for the API token. 
     # + return - Success 
     remote isolated function apitokensGet(string apiVersion, string tokenId) returns ApiToken|error {
-        string resourcePath = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${getEncodedUri(tokenId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ApiToken response = check self.clientEp->get(resourcePath);
@@ -97,7 +101,7 @@ public isolated client class Client {
     # + payload - API token body. 
     # + return - Success 
     remote isolated function apitokensCreate(string apiVersion, string tokenId, ApiToken payload) returns ApiToken|error {
-        string resourcePath = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${getEncodedUri(tokenId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -112,10 +116,10 @@ public isolated client class Client {
     # + tokenId - Unique ID for the API token. 
     # + return - Success 
     remote isolated function apitokensRemove(string apiVersion, string tokenId) returns http:Response|error {
-        string resourcePath = string `/apiTokens/${tokenId}`;
+        string resourcePath = string `/apiTokens/${getEncodedUri(tokenId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the list of device templates in an application
@@ -135,7 +139,7 @@ public isolated client class Client {
     # + deviceTemplateId - Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier) 
     # + return - Success 
     remote isolated function devicetemplatesGet(string apiVersion, string deviceTemplateId) returns DeviceTemplate|error {
-        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${getEncodedUri(deviceTemplateId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceTemplate response = check self.clientEp->get(resourcePath);
@@ -148,7 +152,7 @@ public isolated client class Client {
     # + payload - Device template body. 
     # + return - Success 
     remote isolated function devicetemplatesCreate(string apiVersion, string deviceTemplateId, DeviceTemplate payload) returns DeviceTemplate|error {
-        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${getEncodedUri(deviceTemplateId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -163,10 +167,10 @@ public isolated client class Client {
     # + deviceTemplateId - Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier) 
     # + return - Success 
     remote isolated function devicetemplatesRemove(string apiVersion, string deviceTemplateId) returns http:Response|error {
-        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${getEncodedUri(deviceTemplateId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update the cloud properties and overrides of an existing device template via patch.
@@ -176,7 +180,7 @@ public isolated client class Client {
     # + payload - Device template patch body. 
     # + return - Success 
     remote isolated function devicetemplatesUpdate(string apiVersion, string deviceTemplateId, Payload payload) returns DeviceTemplate|error {
-        string resourcePath = string `/deviceTemplates/${deviceTemplateId}`;
+        string resourcePath = string `/deviceTemplates/${getEncodedUri(deviceTemplateId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -202,7 +206,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGet(string apiVersion, string deviceId) returns Device|error {
-        string resourcePath = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Device response = check self.clientEp->get(resourcePath);
@@ -215,7 +219,7 @@ public isolated client class Client {
     # + payload - Device body. 
     # + return - Success 
     remote isolated function devicesCreate(string apiVersion, string deviceId, Device payload) returns Device|error {
-        string resourcePath = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -230,10 +234,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesRemove(string apiVersion, string deviceId) returns http:Response|error {
-        string resourcePath = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a device via patch
@@ -243,7 +247,7 @@ public isolated client class Client {
     # + payload - Device patch body. 
     # + return - Success 
     remote isolated function devicesUpdate(string apiVersion, string deviceId, Payload payload) returns Device|error {
-        string resourcePath = string `/devices/${deviceId}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -258,7 +262,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetattestation(string apiVersion, string deviceId) returns Attestation|error {
-        string resourcePath = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Attestation response = check self.clientEp->get(resourcePath);
@@ -271,7 +275,7 @@ public isolated client class Client {
     # + payload - Individual device attestation body. 
     # + return - Success 
     remote isolated function devicesCreateattestation(string apiVersion, string deviceId, Attestation payload) returns Attestation|error {
-        string resourcePath = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -286,10 +290,10 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesRemoveattestation(string apiVersion, string deviceId) returns http:Response|error {
-        string resourcePath = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an individual device attestation via patch
@@ -299,7 +303,7 @@ public isolated client class Client {
     # + payload - Individual device attestation patch body. 
     # + return - Success 
     remote isolated function devicesUpdateattestation(string apiVersion, string deviceId, Payload payload) returns Attestation|error {
-        string resourcePath = string `/devices/${deviceId}/attestation`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/attestation`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -315,7 +319,7 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetcommandhistory(string apiVersion, string deviceId, string commandName) returns DeviceCommandCollection|error {
-        string resourcePath = string `/devices/${deviceId}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceCommandCollection response = check self.clientEp->get(resourcePath);
@@ -329,7 +333,7 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRuncommand(string apiVersion, string deviceId, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string resourcePath = string `/devices/${deviceId}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -344,7 +348,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesListcomponents(string apiVersion, string deviceId) returns Collection|error {
-        string resourcePath = string `/devices/${deviceId}/components`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Collection response = check self.clientEp->get(resourcePath);
@@ -358,7 +362,7 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetcomponentcommandhistory(string apiVersion, string deviceId, string componentName, string commandName) returns DeviceCommandCollection|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceCommandCollection response = check self.clientEp->get(resourcePath);
@@ -373,7 +377,7 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRuncomponentcommand(string apiVersion, string deviceId, string componentName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -389,7 +393,7 @@ public isolated client class Client {
     # + componentName - Name of the device component. 
     # + return - Success 
     remote isolated function devicesGetcomponentproperties(string apiVersion, string deviceId, string componentName) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceProperties response = check self.clientEp->get(resourcePath);
@@ -403,7 +407,7 @@ public isolated client class Client {
     # + payload - Device properties. 
     # + return - Success 
     remote isolated function devicesReplacecomponentproperties(string apiVersion, string deviceId, string componentName, DeviceProperties payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -420,7 +424,7 @@ public isolated client class Client {
     # + payload - Device properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatecomponentproperties(string apiVersion, string deviceId, string componentName, Payload payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -437,7 +441,7 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetcomponenttelemetryvalue(string apiVersion, string deviceId, string componentName, string telemetryName) returns DeviceTelemetry|error {
-        string resourcePath = string `/devices/${deviceId}/components/${componentName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/components/${getEncodedUri(componentName)}/telemetry/${getEncodedUri(telemetryName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceTelemetry response = check self.clientEp->get(resourcePath);
@@ -449,7 +453,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetcredentials(string apiVersion, string deviceId) returns DeviceCredentials|error {
-        string resourcePath = string `/devices/${deviceId}/credentials`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/credentials`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceCredentials response = check self.clientEp->get(resourcePath);
@@ -461,7 +465,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesListmodules(string apiVersion, string deviceId) returns Collection|error {
-        string resourcePath = string `/devices/${deviceId}/modules`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Collection response = check self.clientEp->get(resourcePath);
@@ -475,7 +479,7 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetmodulecommandhistory(string apiVersion, string deviceId, string moduleName, string commandName) returns DeviceCommandCollection|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceCommandCollection response = check self.clientEp->get(resourcePath);
@@ -490,7 +494,7 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRunmodulecommand(string apiVersion, string deviceId, string moduleName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -506,7 +510,7 @@ public isolated client class Client {
     # + moduleName - Name of the device module. 
     # + return - Success 
     remote isolated function devicesListmodulecomponents(string apiVersion, string deviceId, string moduleName) returns Collection|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Collection response = check self.clientEp->get(resourcePath);
@@ -521,7 +525,7 @@ public isolated client class Client {
     # + commandName - Name of this device command. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponentcommandhistory(string apiVersion, string deviceId, string moduleName, string componentName, string commandName) returns DeviceCommandCollection|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceCommandCollection response = check self.clientEp->get(resourcePath);
@@ -537,7 +541,7 @@ public isolated client class Client {
     # + payload - Device command body. 
     # + return - Success 
     remote isolated function devicesRunmodulecomponentcommand(string apiVersion, string deviceId, string moduleName, string componentName, string commandName, DeviceCommand payload) returns DeviceCommand|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/commands/${commandName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/commands/${getEncodedUri(commandName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -554,7 +558,7 @@ public isolated client class Client {
     # + componentName - Name of the device component. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceProperties response = check self.clientEp->get(resourcePath);
@@ -569,7 +573,7 @@ public isolated client class Client {
     # + payload - Module properties. 
     # + return - Success 
     remote isolated function devicesReplacemodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName, DeviceProperties payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -587,7 +591,7 @@ public isolated client class Client {
     # + payload - Module properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatemodulecomponentproperties(string apiVersion, string deviceId, string moduleName, string componentName, Payload payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -605,7 +609,7 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetmodulecomponenttelemetryvalue(string apiVersion, string deviceId, string moduleName, string componentName, string telemetryName) returns DeviceTelemetry|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/components/${componentName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/components/${getEncodedUri(componentName)}/telemetry/${getEncodedUri(telemetryName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceTelemetry response = check self.clientEp->get(resourcePath);
@@ -618,7 +622,7 @@ public isolated client class Client {
     # + moduleName - Name of the device module. 
     # + return - Success 
     remote isolated function devicesGetmoduleproperties(string apiVersion, string deviceId, string moduleName) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceProperties response = check self.clientEp->get(resourcePath);
@@ -632,7 +636,7 @@ public isolated client class Client {
     # + payload - Module properties. 
     # + return - Success 
     remote isolated function devicesReplacemoduleproperties(string apiVersion, string deviceId, string moduleName, DeviceProperties payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -649,7 +653,7 @@ public isolated client class Client {
     # + payload - Module properties patch. 
     # + return - Success 
     remote isolated function devicesUpdatemoduleproperties(string apiVersion, string deviceId, string moduleName, Payload payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -666,7 +670,7 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGetmoduletelemetryvalue(string apiVersion, string deviceId, string moduleName, string telemetryName) returns DeviceTelemetry|error {
-        string resourcePath = string `/devices/${deviceId}/modules/${moduleName}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/modules/${getEncodedUri(moduleName)}/telemetry/${getEncodedUri(telemetryName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceTelemetry response = check self.clientEp->get(resourcePath);
@@ -678,7 +682,7 @@ public isolated client class Client {
     # + deviceId - Unique ID of the device. 
     # + return - Success 
     remote isolated function devicesGetproperties(string apiVersion, string deviceId) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceProperties response = check self.clientEp->get(resourcePath);
@@ -691,7 +695,7 @@ public isolated client class Client {
     # + payload - Device properties. 
     # + return - Success 
     remote isolated function devicesReplaceproperties(string apiVersion, string deviceId, DeviceProperties payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -707,7 +711,7 @@ public isolated client class Client {
     # + payload - Device properties patch. 
     # + return - Success 
     remote isolated function devicesUpdateproperties(string apiVersion, string deviceId, Payload payload) returns DeviceProperties|error {
-        string resourcePath = string `/devices/${deviceId}/properties`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/properties`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -723,7 +727,7 @@ public isolated client class Client {
     # + telemetryName - Name of this device telemetry. 
     # + return - Success 
     remote isolated function devicesGettelemetryvalue(string apiVersion, string deviceId, string telemetryName) returns DeviceTelemetry|error {
-        string resourcePath = string `/devices/${deviceId}/telemetry/${telemetryName}`;
+        string resourcePath = string `/devices/${getEncodedUri(deviceId)}/telemetry/${getEncodedUri(telemetryName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DeviceTelemetry response = check self.clientEp->get(resourcePath);
@@ -746,7 +750,7 @@ public isolated client class Client {
     # + roleId - Unique ID for the role. 
     # + return - Success 
     remote isolated function rolesGet(string apiVersion, string roleId) returns Role|error {
-        string resourcePath = string `/roles/${roleId}`;
+        string resourcePath = string `/roles/${getEncodedUri(roleId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Role response = check self.clientEp->get(resourcePath);
@@ -769,7 +773,7 @@ public isolated client class Client {
     # + userId - Unique ID of the user. 
     # + return - Success 
     remote isolated function usersGet(string apiVersion, string userId) returns User|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         User response = check self.clientEp->get(resourcePath);
@@ -782,7 +786,7 @@ public isolated client class Client {
     # + payload - User body. 
     # + return - Success 
     remote isolated function usersCreate(string apiVersion, string userId, User payload) returns User|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -797,10 +801,10 @@ public isolated client class Client {
     # + userId - Unique ID of the user. 
     # + return - Success 
     remote isolated function usersRemove(string apiVersion, string userId) returns http:Response|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a user in the application via patch
@@ -810,7 +814,7 @@ public isolated client class Client {
     # + payload - User patch body. 
     # + return - Success 
     remote isolated function usersUpdate(string apiVersion, string userId, Payload payload) returns User|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

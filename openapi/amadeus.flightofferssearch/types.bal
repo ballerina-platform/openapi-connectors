@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # traveler type
 # age restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y
@@ -123,12 +125,14 @@ public type FlightOffer record {
     # If booked on the same day as the search (with respect to timezone), this flight offer is guaranteed to be thereafter valid for ticketing until this date (included). Unspecified when it does not make sense for this flight offer (e.g. no control over ticketing once booked). YYYY-MM-DD format, e.g. 2019-06-07
     string lastTicketingDate?;
     # Number of seats bookable in a single request. Can not be higher than 9.
+    @constraint:Number {minValue: 1, maxValue: 9}
     decimal numberOfBookableSeats?;
     Itineraries[] itineraries?;
     # price information
     ExtendedPrice price?;
     PricingOptions pricingOptions?;
     # This option ensures that the system will only consider offers with these airlines as validating carrier.
+    @constraint:Array {maxLength: 9, minLength: 1}
     string[] validatingAirlineCodes?;
     # Fare information for each traveler/segment
     TravelerPricing[] travelerPricings?;
@@ -218,6 +222,7 @@ public type OriginDestination record {
     # Can not be combined with "dateWindow" or "timeWindow".
     decimal originRadius?;
     # Set of alternative origin location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.
+    @constraint:Array {maxLength: 2, minLength: 1}
     string[] alternativeOriginsCodes?;
     # Destination location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.
     string destinationLocationCode?;
@@ -226,12 +231,15 @@ public type OriginDestination record {
     # Can not be combined with "dateWindow" or "timeWindow".
     decimal destinationRadius?;
     # Set of alternative destination location, such as a city or an airport. Currently, only the locations defined in [IATA](http://www.iata.org/publications/Pages/code-search.aspx) are supported.
+    @constraint:Array {maxLength: 2, minLength: 1}
     string[] alternativeDestinationsCodes?;
     DateTimeRange departureDateTimeRange?;
     DateTimeRange arrivalDateTimeRange?;
     # List of included connections points. When an includedViaPoints option is specified, all FlightOffer returned must at least go via this Connecting Point. Currently, only the locations defined in IATA are supported. Used only by the AMADEUS provider
+    @constraint:Array {maxLength: 2, minLength: 1}
     string[] includedConnectionPoints?;
     # List of excluded connections points. Any FlightOffer with these connections points will be present in response. Currently, only the locations defined in IATA are supported. Used only by the AMADEUS provider
+    @constraint:Array {maxLength: 3, minLength: 1}
     string[] excludedConnectionPoints?;
 };
 
@@ -243,8 +251,10 @@ public type CarrierRestrictions record {
     # This flag enable/disable filtering of blacklisted airline by EU. The list of the banned airlines is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline
     boolean blacklistedInEUAllowed?;
     # This option ensures that the system will only consider these airlines.
+    @constraint:Array {maxLength: 99, minLength: 1}
     string[] excludedCarrierCodes?;
     # This option ensures that the system will only consider these airlines.
+    @constraint:Array {maxLength: 99, minLength: 1}
     string[] includedCarrierCodes?;
 };
 
@@ -278,13 +288,16 @@ public type GetFlightOffersQuery record {
     # The currency code, as defined in [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217), to reflect the currency in which this amount is expressed.
     string currencyCode?;
     # Origins and Destinations must be properly ordered in time (chronological order in accordance with the timezone of each location) to describe the journey consistently. Dates and times must not be past nor more than 365 days in the future, according to provider settings.Number of Origins and Destinations must not exceed the limit defined in provider settings.
+    @constraint:Array {maxLength: 6, minLength: 1}
     OriginDestination[] originDestinations;
     # travelers in the trip. 
     # 
     #  Maximum number of passengers older than 2 yo (CHILD, ADULT, YOUGHT): 9.
     #  Each adult can travel with one INFANT so maximum total number of passengers: 18
+    @constraint:Array {maxLength: 18, minLength: 1}
     Traveler[] travelers;
     # Allows enable one or more sources. If present in the list, these sources will be called by the system.
+    @constraint:Array {minLength: 1}
     FlightOfferSource[] sources;
     SearchCriteria searchCriteria?;
 };
@@ -322,6 +335,7 @@ public type Segment record {
     # The [list of the banned airlines](https://ec.europa.eu/transport/sites/transport/files/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   
     boolean blacklistedInEU?;
     # Co2 informations
+    @constraint:Array {minLength: 1}
     Co2Emission[] co2Emissions?;
     *FlightSegment;
 };
@@ -333,8 +347,10 @@ public type FlightSegment record {
     # departure or arrival information
     FlightEndPoint arrival?;
     # providing the airline / carrier code
+    @constraint:String {maxLength: 2, minLength: 1}
     string carrierCode?;
     # the flight number as assigned by the carrier
+    @constraint:String {maxLength: 4, minLength: 1}
     string number?;
     # information related to the aircraft
     AircraftEquipment aircraft?;
@@ -476,12 +492,14 @@ public type PricingOptionsFareType string[];
 public type Itineraries record {
     # duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m
     string duration?;
+    @constraint:Array {maxLength: 9, minLength: 1}
     Segment[] segments;
 };
 
 # information about the operating flight
 public type OperatingFlight record {
     # providing the airline / carrier code
+    @constraint:String {maxLength: 2, minLength: 1}
     string carrierCode?;
 };
 
@@ -506,6 +524,7 @@ public type FlightFilters record {
     # Restriction towards carriers.
     CarrierRestrictions carrierRestrictions?;
     # Restriction towards cabins.
+    @constraint:Array {maxLength: 6, minLength: 1}
     CabinRestriction[] cabinRestrictions?;
     # Restriction towards number of connections.
     ConnectionRestriction connectionRestriction?;

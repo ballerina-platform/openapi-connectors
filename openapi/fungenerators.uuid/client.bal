@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -67,7 +67,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a random UUID (v4).
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + text - For v3 and v5 of UUID Spec supply the text value for the type specified dns/url/oid/x500/nil. For example specify a dns/domain string if the type is "dns" 
     # + return - 200  response 
     remote isolated function generateUUIDByVersion(int 'version, int? count = (), string? 'type = (), string? text = ()) returns json|error {
-        string resourcePath = string `/uuid/version/${'version}`;
+        string resourcePath = string `/uuid/version/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"count": count, "type": 'type, "text": text};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-Fungenerators-Api-Secret": self.apiKeyConfig.xFungeneratorsApiSecret};

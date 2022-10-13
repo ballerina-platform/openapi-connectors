@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -86,7 +86,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ArticleShow response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ArticleShow response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Published articles sorted by publish date
@@ -162,7 +162,7 @@ public isolated client class Client {
     # + id - Id of the article 
     # + return - An article 
     remote isolated function getArticleById(int id) returns ArticleShow|error {
-        string resourcePath = string `/articles/${id}`;
+        string resourcePath = string `/articles/${getEncodedUri(id)}`;
         ArticleShow response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -172,13 +172,13 @@ public isolated client class Client {
     # + payload - Article params for the update. 
     # + return - The updated article 
     remote isolated function updateArticle(int id, ArticleUpdate payload) returns ArticleShow|error {
-        string resourcePath = string `/articles/${id}`;
+        string resourcePath = string `/articles/${getEncodedUri(id)}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ArticleShow response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ArticleShow response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # A published article by path
@@ -187,7 +187,7 @@ public isolated client class Client {
     # + slug - Slug of the article. 
     # + return - An article 
     remote isolated function getArticleByPath(string username, string slug) returns ArticleShow|error {
-        string resourcePath = string `/articles/${username}/${slug}`;
+        string resourcePath = string `/articles/${getEncodedUri(username)}/${getEncodedUri(slug)}`;
         ArticleShow response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -208,7 +208,7 @@ public isolated client class Client {
     # + id - Comment identifier. 
     # + return - A comment and its descendants 
     remote isolated function getCommentById(string id) returns Comment|error {
-        string resourcePath = string `/comments/${id}`;
+        string resourcePath = string `/comments/${getEncodedUri(id)}`;
         Comment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -261,7 +261,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Listing response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Listing response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Published listings by category
@@ -271,7 +271,7 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of listings 
     remote isolated function getListingsByCategory(ListingCategory category, int page = 1, int perPage = 30) returns Listing[]|error {
-        string resourcePath = string `/listings/category/${category}`;
+        string resourcePath = string `/listings/category/${getEncodedUri(category)}`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Listing[] response = check self.clientEp->get(resourcePath);
@@ -282,7 +282,7 @@ public isolated client class Client {
     # + id - Id of the listing 
     # + return - A listing 
     remote isolated function getListingById(int id) returns Listing|error {
-        string resourcePath = string `/listings/${id}`;
+        string resourcePath = string `/listings/${getEncodedUri(id)}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Listing response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -294,13 +294,13 @@ public isolated client class Client {
     # + payload - Listing params for the update. 
     # + return - The updated article 
     remote isolated function updateListing(int id, ListingUpdate payload) returns ArticleShow|error {
-        string resourcePath = string `/listings/${id}`;
+        string resourcePath = string `/listings/${getEncodedUri(id)}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ArticleShow response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ArticleShow response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # An organization
@@ -308,7 +308,7 @@ public isolated client class Client {
     # + username - Username of the organization 
     # + return - An organization 
     remote isolated function getOrganization(string username) returns Organization|error {
-        string resourcePath = string `/organizations/${username}`;
+        string resourcePath = string `/organizations/${getEncodedUri(username)}`;
         Organization response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -319,7 +319,7 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of users belonging to the organization 
     remote isolated function getOrgArticles(string username, int page = 1, int perPage = 30) returns ArticleIndex[]|error {
-        string resourcePath = string `/organizations/${username}/articles`;
+        string resourcePath = string `/organizations/${getEncodedUri(username)}/articles`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ArticleIndex[] response = check self.clientEp->get(resourcePath);
@@ -333,7 +333,7 @@ public isolated client class Client {
     # + category - Using this parameter will return listings belonging to the requested category. 
     # + return - A list of listings belonging to the organization 
     remote isolated function getOrgListings(string username, int page = 1, int perPage = 30, string? category = ()) returns json[]|error {
-        string resourcePath = string `/organizations/${username}/listings`;
+        string resourcePath = string `/organizations/${getEncodedUri(username)}/listings`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "category": category};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json[] response = check self.clientEp->get(resourcePath);
@@ -346,7 +346,7 @@ public isolated client class Client {
     # + perPage - Page size (the number of items to return per page). 
     # + return - A list of users belonging to the organization 
     remote isolated function getOrgUsers(string username, int page = 1, int perPage = 30) returns User[]|error {
-        string resourcePath = string `/organizations/${username}/users`;
+        string resourcePath = string `/organizations/${getEncodedUri(username)}/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         User[] response = check self.clientEp->get(resourcePath);
@@ -370,7 +370,7 @@ public isolated client class Client {
     # + username - Username of the user or organization 
     # + return - The profile image 
     remote isolated function getProfileImage(string username) returns ProfileImage|error {
-        string resourcePath = string `/profile_images/${username}`;
+        string resourcePath = string `/profile_images/${getEncodedUri(username)}`;
         ProfileImage response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -416,7 +416,7 @@ public isolated client class Client {
     # + url - Username of the user 
     # + return - A user 
     remote isolated function getUser(string id, string? url = ()) returns User|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"url": url};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         User response = check self.clientEp->get(resourcePath);
@@ -455,7 +455,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        WebhookShow response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        WebhookShow response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # A webhook endpoint
@@ -463,7 +463,7 @@ public isolated client class Client {
     # + id - Id of the webhook 
     # + return - A webhook endpoint 
     remote isolated function getWebhookById(int id) returns WebhookShow|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         WebhookShow response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -474,10 +474,10 @@ public isolated client class Client {
     # + id - Id of the webhook 
     # + return - A successful deletion 
     remote isolated function deleteWebhook(int id) returns http:Response|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         map<any> headerValues = {"api-key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.ebay.com/identity/v1/oauth2/token";
 |};
 
 # This is a generated connector for [eBay Inventory API v1.13.0](https://developer.ebay.com/api-docs/sell/inventory/overview.html) OpenAPI Specification.
@@ -108,7 +119,7 @@ public isolated client class Client {
     # + sku - This is the seller-defined SKU value of the product whose inventory item record you wish to retrieve. Max length: 50. 
     # + return - Success 
     remote isolated function getInventoryItem(string sku) returns InventoryItemWithSkuLocaleGroupid|error {
-        string resourcePath = string `/inventory_item/${sku}`;
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}`;
         InventoryItemWithSkuLocaleGroupid response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -119,13 +130,13 @@ public isolated client class Client {
     # + payload - Details of the inventory item record. 
     # + return - Success 
     remote isolated function createOrReplaceInventoryItem(string contentLanguage, string sku, InventoryItem payload) returns BaseResponse|error? {
-        string resourcePath = string `/inventory_item/${sku}`;
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}`;
         map<any> headerValues = {"Content-Language": contentLanguage};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BaseResponse? response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        BaseResponse? response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # This call is used to delete an inventory item record associated with a specified SKU. A successful call will not only delete that inventory item record, but will also have the following effects: Delete any and all unpublished offers associated with that SKU; Delete any and all single-variation eBay listings associated with that SKU; Automatically remove that SKU from a multiple-variation listing and remove that SKU from any and all inventory item groups in which that SKU was a member. The authorization header is the only required HTTP header for this call. See the HTTP request headers section for more information.
@@ -133,8 +144,8 @@ public isolated client class Client {
     # + sku - This is the seller-defined SKU value of the product whose inventory item record you wish to delete. Max length: 50. 
     # + return - No Content 
     remote isolated function deleteInventoryItem(string sku) returns http:Response|error {
-        string resourcePath = string `/inventory_item/${sku}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This call retrieves all inventory item records defined for the seller's account. The limit query parameter allows the seller to control how many records are returned per page, and the offset query parameter is used to retrieve a specific page of records. The seller can make multiple calls to scan through multiple pages of records. There is no request payload for this call. The authorization header is the only required HTTP header for this call, and it is required for all Inventory API calls. See the HTTP request headers section for more information. For those who prefer to retrieve numerous inventory item records by SKU value with one call (up to 25 at a time), the bulkGetInventoryItem method can be used.
@@ -154,7 +165,7 @@ public isolated client class Client {
     # + sku - A SKU (stock keeping unit) is an unique identifier defined by a seller for a product 
     # + return - Success 
     remote isolated function getProductCompatibility(string sku) returns Compatibility|error {
-        string resourcePath = string `/inventory_item/${sku}/product_compatibility`;
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}/product_compatibility`;
         Compatibility response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -165,13 +176,13 @@ public isolated client class Client {
     # + payload - Details of the compatibility 
     # + return - Success 
     remote isolated function createOrReplaceProductCompatibility(string contentLanguage, string sku, Compatibility payload) returns BaseResponse|error? {
-        string resourcePath = string `/inventory_item/${sku}/product_compatibility`;
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}/product_compatibility`;
         map<any> headerValues = {"Content-Language": contentLanguage};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BaseResponse? response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        BaseResponse? response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # This call is used by the seller to delete the list of products that are compatible with the inventory item that is associated with the compatible product list. The inventory item is identified with a SKU value in the URI. Product compatibility is currently only applicable to motor vehicle parts and accessory categories, but more categories may be supported in the future.
@@ -179,8 +190,8 @@ public isolated client class Client {
     # + sku - A SKU (stock keeping unit) is an unique identifier defined by a seller for a product 
     # + return - No Content 
     remote isolated function deleteProductCompatibility(string sku) returns http:Response|error {
-        string resourcePath = string `/inventory_item/${sku}/product_compatibility`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/inventory_item/${getEncodedUri(sku)}/product_compatibility`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This call retrieves the inventory item group for a given inventoryItemGroupKey value. The inventoryItemGroupKey value is passed in at the end of the call URI.
@@ -188,7 +199,7 @@ public isolated client class Client {
     # + inventoryItemGroupKey - The unique identifier of an inventory item group. This value is assigned by the seller when an inventory item group is created. The inventoryItemGroupKey value for the inventory item group to retrieve is passed in at the end of the call URI. 
     # + return - Success 
     remote isolated function getInventoryItemGroup(string inventoryItemGroupKey) returns InventoryItemGroup|error {
-        string resourcePath = string `/inventory_item_group/${inventoryItemGroupKey}`;
+        string resourcePath = string `/inventory_item_group/${getEncodedUri(inventoryItemGroupKey)}`;
         InventoryItemGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -199,13 +210,13 @@ public isolated client class Client {
     # + payload - Details of the inventory Item Group 
     # + return - Success 
     remote isolated function createOrReplaceInventoryItemGroup(string contentLanguage, string inventoryItemGroupKey, InventoryItemGroup payload) returns BaseResponse|error? {
-        string resourcePath = string `/inventory_item_group/${inventoryItemGroupKey}`;
+        string resourcePath = string `/inventory_item_group/${getEncodedUri(inventoryItemGroupKey)}`;
         map<any> headerValues = {"Content-Language": contentLanguage};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BaseResponse? response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        BaseResponse? response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # This call deletes the inventory item group for a given inventoryItemGroupKey value.
@@ -213,8 +224,8 @@ public isolated client class Client {
     # + inventoryItemGroupKey - The unique identifier of an inventory item group. This value is assigned by the seller when an inventory item group is created. The inventoryItemGroupKey value for the inventory item group to delete is passed in at the end of the call URI. 
     # + return - No Content 
     remote isolated function deleteInventoryItemGroup(string inventoryItemGroupKey) returns http:Response|error {
-        string resourcePath = string `/inventory_item_group/${inventoryItemGroupKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/inventory_item_group/${getEncodedUri(inventoryItemGroupKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This call is used to convert existing eBay Listings to the corresponding Inventory API objects. If an eBay listing is successfully migrated to the Inventory API model, new Inventory Location, Inventory Item, and Offer objects are created. For a multiple-variation listing that is successfully migrated, in addition to the three new Inventory API objects just mentioned, an Inventory Item Group object will also be created. If the eBay listing is a motor vehicle part or accessory listing with a compatible vehicle list (ItemCompatibilityList container in Trading API's Add/Revise/Relist/Verify calls), a Product Compatibility object will be created. Migration Requirements To be eligible for migration, the active eBay listings must meet the following requirements: Listing type is Fixed-Price Listing duration is 'GTC' (Good 'til Cancelled) The item(s) in the listings must have seller-defined SKU values associated with them, and in the case of a multiple-variation listing, each product variation must also have its own SKU value Business Polices (Payment, Return Policy, and Shipping) must be used on the listing, as legacy payment, return policy, and shipping fields will not be accepted. With the Payment Policy associated with a listing, the immediate payment requirement must be enabled, and the only accepted payment method should be PayPal The postal/zip code (PostalCode field in Trading's ItemType) or city (Location field in Trading's ItemType) must be set in the listing; the country is also needed, but this value is required in Trading API, so it will always be set for every listing Unsupported Listing Features The following features are not yet available to be set or modified through the Inventory API, but they will remain on the active eBay listing, even after a successful migration to the Inventory model. The downside to this is that the seller will be completely blocked (in APIs or My eBay) from revising these features/settings once the migration takes place: Any listing-level Buyer Requirements Charity donations from sale proceeds Listing Designer Template applied to the listing Listing enhancements like a bold listing title or Gallery Plus Making the Call In the request payload of the bulkMigrateListings call, the seller will pass in an array of one to five eBay listing IDs (aka Item IDs). To save time and hassle, that seller should do a pre-check on each listing to make sure those listings meet the requirements to be migrated to the new Inventory model. There are no path or query parameters for this call. Call Response If an eBay listing is migrated successfully to the new Inventory model, the following will occur: An Inventory Item object will be created for the item(s) in the listing, and this object will be accessible through the Inventory API An Offer object will be created for the listing, and this object will be accessible through the Inventory API An Inventory Location object will be created and associated with the Offer object, as an Inventory Location must be associated with a published OfferThe response payload of the Bulk Migrate Listings call will show the results of each listing migration. These results include an HTTP status code to indicate the success or failure of each listing migration, the SKU value associated with each item, and if the migration is successful, an Offer ID value. The SKU value will be used in the Inventory API to manage the Inventory Item object, and the Offer ID value will be used in the Inventory API to manage the Offer object. Errors and/or warnings containers will be returned for each listing where an error and/or warning occurred with the attempted migration. If a multiple-variation listing is successfully migrated, along with the Offer and Inventory Location objects, an Inventory Item object will be created for each product variation within the listing, and an Inventory Item Group object will also be created, grouping those variations together in the Inventory API platform. For a motor vehicle part or accessory listing that has a specified list of compatible vehicles, in addition to the Inventory Item, Inventory Location, and Offer objects that are created, a Product Compatibility object will also be created in the Inventory API platform.
@@ -280,7 +291,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OfferResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OfferResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # This call retrieves a specific published or unpublished offer. The unique identifier of the offer (offerId) is passed in at the end of the call URI. The authorization header is the only required HTTP header for this call. See the HTTP request headers section for more information.
@@ -288,7 +299,7 @@ public isolated client class Client {
     # + offerId - The unique identifier of the offer that is to be retrieved. 
     # + return - Success 
     remote isolated function getOffer(string offerId) returns EbayOfferDetailsWithAll|error {
-        string resourcePath = string `/offer/${offerId}`;
+        string resourcePath = string `/offer/${getEncodedUri(offerId)}`;
         EbayOfferDetailsWithAll response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -299,13 +310,13 @@ public isolated client class Client {
     # + payload - Details of the offer for the channel 
     # + return - Success 
     remote isolated function updateOffer(string contentLanguage, string offerId, EbayOfferDetailsWithId payload) returns OfferResponse|error? {
-        string resourcePath = string `/offer/${offerId}`;
+        string resourcePath = string `/offer/${getEncodedUri(offerId)}`;
         map<any> headerValues = {"Content-Language": contentLanguage};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OfferResponse? response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OfferResponse? response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # If used against an unpublished offer, this call will permanently delete that offer. In the case of a published offer (or live eBay listing), a successful call will either end the single-variation listing associated with the offer, or it will remove that product variation from the eBay listing and also automatically remove that product variation from the inventory item group. In the case of a multiple-variation listing, the deleteOffer will not remove the product variation from the listing if that variation has one or more sales. If that product variation has one or more sales, the seller can alternately just set the available quantity of that product variation to 0, so it is not available in the eBay search or View Item page, and then the seller can remove that product variation from the inventory item group at a later time.
@@ -313,8 +324,8 @@ public isolated client class Client {
     # + offerId - The unique identifier of the offer to delete. The unique identifier of the offer (offerId) is passed in at the end of the call URI. 
     # + return - No Content 
     remote isolated function deleteOffer(string offerId) returns http:Response|error {
-        string resourcePath = string `/offer/${offerId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/offer/${getEncodedUri(offerId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This call is used to retrieve the expected listing fees for up to 250 unpublished offers. An array of one or more offerId values are passed in under the offers container. In the response payload, all listing fees are grouped by eBay marketplace, and listing fees per offer are not shown. A fees container will be returned for each eBay marketplace where the seller is selling the products associated with the specified offers. Errors will occur if the seller passes in offerIds that represent published offers, so this call should be made before the seller publishes offers with the publishOffer.
@@ -334,7 +345,7 @@ public isolated client class Client {
     # + offerId - The unique identifier of the offer that is to be published. 
     # + return - Success 
     remote isolated function publishOffer(string offerId) returns PublishResponse|error {
-        string resourcePath = string `/offer/${offerId}/publish/`;
+        string resourcePath = string `/offer/${getEncodedUri(offerId)}/publish/`;
         http:Request request = new;
         //TODO: Update the request as needed;
         PublishResponse response = check self.clientEp-> post(resourcePath, request);
@@ -357,7 +368,7 @@ public isolated client class Client {
     # + offerId - The unique identifier of the offer that is to be withdrawn. This value is passed into the path of the call URI. 
     # + return - Success 
     remote isolated function withdrawOffer(string offerId) returns WithdrawResponse|error {
-        string resourcePath = string `/offer/${offerId}/withdraw`;
+        string resourcePath = string `/offer/${getEncodedUri(offerId)}/withdraw`;
         http:Request request = new;
         //TODO: Update the request as needed;
         WithdrawResponse response = check self.clientEp-> post(resourcePath, request);
@@ -380,7 +391,7 @@ public isolated client class Client {
     # + merchantLocationKey - A unique merchant-defined key (ID) for an inventory location. This value is passed in at the end of the call URI to specify the inventory location to retrieve. Max length: 36 
     # + return - Success 
     remote isolated function getInventoryLocation(string merchantLocationKey) returns InventoryLocationResponse|error {
-        string resourcePath = string `/location/${merchantLocationKey}`;
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}`;
         InventoryLocationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -390,7 +401,7 @@ public isolated client class Client {
     # + payload - Inventory Location details 
     # + return - No Content 
     remote isolated function createInventoryLocation(string merchantLocationKey, InventoryLocationFull payload) returns http:Response|error {
-        string resourcePath = string `/location/${merchantLocationKey}`;
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -402,8 +413,8 @@ public isolated client class Client {
     # + merchantLocationKey - A unique merchant-defined key (ID) for an inventory location. This value is passed in at the end of the call URI to indicate the inventory location to be deleted. Max length: 36 
     # + return - Success 
     remote isolated function deleteInventoryLocation(string merchantLocationKey) returns http:Response|error {
-        string resourcePath = string `/location/${merchantLocationKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # This call disables the inventory location that is specified in the merchantLocationKey path parameter. Sellers can not load/modify inventory to disabled inventory locations. Note that disabling an inventory location will not affect any active eBay listings associated with the disabled location, but the seller will not be able modify the offers associated with a disabled inventory location. The authorization HTTP header is the only required request header for this call. A successful call will return an HTTP status value of 200 OK.
@@ -411,7 +422,7 @@ public isolated client class Client {
     # + merchantLocationKey - A unique merchant-defined key (ID) for an inventory location. This value is passed in through the call URI to disable the specified inventory location. Max length: 36 
     # + return - Success 
     remote isolated function disableInventoryLocation(string merchantLocationKey) returns json|error {
-        string resourcePath = string `/location/${merchantLocationKey}/disable`;
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}/disable`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> post(resourcePath, request);
@@ -422,7 +433,7 @@ public isolated client class Client {
     # + merchantLocationKey - A unique merchant-defined key (ID) for an inventory location. This value is passed in through the call URI to specify the disabled inventory location to enable. Max length: 36 
     # + return - Success 
     remote isolated function enableInventoryLocation(string merchantLocationKey) returns json|error {
-        string resourcePath = string `/location/${merchantLocationKey}/enable`;
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}/enable`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> post(resourcePath, request);
@@ -446,7 +457,7 @@ public isolated client class Client {
     # + payload - The inventory location details to be updated (other than the address and geo co-ordinates). 
     # + return - Success 
     remote isolated function updateInventoryLocation(string merchantLocationKey, InventoryLocation payload) returns http:Response|error {
-        string resourcePath = string `/location/${merchantLocationKey}/update_location_details`;
+        string resourcePath = string `/location/${getEncodedUri(merchantLocationKey)}/update_location_details`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

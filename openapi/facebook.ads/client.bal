@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public isolated client class Client {
     # + summary - Aggregated information about the edge, such as counts 
     # + return - Success 
     remote isolated function getCampaigns(string adAccountId, string? datePreset = (), string[]? effectiveStatus = (), boolean? isCompleted = (), TimeRange? timeRange = (), string[]? fields = (), string[]? summary = ()) returns CampaignList|error {
-        string resourcePath = string `/act_${adAccountId}/campaigns`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/campaigns`;
         map<anydata> queryParam = {"date_preset": datePreset, "effective_status": effectiveStatus, "is_completed": isCompleted, "time_range": timeRange, "fields": fields, "summary": summary, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"effective_status": {style: FORM, explode: true}, "time_range": {style: FORM, explode: true}, "fields": {style: FORM, explode: false}, "summary": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -66,7 +66,7 @@ public isolated client class Client {
     # + properties - Campaign properties 
     # + return - Success 
     remote isolated function createCampaign(string adAccountId, Campaign properties) returns CampaignResponse|error {
-        string resourcePath = string `/act_${adAccountId}/campaigns`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/campaigns`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -83,10 +83,10 @@ public isolated client class Client {
     # + objectCount - Object count 
     # + return - Success 
     remote isolated function dissociateCampaign(string adAccountId, string deleteStrategy, string? beforeDate = (), int? objectCount = ()) returns CampaignDissociateResponse|error {
-        string resourcePath = string `/act_${adAccountId}/campaigns`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/campaigns`;
         map<anydata> queryParam = {"before_date": beforeDate, "delete_strategy": deleteStrategy, "object_count": objectCount, "access_token": self.apiKeyConfig.accessToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CampaignDissociateResponse response = check self.clientEp->delete(resourcePath);
+        CampaignDissociateResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a campaign.
@@ -95,7 +95,7 @@ public isolated client class Client {
     # + properties - Campaign update properties 
     # + return - Success 
     remote isolated function updateCampaign(string campaignId, CampaignUpdate properties) returns CampaignResponse|error {
-        string resourcePath = string `/${campaignId}`;
+        string resourcePath = string `/${getEncodedUri(campaignId)}`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -109,10 +109,10 @@ public isolated client class Client {
     # + campaignId - ID of the campaign. 
     # + return - Success 
     remote isolated function deleteCampaign(string campaignId) returns CampaignResponse|error {
-        string resourcePath = string `/${campaignId}`;
+        string resourcePath = string `/${getEncodedUri(campaignId)}`;
         map<anydata> queryParam = {"access_token": self.apiKeyConfig.accessToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CampaignResponse response = check self.clientEp->delete(resourcePath);
+        CampaignResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns all ad sets from one ad account
@@ -123,7 +123,7 @@ public isolated client class Client {
     # + fields - Fields of the ad set 
     # + return - Success 
     remote isolated function getAdSets(string adAccountId, string? datePreset = (), TimeRange? timeRange = (), string[]? fields = ()) returns AdSetList|error {
-        string resourcePath = string `/act_${adAccountId}/adsets`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/adsets`;
         map<anydata> queryParam = {"date_preset": datePreset, "time_range": timeRange, "fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"time_range": {style: FORM, explode: true}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -136,7 +136,7 @@ public isolated client class Client {
     # + properties - Ad set properties 
     # + return - Success 
     remote isolated function createAdSet(string adAccountId, AdSet properties) returns AdSetResponse|error {
-        string resourcePath = string `/act_${adAccountId}/adsets`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/adsets`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -153,7 +153,7 @@ public isolated client class Client {
     # + fields - Fields of the ad set 
     # + return - Success 
     remote isolated function getAdSet(string adSetId, string? datePreset = (), TimeRange? timeRange = (), string[]? fields = ()) returns AdSet|error {
-        string resourcePath = string `/${adSetId}`;
+        string resourcePath = string `/${getEncodedUri(adSetId)}`;
         map<anydata> queryParam = {"date_preset": datePreset, "time_range": timeRange, "fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"time_range": {style: FORM, explode: true}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -166,7 +166,7 @@ public isolated client class Client {
     # + properties - Ad set update properties 
     # + return - Success 
     remote isolated function updateAdSet(string adSetId, AdSetUpdate properties) returns AdSetResponse|error {
-        string resourcePath = string `/${adSetId}`;
+        string resourcePath = string `/${getEncodedUri(adSetId)}`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -180,10 +180,10 @@ public isolated client class Client {
     # + adSetId - ID of the ad set. 
     # + return - Success 
     remote isolated function deleteAdSet(string adSetId) returns AdSetResponse|error {
-        string resourcePath = string `/${adSetId}`;
+        string resourcePath = string `/${getEncodedUri(adSetId)}`;
         map<anydata> queryParam = {"access_token": self.apiKeyConfig.accessToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        AdSetResponse response = check self.clientEp->delete(resourcePath);
+        AdSetResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns ads under this ad account.
@@ -197,7 +197,7 @@ public isolated client class Client {
     # + summary - Aggregated information about the edge, such as counts 
     # + return - Success 
     remote isolated function getAds(string adAccountId, string? datePreset = (), string[]? effectiveStatus = (), TimeRange? timeRange = (), int? updatedSince = (), string[]? fields = (), string[]? summary = ()) returns AdList|error {
-        string resourcePath = string `/act_${adAccountId}/ads`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/ads`;
         map<anydata> queryParam = {"date_preset": datePreset, "effective_status": effectiveStatus, "time_range": timeRange, "updated_since": updatedSince, "fields": fields, "summary": summary, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"effective_status": {style: FORM, explode: true}, "time_range": {style: FORM, explode: true}, "fields": {style: FORM, explode: false}, "summary": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -210,7 +210,7 @@ public isolated client class Client {
     # + properties - Ad properties 
     # + return - Success 
     remote isolated function createAd(string adAccountId, Ad properties) returns AdResponse|error {
-        string resourcePath = string `/act_${adAccountId}/ads`;
+        string resourcePath = string `/act_${getEncodedUri(adAccountId)}/ads`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -228,7 +228,7 @@ public isolated client class Client {
     # + fields - Fields of the campaign 
     # + return - Success 
     remote isolated function getAd(string adId, string? datePreset = (), TimeRange? timeRange = (), int? updatedSince = (), string[]? fields = ()) returns Ad|error {
-        string resourcePath = string `/${adId}`;
+        string resourcePath = string `/${getEncodedUri(adId)}`;
         map<anydata> queryParam = {"date_preset": datePreset, "time_range": timeRange, "updated_since": updatedSince, "fields": fields, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"time_range": {style: FORM, explode: true}, "fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -241,7 +241,7 @@ public isolated client class Client {
     # + properties - Ad set update properties 
     # + return - Success 
     remote isolated function updateAd(string adId, AdUpdate properties) returns AdResponse|error {
-        string resourcePath = string `/${adId}`;
+        string resourcePath = string `/${getEncodedUri(adId)}`;
         map<anydata> queryParam = {"properties": properties, "access_token": self.apiKeyConfig.accessToken};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -255,10 +255,10 @@ public isolated client class Client {
     # + adId - ID of the ad 
     # + return - Success 
     remote isolated function deleteAd(string adId) returns AdResponse|error {
-        string resourcePath = string `/${adId}`;
+        string resourcePath = string `/${getEncodedUri(adId)}`;
         map<anydata> queryParam = {"access_token": self.apiKeyConfig.accessToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        AdResponse response = check self.clientEp->delete(resourcePath);
+        AdResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

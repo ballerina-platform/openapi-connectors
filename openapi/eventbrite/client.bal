@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
@@ -80,7 +84,7 @@ public isolated client class Client {
     # + userId - ID of User. Example: 12345. 
     # + return - An object with a single property organizations which is an array of Organization objects. 
     remote isolated function listOrganizationsByUser(string userId) returns Organizations|error {
-        string resourcePath = string `/users/${userId}/organizations/`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/organizations/`;
         Organizations response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -102,7 +106,7 @@ public isolated client class Client {
     # + collectionIdsToExclude - IDs of collections to exclude from the Organization's Events list. This will have precedence over event_group_id filter and collection_id filter. 
     # + return - An object with a property events which is an array of Event objects. 
     remote isolated function listEventsByOrganization(string organizationId, string? nameFilter = (), string? currencyFilter = (), string? orderBy = (), boolean? seriesFilter = (), boolean? showSeriesParent = (), string? status = (), string? eventGroupId = (), string? collectionId = (), decimal? pageSize = (), string? timeFilter = (), string? inventoryTypeFilter = (), string? eventIdsToExclude = (), string? collectionIdsToExclude = ()) returns EventsByOrganization|error {
-        string resourcePath = string `/organizations/${organizationId}/events/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/events/`;
         map<anydata> queryParam = {"name_filter": nameFilter, "currency_filter": currencyFilter, "order_by": orderBy, "series_filter": seriesFilter, "show_series_parent": showSeriesParent, "status": status, "event_group_id": eventGroupId, "collection_id": collectionId, "page_size": pageSize, "time_filter": timeFilter, "inventory_type_filter": inventoryTypeFilter, "event_ids_to_exclude": eventIdsToExclude, "collection_ids_to_exclude": collectionIdsToExclude};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EventsByOrganization response = check self.clientEp->get(resourcePath);
@@ -114,7 +118,7 @@ public isolated client class Client {
     # + payload - An object with a single property event which must be an Event object. 
     # + return - Created new Event 
     remote isolated function createEvent(string organizationId, CreateEventRequest payload) returns CreatedEvent|error {
-        string resourcePath = string `/organizations/${organizationId}/events/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/events/`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -126,7 +130,7 @@ public isolated client class Client {
     # + eventId - Event ID. Example: 12345. 
     # + return - Published event status 
     remote isolated function publishEvent(string eventId) returns PublishedEvent|error {
-        string resourcePath = string `/events/${eventId}/publish/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/publish/`;
         http:Request request = new;
         //TODO: Update the request as needed;
         PublishedEvent response = check self.clientEp-> post(resourcePath, request);
@@ -146,7 +150,7 @@ public isolated client class Client {
     # + holdIds - Filter discounts to only those that apply to specified hold IDs. IDs are in composite id format for either hold class (H123) or hold inventory tier (I123) 
     # + return - An object with a property discounts which is an array of Discount objects. 
     remote isolated function listDiscounts(string organizationId, string? scope = (), string? codeFilter = (), string? code = (), decimal? pageSize = (), string? 'type = (), string? ticketGroupId = (), string? eventId = (), string? orderBy = (), string? holdIds = ()) returns Discounts|error {
-        string resourcePath = string `/organizations/${organizationId}/discounts/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/discounts/`;
         map<anydata> queryParam = {"scope": scope, "code_filter": codeFilter, "code": code, "page_size": pageSize, "type": 'type, "ticket_group_id": ticketGroupId, "event_id": eventId, "order_by": orderBy, "hold_ids": holdIds};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Discounts response = check self.clientEp->get(resourcePath);
@@ -158,7 +162,7 @@ public isolated client class Client {
     # + payload - An object with a single property discount which must be an Discount object. 
     # + return - Created new Discount 
     remote isolated function createDiscount(string organizationId, CreateDiscountRequest payload) returns CreatedDiscount|error {
-        string resourcePath = string `/organizations/${organizationId}/discounts/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/discounts/`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -171,7 +175,7 @@ public isolated client class Client {
     # + payload - An object with a single property ticket_class which must be an TicketClass object. 
     # + return - Created ticket class 
     remote isolated function createTicketClass(string eventId, CreateTicketClassRequest payload) returns CreatedTicketClass|error {
-        string resourcePath = string `/events/${eventId}/ticket_classes/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/ticket_classes/`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -195,7 +199,7 @@ public isolated client class Client {
     # + onlyPublic - True = Filter public Events at the Venue. Example: true 
     # + return - An object with a property events which is an array of Event objects. 
     remote isolated function listEventsByVenue(string venueId, string? status = (), string? orderBy = (), string? startDate = (), boolean? onlyPublic = ()) returns EventsByVenue|error {
-        string resourcePath = string `/venues/${venueId}/events/`;
+        string resourcePath = string `/venues/${getEncodedUri(venueId)}/events/`;
         map<anydata> queryParam = {"status": status, "order_by": orderBy, "start_date": startDate, "only_public": onlyPublic};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EventsByVenue response = check self.clientEp->get(resourcePath);
@@ -206,7 +210,7 @@ public isolated client class Client {
     # + userId - User ID. Example: 12345. 
     # + return - An object with a property user which is a User object. 
     remote isolated function getUserDetails(string userId) returns UserObject|error {
-        string resourcePath = string `/users/${userId}/`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/`;
         UserObject response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -219,7 +223,7 @@ public isolated client class Client {
     # + excludeEmails - Don't include orders placed by any of these emails 
     # + return - An object with a property orders which is an array of Order objects. 
     remote isolated function listOrdersByOrganization(string organizationId, string? status = (), string? changedSince = (), string? onlyEmails = (), boolean? excludeEmails = ()) returns OrdersByOrganization|error {
-        string resourcePath = string `/organizations/${organizationId}/orders/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/orders/`;
         map<anydata> queryParam = {"status": status, "changed_since": changedSince, "only_emails": onlyEmails, "exclude_emails": excludeEmails};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OrdersByOrganization response = check self.clientEp->get(resourcePath);
@@ -236,7 +240,7 @@ public isolated client class Client {
     # + refundRequestStatuses - Only Orders with specified refund request status are included in return. 
     # + return - An object with a property orders which is an array of Order objects. 
     remote isolated function listOrdersByEvent(string eventId, string? status = (), string? changedSince = (), string? lastItemSeen = (), boolean? onlyEmails = (), string? excludeEmails = (), string? refundRequestStatuses = ()) returns OrdersByEvent|error {
-        string resourcePath = string `/events/${eventId}/orders/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/orders/`;
         map<anydata> queryParam = {"status": status, "changed_since": changedSince, "last_item_seen": lastItemSeen, "only_emails": onlyEmails, "exclude_emails": excludeEmails, "refund_request_statuses": refundRequestStatuses};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OrdersByEvent response = check self.clientEp->get(resourcePath);
@@ -249,7 +253,7 @@ public isolated client class Client {
     # + timeFilter - Filter the list to only, or all, past or current and future Orders. 
     # + return - An object with a property orders which is an array of Order objects. 
     remote isolated function listOrdersByUser(string userId, string? changedSince = (), string? timeFilter = ()) returns OrdersByOrganization|error {
-        string resourcePath = string `/users/${userId}/orders/`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/orders/`;
         map<anydata> queryParam = {"changed_since": changedSince, "time_filter": timeFilter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OrdersByOrganization response = check self.clientEp->get(resourcePath);
@@ -262,7 +266,7 @@ public isolated client class Client {
     # + changedSince - Filter Attendees by resource changed on or after the time given. 
     # + return - An object with a property attendees which is an array of Attendee objects. 
     remote isolated function listAttendees(string organizationId, string? status = (), string? changedSince = ()) returns AttendeesByOrganization|error {
-        string resourcePath = string `/organizations/${organizationId}/attendees/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/attendees/`;
         map<anydata> queryParam = {"status": status, "changed_since": changedSince};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AttendeesByOrganization response = check self.clientEp->get(resourcePath);
@@ -277,7 +281,7 @@ public isolated client class Client {
     # + attendeeIds - Filter Attendees with the specified IDs 
     # + return - An object with a property attendees which is an array of Attendee objects. 
     remote isolated function listAttendeesByEvent(string eventId, string? status = (), string? changedSince = (), string? lastItemSeen = (), boolean? attendeeIds = ()) returns AttendeesByEvent|error {
-        string resourcePath = string `/events/${eventId}/attendees/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/attendees/`;
         map<anydata> queryParam = {"status": status, "changed_since": changedSince, "last_item_seen": lastItemSeen, "attendee_ids": attendeeIds};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AttendeesByEvent response = check self.clientEp->get(resourcePath);
@@ -289,7 +293,7 @@ public isolated client class Client {
     # + attendeeId - Attendee ID. Example: 12345. 
     # + return - An object which is an Attendee object. 
     remote isolated function getAttendeeDetails(string eventId, string attendeeId) returns Attendee|error {
-        string resourcePath = string `/events/${eventId}/attendees/${attendeeId}/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/attendees/${getEncodedUri(attendeeId)}/`;
         Attendee response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -298,7 +302,7 @@ public isolated client class Client {
     # + organizationId - Organization ID. Example: 12345. 
     # + return - An object with a property venues which is an array of Venue objects. 
     remote isolated function listVenues(string organizationId) returns Venues|error {
-        string resourcePath = string `/organizations/${organizationId}/venues/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/venues/`;
         Venues response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -308,7 +312,7 @@ public isolated client class Client {
     # + payload - An object with a single property venue which must be a Venue object. 
     # + return - Created Venue 
     remote isolated function createVenue(string organizationId, CreateVenueRequest payload) returns CreatedVenue|error {
-        string resourcePath = string `/organizations/${organizationId}/venues/`;
+        string resourcePath = string `/organizations/${getEncodedUri(organizationId)}/venues/`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -320,7 +324,7 @@ public isolated client class Client {
     # + eventId - Event ID. Example: 12345. 
     # + return - An object with a property teams which is an array of Team objects. 
     remote isolated function listTeams(string eventId) returns Teams|error {
-        string resourcePath = string `/events/${eventId}/teams/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/teams/`;
         Teams response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -330,7 +334,7 @@ public isolated client class Client {
     # + teamId - Team ID. Example: 12345. 
     # + return - An object with a property attendees which is an array of Attendee objects. 
     remote isolated function listAttendeesByTeam(string eventId, string teamId) returns Attendees|error {
-        string resourcePath = string `/events/${eventId}/teams/${teamId}/attendees/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/teams/${getEncodedUri(teamId)}/attendees/`;
         Attendees response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -340,7 +344,7 @@ public isolated client class Client {
     # + teamId - Team ID. Example: 1. 
     # + return - An object which is a Team object. 
     remote isolated function getTeamDetails(string eventId, string teamId) returns Team|error {
-        string resourcePath = string `/events/${eventId}/teams/${teamId}/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/teams/${getEncodedUri(teamId)}/`;
         Team response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -349,7 +353,7 @@ public isolated client class Client {
     # + eventId - Event ID. Example: 12345. 
     # + return - An object which is an Event object. 
     remote isolated function getEventDetails(string eventId) returns EventObject|error {
-        string resourcePath = string `/events/${eventId}/`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}/`;
         EventObject response = check self.clientEp->get(resourcePath);
         return response;
     }

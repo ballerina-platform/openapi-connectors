@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type ArticleArr Article[];
 
@@ -105,6 +107,7 @@ public type CollectionPrivateLinkCreator record {
 
 public type ProjectCreate record {
     # Project description
+    @constraint:String {maxLength: 10000}
     string description?;
     # Grant number or organization(s) that funded this project. Up to 2000 characters permitted.
     string funding?;
@@ -113,6 +116,7 @@ public type ProjectCreate record {
     # Only if project type is group.
     int group_id?;
     # The title for this project - mandatory. 3 - 1000 characters.
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title;
 };
 
@@ -125,13 +129,9 @@ public type License record {
     int value?;
 };
 
-public type ProjectCompletePrivate record {
-    *ProjectPrivate;
-};
+public type ProjectCompletePrivate ProjectPrivate;
 
-public type PrivateArticleSearch record {
-    *ArticleSearch;
-};
+public type PrivateArticleSearch ArticleSearch;
 
 public type CollectionDOI record {
     # Reserved DOI
@@ -147,27 +147,30 @@ public type Institution record {
     string name?;
 };
 
-public type AuthorComplete record {
-    *Author;
-};
+public type AuthorComplete Author;
 
 public type AccountCreate record {
     # Email of account
+    @constraint:String {maxLength: 150, minLength: 3}
     string email;
     # First Name
-    string first_name?;
+    @constraint:String {maxLength: 30}
+    string first_name = "";
     # Not applicable to regular users. This field is reserved to institutions/publishers with access to assign to specific groups
     int group_id?;
     # Institution user id
-    string institution_user_id?;
+    @constraint:String {maxLength: 50}
+    string institution_user_id = "";
     # Is account active
     boolean is_active?;
     # Last Name
+    @constraint:String {maxLength: 30}
     string last_name;
     # Account quota
     int quota?;
     # Symplectic user id
-    string symplectic_user_id?;
+    @constraint:String {maxLength: 50}
+    string symplectic_user_id = "";
 };
 
 public type FileCreator record {
@@ -190,13 +193,9 @@ public type PrivateLink record {
     boolean is_active?;
 };
 
-public type PrivateFile record {
-    *PublicFile;
-};
+public type PrivateFile PublicFile;
 
-public type ProjectPrivate record {
-    *Project;
-};
+public type ProjectPrivate Project;
 
 public type AccountGroupRoles record {
 };
@@ -211,8 +210,10 @@ public type PrivateAuthorsSearch record {
     # Return only authors that have published items if True
     boolean is_public?;
     # Number of results included on a page. Used for pagination with query
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int 'limit?;
     # Where to start the listing(the offset of the first result). Used for pagination with limit
+    @constraint:Int {maxValue: 5000}
     int offset?;
     # Orcid of author
     string orcid?;
@@ -221,20 +222,18 @@ public type PrivateAuthorsSearch record {
     # Sorting order (desc or asc)
     string order_direction?;
     # Page number. Used for pagination with page_size
+    @constraint:Int {minValue: 1, maxValue: 5000}
     int page?;
     # The number of results included on a page. Used for pagination with page
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int page_size?;
     # Search term
     string search_for?;
 };
 
-public type ArticleCompletePrivate record {
-    *ArticleComplete;
-};
+public type ArticleCompletePrivate ArticleComplete;
 
-public type ProjectNotePrivate record {
-    *ProjectNote;
-};
+public type ProjectNotePrivate ProjectNote;
 
 public type UploadInfo record {
     # md5 provided on upload initialization
@@ -251,9 +250,7 @@ public type UploadInfo record {
     string token?;
 };
 
-public type ProjectComplete record {
-    *Project;
-};
+public type ProjectComplete Project;
 
 public type ConfidentialityCreator record {
     # Reason for confidentiality
@@ -354,37 +351,39 @@ public type AccountUpdate record {
 
 public type ArticleProjectCreate record {
     # List of authors to be associated with the article. The list can contain the following fields: id, name, first_name, last_name, email, orcid_id. If an id is supplied, it will take priority and everything else will be ignored. No more than 10 authors. For adding more authors use the specific authors endpoint.
-    record {}[] authors?;
+    record {}[] authors = [];
     # List of category ids to be associated with the article(e.g [1, 23, 33, 66])
-    int[] categories?;
+    int[] categories = [];
     # List of key, values pairs to be associated with the article
     record {} custom_fields?;
     # <b>One of:</b> <code>figure</code> <code>online resource</code> <code>preprint</code> <code>book</code> <code>conference contribution</code> <code>media</code> <code>dataset</code> <code>poster</code> <code>journal contribution</code> <code>presentation</code> <code>thesis</code> <code>software</code>
     string defined_type?;
     # The article description. In a publisher case, usually this is the remote article description
-    string description?;
+    @constraint:String {maxLength: 10000}
+    string description = "";
     # Not applicable for regular users. In an institutional case, make sure your group supports setting DOIs. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string doi?;
+    string doi = "";
     # Grant number or funding authority
-    string funding?;
+    string funding = "";
     # Funding creation / update items
     FundingCreate[] funding_list?;
     # Not applicable for regular users. In an institutional case, make sure your group supports setting Handles. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string 'handle?;
+    string 'handle = "";
     # List of tags to be associated with the article. Tags can be used instead
-    string[] keywords?;
+    string[] keywords = [];
     # License id for this article.
-    int license?;
+    int license = 0;
     # List of links to be associated with the article (e.g ["http://link1", "http://link2", "http://link3"])
-    string[] references?;
+    string[] references = [];
     # Not applicable to regular users. In a publisher case, this is the publisher article DOI.
-    string resource_doi?;
+    string resource_doi = "";
     # Not applicable to regular users. In a publisher case, this is the publisher article title.
-    string resource_title?;
+    string resource_title = "";
     # List of tags to be associated with the article. Keywords can be used instead
-    string[] tags?;
+    string[] tags = [];
     TimelineUpdate timeline?;
     # Title of article
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title;
 };
 
@@ -392,41 +391,43 @@ public type CollectionCreate record {
     # List of articles to be associated with the collection
     int[] articles?;
     # List of authors to be associated with the article. The list can contain the following fields: id, name, first_name, last_name, email, orcid_id. If an id is supplied, it will take priority and everything else will be ignored. No more than 10 authors. For adding more authors use the specific authors endpoint.
-    record {}[] authors?;
+    record {}[] authors = [];
     # List of category ids to be associated with the article(e.g [1, 23, 33, 66])
-    int[] categories?;
+    int[] categories = [];
     # List of key, values pairs to be associated with the article
     record {} custom_fields?;
     # The article description. In a publisher case, usually this is the remote article description
-    string description?;
+    @constraint:String {maxLength: 10000}
+    string description = "";
     # Not applicable for regular users. In an institutional case, make sure your group supports setting DOIs. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string doi?;
+    string doi = "";
     # Grant number or funding authority
-    string funding?;
+    string funding = "";
     # Funding creation / update items
     FundingCreate[] funding_list?;
     # Not applicable to regular users. This field is reserved to institutions/publishers with access to assign to specific groups
     int group_id?;
     # Not applicable for regular users. In an institutional case, make sure your group supports setting Handles. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string 'handle?;
+    string 'handle = "";
     # List of tags to be associated with the article. Tags can be used instead
-    string[] keywords?;
+    string[] keywords = [];
     # List of links to be associated with the article (e.g ["http://link1", "http://link2", "http://link3"])
-    string[] references?;
+    string[] references = [];
     # Not applicable to regular users. In a publisher case, this is the publisher article DOI.
-    string resource_doi?;
+    string resource_doi = "";
     # Not applicable to regular users. In a publisher case, this is the publisher article id
     string resource_id?;
     # Not applicable to regular users. In a publisher case, this is the publisher article link
     string resource_link?;
     # Not applicable to regular users. In a publisher case, this is the publisher article title.
-    string resource_title?;
+    string resource_title = "";
     # Not applicable to regular users. In a publisher case, this is the publisher article version
     int resource_version?;
     # List of tags to be associated with the article. Keywords can be used instead
-    string[] tags?;
+    string[] tags = [];
     TimelineUpdate timeline?;
     # Title of article
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title;
 };
 
@@ -531,39 +532,41 @@ public type User record {
 
 public type ArticleCreate record {
     # List of authors to be associated with the article. The list can contain the following fields: id, name, first_name, last_name, email, orcid_id. If an id is supplied, it will take priority and everything else will be ignored. No more than 10 authors. For adding more authors use the specific authors endpoint.
-    record {}[] authors?;
+    record {}[] authors = [];
     # List of category ids to be associated with the article(e.g [1, 23, 33, 66])
-    int[] categories?;
+    int[] categories = [];
     # List of key, values pairs to be associated with the article
     record {} custom_fields?;
     # <b>One of:</b> <code>figure</code> <code>online resource</code> <code>preprint</code> <code>book</code> <code>conference contribution</code> <code>media</code> <code>dataset</code> <code>poster</code> <code>journal contribution</code> <code>presentation</code> <code>thesis</code> <code>software</code>
     string defined_type?;
     # The article description. In a publisher case, usually this is the remote article description
-    string description?;
+    @constraint:String {maxLength: 10000}
+    string description = "";
     # Not applicable for regular users. In an institutional case, make sure your group supports setting DOIs. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string doi?;
+    string doi = "";
     # Grant number or funding authority
-    string funding?;
+    string funding = "";
     # Funding creation / update items
     FundingCreate[] funding_list?;
     # Not applicable to regular users. This field is reserved to institutions/publishers with access to assign to specific groups
     int group_id?;
     # Not applicable for regular users. In an institutional case, make sure your group supports setting Handles. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
-    string 'handle?;
+    string 'handle = "";
     # List of tags to be associated with the article. Tags can be used instead
-    string[] keywords?;
+    string[] keywords = [];
     # License id for this article.
-    int license?;
+    int license = 0;
     # List of links to be associated with the article (e.g ["http://link1", "http://link2", "http://link3"])
-    string[] references?;
+    string[] references = [];
     # Not applicable to regular users. In a publisher case, this is the publisher article DOI.
-    string resource_doi?;
+    string resource_doi = "";
     # Not applicable to regular users. In a publisher case, this is the publisher article title.
-    string resource_title?;
+    string resource_title = "";
     # List of tags to be associated with the article. Keywords can be used instead
-    string[] tags?;
+    string[] tags = [];
     TimelineUpdate timeline?;
     # Title of article
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title;
 };
 
@@ -599,9 +602,7 @@ public type Article record {
     string url_public_html?;
 };
 
-public type ProjectsSearch record {
-    *CommonSearch;
-};
+public type ProjectsSearch CommonSearch;
 
 public type CustomArticleField record {
     # True if field completion is mandatory
@@ -626,21 +627,22 @@ public type ArticleHandle record {
 
 public type ProjectUpdate record {
     # Project description
+    @constraint:String {maxLength: 10000}
     string description?;
     # Grant number or organization(s) that funded this project. Up to 2000 characters permitted.
     string funding?;
     # Funding creation / update items
     FundingCreate[] funding_list?;
     # The title for this project - mandatory. 3 - 1000 characters.
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title?;
 };
 
-public type CollectionComplete record {
-    *Collection;
-};
+public type CollectionComplete Collection;
 
 public type CurationCommentCreate record {
     # The contents/value of the comment
+    @constraint:String {maxLength: 2000, minLength: 1}
     string text;
 };
 
@@ -650,14 +652,19 @@ public type InstitutionAccountsSearch record {
     # filter by institution_user_id
     string institution_user_id?;
     # Filter by active status
+    @constraint:Int {maxValue: 1}
     int is_active?;
     # Number of results included on a page. Used for pagination with query
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int 'limit?;
     # Where to start the listing(the offset of the first result). Used for pagination with limit
+    @constraint:Int {maxValue: 5000}
     int offset?;
     # Page number. Used for pagination with page_size
+    @constraint:Int {minValue: 1, maxValue: 5000}
     int page?;
     # The number of results included on a page. Used for pagination with page
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int page_size?;
     # Search term
     string search_for?;
@@ -674,9 +681,7 @@ public type ProjectCollaborator record {
     int user_id?;
 };
 
-public type ArticleSearch record {
-    *CommonSearch;
-};
+public type ArticleSearch CommonSearch;
 
 public type ShortAccount record {
     # Account activity status
@@ -695,9 +700,7 @@ public type ShortAccount record {
     string last_name?;
 };
 
-public type ProjectArticle record {
-    *Article;
-};
+public type ProjectArticle Article;
 
 public type AccountGroupRolesCreate record {
 };
@@ -717,6 +720,7 @@ public type CollectionUpdate record {
     # List of key, values pairs to be associated with the article
     record {} custom_fields?;
     # The article description. In a publisher case, usually this is the remote article description
+    @constraint:String {maxLength: 10000}
     string description?;
     # Not applicable for regular users. In an institutional case, make sure your group supports setting DOIs. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
     string doi?;
@@ -746,11 +750,13 @@ public type CollectionUpdate record {
     string[] tags?;
     TimelineUpdate timeline?;
     # Title of article
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title?;
 };
 
 public type ProjectNoteCreate record {
     # Text of the note
+    @constraint:String {minLength: 3}
     string text;
 };
 
@@ -842,20 +848,24 @@ public type PublicFile record {
 
 public type CommonSearch record {
     # only return collections from this group
-    int 'group?;
+    int group?;
     # only return collections from this institution
     int institution?;
     # Number of results included on a page. Used for pagination with query
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int 'limit?;
     # Filter by article modified date. Will only return articles published after the date. date(ISO 8601) YYYY-MM-DD
     string modified_since?;
     # Where to start the listing(the offset of the first result). Used for pagination with limit
+    @constraint:Int {maxValue: 5000}
     int offset?;
     # Sorting order (desc or asc)
     string order_direction?;
     # Page number. Used for pagination with page_size
+    @constraint:Int {minValue: 1, maxValue: 5000}
     int page?;
     # The number of results included on a page. Used for pagination with page
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int page_size?;
     # Filter by article publishing date. Will only return articles published after the date. date(ISO 8601) YYYY-MM-DD
     string published_since?;
@@ -878,9 +888,7 @@ public type AccountReport record {
     string status?;
 };
 
-public type ArticleComplete record {
-    *ProjectArticle;
-};
+public type ArticleComplete ProjectArticle;
 
 public type ArticleUpdate record {
     # List of authors to be associated with the article. The list can contain the following fields: id, name, first_name, last_name, email, orcid_id. If an id is supplied, it will take priority and everything else will be ignored. No more than 10 authors. For adding more authors use the specific authors endpoint.
@@ -892,6 +900,7 @@ public type ArticleUpdate record {
     # <b>One of:</b> <code>figure</code> <code>online resource</code> <code>preprint</code> <code>book</code> <code>conference contribution</code> <code>media</code> <code>dataset</code> <code>poster</code> <code>journal contribution</code> <code>presentation</code> <code>thesis</code> <code>software</code>
     string defined_type?;
     # The article description. In a publisher case, usually this is the remote article description
+    @constraint:String {maxLength: 10000}
     string description?;
     # Not appliable for regular users. In an institutional case, make sure your group supports setting DOIs. This setting is applied by figshare via opening a ticket through our support/helpdesk system.
     string doi?;
@@ -917,16 +926,13 @@ public type ArticleUpdate record {
     string[] tags?;
     TimelineUpdate timeline?;
     # Title of article
+    @constraint:String {maxLength: 1000, minLength: 3}
     string title?;
 };
 
-public type CurationDetail record {
-    *Curation;
-};
+public type CurationDetail Curation;
 
-public type PrivateCollectionSearch record {
-    *CollectionSearch;
-};
+public type PrivateCollectionSearch CollectionSearch;
 
 public type ArticleEmbargo record {
     # Date when embargo lifts
@@ -943,13 +949,9 @@ public type ArticleEmbargo record {
     boolean is_embargoed?;
 };
 
-public type CollectionSearch record {
-    *CommonSearch;
-};
+public type CollectionSearch CommonSearch;
 
-public type Timeline record {
-    *TimelineUpdate;
-};
+public type Timeline TimelineUpdate;
 
 public type UploadFilePart record {
     # Indexes on byte range. zero-based and inclusive

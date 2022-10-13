@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -63,7 +63,7 @@ public isolated client class Client {
     # + return - Logged off. 
     remote isolated function logOff() returns http:Response|error {
         string resourcePath = string `/v1/auth`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Authenticates a user via OTDS, using the state and code, and logs that user onto File360.
@@ -89,7 +89,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/document`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "allversions": allversions, "priorversions": priorversions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SourceDocumentResult response = check self.clientEp->delete(resourcePath);
+        SourceDocumentResult response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a list of devices for a document.
@@ -173,7 +173,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/document/index`;
         map<anydata> queryParam = {"masterId": masterId, "version": 'version, "suffix": suffix};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDocumentResult response = check self.clientEp->delete(resourcePath);
+        DeleteDocumentResult response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the keywords associated with a document.
@@ -234,7 +234,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/document/legalhold`;
         map<anydata> queryParam = {"masterId": masterId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SourceDocumentIdentifier response = check self.clientEp->delete(resourcePath);
+        SourceDocumentIdentifier response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the remarks associated with a document.
@@ -285,7 +285,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/document/unlock`;
         map<anydata> queryParam = {"masterId": masterId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SourceDocumentIdentifier response = check self.clientEp->delete(resourcePath);
+        SourceDocumentIdentifier response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a new version for a document.
@@ -359,7 +359,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/folder`;
         map<anydata> queryParam = {"folderId": folderId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        IndexFolder response = check self.clientEp->delete(resourcePath);
+        IndexFolder response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the document information from a folder.
@@ -400,7 +400,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/folder/document`;
         map<anydata> queryParam = {"indexDataId": indexDataId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        IndexFolderDocument response = check self.clientEp->delete(resourcePath);
+        IndexFolderDocument response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a Brava composition id for a list of folder document files.
@@ -570,7 +570,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/template/retrieval/layout`;
         map<anydata> queryParam = {"templateId": templateId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        RetrievalTemplate response = check self.clientEp->delete(resourcePath);
+        RetrievalTemplate response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Data entry templates listing.
@@ -632,7 +632,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/admin/user`;
         map<anydata> queryParam = {"userId": userId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        int response = check self.clientEp->delete(resourcePath);
+        int response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a list of groups.
@@ -686,7 +686,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/admin/group`;
         map<anydata> queryParam = {"groupId": groupId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        int response = check self.clientEp->delete(resourcePath);
+        int response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a the list of users for a group.
@@ -813,7 +813,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/workflow/worklist/workitem`;
         map<anydata> queryParam = {"workitemId": workitemId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        string response = check self.clientEp->delete(resourcePath);
+        string response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a list of worksets.

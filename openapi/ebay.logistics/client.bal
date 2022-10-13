@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.ebay.com/identity/v1/oauth2/token";
 |};
 
 # This is a generated connector for [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
@@ -84,7 +95,7 @@ public isolated client class Client {
     # + shippingQuoteId - This path parameter specifies the unique eBay-assigned ID of the shipping quote you want to retrieve. The shippingQuoteId value is generated and returned by a call to createShippingQuote. 
     # + return - Success 
     remote isolated function getShippingQuote(string shippingQuoteId) returns ShippingQuote|error {
-        string resourcePath = string `/shipping_quote/${shippingQuoteId}`;
+        string resourcePath = string `/shipping_quote/${getEncodedUri(shippingQuoteId)}`;
         ShippingQuote response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -105,7 +116,7 @@ public isolated client class Client {
     # + shipmentId - This path parameter specifies the unique eBay-assigned ID of the shipment you want to retrieve. The shipmentId value is generated and returned by a call to createFromShippingQuote. 
     # + return - Success 
     remote isolated function getShipment(string shipmentId) returns Shipment|error {
-        string resourcePath = string `/shipment/${shipmentId}`;
+        string resourcePath = string `/shipment/${getEncodedUri(shipmentId)}`;
         Shipment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -114,7 +125,7 @@ public isolated client class Client {
     # + shipmentId - This path parameter specifies the unique eBay-assigned ID of the shipment associated with the shipping label you want to download. The shipmentId value is generated and returned by a call to createFromShippingQuote. 
     # + return - Success 
     remote isolated function downloadLabelFile(string shipmentId) returns string[]|error {
-        string resourcePath = string `/shipment/${shipmentId}/download_label_file`;
+        string resourcePath = string `/shipment/${getEncodedUri(shipmentId)}/download_label_file`;
         string[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -123,7 +134,7 @@ public isolated client class Client {
     # + shipmentId - This path parameter specifies the unique eBay-assigned ID of the shipment to be canceled. The shipmentId value is generated and returned by a call to createFromShippingQuote. 
     # + return - Success 
     remote isolated function cancelShipment(string shipmentId) returns Shipment|error {
-        string resourcePath = string `/shipment/${shipmentId}/cancel`;
+        string resourcePath = string `/shipment/${getEncodedUri(shipmentId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Shipment response = check self.clientEp-> post(resourcePath, request);

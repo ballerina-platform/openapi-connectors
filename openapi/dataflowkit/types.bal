@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,13 @@
 
 public type Fetchrequest record {
     # Use actions to automate manual workflows while rendering web pages. They simulate real-world human interaction with pages. _(Chrome fetcher type only)_
-    Action[] actions?;
+    Action[] actions = [];
     # The HTTP 200 OK success status response code indicates that the request has succeeded. Sometimes a server returns normal HTML content even with an erroneous Non-200 HTTP response status code. The IgnoreHTTPStatusCode option is useful when you need to force the return of HTML content. Defaults to "false."
     boolean ignoreHTTPStatusErrCodes?;
     # The "Initial Cookies" option is useful for crawling websites that require a login. The simplest solution to get an array of cookies for specific websites is to use a web browser "EditThisCookie" extension. Copy a cookie array with "EditThisCookie" and paste it into the "Initial cookie" field.
-    InitialCookie[] initialCookies?;
+    InitialCookie[] initialCookies = [];
     # If set to _file_, the content of downloaded HTML is uploaded to Dataflow Kit Storage first. Then the link to this file is returned. Overwise, downloaded content is returned in the response body.
-    string output?;
+    string output = "buffer";
     # Specify proxy by adding [country ISO code](https://en.wikipedia.org/wiki/ISO_3166-2) to `country-` value to send requests through a proxy in the specified country. Use `country-any` to use random geo-targets.
     string proxy?;
     # If set to `base`, the Base fetcher is used for downloading web page content. Use `chrome` for fetching content with a Headless chrome browser. If omitted `base` fetcher is used by default.
@@ -37,7 +37,7 @@ public type Field record {
     # A set of attributes to extract from a Field. Find more information about attributes
     string[] attrs;
     # Details themself represent independent Parse request that extracts data from linked pages.
-    record {*Parserequest;} details?;
+    Parserequest details?;
     # Filters are used to pre-processing of text data when extracting.
     (record {string name?;}|record {string name?; string param?;})[] filters?;
     # Field name is used to aggregate results.
@@ -117,39 +117,39 @@ public type Action record {
 
 public type Url2screenshotrequest record {
     # Use actions to automate manual workflows while rendering web pages. They simulate real-world human interaction with pages.
-    Action[] actions?;
+    Action[] actions = [];
     # Captures a screenshot of specified CSS element on a web page.
     string clipSelector?;
     # Sets the Format of output image
-    string format?;
+    string format = "png";
     # takes a screenshot of a full web page. It ignores offsetX, offsety, width and height argument values.
-    boolean fullPage?;
+    boolean fullPage = false;
     # Rectangle height in device independent pixels (dip).
-    int height?;
+    int height = 600;
     # The HTTP 200 OK success status response code indicates that the request has succeeded. Sometimes a server returns normal HTML content even with an erroneous Non-200 HTTP response status code. The IgnoreHTTPStatusCode option is useful when you need to force the return of HTML content. Defaults to "false."
     boolean ignoreHTTPStatusErrCodes?;
     # The "Initial Cookies" option is useful for crawling websites that require a login. The simplest solution to get an array of cookies for specific websites is to use a web browser "EditThisCookie" extension. Copy a cookie array with "EditThisCookie" and paste it into the "Initial cookie" field.
-    InitialCookie[] initialCookies?;
+    InitialCookie[] initialCookies = [];
     # X offset in device independent pixels (dip).
-    int offsetx?;
+    int offsetx = 0;
     # Y offset in device independent pixels (dip).
-    int offsety?;
+    int offsety = 0;
     # If set to _file_, the resulted screenshot is uploaded to Dataflow Kit Storage first. Then the link to this file is returned. Overwise, web site screenshot is returned in the response body.
-    string output?;
+    string output = "buffer";
     # Print background graphics in the PDF.
-    boolean printBackground?;
+    boolean printBackground = false;
     # Specify proxy by adding [country ISO code](https://en.wikipedia.org/wiki/ISO_3166-2) to `country-` value to send requests through a proxy in the specified country. Use `country-any` to use random geo-targets.
     string proxy?;
     # Sets the Quality of output image. Compression quality from range [0..100] (jpeg only).
-    int quality?;
+    int quality = 80;
     # Image scale factor. range [0.1 .. 3]
-    decimal scale?;
+    decimal scale = 1;
     # The full URL address (including HTTP/HTTPS) of a web page that you want to capture
     string url;
     # Specify a wait delay (in seconds). This may be useful if certain elements of the web site need to be rendered after the initial page load.
-    decimal waitDelay?;
+    decimal waitDelay = 0.5;
     # Rectangle width in device independent pixels (dip).
-    int width?;
+    int width = 800;
 };
 
 public type Serprequest record {
@@ -162,7 +162,7 @@ public type Serprequest record {
     # Collection name.
     string name;
     # Specify number of pages to crawl.
-    int pageNum?;
+    int pageNum = 1;
     # Always specify proxy for sending SERP requests. Add choosen [country ISO code](https://en.wikipedia.org/wiki/ISO_3166-2) to `country-` value to send requests through a proxy in the specified country. Use `country-any` to use random geo-targets.
     string proxy;
     # For SERP requests you should _always_ use `chrome` type to fetch content with a Headless chrome browser
@@ -188,39 +188,39 @@ public type InitialCookie record {
 
 public type Url2pdfrequest record {
     # Use actions to automate manual workflows while rendering web pages. They simulate real-world human interaction with pages.
-    Action[] actions?;
+    Action[] actions = [];
     # The HTTP 200 OK success status response code indicates that the request has succeeded. Sometimes a server returns normal HTML content even with an erroneous Non-200 HTTP response status code. The IgnoreHTTPStatusCode option is useful when you need to force the return of HTML content. Defaults to "false."
     boolean ignoreHTTPStatusErrCodes?;
     # The "Initial Cookies" option is useful for crawling websites that require a login. The simplest solution to get an array of cookies for specific websites is to use a web browser "EditThisCookie" extension. Copy a cookie array with "EditThisCookie" and paste it into the "Initial cookie" field.
-    InitialCookie[] initialCookies?;
+    InitialCookie[] initialCookies = [];
     # Paper orientation. Parameter landscape = false means portrait orientation. Set landscape to true for landscape page oriantation.
-    boolean landscape?;
+    boolean landscape = false;
     # Bottom Margin of the PDF (in inches)
-    decimal marginBottom?;
+    decimal marginBottom = 0.4;
     # Left Margin of the PDF (in inches)
-    decimal marginLeft?;
+    decimal marginLeft = 0.4;
     # Right Margin of the PDF (in inches)
-    decimal marginRight?;
+    decimal marginRight = 0.4;
     # Top Margin of the PDF (in inches)
-    decimal marginTop?;
+    decimal marginTop = 0.4;
     # If set to _file_, the resulted PDF is uploaded to Dataflow Kit Storage first. Then the link to this file is returned. Overwise, PDF content is returned in the response body.
-    string output?;
+    string output = "buffer";
     # Specify page ranges to convert. Defaults to the empty value, which means convert all pages.
     string pageRanges?;
     # Page size parameter consists of the most popular page formats.
-    string paperSize?;
+    string paperSize = "A4";
     # Print background graphics in the PDF.
-    boolean printBackground?;
+    boolean printBackground = false;
     # printHeaderFooter  parameter consists of the date, name of the web page, the page URL, and how many pages the document you are printing.
-    boolean printHeaderFooter?;
+    boolean printHeaderFooter = false;
     # Specify proxy by adding [country ISO code](https://en.wikipedia.org/wiki/ISO_3166-2) to `country-` value to send requests through a proxy in the specified country. Use `country-any` to use random geo-targets.
     string proxy?;
     # By default, PDF document content is generated according to dimensions of the original web page content. Using the `scale` parameter, you can specify a custom zoom factor from 0.1 to 5.0 of the webpage rendering.
-    decimal scale?;
+    decimal scale = 1;
     # The full URL address (including HTTP/HTTPS) of a web page that you want to save as PDF
     string url;
     # Specify a wait delay (in seconds). This may be useful if certain elements of the web site need to be rendered after the initial page load.
-    decimal waitDelay?;
+    decimal waitDelay = 0.5;
 };
 
 public type Paginator record {
@@ -239,6 +239,6 @@ public type Parserequest record {
     string name;
     Paginator paginator?;
     # Path is a special parameter specifying navigation pages only. It collects information from detailed pages. No results from the current page return. Defaults to false.
-    boolean path?;
+    boolean path = false;
     Fetchrequest request?;
 };

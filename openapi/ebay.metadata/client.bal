@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,13 +48,24 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
     string tokenUrl = "https://api.ebay.com/identity/v1/oauth2/token";
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.ebay.com/identity/v1/oauth2/token";
 |};
 
 # This is a generated connector for [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification. 
@@ -81,7 +92,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. Note: Only the following eBay marketplaces support automotive parts compatibility: EBAY_US EBAY_AU EBAY_CA EBAY_DE EBAY_ES EBAY_FR EBAY_GB EBAY_IT 
     # + return - Success 
     remote isolated function getAutomotivePartsCompatibilityPolicies(string marketplaceId, string? filter = ()) returns AutomotivePartsCompatibilityPolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_automotive_parts_compatibility_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_automotive_parts_compatibility_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AutomotivePartsCompatibilityPolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -93,7 +104,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. See the following page for a list of valid eBay marketplace IDs: Request components. 
     # + return - Success 
     remote isolated function getItemConditionPolicies(string marketplaceId, string? filter = ()) returns ItemConditionPolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_item_condition_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_item_condition_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ItemConditionPolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -105,7 +116,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. See the following page for a list of valid eBay marketplace IDs: Request components. 
     # + return - Success 
     remote isolated function getListingStructurePolicies(string marketplaceId, string? filter = ()) returns ListingStructurePolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_listing_structure_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_listing_structure_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListingStructurePolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -117,7 +128,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. See the following page for a list of valid eBay marketplace IDs: Request components. 
     # + return - Success 
     remote isolated function getNegotiatedPricePolicies(string marketplaceId, string? filter = ()) returns NegotiatedPricePolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_negotiated_price_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_negotiated_price_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         NegotiatedPricePolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -129,7 +140,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. See the following page for a list of valid eBay marketplace IDs: Request components. 
     # + return - Success 
     remote isolated function getProductAdoptionPolicies(string marketplaceId, string? filter = ()) returns ProductAdoptionPolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_product_adoption_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_product_adoption_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ProductAdoptionPolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -141,7 +152,7 @@ public isolated client class Client {
     # + marketplaceId - This path parameter specifies the eBay marketplace for which policy information is retrieved. See the following page for a list of valid eBay marketplace IDs: Request components. 
     # + return - Success 
     remote isolated function getReturnPolicies(string marketplaceId, string? filter = ()) returns ReturnPolicyResponse|error? {
-        string resourcePath = string `/marketplace/${marketplaceId}/get_return_policies`;
+        string resourcePath = string `/marketplace/${getEncodedUri(marketplaceId)}/get_return_policies`;
         map<anydata> queryParam = {"filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ReturnPolicyResponse? response = check self.clientEp->get(resourcePath);
@@ -152,7 +163,7 @@ public isolated client class Client {
     # + countryCode - This path parameter specifies the two-letter ISO 3166 country code for the country whose jurisdictions you want to retrieve. eBay provides sales tax jurisdiction information for Canada and the United States.Valid values for this path parameter are CA and US. 
     # + return - Success 
     remote isolated function getSalesTaxJurisdictions(string countryCode) returns SalesTaxJurisdictions|error {
-        string resourcePath = string `/country/${countryCode}/sales_tax_jurisdiction`;
+        string resourcePath = string `/country/${getEncodedUri(countryCode)}/sales_tax_jurisdiction`;
         SalesTaxJurisdictions response = check self.clientEp->get(resourcePath);
         return response;
     }

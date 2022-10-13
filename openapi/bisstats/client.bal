@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getData(string flow, string 'key, string? startPeriod = (), string? endPeriod = (), int? firstNObservations = (), int? lastNObservations = (), string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/data/${flow}/${'key}/all`;
+        string resourcePath = string `/data/${getEncodedUri(flow)}/${getEncodedUri('key)}/all`;
         map<anydata> queryParam = {"startPeriod": startPeriod, "endPeriod": endPeriod, "firstNObservations": firstNObservations, "lastNObservations": lastNObservations, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -67,7 +67,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getDataAvailabilityInformation(string flow, string 'key, string componentID, string mode = "exact", string references = "none", string? startPeriod = (), string? endPeriod = (), string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/availableconstraint/${flow}/${'key}/all/${componentID}`;
+        string resourcePath = string `/availableconstraint/${getEncodedUri(flow)}/${getEncodedUri('key)}/all/${getEncodedUri(componentID)}`;
         map<anydata> queryParam = {"mode": mode, "references": references, "startPeriod": startPeriod, "endPeriod": endPeriod};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -85,7 +85,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getDataStructures(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/datastructure/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/datastructure/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -103,7 +103,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getDataFlows(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/dataflow/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/dataflow/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -121,7 +121,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getCategorisations(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/categorisation/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/categorisation/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -139,7 +139,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getContentConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/contentconstraint/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/contentconstraint/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -157,7 +157,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getActualConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/actualconstraint/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/actualconstraint/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -175,7 +175,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getAllowedConstraints(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/allowedconstraint/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/allowedconstraint/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -193,7 +193,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getStructures(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/structure/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/structure/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -211,7 +211,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getConceptSchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/conceptscheme/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/conceptscheme/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -229,7 +229,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getCodelists(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/codelist/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/codelist/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -247,7 +247,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getCategorySchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/categoryscheme/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/categoryscheme/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -265,7 +265,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getHierarchicalCodelists(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/hierarchicalcodelist/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/hierarchicalcodelist/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -283,7 +283,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getAgencySchemes(string agencyID, string resourceID, string 'version, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/agencyscheme/${agencyID}/${resourceID}/${'version}`;
+        string resourcePath = string `/agencyscheme/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -302,7 +302,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getConcepts(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/conceptscheme/${agencyID}/${resourceID}/${'version}/${itemID}`;
+        string resourcePath = string `/conceptscheme/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}/${getEncodedUri(itemID)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -321,7 +321,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getCodes(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/codelist/${agencyID}/${resourceID}/${'version}/${itemID}`;
+        string resourcePath = string `/codelist/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}/${getEncodedUri(itemID)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -340,7 +340,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getCategories(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/categoryscheme/${agencyID}/${resourceID}/${'version}/${itemID}`;
+        string resourcePath = string `/categoryscheme/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}/${getEncodedUri(itemID)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};
@@ -359,7 +359,7 @@ public isolated client class Client {
     # + acceptEncoding - Specifies whether the response should be compressed and how.  `identity` (the default) indicates that no compression will be performed. 
     # + return - OK 
     remote isolated function getHierarchies(string agencyID, string resourceID, string 'version, string itemID, string references = "none", string detail = "full", string acceptEncoding = "identity") returns string|error {
-        string resourcePath = string `/hierarchicalcodelist/${agencyID}/${resourceID}/${'version}/${itemID}`;
+        string resourcePath = string `/hierarchicalcodelist/${getEncodedUri(agencyID)}/${getEncodedUri(resourceID)}/${getEncodedUri('version)}/${getEncodedUri(itemID)}`;
         map<anydata> queryParam = {"references": references, "detail": detail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept-Encoding": acceptEncoding};

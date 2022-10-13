@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,7 @@ public type BulkUpdateRequest record {
 };
 
 public type FullShorten record {
-    string domain?;
+    string domain = "bit.ly";
     string title?;
     # Always include a specific group and custom domain in your shorten calls.
     string group_guid?;
@@ -154,9 +154,7 @@ public type LaunchpadQRCode record {
 };
 
 # INTERNAL_ERROR
-public type InternalError record {
-    *Error;
-};
+public type InternalError Error;
 
 public type FormCapturePayload record {
     string submit_text?;
@@ -263,9 +261,7 @@ public type Groups record {
 };
 
 # BAD_GATEWAY
-public type BadGateway record {
-    *Error;
-};
+public type BadGateway Error;
 
 public type UserPreferenceBody record {
     boolean is_active?;
@@ -308,7 +304,7 @@ public type Tiers Tier[];
 
 public type Shorten record {
     string group_guid?;
-    string domain?;
+    string domain = "bit.ly";
     string long_url;
 };
 
@@ -431,9 +427,7 @@ public type Webhook record {
 };
 
 # UNPROCESSABLE_ENTITY
-public type UnprocessableEntity record {
-    *Error;
-};
+public type UnprocessableEntity Error;
 
 public type Clicks record {
     int units?;
@@ -520,7 +514,7 @@ public type SubscriptionCancelledDate record {
 };
 
 public type ClicksCount record {
-    string _error?;
+    string 'error?;
     int clicks?;
     string bitlink_id?;
 };
@@ -611,9 +605,7 @@ public type Campaign record {
 };
 
 # CONFLICT
-public type Conflict record {
-    *Error;
-};
+public type Conflict Error;
 
 public type InstallPreference string;
 
@@ -629,9 +621,7 @@ public type LaunchpadClicks record {
 };
 
 # UPGRADE_REQUIRED
-public type UpgradeRequired record {
-    *Error;
-};
+public type UpgradeRequired Error;
 
 public type BaseChannelBitlink record {
     string campaign_guid?;
@@ -643,9 +633,7 @@ public type InvitationsForLogin record {
 };
 
 # FORBIDDEN
-public type Forbidden record {
-    *Error;
-};
+public type Forbidden Error;
 
 public type UMGroupPreferences record {
     UMGroupPreference[] preferences?;
@@ -846,9 +834,7 @@ public type FacetCountData record {
 };
 
 # NOT_FOUND
-public type NotFound record {
-    *Error;
-};
+public type NotFound Error;
 
 public type DomainAgreement record {
     string content?;
@@ -923,7 +909,7 @@ public type BulkShortenUpload record {
 };
 
 public type DeactivateUser record {
-    record {*Feedback;} feedback?;
+    Feedback feedback?;
     string confirm_text?;
 };
 
@@ -977,9 +963,7 @@ public type Authorizations record {
 };
 
 # EXPECTATION_FAILED
-public type ExpectationFailed record {
-    *Error;
-};
+public type ExpectationFailed Error;
 
 public type UpdateLaunchpad record {
     string launchpad_id?;
@@ -1301,9 +1285,7 @@ public type CampaignClicks record {
 };
 
 # TEMPORARILY_UNAVAILABLE
-public type TemporarilyUnavailable record {
-    *Error;
-};
+public type TemporarilyUnavailable Error;
 
 public type ShortenBitlinkBody record {
     *HasReferences;
@@ -1463,9 +1445,7 @@ public type PaymentInvoice record {
 };
 
 # TIMEOUT
-public type Timeout record {
-    *Error;
-};
+public type Timeout Error;
 
 public type Channel record {
     *BaseChannel;
@@ -1505,9 +1485,7 @@ public type GroupClicksByFacet record {
 };
 
 # BAD_REQUEST
-public type BadRequest record {
-    *Error;
-};
+public type BadRequest Error;
 
 # custom domain in validation queue
 public type DomainValidate record {
@@ -1645,9 +1623,7 @@ public type PublicValidate record {
 };
 
 # UNAUTHORIZED
-public type Unauthorized record {
-    *Error;
-};
+public type Unauthorized Error;
 
 public type CountryCode record {
     string CountryName?;
@@ -1767,9 +1743,7 @@ public type DomainUpdate record {
 };
 
 # TOO_MANY_REQUESTS
-public type TooManyRequests record {
-    *Error;
-};
+public type TooManyRequests Error;
 
 public type OrgEmailBody record {
     string login?;

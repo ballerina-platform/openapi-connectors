@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -28,19 +28,19 @@ public type GlobalSummary record {
     # The ID of the global summary (this ID will always be "global").
     string id?;
     # The total power consumption of all the devices.
-    float totalPowerConsumption?;
+    decimal totalPowerConsumption?;
     # The lowest heating margin among the heating margins of all the devices.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMargin?;
+    decimal heatingMargin?;
     # The percentage of devices whose heating margin could be found.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMarginCoverage?;
+    decimal heatingMarginCoverage?;
     # The link to the details of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginDeviceUrl?;
     # The name of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginDeviceName?;
     # The electricity rate for all devices. This value can be updated by users with sufficient permissions.
-    float energyCost?;
+    decimal energyCost?;
     # The CO<sub>2</sub> emissions for all devices. This value can be updated by users with sufficient permissions.
-    float co2Emission?;
+    decimal co2Emission?;
     # Regular expression used to filter the groups for which the power consumption will be reported.
     string groupNameFilter?;
     # The data collection time (as an Epoch time, in seconds).
@@ -84,11 +84,11 @@ public type GroupSummary record {
     int serverId?;
     DeviceSummary[] deviceSummaries?;
     # The total power consumption of the devices attached to the group.
-    float totalPowerConsumption?;
+    decimal totalPowerConsumption?;
     # The unit in which the total power consumption of the devices attached to the group is being expressed.
     string totalPowerConsumptionUnit?;
     # The lowest heating margin among the heating margins of the devices attached to the group.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMargin?;
+    decimal heatingMargin?;
     # The unit in which the heating margin of the group is being expressed.
     string heatingMarginUnit?;
     # The name of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
@@ -96,35 +96,35 @@ public type GroupSummary record {
     # The link to the details of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginDeviceUrl?;
     # The percentage of devices attached to the group, whose heating margin could be found.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMarginCoverage?;
+    decimal heatingMarginCoverage?;
     # The electricity rate for all devices attached to the group. This value can be updated by users with sufficient permissions.
-    float energyCost?;
+    decimal energyCost?;
     # The CO<sub>2</sub> emissions for all devices attached to the group. This value can be updated by users with sufficient permissions.
-    float co2Emission?;
+    decimal co2Emission?;
     # The quantity of energy consumed by the devices attached to the group during one day.
-    float oneDayEnergyConsumption?;
+    decimal oneDayEnergyConsumption?;
     # The daily cost of the energy consumed by the devices attached to the group.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayCost?;
+    decimal oneDayCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the group during one day.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayEmittedCo2?;
+    decimal oneDayEmittedCo2?;
     # The confidence score (percentage) for the daily energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneDayConfidence?;
+    decimal oneDayConfidence?;
     # The quantity of energy consumed by the devices attached to the group during one month.
-    float oneMonthEnergyConsumption?;
+    decimal oneMonthEnergyConsumption?;
     # The monthly cost of the energy consumed by the devices attached to the group.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthCost?;
+    decimal oneMonthCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the group during one month.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthEmittedCo2?;
+    decimal oneMonthEmittedCo2?;
     # The confidence score (percentage) for the monthly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneMonthConfidence?;
+    decimal oneMonthConfidence?;
     # The quantity of energy consumed by the devices attached to the group during one year.
-    float oneYearEnergyConsumption?;
+    decimal oneYearEnergyConsumption?;
     # The yearly cost of the energy consumed by the devices attached to the group.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearCost?;
+    decimal oneYearCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the group in one year.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearEmittedCo2?;
+    decimal oneYearEmittedCo2?;
     # The confidence score (percentage) for the yearly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneYearConfidence?;
+    decimal oneYearConfidence?;
     # The data collection time (as an Epoch time, in seconds).
     int updateTimestamp?;
     # The link to the group details.
@@ -134,7 +134,7 @@ public type GroupSummary record {
     # The unit in which th euser-defined electricity rate value is being expressed.
     string energyCostUnit?;
     # The average ambient temperature based on the ambient temperatures of the devices attached to the group.
-    float ambientTemperature?;
+    decimal ambientTemperature?;
     # The unit in which the ambient temperature value is being expressed.
     string ambientTemperatureUnit?;
     # The unit in which the user-defined CO<sub>2</sub> emission value is being expressed.
@@ -166,11 +166,11 @@ public type DeviceSummary record {
     # The name of the PATROL Agent the device is attached to.
     string agentName?;
     # The power consumption of the device.
-    float powerConsumption?;
+    decimal powerConsumption?;
     # The unit in which the power consumption of the device is being expressed.
     string powerConsumptionUnit?;
     # The heating margin of the device.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMargin?;
+    decimal heatingMargin?;
     # The unit in which the heating margin of the device is being expressed.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginUnit?;
     # The collection time of the heating margin (as an Epoch time, in seconds).<br><u>Note</u>:This field will only be present if a value could be found.
@@ -180,7 +180,7 @@ public type DeviceSummary record {
     # The data collection time (as an Epoch time, in seconds).
     int updateTimestamp?;
     # The ambient temperature of the device.
-    float ambientTemperature?;
+    decimal ambientTemperature?;
     string 'type?;
     # The TSMOKey of the device.
     string deviceTSMOKey?;
@@ -196,11 +196,11 @@ public type ApplicationSummary record {
     # The list of devices attached to the application.<br><u>Note</u>: when using the <b>Applications</b> service, this list is always empty. It is populated only when using the <b>Application Details</b> service.
     DeviceSummary[] deviceSummaries?;
     # The total power consumption of the devices attached to the application.
-    float totalPowerConsumption?;
+    decimal totalPowerConsumption?;
     # The unit in which the total power consumption of the devices attached to the application is being expressed.
     string totalPowerConsumptionUnit?;
     # The lowest heating margin among the heating margins of the devices attached to the application.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMargin?;
+    decimal heatingMargin?;
     # The unit in which the heating margin of the application is being expressed.
     string heatingMarginUnit?;
     # The name of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
@@ -208,31 +208,31 @@ public type ApplicationSummary record {
     # The link to the details of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginDeviceUrl?;
     # The percentage of devices attached to the application, whose heating margin could be found.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMarginCoverage?;
+    decimal heatingMarginCoverage?;
     # The quantity of energy consumed by the devices attached to the application during one day.
-    float oneDayEnergyConsumption?;
+    decimal oneDayEnergyConsumption?;
     # The daily cost of the energy consumed by the devices attached to the application.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayCost?;
+    decimal oneDayCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the application during one day.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayEmittedCo2?;
+    decimal oneDayEmittedCo2?;
     # The confidence score (percentage) for the daily energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneDayConfidence?;
+    decimal oneDayConfidence?;
     # The quantity of energy consumed by the devices attached to the application during one month.
-    float oneMonthEnergyConsumption?;
+    decimal oneMonthEnergyConsumption?;
     # The monthly cost of the energy consumed by the devices attached to the application.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthCost?;
+    decimal oneMonthCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the application during one month.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthEmittedCo2?;
+    decimal oneMonthEmittedCo2?;
     # The confidence score (percentage) for the monthly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneMonthConfidence?;
+    decimal oneMonthConfidence?;
     # The quantity of energy consumed by the devices attached to the application during one year.
-    float oneYearEnergyConsumption?;
+    decimal oneYearEnergyConsumption?;
     # The yearly cost of the energy consumed by the devices attached to the application.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearCost?;
+    decimal oneYearCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the application in one year.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearEmittedCo2?;
+    decimal oneYearEmittedCo2?;
     # The confidence score (percentage) for the yearly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneYearConfidence?;
+    decimal oneYearConfidence?;
     # The data collection time (as an Epoch time, in seconds).
     int updateTimestamp?;
     # The link to the application details.
@@ -252,9 +252,9 @@ public type ApplicationSummary record {
 # The deserialized form of the <b>Energy Footprint Update</b> service's request payload.
 public type GroupConfiguration record {
     # Updates the electricity rate (unit: $/kWh).
-    float energyCost?;
+    decimal energyCost?;
     # Updates the CO<sub>2</sub> emission (unit: kg/kWh).
-    float co2Emission?;
+    decimal co2Emission?;
     # Updates the regular expression used to filter the groups for which the power consumption should be reported.
     string groupNameFilter?;
 };
@@ -291,11 +291,11 @@ public type ServiceSummary record {
     # The list of devices attached to the service.<br><u>Note</u>: when using the <b>Services</b> service, this list is always empty. It is populated only when using the <b>Service Details</b> service.
     DeviceSummary[] deviceSummaries?;
     # The total power consumption of the devices attached to the service.
-    float totalPowerConsumption?;
+    decimal totalPowerConsumption?;
     # The unit in which the total power consumption of the devices attached to the service is being expressed.
     string totalPowerConsumptionUnit?;
     # The lowest heating margin among the heating margins of the devices attached to the service.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMargin?;
+    decimal heatingMargin?;
     # The unit in which the heating margin of the service is being expressed.
     string heatingMarginUnit?;
     # The name of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
@@ -303,31 +303,31 @@ public type ServiceSummary record {
     # The link to the details of the device having the lowest heating margin.<br><u>Note</u>:This field will only be present if a value could be found.
     string heatingMarginDeviceUrl?;
     # The percentage of devices attached to the service, whose heating margin could be found.<br><u>Note</u>:This field will only be present if a value could be found.
-    float heatingMarginCoverage?;
+    decimal heatingMarginCoverage?;
     # The quantity of energy consumed by the devices attached to the service during one day.
-    float oneDayEnergyConsumption?;
+    decimal oneDayEnergyConsumption?;
     # The daily cost of the energy consumed by the devices attached to the service.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayCost?;
+    decimal oneDayCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the service during one day.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneDayEmittedCo2?;
+    decimal oneDayEmittedCo2?;
     # The confidence score (percentage) for the daily energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneDayConfidence?;
+    decimal oneDayConfidence?;
     # The quantity of energy consumed by the devices attached to the service during one month.
-    float oneMonthEnergyConsumption?;
+    decimal oneMonthEnergyConsumption?;
     # The monthly cost of the energy consumed by the devices attached to the service.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthCost?;
+    decimal oneMonthCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the service during one month.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneMonthEmittedCo2?;
+    decimal oneMonthEmittedCo2?;
     # The confidence score (percentage) for the monthly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneMonthConfidence?;
+    decimal oneMonthConfidence?;
     # The quantity of energy consumed by the devices attached to the service during one year.
-    float oneYearEnergyConsumption?;
+    decimal oneYearEnergyConsumption?;
     # The yearly cost of the energy consumed by the devices attached to the service.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearCost?;
+    decimal oneYearCost?;
     # The quantity of CO<sub>2</sub> emitted by the devices attached to the service in one year.<br><u>Note</u>:This field will only be present if a value could be computed.
-    float oneYearEmittedCo2?;
+    decimal oneYearEmittedCo2?;
     # The confidence score (percentage) for the yearly energy consumption, energy cost and CO<sub>2</sub> emission values.<br>The lower the confidence score, the more extrapolated the values are.
-    float oneYearConfidence?;
+    decimal oneYearConfidence?;
     # The data collection time (as an Epoch time, in seconds).
     int updateTimestamp?;
     # The link to the service details.

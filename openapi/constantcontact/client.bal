@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://idfed.constantcontact.com/as/token.oauth2";
 |};
 
 # This is a generated connector for [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
@@ -161,7 +172,7 @@ public isolated client class Client {
     # + activityId - The unique ID of the activity to GET 
     # + return - Request Successful 
     remote isolated function getActivity(string activityId) returns Activity|error {
-        string resourcePath = string `/activities/${activityId}`;
+        string resourcePath = string `/activities/${getEncodedUri(activityId)}`;
         Activity response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -302,7 +313,7 @@ public isolated client class Client {
     # + segmentId - The system-generated unique ID that identifies a segment. 
     # + return - The segment was successfully returned. 
     remote isolated function getSegmentDetail(int segmentId) returns SegmentDetail|error {
-        string resourcePath = string `/segments/${segmentId}`;
+        string resourcePath = string `/segments/${getEncodedUri(segmentId)}`;
         SegmentDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -312,7 +323,7 @@ public isolated client class Client {
     # + payload - Include both the `name` and `segment_criteria` (single-string escaped JSON) in the body request, then make updates to either or both. 
     # + return - The segment was successfully updated. 
     remote isolated function updateSegment(int segmentId, SegmentData payload) returns SegmentDetail|error {
-        string resourcePath = string `/segments/${segmentId}`;
+        string resourcePath = string `/segments/${getEncodedUri(segmentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -324,8 +335,8 @@ public isolated client class Client {
     # + segmentId - The system generated ID that uniquely identifies the segment. 
     # + return - The segment was successfully deleted. 
     remote isolated function deleteSegment(int segmentId) returns http:Response|error {
-        string resourcePath = string `/segments/${segmentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/segments/${getEncodedUri(segmentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # PATCH (rename) a Segment
@@ -334,7 +345,7 @@ public isolated client class Client {
     # + payload - Include the existing segment `name` in the body request, then rename the segment using a unique new name. 
     # + return - The segment name was successfully updated. 
     remote isolated function updateSegmentName(int segmentId, SegmentName payload) returns SegmentDetail|error {
-        string resourcePath = string `/segments/${segmentId}/name`;
+        string resourcePath = string `/segments/${getEncodedUri(segmentId)}/name`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -347,7 +358,7 @@ public isolated client class Client {
     # + include - Use `include` to specify which contact sub-resources to include in the response. Use a comma to separate multiple sub-resources. Valid values: `custom_fields`, `list_memberships`, `phone_numbers`, `street_addresses`, `notes`, and `taggings`. 
     # + return - Request successful 
     remote isolated function getContact(string contactId, string? include = ()) returns ContactResource|error {
-        string resourcePath = string `/contacts/${contactId}`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}`;
         map<anydata> queryParam = {"include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactResource response = check self.clientEp->get(resourcePath);
@@ -359,7 +370,7 @@ public isolated client class Client {
     # + payload - JSON payload defining the contact object, with updates. Any properties left blank or not included in the PUT payload are overwritten with null value - does not apply to contact subresources. 
     # + return - Contact resource has been updated 
     remote isolated function putContact(string contactId, ContactPutRequest payload) returns ContactResource|error {
-        string resourcePath = string `/contacts/${contactId}`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -371,8 +382,8 @@ public isolated client class Client {
     # + contactId - Unique ID of contact to DELETE 
     # + return - Request successful; No content returned 
     remote isolated function deleteContact(string contactId) returns http:Response|error {
-        string resourcePath = string `/contacts/${contactId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # GET Contacts Collection
@@ -434,7 +445,7 @@ public isolated client class Client {
     # + customFieldId - Unique ID of the `custom_field` on which to operate. 
     # + return - Request successful 
     remote isolated function getCustomField(string customFieldId) returns CustomFieldResource|error {
-        string resourcePath = string `/contact_custom_fields/${customFieldId}`;
+        string resourcePath = string `/contact_custom_fields/${getEncodedUri(customFieldId)}`;
         CustomFieldResource response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -444,7 +455,7 @@ public isolated client class Client {
     # + payload - The JSON payload used to update an existing custom field. Any properties omitted in the PUT request are overwritten with a null value. 
     # + return - Success - custom_field updated 
     remote isolated function putCustomField(string customFieldId, CustomFieldInput payload) returns CustomFieldResource|error {
-        string resourcePath = string `/contact_custom_fields/${customFieldId}`;
+        string resourcePath = string `/contact_custom_fields/${getEncodedUri(customFieldId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -456,8 +467,8 @@ public isolated client class Client {
     # + customFieldId - Unique ID of the custom_field on which to operate. 
     # + return - Request successful; No content returned 
     remote isolated function deleteCustomField(string customFieldId) returns http:Response|error {
-        string resourcePath = string `/contact_custom_fields/${customFieldId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contact_custom_fields/${getEncodedUri(customFieldId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # GET custom_fields Collection
@@ -489,7 +500,7 @@ public isolated client class Client {
     # + includeMembershipCount - Use to include the number of contact members per list by setting the `include_membership_count` to either `active`, to count only active contacts, or `all` to include all contacts in the count. 
     # + return - Request successful 
     remote isolated function getList(string listId, string? includeMembershipCount = ()) returns ContactList|error {
-        string resourcePath = string `/contact_lists/${listId}`;
+        string resourcePath = string `/contact_lists/${getEncodedUri(listId)}`;
         map<anydata> queryParam = {"include_membership_count": includeMembershipCount};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactList response = check self.clientEp->get(resourcePath);
@@ -501,7 +512,7 @@ public isolated client class Client {
     # + payload - JSON payload containing updates to the specified contact list 
     # + return - Request successful 
     remote isolated function putList(string listId, ListInput payload) returns ContactList|error {
-        string resourcePath = string `/contact_lists/${listId}`;
+        string resourcePath = string `/contact_lists/${getEncodedUri(listId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -513,8 +524,8 @@ public isolated client class Client {
     # + listId - Unique ID of the list to delete 
     # + return - Accepted 
     remote isolated function deleteListActivity(string listId) returns ActivityDeleteListResponse|error {
-        string resourcePath = string `/contact_lists/${listId}`;
-        ActivityDeleteListResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contact_lists/${getEncodedUri(listId)}`;
+        ActivityDeleteListResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # GET Lists Collection
@@ -559,7 +570,7 @@ public isolated client class Client {
     # + includeCount - Use to include (`true`) or exclude (`false`) the total number of tagged contacts (`contacts_count`) from the results. 
     # + return - Request Successful 
     remote isolated function getTag(string tagId, boolean includeCount = false) returns Tag|error {
-        string resourcePath = string `/contact_tags/${tagId}`;
+        string resourcePath = string `/contact_tags/${getEncodedUri(tagId)}`;
         map<anydata> queryParam = {"include_count": includeCount};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Tag response = check self.clientEp->get(resourcePath);
@@ -571,7 +582,7 @@ public isolated client class Client {
     # + payload - The JSON payload used to update the tag name (`name`). 
     # + return - Request Successful 
     remote isolated function putTag(string tagId, TagPut payload) returns Tag|error {
-        string resourcePath = string `/contact_tags/${tagId}`;
+        string resourcePath = string `/contact_tags/${getEncodedUri(tagId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -583,8 +594,8 @@ public isolated client class Client {
     # + tagId - The ID that uniquely identifies a tag in UUID format. 
     # + return - The asynchronous request was successfully accepted. To view the results of the activity request, use the href link returned in the response. 
     remote isolated function deleteTag(string tagId) returns ActivityGeneric|error {
-        string resourcePath = string `/contact_tags/${tagId}`;
-        ActivityGeneric response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contact_tags/${getEncodedUri(tagId)}`;
+        ActivityGeneric response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # GET Details for All Tags
@@ -641,7 +652,7 @@ public isolated client class Client {
     # + campaignId - The ID (UUID format) that uniquely identifies this email campaign. 
     # + return - Request successful. 
     remote isolated function retrieveEmailCampaignUsingGET(string campaignId) returns EmailCampaign|error {
-        string resourcePath = string `/emails/${campaignId}`;
+        string resourcePath = string `/emails/${getEncodedUri(campaignId)}`;
         EmailCampaign response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -650,8 +661,8 @@ public isolated client class Client {
     # + campaignId - The unique ID for the email campaign you are deleting. 
     # + return - Email campaign successfully deleted. No response body returned. 
     remote isolated function removeEmailCampaignUsingDELETE(string campaignId) returns http:Response|error {
-        string resourcePath = string `/emails/${campaignId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/emails/${getEncodedUri(campaignId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # PATCH (Update) an Email Campaign Name
@@ -660,7 +671,7 @@ public isolated client class Client {
     # + payload - A JSON payload that contains the new email campaign name. 
     # + return - Request successful. 
     remote isolated function renameEmailCampaignUsingPATCH(string campaignId, EmailCampaignName payload) returns EmailCampaign|error {
-        string resourcePath = string `/emails/${campaignId}`;
+        string resourcePath = string `/emails/${getEncodedUri(campaignId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -684,7 +695,7 @@ public isolated client class Client {
     # + include - Use the `include` query parameter to enter a comma separated list of additional email campaign activity properties for the V3 API to return. Valid values are `physical_address_in_footer`, `permalink_url`, `html_content`, and `document_properties`. 
     # + return - Request successful. 
     remote isolated function retrieveEmailCampaignActivityUsingGET(string campaignActivityId, string? include = ()) returns EmailCampaignActivity|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}`;
         map<anydata> queryParam = {"include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailCampaignActivity response = check self.clientEp->get(resourcePath);
@@ -696,7 +707,7 @@ public isolated client class Client {
     # + payload - A request body payload that contains the complete email campaign activity with your changes. 
     # + return - Email campaign activity successfully updated. 
     remote isolated function updateEmailCampaignActivityUsingPUT(string campaignActivityId, EmailCampaignActivity payload) returns EmailCampaignActivity|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -708,7 +719,7 @@ public isolated client class Client {
     # + campaignActivityId - The unique ID for an email campaign activity. 
     # + return - Request successful. 
     remote isolated function retrieveEmailSchedulesUsingGET(string campaignActivityId) returns EmailScheduleResponse|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/schedules`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/schedules`;
         EmailScheduleResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -718,7 +729,7 @@ public isolated client class Client {
     # + payload - A request body payload that contains the date that you want Constant Contact to send your email campaign activity on. Use `"0"` as the date to have Constant Contact immediately send the email campaign activity. 
     # + return - Request successful. 
     remote isolated function scheduleEmailCampaignActivityUsingPOST(string campaignActivityId, EmailScheduleInput payload) returns EmailScheduleResponse|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/schedules`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/schedules`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -730,8 +741,8 @@ public isolated client class Client {
     # + campaignActivityId - The unique ID for an email campaign activity. 
     # + return - Email campaign activity schedule successfully deleted. No response body returned. 
     remote isolated function unscheduleEmailCampaignActivityUsingDELETE(string campaignActivityId) returns http:Response|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/schedules`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/schedules`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # POST Test Send an Email Campaign Activity
@@ -740,7 +751,7 @@ public isolated client class Client {
     # + payload - A JSON request body that contains the recipients of the test email and an optional personal message. 
     # + return - Test email campaign activity successfully sent. No response body returned. 
     remote isolated function testSendCampaignActivityUsingPOST(string campaignActivityId, EmailTestSendInput payload) returns http:Response|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/tests`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/tests`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -752,7 +763,7 @@ public isolated client class Client {
     # + campaignActivityId - The unique ID for an email campaign activity. 
     # + return - Request successful. 
     remote isolated function retrieveEmailCampaignActivityPreviewUsingGET(string campaignActivityId) returns EmailCampaignActivityPreview|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/previews`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/previews`;
         EmailCampaignActivityPreview response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -761,7 +772,7 @@ public isolated client class Client {
     # + campaignActivityId - The unique ID for an email campaign activity. You can return the send history for `primary_email` and `resend` role email campaign activities. 
     # + return - Request successful. 
     remote isolated function retrieveEmailSendHistoryUsingGET(string campaignActivityId) returns EmailSendHistory|error {
-        string resourcePath = string `/emails/activities/${campaignActivityId}/send_history`;
+        string resourcePath = string `/emails/activities/${getEncodedUri(campaignActivityId)}/send_history`;
         EmailSendHistory response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -772,7 +783,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return in a single page. Valid values are 1 to 100. Default is 100. 
     # + return - successful operation 
     remote isolated function getContactTracking(string contactId, string trackingActivitiesList, string 'limit = "100") returns ContactTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/contact_reports/${contactId}/activity_details`;
+        string resourcePath = string `/reports/contact_reports/${getEncodedUri(contactId)}/activity_details`;
         map<anydata> queryParam = {"tracking_activities_list": trackingActivitiesList, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -785,7 +796,7 @@ public isolated client class Client {
     # + end - The ending date, in ISO 8601 format, to use to get campaigns. For example: 2019-12-01T00:00:00-0500. 
     # + return - Request Successful 
     remote isolated function getContactOpenClickRate(string contactId, string 'start, string end) returns ContactOpenAndClickRates|error {
-        string resourcePath = string `/reports/contact_reports/${contactId}/open_and_click_rates`;
+        string resourcePath = string `/reports/contact_reports/${getEncodedUri(contactId)}/open_and_click_rates`;
         map<anydata> queryParam = {"start": 'start, "end": end};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactOpenAndClickRates response = check self.clientEp->get(resourcePath);
@@ -798,7 +809,7 @@ public isolated client class Client {
     # + end - The ending date, in ISO 8601 format, to use to get campaigns. For example: 2019-12-01T00:00:00-0500. 
     # + return - successful operation 
     remote isolated function getContactTrackingCount(string contactId, string 'start, string end) returns ContactCampaignActivitiesSummary|error {
-        string resourcePath = string `/reports/contact_reports/${contactId}/activity_summary`;
+        string resourcePath = string `/reports/contact_reports/${getEncodedUri(contactId)}/activity_summary`;
         map<anydata> queryParam = {"start": 'start, "end": end};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactCampaignActivitiesSummary response = check self.clientEp->get(resourcePath);
@@ -809,7 +820,7 @@ public isolated client class Client {
     # + campaignActivityId - The unique ID for an email campaign activity. 
     # + return - Request was successful 
     remote isolated function getCampaignActivityLinkStats(string campaignActivityId) returns EmailLinks|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/links`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/links`;
         EmailLinks response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -819,7 +830,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getSends(string campaignActivityId, string 'limit = "500") returns SendsTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/sends`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/sends`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SendsTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -831,7 +842,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getOpens(string campaignActivityId, string 'limit = "500") returns OpensTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/opens`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/opens`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OpensTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -843,7 +854,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getUniqueOpens(string campaignActivityId, string 'limit = "500") returns OpensTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/unique_opens`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/unique_opens`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OpensTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -855,7 +866,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getDidNotOpens(string campaignActivityId, string 'limit = "500") returns DidNotOpensTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/didnotopens`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/didnotopens`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DidNotOpensTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -868,7 +879,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getClicks(string campaignActivityId, int? urlId = (), string 'limit = "500") returns ClicksTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/clicks`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/clicks`;
         map<anydata> queryParam = {"url_id": urlId, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ClicksTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -880,7 +891,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getForwards(string campaignActivityId, string 'limit = "500") returns ForwardsTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/forwards`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/forwards`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ForwardsTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -892,7 +903,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getOptouts(string campaignActivityId, string 'limit = "500") returns OptoutsTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/optouts`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/optouts`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OptoutsTrackingActivitiesPage response = check self.clientEp->get(resourcePath);
@@ -905,7 +916,7 @@ public isolated client class Client {
     # + 'limit - The number of tracking activities to return on a page. 
     # + return - Request was successful 
     remote isolated function getBounces(string campaignActivityId, string[]? bounceCode = (), string 'limit = "500") returns BouncesTrackingActivitiesPage|error {
-        string resourcePath = string `/reports/email_reports/${campaignActivityId}/tracking/bounces`;
+        string resourcePath = string `/reports/email_reports/${getEncodedUri(campaignActivityId)}/tracking/bounces`;
         map<anydata> queryParam = {"bounce_code": bounceCode, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"bounce_code": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -928,7 +939,7 @@ public isolated client class Client {
     # + campaignIds - A comma-separated list of `campaign_id`s (UUID's). 
     # + return - Request was successful. 
     remote isolated function getEmailSummary(string campaignIds) returns CampaignStatsQueryResultEmail|error {
-        string resourcePath = string `/reports/stats/email_campaigns/${campaignIds}`;
+        string resourcePath = string `/reports/stats/email_campaigns/${getEncodedUri(campaignIds)}`;
         CampaignStatsQueryResultEmail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -937,7 +948,7 @@ public isolated client class Client {
     # + campaignActivityIds - A comma-separated list of `campaign_activity_id`s (UUID's). 
     # + return - Request was successful. 
     remote isolated function getEmailCampaignActivitySummary(string campaignActivityIds) returns CampaignActivityStatsQueryResultEmail|error {
-        string resourcePath = string `/reports/stats/email_campaign_activities/${campaignActivityIds}`;
+        string resourcePath = string `/reports/stats/email_campaign_activities/${getEncodedUri(campaignActivityIds)}`;
         CampaignActivityStatsQueryResultEmail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -970,7 +981,7 @@ public isolated client class Client {
     # + encodedAccountId - Specify the client's unique `encoded_account_id`. 
     # + return - Request successful. 
     remote isolated function getPlan(string encodedAccountId) returns PlanTiersObject|error {
-        string resourcePath = string `/partner/accounts/${encodedAccountId}/plan`;
+        string resourcePath = string `/partner/accounts/${getEncodedUri(encodedAccountId)}/plan`;
         PlanTiersObject response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -980,7 +991,7 @@ public isolated client class Client {
     # + payload - Update the billing plan (`plan_type`) for an existing Constant Contact client account. Options include: 
     # + return - Request successful. 
     remote isolated function setPlan(string encodedAccountId, PlanInfo payload) returns PlanTiersObject|error {
-        string resourcePath = string `/partner/accounts/${encodedAccountId}/plan`;
+        string resourcePath = string `/partner/accounts/${getEncodedUri(encodedAccountId)}/plan`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -993,7 +1004,7 @@ public isolated client class Client {
     # + payload - By default, the current date and time is automatically used as the cancellation date. However, you can specify a future date and time to cancel the account (`effective_date`) in the request body in ISO format. You can also enter the client's cancellation reason (`reason_id`). 
     # + return - Request successful 
     remote isolated function cancelAccount(string encodedAccountId, AccountCancellation payload) returns AccountCancellation|error {
-        string resourcePath = string `/partner/accounts/${encodedAccountId}/status/cancel`;
+        string resourcePath = string `/partner/accounts/${getEncodedUri(encodedAccountId)}/status/cancel`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1013,7 +1024,7 @@ public isolated client class Client {
     # + topicId - Identifies a webhook topic. 
     # + return - Request successful 
     remote isolated function getWebhooksTopic(string topicId) returns WebhooksSubscriptionResponse|error {
-        string resourcePath = string `/partner/webhooks/subscriptions/${topicId}`;
+        string resourcePath = string `/partner/webhooks/subscriptions/${getEncodedUri(topicId)}`;
         WebhooksSubscriptionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1023,7 +1034,7 @@ public isolated client class Client {
     # + payload - A JSON payload containing a callback URI. Constant Contact uses this callback URI to notify you about your chosen topic. 
     # + return - Request successful. 
     remote isolated function putWebhooksTopic(string topicId, WebhooksSubscriptionBody payload) returns WebhooksSubscriptionPutResp|error {
-        string resourcePath = string `/partner/webhooks/subscriptions/${topicId}`;
+        string resourcePath = string `/partner/webhooks/subscriptions/${getEncodedUri(topicId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1035,8 +1046,8 @@ public isolated client class Client {
     # + topicId - Identifies a webhook topic. 
     # + return - Webhooks subscription successfully deleted. 
     remote isolated function deleteWebhooksSubscriptions(string topicId) returns http:Response|error {
-        string resourcePath = string `/partner/webhooks/subscriptions/${topicId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/partner/webhooks/subscriptions/${getEncodedUri(topicId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # POST Test Send Webhook Notification
@@ -1044,7 +1055,7 @@ public isolated client class Client {
     # + topicId - Identifies a webhook topic. 
     # + return - Test notification successfully sent to your callback URI. 
     remote isolated function testSendWebhooksTopic(string topicId) returns WebhooksTestSend|error {
-        string resourcePath = string `/partner/webhooks/subscriptions/${topicId}/tests`;
+        string resourcePath = string `/partner/webhooks/subscriptions/${getEncodedUri(topicId)}/tests`;
         http:Request request = new;
         //TODO: Update the request as needed;
         WebhooksTestSend response = check self.clientEp-> post(resourcePath, request);

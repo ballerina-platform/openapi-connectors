@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Client Credentials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = " ";
 |};
 
 # This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification. 
@@ -69,7 +80,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomersByProjectKeyByID(string projectKey, string id, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -79,7 +90,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomersByProjectKeyByID(string projectKey, string id, CustomerUpdate payload, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -91,12 +102,12 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerByProjectKeyByID(string projectKey, string id, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/${id}`;
+    remote isolated function deleteCustomerByProjectKeyByID(string projectKey, string id, decimal 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"dataErasure": dataErasure, "version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Customer response = check self.clientEp->delete(resourcePath);
+        Customer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a customer by its ID from a specific Store.
@@ -106,7 +117,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerInStoreByID(string projectKey, string storeKey, string id, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -119,7 +130,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerInStoreByID(string projectKey, string storeKey, string id, CustomerUpdate payload, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -131,18 +142,18 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerInStoreByID(string projectKey, string storeKey, string id, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/${id}`;
+    remote isolated function deleteCustomerInStoreByID(string projectKey, string storeKey, string id, decimal 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"dataErasure": dataErasure, "version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Customer response = check self.clientEp->delete(resourcePath);
+        Customer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
     # + return - 200 
     remote isolated function getCustomerByKey(string projectKey, string 'key, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -152,7 +163,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerByKey(string projectKey, string 'key, CustomerUpdate payload, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -164,12 +175,12 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerByKey(string projectKey, string 'key, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/key=${'key}`;
+    remote isolated function deleteCustomerByKey(string projectKey, string 'key, decimal 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"dataErasure": dataErasure, "version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Customer response = check self.clientEp->delete(resourcePath);
+        Customer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a customer by its Key from a specific Store.
@@ -179,7 +190,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerInStoreByKey(string projectKey, string storeKey, string 'key, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -191,7 +202,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerInStorebyKey(string projectKey, string storeKey, string 'key, CustomerUpdate payload, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -203,18 +214,18 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerInStorebyKey(string projectKey, string storeKey, string 'key, float 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/key=${'key}`;
+    remote isolated function deleteCustomerInStorebyKey(string projectKey, string storeKey, string 'key, decimal 'version, boolean? dataErasure = (), Expansion[]? expand = ()) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"dataErasure": dataErasure, "version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        Customer response = check self.clientEp->delete(resourcePath);
+        Customer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
     # + return - 200 
-    remote isolated function queryCustomers(string projectKey, Expansion[]? expand = (), Sort[]? sort = (), float? 'limit = (), float? offset = (), boolean? withTotal = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns CustomerPagedQueryResponse|error {
-        string resourcePath = string `/${projectKey}/customers`;
+    remote isolated function queryCustomers(string projectKey, Expansion[]? expand = (), Sort[]? sort = (), decimal? 'limit = (), decimal? offset = (), boolean? withTotal = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns CustomerPagedQueryResponse|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers`;
         map<anydata> queryParam = {"expand": expand, "sort": sort, "limit": 'limit, "offset": offset, "withTotal": withTotal, "where": 'where, "/^var[.][a-zA-Z0-9]+$/": varAZaZ09};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}, "sort": {style: FORM, explode: true}, "where": {style: FORM, explode: true}, "/^var[.][a-zA-Z0-9]+$/": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -227,7 +238,7 @@ public isolated client class Client {
     #
     # + return - 201 
     remote isolated function createcustomerSignup(string projectKey, CustomerDraft payload, Expansion[]? expand = ()) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/customers`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -239,8 +250,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function queryCustomersInStore(string projectKey, string storeKey, Expansion[]? expand = (), Sort[]? sort = (), float? 'limit = (), float? offset = (), boolean? withTotal = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns CustomerPagedQueryResponse|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers`;
+    remote isolated function queryCustomersInStore(string projectKey, string storeKey, Expansion[]? expand = (), Sort[]? sort = (), decimal? 'limit = (), decimal? offset = (), boolean? withTotal = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns CustomerPagedQueryResponse|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers`;
         map<anydata> queryParam = {"expand": expand, "sort": sort, "limit": 'limit, "offset": offset, "withTotal": withTotal, "where": 'where, "/^var[.][a-zA-Z0-9]+$/": varAZaZ09};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}, "sort": {style: FORM, explode: true}, "where": {style: FORM, explode: true}, "/^var[.][a-zA-Z0-9]+$/": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -258,7 +269,7 @@ public isolated client class Client {
     #
     # + return - 201 
     remote isolated function createcustomersinstoreSignup(string projectKey, string storeKey, CustomerDraft payload, Expansion[]? expand = ()) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -272,7 +283,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function resetCustomerPassword(string projectKey, CustomerResetPassword payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/password/reset`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/password/reset`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -283,7 +294,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function changeCustomerPasswordInStore(string projectKey, string storeKey, CustomerChangePassword payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/password`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/password`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -300,7 +311,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function authenticateglobalcustomerSignin(string projectKey, CustomerSignin payload) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/login`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/login`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -311,7 +322,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function authenticatecustomerSigninInstore(string projectKey, string storeKey, CustomerSignin payload) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/login`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/login`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -323,7 +334,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function createTokenForVerifyingCustomerEmailByPasswordToken(string projectKey, CustomerCreatePasswordResetToken payload) returns CustomerToken|error {
-        string resourcePath = string `/${projectKey}/customers/password-token`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/password-token`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -333,7 +344,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerByPasswordToken(string projectKey, string passwordToken, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/password-token=${passwordToken}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/password-token=${getEncodedUri(passwordToken)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -345,7 +356,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function createTokenForResetCustomerPasswordInStore(string projectKey, string storeKey, CustomerCreatePasswordResetToken payload) returns CustomerToken|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/password-token`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/password-token`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -355,7 +366,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerByPasswordTokenInStore(string projectKey, string storeKey, string passwordToken, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/password-token=${passwordToken}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/password-token=${getEncodedUri(passwordToken)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -366,7 +377,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function resetCustomerPasswordInStore(string projectKey, string storeKey, CustomerResetPassword payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/password/reset`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/password/reset`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -377,7 +388,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function createTokenForVerifyingCustomerEmailByEmailToken(string projectKey, CustomerCreateEmailToken payload) returns CustomerToken|error {
-        string resourcePath = string `/${projectKey}/customers/email-token`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/email-token`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -387,7 +398,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerByEmailToken(string projectKey, string emailToken, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/email-token=${emailToken}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/email-token=${getEncodedUri(emailToken)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -398,7 +409,7 @@ public isolated client class Client {
     #
     # + return - The email was verified. 
     remote isolated function verifyCustomerEmail(string projectKey, CustomerEmailVerify payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/customers/email/confirm`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customers/email/confirm`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -409,7 +420,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function verifyCustomerEmailInStore(string projectKey, string storeKey, CustomerCreateEmailToken payload) returns CustomerToken|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/email-token`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/email-token`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -419,7 +430,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerByEmailTokenInStore(string projectKey, string storeKey, string emailToken, Expansion[]? expand = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/email-token=${emailToken}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/email-token=${getEncodedUri(emailToken)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -430,7 +441,7 @@ public isolated client class Client {
     #
     # + return - The email was verified. 
     remote isolated function verifyCustomerEmailUsingToken(string projectKey, string storeKey, CustomerEmailVerify payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/in-store/key=${storeKey}/customers/email/confirm`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/in-store/key=${getEncodedUri(storeKey)}/customers/email/confirm`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -439,8 +450,8 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function getCustomerByProjectKey(string projectKey, Sort[]? sort = (), float? 'limit = (), float? offset = (), boolean? withTotal = (), Expansion[]? expand = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns Customer|error {
-        string resourcePath = string `/${projectKey}/me`;
+    remote isolated function getCustomerByProjectKey(string projectKey, Sort[]? sort = (), decimal? 'limit = (), decimal? offset = (), boolean? withTotal = (), Expansion[]? expand = (), QueryPredicate[]? 'where = (), string[]? varAZaZ09 = ()) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me`;
         map<anydata> queryParam = {"sort": sort, "limit": 'limit, "offset": offset, "withTotal": withTotal, "expand": expand, "where": 'where, "/^var[.][a-zA-Z0-9]+$/": varAZaZ09};
         map<Encoding> queryParamEncoding = {"sort": {style: FORM, explode: true}, "expand": {style: FORM, explode: true}, "where": {style: FORM, explode: true}, "/^var[.][a-zA-Z0-9]+$/": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -451,7 +462,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerByProjectKey(string projectKey, MyCustomerUpdate payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/me`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -461,17 +472,17 @@ public isolated client class Client {
     # Delete my Customer
     #
     # + return - 200 
-    remote isolated function deleteCustomerByProjectKey(string projectKey, float 'version) returns Customer|error {
-        string resourcePath = string `/${projectKey}/me`;
+    remote isolated function deleteCustomerByProjectKey(string projectKey, decimal 'version) returns Customer|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me`;
         map<anydata> queryParam = {"version": 'version};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Customer response = check self.clientEp->delete(resourcePath);
+        Customer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
     # + return - 201 
     remote isolated function createCustomerSignUpByProjectKey(string projectKey, MyCustomerDraft payload) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/me/signup`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me/signup`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -481,7 +492,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function authenticatecustomerSignin(string projectKey, CustomerSignin payload) returns CustomerSignInResult|error {
-        string resourcePath = string `/${projectKey}/me/login`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me/login`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -491,7 +502,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function changeCustomerPasswordByProjectKey(string projectKey, MyCustomerChangePassword payload) returns Customer|error {
-        string resourcePath = string `/${projectKey}/me/password`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me/password`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -501,7 +512,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function resetCustomerPasswordByProject(string projectKey) returns Customer|error {
-        string resourcePath = string `/${projectKey}/me/password/reset`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me/password/reset`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Customer response = check self.clientEp-> post(resourcePath, request);
@@ -510,7 +521,7 @@ public isolated client class Client {
     #
     # + return - ## Bad Request A 400 is the most commonly expected error response and indicates that a request failed due to providing bad input. Bad input can be a malformed request body, missing required parameters, wrongly typed or malformed parameters or a parameter that references another resource that does not exist. Clients need to resolve the problems mentioned in the response before re-sending the request. The following general error codes can appear in responses with the HTTP status code `400`: * `InvalidInput`   Invalid input has been sent to the service.   The client application should validate the input according to the constraints described in the error message   before sending the request. * `InvalidOperation`   The resource(s) involved in the request are not in a valid state for the operation. The client application   should validate the constraints described in the error message before sending the request. * `InvalidField`   A field has an invalid value.   Extra fields:   * `field` - String     The name of the field.   * `invalidValue` - *     The invalid value.   * `allowedValues` - Array of * - Optional     A fixed set of allowed values for the field, if any. * `RequiredField`   A required field is missing a value.   Extra fields:   * `field` - String     The name of the field. * `DuplicateField`   A value for a field conflicts with an existing duplicate value.   Extra fields:   * `field` - String     The name of the field.   * `duplicateValue` - *     The offending duplicate value. 
     remote isolated function verifyCustomerEmailByProject(string projectKey) returns http:Response|error {
-        string resourcePath = string `/${projectKey}/me/email/confirm`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/me/email/confirm`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -519,7 +530,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function getCustomerGroupsByID(string projectKey, string id, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -529,7 +540,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerGroupsByID(string projectKey, string id, CustomerGroupUpdate payload, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/${id}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -541,18 +552,18 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerGroupsByID(string projectKey, string id, float 'version, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/${id}`;
+    remote isolated function deleteCustomerGroupsByID(string projectKey, string id, decimal 'version, Expansion[]? expand = ()) returns CustomerGroup|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CustomerGroup response = check self.clientEp->delete(resourcePath);
+        CustomerGroup response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
     # + return - 200 
     remote isolated function getCustomerGroupbyKey(string projectKey, string 'key, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -562,7 +573,7 @@ public isolated client class Client {
     #
     # + return - 200 
     remote isolated function updateCustomerGroupbyKey(string projectKey, string 'key, CustomerGroupUpdate payload, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/key=${'key}`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -574,18 +585,18 @@ public isolated client class Client {
     }
     #
     # + return - 200 
-    remote isolated function deleteCustomerGroupbyKey(string projectKey, string 'key, float 'version, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups/key=${'key}`;
+    remote isolated function deleteCustomerGroupbyKey(string projectKey, string 'key, decimal 'version, Expansion[]? expand = ()) returns CustomerGroup|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups/key=${getEncodedUri('key)}`;
         map<anydata> queryParam = {"version": 'version, "expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        CustomerGroup response = check self.clientEp->delete(resourcePath);
+        CustomerGroup response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
     # + return - 200 
-    remote isolated function queryCustomerGroups(string projectKey, QueryPredicate[]? 'where = (), Expansion[]? expand = (), Sort[]? sort = (), float? 'limit = (), float? offset = (), boolean? withTotal = (), string[]? varAZaZ09 = ()) returns CustomerGroupPagedQueryResponse|error {
-        string resourcePath = string `/${projectKey}/customer-groups`;
+    remote isolated function queryCustomerGroups(string projectKey, QueryPredicate[]? 'where = (), Expansion[]? expand = (), Sort[]? sort = (), decimal? 'limit = (), decimal? offset = (), boolean? withTotal = (), string[]? varAZaZ09 = ()) returns CustomerGroupPagedQueryResponse|error {
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups`;
         map<anydata> queryParam = {"where": 'where, "expand": expand, "sort": sort, "limit": 'limit, "offset": offset, "withTotal": withTotal, "/^var[.][a-zA-Z0-9]+$/": varAZaZ09};
         map<Encoding> queryParamEncoding = {"where": {style: FORM, explode: true}, "expand": {style: FORM, explode: true}, "sort": {style: FORM, explode: true}, "/^var[.][a-zA-Z0-9]+$/": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -595,7 +606,7 @@ public isolated client class Client {
     #
     # + return - 201 
     remote isolated function createCustomerGroup(string projectKey, CustomerGroupDraft payload, Expansion[]? expand = ()) returns CustomerGroup|error {
-        string resourcePath = string `/${projectKey}/customer-groups`;
+        string resourcePath = string `/${getEncodedUri(projectKey)}/customer-groups`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

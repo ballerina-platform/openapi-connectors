@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
@@ -116,7 +120,7 @@ public isolated client class Client {
     # + embed - Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). 
     # + return - A Case object. 
     remote isolated function showCase(string caseId, string? embed = ()) returns CaseObject|error {
-        string resourcePath = string `/api/v2/kases/${caseId}`;
+        string resourcePath = string `/api/v2/kases/${getEncodedUri(caseId)}`;
         map<anydata> queryParam = {"embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CaseObject response = check self.clientEp->get(resourcePath);
@@ -130,7 +134,7 @@ public isolated client class Client {
     # + embed - Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). 
     # + return - An object with a single property kases which is an array of Case objects. 
     remote isolated function listCasesByParty(string partyId, int? page = (), int? perPage = (), string? embed = ()) returns Cases|error {
-        string resourcePath = string `/api/v2/parties/${partyId}/kases`;
+        string resourcePath = string `/api/v2/parties/${getEncodedUri(partyId)}/kases`;
         map<anydata> queryParam = {"page": page, "perPage": perPage, "embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Cases response = check self.clientEp->get(resourcePath);
@@ -185,7 +189,7 @@ public isolated client class Client {
     # + embed - Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), party (assigned party), milestone (the opportunity milestone), and missingImportantFields (indicates if an opportunity has any Important custom fields that are missing a value). 
     # + return - An Opportunity object. 
     remote isolated function showOpportunity(string opportunityId, string? embed = ()) returns OpportunityObject|error {
-        string resourcePath = string `/api/v2/opportunities/${opportunityId}`;
+        string resourcePath = string `/api/v2/opportunities/${getEncodedUri(opportunityId)}`;
         map<anydata> queryParam = {"embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OpportunityObject response = check self.clientEp->get(resourcePath);
@@ -198,7 +202,7 @@ public isolated client class Client {
     # + payload - An object with a single property opportunity which must be an Opportunity object. Fields that are not included in the request will remain unchanged. An owner and/or team are required on an opportunity. 
     # + return - All good 
     remote isolated function updateOpportunity(string opportunityId, UpdateOpportunityRequest payload, string? embed = ()) returns http:Response|error {
-        string resourcePath = string `/api/v2/opportunities/${opportunityId}`;
+        string resourcePath = string `/api/v2/opportunities/${getEncodedUri(opportunityId)}`;
         map<anydata> queryParam = {"embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -212,8 +216,8 @@ public isolated client class Client {
     # + opportunityId - The opportunity ID 
     # + return - An empty body if the opportunity was successfully deleted. 
     remote isolated function deleteOpportunity(string opportunityId) returns http:Response|error {
-        string resourcePath = string `/api/v2/opportunities/${opportunityId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/opportunities/${getEncodedUri(opportunityId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves the collection of all opportunities associated with the given party.
@@ -224,7 +228,7 @@ public isolated client class Client {
     # + embed - Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags ( tags), fields (custom fields and fields in DataTags), party (assigned party), opportunity (the associated opportunity), and missingImportantFields (indicates if a case has any Important custom fields that are missing a value). 
     # + return - An object with a single property opportunities which is an array of Opportunity objects. 
     remote isolated function listOpportunitiesByParty(string partyId, int? page = (), int? perPage = (), string? embed = ()) returns Opportunities|error {
-        string resourcePath = string `/api/v2/parties/${partyId}/opportunities`;
+        string resourcePath = string `/api/v2/parties/${getEncodedUri(partyId)}/opportunities`;
         map<anydata> queryParam = {"page": page, "perPage": perPage, "embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Opportunities response = check self.clientEp->get(resourcePath);
@@ -279,7 +283,7 @@ public isolated client class Client {
     # + embed - Can be used to request additional data that aren’t included in the response by default. If provided, should be a comma separated list of strings. Supported values for this endpoint are tags (tags), fields (custom fields and fields in DataTags), organisation (extended organisation details for people), and missingImportantFields (indicates if a party has any Important custom fields that are missing a value). 
     # + return - An object with a single property party which will contain a Party object. 
     remote isolated function showParty(string partyId, string? embed = ()) returns PartyObject|error {
-        string resourcePath = string `/api/v2/parties/${partyId}`;
+        string resourcePath = string `/api/v2/parties/${getEncodedUri(partyId)}`;
         map<anydata> queryParam = {"embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PartyObject response = check self.clientEp->get(resourcePath);
@@ -292,7 +296,7 @@ public isolated client class Client {
     # + payload - object with a single property party which must be a Party object. Fields that are not included in the request will remain unchanged. 
     # + return - All good 
     remote isolated function updateParty(string partyId, UpdatePartyRequest payload, string? embed = ()) returns http:Response|error {
-        string resourcePath = string `/api/v2/parties/${partyId}`;
+        string resourcePath = string `/api/v2/parties/${getEncodedUri(partyId)}`;
         map<anydata> queryParam = {"embed": embed};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -306,8 +310,8 @@ public isolated client class Client {
     # + partyId - The party ID 
     # + return - An empty body if the party was successfully deleted. 
     remote isolated function deleteParty(string partyId) returns http:Response|error {
-        string resourcePath = string `/api/v2/parties/${partyId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/parties/${getEncodedUri(partyId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves the collection of Tasks on the Capsule account. By default the body will contain only the open tasks. If you want to retrieve pending and/or completed tasks use the status query parameter.

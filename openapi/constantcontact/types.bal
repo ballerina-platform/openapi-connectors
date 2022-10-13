@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,10 +14,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type Customer record {
     # Email addresses that are associated with the Constant Contact account owner.
     string contact_email?;
     # The account owner's contact phone number (up to 25 characters in length).
+    @constraint:String {maxLength: 25}
     string contact_phone?;
     # The uppercase two-letter <a href='https://en.wikipedia.org/wiki/ISO_3166-1' target='_blank'>ISO 3166-1 code</a> representing the organization's country.
     string country_code?;
@@ -102,12 +105,14 @@ public type TagAddRemoveContacts record {
     # Use to exclude specified contacts from being added or removed from a tag. Only applicable if the specified source is either <code>all_active_contacts</code> or <code>list_ids</code>.
     TagaddremovecontactsExclude exclude?;
     # An array of tags (<code>tag_id</code>) to add to all contacts meeting the specified source criteria.
-    string[50] tag_ids;
+    @constraint:Array {maxLength: 50}
+    string[] tag_ids;
 };
 
 public type ContactXrefs record {
     # An array of cross-referenced V3 API <code>contact_id</code> and V2 API <code>sequence_id</code> values. Response is sorted ascending by <code>sequence_id</code>.
-    ContactXref[500] xrefs?;
+    @constraint:Array {maxLength: 500}
+    ContactXref[] xrefs?;
 };
 
 # Link to an activity result resource; as an example, for file_export, the link to the exported contacts file.
@@ -144,22 +149,27 @@ public type EmailCampaignActivityInput record {
     # The email format you are using to create the email campaign activity. The V3 API supports creating emails using <code>format_type</code> 5 (custom code emails).
     int format_type;
     # The email sender's name to display for the email campaign activity.
+    @constraint:String {maxLength: 100}
     string from_name;
     # The sender's email address to use for the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.
+    @constraint:String {maxLength: 80}
     string from_email;
     # The sender's email address to use if the contact replies to the email campaign activity. You must use a confirmed Constant Contact account email address. Make a GET call to <code>/account/emails</code> to return a collection of account emails and their confirmation status.
+    @constraint:String {maxLength: 80}
     string reply_to_email;
     # The text to display in the subject line that describes the email campaign activity.
     string subject;
     # The email preheader for the email campaign activity. Contacts will view your preheader as a short summary that follows the subject line in their email client. Only <code>format_type</code> 3, 4, and 5 email campaign activities use the preheader property.
     string preheader?;
     # The HTML content for the email campaign activity. Only <code>format_type</code> 5 (custom code emails) can contain <code>html_content</code>. When creating a <code>format_type</code> 5 custom code email, make sure that you include <code>[[trackingImage]]</code> in the <code>&lt;body&gt;</code> element of your HTML.
+    @constraint:String {maxLength: 150000}
     string html_content;
     EmailPhysicalAddress physical_address_in_footer?;
 };
 
 public type EmailCampaignName record {
     # The updated email campaign name. The email campaign name must be unique.
+    @constraint:String {maxLength: 80}
     string name;
 };
 
@@ -183,9 +193,9 @@ public type ContactOpenAndClickRates record {
     # The number of activities included in the calculation.
     int included_activities_count;
     # The average rate the contact opened emails sent to them.
-    float average_open_rate;
+    decimal average_open_rate;
     # The average rate the contact clicked on links in emails sent to them.
-    float average_click_rate;
+    decimal average_click_rate;
 };
 
 public type BulkEmailCampaignSummary record {
@@ -201,9 +211,11 @@ public type BulkEmailCampaignSummary record {
 # You can export contact objects to a CSV file. By default, all contacts in the user's account are exported if none of the following properties are included: <br/><li> By contact_id - you can specify up to 500 specific contacts. <li>list_id - you can specify up to 50 lists. You can use the status parameter with list_id<li>status - you can export contacts by status (unsubscribed, active, removed); this property can be used with list_ids.
 public type ContactsExport record {
     # Exports up to 500 specific contacts. This property is mutually exclusive with <code>list_ids</code>.
-    string[500] contact_ids?;
+    @constraint:Array {maxLength: 500}
+    string[] contact_ids?;
     # Exports all of the contacts inside of up to 50 contact lists. This property is mutually exclusive with <code>contact_ids</code>.
-    string[50] list_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids?;
     # Specify the <code>segment_id</code> from which you want to export all contacts that meet the specified <code>segment_criteria</code>. This property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>. You can only specify one <code>segment_id</code>.
     int segment_id?;
     # Use this array to export specific contact fields. You must export <code>email_address</code> to successfully export <code>email_optin_source</code>, <code>email_optin_date</code>, <code>email_optout_source</code>, <code>email_optout_date</code>, or <code>email_optout_reason</code>.
@@ -237,11 +249,14 @@ public type ActivityTagging record {
 # Select the source used to identify contacts to which a tag is added or removed. Source types are mutually exclusive.
 public type TagaddremovecontactsSource record {
     # An array of contacts IDs.
-    string[500] contact_ids?;
+    @constraint:Array {maxLength: 500}
+    string[] contact_ids?;
     # An array of list IDs ( <code>list_id</code> ).
-    string[50] list_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids?;
     # An array of tags ( <code>tag_id</code> ).
-    string[50] tag_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] tag_ids?;
     # Use to identify contacts with an active status.
     boolean all_active_contacts?;
     # Use to identify newly subscribed contacts.
@@ -293,8 +308,10 @@ public type ActivitiesActivities record {
 
 public type AccountEmailCreateResponse record {
     # An email address associated with a Constant Contact account owner.
+    @constraint:String {maxLength: 80}
     string email_address?;
     # The unique ID for an email address in a Constant Contact account.
+    @constraint:Int {minValue: 1}
     int email_id?;
     # The confirmation status of the account email address. When you add a new email address to an account, Constant Contact automatically sends an email to that address with a link to confirm it. You can use any account email address with a <code>CONFIRMED</code> status to create an email campaign.
     string confirm_status?;
@@ -332,6 +349,7 @@ public type PagingLinks record {
 # A contact subresource describing the contact's email_address.
 public type EmailAddress record {
     # The email address of the contact. The email address must be unique for each contact.
+    @constraint:String {maxLength: 80}
     string address;
     # Identifies the type of permission that the Constant Contact account has to send email to the contact. Types of permission: explicit, implicit, not_set, pending_confirmation, temp_hold, unsubscribed.
     string permission_to_send?;
@@ -348,6 +366,7 @@ public type EmailAddress record {
     # Date and time that the contact unsubscribed/opted-out of receiving email from the account, in ISO-8601 format. Displayed only if contact has been unsubscribed/opt-out. System generated.
     string opt_out_date?;
     # The reason, as provided by the contact, that they unsubscribed/opted-out of receiving email campaigns.
+    @constraint:String {maxLength: 255}
     string opt_out_reason?;
     # Indicates if the contact confirmed their email address after they subscribed to receive emails. Possible values: pending, confirmed, off.
     string confirm_status?;
@@ -383,18 +402,23 @@ public type Contactresource2 record {
     # A contact subresource describing the contact's email_address.
     EmailAddress email_address?;
     # The first name of the contact.
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The last name of the contact.
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The job title of the contact.
+    @constraint:String {maxLength: 50}
     string job_title?;
     # The name of the company where the contact works.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # The month value for the contact's birthday. Valid values are from 1 through 12. You must use this property with <code>birthday_month</code>.
     int birthday_month?;
     # The day value for the contact's birthday. Valid values are from 1 through 12. You must use this property with <code>birthday_day</code>.
     int birthday_day?;
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
+    @constraint:String {maxLength: 10}
     string anniversary?;
     # Identifies who last updated the contact; valid values are Contact or Account
     string update_source?;
@@ -407,24 +431,32 @@ public type Contactresource2 record {
     # For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
     string deleted_at?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[25] custom_fields?;
+    @constraint:Array {maxLength: 25}
+    ContactCustomField[] custom_fields?;
     # Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
-    PhoneNumber[2] phone_numbers?;
+    @constraint:Array {maxLength: 2}
+    PhoneNumber[] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
-    StreetAddress[1] street_addresses?;
+    @constraint:Array {maxLength: 1}
+    StreetAddress[] street_addresses?;
     # Array of list_id's to which the contact is subscribed, up to a maximum of 50.
-    string[50] list_memberships?;
+    @constraint:Array {maxLength: 50}
+    string[] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[50] taggings?;
+    @constraint:Array {maxLength: 50}
+    string[] taggings?;
     # An array of up to 150 notes about the contact.
-    Note[150] notes?;
+    @constraint:Array {maxLength: 150}
+    Note[] notes?;
 };
 
 public type ContactDelete record {
     # Specify up to 500 contacts by <code>contact_id</code> to delete; mutually exclusive with <code>list_ids</code>.
-    string[500] contact_ids?;
+    @constraint:Array {maxLength: 500}
+    string[] contact_ids?;
     # The contacts on the lists (up to 50) specified will be deleted; mutually exclusive with <code>contact_ids</code>.
-    string[50] list_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids?;
 };
 
 public type Paginglinks2 record {
@@ -442,6 +474,7 @@ public type Note record {
     # The date that the note was created.
     string created_at?;
     # The content for the note.
+    @constraint:String {maxLength: 2000}
     string content?;
 };
 
@@ -571,6 +604,7 @@ public type ActivityTaggingStatus record {
 # The contact's email address and related properties.
 public type EmailAddressPut record {
     # The email address of the contact. The email address must be unique for each contact.
+    @constraint:String {maxLength: 80}
     string address;
     # Identifies the type of permission that the Constant Contact account has to send email to the contact. Types of permission: explicit, implicit, not_set, pending_confirmation, temp_hold, unsubscribed.
     string permission_to_send?;
@@ -585,6 +619,7 @@ public type EmailAddressPut record {
     # Date and time that the contact unsubscribed/opted-out of receiving email from the account, in ISO-8601 format. Displayed only if contact has been unsubscribed/opt-out. System generated.
     string opt_out_date?;
     # The reason, as provided by the contact, that they unsubscribed/opted-out of receiving email campaigns.
+    @constraint:String {maxLength: 255}
     string opt_out_reason?;
     # Indicates if the contact confirmed their email address after they subscribed to receive emails. Possible values: pending, confirmed, off.
     string confirm_status?;
@@ -592,14 +627,18 @@ public type EmailAddressPut record {
 
 public type CustomerPhysicalAddress record {
     # Line 1 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line1;
     # Line 2 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line2?;
     # Line 3 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line3?;
     # The city where the organization is located.
     string city;
     # The two letter ISO 3166-1 code for the organization's state and only used if the <code>country_code</code> is <code>US</code> or <code>CA</code>. If not, exclude this property from the request body.
+    @constraint:String {maxLength: 2}
     string state_code?;
     # Use if the state where the organization is physically located is not in the United States or Canada. If  <code>country_code</code> is  <code>US</code> or <code>CA</code>, exclude this property from the request body.
     string state_name?;
@@ -653,14 +692,19 @@ public type StreetAddressPut record {
     # Describes the type of address; valid values are home, work, or other.
     string kind;
     # Number and street of the address.
+    @constraint:String {maxLength: 255}
     string street?;
     # The name of the city where the contact lives.
+    @constraint:String {maxLength: 50}
     string city?;
     # The name of the state or province where the contact lives.
+    @constraint:String {maxLength: 50}
     string state?;
     # The zip or postal code of the contact.
+    @constraint:String {maxLength: 50}
     string postal_code?;
     # The name of the country where the contact lives.
+    @constraint:String {maxLength: 50}
     string country?;
 };
 
@@ -721,6 +765,7 @@ public type BouncesTrackingActivity record {
 # The contact's email address and related properties.
 public type EmailAddressPost record {
     # The contact's email address
+    @constraint:String {maxLength: 80}
     string address;
     # Identifies the type of permission that the Constant Contact account has been granted to send email to the contact. Types of permission: explicit, implicit, not_set, pending_confirmation, temp_hold, unsubscribed.
     string permission_to_send?;
@@ -764,14 +809,19 @@ public type ActivityImport record {
 
 public type Provision record {
     # A valid email address to associate with the client account.
+    @constraint:String {maxLength: 80}
     string contact_email;
     # The contact phone number to associate with the client account.
+    @constraint:String {maxLength: 25, minLength: 5}
     string contact_phone?;
     # The two-letter country code (ISO 3166-1 code) that specifies the country in which the client resides.
+    @constraint:String {maxLength: 3, minLength: 2}
     string country_code;
     # The name of organization that identifies the client account.
+    @constraint:String {maxLength: 50, minLength: 1}
     string organization_name?;
     # The organization phone number. To set the organization phone number using the user interface, select <b>My Settings</b> and in the <b>Organization Information</b> section, select <b>Edit Organization Information</b>.
+    @constraint:String {maxLength: 25, minLength: 5}
     string organization_phone?;
     # The two-letter state code that represents the US state (<code>country_code</code> is <code>US</code> ) or Canadian province (<code>country_code</code> is <code>CA</code>) where the client's organization is physically located. Leave the <code>state_code</code> blank for non-US states and Canadian provinces.
     string state_code;
@@ -780,14 +830,19 @@ public type Provision record {
     # The client's website URL. Specifying the website URL eliminates the need for clients to provide that information. Requires a valid URL starting with http:// or https://.
     string website?;
     # A unique login name to associate with the client account. The name must only contain alphanumeric characters and '-', '_', '@','.','+'. 
+    @constraint:String {maxLength: 50, minLength: 6}
     string login_name;
     # Required if not using Single Sign On (SSO) or external authenticator. The password to associate with the client account. Passwords must be a minimum of six characters in length and have no spaces. The password is not returned in the response payload for security reasons. If using SSO authentication, use <code>external_provider</code> and <code>external_id</code> instead of <code>password</code>.
+    @constraint:String {maxLength: 80, minLength: 6}
     string password?;
     # The client account owner's first name.
+    @constraint:String {maxLength: 80, minLength: 2}
     string first_name?;
     # The client account owner's last name.
+    @constraint:String {maxLength: 80, minLength: 2}
     string last_name?;
     # The unique client account identifier that partners define and use for billing and reporting purposes.
+    @constraint:String {maxLength: 80}
     string partner_account_id?;
     # The currency to use when billing the client account. Valid values are: <code>en_US</code> (default, US Dollars) or <code>en_GB</code> (British Pounds).
     string billing_locale?;
@@ -798,8 +853,10 @@ public type Provision record {
     # When creating accounts for users who have opted-out of any marketing communications, set  the <code> gdpr_opt_out</code>  to <code>true</code>  so that Constant Contact does not send any marketing communications to the account.
     boolean gdpr_opt_out?;
     # The ID used to uniquely identify the client account for the external authenticator. Do not use the <code>password</code> property when using an external authenticator.
+    @constraint:String {maxLength: 255}
     string external_id?;
     # The name of the provider who externally authenticates this customer. For example, PayPal or Yahoo. Do not use the <code>password</code> property when using an external authenticator.
+    @constraint:String {maxLength: 80}
     string external_provider?;
 };
 
@@ -830,11 +887,13 @@ public type ActivitydeletelistresponseLinks record {
 # The <code>source</code> object specifies which contacts to remove from your targeted lists using one of three mutually exclusive properties.
 public type ListactivityremovecontactsSource record {
     # Specifies which contacts to remove from your target lists as an array of up to 50 contact <code>list_id</code> values. This property is mutually exclusive with <code>contact_ids</code> and <code>all_active_contacts</code>.
-    string[50] list_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids?;
     # Removes all active contacts from your targeted lists. This property is mutually exclusive with <code>contact_ids</code> and <code>list_ids</code>.
     boolean all_active_contacts?;
     # Specifies which contacts to remove from your target lists as an array of <code>contact_id</code> values. This property is mutually exclusive with <code>list_ids</code> and <code>all_active_contacts</code>.
-    string[500] contact_ids?;
+    @constraint:Array {maxLength: 500}
+    string[] contact_ids?;
 };
 
 public type CampaignActivitySummary record {
@@ -858,7 +917,8 @@ public type CampaignActivitySummary record {
 
 public type TagIdList500Limit record {
     # The tag IDs (<code>tag_ids</code>) to delete.
-    string[500] tag_ids;
+    @constraint:Array {maxLength: 500}
+    string[] tag_ids;
 };
 
 public type ClicksTrackingActivitiesPage record {
@@ -873,8 +933,10 @@ public type Customfieldresource2 record {
     # The custom_field's unique ID
     string custom_field_id?;
     # The display name for the custom_field shown in the UI as free-form text
+    @constraint:String {maxLength: 50}
     string label;
     # Unique name for the custom_field constructed from the label by replacing blanks with underscores.
+    @constraint:String {maxLength: 50}
     string name?;
     # Specifies the type of value the custom_field field accepts: string or date.
     string 'type;
@@ -912,12 +974,16 @@ public type ContactPostRequest record {
     # The contact's email address and related properties.
     EmailAddressPost email_address?;
     # The first name of the contact.
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The last name of the contact.
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The job title of the contact.
+    @constraint:String {maxLength: 50}
     string job_title?;
     # The name of the company where the contact works.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # Describes who added the contact; valid values are <code>Contact</code> or <code>Account</code>. Your integration must accurately identify <code>create_source</code> for compliance reasons; value is set on POST, and is read-only going forward.
     string create_source?;
@@ -926,33 +992,44 @@ public type ContactPostRequest record {
     # The day value for the contact's birthday. Valid values are from 1 through 31. The <code>birthday_day</code> property is required if you use <code>birthday_month</code>.
     int birthday_day?;
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
+    @constraint:String {maxLength: 10}
     string anniversary?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[25] custom_fields?;
+    @constraint:Array {maxLength: 25}
+    ContactCustomField[] custom_fields?;
     # Array of up to 2 phone_numbers subresources.
-    PhoneNumberPut[2] phone_numbers?;
+    @constraint:Array {maxLength: 2}
+    PhoneNumberPut[] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
     StreetAddressPut[] street_addresses?;
     # Array of list_id's to which the contact is being subscribed, up to a maximum of 50.
-    string[50] list_memberships?;
+    @constraint:Array {maxLength: 50}
+    string[] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[50] taggings?;
+    @constraint:Array {maxLength: 50}
+    string[] taggings?;
     # An array of notes about the contact.
-    Note[150] notes?;
+    @constraint:Array {maxLength: 150}
+    Note[] notes?;
 };
 
 public type ContactcreateorupdateinputStreetAddress record {
     # The type of street address for the contact. Valid values are home, work, or other.
     string kind;
     # The number and street of the contact's address.
+    @constraint:String {maxLength: 255}
     string street?;
     # The name of the city for the contact's address.
+    @constraint:String {maxLength: 50}
     string city?;
     # The name of the state or province for the contact's address.
+    @constraint:String {maxLength: 50}
     string state?;
     # The zip or postal code for the contact's address.
+    @constraint:String {maxLength: 50}
     string postal_code?;
     # The name of the country for the contact's address.
+    @constraint:String {maxLength: 50}
     string country?;
 };
 
@@ -961,8 +1038,10 @@ public type CustomFieldResource record {
     # The custom_field's unique ID
     string custom_field_id?;
     # The display name for the custom_field shown in the UI as free-form text
+    @constraint:String {maxLength: 50}
     string label;
     # Unique name for the custom_field constructed from the label by replacing blanks with underscores.
+    @constraint:String {maxLength: 50}
     string name?;
     # Specifies the type of value the custom_field field accepts: string or date.
     string 'type;
@@ -1014,6 +1093,7 @@ public type ActivityListsMembership record {
 
 public type EmailCampaignComplete record {
     # The unique and descriptive name that you specify for the email campaign.
+    @constraint:String {maxLength: 80}
     string name;
     # The content of the email campaign as an array that contains a single email campaign activity object.
     EmailCampaignActivityInput[] email_campaign_activities;
@@ -1023,6 +1103,7 @@ public type PhoneNumber record {
     # Unique ID for the phone number
     string phone_number_id?;
     # The contact's phone number, 1 of 2 allowed per contact, no more than 25 characters
+    @constraint:String {maxLength: 25}
     string phone_number?;
     # Describes the type of phone number; valid values are home, work, mobile, or other.
     string kind?;
@@ -1075,7 +1156,8 @@ public type StatsError record {
 
 public type ListXrefs record {
     # An array of cross-referenced V3 API <code>list_id</code> and V2 API <code>sequence_id</code> properties. Response is sorted ascending by <code>sequence_id</code>.
-    ListXref[500] xrefs?;
+    @constraint:Array {maxLength: 500}
+    ListXref[] xrefs?;
 };
 
 public type OpensTrackingActivity record {
@@ -1202,6 +1284,7 @@ public type CreateOrUpdateContactCustomField record {
     # The unique ID for the <code>custom_field</code>.
     string custom_field_id?;
     # The value of the <code>custom_field</code>.
+    @constraint:String {maxLength: 255}
     string value?;
 };
 
@@ -1211,21 +1294,29 @@ public type PaginationLinks record {
 
 public type ContactCreateOrUpdateInput record {
     # The email address for the contact. This method identifies each unique contact using their email address. If the email address exists in the account, this method updates the contact. If the email address is new, this method creates a new contact.
+    @constraint:String {maxLength: 50}
     string email_address;
     # The first name of the contact.
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The last name of the contact.
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The job title of the contact.
+    @constraint:String {maxLength: 50}
     string job_title?;
     # The name of the company where the contact works.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # The phone number for the contact.
+    @constraint:String {maxLength: 25}
     string phone_number?;
     # The contact lists you want to add the contact to as an array of up to 50 contact <code>list_id</code> values. You must include at least one <code>list_id</code>.
-    string[50] list_memberships;
+    @constraint:Array {maxLength: 50, minLength: 1}
+    string[] list_memberships;
     # The custom fields you want to add to the contact as an array of up to 50 custom field objects.
-    CreateOrUpdateContactCustomField[50] custom_fields?;
+    @constraint:Array {maxLength: 50}
+    CreateOrUpdateContactCustomField[] custom_fields?;
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
     string anniversary?;
     # The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
@@ -1259,33 +1350,43 @@ public type ContactPutRequest record {
     # The contact's email address and related properties.
     EmailAddressPut email_address?;
     # The contact's first name
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The contact's last name
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The contact's job title
+    @constraint:String {maxLength: 50}
     string job_title?;
     # Name of the company the contact works for.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # Accepts values from 1-12; must be used with <code>birthday_day</code>
     int birthday_month?;
     # Accepts values from 1-31; must be used with <code>birthday_month</code>
     int birthday_day?;
     # The anniversary date; Accepted formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D, MM-DD-YYYY, M-D-YYYY
+    @constraint:String {maxLength: 10}
     string anniversary?;
     # Identifies who last updated the contact; valid values are <code>Contact</code> or <code>Account</code>.
     string update_source;
     # Array of up to 25 custom_field subresources.
-    ContactCustomField[25] custom_fields?;
+    @constraint:Array {maxLength: 25}
+    ContactCustomField[] custom_fields?;
     # Array of up to 2 phone_numbers subresources.
-    PhoneNumberPut[2] phone_numbers?;
+    @constraint:Array {maxLength: 2}
+    PhoneNumberPut[] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
     StreetAddressPut[] street_addresses?;
     # Array of up to 50 <code>list_ids</code> to which the contact is subscribed.
-    string[50] list_memberships?;
+    @constraint:Array {maxLength: 50}
+    string[] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[50] taggings?;
+    @constraint:Array {maxLength: 50}
+    string[] taggings?;
     # An array of notes about the contact listed by most recent note first.
-    Note[150] notes?;
+    @constraint:Array {maxLength: 150}
+    Note[] notes?;
 };
 
 # Status
@@ -1405,34 +1506,42 @@ public type SendsTrackingActivitiesPage record {
 # An object that contains optional properties for legacy format type emails (<code>format_type</code> 1 and 2). If you attempt to add a property that does apply to the email <code>format_type</code>, the API will ignore the property.
 public type EmailcampaignactivityDocumentProperties record {
     # Contains style sheet elements for XHTML letter format emails. This property applies only to <code>format_type</code> 1.
+    @constraint:String {maxLength: 150000}
     string style_content?;
     # Email message format. Valid values are <code>HTML</code> and <code>XHTML</code>. By default, the value is <code>HTML</code>. For more information, see the <a href="http://www.constantcontact.com/display_media.jsp?id=87" target="_blank">Advanced Editor User's Guide</a>. This property applies only to <code>format_type</code> 1. You cannot change this property after you create an email.
     string letter_format?;
     # The greeting used in the email message. This property applies only to <code>format_type</code> 1.
+    @constraint:String {maxLength: 50}
     string greeting_salutation?;
     # The type of name the campaign uses to greet the contact. Valid values are <code>F</code> (First Name), <code>L</code> (Last Name), <code>B</code> (First and Last Name), or <code>N</code> (No greeting). By default, the value is <code>N</code>. This property applies only to <code>format_type</code> 1.
     string greeting_name_type?;
     # A fallback text string the campaign uses to greet the contact when the <code>greeting_name_type</code> is not available or set to <code>N</code>. This property applies only to <code>format_type</code> 1.
+    @constraint:String {maxLength: 1500}
     string greeting_secondary?;
     # If <code>true</code>, the email footer includes a link for subscribing to the list. If <code>false</code>, the message footer does not include a link for subscribing to the list. By default, the value is <code>false</code>. This property applies only to <code>format_type</code> 1.
     string subscribe_link_enabled?;
     # The text displayed as the name for the subscribe link in the email footer. This property applies only to <code>format_type</code> 1.
+    @constraint:String {maxLength: 80}
     string subscribe_link_name?;
     # Contains the text content that Constant Contact displays to contacts when their email client cannot display HTML email. If you do not specify text content, Constant Contact displays "Greetings!" as the text content. This property applies only to <code>format_type</code> 1.
+    @constraint:String {maxLength: 150000}
     string text_content?;
     # If <code>true</code>, Constant Contact displays your <code>permission_reminder</code> message to contacts at top of the email. If <code>false</code>, Constant Contact does not display the message. By default, the value is <code>false</code>. This property applies to <code>format_type</code> 1 and 2.
     string permission_reminder_enabled?;
     # The message text Constant Contact displays at the top of the email message to remind users that they are subscribed to an email list. This property applies to <code>format_type</code> 1 and 2.
+    @constraint:String {maxLength: 1500}
     string permission_reminder?;
     # If <code>true</code>, Constant Contact displays the view as web page email message. If <code>false</code> Constant Contact does not display the message. By default, the value is <code>false</code>. This property applies to <code>format_type</code> 1 and 2.
     string view_as_webpage_enabled?;
     # The text Constant Contact displays before the view as web page link at the top of the email. This property applies to <code>format_type</code> 1 and 2.
+    @constraint:String {maxLength: 50}
     string view_as_webpage_text?;
     # The name of the link that users can click to view the email as a web page. This property applies to <code>format_type</code> 1 and 2.
     string view_as_webpage_link_name?;
     # If <code>true</code>, when the user forwards an email message the footer includes a link for subscribing to the list. If <code>false</code>, when a user forwards an email message the footer does not include a link for subscribing to the list. By default, the value is <code>false</code>. This property applies to <code>format_type</code> 1 and 2.
     string forward_email_link_enabled?;
     # The text displayed as the name for the forward email link in the footer when a user forwards an email. This property applies to <code>format_type</code> 1 and 2.
+    @constraint:String {maxLength: 80}
     string forward_email_link_name?;
 };
 
@@ -1464,7 +1573,8 @@ public type ContactsJsonImport record {
     # An array containing the contacts to import.
     JsonImportContact[] import_data;
     # Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact <code>list_id</code> string values.
-    string[50] list_ids;
+    @constraint:Array {maxLength: 50, minLength: 1}
+    string[] list_ids;
 };
 
 public type CompanyLogo record {
@@ -1493,6 +1603,7 @@ public type EmailCampaign record {
     # </ul>
     string current_status?;
     # The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
+    @constraint:String {maxLength: 80}
     string name?;
     # Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
     string 'type?;
@@ -1529,6 +1640,7 @@ public type ActivitylinksResults record {
 
 public type EmailsendhistoryInner record {
     # Uniquely identifies each send history object using the number of times that you sent the email campaign activity as a sequence starting at <code>1</code>. For example, when you send a specific email campaign activity twice this method returns an object with a <code>send_id</code> of 1 for the first send and an object with a <code>send_id</code> of 2 for the second send.
+    @constraint:Int {minValue: 1}
     int send_id?;
     # The contacts lists that Constant Contact sent email campaign activity to as an array of contact <code>list_id</code> strings.
     string[] contact_list_ids?;
@@ -1565,13 +1677,15 @@ public type ListActivityRemoveContacts record {
     # The <code>source</code> object specifies which contacts to remove from your targeted lists using one of three mutually exclusive properties.
     ListactivityremovecontactsSource 'source;
     # Specifies which lists (up to 50) to remove your source contacts from.
-    string[50] list_ids;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids;
 };
 
 # Use this endpoint to retrieve (GET) all custom_fields in the user's account, or to create (POST) a new custom_field.
 public type CustomFields record {
     # CustomFields array
-    Customfieldresource2[100] custom_fields?;
+    @constraint:Array {maxLength: 100}
+    Customfieldresource2[] custom_fields?;
     # Paging links
     PagingLinks _links?;
 };
@@ -1602,6 +1716,7 @@ public type EmailScheduleInput record {
 
 public type CustomFieldInput record {
     # The display name for the custom_field shown in the UI as free-form text
+    @constraint:String {maxLength: 50}
     string label;
     # Specifies the type of value the custom_field field accepts: string or date.
     string 'type;
@@ -1641,6 +1756,7 @@ public type EmailSendHistory EmailsendhistoryInner[];
 
 public type PhoneNumberPut record {
     # The contact's phone number, 1 of 2 allowed per contact, no more than 25 characters
+    @constraint:String {maxLength: 25}
     string phone_number?;
     # Describes the type of phone number; valid values are home, work, mobile, or other.
     string kind?;
@@ -1662,6 +1778,7 @@ public type SegmentData record {
     # The segment's unique descriptive name.
     string name;
     # The <code>segment_criteria</code> specifies the contact data that Constant Contact uses to evaluate and identify contacts that meet your criteria. The <code>segment_criteria</code> must be formatted as single-string escaped JSON. The top-level <code>group</code> <code>type</code> must be <code>add</code>.
+    @constraint:String {maxLength: 20000}
     string segment_criteria;
 };
 
@@ -1705,6 +1822,7 @@ public type EmailCampaigns record {
     # </ul>
     string current_status?;
     # The descriptive name the user provides to identify this campaign. Campaign names must be unique for each account ID.
+    @constraint:String {maxLength: 80}
     string name?;
     # Identifies the type of campaign that you select when creating the campaign. Newsletter and Custom Code email campaigns are the primary types.
     string 'type?;
@@ -1798,18 +1916,23 @@ public type ContactResource record {
     # A contact subresource describing the contact's email_address.
     EmailAddress email_address?;
     # The first name of the contact.
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The last name of the contact.
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The job title of the contact.
+    @constraint:String {maxLength: 50}
     string job_title?;
     # The name of the company where the contact works.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # The month value for the contact's birthday. Valid values are from 1 through 12. You must use this property with <code>birthday_month</code>.
     int birthday_month?;
     # The day value for the contact's birthday. Valid values are from 1 through 12. You must use this property with <code>birthday_day</code>.
     int birthday_day?;
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
+    @constraint:String {maxLength: 10}
     string anniversary?;
     # Identifies who last updated the contact; valid values are Contact or Account
     string update_source?;
@@ -1822,17 +1945,23 @@ public type ContactResource record {
     # For deleted contacts (<code>email_address</code> contains <code>opt_out_source</code> and <code>opt_out_date</code>), shows the date of deletion.
     string deleted_at?;
     # Array of up to 25 <code>custom_field</code> key value pairs.
-    ContactCustomField[25] custom_fields?;
+    @constraint:Array {maxLength: 25}
+    ContactCustomField[] custom_fields?;
     # Array of phone_numbers subresources. A contact can have up to 2 phone numbers.
-    PhoneNumber[2] phone_numbers?;
+    @constraint:Array {maxLength: 2}
+    PhoneNumber[] phone_numbers?;
     # Array of street_addresses subresources. A contact can have 1 street address.
-    StreetAddress[1] street_addresses?;
+    @constraint:Array {maxLength: 1}
+    StreetAddress[] street_addresses?;
     # Array of list_id's to which the contact is subscribed, up to a maximum of 50.
-    string[50] list_memberships?;
+    @constraint:Array {maxLength: 50}
+    string[] list_memberships?;
     # Array of tags (<code>tag_id</code>) assigned to the contact, up to a maximum of 50.
-    string[50] taggings?;
+    @constraint:Array {maxLength: 50}
+    string[] taggings?;
     # An array of up to 150 notes about the contact.
-    Note[150] notes?;
+    @constraint:Array {maxLength: 150}
+    Note[] notes?;
 };
 
 public type BouncesTrackingActivitiesPage record {
@@ -1844,6 +1973,7 @@ public type BouncesTrackingActivitiesPage record {
 
 public type TagPost record {
     # Specify a unique name to use to identify the tag. Tag names must be at least one character in length and not more than 255 characters.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name;
     # The source used to identify the contacts to tag.
     string tag_source?;
@@ -1901,13 +2031,16 @@ public type ContactCustomField record {
     # The custom_field's unique ID
     string custom_field_id;
     # The custom_field value.
+    @constraint:String {maxLength: 255}
     string value;
 };
 
 public type AccountemailsInner record {
     # An email address associated with a Constant Contact account owner.
+    @constraint:String {maxLength: 80}
     string email_address?;
     # The unique ID for an email address in a Constant Contact account.
+    @constraint:Int {minValue: 1}
     int email_id?;
     # The confirmation status of the account email address. When you add a new email address to an account, Constant Contact automatically sends an email to that address with a link to confirm it. You can use any account email address with a <code>CONFIRMED</code> status to create an email campaign.
     string confirm_status?;
@@ -1994,6 +2127,7 @@ public type ContactXref record {
 
 public type AccountEmailInput record {
     # The new email address you want to add to a Constant Contact account.
+    @constraint:String {maxLength: 80}
     string email_address?;
 };
 
@@ -2013,7 +2147,8 @@ public type ActivitiesContactsFileImportBody record {
     # You can also use custom fields as column headings. Enter the custom field name prefixed with `cf:` as the column heading. For example, use `cf:first_name` as the header name if you have a custom field named "first_name". The custom field must already exist in the Constant Contact account you are using. Depending on the custom field data type, you can enter dates or strings as the value of the custom field. Each contact can contain up to 25 different custom fields.
     string file;
     # Specify which contact lists you are adding all imported contacts to as an array of up to 50 contact `list_id` values.
-    string[50] list_ids;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids;
 };
 
 public type CampaignActivityStatsResultGenericStatsEmailActivity record {
@@ -2052,22 +2187,26 @@ public type ListActivityAddContacts record {
     # The <code>source</code> object specifies which contacts you are adding to your targeted lists using one of four mutually exclusive properties.
     ListactivityaddcontactsSource 'source;
     # Specifies which lists (up to 50) you are adding your source contacts to.
-    string[50] list_ids;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids;
 };
 
 public type TagPut record {
     # The new tag name to use. The tag name must be unique.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name;
 };
 
 # The <code>source</code> object specifies which contacts you are adding to your targeted lists using one of four mutually exclusive properties.
 public type ListactivityaddcontactsSource record {
     # Specifies which contacts you are adding to lists as an array of up to 50 contact <code>list_id</code> values. This property is mutually exclusive with <code>contact_ids</code>, <code>all_active_contacts</code>, and <code>segment_id</code>.
-    string[50] list_ids?;
+    @constraint:Array {maxLength: 50}
+    string[] list_ids?;
     # Adds all active contacts to your targeted lists. This property is mutually exclusive with <code>contact_ids</code>, <code>list_ids</code>, and <code>segment_id</code>.
     boolean all_active_contacts?;
     # Specifies which contacts (up to 500) you are adding to lists as an array of <code>contact_id</code> values. This property is mutually exclusive with <code>list_ids</code>, <code>all_active_contacts</code>, and <code>segment_id</code>.
-    string[500] contact_ids?;
+    @constraint:Array {maxLength: 500}
+    string[] contact_ids?;
     # Specifies which contacts you are adding to lists as a single <code>segment_id</code> value. This property is mutually exclusive with <code>list_ids</code>, <code>all_active_contacts</code>, and <code>contact_ids</code>.
     int segment_id?;
 };
@@ -2115,9 +2254,10 @@ public type StatsEmail record {
 
 public type ListInput record {
     # The name given to the contact list
+    @constraint:String {maxLength: 255}
     string name;
     # Identifies whether or not the account has favorited the contact list.
-    boolean favorite?;
+    boolean favorite = false;
     # Text describing the list.
     string description?;
 };
@@ -2147,14 +2287,19 @@ public type StreetAddress record {
     # Describes the type of address; valid values are home, work, or other.
     string kind;
     # Number and street of the address.
+    @constraint:String {maxLength: 255}
     string street?;
     # The name of the city where the contact lives.
+    @constraint:String {maxLength: 50}
     string city?;
     # The name of the state or province where the contact lives.
+    @constraint:String {maxLength: 50}
     string state?;
     # The zip or postal code of the contact.
+    @constraint:String {maxLength: 50}
     string postal_code?;
     # The name of the country where the contact lives.
+    @constraint:String {maxLength: 50}
     string country?;
     # Date and time that the street address was created, in ISO-8601 format. System generated.
     string created_at?;
@@ -2170,7 +2315,8 @@ public type PartnerAccount record {
 
 public type EmailTestSendInput record {
     # The recipients of the test email as an array of email address strings. You can send a test email to up to 5 different email addresses at a time.
-    string[5] email_addresses;
+    @constraint:Array {maxLength: 5}
+    string[] email_addresses;
     # A personal message for the recipients of the test email. Constant Contact displays this message before the email campaign activity content.
     string personal_message?;
 };
@@ -2179,6 +2325,7 @@ public type CustomerPut record {
     # The confirmed email address that is associated with the account owner.
     string contact_email?;
     # The account owner's contact phone number (up to 25 characters in length).
+    @constraint:String {maxLength: 25}
     string contact_phone?;
     # The two-letter <a href='https://en.wikipedia.org/wiki/ISO_3166-1' target='_blank'>ISO 3166-1 code</a> representing the organization's country.
     string country_code?;
@@ -2208,6 +2355,7 @@ public type SegmentDetail record {
     # The segment's unique descriptive name.
     string name?;
     # The segment's contact selection criteria formatted as single-string escaped JSON.
+    @constraint:String {maxLength: 20000}
     string segment_criteria?;
     # The system generated number that uniquely identifies the segment.
     int segment_id?;
@@ -2224,14 +2372,18 @@ public type AuthToken record {
 
 public type AccountPhysicalAddress record {
     # Line 1 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line1;
     # Line 2 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line2?;
     # Line 3 of the organization's street address.
+    @constraint:String {maxLength: 80, minLength: 1}
     string address_line3?;
     # The city where the organization is located.
     string city;
     # The two letter ISO 3166-1 code for the organization's state and only used if the <code>country_code</code> is <code>US</code> or <code>CA</code>. If not, exclude this property from the request body.
+    @constraint:String {maxLength: 2}
     string state_code?;
     # Use if the state where the organization is physically located is not in the United States or Canada. If  <code>country_code</code> is  <code>US</code> or <code>CA</code>, exclude this property from the request body.
     string state_name?;
@@ -2243,14 +2395,19 @@ public type AccountPhysicalAddress record {
 
 public type JsonImportContact record {
     # The email address of the contact. This method identifies each unique contact using their email address.
+    @constraint:String {maxLength: 50}
     string email;
     # The first name of the contact.
+    @constraint:String {maxLength: 50}
     string first_name?;
     # The last name of the contact.
+    @constraint:String {maxLength: 50}
     string last_name?;
     # The job title of the contact.
+    @constraint:String {maxLength: 50}
     string job_title?;
     # The name of the company where the contact works.
+    @constraint:String {maxLength: 50}
     string company_name?;
     # The month value for the contact's birthday. Valid values are from 1 through 12. The <code>birthday_month</code> property is required if you use <code>birthday_day</code>.
     int birthday_month?;
@@ -2259,20 +2416,28 @@ public type JsonImportContact record {
     # The anniversary date for the contact. For example, this value could be the date when the contact first became a customer of an organization in Constant Contact. Valid date formats are MM/DD/YYYY, M/D/YYYY, YYYY/MM/DD, YYYY/M/D, YYYY-MM-DD, YYYY-M-D,M-D-YYYY, or M-DD-YYYY.
     string anniversary?;
     # The phone number for the contact.
+    @constraint:String {maxLength: 50}
     string phone?;
     # Line one of the street address for the contact.
+    @constraint:String {maxLength: 255}
     string street?;
     # Line two of the street address for the contact. This value is automatically appended to the <code>street</code> value.
+    @constraint:String {maxLength: 255}
     string street2?;
     # The name of the city where the contact lives.
+    @constraint:String {maxLength: 50}
     string city?;
     # The name of the state or province where the contact lives.
+    @constraint:String {maxLength: 50}
     string state?;
     # The zip or postal code of the contact.
+    @constraint:String {maxLength: 50}
     string zip?;
     # The name of the country where the contact lives.
+    @constraint:String {maxLength: 50}
     string country?;
     # The name of this property is dynamic based on the custom fields you want to import. Use a key-value pair where the key is an existing custom field name prefixed with <code>cf:</code>, and the value is a custom field string value. For example, if you have a custom field named <code>first_name</code> you can use <code>"cf:first_name":"Joe"</code>. Each contact can contain up to 25 different custom fields.
+    @constraint:String {maxLength: 255}
     string 'cf\:custom\_field\_name?;
 };
 

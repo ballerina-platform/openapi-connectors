@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BarcodeLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BarcodeLookupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a QR code barcode as PNG file
@@ -67,7 +67,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a UPC-A code barcode as PNG file
@@ -81,7 +81,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a UPC-E code barcode as PNG file
@@ -95,7 +95,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a EAN-13 code barcode as PNG file
@@ -109,7 +109,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generate a EAN-8 code barcode as PNG file
@@ -123,7 +123,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

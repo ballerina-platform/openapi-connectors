@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ParseAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ParseAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a street address
@@ -67,7 +67,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Normalize a street address
@@ -81,7 +81,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        NormalizeAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NormalizeAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a City and State/Province combination, get location information about it
@@ -95,7 +95,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateCityResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateCityResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a state or province, name or abbreviation, get location information about it
@@ -109,7 +109,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateStateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateStateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a postal code, get location information about it
@@ -123,7 +123,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidatePostalCodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidatePostalCodeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate and normalize country information, return ISO 3166-1 country codes and country name
@@ -137,7 +137,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of ISO 3166-1 countries
@@ -149,7 +149,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        CountryListResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CountryListResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if a country is a member of the European Union (EU)
@@ -163,7 +163,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the currency of the input country
@@ -177,7 +177,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the region, subregion and continent of the country
@@ -191,7 +191,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateCountryResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets IANA/Olsen time zones for a country
@@ -205,7 +205,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetTimezonesResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetTimezonesResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Geocode a street address into latitude and longitude
@@ -219,7 +219,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reverse geocode a lattitude and longitude into an address
@@ -233,7 +233,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ReverseGeocodeAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ReverseGeocodeAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get current date and time as of now
@@ -257,7 +257,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PublicHolidaysResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PublicHolidaysResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Parses a standardized date and time string into a date and time
@@ -271,7 +271,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DateTimeStandardizedParseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DateTimeStandardizedParseResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Parses a free-form natural language date and time string into a date and time
@@ -285,7 +285,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DateTimeStandardizedParseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DateTimeStandardizedParseResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a domain name
@@ -299,7 +299,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CheckResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CheckResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a domain name's quality score
@@ -313,7 +313,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DomainQualityResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DomainQualityResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get WHOIS information for a domain
@@ -327,7 +327,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        WhoisResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        WhoisResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a URL syntactically
@@ -341,7 +341,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a URL fully
@@ -355,7 +355,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateUrlResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateUrlResponseFull response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get top-level domain name from URL
@@ -369,7 +369,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateUrlResponseSyntaxOnly response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for Phishing threats
@@ -383,7 +383,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PhishingCheckResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PhishingCheckResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if path is a high-risk or vulnerable server administration path
@@ -397,7 +397,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IsAdminPathResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IsAdminPathResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for safety threats
@@ -411,7 +411,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlSafetyCheckResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlSafetyCheckResponseFull response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for SSRF threats
@@ -425,7 +425,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlSsrfResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlSsrfResponseFull response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for SSRF threats in batches
@@ -439,7 +439,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlSsrfResponseBatch response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlSsrfResponseBatch response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for HTML embedded SSRF threats
@@ -453,7 +453,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlHtmlSsrfResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlHtmlSsrfResponseFull response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate email adddress for syntactic correctness only
@@ -467,7 +467,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AddressVerifySyntaxOnlyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AddressVerifySyntaxOnlyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Partially check whether an email address is valid
@@ -481,7 +481,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AddressGetServersResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AddressGetServersResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Fully validate an email address
@@ -495,7 +495,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FullEmailValidationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FullEmailValidationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get intelligence on an IP address
@@ -509,7 +509,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IPIntelligenceResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPIntelligenceResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Geolocate an IP address
@@ -523,7 +523,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GeolocateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GeolocateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Geolocate an IP address to a street address
@@ -537,7 +537,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GeolocateStreetAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GeolocateStreetAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a known threat
@@ -551,7 +551,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IPThreatResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPThreatResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a Tor node server
@@ -565,7 +565,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TorNodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TorNodeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a Bot client
@@ -579,7 +579,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BotCheckResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BotCheckResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform a reverse domain name (DNS) lookup on an IP address
@@ -593,7 +593,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IPReverseDNSLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPReverseDNSLookupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Enrich an input lead with additional fields of data
@@ -607,7 +607,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LeadEnrichmentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LeadEnrichmentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Parse and validate a full name
@@ -621,7 +621,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FullNameValidationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FullNameValidationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a first name
@@ -635,7 +635,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FirstNameValidationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FirstNameValidationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a last name
@@ -649,7 +649,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LastNameValidationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LastNameValidationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the gender of a first name
@@ -663,7 +663,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetGenderResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetGenderResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a code identifier
@@ -677,7 +677,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ValidateIdentifierResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ValidateIdentifierResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate phone number (basic)
@@ -691,7 +691,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PhoneNumberValidationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PhoneNumberValidationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check text input for SQL Injection (SQLI) attacks
@@ -706,7 +706,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SqlInjectionDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SqlInjectionDetectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check and protect multiple text inputs for SQL Injection (SQLI) attacks in batch
@@ -720,7 +720,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SqlInjectionCheckBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SqlInjectionCheckBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check text input for Cross-Site-Scripting (XSS) attacks
@@ -734,7 +734,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        XssProtectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        XssProtectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect text input from Cross-Site-Scripting (XSS) attacks through normalization
@@ -748,7 +748,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        XssProtectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        XssProtectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check and protect multiple text inputs for Cross-Site-Scripting (XSS) attacks in batch
@@ -762,7 +762,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        XssProtectionBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        XssProtectionBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect html input from Server-side Request Forgery (SSRF) attacks
@@ -776,7 +776,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        HtmlSsrfDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        HtmlSsrfDetectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect text input from XML External Entity (XXE) attacks
@@ -793,7 +793,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        XxeDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        XxeDetectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect text input from XML External Entity (XXE) attacks
@@ -806,7 +806,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        XxeDetectionBatchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        XxeDetectionBatchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Parse an HTTP User-Agent string, identify robots
@@ -820,7 +820,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UserAgentValidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserAgentValidateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Validate a VAT number
@@ -834,7 +834,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        VatLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        VatLookupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

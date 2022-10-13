@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given US state 
     remote isolated function getUSAStatusByState(string states, string? yesterday = (), string? allowNull = ()) returns CovidState|error {
-        string resourcePath = string `/v3/covid-19/states/${states}`;
+        string resourcePath = string `/v3/covid-19/states/${getEncodedUri(states)}`;
         map<anydata> queryParam = {"yesterday": yesterday, "allowNull": allowNull};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidState response = check self.clientEp->get(resourcePath);
@@ -94,7 +94,7 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given continent 
     remote isolated function getStatusByContinent(string continent, string? yesterday = (), string? twoDaysAgo = (), string strict = "true", string? allowNull = ()) returns CovidContinent|error {
-        string resourcePath = string `/v3/covid-19/continents/${continent}`;
+        string resourcePath = string `/v3/covid-19/continents/${getEncodedUri(continent)}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidContinent response = check self.clientEp->get(resourcePath);
@@ -123,7 +123,7 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - COVID-19 status of the given country 
     remote isolated function getStatusByCountry(string country, string? yesterday = (), string? twoDaysAgo = (), string strict = "true", string? allowNull = ()) returns CovidCountry|error {
-        string resourcePath = string `/v3/covid-19/countries/${country}`;
+        string resourcePath = string `/v3/covid-19/countries/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "strict": strict, "allowNull": allowNull};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidCountry response = check self.clientEp->get(resourcePath);
@@ -137,7 +137,7 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status OK 
     remote isolated function getMultipleCountriesStatus(string countries, string? yesterday = (), string? twoDaysAgo = (), string? allowNull = ()) returns CovidCountries|error {
-        string resourcePath = string `/v3/covid-19/countries/${countries}`;
+        string resourcePath = string `/v3/covid-19/countries/${getEncodedUri(countries)}`;
         map<anydata> queryParam = {"yesterday": yesterday, "twoDaysAgo": twoDaysAgo, "allowNull": allowNull};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidCountries response = check self.clientEp->get(resourcePath);
@@ -164,7 +164,7 @@ public isolated client class Client {
     # + county - Name of any county in the USA. All counties are listed in the /v3/covid-19/jhucsse/counties/ endpoint 
     # + return - Status OK 
     remote isolated function getUSAStatusByCounty(string county) returns CovidJHUCounties|error {
-        string resourcePath = string `/v3/covid-19/jhucsse/counties/${county}`;
+        string resourcePath = string `/v3/covid-19/jhucsse/counties/${getEncodedUri(county)}`;
         CovidJHUCounties response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -196,7 +196,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - COVID-19 related time series for the given country 
     remote isolated function getTimeSeriesBycountry(string country, string lastdays = "30") returns CovidHistoricalCountry|error {
-        string resourcePath = string `/v3/covid-19/historical/${country}`;
+        string resourcePath = string `/v3/covid-19/historical/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidHistoricalCountry response = check self.clientEp->get(resourcePath);
@@ -208,7 +208,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesOfMultipleCountries(string countries, string lastdays = "30") returns CovidHistoricalCountries|error {
-        string resourcePath = string `/v3/covid-19/historical/${countries}`;
+        string resourcePath = string `/v3/covid-19/historical/${getEncodedUri(countries)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidHistoricalCountries response = check self.clientEp->get(resourcePath);
@@ -221,7 +221,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByProvince(string country, string province, string lastdays = "30") returns CovidHistoricalProvince|error {
-        string resourcePath = string `/v3/covid-19/historical/${country}/${province}`;
+        string resourcePath = string `/v3/covid-19/historical/${getEncodedUri(country)}/${getEncodedUri(province)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidHistoricalProvince response = check self.clientEp->get(resourcePath);
@@ -234,7 +234,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesDataForMultipleProvinces(string country, string provinces, string lastdays = "30") returns CovidHistoricalProvinces|error {
-        string resourcePath = string `/v3/covid-19/historical/${country}/${provinces}`;
+        string resourcePath = string `/v3/covid-19/historical/${getEncodedUri(country)}/${getEncodedUri(provinces)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidHistoricalProvinces response = check self.clientEp->get(resourcePath);
@@ -254,7 +254,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getUSACountiesDataByState(string state, string lastdays = "30") returns CovidHistoricalUSCounty|error {
-        string resourcePath = string `/v3/covid-19/historical/usacounties/${state}`;
+        string resourcePath = string `/v3/covid-19/historical/usacounties/${getEncodedUri(state)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidHistoricalUSCounty response = check self.clientEp->get(resourcePath);
@@ -277,7 +277,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByUSAStateNYT(string state, string lastdays = "30") returns CovidNYTState|error {
-        string resourcePath = string `/v3/covid-19/nyt/states/${state}`;
+        string resourcePath = string `/v3/covid-19/nyt/states/${getEncodedUri(state)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidNYTState response = check self.clientEp->get(resourcePath);
@@ -289,7 +289,7 @@ public isolated client class Client {
     # + lastdays - Number of days to return. Use 'all' for the full data set (e.g. 15, all, 24) 
     # + return - Status Ok 
     remote isolated function getTimeSeriesByUSACountyNYT(string county, string lastdays = "30") returns CovidNYTCounty|error {
-        string resourcePath = string `/v3/covid-19/nyt/counties/${county}`;
+        string resourcePath = string `/v3/covid-19/nyt/counties/${getEncodedUri(county)}`;
         map<anydata> queryParam = {"lastdays": lastdays};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CovidNYTCounty response = check self.clientEp->get(resourcePath);
@@ -316,7 +316,7 @@ public isolated client class Client {
     # + country - A valid country name from the /v3/covid-19/apple/countries endpoint 
     # + return - Status Ok 
     remote isolated function getAppleMobilityDataSupportedSubRegions(string country) returns CovidAppleSubregions|error {
-        string resourcePath = string `/v3/covid-19/apple/countries/${country}`;
+        string resourcePath = string `/v3/covid-19/apple/countries/${getEncodedUri(country)}`;
         CovidAppleSubregions response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -326,7 +326,7 @@ public isolated client class Client {
     # + subregions - Valid subregion(s) from the /v3/covid-19/apple/countries/{country} endpoint, separated by with commas 
     # + return - Status Ok 
     remote isolated function getStatusBySubRegionUsingAppleMobilotyData(string country, string subregions) returns CovidAppleData|error {
-        string resourcePath = string `/v3/covid-19/apple/countries/${country}/${subregions}`;
+        string resourcePath = string `/v3/covid-19/apple/countries/${getEncodedUri(country)}/${getEncodedUri(subregions)}`;
         CovidAppleData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -344,7 +344,7 @@ public isolated client class Client {
     # + allowNull - By default, value is 0. Enter `1` to allow nulls to be returned 
     # + return - Status Ok 
     remote isolated function getGovernmentReportedDataByCountry(string country, string? allowNull = ()) returns http:Response|error {
-        string resourcePath = string `/v3/covid-19/gov/${country}`;
+        string resourcePath = string `/v3/covid-19/gov/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"allowNull": allowNull};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -389,7 +389,7 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageByCountry(string country, string lastdays = "30", string fullData = "false") returns VaccineCountryCoverage|error {
-        string resourcePath = string `/v3/covid-19/vaccine/coverage/countries/${country}`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/countries/${getEncodedUri(country)}`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         VaccineCountryCoverage response = check self.clientEp->get(resourcePath);
@@ -414,7 +414,7 @@ public isolated client class Client {
     # + fullData - Flag indicating whether to return data type as SimpleVaccineTimeline (false) or FullVaccineTimeline (true). 
     # + return - Status Ok 
     remote isolated function getVaccineCoverageByUSAState(string state, string lastdays = "30", string fullData = "false") returns VaccineStateCoverage|error {
-        string resourcePath = string `/v3/covid-19/vaccine/coverage/states/${state}`;
+        string resourcePath = string `/v3/covid-19/vaccine/coverage/states/${getEncodedUri(state)}`;
         map<anydata> queryParam = {"lastdays": lastdays, "fullData": fullData};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         VaccineStateCoverage response = check self.clientEp->get(resourcePath);

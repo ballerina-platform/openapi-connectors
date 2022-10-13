@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        StringAutomaticThreatDetection response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        StringAutomaticThreatDetection response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Detect Insecure Deserialization JSON (JID) attacks in a string
@@ -67,7 +67,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        StringInsecureDeserializationJsonDetection response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        StringInsecureDeserializationJsonDetection response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check text input for SQL Injection (SQLI) attacks
@@ -81,7 +81,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        StringSqlInjectionDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        StringSqlInjectionDetectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect text input from Cross-Site-Scripting (XSS) attacks through normalization
@@ -95,7 +95,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        StringXssProtectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        StringXssProtectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Protect text input from XML External Entity (XXE) attacks
@@ -109,7 +109,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        StringXxeDetectionResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        StringXxeDetectionResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check a URL for Server-side Request Forgery (SSRF) threats
@@ -123,7 +123,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlSsrfThreatDetectionResponseFull response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlSsrfThreatDetectionResponseFull response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a known threat
@@ -137,7 +137,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IPThreatDetectionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPThreatDetectionResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a Bot client threat
@@ -151,7 +151,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ThreatDetectionBotCheckResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ThreatDetectionBotCheckResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Check if IP address is a Tor node server
@@ -165,7 +165,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ThreatDetectionTorNodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ThreatDetectionTorNodeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

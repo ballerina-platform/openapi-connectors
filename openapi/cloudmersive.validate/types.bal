@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,7 @@ public type BotCheckResponse record {
 # Result of performing a domain quality score operation
 public type DomainQualityResponse record {
     # The quality score of the domain name; possible values are 0.0 to 10.0 with 10.0 being the highest and 0.0 being the lowest quality.
-    float DomainQualityScore?;
+    decimal DomainQualityScore?;
 };
 
 # Result of checking a URL for SSRF threats
@@ -219,9 +219,9 @@ public type ValidateStateResponse record {
     # If valid; State or province corresponding to the input state name, such as 'CA' or 'California'
     string StateOrProvince?;
     # If the postal code is valid, the degrees latitude of the centroid of the state, null otherwise
-    float? Latitude?;
+    decimal? Latitude?;
     # If the postal code is valid, the degrees longitude of the centroid of the state, null otherwise
-    float? Longitude?;
+    decimal? Longitude?;
 };
 
 # Individual item to detect for XXE
@@ -421,9 +421,9 @@ public type GeolocateResponse record {
     # Timezone of IP address
     string TimezoneStandardName?;
     # Latitude of IP address
-    float Latitude?;
+    decimal Latitude?;
     # Longitude of IP address
-    float Longitude?;
+    decimal Longitude?;
 };
 
 # Result of performing an XXE threat detection operation
@@ -566,9 +566,9 @@ public type ValidateCityResponse record {
     # If valid; State or province corresponding to the input state name, such as 'CA' or 'California'
     string StateOrProvince?;
     # If the postal code is valid, the degrees latitude of the centroid of the state, null otherwise
-    float? Latitude?;
+    decimal? Latitude?;
     # If the postal code is valid, the degrees longitude of the centroid of the state, null otherwise
-    float? Longitude?;
+    decimal? Longitude?;
 };
 
 # Geolocation street address result
@@ -881,9 +881,9 @@ public type NormalizeAddressResponse record {
     # Two-letter ISO 3166-1 country code
     string ISOTwoLetterCode?;
     # If the address is valid, the degrees latitude of the validated address, null otherwise
-    float? Latitude?;
+    decimal? Latitude?;
     # If the address is valid, the degrees longitude of the validated address, null otherwise
-    float? Longitude?;
+    decimal? Longitude?;
 };
 
 # Request to Validate a State or Province in a country
@@ -917,9 +917,9 @@ public type ValidatePostalCodeResponse record {
     # If valid; State or province corresponding to the input postal code, such as 'CA' or 'California'
     string StateOrProvince?;
     # If the postal code is valid, the degrees latitude of the centroid of the postal code, null otherwise
-    float? Latitude?;
+    decimal? Latitude?;
     # If the postal code is valid, the degrees longitude of the centroid of the postal code, null otherwise
-    float? Longitude?;
+    decimal? Longitude?;
 };
 
 # Result of performing an Admin Path operation
@@ -977,9 +977,9 @@ public type ValidateCountryRequest record {
 # Request to reverse geocode a Street Address
 public type ReverseGeocodeAddressRequest record {
     # Latitude coordinate in WGS84 format
-    float Latitude?;
+    decimal Latitude?;
     # Longitude coordinate in WGS84 format
-    float Longitude?;
+    decimal Longitude?;
 };
 
 # Result of validating a street address
@@ -987,9 +987,9 @@ public type ValidateAddressResponse record {
     # True if the address is valid, false otherwise
     boolean ValidAddress?;
     # If the address is valid, the degrees latitude of the validated address, null otherwise
-    float? Latitude?;
+    decimal? Latitude?;
     # If the address is valid, the degrees longitude of the validated address, null otherwise
-    float? Longitude?;
+    decimal? Longitude?;
 };
 
 # Details of one country

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -54,7 +54,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetToken response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetToken response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the block number of the last mined Ethereum block.
@@ -67,7 +67,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        GetLastBlockNumber response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetLastBlockNumber response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the current gas price in GWEI.
@@ -80,7 +80,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        GetGasPrice response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetGasPrice response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the current Ethereum price in Euro or US Dollar.
@@ -94,7 +94,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetExchangeRate response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetExchangeRate response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the Ethereum balance of a given address.
@@ -108,7 +108,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetEthereumBalance response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetEthereumBalance response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns the token balance of a given address.
@@ -122,7 +122,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetTokenBalance response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetTokenBalance response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns information like confirmations, token contract address, amount, gas price and more of a given transaction.
@@ -136,7 +136,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetTransactions response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetTransactions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns information of an Ethereum block with or without transactions.
@@ -150,7 +150,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetBlock response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetBlock response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Generates a new Ethereum addresses you can use to send or receive funds. Do not lose the password! We can't restore access to an address if you lose it.
@@ -164,7 +164,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        NewAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NewAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes an existing Ethereum address. Be careful when using this function.
@@ -178,7 +178,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DeleteAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DeleteAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns all Ethereum addresses created with an account.
@@ -191,7 +191,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ListAddresses response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ListAddresses response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Imports an existing keystore into system and makes it possible to send transactions from it.
@@ -205,7 +205,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ImportAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ImportAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Exports an existing keystore file so you can use it in other wallets.
@@ -219,7 +219,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ExportAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ExportAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Creates a new subscription/IPN for the given address (and contractaddress). You will receive a notification to the given url every time a deposit is received. Unsubscribe the address before sending tokens/ETH from it or you won't get reliable notifications anymore.
@@ -233,7 +233,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SubscribeAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SubscribeAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes an existing subscription/IPN for the given address (and contractaddress).
@@ -247,7 +247,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UnsubscribeAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UnsubscribeAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns all subscriptions/IPNs created with an account.
@@ -260,7 +260,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ListSubscribedAddresses response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ListSubscribedAddresses response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns all IPNs that couldn't be sent. Our system tries to send IPNs 10 times until they end up failed.
@@ -273,7 +273,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ListFailedIPNs response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ListFailedIPNs response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Tries to resend a failed IPN.
@@ -287,7 +287,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ResendFailedIPN response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ResendFailedIPN response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sends Ethereum from an address controlled by the account to a specified receiver address.
@@ -301,7 +301,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SendEthereum response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SendEthereum response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sends all available Ethereum funds of an address to a specified receiver address.
@@ -315,7 +315,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ClearAddress response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ClearAddress response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sends ERC20 tokens from an address controlled by the account to a specified receiver address. The token contract address is needed to specify the token. The use of the identifier parameter is recommend and awaits an unique string. Whenever a transaction is beeing sent, the identifier is checked and the transaction gets dropped if there is one with that identifier already.
@@ -329,7 +329,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SendToken response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SendToken response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

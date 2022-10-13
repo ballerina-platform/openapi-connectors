@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Management policy for a certificate.
 public type CertificatePolicy record {
@@ -115,6 +117,7 @@ public type Trigger record {
     # Days before expiry to attempt renewal. Value should be between 1 and validity_in_months multiplied by 27. If validity_in_months is 36, then value should be between 1 and 972 (36 * 27).
     int days_before_expiry?;
     # Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+    @constraint:Int {minValue: 1, maxValue: 99}
     int lifetime_percentage?;
 };
 
@@ -279,9 +282,7 @@ public type JsonWebKey record {
 };
 
 # A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-public type DeletedSecretBundle record {
-    *SecretBundle;
-};
+public type DeletedSecretBundle SecretBundle;
 
 # The key update parameters.
 public type KeyUpdateParameters record {
@@ -302,6 +303,7 @@ public type StorageRestoreParameters record {
 # The key operations parameters.
 public type KeyOperationsParameters record {
     # Algorithm identifier
+    @constraint:String {minLength: 1}
     string alg;
     # The Base64 value of encrypted data.
     string value;
@@ -344,6 +346,7 @@ public type DeletedSasDefinitionListResult record {
 # The key operations parameters.
 public type KeySignParameters record {
     # The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+    @constraint:String {minLength: 1}
     string alg;
     # The Base64 representation of the digest.
     string value;
@@ -364,25 +367,19 @@ public type BackupSecretResult record {
 };
 
 # A deleted SAS definition bundle consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-public type DeletedSasDefinitionBundle record {
-    *SasDefinitionBundle;
-};
+public type DeletedSasDefinitionBundle SasDefinitionBundle;
 
 # A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
-public type DeletedKeyBundle record {
-    *KeyBundle;
-};
+public type DeletedKeyBundle KeyBundle;
 
 # The key vault error exception.
 public type KeyVaultError record {
     # The key vault server error.
-    Error _error?;
+    Error 'error?;
 };
 
 # The deleted SAS definition item containing metadata about the deleted SAS definition.
-public type DeletedSasDefinitionItem record {
-    *SasDefinitionItem;
-};
+public type DeletedSasDefinitionItem SasDefinitionItem;
 
 # The action that will be executed.
 public type Action record {
@@ -391,9 +388,7 @@ public type Action record {
 };
 
 # The deleted certificate item containing metadata about the deleted certificate.
-public type DeletedCertificateItem record {
-    *CertificateItem;
-};
+public type DeletedCertificateItem CertificateItem;
 
 # The SAS definition management attributes.
 public type SasDefinitionAttributes record {
@@ -408,9 +403,7 @@ public type SasDefinitionAttributes record {
 };
 
 # The deleted key item containing the deleted key metadata and information about deletion.
-public type DeletedKeyItem record {
-    *KeyItem;
-};
+public type DeletedKeyItem KeyItem;
 
 # Action and its trigger that will be performed by Key Vault over the lifetime of a certificate.
 public type LifetimeAction record {
@@ -453,9 +446,7 @@ public type SasDefinitionCreateParameters record {
 };
 
 # A Deleted Certificate consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-public type DeletedCertificateBundle record {
-    *CertificateBundle;
-};
+public type DeletedCertificateBundle CertificateBundle;
 
 # The certificate restore parameters.
 public type CertificateRestoreParameters record {
@@ -510,6 +501,7 @@ public type KeyCreateParameters record {
     # The key size in bits. For example: 2048, 3072, or 4096 for RSA.
     int key_size?;
     # The type of key to create. For valid values, see JsonWebKeyType.
+    @constraint:String {minLength: 1}
     string kty;
     # Application specific metadata in the form of key-value pairs.
     record {} tags?;
@@ -568,9 +560,7 @@ public type DeletedCertificateListResult record {
 };
 
 # The deleted storage account item containing metadata about the deleted storage account.
-public type DeletedStorageAccountItem record {
-    *StorageAccountItem;
-};
+public type DeletedStorageAccountItem StorageAccountItem;
 
 # A secret consisting of a value, id and its attributes.
 public type SecretBundle record {
@@ -645,9 +635,7 @@ public type KeyProperties record {
 };
 
 # The certificate management attributes.
-public type CertificateAttributes record {
-    *Attributes;
-};
+public type CertificateAttributes Attributes;
 
 # The certificate list result.
 public type CertificateListResult record {
@@ -678,9 +666,7 @@ public type IssuerParameters record {
 };
 
 # The attributes of a key managed by the key vault service.
-public type KeyAttributes record {
-    *Attributes;
-};
+public type KeyAttributes Attributes;
 
 # The key list result.
 public type KeyListResult record {
@@ -747,7 +733,7 @@ public type CertificateOperation record {
     # The certificate signing request (CSR) that is being used in the certificate operation.
     string csr?;
     # The key vault server error.
-    Error _error?;
+    Error 'error?;
     # The certificate id.
     string id?;
     # Parameters for the issuer of the X509 component of a certificate.
@@ -763,9 +749,7 @@ public type CertificateOperation record {
 };
 
 # The deleted secret item containing metadata about the deleted secret.
-public type DeletedSecretItem record {
-    *SecretItem;
-};
+public type DeletedSecretItem SecretItem;
 
 # The deleted secret list result
 public type DeletedSecretListResult record {
@@ -776,9 +760,7 @@ public type DeletedSecretListResult record {
 };
 
 # A deleted storage account bundle consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
-public type DeletedStorageBundle record {
-    *StorageBundle;
-};
+public type DeletedStorageBundle StorageBundle;
 
 # The contact information for the vault certificates.
 public type Contact record {
@@ -843,9 +825,7 @@ public type CertificateItem record {
 };
 
 # The secret management attributes.
-public type SecretAttributes record {
-    *Attributes;
-};
+public type SecretAttributes Attributes;
 
 # The secret list result.
 public type SecretListResult record {
@@ -886,6 +866,7 @@ public type DeletedStorageListResult record {
 # The key verify parameters.
 public type KeyVerifyParameters record {
     # The signing/verification algorithm. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
+    @constraint:String {minLength: 1}
     string alg;
     # The digest used for signing.
     string digest;

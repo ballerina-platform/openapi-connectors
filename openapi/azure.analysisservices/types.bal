@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # An object that represents a set of mutable Analysis Services resource properties.
 public type AnalysisServicesServerMutableProperties record {
@@ -147,7 +149,7 @@ public type OperationStatus record {
     # The status of the operation.
     string status?;
     # The error detail.
-    ErrorDetail _error?;
+    ErrorDetail 'error?;
 };
 
 # Provision request specification
@@ -226,7 +228,7 @@ public type Resource record {
 # Describes the format of Error response.
 public type ErrorResponse record {
     # The error detail.
-    ErrorDetail _error?;
+    ErrorDetail 'error?;
 };
 
 # Represents the SKU name and Azure pricing tier for Analysis Services resource.
@@ -236,7 +238,8 @@ public type ResourceSku record {
     # The name of the Azure pricing tier to which the SKU applies.
     string tier?;
     # The number of instances in the read only query pool.
-    int capacity?;
+    @constraint:Int {minValue: 1, maxValue: 8}
+    int capacity = 1;
 };
 
 # The checking result of server name availability.
@@ -256,13 +259,12 @@ public type OperationProperties record {
 };
 
 # Represents an instance of an Analysis Services resource.
-public type AnalysisServicesServer record {
-    *Resource;
-};
+public type AnalysisServicesServer Resource;
 
 # Details of server name request body.
 public type CheckServerNameAvailabilityParameters record {
     # Name for checking availability.
+    @constraint:String {maxLength: 63, minLength: 3}
     string name?;
     # The resource type of azure analysis services.
     string 'type?;
@@ -291,10 +293,8 @@ public type MetricSpecifications record {
 };
 
 # Properties of Analysis Services resource.
-public type AnalysisServicesServerProperties record {
-    *AnalysisServicesServerMutableProperties;
-};
+public type AnalysisServicesServerProperties AnalysisServicesServerMutableProperties;
 
 public type GatewayListStatusError record {
-    GatewayError _error?;
+    GatewayError 'error?;
 };

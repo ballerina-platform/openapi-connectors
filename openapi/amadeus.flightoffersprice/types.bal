@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # traveler type
 # age restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y
@@ -204,14 +206,18 @@ public type FlightOffer record {
     # If booked on the same day as the search (with respect to timezone), this flight offer is guaranteed to be thereafter valid for ticketing until this date (included). Unspecified when it does not make sense for this flight offer (e.g. no control over ticketing once booked). YYYY-MM-DD format, e.g. 2019-06-07
     string lastTicketingDate?;
     # Number of seats bookable in a single request. Can not be higher than 9.
+    @constraint:Number {minValue: 1, maxValue: 9}
     decimal numberOfBookableSeats?;
+    @constraint:Array {maxLength: 250, minLength: 1}
     Itineraries[] itineraries?;
     # price information
     ExtendedPrice price?;
     PricingOptions pricingOptions?;
     # This option ensures that the system will only consider these airlines.
+    @constraint:Array {maxLength: 9, minLength: 1}
     string[] validatingAirlineCodes?;
     # Fare information for each traveler/segment
+    @constraint:Array {maxLength: 18, minLength: 1}
     TravelerPricing[] travelerPricings?;
 };
 
@@ -308,6 +314,7 @@ public type Payment record {
     # The first 6 digits of the credit card
     int binNumber?;
     # Id of the flightOffers to pay
+    @constraint:Array {maxLength: 6, minLength: 1}
     string[] flightOfferIds?;
 };
 
@@ -438,6 +445,7 @@ public type Segment record {
     # The [list of the banned airlines](https://ec.europa.eu/transport/sites/transport/files/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   
     boolean blacklistedInEU?;
     # Co2 informations
+    @constraint:Array {minLength: 1}
     Co2Emission[] co2Emissions?;
     *FlightSegment;
 };
@@ -447,6 +455,7 @@ public type FlightOfferPricingOut record {
     # the resource name
     string 'type;
     # list of flight offer to price
+    @constraint:Array {maxLength: 6, minLength: 1}
     FlightOffer[] flightOffers;
     # pricing condition at booking level
     BookingRequirements bookingRequirements?;
@@ -459,8 +468,10 @@ public type FlightSegment record {
     # departure or arrival information
     FlightEndPoint arrival?;
     # providing the airline / carrier code
+    @constraint:String {maxLength: 2, minLength: 1}
     string carrierCode?;
     # the flight number as assigned by the carrier
+    @constraint:String {maxLength: 4, minLength: 1}
     string number?;
     # information related to the aircraft
     AircraftEquipment aircraft?;
@@ -573,10 +584,13 @@ public type FlightOfferPricingIn record {
     # the resource name
     string 'type;
     # list of flight offer to price
+    @constraint:Array {maxLength: 6, minLength: 1}
     FlightOffer[] flightOffers;
     # payment information for retrieve eventual credit card fees
+    @constraint:Array {maxLength: 6}
     Payment[] payments?;
     # list of travelers
+    @constraint:Array {maxLength: 18}
     Traveler[] travelers?;
 };
 
@@ -619,6 +633,7 @@ public type TravelerPricing record {
     # if type="HELD_INFANT", corresponds to the adult traveler's id who will share the seat
     string associatedAdultId?;
     Price price?;
+    @constraint:Array {maxLength: 18, minLength: 1}
     FareDetailsBySegment[] fareDetailsBySegment;
 };
 
@@ -628,6 +643,7 @@ public type DocumentType string;
 public type FareRules record {
     # The currency of the penalties
     string currency?;
+    @constraint:Array {minLength: 1}
     TermAndCondition[] rules?;
 };
 
@@ -641,6 +657,7 @@ public type PricingOptionsFareType string[];
 public type Contact record {
     *ContactDictionary;
     # Phone numbers
+    @constraint:Array {maxLength: 3}
     Phone[] phones?;
     # Name of the company
     string companyName?;
@@ -654,12 +671,14 @@ public type PhoneDeviceType string;
 public type Itineraries record {
     # duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601) PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m
     string duration?;
+    @constraint:Array {maxLength: 9, minLength: 1}
     Segment[] segments;
 };
 
 # information about the operating flight
 public type OperatingFlight record {
     # providing the airline / carrier code
+    @constraint:String {maxLength: 2, minLength: 1}
     string carrierCode?;
 };
 
@@ -680,8 +699,10 @@ public type Traveler record {
     # emergency contact number
     EmergencyContact emergencyContact?;
     # list of loyalty program followed by the traveler
+    @constraint:Array {maxLength: 10}
     LoyaltyProgram[] loyaltyPrograms?;
     # list of element that allow a discount.
+    @constraint:Array {maxLength: 10}
     Discount[] discountEligibility?;
     # contact information
     Contact contact?;

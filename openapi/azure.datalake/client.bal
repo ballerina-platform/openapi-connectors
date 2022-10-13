@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification.
@@ -102,7 +106,7 @@ public isolated client class Client {
     # + upn - Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user identity values returned in the owner and group fields of each list entry will be transformed from Azure Active Directory Object IDs to User Principal Names.  If "false", the values will be returned as Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not translated because they do not have unique friendly names. 
     # + return - Ok 
     remote isolated function pathList(string filesystem, string 'resource, boolean recursive, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? directory = (), string? continuation = (), int? maxResults = (), boolean? upn = ()) returns PathList|error {
-        string resourcePath = string `/${filesystem}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}`;
         map<anydata> queryParam = {"resource": 'resource, "timeout": timeout, "directory": directory, "recursive": recursive, "continuation": continuation, "maxResults": maxResults, "upn": upn};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion};
@@ -121,14 +125,14 @@ public isolated client class Client {
     # + xMsProperties - User-defined properties to be stored with the filesystem, in the format of a comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. 
     # + return - Created 
     remote isolated function filesystemCreate(string filesystem, string 'resource, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? xMsProperties = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}`;
         map<anydata> queryParam = {"resource": 'resource, "timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "x-ms-properties": xMsProperties};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Filesystem
@@ -143,12 +147,12 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - Accepted 
     remote isolated function filesystemDelete(string filesystem, string 'resource, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}`;
         map<anydata> queryParam = {"resource": 'resource, "timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Set Filesystem Properties
@@ -164,14 +168,14 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - Ok 
     remote isolated function filesystemSetproperties(string filesystem, string 'resource, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? xMsProperties = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}`;
         map<anydata> queryParam = {"resource": 'resource, "timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "x-ms-properties": xMsProperties, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Filesystem Properties.
@@ -184,7 +188,7 @@ public isolated client class Client {
     # + xMsVersion - Specifies the version of the REST protocol used for processing the request. This is required when using shared key authorization. 
     # + return - Ok 
     remote isolated function filesystemGetproperties(string filesystem, string 'resource, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}`;
         map<anydata> queryParam = {"resource": 'resource, "timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion};
@@ -209,7 +213,7 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - Ok 
     remote isolated function pathRead(string filesystem, string pathParam, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? range = (), string? xMsLeaseId = (), boolean? xMsRangeGetContentMd5 = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns string|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "Range": range, "x-ms-lease-id": xMsLeaseId, "x-ms-range-get-content-md5": xMsRangeGetContentMd5, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
@@ -253,14 +257,14 @@ public isolated client class Client {
     # + xMsSourceIfUnmodifiedSince - Optional. A date and time value. Specify this header to perform the rename operation only if the source has not been modified since the specified date and time. 
     # + return - The file or directory was created. 
     remote isolated function pathCreate(string filesystem, string pathParam, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? 'resource = (), string? continuation = (), string? mode = (), string? cacheControl = (), string? contentEncoding = (), string? contentLanguage = (), string? contentDisposition = (), string? xMsCacheControl = (), string? xMsContentType = (), string? xMsContentEncoding = (), string? xMsContentLanguage = (), string? xMsContentDisposition = (), string? xMsRenameSource = (), string? xMsLeaseId = (), string? xMsSourceLeaseId = (), string? xMsProperties = (), string? xMsPermissions = (), string? xMsUmask = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = (), string? xMsSourceIfMatch = (), string? xMsSourceIfNoneMatch = (), string? xMsSourceIfModifiedSince = (), string? xMsSourceIfUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout, "resource": 'resource, "continuation": continuation, "mode": mode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "Cache-Control": cacheControl, "Content-Encoding": contentEncoding, "Content-Language": contentLanguage, "Content-Disposition": contentDisposition, "x-ms-cache-control": xMsCacheControl, "x-ms-content-type": xMsContentType, "x-ms-content-encoding": xMsContentEncoding, "x-ms-content-language": xMsContentLanguage, "x-ms-content-disposition": xMsContentDisposition, "x-ms-rename-source": xMsRenameSource, "x-ms-lease-id": xMsLeaseId, "x-ms-source-lease-id": xMsSourceLeaseId, "x-ms-properties": xMsProperties, "x-ms-permissions": xMsPermissions, "x-ms-umask": xMsUmask, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince, "x-ms-source-if-match": xMsSourceIfMatch, "x-ms-source-if-none-match": xMsSourceIfNoneMatch, "x-ms-source-if-modified-since": xMsSourceIfModifiedSince, "x-ms-source-if-unmodified-since": xMsSourceIfUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Lease Path
@@ -282,14 +286,14 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - The "renew", "change" or "release" action was successful. 
     remote isolated function pathLease(string filesystem, string pathParam, string xMsLeaseAction, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), int? xMsLeaseDuration = (), int? xMsLeaseBreakPeriod = (), string? xMsLeaseId = (), string? xMsProposedLeaseId = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "x-ms-lease-action": xMsLeaseAction, "x-ms-lease-duration": xMsLeaseDuration, "x-ms-lease-break-period": xMsLeaseBreakPeriod, "x-ms-lease-id": xMsLeaseId, "x-ms-proposed-lease-id": xMsProposedLeaseId, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete File | Delete Directory
@@ -309,12 +313,12 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - The file was deleted. 
     remote isolated function pathDelete(string filesystem, string pathParam, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), boolean? recursive = (), string? continuation = (), string? xMsLeaseId = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout, "recursive": recursive, "continuation": continuation};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "x-ms-lease-id": xMsLeaseId, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Append Data | Flush Data | Set Properties | Set Access Control
@@ -350,14 +354,14 @@ public isolated client class Client {
     # + payload - Valid only for append operations.  The data to be uploaded and appended to the file. 
     # + return - The data was flushed (written) to the file or the properties were set successfully. 
     remote isolated function pathUpdate(string filesystem, string pathParam, string action, byte[] payload, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), int? position = (), boolean? retainUncommittedData = (), boolean? close = (), int? contentLength = (), string? contentMd5 = (), string? xMsLeaseId = (), string? xMsCacheControl = (), string? xMsContentType = (), string? xMsContentDisposition = (), string? xMsContentEncoding = (), string? xMsContentLanguage = (), string? xMsContentMd5 = (), string? xMsProperties = (), string? xMsOwner = (), string? xMsGroup = (), string? xMsPermissions = (), string? xMsAcl = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout, "action": action, "position": position, "retainUncommittedData": retainUncommittedData, "close": close};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "Content-Length": contentLength, "Content-MD5": contentMd5, "x-ms-lease-id": xMsLeaseId, "x-ms-cache-control": xMsCacheControl, "x-ms-content-type": xMsContentType, "x-ms-content-disposition": xMsContentDisposition, "x-ms-content-encoding": xMsContentEncoding, "x-ms-content-language": xMsContentLanguage, "x-ms-content-md5": xMsContentMd5, "x-ms-properties": xMsProperties, "x-ms-owner": xMsOwner, "x-ms-group": xMsGroup, "x-ms-permissions": xMsPermissions, "x-ms-acl": xMsAcl, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/octet-stream");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Properties | Get Status | Get Access Control List | Check Access
@@ -378,7 +382,7 @@ public isolated client class Client {
     # + ifUnmodifiedSince - Optional. A date and time value. Specify this header to perform the operation only if the resource has not been modified since the specified date and time. 
     # + return - Returns all properties for the file or directory. 
     remote isolated function pathGetproperties(string filesystem, string pathParam, string? xMsClientRequestId = (), int? timeout = (), string? xMsDate = (), string? xMsVersion = (), string? action = (), boolean? upn = (), string? fsAction = (), string? xMsLeaseId = (), string? ifMatch = (), string? ifNoneMatch = (), string? ifModifiedSince = (), string? ifUnmodifiedSince = ()) returns http:Response|error {
-        string resourcePath = string `/${filesystem}/${pathParam}`;
+        string resourcePath = string `/${getEncodedUri(filesystem)}/${getEncodedUri(pathParam)}`;
         map<anydata> queryParam = {"timeout": timeout, "action": action, "upn": upn, "fsAction": fsAction};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-ms-client-request-id": xMsClientRequestId, "x-ms-date": xMsDate, "x-ms-version": xMsVersion, "x-ms-lease-id": xMsLeaseId, "If-Match": ifMatch, "If-None-Match": ifNoneMatch, "If-Modified-Since": ifModifiedSince, "If-Unmodified-Since": ifUnmodifiedSince};

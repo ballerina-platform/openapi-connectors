@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector from [Azure SQL DB API v1.0](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview)  OpenAPI specification.
@@ -76,7 +80,7 @@ public isolated client class Client {
     # + payload - The definition for completing the restore of this managed database. 
     # + return - Successfully issued complete restore request. 
     remote isolated function completeRestoreManagedDatabases(string locationName, string operationId, string subscriptionId, string apiVersion, CompleteDatabaseRestoreDefinition payload) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/providers/Microsoft.Sql/locations/${locationName}/managedDatabaseRestoreAzureAsyncOperation/${operationId}/completeRestore`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/providers/Microsoft.Sql/locations/${getEncodedUri(locationName)}/managedDatabaseRestoreAzureAsyncOperation/${getEncodedUri(operationId)}/completeRestore`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -93,7 +97,7 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully retrieved the list of databases. 
     remote isolated function listManagedDatabasesByInstance(string resourceGroupName, string managedInstanceName, string subscriptionId, string apiVersion) returns ManagedDatabaseListResult|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.Sql/managedInstances/${getEncodedUri(managedInstanceName)}/databases`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ManagedDatabaseListResult response = check self.clientEp->get(resourcePath);
@@ -108,7 +112,7 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully retrieved the specified managed database. 
     remote isolated function getManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion) returns ManagedDatabase|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.Sql/managedInstances/${getEncodedUri(managedInstanceName)}/databases/${getEncodedUri(databaseName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ManagedDatabase response = check self.clientEp->get(resourcePath);
@@ -124,7 +128,7 @@ public isolated client class Client {
     # + payload - The requested database resource state. 
     # + return - Successfully updated the database. 
     remote isolated function createOrUpdateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabase payload) returns ManagedDatabase|error? {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.Sql/managedInstances/${getEncodedUri(managedInstanceName)}/databases/${getEncodedUri(databaseName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -142,10 +146,10 @@ public isolated client class Client {
     # + apiVersion - The API version to use for the request. 
     # + return - Successfully deleted the managed database. 
     remote isolated function deleteManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.Sql/managedInstances/${getEncodedUri(managedInstanceName)}/databases/${getEncodedUri(databaseName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an existing database.
@@ -158,7 +162,7 @@ public isolated client class Client {
     # + payload - The requested database resource state. 
     # + return - Successfully updated the database. 
     remote isolated function updateManagedDatabases(string resourceGroupName, string managedInstanceName, string databaseName, string subscriptionId, string apiVersion, ManagedDatabaseUpdate payload) returns ManagedDatabase|error? {
-        string resourcePath = string `/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Sql/managedInstances/${managedInstanceName}/databases/${databaseName}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}/resourceGroups/${getEncodedUri(resourceGroupName)}/providers/Microsoft.Sql/managedInstances/${getEncodedUri(managedInstanceName)}/databases/${getEncodedUri(databaseName)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

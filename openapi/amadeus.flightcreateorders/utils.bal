@@ -14,17 +14,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type InlineResponse401 record {
-    # Contains parameter or domain specific information related to the error and why it occured.
-    string detail?;
-    # Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
-    string 'error?;
-    # A human-readable message providing more details about the error.
-    string message?;
-    # Link to documentation of error type
-    string ref?;
-    # HTTP status code
-    decimal status_code?;
-    # The type of error returned
-    string type_name?;
-};
+import ballerina/url;
+
+# Get Encoded URI for a given value.
+#
+# + value - Value to be encoded
+# + return - Encoded string
+isolated function getEncodedUri(anydata value) returns string {
+    string|error encoded = url:encode(value.toString(), "UTF8");
+    if (encoded is string) {
+        return encoded;
+    } else {
+        return value.toString();
+    }
+}

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-public type User record {
-    *Permission;
-};
+import ballerina/constraint;
+
+public type User Permission;
 
 public type RoleAssignment record {
     # ID of the role for this role assignment.
@@ -68,9 +68,7 @@ public type Tpm record {
     string endorsementKey;
 };
 
-public type SymmetricKeyAttestation record {
-    *Attestation;
-};
+public type SymmetricKeyAttestation Attestation;
 
 public type DeviceTemplate record {
     # Unique ID of the device template.
@@ -89,6 +87,7 @@ public type DeviceTemplate record {
 
 public type Permission record {
     # List of role assignments that specify the permissions to access the application.
+    @constraint:Array {minLength: 1}
     RoleAssignment[] roles;
 };
 
@@ -99,9 +98,7 @@ public type DeviceCommandCollection record {
     string nextLink?;
 };
 
-public type X509Attestation record {
-    *Attestation;
-};
+public type X509Attestation Attestation;
 
 public type RoleCollection record {
     # The collection of roles.
@@ -128,9 +125,7 @@ public type ApiTokenCollection record {
     string nextLink?;
 };
 
-public type TpmAttestation record {
-    *Attestation;
-};
+public type TpmAttestation Attestation;
 
 public type X509Certificates record {
     X509Certificate primary;
@@ -163,8 +158,10 @@ public type DeviceCommand record {
     # The request ID of the device command execution.
     string id?;
     # Connection timeout in seconds to wait for a disconnected device to come online. Defaults to 0 seconds.
+    @constraint:Int {maxValue: 30}
     int connectionTimeout?;
     # Response timeout in seconds to wait for a command completion on a device. Defaults to 30 seconds.
+    @constraint:Int {minValue: 5, maxValue: 30}
     int responseTimeout?;
     # The payload for the device command.
     record {} request?;
@@ -192,13 +189,9 @@ public type Role record {
     string displayName?;
 };
 
-public type EmailUser record {
-    *User;
-};
+public type EmailUser User;
 
-public type ApiToken record {
-    *Permission;
-};
+public type ApiToken Permission;
 
 public type Collection record {
     # The collection of entities.
@@ -210,6 +203,4 @@ public type Collection record {
 public type Payload record {
 };
 
-public type ServicePrincipalUser record {
-    *User;
-};
+public type ServicePrincipalUser User;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Compilation error when evaluating route
 public type RouteCompilationError record {
@@ -80,7 +82,8 @@ public type RouteProperties record {
     # The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default. For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
     string condition?;
     # The list of endpoints to which messages that satisfy the condition are routed. Currently only one endpoint is allowed.
-    string[1] endpointNames;
+    @constraint:Array {maxLength: 1, minLength: 1}
+    string[] endpointNames;
     # Used to specify whether a route is enabled.
     boolean isEnabled;
     # The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
@@ -110,6 +113,7 @@ public type MessagingEndpointProperties record {
     # The lock duration. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
     string lockDurationAsIso8601?;
     # The number of times the IoT hub attempts to deliver a message. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int maxDeliveryCount?;
     # The period of time for which a message is available to consume before it is expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
     string ttlAsIso8601?;
@@ -120,6 +124,7 @@ public type FeedbackProperties record {
     # The lock duration for the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
     string lockDurationAsIso8601?;
     # The number of times the IoT hub attempts to deliver a message on the feedback queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int maxDeliveryCount?;
     # The period of time for which a message is available to consume before it is expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
     string ttlAsIso8601?;
@@ -170,6 +175,7 @@ public type CloudToDeviceProperties record {
     # The properties of the feedback queue for cloud-to-device messages.
     FeedbackProperties feedback?;
     # The max delivery count for cloud-to-device messages in the device queue. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int maxDeliveryCount?;
 };
 
@@ -196,7 +202,8 @@ public type FallbackRouteProperties record {
     # The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
     string condition?;
     # The list of endpoints to which the messages that satisfy the condition are routed to. Currently only 1 endpoint is allowed.
-    string[1] endpointNames;
+    @constraint:Array {maxLength: 1, minLength: 1}
+    string[] endpointNames;
     # Used to specify whether the fallback route is enabled.
     boolean isEnabled;
     # The name of the route. The name can only include alphanumeric characters, periods, underscores, hyphens, has a maximum length of 64 characters, and must be unique.
@@ -262,9 +269,7 @@ public type IotHubSkuDescriptionListResult record {
 };
 
 # The description of the IoT hub.
-public type IotHubDescription record {
-    *Resource;
-};
+public type IotHubDescription Resource;
 
 # The properties related to the custom endpoints to which your IoT hub routes messages based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs and only 1 custom endpoint is allowed across all endpoint types for free hubs.
 public type RoutingEndpoints record {
@@ -281,6 +286,7 @@ public type RoutingEndpoints record {
 # The properties of an enrichment that your IoT hub applies to messages delivered to endpoints.
 public type EnrichmentProperties record {
     # The list of endpoints for which the enrichment is applied to the message.
+    @constraint:Array {minLength: 1}
     string[] endpointNames;
     # The key or name for the enrichment property.
     string 'key;
@@ -349,6 +355,7 @@ public type CertificatePropertiesWithNonce record {
 # The properties related to a storage container endpoint.
 public type RoutingStorageContainerProperties record {
     # Time interval at which blobs are written to storage. Value should be between 60 and 720 seconds. Default value is 300 seconds.
+    @constraint:Int {minValue: 60, maxValue: 720}
     int batchFrequencyInSeconds?;
     # The connection string of the storage account.
     string connectionString;
@@ -359,6 +366,7 @@ public type RoutingStorageContainerProperties record {
     # File name format for the blob. Default format is {iothub}/{partition}/{YYYY}/{MM}/{DD}/{HH}/{mm}. All parameters are mandatory but can be reordered.
     string fileNameFormat?;
     # Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
+    @constraint:Int {minValue: 10485760, maxValue: 524288000}
     int maxChunkSizeInBytes?;
     # The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
     string name;
@@ -660,10 +668,11 @@ public type RoutingTwin record {
 # IoT Hub capacity information.
 public type IotHubCapacity record {
     # The default number of units.
-    int 'default?;
+    int default?;
     # The maximum number of units.
     int maximum?;
     # The minimum number of units.
+    @constraint:Int {minValue: 1, maxValue: 1}
     int minimum?;
     # The type of the scaling enabled.
     string scaleType?;

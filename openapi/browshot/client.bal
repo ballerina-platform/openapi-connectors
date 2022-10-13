@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -160,7 +160,7 @@ public isolated client class Client {
     # + file - file name to use - optional, used with hosting=s3 
     # + headers - HTTP headers to add to your S3 object - optional, used with hosting=s3 
     # + return - list of screenshot information 
-    remote isolated function hostScreenshot(int id, string hosting, int? width = (), int? height = (), float scale = 1.0, string? bucket = (), string? file = (), string? headers = ()) returns ScreenshotHost[]|error {
+    remote isolated function hostScreenshot(int id, string hosting, int? width = (), int? height = (), decimal scale = 1.0, string? bucket = (), string? file = (), string? headers = ()) returns ScreenshotHost[]|error {
         string resourcePath = string `/screenshot/host`;
         map<anydata> queryParam = {"id": id, "hosting": hosting, "width": width, "height": height, "scale": scale, "bucket": bucket, "file": file, "headers": headers, "key": self.apiKeyConfig.'key};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -183,7 +183,7 @@ public isolated client class Client {
     # + shot - get the second or third screenshot if multiple screenshots were requested 
     # + quality - JPEG quality factor (for JPEG thumbnails only) 
     # + return - thumbnail 
-    remote isolated function getThumbnail(int id, int? width = (), int? height = (), float scale = 1.0, int zoom = 100, string ratio = "fit", int left = 0, int right = 0, int top = 0, int? bottom = (), string format = "png", int shot = 1, int quality = 100) returns http:Response|error {
+    remote isolated function getThumbnail(int id, int? width = (), int? height = (), decimal scale = 1.0, int zoom = 100, string ratio = "fit", int left = 0, int right = 0, int top = 0, int? bottom = (), string format = "png", int shot = 1, int quality = 100) returns http:Response|error {
         string resourcePath = string `/screenshot/thumbnail`;
         map<anydata> queryParam = {"id": id, "width": width, "height": height, "scale": scale, "zoom": zoom, "ratio": ratio, "left": left, "right": right, "top": top, "bottom": bottom, "format": format, "shot": shot, "quality": quality, "key": self.apiKeyConfig.'key};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);

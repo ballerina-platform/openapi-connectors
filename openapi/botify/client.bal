@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getProjectAnalyses(string username, string projectSlug, int? page = (), int? size = ()) returns InlineResponse200|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -65,7 +65,7 @@ public isolated client class Client {
     # + analysisSlug - Analysis' identifier 
     # + return - Successful operation 
     remote isolated function getAnalysisSummary(string username, string projectSlug, string analysisSlug) returns AnalysisDetail|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AnalysisDetail response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + analysisSlug - Analysis' identifier 
     # + return - Successful operation 
     remote isolated function getCrawlStatistics(string username, string projectSlug, string analysisSlug) returns CrawlStatistics|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/crawl_statistics`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/crawl_statistics`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CrawlStatistics response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -93,7 +93,7 @@ public isolated client class Client {
     # + frequency - Aggregation frequency 
     # + return - Successful operation 
     remote isolated function getCrawlStatisticsByFrequency(string username, string projectSlug, string analysisSlug, string frequency, int? 'limit = ()) returns CrawlStatisticsTime|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/crawl_statistics/time`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/crawl_statistics/time`;
         map<anydata> queryParam = {"limit": 'limit, "frequency": frequency};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -109,7 +109,7 @@ public isolated client class Client {
     # + listType - URLs list type (crawled URLs or error URLs) 
     # + return - Successful operation 
     remote isolated function getCrawlStatisticsUrls(string username, string projectSlug, string analysisSlug, string listType) returns json[]|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/crawl_statistics/urls/${listType}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/crawl_statistics/urls/${getEncodedUri(listType)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -126,7 +126,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getGanalyticsOrphanURLs(string username, string projectSlug, string analysisSlug, string medium, string 'source, int? page = (), int? size = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/ganalytics/orphan_urls/${medium}/${'source}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/ganalytics/orphan_urls/${getEncodedUri(medium)}/${getEncodedUri('source)}`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + analysisSlug - Analysis' identifier 
     # + return - Successful operation 
     remote isolated function getLinksPercentiles(string username, string projectSlug, string analysisSlug) returns LinksPercentiles|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/links/percentiles`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/links/percentiles`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         LinksPercentiles response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -154,7 +154,7 @@ public isolated client class Client {
     # + analysisSlug - Analysis' identifier 
     # + return - Successful operation 
     remote isolated function getPageRankLost(string username, string projectSlug, string analysisSlug) returns PageRankLost|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/pagerank/lost`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/pagerank/lost`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         PageRankLost response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -167,7 +167,7 @@ public isolated client class Client {
     # + analysisSlug - Analysis' identifier 
     # + return - Successful operation 
     remote isolated function getSitemapsReport(string username, string projectSlug, string analysisSlug) returns SitemapsReport|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/sitemaps/report`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/sitemaps/report`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         SitemapsReport response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -182,7 +182,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getSitemapsSamplesOutOfConfig(string username, string projectSlug, string analysisSlug, int? page = (), int? size = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/sitemaps/samples/out_of_config`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/sitemaps/samples/out_of_config`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -199,7 +199,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getSitemapsSamplesSitemapsOnly(string username, string projectSlug, string analysisSlug, int? page = (), int? size = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/sitemaps/samples/sitemap_only`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/sitemaps/samples/sitemap_only`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -216,7 +216,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getLinksTopDomains(string username, string projectSlug, string analysisSlug, int? page = (), int? size = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/top_domains/domains`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/top_domains/domains`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -233,7 +233,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getLinksTopSubdomains(string username, string projectSlug, string analysisSlug, int? page = (), int? size = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/features/top_domains/subdomains`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/features/top_domains/subdomains`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -252,7 +252,7 @@ public isolated client class Client {
     # + payload - Query urls 
     # + return - Successful operation 
     remote isolated function getUrls(string username, string projectSlug, string analysisSlug, UrlsQuery payload, string area = "current", int? page = (), int? size = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls`;
         map<anydata> queryParam = {"area": area, "page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -260,7 +260,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2004 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2004 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Query aggregator
@@ -272,7 +272,7 @@ public isolated client class Client {
     # + payload - Aggregated query urls 
     # + return - Successful operation 
     remote isolated function getUrlsAggs(string username, string projectSlug, string analysisSlug, UrlsAggsQueries payload, string area = "current") returns json[]|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/aggs`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/aggs`;
         map<anydata> queryParam = {"area": area};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -280,7 +280,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets an Analysis datamodel
@@ -291,7 +291,7 @@ public isolated client class Client {
     # + area - Analysis context to execute the queries 
     # + return - Successful operation 
     remote isolated function getUrlsDatamodel(string username, string projectSlug, string analysisSlug, string area = "current") returns CrawlDatamodel|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/datamodel`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/datamodel`;
         map<anydata> queryParam = {"area": area};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -308,7 +308,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getUrlsExports(string username, string projectSlug, string analysisSlug, int? page = (), int? size = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/export`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/export`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -325,7 +325,7 @@ public isolated client class Client {
     # + payload - Query urls 
     # + return - Successful operation 
     remote isolated function createUrlsExport(string username, string projectSlug, string analysisSlug, UrlsQuery payload, string area = "current") returns CsvExportStatus|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/export`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/export`;
         map<anydata> queryParam = {"area": area};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -333,7 +333,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CsvExportStatus response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CsvExportStatus response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Checks the status of an CSVUrlExportJob object
@@ -344,7 +344,7 @@ public isolated client class Client {
     # + urlExportId - Url Export ID 
     # + return - Successful operation 
     remote isolated function getUrlsExportStatus(string username, string projectSlug, string analysisSlug, string urlExportId) returns CsvExportStatus|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/export/${urlExportId}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/export/${getEncodedUri(urlExportId)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         CsvExportStatus response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -359,7 +359,7 @@ public isolated client class Client {
     # + payload - Aggregated url query 
     # + return - Successful operation 
     remote isolated function getUrlsSuggestedFilters(string username, string projectSlug, string analysisSlug, UrlsAggsQuery payload, string area = "current") returns UrlsAggsQuery|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/suggested_filters`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/suggested_filters`;
         map<anydata> queryParam = {"area": area};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -367,7 +367,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UrlsAggsQuery response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UrlsAggsQuery response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets the detail of an URL for an analysis
@@ -379,7 +379,7 @@ public isolated client class Client {
     # + fields - comma separated list of fields to return (c.f. URLs Datamodel) 
     # + return - Successful operation 
     remote isolated function getUrlDetail(string username, string projectSlug, string analysisSlug, string url, string[]? fields = ()) returns UrlDetail|error {
-        string resourcePath = string `/analyses/${username}/${projectSlug}/${analysisSlug}/urls/${url}`;
+        string resourcePath = string `/analyses/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/${getEncodedUri(analysisSlug)}/urls/${getEncodedUri(url)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -395,7 +395,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getUserProjects(string username, int? page = (), int? size = ()) returns InlineResponse2006|error {
-        string resourcePath = string `/projects/${username}`;
+        string resourcePath = string `/projects/${getEncodedUri(username)}`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -409,12 +409,12 @@ public isolated client class Client {
     # + projectSlug - Project's identifier 
     # + return - Successful operation 
     remote isolated function testUrlRewritingRules(string username, string projectSlug) returns URLRewritingRulesSerializer|error {
-        string resourcePath = string `/projects/${username}/${projectSlug}/features/url_rewriting/rules_validator`;
+        string resourcePath = string `/projects/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/features/url_rewriting/rules_validator`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        URLRewritingRulesSerializer response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        URLRewritingRulesSerializer response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List all the project's saved filters (each filter's name, ID and filter value)
@@ -425,7 +425,7 @@ public isolated client class Client {
     # + size - Page Size 
     # + return - Successful operation 
     remote isolated function getSavedFilters(string username, string projectSlug, int? page = (), int? size = ()) returns InlineResponse2007|error {
-        string resourcePath = string `/projects/${username}/${projectSlug}/filters`;
+        string resourcePath = string `/projects/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/filters`;
         map<anydata> queryParam = {"page": page, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -440,7 +440,7 @@ public isolated client class Client {
     # + identifier - Saved Filter's identifier 
     # + return - Successful operation 
     remote isolated function getSavedFilter(string username, string projectSlug, string identifier) returns ProjectSavedFilter|error {
-        string resourcePath = string `/projects/${username}/${projectSlug}/filters/${identifier}`;
+        string resourcePath = string `/projects/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/filters/${getEncodedUri(identifier)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ProjectSavedFilter response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -456,7 +456,7 @@ public isolated client class Client {
     # + payload - Aggregated query urls 
     # + return - Successful operation 
     remote isolated function getProjectUrlsAggs(string username, string projectSlug, UrlsAggsQueries payload, string area = "current", string? lastAnalysisSlug = (), int nbAnalyses = 20) returns Default|error {
-        string resourcePath = string `/projects/${username}/${projectSlug}/urls/aggs`;
+        string resourcePath = string `/projects/${getEncodedUri(username)}/${getEncodedUri(projectSlug)}/urls/aggs`;
         map<anydata> queryParam = {"area": area, "last_analysis_slug": lastAnalysisSlug, "nb_analyses": nbAnalyses};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -464,7 +464,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Default response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Default response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

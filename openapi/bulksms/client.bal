@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [BulkSMS API v1](https://www.bulksms.com/developer/) OpenAPI Specification.
@@ -91,7 +95,7 @@ public isolated client class Client {
     # + id - The `id` of the webhook 
     # + return - The properties of a specific webhook 
     remote isolated function getWebhookByID(string id) returns Webhook|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         Webhook response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -101,7 +105,7 @@ public isolated client class Client {
     # + payload - Contains the new property values for the webhook 
     # + return - The properties of the updated webhook 
     remote isolated function updateWebhook(string id, WebhookEntry payload) returns Webhook|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -113,8 +117,8 @@ public isolated client class Client {
     # + id - The `id` of the webhook 
     # + return - The webhook was deleted successfully 
     remote isolated function deleteWebhook(string id) returns http:Response|error {
-        string resourcePath = string `/webhooks/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets profile
@@ -174,7 +178,7 @@ public isolated client class Client {
     # + id - The `id` of the sent message 
     # + return - An array of related messages.  If the `id` is not a sent message, the array will be empty. 
     remote isolated function getSentMessages(string id) returns Message[]|error {
-        string resourcePath = string `/messages/${id}/relatedReceivedMessages`;
+        string resourcePath = string `/messages/${getEncodedUri(id)}/relatedReceivedMessages`;
         Message[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -183,7 +187,7 @@ public isolated client class Client {
     # + id - The `id` of the message you want to retrieve 
     # + return - The message detail 
     remote isolated function getMessage(string id) returns Message|error {
-        string resourcePath = string `/messages/${id}`;
+        string resourcePath = string `/messages/${getEncodedUri(id)}`;
         Message response = check self.clientEp->get(resourcePath);
         return response;
     }

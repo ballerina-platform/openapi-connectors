@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type FunctionalityRightInfoArr FunctionalityRightInfo[];
 
@@ -186,7 +188,7 @@ public type FilterOperatorName string;
 
 public type ReportByChannel record {
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
     # The catalog product count
     int catalogProductCount;
     # The enabled product count
@@ -292,13 +294,13 @@ public type OrderIdentifierWithETag record {
 # Describe the prorata info based on your previous invoice
 public type PreviousFixPeriodInvoiceProrataInfo record {
     # The prorata amount
-    float computedProrataToBeDeducted?;
+    decimal computedProrataToBeDeducted?;
     # The previous invoice number
     string invoiceNumber?;
     # The amount to be payed of the previous invoice
-    float amountToBePaid?;
+    decimal amountToBePaid?;
     # The amout after tax of the previous invoice
-    float amountAfterTax?;
+    decimal amountAfterTax?;
     # The contract id related to the previous invoice
     string contractId?;
     # The fixed end period of the previous invoice
@@ -706,7 +708,7 @@ public type ProductOverridesWithCatalogValues record {
 public type ReportByDayGlobalByChannel record {
     *ReportByDayGlobalAllChannels;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
 };
 
 # Indicate the duplicate product sku strategy.
@@ -825,7 +827,7 @@ public type BeezUPColumnConfiguration record {
     # /!\ ONLY AVAILABLE ON CATALOG COLUMN NOT ON CUSTOM COLUMNS!!
     # If true, an error happen at the second occurence of the same value for this column
     # This information will be used during the importation process and later for mapping proposal
-    boolean unique?;
+    boolean unique = false;
     # Importance of the column
     BeezupCommonColumnimportance columnImportance;
     # Data type of the column, will be used for parsing and for consolidation proces
@@ -908,6 +910,7 @@ public type UnmapCategoryRequest record {
 };
 
 # Footer Content HTML
+@constraint:String {maxLength: 1000}
 public type FooterContentHtml string;
 
 public type LinksGetmarketplacechannelcatalogslink record {
@@ -1012,7 +1015,7 @@ public type ClickIncludedAndVariablePrice record {
     # Click included
     int clickIncluded?;
     # The pricing applied for this range
-    float variablePrice?;
+    decimal variablePrice?;
 };
 
 # The channel category column overrides
@@ -1076,7 +1079,7 @@ public type StandardOfferLinks record {
 public type ChannelCatalogMarketplaceIntegerProperty record {
     *ChannelCatalogMarketplaceProperty;
     # Indicate the default values of the property
-    int[] 'default?;
+    int[] default?;
 };
 
 # The alert name
@@ -1101,6 +1104,7 @@ public type OrderListLinks record {
 public type PerformanceIndicatorFormulaOperatorName string;
 
 # Indicates the page number
+@constraint:Int {minValue: 1}
 public type BeezupCommonPagenumber int;
 
 public type LinksGetmarketplaceaccountssynchronizationlink record {
@@ -1128,6 +1132,7 @@ public type LinksMoveuprulelink record {
 public type BeezupCommonStoreid string;
 
 # Product VAT in percent
+@constraint:Number {maxValue: 100}
 public type ProductVATPercent decimal;
 
 # Card Verification Code
@@ -1372,6 +1377,7 @@ public type OrderOperationResponse record {
 };
 
 # Can be null. The billing period in month based on /billingPeriods
+@constraint:Int {minValue: 1}
 public type BillingPeriodInMonth int;
 
 public type CatalogIndexLinks record {
@@ -1495,7 +1501,8 @@ public type ProductOverrides record {
 };
 
 public type ClearMerchantOrderInfoListRequest record {
-    OrderIdentifier[100] orders;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    OrderIdentifier[] orders;
 };
 
 public type LinksCatalogDeletecustomcolumnlink record {
@@ -1645,6 +1652,7 @@ public type InputConfiguration record {
     # Can be null. Use to transform multiple files with an XSLT file.
     string transformFileUrl?;
     # The list of files to get and read
+    @constraint:Array {minLength: 1}
     InputFileConfiguration[] files;
 };
 
@@ -1671,7 +1679,9 @@ public type LinksConfigurechannelcatalogexclusionfilterscopylink record {
 };
 
 public type GetChannelCatalogProductInfoListRequest record {
+    @constraint:Int {minValue: 1}
     int pageNumber;
+    @constraint:Int {minValue: 100}
     int pageSize;
     ProductSetVisibilityCriteria criteria;
     # Search overridden products. If null the filter will not be taken in account.
@@ -1726,16 +1736,19 @@ public type ExclusionFilter record {
     # The exclusion filter name
     ExclusionFilterName name;
     # The position of the exclusion filter
+    @constraint:Int {minValue: 1}
     int position;
     # Indicate the filter's group. All filters in the same group means an "AND" operation in the filter group
     string groupId;
     # Indicate the filter group position. This information is used for the UI purpose and must be unique in the filter group.
+    @constraint:Int {minValue: 1}
     int positionInGroup;
     # The channel column identifier
     BeezupCommonChannelcolumnid channelColumnId;
     # The exclusion filter operator name
     FilterOperatorName operatorName;
     # The value indicate by the user when the filter operation requires it.
+    @constraint:String {maxLength: 4000}
     string value?;
     # indicates if the filter is currently enable.
     boolean enabled;
@@ -1755,6 +1768,7 @@ public type ChannelCategorySettings record {
 public type ChannelCatalogMarketplacePropertyName string;
 
 # The offer id based on /offers. Not a free offer of course.
+@constraint:Int {minValue: 1}
 public type OfferId int;
 
 # order invoice url
@@ -1786,6 +1800,7 @@ public type ChannelCatalogMarketplaceSettingDiscriminatorType string;
 # Describe how to get and read a file
 public type InputFileConfiguration record {
     # The file number starting by 1
+    @constraint:Int {minValue: 1}
     int fileNumber;
     # Describe the way to download the file
     InputFileFetchConfiguration fetch;
@@ -1942,9 +1957,7 @@ public type LinksSaveprofilepictureinfolink record {
 # The exclusion filter name
 public type ExclusionFilterName string;
 
-public type ReportByProductResponseLinks record {
-    *ReportByCommonResponseLinks;
-};
+public type ReportByProductResponseLinks ReportByCommonResponseLinks;
 
 public type LinksAutoConfigureautoimportintervallink record {
     *BeezupCommonLink3;
@@ -1970,9 +1983,11 @@ public type ReportFiltersLinks record {
 public type ReportAdvancedFilters record {
     MarginType marginType;
     # If the margin type is 'Global', indicate the percentage of sale price.
+    @constraint:Int {maxValue: 100}
     int globalMarginPercent?;
     LinkClickToOrderType linkClickToOrderType;
     # If the linkOrderType is OnClickDate, indicate the max day to search the click from the order
+    @constraint:Int {maxValue: 180}
     int linkClickToOrderMaxDay?;
     # If true, you will get the only the orders with payment validated. Otherwise, you will get all orders validated or not.
     boolean onlyPaymentValidatedOrders;
@@ -2004,9 +2019,9 @@ public type LinksChangeorderlink record {
 # Describe the billing period information related to the offer.
 public type ContractBillingPeriodInfo record {
     # The amount discounted related to the billing period
-    float amountBillingPeriodDiscount?;
+    decimal amountBillingPeriodDiscount?;
     # The discount percent related to the billing period
-    float billingPeriodPercentDiscount?;
+    decimal billingPeriodPercentDiscount?;
     # Can be null. The billing period in month based on /billingPeriods
     BillingPeriodInMonth billingPeriodInMonth?;
 };
@@ -2024,7 +2039,7 @@ public type BeezupCommonLinkparameter3 record {
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
     record {} value?;
-    boolean required?;
+    boolean required = false;
     # * path: if the parameter must be pass in the path uri
     # * header: if the parameter must be passed in http header
     # * query: if the parameter must be passed in querystring
@@ -2095,9 +2110,9 @@ public type Invoice record {
     # Your invoice number
     InvoiceNumber invoiceNumber;
     # The amount of your invoice
-    float amount;
+    decimal amount;
     # The remaining amount to be paid for this invoice
-    float amountToBePaid;
+    decimal amountToBePaid;
     # The currency code <a href="https://en.wikipedia.org/wiki/ISO_4217">(ISO 4217)</a>
     BeezupCommonCurrencycode currencyCode;
     # The payment status
@@ -2248,11 +2263,11 @@ public type ContractInfo record {
     # The trial period in month
     int trialPeriodInMonth?;
     # The percent discount related to the billing period
-    float billingPeriodPercentDiscount?;
+    decimal billingPeriodPercentDiscount?;
     # The discount duration in month
     int discountDurationInMonth?;
     # The percent of the discount
-    float percentDiscount?;
+    decimal percentDiscount?;
     # The offer id based on /offers. Not a free offer of course.
     OfferId offerId?;
     # The store count you want to have in your contract.
@@ -2264,7 +2279,7 @@ public type ContractInfo record {
     # The billing period in month
     int billingPeriodInMonth?;
     # The fixed price of your contract
-    float fixedPrice?;
+    decimal fixedPrice?;
     # The offer name based on /offers
     string offerName?;
     # The currency code <a href="https://en.wikipedia.org/wiki/ISO_4217">(ISO 4217)</a>
@@ -2276,7 +2291,7 @@ public type ContractInfo record {
     # The click included
     int clickIncluded?;
     # Additional click price
-    float additionalClickPrice?;
+    decimal additionalClickPrice?;
     # The IP of the user who creates the contract
     string ipUserCreation?;
     # The IP of the user who modified the contract
@@ -2296,7 +2311,7 @@ public type ContractInfo record {
 public type ReportByDayByChannel record {
     *ReportByDayAllChannels;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
 };
 
 # The message contains the offer identifier required to execute this operation
@@ -2438,27 +2453,27 @@ public type PerformanceIndicatorFormulaParameterType string;
 # Describe the pricing information related to the offer.
 public type ContractMoneyInfo record {
     # The amount excluding taxes and excluding code promo discount including billing period discount.
-    float amountExcludingTaxesAndExcludingCodePromoDiscountIncludingBillingPeriodDiscount?;
+    decimal amountExcludingTaxesAndExcludingCodePromoDiscountIncludingBillingPeriodDiscount?;
     # The amount excluding taxes including discounts.
-    float amountExcludingTaxesIncludingDiscounts?;
+    decimal amountExcludingTaxesIncludingDiscounts?;
     # The taxes excluding discount including billing period discount.
-    float amountTaxesExcludingDiscountIncludingBillingPeriodDiscount?;
+    decimal amountTaxesExcludingDiscountIncludingBillingPeriodDiscount?;
     # The amount including taxes excluding discount including billing period discount.
-    float amountIncludingTaxesExcludingDiscountIncludingBillingPeriodDiscount?;
+    decimal amountIncludingTaxesExcludingDiscountIncludingBillingPeriodDiscount?;
     # The currency code <a href="https://en.wikipedia.org/wiki/ISO_4217">(ISO 4217)</a>
     BeezupCommonCurrencycode currencyCode?;
     # The VAT percent.
-    float vatPercent?;
+    decimal vatPercent?;
     # The amount excluding taxes including discounts per month.
-    float amountExcludingTaxesIncludingDiscountsPerMonth?;
+    decimal amountExcludingTaxesIncludingDiscountsPerMonth?;
     # The amount excluding taxes and excluding discounts.
-    float amountExcludingTaxesAndExcludingDiscounts?;
+    decimal amountExcludingTaxesAndExcludingDiscounts?;
     # Taxes including discounts.
-    float amountTaxesIncludingDiscounts?;
+    decimal amountTaxesIncludingDiscounts?;
     # The amount including taxes including discounts.
-    float amountIncludingTaxesIncludingDiscounts?;
+    decimal amountIncludingTaxesIncludingDiscounts?;
     # The initial offer fixed price.
-    float initialOfferFixedPrice?;
+    decimal initialOfferFixedPrice?;
 };
 
 public type LinksGetpubliclistofvalueslink record {
@@ -2611,9 +2626,9 @@ public type InputFileReadConfiguration record {
     # CSV or XML
     FileFormatStrategy format;
     # The encoding type. UTF-8 by default.
-    string encodingTypeName?;
+    string encodingTypeName = "UTF-8";
     # The culture name of the file.  (i.e. fr-FR). If null then Invariant culture will be used.
-    string cultureName?;
+    string cultureName = "";
     # The CSV file description
     InputFileReadCsvConfiguration csvFileReadProperties?;
     # The XML file description
@@ -2627,7 +2642,7 @@ public type VariableModelInfo record {
     # The overflow click count
     int overflowClickCount;
     # The overflow click price
-    float overflowClickPrice;
+    decimal overflowClickPrice;
 };
 
 # If non null, culture used to parse the value to the storage type of this column\r\n will be used for parsing and for consolidation proces
@@ -2839,9 +2854,11 @@ public type LinksImportationMapcatalogcolumnlink record {
 };
 
 # Shipping cost VAT in percent
+@constraint:Number {maxValue: 100}
 public type ShippingVATPercent decimal;
 
 # Indicate the item count per page
+@constraint:Int {minValue: 25, maxValue: 100}
 public type BeezupCommonPagesize int;
 
 public type LinksImportationDeletecustomcolumnlink record {
@@ -2964,7 +2981,8 @@ public type GetProductsRequest record {
     BeezupCommonPagenumber pageNumber;
     # Indicate the item count per page
     BeezupCommonPagesize pageSize;
-    BeezupCommonCatalogcolumnid[5] columnIdList?;
+    @constraint:Array {maxLength: 5, minLength: 1}
+    BeezupCommonCatalogcolumnid[] columnIdList?;
     # Search for existing products or not. If null you will received both.
     boolean exists?;
     # Filter with a list of product identifier
@@ -2988,7 +3006,7 @@ public type GetProductsRequest record {
 # Products optimisatisation copied
 public type CopyOptimisationResponse record {
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
     # The catalog product count
     int catalogProductCount;
     # The enabled product count
@@ -3069,7 +3087,7 @@ public type InputFileReadCsvConfiguration record {
     # Indicate the separator of the values in the CSV file. Generally ";"
     CsvSeparator csvSeparator;
     # Indicate the text qualifier of the CSV file. Generally the value is "
-    string csvTextQualifier?;
+    string csvTextQualifier = "\"";
 };
 
 public type LinksGetstoretrackingstatuslink record {
@@ -3233,7 +3251,7 @@ public type GetImportationProductsReportResponse record {
 
 public type BonusInfo record {
     BonusType bonusType;
-    float amount;
+    decimal amount;
 };
 
 # The execution identifier
@@ -3246,7 +3264,8 @@ public type LinksGetlegacytrackingchannelcatalogslink record {
 # The BeezUP column name
 public type BeezupCommonBeezupcolumnname string;
 
-public type ProductColumnsToDisplay BeezupCommonCatalogcolumnid[1];
+@constraint:Array {maxLength: 1}
+public type ProductColumnsToDisplay BeezupCommonCatalogcolumnid[];
 
 public type LinksCatalogGetcustomcolumnexpressionlink record {
     *BeezupCommonLink3;
@@ -3274,6 +3293,7 @@ public type SetMerchantOrderInfoListRequestItem record {
 };
 
 # Indicate the order count per page
+@constraint:Int {minValue: 25, maxValue: 100}
 public type PageSize int;
 
 # The URL <a href="https://en.wikipedia.org/wiki/URL">https://en.wikipedia.org/wiki/URL</a>
@@ -3398,6 +3418,7 @@ public type ImportAlreadyInProgressResponseLinks record {
 };
 
 # The channel category level starting from 1
+@constraint:Int {minValue: 1, maxValue: 9}
 public type ChannelCategoryLevel int;
 
 # Indicate the default configuration of the cost on this channel.
@@ -3556,7 +3577,7 @@ public type LinkParameter3 record {
     string label?;
     # The value of the parameter. It can be an integer a string or an object.
     record {} value?;
-    boolean required?;
+    boolean required = false;
     # * path: if the parameter must be pass in the path uri
     # * header: if the parameter must be passed in http header
     # * query: if the parameter must be passed in querystring
@@ -3666,7 +3687,7 @@ public type ReportFilterPeriodType string;
 public type ChannelCatalogMarketplaceBooleanProperty record {
     *ChannelCatalogMarketplaceProperty;
     # Indicate the default values of the property
-    boolean 'default?;
+    boolean default?;
 };
 
 # The reporting related to a change order operation
@@ -3727,6 +3748,7 @@ public type ChannelHeader record {
 };
 
 # The store count you want to have in your contract.
+@constraint:Int {minValue: 1}
 public type StoreCount int;
 
 # Links to know if the user can create a rule or run all rules
@@ -3756,6 +3778,7 @@ public type LinksGetchannelcatalogproductinfolink record {
 public type ErrorCode string;
 
 # The Stock Keeping Unit (SKU), i.e. a merchant-specific identifier for a product or service, or the product to which the offer refers. http://schema.org/sku
+@constraint:String {maxLength: 50}
 public type Sku string;
 
 public type BeezupCommonApisettingsstatus string;
@@ -3890,7 +3913,7 @@ public type BillingPeriod record {
     # The billing period in month
     int billingPeriodInMonth;
     # The discount percentage related to this billing period
-    float discountPercentage;
+    decimal discountPercentage;
 };
 
 # The catalog column named by the user (catalog or custom column)
@@ -4001,7 +4024,7 @@ public type ReportFilterLinks record {
 # Describe the click information related to the offer.
 public type ContractClickInfo record {
     # The addition click price in the offer
-    float additionalClickPrice?;
+    decimal additionalClickPrice?;
     # The click included in the offer
     int clickIncluded?;
     # The click included in your current contract
@@ -4162,6 +4185,7 @@ public type LinksDeletereportfilterlink record {
 };
 
 # Expiration Month
+@constraint:Int {minValue: 1, maxValue: 12}
 public type ExpirationMonth int;
 
 public type LinksCatalogindexlink record {
@@ -4211,6 +4235,7 @@ public type CustomerIndex record {
 };
 
 # Indicates the page number
+@constraint:Int {minValue: 1}
 public type PageNumber int;
 
 public type LinksConfigureautomatictransitionslink record {
@@ -4290,7 +4315,7 @@ public type TrackedOrder record {
     # The utc date of the order
     string utcDate;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
     # The merchant order identifier
     string merchantOrderId;
     # The total amount of the order
@@ -4382,7 +4407,7 @@ public type InputFileFetchConfiguration record {
     # Indicate the relative path in the compressed file
     string compressedRelativePath?;
     # Indicate the download time out in second
-    int downloadTimeout?;
+    int downloadTimeout = 30;
 };
 
 public type LinksGetofferlink record {
@@ -4422,9 +4447,7 @@ public type OrderExportationReporting record {
     string warningMessage?;
 };
 
-public type ReportByChannelResponseLinks record {
-    *ReportByCommonResponseLinks;
-};
+public type ReportByChannelResponseLinks ReportByCommonResponseLinks;
 
 # The filter operator
 public type FilterOperator record {
@@ -4494,7 +4517,7 @@ public type ContractStoreInfo record {
     # The owned store count.
     int ownedStoreCount?;
     # The additional store price.
-    float additionalStorePrice?;
+    decimal additionalStorePrice?;
     # The store count included in the offer.
     int storeIncluded?;
 };
@@ -4502,15 +4525,15 @@ public type ContractStoreInfo record {
 # Describe the discount information related to the offer.
 public type ContractDiscountInfo record {
     # The amount discounted per month
-    float amountCodePromoDiscountPerMonth?;
+    decimal amountCodePromoDiscountPerMonth?;
     # Duration of the discount in month
     int discountDurationInMonth?;
     # Percentage of the discount
-    float percentDiscount?;
+    decimal percentDiscount?;
     # Indicate the validaty of the discount
     PromotionalCodeValidity promotionalCodeValidity?;
     # The discount amount
-    float amountCodePromoDiscount?;
+    decimal amountCodePromoDiscount?;
     # The discount code
     string couponDiscountCode?;
     # Internal use: The discount id
@@ -4602,9 +4625,10 @@ public type ConfigureCategoryRequest record {
 # The message request to schedule the auto import
 public type ScheduleAutoImportRequest record {
     # Indicate the time span you want to import your catalog. (i.e. "21:00:00" to import your catalog at 9PM)
+    @constraint:Array {minLength: 1}
     string[] schedules;
     # If null the local time zone name will be "Romance Standard Time"
-    string localTimeZoneName?;
+    string localTimeZoneName = "Romance Standard Time";
 };
 
 # The publication history for an account
@@ -4688,7 +4712,7 @@ public type PhoneNumber string;
 # The catalog column configuration
 public type CatalogColumn record {
     # IF true, the product values of this column will be not taken in account during the importation process
-    boolean ignored?;
+    boolean ignored = false;
     # Describe how you want to manage the duplication of the product value
     DuplicateProductValueConfiguration duplicateProductValueConfiguration?;
     # The catalog column identifier
@@ -4710,7 +4734,7 @@ public type TrackedClick record {
     # The user IP address for the click
     string ipAddress;
     # The basic info related to a channel
-    BeezupCommonChannelbasicinfo 'channel;
+    BeezupCommonChannelbasicinfo channel;
 };
 
 # For all catalog categories the current mapping applied
@@ -4734,6 +4758,7 @@ public type AutoImportConfiguration record {
     # The user identifier
     BeezupCommonUserid scheduledByUserId?;
     # Indicate the scheduling value. If the scheduling type is Interval then the value will be a duration otherwise the values will be the time.
+    @constraint:Array {minLength: 1}
     string[] schedulingValue;
     # Indicate if the auto import is in pause or not.
     boolean paused;
@@ -4744,7 +4769,7 @@ public type AutoImportConfiguration record {
     # Describe how you want to manage the duplication of the product value
     DuplicateProductValueConfiguration duplicateProductConfiguration;
     # Indicate the time zone name of the scheduling. If the scheduling type is "Schedule"
-    string schedulingLocalTimeZoneName?;
+    string schedulingLocalTimeZoneName = "Romance Standard Time";
 };
 
 # This is the index of the channel catalog API
@@ -4792,21 +4817,24 @@ public type ChannelCatalogMarketplaceProperty record {
     # Indicate the description of the property
     string description?;
     # Indicate the position of the property in the display group
+    @constraint:Int {minValue: 1}
     int position;
     # Indicate if the value cannot be changed. This is used for example for ebay token that should not be changed.
     boolean readOnly;
     # Indicates the minimum size of the property value
-    int minLength?;
+    int minLength = 0;
     # Indicates the maximum size of the property value
+    @constraint:Int {minValue: 1}
     int maxLength?;
     # Indicates the minimum item count of the property value.
-    int minItems?;
+    int minItems = 1;
     # Indicates the maximum item count of the property value
-    int maxItems?;
+    @constraint:Int {minValue: 1}
+    int maxItems = 1;
     # Describe the way you have to follow to get access to the LOV
     BeezupCommonLovlink3 lovLink?;
     # Indicates if the property value must be in the list of value.
-    boolean lovRequired?;
+    boolean lovRequired = false;
     # Indicate if the property is required or not
     boolean required;
     # Indicates the offer identifier required to configure this property.
@@ -4846,7 +4874,7 @@ public type StandardOffer record {
     # The offer name
     string name;
     # The additional click price
-    float additionalClickPrice?;
+    decimal additionalClickPrice?;
     # The included click
     int includedClick?;
     # UI purpose. Is the offer is the most popular
@@ -4854,7 +4882,7 @@ public type StandardOffer record {
     # Is an old offer
     boolean isOldOffer?;
     # The fixed price of the offer
-    float fixedPrice?;
+    decimal fixedPrice?;
     # The currency code <a href="https://en.wikipedia.org/wiki/ISO_4217">(ISO 4217)</a>
     BeezupCommonCurrencycode currencyCode?;
     # UI purpose. The position of the offer
@@ -5005,6 +5033,7 @@ public type AnalyticsIndexLovLinks record {
 };
 
 # Header Content HTML
+@constraint:String {maxLength: 1000}
 public type HeaderContentHtml string;
 
 # The links related to an available channel
@@ -5085,7 +5114,7 @@ public type LinksGetorderindexlink record {
 public type ChannelCatalogMarketplaceNumberProperty record {
     *ChannelCatalogMarketplaceProperty;
     # Indicate the default values of the property
-    decimal[] 'default?;
+    decimal[] default?;
 };
 
 # The e-commerce software name of the merchant
@@ -5156,7 +5185,8 @@ public type SetMerchantOrderInfoListRequest record {
     OrderMerchantecommercesoftwarename order_MerchantECommerceSoftwareName;
     # The e-commece software version of the merchant
     OrderMerchantecommercesoftwareversion order_MerchantECommerceSoftwareVersion;
-    SetMerchantOrderInfoListRequestItem[100] orders;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    SetMerchantOrderInfoListRequestItem[] orders;
 };
 
 public type LinkParameterProperty3 record {
@@ -5218,9 +5248,7 @@ public type UserErrorMessage record {
     UserErrorMessageArguments arguments?;
 };
 
-public type CreateContract record {
-    *OfferRequest;
-};
+public type CreateContract OfferRequest;
 
 # The channel catalog product info list
 public type ChannelCatalogProductInfoList record {
@@ -5236,9 +5264,7 @@ public type GetImportationReportResponseDiff record {
     int unchangedCount?;
 };
 
-public type ReportByCategoryResponseLinks record {
-    *ReportByCommonResponseLinks;
-};
+public type ReportByCategoryResponseLinks ReportByCommonResponseLinks;
 
 # Is the alert enable ?
 public type AlertEnabled boolean;
@@ -5549,7 +5575,7 @@ public type PublicchannelindexLinks record {
 public type ChannelCatalogMarketplaceStringProperty record {
     *ChannelCatalogMarketplaceProperty;
     # Indicate the default values of the property
-    string[] 'default?;
+    string[] default?;
 };
 
 public type ChannelCatalogMarketplacePropertiesLinks record {
@@ -5636,7 +5662,7 @@ public type ClickIncludedAndAdditionalClickPrice record {
     # The click included
     int clickIncluded?;
     # The additional click price
-    float additionalClickPrice?;
+    decimal additionalClickPrice?;
 };
 
 # Describe a filter on a product's column.
@@ -5675,9 +5701,7 @@ public type Category record {
     int selfProductCount;
 };
 
-public type ExternallinksGetexternalconfigurationpagelink record {
-    *BeezupCommonLink3;
-};
+public type ExternallinksGetexternalconfigurationpagelink BeezupCommonLink3;
 
 # Your friend's user email
 public type FriendEmail string;
@@ -5737,6 +5761,7 @@ public type LinksUpdatestorelink record {
 };
 
 # Expiration Year
+@constraint:Int {minValue: 2017, maxValue: 9000}
 public type ExpirationYear int;
 
 # Copy the optimisation between 2 channels
@@ -5757,6 +5782,7 @@ public type ChannelCatalogMarketplacePropertyGroup record {
     # Indicate the code identifier of the group
     string name;
     # Indicate the position of the group
+    @constraint:Int {minValue: 1}
     int position;
     ChannelCatalogMarketplaceProperty[] properties;
 };

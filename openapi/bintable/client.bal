@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -52,7 +52,7 @@ public isolated client class Client {
     # + apiKey - The API key, which you can get from bintable.com website. 
     # + return - BIN data response 
     remote isolated function binLookup(string bin, string apiKey) returns ResponseItem|error {
-        string resourcePath = string `/${bin}`;
+        string resourcePath = string `/${getEncodedUri(bin)}`;
         map<anydata> queryParam = {"api_key": apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ResponseItem response = check self.clientEp->get(resourcePath);

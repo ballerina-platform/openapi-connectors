@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type InlineResponse2016Arr InlineResponse2016[];
 
@@ -59,6 +61,7 @@ public type ExtensionSchema record {
 };
 
 public type IdNotificationSubscriptionsBody1 record {
+    @constraint:Array {minLength: 1}
     NotificationSubscribable[] subscribables;
 };
 
@@ -81,6 +84,7 @@ public type AlertGroupingParameters record {
     TimeBasedAlertGroupingConfiguration|ContentBasedAlertGroupingConfiguration config?;
 };
 
+# 
 public type BusinessServiceIdImpactsBody record {
     string relation;
 };
@@ -260,6 +264,7 @@ public type ExtensionReference record {
 public type WeeklyRestriction record {
     *Restriction;
     # The first day of the weekly rotation schedule as [ISO 8601 day](https://en.wikipedia.org/wiki/ISO_week_date) (1 is Monday, etc.)
+    @constraint:Int {minValue: 1, maxValue: 7}
     int start_day_of_week;
 };
 
@@ -356,8 +361,10 @@ public type Team record {
     # The type of object being created.
     string 'type;
     # The name of the team.
+    @constraint:String {maxLength: 100}
     string name;
     # The description of the team.
+    @constraint:String {maxLength: 1024}
     string description?;
     TeamReference parent?;
 };
@@ -446,7 +453,7 @@ public type RulesetsBody record {
 };
 
 public type InlineResponse409 record {
-    InlineResponse409Error _error?;
+    InlineResponse409Error 'error?;
 };
 
 public type WebhooksubscriptionFilter record {
@@ -545,6 +552,7 @@ public type InlineResponse2005 record {
     BusinessService[] business_services;
 };
 
+# 
 public type BusinessServicesPriorityThresholdsBody record {
     BusinessServicespriorityThresholdsGlobalThreshold global_threshold;
 };
@@ -603,13 +611,14 @@ public type AlertCount record {
     # The count of resolved alerts
     int resolved?;
     # The total count of alerts
-    int 'all?;
+    int all?;
 };
 
 public type WebhooksubscriptionupdateWebhookSubscription record {
     # A short description of the webhook subscription.
     string description?;
     # The set of outbound event types the subscription will receive.
+    @constraint:Array {minLength: 1}
     string[] events?;
     WebhooksubscriptionupdateWebhookSubscriptionFilter filter?;
     # If true, a webhook will be sent. True is the default state. If false, a webhook will not be sent.
@@ -630,6 +639,7 @@ public type PhoneContactMethod record {
     *ContactMethod;
     string 'type?;
     # The 1-to-3 digit country calling code.
+    @constraint:Int {minValue: 1, maxValue: 1999}
     int country_code;
     # If true, this phone is capable of receiving SMS messages.
     boolean enabled?;
@@ -638,6 +648,7 @@ public type PhoneContactMethod record {
 };
 
 public type IdSubscribersBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscriber[] subscribers;
 };
 
@@ -742,6 +753,7 @@ public type Webhooksv1messageData record {
 };
 
 public type NotificationSubscriptionsUnsubscribeBody1 record {
+    @constraint:Array {minLength: 1}
     NotificationSubscribable[] subscribables;
 };
 
@@ -843,6 +855,7 @@ public type InlineResponse20032Incident record {
 public type MatchPredicate record {
     string 'type;
     # Required if the type is `contains`, `exactly` or `regex`.
+    @constraint:String {minLength: 1}
     string matcher?;
     # The email field that will attempt to use the matcher expression. Required if the type is `contains`, `exactly` or `regex`.
     string part;
@@ -1066,6 +1079,7 @@ public type ServiceDependenciesDisassociateBody record {
     ServiceDependenciesassociateRelationships[] relationships?;
 };
 
+# 
 public type IdOverridesBody record {
     Override[] overrides?;
 };
@@ -1079,14 +1093,14 @@ public type Extension record {
     # The name of the extension.
     string name;
     # The type of object being created.
-    string 'type?;
+    string 'type = "extension";
     # The url of the extension.
     string endpoint_url?;
     # The objects for which the extension applies
     ServiceReference[] extension_objects;
     ExtensionSchemaReference extension_schema;
     # Whether or not this extension is temporarily disabled; for example, a webhook extension that is repeatedly rejected by the server.
-    boolean temporarily_disabled?;
+    boolean temporarily_disabled = false;
     # The object that contains extension configuration values depending on the extension schema specification.
     record {} config?;
 };
@@ -1129,6 +1143,7 @@ public type EventruleactionscommonPriority record {
 };
 
 public type StatusUpdatesSubscribersBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscriber[] subscribers;
 };
 
@@ -1145,7 +1160,7 @@ public type Alert record {
     LogEntryReference first_trigger_log_entry?;
     IncidentReference incident?;
     # Whether or not an alert is suppressed. Suppressed alerts are not created with a parent incident.
-    boolean suppressed?;
+    boolean suppressed = false;
     # The magnitude of the problem as reported by the monitoring tool.
     string severity?;
     IntegrationReference integration?;
@@ -1273,6 +1288,7 @@ public type ScheduleReference record {
 public type TagsToAdd record {
     string 'type;
     # The label of the tag. Should be used when type is "tag".
+    @constraint:String {maxLength: 191}
     string label?;
     # The id of the tag. Should be used when type is "tag_reference".
     string id?;
@@ -1309,6 +1325,7 @@ public type InlineResponse20022 record {
     Incident incident;
 };
 
+# 
 public type InlineResponse20025 record {
     string relation?;
 };
@@ -1441,6 +1458,7 @@ public type EmailparserValueExtractors record {
     string 'type;
     string part;
     # The field name to set in the Incident object. Exactly one must use the `value_name` of `incident_key`
+    @constraint:String {minLength: 1}
     string value_name;
     string regex?;
     string starts_after?;
@@ -1480,6 +1498,7 @@ public type ServiceDependenciesassociateDependentService record {
     string 'type?;
 };
 
+# 
 public type InlineResponse20032 record {
     # Aggregate of past incidents
     InlineResponse20032PastIncidents[] past_incidents?;
@@ -1489,11 +1508,13 @@ public type InlineResponse20032 record {
     decimal 'limit?;
 };
 
+# 
 public type InlineResponse20031 record {
     # Outlier Incident information calculated over the same Service as the given Incident.
     InlineResponse20031OutlierIncident outlier_incident?;
 };
 
+# 
 public type InlineResponse20034 record {
     # A list of Related Incidents and their relationships.
     InlineResponse20034RelatedIncidents[] related_incidents?;
@@ -1665,6 +1686,7 @@ public type IncidentsIncidents record {
 };
 
 public type BusinessServicespriorityThresholdsGlobalThreshold record {
+    @constraint:String {minLength: 1}
     string id;
     decimal 'order;
 };
@@ -1743,6 +1765,7 @@ public type SnoozeLogEntry record {
 };
 
 public type IdUnsubscribeBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscriber[] subscribers;
 };
 
@@ -1763,7 +1786,7 @@ public type IncidentNote record {
     string id?;
     record {*Reference; string 'type?;} user?;
     # The means by which this Note was created. Has different formats depending on type.
-    IncidentnoteChannel 'channel?;
+    IncidentnoteChannel channel?;
     # The note content
     string content;
     # The time at which the note was submitted
@@ -1815,7 +1838,7 @@ public type AuditrecordMethod record {
 
 public type IdChannelBody record {
     # The parameters to update.
-    LogEntriesidchannelChannel 'channel;
+    LogEntriesidchannelChannel channel;
 };
 
 public type IdStatusUpdatesBody record {
@@ -1926,8 +1949,9 @@ public type Tag record {
     # a URL at which the entity is uniquely displayed in the Web app
     string? html_url?;
     # The type of object being created.
-    string created_type?;
+    string created_type = "tag";
     # The label of the tag.
+    @constraint:String {maxLength: 191}
     string label;
 };
 
@@ -1955,6 +1979,7 @@ public type MaintenanceWindowsBody record {
 };
 
 public type IdNotificationSubscriptionsBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscribable[] subscribables;
 };
 
@@ -2067,6 +2092,7 @@ public type Team2 record {
 };
 
 public type NotificationSubscriptionsUnsubscribeBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscribable[] subscribables;
 };
 
@@ -2140,7 +2166,7 @@ public type Channel record {
     # team
     record {} team?;
     # channel
-    record {} 'channel?;
+    record {} channel?;
 };
 
 public type IncidentUrgencyType record {
@@ -2155,7 +2181,8 @@ public type EscalationRule record {
     # The number of minutes before an unacknowledged incident escalates away from this rule.
     int escalation_delay_in_minutes;
     # The targets an incident should be assigned to upon reaching this rule.
-    EscalationTargetReference[10] targets;
+    @constraint:Array {maxLength: 10, minLength: 1}
+    EscalationTargetReference[] targets;
 };
 
 public type EscalationPoliciesIdBody record {
@@ -2309,6 +2336,7 @@ public type PushContactMethod record {
 
 public type User record {
     # The name of the user.
+    @constraint:String {maxLength: 100}
     string name;
     # The type of object being created.
     string 'type;
@@ -2327,6 +2355,7 @@ public type User record {
     # If true, the user has an outstanding invitation.
     boolean invitation_sent?;
     # The user's title.
+    @constraint:String {maxLength: 100}
     string job_title?;
     # The list of teams to which the user belongs. Account must have the `teams` ability to set this.
     TeamReference[] teams?;
@@ -2394,9 +2423,11 @@ public type InlineResponse2004Filters record {
     # The service_ids filter applied to the results.
     string[] service_ids?;
     # The priority_ids filter applied to the results.
-    string[5] priority_ids?;
+    @constraint:Array {maxLength: 5}
+    string[] priority_ids?;
     # The priority_names filter applied to the results.
-    string[5] priority_names?;
+    @constraint:Array {maxLength: 5}
+    string[] priority_names?;
 };
 
 public type AcknowledgerReference record {
@@ -2458,6 +2489,7 @@ public type EntityTypeidchangeTagsRemove record {
 };
 
 public type StatusUpdatesUnsubscribeBody record {
+    @constraint:Array {minLength: 1}
     NotificationSubscriber[] subscribers;
 };
 
@@ -2470,6 +2502,7 @@ public type EmailParser record {
     string action;
     MatchPredicate match_predicate;
     # Additional values that will be pulled in to the Incident object. Exactly one value extractor must have a `value_name` of `incident_key`.
+    @constraint:Array {minLength: 1}
     EmailparserValueExtractors[] value_extractors?;
 };
 
@@ -2498,7 +2531,7 @@ public type LogEntry record {
     # Time at which the log entry was created.
     string created_at?;
     # Polymorphic object representation of the means by which the action was channeled. Has different formats depending on type, indicated by channel[type]. Will be one of `auto`, `email`, `api`, `nagios`, or `timeout` if `agent[type]` is `service`. Will be one of `email`, `sms`, `website`, `web_trigger`, or `note` if `agent[type]` is `user`. See [below](https://developer.pagerduty.com/documentation/rest/log_entries/show#channel_types) for detailed information about channel formats.
-    Channel 'channel?;
+    Channel channel?;
     AgentReference agent?;
     # Optional field containing a note, if one was included with the log entry.
     string note?;
@@ -2523,6 +2556,7 @@ public type Addon record {
     # The type of Add-on.
     string 'type;
     # The name of the Add-on.
+    @constraint:String {maxLength: 100}
     string name;
     # The source URL to display in a frame in the PagerDuty UI. HTTPS is required.
     string src;
@@ -2543,10 +2577,12 @@ public type Integration record {
     # Specify for generic_email_inbound_integration. May override email_incident_creation
     string email_filter_mode?;
     # Specify for generic_email_inbound_integration.
+    @constraint:Array {minLength: 1}
     EmailParser[] email_parsers?;
     # Specify for generic_email_inbound_integration.
     string email_parsing_fallback?;
     # Specify for generic_email_inbound_integration.
+    @constraint:Array {minLength: 1}
     IntegrationEmailFilters[] email_filters?;
 };
 
@@ -2591,11 +2627,12 @@ public type WebhookSubscription record {
     # The type indicating the schema of the object.
     string 'type;
     # Determines whether this subscription will produce webhook events.
-    boolean active?;
+    boolean active = true;
     WebhooksubscriptionDeliveryMethod delivery_method;
     # A short description of the webhook subscription.
     string description?;
     # The set of outbound event types the webhook will receive.
+    @constraint:Array {minLength: 1}
     string[] events;
     WebhooksubscriptionFilter filter;
 };
@@ -2613,7 +2650,7 @@ public type EscalationPolicy record {
     # Escalation policy description.
     string description?;
     # The number of times the escalation policy will repeat after reaching the end of its escalation.
-    int num_loops?;
+    int num_loops = 0;
     # Determines how on call handoff notifications will be sent for users on the escalation policy. Defaults to "if_has_services".
     string on_call_handoff_notifications?;
     EscalationRule[] escalation_rules;
@@ -2630,9 +2667,9 @@ public type Service record {
     # The user-provided description of the service.
     string description?;
     # Time in seconds that an incident is automatically resolved if left open for that long. Value is `null` if the feature is disabled. Value must not be negative. Setting this field to `0`, `null` (or unset in POST request) will disable the feature.
-    int auto_resolve_timeout?;
+    int auto_resolve_timeout = 14400;
     # Time in seconds that an incident changes to the Triggered State after being Acknowledged. Value is `null` if the feature is disabled. Value must not be negative. Setting this field to `0`, `null` (or unset in POST request) will disable the feature.
-    int acknowledgement_timeout?;
+    int acknowledgement_timeout = 1800;
     # The date/time when this service was created
     string created_at?;
     # The current state of the Service. Valid statuses are:
@@ -2643,7 +2680,7 @@ public type Service record {
     # - `critical`: The service is enabled and has one or more triggered incidents.
     # - `maintenance`: The service is under maintenance, no new incidents will be triggered during maintenance mode.
     # - `disabled`: The service is disabled and will not have any new triggered incidents.
-    string status?;
+    string status = "active";
     # The date/time when the most recent incident was created for this service.
     string last_incident_timestamp?;
     EscalationPolicyReference escalation_policy;
@@ -2715,6 +2752,7 @@ public type Restriction record {
     # The start time in HH:mm:ss format.
     string start_time_of_day;
     # Only required for use with a `weekly_restriction` restriction type. The first day of the weekly rotation schedule as [ISO 8601 day](https://en.wikipedia.org/wiki/ISO_week_date) (1 is Monday, etc.)
+    @constraint:Int {minValue: 1, maxValue: 7}
     int start_day_of_week?;
 };
 
@@ -2772,6 +2810,7 @@ public type InlineResponse20011 record {
     decimal non_existent_count;
 };
 
+# 
 public type InlineResponse20014 record {
     InlineResponse20014GlobalThreshold global_threshold;
 };

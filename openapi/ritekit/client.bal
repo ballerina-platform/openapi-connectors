@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -177,7 +177,7 @@ public isolated client class Client {
     # + hashtag - Hashtag without # mark 
     # + return - OK 
     remote isolated function hashtagHistory(string hashtag) returns json|error {
-        string resourcePath = string `/v1/stats/history/${hashtag}`;
+        string resourcePath = string `/v1/stats/history/${getEncodedUri(hashtag)}`;
         map<anydata> queryParam = {"client_id": self.apiKeyConfig.clientId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);

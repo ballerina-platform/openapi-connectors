@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,20 +14,27 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ResourceinwarehouseresponseResource record {
     ResourceinwarehouseresponseResourceValues values?;
 };
 
 public type ContainerDimensions record {
     # This is the length of the container based on its Unit of Measurement (lengthUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float length?;
     # This is the width of the container based on its Unit of Measurement (widthUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float width?;
     # This is the width of the container based on its Unit of Measurement (widthUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float height?;
     # This is the weight of the container based on its Unit of Measurement (weightUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float weight?;
     # This is the maximum weight that the container can hold based on its Unit of Measurement (maxWeightUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float maxWeight?;
     # This is the Unit of Measurement for Container length (e.g. inches)
     string lengthUnit?;
@@ -48,6 +55,7 @@ public type GetCarrierProperties record {
     # This is the service level code associated with the carrier. There are multiple levels for one type of service. Each level has a specific code. (e.g. For FDX the codes are 1D, 2D, GD, etc.)
     string serviceLevelCode?;
     # Name of the carrier
+    @constraint:String {maxLength: 50, minLength: 1}
     string name?;
     # A boolean that indicates the carrier is a freight carrier. The value "1" (True) means this carrier supports heavy weight orders or large items.
     int isFreightCarrier?;
@@ -123,10 +131,13 @@ public type WarehouseinformationContainers record {
 # Sample Post request to create a new warehouse
 public type PostWarehouseRequest record {
     # A unique user-provided identifier for the warehouse in an external system.
+    @constraint:String {maxLength: 32, minLength: 1}
     string externalId?;
     # Name of the warehouse
+    @constraint:String {maxLength: 50, minLength: 1}
     string name;
     # This is the code assigned to the warehouse for easy reference.
+    @constraint:String {maxLength: 25, minLength: 1}
     string code?;
     # A unique ID assigned to each vendor in the Shipwire system. (See the Vendors API.)
     int vendorId?;
@@ -137,8 +148,10 @@ public type PostWarehouseRequest record {
     # Address
     record {} address;
     # Latitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -90.0, maxValue: 90.0}
     float latitude?;
     # Longitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -180.0, maxValue: 180.0}
     float longitude?;
     # A boolean which indicates whether orders may be routed to this warehouse by our routing engine.
     int isRoutable?;
@@ -149,6 +162,7 @@ public type PostWarehouseRequest record {
     # This is the unique ID of the Shipwire warehouse used for RMA process and will store returned goods.
     int returnWarehouseId?;
     # This is the external ID of the Shipwire warehouse used for RMA process.
+    @constraint:String {maxLength: 11, minLength: 1}
     string returnWarehouseExternalId?;
 };
 
@@ -183,6 +197,7 @@ public type RetireAWarehouseResponse record {
     # This is the HTTP status code.
     int status?;
     # This is the HTTP status message.
+    @constraint:String {maxLength: 30, minLength: 6}
     string message?;
     # A URL that gives more information about the linked resource. A "null" value would mean that no further information is available for that resource.
     string resourceLocation?;
@@ -219,28 +234,37 @@ public type WarehouseinformationAddress record {
 # Shipwire Anywhere Warehouse Address
 public type WarehouseAddress record {
     # This is the first line of the address of the warehouse.
+    @constraint:String {maxLength: 32, minLength: 1}
     string address1;
     # This is the second line of the address of the warehouse.
+    @constraint:String {maxLength: 35}
     string address2?;
     # This is the third line of the address of the warehouse.
+    @constraint:String {maxLength: 35}
     string address3?;
     # City where the warehouse is located.
+    @constraint:String {maxLength: 35}
     string city;
     # State where the warehouse is located.
+    @constraint:String {maxLength: 3, minLength: 2}
     string state;
     # Postal code of the warehouse
+    @constraint:String {maxLength: 10}
     string postalCode;
     # 2 digit country code of the warehouse
     string country;
     # Name of the continent where the warehouse is located.
     string continent?;
     # Name of the warehouse
+    @constraint:String {maxLength: 32, minLength: 1}
     string name;
     # Email address of contact at the warehouse for any communication
     string email?;
     # Contact phone number of the warehouse for any communication
+    @constraint:String {maxLength: 50, minLength: 1}
     string phone;
     # Contact fax number of the warehouse for any communication
+    @constraint:String {maxLength: 50, minLength: 1}
     string fax?;
 };
 
@@ -308,16 +332,20 @@ public type ResourceDimensionValues record {
     # A unique auto-generated ID assigned to each new container added to the Shipwire Platform.
     int id?;
     # A unique user-provided identifier for a container in an external system.
+    @constraint:String {maxLength: 32, minLength: 1}
     string externalId?;
     # A unique identifier for the container in the Shipwire system.
+    @constraint:String {maxLength: 50, minLength: 1}
     string name?;
     # This is the type of container based on the contents stored in it.
+    @constraint:String {maxLength: 25, minLength: 1}
     string 'type?;
     # A boolean which indicates whether or not the warehouse can use the container for a particular customer for packaging.
     int isActive?;
     # A unique identifier for a Shipwire or Shipwire Anywhere warehouse. 
     int warehouseId?;
     # A unique user-provided identifier for a Shipwire Anywhere warehouse in an external system.
+    @constraint:String {maxLength: 32, minLength: 1}
     string warehouseExternalId?;
     # Basis is a parameter that is used by Shipwire to prioritize the use of some boxes over the others depending on the product dimensions. The higher the box dimensions are the higher the basis will be. The highest basis for standard boxes is 1025. Pallets have the highest basis where as envelopes have the lowest basis. When setting up a merchant specific box, if you want to use this new box over some of the generic boxes that are bigger in volume, you need to assign a higher basis for the new box to ensure products rate into the box you create.
     float basis?;
@@ -331,10 +359,13 @@ public type WarehouseInformation record {
     # A unique auto-generated ID assigned to each new warehouse added to the Shipwire Platform.
     int id?;
     # A unique user-provided identifier for the warehouse in an external system.
+    @constraint:String {maxLength: 32, minLength: 1}
     string externalId?;
     # Name of the warehouse
+    @constraint:String {maxLength: 50, minLength: 1}
     string name?;
     # This is the code assigned to the warehouse for easy reference.
+    @constraint:String {maxLength: 25, minLength: 1}
     string code?;
     # A unique ID assigned to each vendor in the Shipwire system. (See the Vendors API.)
     int vendorId?;
@@ -345,8 +376,10 @@ public type WarehouseInformation record {
     # WarehouseInformation address
     WarehouseinformationAddress address?;
     # Latitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -90.0, maxValue: 90.0}
     float latitude?;
     # Longitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -180.0, maxValue: 180.0}
     float longitude?;
     # A boolean which indicates whether orders may be routed to this warehouse by our routing engine.
     int isRoutable?;
@@ -359,8 +392,10 @@ public type WarehouseInformation record {
     # This warehouse property ensures all shipping labels generated are a combination of packing list and label.
     boolean combineShippingDocuments?;
     # This is the unique ID of the Shipwire warehouse used for RMA process and will store returned goods.
+    @constraint:String {maxLength: 11, minLength: 1}
     string returnWarehouseId?;
     # This is the external ID of the Shipwire warehouse used for RMA process.
+    @constraint:String {maxLength: 11, minLength: 1}
     string returnWarehouseExternalId?;
     # A shipwire warehouse ID used to identify a specific physical warehouse that corresponds to a Shipwire Anywhere warehouse and is useful in consolidating inventory. If the SKU item is at a Shipwire warehouse, then this will be "null".
     int physicalWarehouseId?;
@@ -373,10 +408,13 @@ public type WarehouseInformation record {
 # Update Shipwire Warehouse Information
 public type UpdateAWarehouseRequest record {
     # A unique user-provided identifier for the warehouse in an external system.
+    @constraint:String {maxLength: 32, minLength: 1}
     string externalId?;
     # Name of the warehouse
+    @constraint:String {maxLength: 50, minLength: 1}
     string name?;
     # This is the code assigned to the warehouse for easy reference.
+    @constraint:String {maxLength: 25, minLength: 1}
     string code?;
     # A unique ID assigned to each vendor in the Shipwire system. (See the Vendors API.)
     int vendorId?;
@@ -387,16 +425,20 @@ public type UpdateAWarehouseRequest record {
     # Shipwire Anywhere Warehouse Address
     WarehouseAddress address?;
     # Latitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -90.0, maxValue: 90.0}
     float latitude?;
     # Longitude of the warehouse. This is useful for routing purposes to find the nearest warehouse.
+    @constraint:Float {minValue: -180.0, maxValue: 180.0}
     float longitude?;
     # A boolean which indicates whether orders may be routed to this warehouse by our routing engine.
     int isRoutable?;
     # A boolean which indicates whether or not the warehouse can generate shipping labels. These labels are stored on the server and can be given to the customer if required
     int generatesLabels?;
     # This is the unique ID of the Shipwire warehouse used for RMA process and will store returned goods.
+    @constraint:String {maxLength: 11, minLength: 1}
     string returnWarehouseId?;
     # This is the external ID of the Shipwire warehouse used for RMA process.
+    @constraint:String {maxLength: 11, minLength: 1}
     string returnWarehouseExternalId?;
 };
 

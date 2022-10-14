@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BulkMappingJobResult response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BulkMappingJobResult response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get values for enum-like fields.
@@ -61,7 +61,7 @@ public isolated client class Client {
     # + 'key - Key of MappingJob for which to get possible values. 
     # + return - The list of values. 
     remote isolated function getValues(string 'key) returns Values|error {
-        string resourcePath = string `/mapping/values/${'key}`;
+        string resourcePath = string `/mapping/values/${getEncodedUri('key)}`;
         map<any> headerValues = {"X-OPENFIGI-APIKEY": self.apiKeyConfig.xOpenfigiApikey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Values response = check self.clientEp->get(resourcePath, httpHeaders);

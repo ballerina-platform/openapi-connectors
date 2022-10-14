@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Readme API v2.0](https://docs.readme.com/reference) OpenAPI specification.  
@@ -103,7 +107,7 @@ public isolated client class Client {
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update an API specification in ReadMe
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + payload - File 
     # + return - The API specification was updated 
     remote isolated function updateAPISpecification(string id, File payload) returns http:Response|error {
-        string resourcePath = string `/api-specification/${id}`;
+        string resourcePath = string `/api-specification/${getEncodedUri(id)}`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -124,8 +128,8 @@ public isolated client class Client {
     # + id - ID of the API specification. The unique ID for each API can be found by navigating to your **API Definitions** page. 
     # + return - The API specification was deleted 
     remote isolated function deleteAPISpecification(string id) returns http:Response|error {
-        string resourcePath = string `/api-specification/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api-specification/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get category
@@ -134,7 +138,7 @@ public isolated client class Client {
     # + xReadmeVersion - Version number of your docs project, for example, v3.0. To see all valid versions for your docs project call https://docs.readme.com/developers/reference/version#getversions. 
     # + return - The category exists and has been returned 
     remote isolated function getCategory(string slug, string xReadmeVersion) returns http:Response|error {
-        string resourcePath = string `/categories/${slug}`;
+        string resourcePath = string `/categories/${getEncodedUri(slug)}`;
         map<any> headerValues = {"x-readme-version": xReadmeVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -146,7 +150,7 @@ public isolated client class Client {
     # + xReadmeVersion - Version number of your docs project, for example, v3.0. To see all valid versions for your docs project call https://docs.readme.com/developers/reference/version#getversions. 
     # + return - The category exists and all of the docs have been returned 
     remote isolated function getCategoryDocs(string slug, string xReadmeVersion) returns http:Response|error {
-        string resourcePath = string `/categories/${slug}/docs`;
+        string resourcePath = string `/categories/${getEncodedUri(slug)}/docs`;
         map<any> headerValues = {"x-readme-version": xReadmeVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -181,7 +185,7 @@ public isolated client class Client {
     # + slug - Slug of changelog 
     # + return - The changelog exists and has been returned 
     remote isolated function getChangelog(string slug) returns http:Response|error {
-        string resourcePath = string `/changelogs/${slug}`;
+        string resourcePath = string `/changelogs/${getEncodedUri(slug)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -191,7 +195,7 @@ public isolated client class Client {
     # + payload - Changelog object 
     # + return - The changelog has successfully been updated 
     remote isolated function updateChangelog(string slug, Changelog payload) returns http:Response|error {
-        string resourcePath = string `/changelogs/${slug}`;
+        string resourcePath = string `/changelogs/${getEncodedUri(slug)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -203,8 +207,8 @@ public isolated client class Client {
     # + slug - Slug of changelog 
     # + return - The changelog has successfully been updated 
     remote isolated function deleteChangelog(string slug) returns http:Response|error {
-        string resourcePath = string `/changelogs/${slug}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/changelogs/${getEncodedUri(slug)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get custom pages
@@ -236,7 +240,7 @@ public isolated client class Client {
     # + slug - Slug of custom page 
     # + return - The custom page exists and has been returned 
     remote isolated function getCustomPage(string slug) returns http:Response|error {
-        string resourcePath = string `/custompages/${slug}`;
+        string resourcePath = string `/custompages/${getEncodedUri(slug)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -246,7 +250,7 @@ public isolated client class Client {
     # + payload - CustomPage object 
     # + return - The custom page has successfully been updated 
     remote isolated function updateCustomPage(string slug, CustomPage payload) returns http:Response|error {
-        string resourcePath = string `/custompages/${slug}`;
+        string resourcePath = string `/custompages/${getEncodedUri(slug)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -258,8 +262,8 @@ public isolated client class Client {
     # + slug - Slug of custom page 
     # + return - The custom page has successfully been updated 
     remote isolated function deleteCustomPage(string slug) returns http:Response|error {
-        string resourcePath = string `/custompages/${slug}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/custompages/${getEncodedUri(slug)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create doc
@@ -274,7 +278,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Search docs
@@ -290,7 +294,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get doc
@@ -299,7 +303,7 @@ public isolated client class Client {
     # + xReadmeVersion - Version number of your docs project, for example, v3.0. To see all valid versions for your docs project call https://docs.readme.com/developers/reference/version#getversions. 
     # + return - The doc exists and has been returned 
     remote isolated function getDoc(string slug, string xReadmeVersion) returns http:Response|error {
-        string resourcePath = string `/docs/${slug}`;
+        string resourcePath = string `/docs/${getEncodedUri(slug)}`;
         map<any> headerValues = {"x-readme-version": xReadmeVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -312,13 +316,13 @@ public isolated client class Client {
     # + payload - Doc object 
     # + return - The doc has successfully been updated 
     remote isolated function updateDoc(string slug, string xReadmeVersion, Doc payload) returns http:Response|error {
-        string resourcePath = string `/docs/${slug}`;
+        string resourcePath = string `/docs/${getEncodedUri(slug)}`;
         map<any> headerValues = {"x-readme-version": xReadmeVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete doc
@@ -327,10 +331,10 @@ public isolated client class Client {
     # + xReadmeVersion - Version number of your docs project, for example, v3.0. To see all valid versions for your docs project call https://docs.readme.com/developers/reference/version#getversions. 
     # + return - The doc has successfully been updated 
     remote isolated function deleteDoc(string slug, string xReadmeVersion) returns http:Response|error {
-        string resourcePath = string `/docs/${slug}`;
+        string resourcePath = string `/docs/${getEncodedUri(slug)}`;
         map<any> headerValues = {"x-readme-version": xReadmeVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get errors
@@ -349,8 +353,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function deleteSwagger(string id) returns http:Response|error {
-        string resourcePath = string `/swagger/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/swagger/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get versions
@@ -378,7 +382,7 @@ public isolated client class Client {
     # + versionId - Semver version indentifier 
     # + return - JSON version model 
     remote isolated function getVersion(string versionId) returns http:Response|error {
-        string resourcePath = string `/version/${versionId}`;
+        string resourcePath = string `/version/${getEncodedUri(versionId)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -388,7 +392,7 @@ public isolated client class Client {
     # + payload - Version object 
     # + return - The target version was successfully updated 
     remote isolated function updateVersion(string versionId, Version payload) returns http:Response|error {
-        string resourcePath = string `/version/${versionId}`;
+        string resourcePath = string `/version/${getEncodedUri(versionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -400,8 +404,8 @@ public isolated client class Client {
     # + versionId - Semver version indentifier 
     # + return - The target version was successfully deleted 
     remote isolated function deleteVersion(string versionId) returns http:Response|error {
-        string resourcePath = string `/version/${versionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/version/${getEncodedUri(versionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

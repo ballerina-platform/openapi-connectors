@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Sinch Verification API v2.0](https://www.sinch.com/) OpenAPI specification.
@@ -86,7 +90,7 @@ public isolated client class Client {
     # + payload - Verification report request payload. 
     # + return - A successful response. 
     remote isolated function reportVerificationByIdentity(string 'type, string endpoint, VerificationReportRequestResource payload) returns VerificationResponse|error {
-        string resourcePath = string `/verification/v1/verifications/${'type}/${endpoint}`;
+        string resourcePath = string `/verification/v1/verifications/${getEncodedUri('type)}/${getEncodedUri(endpoint)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -98,7 +102,7 @@ public isolated client class Client {
     # + id - The ID of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusById(string id) returns VerificationResponse|error {
-        string resourcePath = string `/verification/v1/verifications/id/${id}`;
+        string resourcePath = string `/verification/v1/verifications/id/${getEncodedUri(id)}`;
         VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -108,7 +112,7 @@ public isolated client class Client {
     # + payload - Verification report request resource payload. 
     # + return - A sucessful response. 
     remote isolated function reportVerificationById(string id, VerificationReportRequestResource payload) returns VerificationResponse|error {
-        string resourcePath = string `/verification/v1/verifications/id/${id}`;
+        string resourcePath = string `/verification/v1/verifications/id/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -122,7 +126,7 @@ public isolated client class Client {
     # + method - The method of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusByIdentity(string 'type, string endpoint, string method) returns VerificationResponse|error {
-        string resourcePath = string `/verification/v1/verifications/${method}/${'type}/${endpoint}`;
+        string resourcePath = string `/verification/v1/verifications/${getEncodedUri(method)}/${getEncodedUri('type)}/${getEncodedUri(endpoint)}`;
         VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -131,7 +135,7 @@ public isolated client class Client {
     # + reference - The custom reference of the verification. 
     # + return - A sucessful response. 
     remote isolated function verificationStatusByReference(string reference) returns VerificationResponse|error {
-        string resourcePath = string `/verification/v1/verifications/reference/${reference}`;
+        string resourcePath = string `/verification/v1/verifications/reference/${getEncodedUri(reference)}`;
         VerificationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

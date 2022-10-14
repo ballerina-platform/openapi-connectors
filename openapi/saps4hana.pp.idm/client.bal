@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Client Credentials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = "";
 |};
 
 # This is a generated connector for [SAP S/4HANA Procurement Planning System for Cross-domain Identity Management API v1.0.0](https://api.sap.com/api/SCIMService/overview) OpenAPI specification. 
@@ -92,7 +103,7 @@ public isolated client class Client {
     # + id - ID of the user that will be created. 
     # + return - Retrieved entities. 
     remote isolated function getUserById(string id) returns ReadSingleUser|error {
-        string resourcePath = string `/Users/${id}`;
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
         ReadSingleUser response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -102,7 +113,7 @@ public isolated client class Client {
     # + payload - User details 
     # + return - Retrieved entities. 
     remote isolated function updateUserById(string id, User payload) returns User|error {
-        string resourcePath = string `/Users/${id}`;
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -114,8 +125,8 @@ public isolated client class Client {
     # + id - ID of the user that will be deleted. 
     # + return - The task was successfully completed and the context was updated. 
     remote isolated function deleteUserById(string id) returns Success204|error {
-        string resourcePath = string `/Users/${id}`;
-        Success204 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
+        Success204 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

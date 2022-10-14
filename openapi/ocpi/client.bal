@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ public isolated client class Client {
     # + partyID - Party ID 
     # + return - OK 
     remote isolated function getConnectionStatus(string authorization, string countryCode, string partyID) returns string|error {
-        string resourcePath = string `/admin/connection-status/${countryCode}/${partyID}`;
+        string resourcePath = string `/admin/connection-status/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}`;
         map<any> headerValues = {"Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -58,7 +58,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        byte[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        byte[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets health of the OCN
@@ -82,7 +82,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseObject response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets registry information
@@ -99,7 +99,7 @@ public isolated client class Client {
     # + partyID - Party ID 
     # + return - OK 
     remote isolated function getNodeOf(string countryCode, string partyID) returns byte[]|error {
-        string resourcePath = string `/ocn/registry/node/${countryCode}/${partyID}`;
+        string resourcePath = string `/ocn/registry/node/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}`;
         byte[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -162,7 +162,7 @@ public isolated client class Client {
     # + uid - UID 
     # + return - OK 
     remote isolated function getCdrPageFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, string? ocnSignature = ()) returns OcpiResponseCDRList|error {
-        string resourcePath = string `/ocpi/sender/2.2/cdrs/page/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/cdrs/page/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseCDRList response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -181,7 +181,7 @@ public isolated client class Client {
     # + cdrID - Charge Detail Record ID 
     # + return - OK 
     remote isolated function getClientOwnedCdr(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string cdrID, string? ocnSignature = ()) returns OcpiResponseCDR|error {
-        string resourcePath = string `/ocpi/receiver/2.2/cdrs/${cdrID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/cdrs/${getEncodedUri(cdrID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseCDR response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -206,7 +206,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Creates new charging profile
@@ -223,13 +223,13 @@ public isolated client class Client {
     # + payload - Charging profile details 
     # + return - OK 
     remote isolated function postGenericChargingProfileResult(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, GenericChargingProfileResult payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/2.2/sender/chargingprofiles/result/${uid}`;
+        string resourcePath = string `/ocpi/2.2/sender/chargingprofiles/result/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sends or Updates a  ChargingProfile by the Sender
@@ -246,13 +246,13 @@ public isolated client class Client {
     # + payload - Active charging profile details 
     # + return - OK 
     remote isolated function putSenderChargingProfile(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string sessionId, ActiveChargingProfile payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/2.2/sender/chargingprofiles/${sessionId}`;
+        string resourcePath = string `/ocpi/2.2/sender/chargingprofiles/${getEncodedUri(sessionId)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets the active ActiveChargingProfile by receiver
@@ -270,7 +270,7 @@ public isolated client class Client {
     # + responseUrl - URL that the ActiveChargingProfileResult POST should be send to. This URL might contain an unique ID to be able to distinguish between GETActiveChargingProfile requests 
     # + return - OK 
     remote isolated function getReceiverChargingProfile(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string sessionId, int duration, string responseUrl, string? ocnSignature = ()) returns OcpiResponseChargingProfileResponse|error {
-        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${sessionId}`;
+        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${getEncodedUri(sessionId)}`;
         map<anydata> queryParam = {"duration": duration, "response_url": responseUrl};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
@@ -292,13 +292,13 @@ public isolated client class Client {
     # + payload - Charging profile details 
     # + return - OK 
     remote isolated function putReceiverChargingProfile(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string sessionId, SetChargingProfile payload, string? ocnSignature = ()) returns OcpiResponseChargingProfileResponse|error {
-        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${sessionId}`;
+        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${getEncodedUri(sessionId)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseChargingProfileResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseChargingProfileResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancels an existing ChargingProfile for a specific charging session
@@ -315,12 +315,12 @@ public isolated client class Client {
     # + responseUrl - URL that the ClearProfileResult POST should be send to. This URL might contain an unique ID to be able to distinguish between DELETE ChargingProfile requests. 
     # + return - OK 
     remote isolated function deleteReceiverChargingProfile(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string sessionId, string responseUrl, string? ocnSignature = ()) returns OcpiResponseChargingProfileResponse|error {
-        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${sessionId}`;
+        string resourcePath = string `/ocpi/2.2/receiver/chargingprofiles/${getEncodedUri(sessionId)}`;
         map<anydata> queryParam = {"response_url": responseUrl};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        OcpiResponseChargingProfileResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        OcpiResponseChargingProfileResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Receive the asynchronous response from the Charge Point.
@@ -338,13 +338,13 @@ public isolated client class Client {
     # + payload - command details 
     # + return - OK 
     remote isolated function postAsyncResponse(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string command, string uid, CommandResult payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/sender/2.2/commands/${command}/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/commands/${getEncodedUri(command)}/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancel an existing reservation
@@ -366,7 +366,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reserves a (specific) connector of a Charge Point for a given Token
@@ -388,7 +388,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Starts a session.
@@ -410,7 +410,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Stops a session
@@ -432,7 +432,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unlocks a connector of a Charge Point
@@ -454,7 +454,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCommandResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the credentials object to access the server’s platform
@@ -480,7 +480,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCredentials response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCredentials response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Provides the server with a credentials object to access the client’s system (i.e. register)
@@ -495,7 +495,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseCredentials response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseCredentials response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Informs the server that its credentials to the client’s system are now invalid (i.e. unregister)
@@ -506,7 +506,7 @@ public isolated client class Client {
         string resourcePath = string `/ocpi/2.2/credentials`;
         map<any> headerValues = {"Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        OcpiResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        OcpiResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Fetches a list of Locations, last updated between the {date_from} and {date_to} (paginated), or get a specificLocation, EVSE or Connector
@@ -546,7 +546,7 @@ public isolated client class Client {
     # + uid - Page ID 
     # + return - OK 
     remote isolated function getLocationPageFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, string? ocnSignature = ()) returns OcpiResponseLocationList|error {
-        string resourcePath = string `/ocpi/sender/2.2/locations/page/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/locations/page/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseLocationList response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -565,7 +565,7 @@ public isolated client class Client {
     # + locationID - ID of the charging location of an operator 
     # + return - OK 
     remote isolated function getLocationObjectFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string locationID, string? ocnSignature = ()) returns OcpiResponseLocation|error {
-        string resourcePath = string `/ocpi/sender/2.2/locations/${locationID}`;
+        string resourcePath = string `/ocpi/sender/2.2/locations/${getEncodedUri(locationID)}`;
         map<any> headerValues = {"Authorization": authorization, "X-Request-ID": xRequestId, "OCN-Signature": ocnSignature, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseLocation response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -585,7 +585,7 @@ public isolated client class Client {
     # + evseUID - ID of the EVSE 
     # + return - OK 
     remote isolated function getEvseObjectFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string locationID, string evseUID, string? ocnSignature = ()) returns OcpiResponseEvse|error {
-        string resourcePath = string `/ocpi/sender/2.2/locations/${locationID}/${evseUID}`;
+        string resourcePath = string `/ocpi/sender/2.2/locations/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseEvse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -606,7 +606,7 @@ public isolated client class Client {
     # + connectorID - Connector ID 
     # + return - OK 
     remote isolated function getConnectorObjectFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string locationID, string evseUID, string connectorID, string? ocnSignature = ()) returns OcpiResponseConnector|error {
-        string resourcePath = string `/ocpi/sender/2.2/locations/${locationID}/${evseUID}/${connectorID}`;
+        string resourcePath = string `/ocpi/sender/2.2/locations/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}/${getEncodedUri(connectorID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseConnector response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -627,7 +627,7 @@ public isolated client class Client {
     # + locationID - Location.id of the Location object to retrieve 
     # + return - OK 
     remote isolated function getClientOwnedLocation(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string? ocnSignature = ()) returns OcpiResponseLocation|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseLocation response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -649,13 +649,13 @@ public isolated client class Client {
     # + payload - Location details 
     # + return - OK 
     remote isolated function putClientOwnedLocation(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, Location payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status).
@@ -674,13 +674,13 @@ public isolated client class Client {
     # + payload - Location details 
     # + return - OK 
     remote isolated function patchClientOwnedLocation(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, json payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a Location as it is stored in the eMSP system by EVSE UID
@@ -699,7 +699,7 @@ public isolated client class Client {
     # + evseUID - Evse.uid, required when requesting an EVSE or Connector object 
     # + return - OK 
     remote isolated function getClientOwnedEvse(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, string? ocnSignature = ()) returns OcpiResponseEvse|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseEvse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -722,13 +722,13 @@ public isolated client class Client {
     # + payload - EVSE details 
     # + return - OK 
     remote isolated function putClientOwnedEvse(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, Evse payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID
@@ -748,13 +748,13 @@ public isolated client class Client {
     # + payload - Request body details 
     # + return - OK 
     remote isolated function patchClientOwnedEvse(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, json payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a Location as it is stored in the eMSP system by EVSE UID and Connector ID
@@ -774,7 +774,7 @@ public isolated client class Client {
     # + connectorID - Connector.id, required when a Connector object is pushed. 
     # + return - OK 
     remote isolated function getClientOwnedConnector(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, string connectorID, string? ocnSignature = ()) returns OcpiResponseConnector|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}/${connectorID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}/${getEncodedUri(connectorID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseConnector response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -798,13 +798,13 @@ public isolated client class Client {
     # + payload - Connector Details 
     # + return - OK 
     remote isolated function putClientOwnedConnector(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, string connectorID, Connector payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}/${connectorID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}/${getEncodedUri(connectorID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Notifies the eMSP of partial updates to a Location, EVSE or Connector (such as the status) by EVSE UID and connector ID
@@ -825,13 +825,13 @@ public isolated client class Client {
     # + payload - OCPI request details 
     # + return - OK 
     remote isolated function patchClientOwnedConnector(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string locationID, string evseUID, string connectorID, json payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/locations/${countryCode}/${partyID}/${locationID}/${evseUID}/${connectorID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/locations/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(locationID)}/${getEncodedUri(evseUID)}/${getEncodedUri(connectorID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Updates OCN rules - `whitelist`
@@ -846,7 +846,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     #
@@ -860,7 +860,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Updates OCN rules - `blacklist`
@@ -875,7 +875,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     #
@@ -889,7 +889,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Updates OCN Rules - `signature`
@@ -902,7 +902,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Updates OCN Rules - `block-all`
@@ -915,7 +915,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes OCN Rules - `whitelist` by country code and party ID
@@ -925,10 +925,10 @@ public isolated client class Client {
     # + partyID - Party ID 
     # + return - OK 
     remote isolated function deleteFromWhitelist(string authorization, string countryCode, string partyID) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/ocnrules/whitelist/${countryCode}/${partyID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/ocnrules/whitelist/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}`;
         map<any> headerValues = {"Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Deletes OCN Rules - `blacklist` by country code and party ID
@@ -938,10 +938,10 @@ public isolated client class Client {
     # + partyID - Party ID 
     # + return - OK 
     remote isolated function deleteFromBlacklist(string authorization, string countryCode, string partyID) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/ocnrules/blacklist/${countryCode}/${partyID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/ocnrules/blacklist/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}`;
         map<any> headerValues = {"Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Gets all OCN Rules
@@ -992,7 +992,7 @@ public isolated client class Client {
     # + uid - Page ID 
     # + return - OK 
     remote isolated function getSessionsPageFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, string? ocnSignature = ()) returns OcpiResponseSessionList|error {
-        string resourcePath = string `/ocpi/sender/2.2/sessions/page/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/sessions/page/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseSessionList response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1012,13 +1012,13 @@ public isolated client class Client {
     # + payload - Charging preferences details 
     # + return - OK 
     remote isolated function putChargingPreferences(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string sessionID, ChargingPreferences payload, string? ocnSignature = ()) returns OcpiResponseChargingPreferencesResponse|error {
-        string resourcePath = string `/ocpi/sender/2.2/sessions/${sessionID}/charging_preferences`;
+        string resourcePath = string `/ocpi/sender/2.2/sessions/${getEncodedUri(sessionID)}/charging_preferences`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseChargingPreferencesResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseChargingPreferencesResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a Session object from the eMSP’s system with Session.id equal to {session_id}
@@ -1036,7 +1036,7 @@ public isolated client class Client {
     # + sessionID - ID of the Session object to get from the eMSP’s system. 
     # + return - OK 
     remote isolated function getClientOwnedSession(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string sessionID, string? ocnSignature = ()) returns OcpiResponseSession|error {
-        string resourcePath = string `/ocpi/receiver/2.2/sessions/${countryCode}/${partyID}/${sessionID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/sessions/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(sessionID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseSession response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1058,13 +1058,13 @@ public isolated client class Client {
     # + payload - Session details 
     # + return - OK 
     remote isolated function putClientOwnedSession(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string sessionID, Session payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/sessions/${countryCode}/${partyID}/${sessionID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/sessions/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(sessionID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Updates the Session object with Session.id equal to {session_id}
@@ -1083,13 +1083,13 @@ public isolated client class Client {
     # + payload - Request Body detail 
     # + return - OK 
     remote isolated function patchClientOwnedSession(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string sessionID, json payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/sessions/${countryCode}/${partyID}/${sessionID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/sessions/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(sessionID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a Tariff as it is stored in the eMSP’s system
@@ -1107,7 +1107,7 @@ public isolated client class Client {
     # + tariffID - Tariff.id of the Tariff object to retrieve 
     # + return - OK 
     remote isolated function getClientOwnedTariff(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tariffID, string? ocnSignature = ()) returns OcpiResponseTariff|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${countryCode}/${partyID}/${tariffID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tariffID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseTariff response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1129,13 +1129,13 @@ public isolated client class Client {
     # + payload - Tariff detail 
     # + return - OK 
     remote isolated function putClientOwnedTariff(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tariffID, Tariff payload, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${countryCode}/${partyID}/${tariffID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tariffID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes a Tariff object which is not used any more and will not be used in future either
@@ -1153,10 +1153,10 @@ public isolated client class Client {
     # + tariffID - Tariff.id of the Tariff object to delete 
     # + return - OK 
     remote isolated function deleteClientOwnedTariff(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tariffID, string? ocnSignature = ()) returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${countryCode}/${partyID}/${tariffID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tariffs/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tariffID)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Returns Tariff objects from the CPO, last updated between the {date_from} and {date_to}
@@ -1196,7 +1196,7 @@ public isolated client class Client {
     # + uid - Page ID 
     # + return - OK 
     remote isolated function getTariffsPageFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, string? ocnSignature = ()) returns OcpiResponseTariffList|error {
-        string resourcePath = string `/ocpi/sender/2.2/tariffs/page/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/tariffs/page/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseTariffList response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1239,7 +1239,7 @@ public isolated client class Client {
     # + uid - Page ID 
     # + return - OK 
     remote isolated function getTokensPageFromDataOwner(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string uid, string? ocnSignature = ()) returns OcpiResponseTokenList|error {
-        string resourcePath = string `/ocpi/sender/2.2/tokens/page/${uid}`;
+        string resourcePath = string `/ocpi/sender/2.2/tokens/page/${getEncodedUri(uid)}`;
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         OcpiResponseTokenList response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1260,7 +1260,7 @@ public isolated client class Client {
     # + payload - Location references details 
     # + return - OK 
     remote isolated function postRealTimeTokenAuthorization(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string tokenUID, LocationReferences payload, string? ocnSignature = (), string 'type = "RFID") returns OcpiResponseAuthorizationInfo|error {
-        string resourcePath = string `/ocpi/sender/2.2/tokens/${tokenUID}/authorize`;
+        string resourcePath = string `/ocpi/sender/2.2/tokens/${getEncodedUri(tokenUID)}/authorize`;
         map<anydata> queryParam = {"type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
@@ -1268,7 +1268,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseAuthorizationInfo response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OcpiResponseAuthorizationInfo response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a Token as it is stored in the CPO system
@@ -1287,7 +1287,7 @@ public isolated client class Client {
     # + 'type - Token.type of the Token to retrieve. Default if omitted- RFID 
     # + return - OK 
     remote isolated function getClientOwnedToken(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tokenUID, string? ocnSignature = (), string 'type = "RFID") returns OcpiResponseToken|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tokens/${countryCode}/${partyID}/${tokenUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tokens/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tokenUID)}`;
         map<anydata> queryParam = {"type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
@@ -1312,7 +1312,7 @@ public isolated client class Client {
     # + payload - Token details 
     # + return - OK 
     remote isolated function putClientOwnedToken(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tokenUID, Token payload, string? ocnSignature = (), string 'type = "RFID") returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tokens/${countryCode}/${partyID}/${tokenUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tokens/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tokenUID)}`;
         map<anydata> queryParam = {"type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
@@ -1320,7 +1320,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Notifies the CPO of partial updates to a Token
@@ -1340,7 +1340,7 @@ public isolated client class Client {
     # + payload - Request body details 
     # + return - OK 
     remote isolated function patchClientOwnedToken(string authorization, string xRequestId, string xCorrelationId, string ocpiFromCountryCode, string ocpiFromPartyId, string ocpiToCountryCode, string ocpiToPartyId, string countryCode, string partyID, string tokenUID, json payload, string? ocnSignature = (), string 'type = "RFID") returns OcpiResponseUnit|error {
-        string resourcePath = string `/ocpi/receiver/2.2/tokens/${countryCode}/${partyID}/${tokenUID}`;
+        string resourcePath = string `/ocpi/receiver/2.2/tokens/${getEncodedUri(countryCode)}/${getEncodedUri(partyID)}/${getEncodedUri(tokenUID)}`;
         map<anydata> queryParam = {"type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "OCN-Signature": ocnSignature, "X-Request-ID": xRequestId, "X-Correlation-ID": xCorrelationId, "OCPI-from-country-code": ocpiFromCountryCode, "OCPI-from-party-id": ocpiFromPartyId, "OCPI-to-country-code": ocpiToCountryCode, "OCPI-to-party-id": ocpiToPartyId};
@@ -1348,7 +1348,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        OcpiResponseUnit response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Ronin API v1](https://www.roninapp.com/api) OpenAPI specification.
@@ -97,7 +101,7 @@ public isolated client class Client {
     # + id - The client ID 
     # + return - A client object 
     remote isolated function getClient(string id) returns ClientObject|error {
-        string resourcePath = string `/api/v2/clients/${id}.json`;
+        string resourcePath = string `/api/v2/clients/${getEncodedUri(id)}.json`;
         ClientObject response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -108,7 +112,7 @@ public isolated client class Client {
     # + pageSize - You may also use a different page_size parameter. The maximum allowed page_size is 100. 
     # + return - An object with a property contacts which is an array of Contact objects. 
     remote isolated function listContactsByClient(string clientId, int? page = (), string? pageSize = ()) returns Contacts|error {
-        string resourcePath = string `/api/v2/clients/${clientId}/contacts.json`;
+        string resourcePath = string `/api/v2/clients/${getEncodedUri(clientId)}/contacts.json`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Contacts response = check self.clientEp->get(resourcePath);
@@ -120,7 +124,7 @@ public isolated client class Client {
     # + payload - The data required to create a contact. 
     # + return - Created contact 
     remote isolated function createContact(string clientId, CreateContactRequest payload) returns Contact|error {
-        string resourcePath = string `/api/v2/clients/${clientId}/contacts.json`;
+        string resourcePath = string `/api/v2/clients/${getEncodedUri(clientId)}/contacts.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -144,7 +148,7 @@ public isolated client class Client {
     # + id - The contact ID 
     # + return - A contact object 
     remote isolated function getContact(string id) returns Contact|error {
-        string resourcePath = string `/api/v2/contacts/${id}.json`;
+        string resourcePath = string `/api/v2/contacts/${getEncodedUri(id)}.json`;
         Contact response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -176,7 +180,7 @@ public isolated client class Client {
     # + id - The estimate ID 
     # + return - An estimate object 
     remote isolated function getEstimate(string id) returns Estimate|error {
-        string resourcePath = string `/api/v2/estimates/${id}.json`;
+        string resourcePath = string `/api/v2/estimates/${getEncodedUri(id)}.json`;
         Estimate response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -209,7 +213,7 @@ public isolated client class Client {
     # + id - The invoice ID 
     # + return - An invoice object 
     remote isolated function getInvoice(string id) returns Invoice|error {
-        string resourcePath = string `/api/v2/invoices/${id}.json`;
+        string resourcePath = string `/api/v2/invoices/${getEncodedUri(id)}.json`;
         Invoice response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -242,7 +246,7 @@ public isolated client class Client {
     # + id - The project ID 
     # + return - An project object 
     remote isolated function getProject(string id) returns Projects|error {
-        string resourcePath = string `/api/v2/projects/${id}.json`;
+        string resourcePath = string `/api/v2/projects/${getEncodedUri(id)}.json`;
         Projects response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -271,7 +275,7 @@ public isolated client class Client {
     # + id - The task ID 
     # + return - An task object 
     remote isolated function getTask(string id) returns Task|error {
-        string resourcePath = string `/api/v2/tasks/${id}.json`;
+        string resourcePath = string `/api/v2/tasks/${getEncodedUri(id)}.json`;
         Task response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -281,7 +285,7 @@ public isolated client class Client {
     # + payload - The data required to update a task. 
     # + return - An empty body if the task was successfully updated. 
     remote isolated function updateTask(string id, UpdateTaskRequest payload) returns http:Response|error {
-        string resourcePath = string `/api/v2/tasks/${id}.json`;
+        string resourcePath = string `/api/v2/tasks/${getEncodedUri(id)}.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

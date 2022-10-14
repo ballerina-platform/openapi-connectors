@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@ public type Version record {
     string codename?;
     # Semantic Version to use as the base fork
     string 'from;
-    boolean is_beta?;
+    boolean is_beta = true;
     # Should this be deprecated? Only allowed in PUT operations
     boolean is_deprecated?;
     # Should this be publically accessible?
@@ -34,11 +34,11 @@ public type CustomPage record {
     # Body formatted in Markdown (displayed by default).
     string body?;
     # Visibility of the custom page
-    boolean hidden?;
+    boolean hidden = true;
     # Body formatted in HTML (sanitized, only displayed if `htmlmode` is **true**).
     string html?;
     # **true** if `html` should be displayed, **false** if `body` should be displayed.
-    boolean htmlmode?;
+    boolean htmlmode = false;
     # Title of the custom page
     string title;
 };
@@ -49,7 +49,7 @@ public type Doc record {
     # Category ID of the page, which you can get through https://docs.readme.com/developers/reference/categories#getcategory 
     string category;
     # Visibility of the page
-    boolean hidden?;
+    boolean hidden = true;
     # For a subpage, specify the parent doc ID, which you can get through https://docs.readme.com/developers/reference/docs#getdoc
     string parentDoc?;
     # Title of the page
@@ -62,10 +62,10 @@ public type Changelog record {
     # Body content of the changelog
     string body;
     # Visibility of the changelog
-    boolean hidden?;
+    boolean hidden = true;
     # Title of the changelog
     string title;
-    string 'type?;
+    string 'type = "";
 };
 
 public type File record {

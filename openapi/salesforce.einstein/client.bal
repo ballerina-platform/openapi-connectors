@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Einstein Vision and Einstein Language API](https://metamind.readme.io/reference#predictive-vision-service-api) OpenAPI specification. Allows you to access the Einstein Vision and Einstein Language services via the standard REST API calls. Use the APIs to programmatically work with datasets, labels, examples, models, and predictions.
@@ -117,7 +121,7 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function getLanguageDataset(string datasetId) returns Dataset|error {
-        string resourcePath = string `/v2/language/datasets/${datasetId}`;
+        string resourcePath = string `/v2/language/datasets/${getEncodedUri(datasetId)}`;
         Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -126,8 +130,8 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function deleteLanguageDataset(string datasetId) returns DeletionResponse|error {
-        string resourcePath = string `/v2/language/datasets/${datasetId}`;
-        DeletionResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/language/datasets/${getEncodedUri(datasetId)}`;
+        DeletionResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get All Language Examples
@@ -138,7 +142,7 @@ public isolated client class Client {
     # + 'source - return examples that were created in the dataset as feedback 
     # + return - Success 
     remote isolated function getLanguageExamples(string datasetId, string offset = "0", string count = "100", string? 'source = ()) returns ExampleList|error {
-        string resourcePath = string `/v2/language/datasets/${datasetId}/examples`;
+        string resourcePath = string `/v2/language/datasets/${getEncodedUri(datasetId)}/examples`;
         map<anydata> queryParam = {"offset": offset, "count": count, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExampleList response = check self.clientEp->get(resourcePath);
@@ -151,7 +155,7 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function getTrainedLanguageModels(string datasetId, string offset = "0", string count = "100") returns ModelList|error {
-        string resourcePath = string `/v2/language/datasets/${datasetId}/models`;
+        string resourcePath = string `/v2/language/datasets/${getEncodedUri(datasetId)}/models`;
         map<anydata> queryParam = {"offset": offset, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ModelList response = check self.clientEp->get(resourcePath);
@@ -163,7 +167,7 @@ public isolated client class Client {
     # + payload - Dataset upload payload 
     # + return - Upload success 
     remote isolated function updateLanguageDatasetAsync(string datasetId, DatasetidUploadBody payload) returns Dataset|error {
-        string resourcePath = string `/v2/language/datasets/${datasetId}/upload`;
+        string resourcePath = string `/v2/language/datasets/${getEncodedUri(datasetId)}/upload`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + id - Deletion Id 
     # + return - deletion status 
     remote isolated function getLanguageDatasetDeletionStatus(string id) returns DeletionResponse|error {
-        string resourcePath = string `/v2/language/deletion/${id}`;
+        string resourcePath = string `/v2/language/deletion/${getEncodedUri(id)}`;
         DeletionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -221,7 +225,7 @@ public isolated client class Client {
     # + modelId - Model Id 
     # + return - Model Metrics 
     remote isolated function getTrainedLanguageModelMetrics(string modelId) returns Metrics|error {
-        string resourcePath = string `/v2/language/models/${modelId}`;
+        string resourcePath = string `/v2/language/models/${getEncodedUri(modelId)}`;
         Metrics response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -230,8 +234,8 @@ public isolated client class Client {
     # + modelId - Model Id 
     # + return - Deletion submitted 
     remote isolated function deleteLanguageModel(string modelId) returns DeletionResponse|error {
-        string resourcePath = string `/v2/language/models/${modelId}`;
-        DeletionResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/language/models/${getEncodedUri(modelId)}`;
+        DeletionResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Language Model Learning Curve
@@ -241,7 +245,7 @@ public isolated client class Client {
     # + count - Number of epoch to return. Maximum valid value is 25. 
     # + return - Learning Curve 
     remote isolated function getTrainedLanguageModelLearningCurve(string modelId, string offset = "0", string count = "25") returns LearningCurveList|error {
-        string resourcePath = string `/v2/language/models/${modelId}/lc`;
+        string resourcePath = string `/v2/language/models/${getEncodedUri(modelId)}/lc`;
         map<anydata> queryParam = {"offset": offset, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         LearningCurveList response = check self.clientEp->get(resourcePath);
@@ -288,7 +292,7 @@ public isolated client class Client {
     # + modelId - Model ID 
     # + return - Training Status 
     remote isolated function getLanguageTrainStatusAndProgress(string modelId) returns TrainResponse|error {
-        string resourcePath = string `/v2/language/train/${modelId}`;
+        string resourcePath = string `/v2/language/train/${getEncodedUri(modelId)}`;
         TrainResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -309,8 +313,8 @@ public isolated client class Client {
     # + token - the token to revoke 
     # + return - deleted, with no content returned 
     remote isolated function revokeRefreshTokenV2(string token) returns http:Response|error {
-        string resourcePath = string `/v2/oauth2/tokens/${token}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/oauth2/tokens/${getEncodedUri(token)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create Feedback Examples From a Zip File
@@ -379,7 +383,7 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function getVisionDataset(string datasetId) returns Dataset|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}`;
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}`;
         Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -388,8 +392,8 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function deleteVisionDataset(string datasetId) returns DeletionResponse|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}`;
-        DeletionResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}`;
+        DeletionResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get All Vision Dataset Examples
@@ -400,7 +404,7 @@ public isolated client class Client {
     # + 'source - return examples that were created in the dataset as feedback 
     # + return - Success 
     remote isolated function getVisionDatasetExamples(string datasetId, string offset = "0", string count = "100", string? 'source = ()) returns ExampleList|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}/examples`;
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}/examples`;
         map<anydata> queryParam = {"offset": offset, "count": count, "source": 'source};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExampleList response = check self.clientEp->get(resourcePath);
@@ -412,7 +416,7 @@ public isolated client class Client {
     # + payload - Create dataset example payload 
     # + return - Example created 
     remote isolated function addExample(string datasetId, DatasetidExamplesBody payload) returns Example|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}/examples`;
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}/examples`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -426,7 +430,7 @@ public isolated client class Client {
     # + datasetId - Dataset Id 
     # + return - Success 
     remote isolated function getTrainedVisionModels(string datasetId, string offset = "0", string count = "100") returns ModelList|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}/models`;
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}/models`;
         map<anydata> queryParam = {"offset": offset, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ModelList response = check self.clientEp->get(resourcePath);
@@ -438,7 +442,7 @@ public isolated client class Client {
     # + payload - Create dataset example payload 
     # + return - Upload success 
     remote isolated function updateVisionDatasetAsync(string datasetId, DatasetidUploadBody1 payload) returns Dataset|error {
-        string resourcePath = string `/v2/vision/datasets/${datasetId}/upload`;
+        string resourcePath = string `/v2/vision/datasets/${getEncodedUri(datasetId)}/upload`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -450,7 +454,7 @@ public isolated client class Client {
     # + id - Deletion Id 
     # + return - deletion status 
     remote isolated function getVisionDatasetDeleteionStatus(string id) returns DeletionResponse|error {
-        string resourcePath = string `/v2/vision/deletion/${id}`;
+        string resourcePath = string `/v2/vision/deletion/${getEncodedUri(id)}`;
         DeletionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -496,7 +500,7 @@ public isolated client class Client {
     # + modelId - Model ID 
     # + return - Model Metrics 
     remote isolated function getTrainedVisionModelMetrics(string modelId) returns Metrics|error {
-        string resourcePath = string `/v2/vision/models/${modelId}`;
+        string resourcePath = string `/v2/vision/models/${getEncodedUri(modelId)}`;
         Metrics response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -505,8 +509,8 @@ public isolated client class Client {
     # + modelId - Model ID 
     # + return - Deletion submitted 
     remote isolated function deleteVisionModel(string modelId) returns DeletionResponse|error {
-        string resourcePath = string `/v2/vision/models/${modelId}`;
-        DeletionResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/vision/models/${getEncodedUri(modelId)}`;
+        DeletionResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Vision Model Learning Curve
@@ -516,7 +520,7 @@ public isolated client class Client {
     # + count - Number of epoch to return. Maximum valid value is 25. 
     # + return - Learning Curve 
     remote isolated function getTrainedVisionModelLearningCurve(string modelId, string offset = "0", string count = "25") returns LearningCurveList|error {
-        string resourcePath = string `/v2/vision/models/${modelId}/lc`;
+        string resourcePath = string `/v2/vision/models/${getEncodedUri(modelId)}/lc`;
         map<anydata> queryParam = {"offset": offset, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         LearningCurveList response = check self.clientEp->get(resourcePath);
@@ -575,7 +579,7 @@ public isolated client class Client {
     # + modelId - Model ID 
     # + return - Training Status 
     remote isolated function getVisionTrainStatusAndProgress(string modelId) returns TrainResponse|error {
-        string resourcePath = string `/v2/vision/train/${modelId}`;
+        string resourcePath = string `/v2/vision/train/${getEncodedUri(modelId)}`;
         TrainResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

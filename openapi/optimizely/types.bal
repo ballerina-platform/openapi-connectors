@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type AttributeArr Attribute[];
 
@@ -77,7 +79,7 @@ public type CampaignResults record {
     # The unique identifier for the Campaign
     int campaign_id?;
     # The significance level at which you would like to declare winning and losing variations. A lower number minimizes the time needed to declare a winning or losing variation, but increases the risk that your results aren't true winners and losers.
-    float confidence_threshold?;
+    decimal confidence_threshold?;
     # End of the time interval (exclusive) used to calculate the results. The time is formatted in ISO 8601.
     string end_time?;
     # The breakdown of Campaign results by metric. CampaignMetricResults object ordering in the array is consistent with the order that metrics are attached to the Experiment in the Optimizely UI and REST API (i.e. index 0 is the primary metric, indices 1-4 are secondary metrics, indices 5+ are monitoring metrics). See here for an explantion of the impact of metric ordering on results calculations.
@@ -97,7 +99,7 @@ public type BucketingInformation record {
 
 public type Feature record {
     # Whether the Feature has been archived
-    boolean archived?;
+    boolean archived = false;
     # Time when the Feature was created
     string created?;
     # A short description of this Feature
@@ -107,6 +109,7 @@ public type Feature record {
     # The ID of this Feature
     int id?;
     # Unique string identifier for this Feature within the Project
+    @constraint:String {maxLength: 64}
     string 'key;
     # Date last modified
     string last_modified?;
@@ -234,7 +237,7 @@ public type ExperimentResultsReport record {
 
 public type Audience record {
     # Whether the Audience has been archived
-    boolean archived?;
+    boolean archived = false;
     # A string defining the targeting rules for an Audience
     string conditions?;
     # The time the Audience was initially created
@@ -252,7 +255,7 @@ public type Audience record {
     # The ID of the Project the Audience was created in
     int project_id;
     # True if the Audience is available for segmentation on the results page (Audiences can only be used for segmentation in Optimizely Classic). Set to False if you intend to use this Audience only in Optimizely X. Note that a maximum of 10 Audiences can have segmentation set to True in any given Optimizely Classic project.
-    boolean segmentation?;
+    boolean segmentation = false;
 };
 
 public type VariantResults record {
@@ -267,7 +270,7 @@ public type VariantResults record {
     # The name of the variant
     string name?;
     # The value of the metric after dividing the numerator value over the denominator value
-    float rate?;
+    decimal rate?;
     # The value of the denominator
     decimal samples?;
     # A value with statistical context
@@ -275,7 +278,7 @@ public type VariantResults record {
     # The value of the numerator
     decimal value?;
     # The variance of the metric value
-    float variance?;
+    decimal variance?;
     # The unique identifier for the variation this entity contains results for (if applicable)
     string variation_id?;
 };
@@ -288,6 +291,7 @@ public type CustomEventUpdate record {
     # A description of this Event
     string description?;
     # Unique string identifier for this Event within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # A human readable name for this Event
     string name?;
@@ -307,6 +311,7 @@ public type CampaignUpdate record {
     # A list of lists of Experiment IDs that indicate the relative priority of how to show those Experiments in the context of the Campaign. Each list inside of the list represents a group of Experiments of equal priority where groups that appear earlier in the list are of higher priority to be shown.
     int[][] experiment_priorities?;
     # Percentage of visitors to exclude from personalization, measured in basis points. 100 basis points = 1% traffic. For example, a value of 500 would mean that 95% of visitors will see a personalized experience and 5% will see the holdback.
+    @constraint:Int {maxValue: 10000}
     int holdback?;
     # An ordered list of metrics to track for the Campaign
     Metric[] metrics?;
@@ -321,7 +326,8 @@ public type Project record {
     # The account the Project is associated with
     int account_id?;
     # The significance level at which you would like to declare winning and losing variations. A lower number minimizes the time needed to declare a winning or losing variation, but increases the risk that your results aren't true winners and losers. The precision for this number is up to 4 decimal places
-    float confidence_threshold?;
+    @constraint:Number {minValue: 0.5, maxValue: 1}
+    decimal confidence_threshold?;
     # The time that the Project was originally created
     string created?;
     # The ID of a Dynamic Customer Profile Service associated with this Project
@@ -339,13 +345,13 @@ public type Project record {
     # The name of the Project
     string name;
     # The platform of the Project
-    string platform?;
+    string platform = "web";
     # For Full Stack, Mobile, and OTT projects, the language used for the SDK
     string[] sdks?;
     # The token used to identify your mobile app to Optimizely (mobile only)
     string socket_token?;
     # The current status of the Project
-    string status?;
+    string status = "active";
     # The third party platform with which the project is intended to be used. When this is set, a project might have special restrictions. This can have a value of "salesforce" but defaults to null. In order to set this field, an account must have the third party platforms feature and be a fullstack project.
     string? third_party_platform?;
     WebSnippet web_snippet?;
@@ -355,7 +361,7 @@ public type TimeseriesDatapoint record {
     # A value with statistical context
     Datapoint lift?;
     # The value of the metric after dividing the numerator value over the denominator value
-    float rate?;
+    decimal rate?;
     # The value of the denominator
     decimal samples?;
     # Time of this data point formatted in ISO 8601
@@ -363,7 +369,7 @@ public type TimeseriesDatapoint record {
     # The value of the numerator
     decimal value?;
     # The variance of the metric value
-    float variance?;
+    decimal variance?;
 };
 
 public type WebSnippet record {
@@ -423,7 +429,7 @@ public type VariationReach record {
     string name?;
     # The unique identifier for the variation
     string variation_id?;
-    float variation_reach?;
+    decimal variation_reach?;
 };
 
 public type AttributeUpdate record {
@@ -432,6 +438,7 @@ public type AttributeUpdate record {
     # A short description of the Attribute
     string description?;
     # Unique string identifier for this Attribute within the project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The name of the Attribute
     string name?;
@@ -498,14 +505,15 @@ public type SubjectAccessRequestInternal record {
 
 public type Attribute record {
     # Whether or not the Attribute has been archived
-    boolean archived?;
+    boolean archived = false;
     # Whether this Attribute is a custom dimension or custom attribute. If this is a custom dimension, it belongs to an Optimizely Classic experiment and is read-only.
-    string condition_type?;
+    string condition_type = "custom_attribute";
     # A short description of the Attribute
     string description?;
     # The unique identifier for the Attribute
     int id?;
     # Unique string identifier for this Attribute within the project
+    @constraint:String {maxLength: 64}
     string 'key;
     # The last time the Attribute was modified
     string last_modified?;
@@ -574,7 +582,8 @@ public type ProjectUpdate record {
     # The ID of the account the Project is associated with
     int account_id?;
     # The significance level at which you would like to declare winning and losing variations. A lower number minimizes the time needed to declare a winning or losing variation, but increases the risk that your results aren't true winners and losers. The precision for this number is up to 4 decimal places.
-    float confidence_threshold?;
+    @constraint:Number {minValue: 0.5, maxValue: 1}
+    decimal confidence_threshold?;
     # The ID of a Dynamic Customer Profile Service associated with this Project
     int dcp_service_id?;
     # A short description of the Project
@@ -588,7 +597,7 @@ public type ProjectUpdate record {
 
 public type FeatureVariable record {
     # Whether or not this Feature Variable is archived
-    boolean archived?;
+    boolean archived = false;
     # The stringified default value for this Feature Variable. The default value is the value Optimizely SDKs will return when this Feature Variable is accessed by getFeatureVariableValue unless the Feature Variable's value is a part of a feature test variation.
     string default_value;
     # The ID of this Feature Variable
@@ -601,7 +610,7 @@ public type FeatureVariable record {
 
 public type ExperimentResults record {
     # The significance level at which you would like to declare winning and losing variations. A lower number minimizes the time needed to declare a winning or losing variation, but increases the risk that your results aren't true winners and losers.
-    float confidence_threshold?;
+    decimal confidence_threshold?;
     # End of the time interval (exclusive) used to calculated the results. The time is formatted in ISO 8601.
     string end_time?;
     # The unique identifier for the Experiment
@@ -703,7 +712,7 @@ public type ProjectRole record {
 
 public type Section record {
     # Whether or not the Section has been archived
-    boolean archived?;
+    boolean archived = false;
     # A short description of this Section
     string description?;
     # The ID of the Multivariate Test this Section belongs to
@@ -725,6 +734,7 @@ public type EnvironmentUpdate record {
     # Boolean representing whether starting experiments should be restricted to publishers and above in this Environment.
     boolean has_restricted_permissions?;
     # Unique string identifier for this Environment within the Project.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # Name of the Environment.
     string name?;
@@ -742,6 +752,7 @@ public type VariationUpdate record {
     # For Feature Tests, indicates if the feature should be enabled for the variation
     boolean feature_enabled?;
     # Unique string identifier for this variation within the Experiment. Only applicable for Full Stack and Mobile projects.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The name of the variation. Required for Web Experiments and Personalization experiences. Not required for Full Stack Experiments.
     string name?;
@@ -752,6 +763,7 @@ public type VariationUpdate record {
     # An immutable unique identifier for the variation. Required to update an existing variation.
     int variation_id?;
     # The percentage of your visitors that should see this variation, measured in basis points. 100 basis points = 1% traffic. Variation weights must add up to 10000.
+    @constraint:Int {maxValue: 10000}
     int weight;
 };
 
@@ -775,6 +787,7 @@ public type Event record {
     # Whether this Event may be edited
     boolean is_editable?;
     # Unique string identifier for this Event within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The last time the Event was modified
     string last_modified?;
@@ -796,6 +809,7 @@ public type Variation record {
     # For Feature Tests, indicates if the feature should be enabled for the variation
     boolean feature_enabled?;
     # Unique string identifier for this variation within the Experiment. Only applicable for Full Stack and Mobile projects.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The name of the variation. Required for Web Experiments and Personalization experiences. Not required for Full Stack Experiments.
     string name?;
@@ -806,6 +820,7 @@ public type Variation record {
     # The unique identifier for the variation
     int variation_id?;
     # The percentage of your visitors that should see this variation, measured in basis points. 100 basis points = 1% traffic. Variation weights must add up to 10000.
+    @constraint:Int {maxValue: 10000}
     int weight;
 };
 
@@ -818,7 +833,7 @@ public type ListAttribute record {
     # The unique identifier for the Optimizely account
     int account_id?;
     # Whether or not the List Attribute has been archived
-    boolean archived?;
+    boolean archived = false;
     # AWS access key to upload List Attribute source file to S3
     string aws_access_key?;
     # AWS secret key to upload List Attribute source file to S3
@@ -859,10 +874,11 @@ public type CustomEvent record {
     # The unique identifier of the Event
     int id?;
     # Whether or not this Event is a classic Event. If true, this Event is read-only
-    boolean is_classic?;
+    boolean is_classic = false;
     # Whether or not this Event may be edited
     boolean is_editable?;
     # Unique string identifier for this Event within the Project
+    @constraint:String {maxLength: 64}
     string 'key;
     # A human readable name for this Event. If unspecified, defaults to the key
     string name?;
@@ -889,9 +905,9 @@ public type Page record {
     # 'URL Changed' sets the page to trigger when the URL changes [Learn more](https://help.optimizely.com/Build_Campaigns_and_Experiments/Support_for_dynamic_websites%3A_Use_Optimizely_on_single_page_applications#Triggers).
     string activation_type?;
     # Whether the Page has been archived
-    boolean archived?;
+    boolean archived = false;
     # The category this Page is grouped under
-    string category?;
+    string category = "other";
     # Stringified array of the conditions that activate the Page. The array contains Page Condition JSON dicts joined by "and" and "or".
     # Each individual Page Condition dict has format {"type": "url", "match_type": <match_type>, "value": <value>} where match_types are:
     # "simple" match type will match if "value" matches the hostname and path of the Page URL.
@@ -906,6 +922,7 @@ public type Page record {
     # The unique identifier of the Page
     int id?;
     # Unique string identifier for this Page within the Project
+    @constraint:String {maxLength: 500}
     string 'key?;
     # Date last modified
     string last_modified?;
@@ -927,6 +944,7 @@ public type InPageEventUpdate record {
     # A description of this Event
     string description?;
     # Unique string identifier for this Event within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # A human readable name for this Event
     string name?;
@@ -985,6 +1003,7 @@ public type FeatureUpdate record {
     # The configuration for this Feature's Rollout within each Environment, keyed by Environment key.
     record {} environments?;
     # Unique string identifier for this Feature within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # Name of the Feature
     string name?;
@@ -1017,7 +1036,7 @@ public type Experiment record {
     # Traffic allocation policy across variations in this experiment
     string allocation_policy?;
     # The audiences that should see this experiment. To target everyone, use the string "everyone" or omit this field. Multiple audiences can be combined with "and" or "or" using the same structure as audience conditions
-    string audience_conditions?;
+    string audience_conditions = "everyone";
     # For Personalization experiences, this ID corresponds to the parent Campaign. For standalone experiments this campaign_id does not correspond to a campaign object.
     int campaign_id?;
     # Custom CSS or JavaScript that will run before all variations in the Experiment (for Experiments in Web Projects only)
@@ -1037,12 +1056,14 @@ public type Experiment record {
     # The feature flag name to display in the Optimizely app. Whitespaces and other non-alphanumeric characters allowed. Defaults to feature key if left empty.
     string feature_name?;
     # Percent of traffic to exclude from the experiment, measured in basis points. 100 basis points = 1% traffic. For example, a value of 9900 would mean that 1% of visitors will be eligible for the experiment. This is only applicable for Web.
+    @constraint:Int {maxValue: 10000}
     int holdback?;
     # The unique identifier for the Experiment
     int id?;
     # Whether or not the Experiment is a classic Experiment. If true, the Experiment is read-only
-    boolean is_classic?;
+    boolean is_classic = false;
     # Unique string identifier for this Experiment within the Project. Only applicable for Full Stack and Mobile projects.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The last time the Experiment was modified
     string last_modified?;
@@ -1064,9 +1085,10 @@ public type Experiment record {
     # Current state of the Experiment.<br> In Full Stack, this is the Experiment's state in the primary (production) environment.
     string status?;
     # Percent of traffic allocated for the experiment, measured in basis points. 100 basis points = 1% traffic. For example, a value of 5500 would mean that 55% of visitors will be eligible for the experiment. This is only applicable for Full Stack.
+    @constraint:Int {maxValue: 10000}
     int traffic_allocation?;
     # Indicates whether this is an `a/b`, `multivariate`, `feature`, or `multiarmed_bandit` test or an experience within a `personalization` campaign. Note that the default for this field is `a/b`. If another test type is desired, populate this field with the appropriate string (from one of the possible values).
-    string 'type?;
+    string 'type = "a/b";
     URLTargeting url_targeting?;
     # A list of variations that each define an experience to show in the context of the Experiment for the purpose of comparison against each other
     Variation[] variations?;
@@ -1078,13 +1100,13 @@ public type ExperimentVariationReach record {
     # Baseline count
     int baseline_count?;
     # Baseline reach
-    float baseline_reach?;
+    decimal baseline_reach?;
     # Total number of visitors exposed to the Experiment
     int total_count?;
     # Treatment count
     int treatment_count?;
     # Treatment reach
-    float treatment_reach?;
+    decimal treatment_reach?;
     # A map of reach for each variation keyed by variation ID
     record {} variations?;
 };
@@ -1109,9 +1131,11 @@ public type ImpressionsUsage record {
 # A value with statistical context
 public type Datapoint record {
     # The confidence interval measures the uncertainty around improvement. It starts out wide and shrinks as more data comes in. Significance means that the confidence interval is completely above or completely below 0. If the result is significant and positive, the confidence interval will be above 0. If the result is significant and negative, confidence interval will be below 0. If the result is inconclusive, confidence interval includes 0
-    float[2] confidence_interval?;
+    @constraint:Array {maxLength: 2, minLength: 2}
+    decimal[] confidence_interval?;
     # The confidence interval with bounds that are scaled by the baseline conversion rate.
-    float[2] confidence_interval_scaled?;
+    @constraint:Array {maxLength: 2, minLength: 2}
+    decimal[] confidence_interval_scaled?;
     # End of epoch
     boolean end_of_epoch?;
     # Indicates that this is the best performing variant for this metric. Also referred to as the 'Winner'
@@ -1121,11 +1145,11 @@ public type Datapoint record {
     # Indicates whether a variation is doing better/worse than the baseline after taking the metric's winning direction into account.
     string lift_status?;
     # The likelihood that the observed difference in conversion rate is not due to chance
-    float significance?;
+    decimal significance?;
     # The estimated improvement for this variant compared to the baseline
-    float value?;
+    decimal value?;
     # The estimated improvement scaled by the baseline conversion rate.
-    float value_scaled?;
+    decimal value_scaled?;
     # The number of estimated visitors remaining before result becomes statistically significant. A value of 9223372036854775807 means the value is not available.
     int visitors_remaining?;
 };
@@ -1142,6 +1166,7 @@ public type Campaign record {
     # A list of lists of Experiment IDs that indicate the relative priority of how to show those Experiments in the context of the Campaign. Each list inside of the list represents a group of Experiments of equal priority where groups that appear earlier in the list are of higher priority to be shown.
     int[][] experiment_priorities?;
     # Percentage of visitors to exclude from personalization, measured in basis points. 100 basis points = 1% traffic. For example, a value of 500 would mean that 95% of visitors will see a personalized experience and 5% will see the holdback.
+    @constraint:Int {maxValue: 10000}
     int holdback?;
     # The unique identifier for the Campaign
     int id?;
@@ -1160,7 +1185,7 @@ public type Campaign record {
     # Current state of the Campaign. not_started means the Campaign has never been published to the world. running means the Campaign is currently live to the world. paused means the Campaign has been published, but is currently not running. archived means the Campaign is paused and not visible in the web UI.
     string status?;
     # Indicates the type of this campaign. Campaigns created or fetched via the API should currently all have a type of `personalization`, but if you get a campaign_id for an experiment and look it up, you may get an `other` value.
-    string 'type?;
+    string 'type = "personalization";
     URLTargeting url_targeting?;
 };
 
@@ -1189,12 +1214,13 @@ public type Environment record {
     # A short description of the Environment.
     string description?;
     # Boolean representing whether starting experiments should be restricted to publishers and above in this Environment.
-    boolean has_restricted_permissions?;
+    boolean has_restricted_permissions = false;
     # ID of this Environment.
     int id?;
     # Boolean representing if this is the primary (default) Environment.
     boolean is_primary?;
     # Unique string identifier for this Environment within the Project.
+    @constraint:String {maxLength: 64}
     string 'key;
     # Last modification time.
     string last_modified?;
@@ -1223,7 +1249,7 @@ public type SectionUpdate record {
 
 public type ExperimentTimeseries record {
     # The significance level at which you would like to declare winning and losing variations. A lower number minimizes the time needed to declare a winning or losing variation, but increases the risk that your results aren't true winners and losers.
-    float confidence_threshold?;
+    decimal confidence_threshold?;
     # End of the time interval (exclusive) used to calculated the results. The time is formatted in ISO 8601.
     string end_time?;
     # The unique identifier for the Experiment
@@ -1267,6 +1293,7 @@ public type URLTargeting record {
     # URL to load in the editor for this page
     string edit_url;
     # Unique string identifier for this Page within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # The unique identifier of the Page that represents the experiment or campaign's URL Targeting.
     int page_id?;
@@ -1368,8 +1395,10 @@ public type ExperimentUpdate record {
     # The ID of a Feature to attach to the Experiment. This turns an Experiment into a Feature Test.
     int feature_id?;
     # Percent of traffic to exclude from the experiment, measured in basis points. 100 basis points = 1% traffic. For example, a value of 9900 would mean that 1% of visitors will be eligible for the experiment. This is only applicable for Web.
+    @constraint:Int {maxValue: 10000}
     int holdback?;
     # Unique string identifier for this Experiment within the Project. Only applicable for Full Stack and Mobile projects.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # An ordered list of metrics to track for the Experiment
     Metric[] metrics?;
@@ -1379,6 +1408,7 @@ public type ExperimentUpdate record {
     int[] page_ids?;
     ScheduleUpdate schedule?;
     # Percent of traffic allocated for the experiment, measured in basis points. 100 basis points = 1% traffic. For example, a value of 5500 would mean that 55% of visitors will be eligible for the experiment. This is only applicable for Full Stack.
+    @constraint:Int {maxValue: 10000}
     int traffic_allocation?;
     URLTargeting url_targeting?;
     # List of IDs of all variations in the Experiment
@@ -1428,6 +1458,7 @@ public type RolloutRule record {
     # Whether or not the Rollout Rule is applied in this Environment. You can toggle this on and off by sending True or False.
     boolean enabled?;
     # The percentage of the designated audiences that should get this Feature, measured in basis points. 100 basis points = 1% traffic.
+    @constraint:Int {maxValue: 10000}
     int percentage_included?;
 };
 
@@ -1474,6 +1505,7 @@ public type ImpressionsUsageSummary record {
     # Usage for the account.
     int usage;
     # Utilised usage percentage.
+    @constraint:Number {maxValue: 100}
     decimal usage_percentage;
 };
 
@@ -1496,6 +1528,7 @@ public type SubjectAccessRequest record {
     # The Subject Access Request ID.
     int id?;
     # The identifier value that you would like us to use when searching. If <code>user</code> was selected in the previous step, the identifier will be the email address for the User.
+    @constraint:String {maxLength: 355}
     string identifier;
     # <p>User data is identified by the email address used to create the end user account. The endpoint only accepts the <code>email</code> datatype if you selected <code>user</code> for <strong>Datatype</strong>.<br>
     # <br>
@@ -1537,7 +1570,7 @@ public type ScheduledJob record {
     # The account that the job is associated with
     int account_id?;
     # Whether the Scheduled Job is archived
-    boolean archived?;
+    boolean archived = false;
     # A list of campaign_ids that should be considered during the job
     int[] campaign_ids?;
     # A list of experiment_ids that should be considered during the job
@@ -1630,6 +1663,7 @@ public type PageUpdate record {
     # URL of the Page
     string edit_url?;
     # Unique string identifier for this Page within the Project
+    @constraint:String {maxLength: 500}
     string 'key?;
     # Page Name
     string name?;
@@ -1651,7 +1685,8 @@ public type FeatureEnvironment record {
     # Whether the Environment this set of Rollout Rules applies to is the primary Environment
     boolean is_primary?;
     # Rollout Rules allow you to define groups of users and a percentage of those users that will see a Feature by default. You are currently limited to a single rollout rule. Audience IDs sent in any environment must always match that of the primary environment.
-    RolloutRule[1] rollout_rules;
+    @constraint:Array {maxLength: 1, minLength: 1}
+    RolloutRule[] rollout_rules;
 };
 
 public type ExperimentSummary record {
@@ -1759,10 +1794,11 @@ public type InPageEvent record {
     # The unique identifier of the Event
     int id?;
     # Whether or not this Event is a classic Event. If true, the Event is read-only
-    boolean is_classic?;
+    boolean is_classic = false;
     # Whether or not this Event may be edited
     boolean is_editable?;
     # Unique string identifier for this Event within the Project
+    @constraint:String {maxLength: 64}
     string 'key?;
     # A human readable name for this Event
     string name;

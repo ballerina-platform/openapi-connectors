@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type PdfToImageRequestDto record {
     # The pdf file to generate image from, as Base64 encoded string.
@@ -35,10 +37,13 @@ public type WkHtmlToPdfRequestDto record {
 # Set color
 public type ColorDto record {
     # Get or sets R value of RGB color
+    @constraint:Int {maxValue: 255}
     int R?;
     # Get or sets G value of RGB color
+    @constraint:Int {maxValue: 255}
     int G?;
     # Get or sets B value of RGB color
+    @constraint:Int {maxValue: 255}
     int B?;
 };
 
@@ -196,9 +201,9 @@ public type PdfToImageOptions record {
     # Valid options are "image/jpeg", "image/png" or "image/gif". Default is "image/png"
     string? ImageFormat?;
     # Set the horizontal resolution, default is 96 dpi;
-    float HorizontalResolution?;
+    decimal HorizontalResolution?;
     # Set the vertical resolution, default is 96 dpi;
-    float VerticalResolution?;
+    decimal VerticalResolution?;
     # Set the width of the output image, default value is width of source document. To scale width, and keeping proportions, do not set height;
     int Width?;
     # Set the height of the output image, default value is width of source document. To scale height, and keeping proportions, do not set width;

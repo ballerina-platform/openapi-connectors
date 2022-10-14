@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -44,87 +44,87 @@ public isolated client class Client {
     }
     # Communication & Tonality
     #
-    # + 'all - Returns all predictions, not only the most probable one 
+    # + all - Returns all predictions, not only the most probable one 
     # + payload - Request Details 
     # + return - Successful Response 
-    remote isolated function getCommunicationStyle(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
+    remote isolated function getCommunicationStyle(PostRequest payload, boolean all = false) returns PredictionResults|error {
         string resourcePath = string `/communication`;
-        map<anydata> queryParam = {"all": 'all};
+        map<anydata> queryParam = {"all": all};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PredictionResults response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Emotion Analysis
     #
-    # + 'all - Returns all predictions, not only the most probable one 
+    # + all - Returns all predictions, not only the most probable one 
     # + payload - Request Details 
     # + return - Successful Response 
-    remote isolated function getEmotion(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
+    remote isolated function getEmotion(PostRequest payload, boolean all = false) returns PredictionResults|error {
         string resourcePath = string `/emotion`;
-        map<anydata> queryParam = {"all": 'all};
+        map<anydata> queryParam = {"all": all};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PredictionResults response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Emotion Analysis
     #
-    # + 'all - Returns all predictions, not only the most probable one 
+    # + all - Returns all predictions, not only the most probable one 
     # + payload - Request Details 
     # + return - Successful Response 
-    remote isolated function getEkmanEmotion(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
+    remote isolated function getEkmanEmotion(PostRequest payload, boolean all = false) returns PredictionResults|error {
         string resourcePath = string `/ekman-emotion`;
-        map<anydata> queryParam = {"all": 'all};
+        map<anydata> queryParam = {"all": all};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PredictionResults response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Personality Traits
     #
-    # + 'all - Returns all predictions, not only the most probable one 
+    # + all - Returns all predictions, not only the most probable one 
     # + payload - Request Details 
     # + return - Successful Response 
-    remote isolated function getPersonality(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
+    remote isolated function getPersonality(PostRequest payload, boolean all = false) returns PredictionResults|error {
         string resourcePath = string `/personality`;
-        map<anydata> queryParam = {"all": 'all};
+        map<anydata> queryParam = {"all": all};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PredictionResults response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sentiment Analysis
     #
-    # + 'all - Returns all predictions, not only the most probable one 
+    # + all - Returns all predictions, not only the most probable one 
     # + payload - Request Details 
     # + return - Successful Response 
-    remote isolated function getSentiment(PostRequest payload, boolean 'all = false) returns PredictionResults|error {
+    remote isolated function getSentiment(PostRequest payload, boolean all = false) returns PredictionResults|error {
         string resourcePath = string `/sentiment`;
-        map<anydata> queryParam = {"all": 'all};
+        map<anydata> queryParam = {"all": all};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PredictionResults response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PredictionResults response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Extracts topics and sentiments and relates them.
@@ -141,7 +141,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TopicSentimentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TopicSentimentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Language Detection
@@ -155,7 +155,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LanguageDetectionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LanguageDetectionResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

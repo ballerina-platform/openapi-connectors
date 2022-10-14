@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,7 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
 import ballerina/http;
 
 # This is a generated connector from [Quickbase API v1](https://developer.quickbase.com/) OpenAPI Specification.
@@ -46,7 +47,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an app
@@ -57,7 +58,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getApp(string appId, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/apps/${appId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -72,13 +73,13 @@ public isolated client class Client {
     # + payload - App details 
     # + return - Success 
     remote isolated function updateApp(string appId, string qbRealmHostname, string authorization, AppsAppidBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/apps/${appId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get app events
@@ -89,7 +90,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getAppEvents(string appId, string qbRealmHostname, string authorization, string? userAgent = ()) returns InlineResponse200[]|error {
-        string resourcePath = string `/apps/${appId}/events`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/events`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse200[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -104,13 +105,13 @@ public isolated client class Client {
     # + payload - App details 
     # + return - Success 
     remote isolated function copyApp(string appId, string qbRealmHostname, string authorization, AppidCopyBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/apps/${appId}/copy`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/copy`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get tables for an app
@@ -146,7 +147,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a table
@@ -158,7 +159,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getTable(string tableId, string appId, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}`;
         map<anydata> queryParam = {"appId": appId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -176,7 +177,7 @@ public isolated client class Client {
     # + payload - Table details 
     # + return - Success 
     remote isolated function updateTable(string tableId, string appId, string qbRealmHostname, string authorization, TablesTableidBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}`;
         map<anydata> queryParam = {"appId": appId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -184,7 +185,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a table
@@ -196,12 +197,12 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function deleteTable(string tableId, string appId, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}`;
         map<anydata> queryParam = {"appId": appId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp->delete(resourcePath, httpHeaders);
+        json response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get all relationships
@@ -213,7 +214,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getRelationships(string tableId, string qbRealmHostname, string authorization, int? skip = (), string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}/relationships`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}/relationships`;
         map<anydata> queryParam = {"skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -230,13 +231,13 @@ public isolated client class Client {
     # + payload - Relationship details 
     # + return - Success 
     remote isolated function createRelationship(string tableId, string qbRealmHostname, string authorization, TableidRelationshipBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}/relationship`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}/relationship`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update a relationship
@@ -249,13 +250,13 @@ public isolated client class Client {
     # + payload - Relationship details 
     # + return - Success 
     remote isolated function updateRelationship(string tableId, decimal relationshipId, string qbRealmHostname, string authorization, RelationshipRelationshipidBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}/relationship/${relationshipId}`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}/relationship/${getEncodedUri(relationshipId)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a relationship
@@ -267,10 +268,10 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function deleteRelationship(string tableId, decimal relationshipId, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/tables/${tableId}/relationship/${relationshipId}`;
+        string resourcePath = string `/tables/${getEncodedUri(tableId)}/relationship/${getEncodedUri(relationshipId)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp->delete(resourcePath, httpHeaders);
+        json response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get reports for a table
@@ -298,7 +299,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getReport(string reportId, string tableId, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/reports/${reportId}`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}`;
         map<anydata> queryParam = {"tableId": tableId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -318,7 +319,7 @@ public isolated client class Client {
     # + payload - Report details 
     # + return - Success 
     remote isolated function runReport(string reportId, string tableId, string qbRealmHostname, string authorization, json payload, int? skip = (), int? top = (), string? userAgent = ()) returns json|error {
-        string resourcePath = string `/reports/${reportId}/run`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/run`;
         map<anydata> queryParam = {"tableId": tableId, "skip": skip, "top": top};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -326,7 +327,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get fields for a table
@@ -363,7 +364,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get field
@@ -376,7 +377,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getField(int fieldId, string tableId, string qbRealmHostname, string authorization, boolean includeFieldPerms = false, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/fields/${fieldId}`;
+        string resourcePath = string `/fields/${getEncodedUri(fieldId)}`;
         map<anydata> queryParam = {"tableId": tableId, "includeFieldPerms": includeFieldPerms};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -394,7 +395,7 @@ public isolated client class Client {
     # + payload - Field details 
     # + return - Success 
     remote isolated function updateField(int fieldId, string tableId, string qbRealmHostname, string authorization, FieldsFieldidBody payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/fields/${fieldId}`;
+        string resourcePath = string `/fields/${getEncodedUri(fieldId)}`;
         map<anydata> queryParam = {"tableId": tableId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -402,7 +403,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get usage for all fields
@@ -432,7 +433,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function getFieldUsage(int fieldId, string tableId, string qbRealmHostname, string authorization, string? userAgent = ()) returns InlineResponse2004[]|error {
-        string resourcePath = string `/fields/usage/${fieldId}`;
+        string resourcePath = string `/fields/usage/${getEncodedUri(fieldId)}`;
         map<anydata> queryParam = {"tableId": tableId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
@@ -454,7 +455,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Insert/Update record(s)
@@ -471,7 +472,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Query for data
@@ -488,7 +489,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a temporary token for a dbid
@@ -499,7 +500,7 @@ public isolated client class Client {
     # + qbAppToken - Your Quickbase app token 
     # + return - This token is used in the authorization header value (similar to the QB-USER-TOKEN), except it uses the QB-TEMP-TOKEN prefix header['Authorization'] = 'QB-TEMP-TOKEN {token}' 
     remote isolated function getTempTokenDBID(string dbid, string qbRealmHostname, string? userAgent = (), string? qbAppToken = ()) returns json|error {
-        string resourcePath = string `/auth/temporary/${dbid}`;
+        string resourcePath = string `/auth/temporary/${getEncodedUri(dbid)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "QB-App-Token": qbAppToken};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -519,7 +520,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Deactivate a user token
@@ -534,7 +535,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a user token
@@ -547,7 +548,7 @@ public isolated client class Client {
         string resourcePath = string `/usertoken`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp->delete(resourcePath, httpHeaders);
+        json response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Download file
@@ -561,7 +562,7 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Success 
     remote isolated function downloadFile(string tableId, int recordId, int fieldId, int versionNumber, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/files/${tableId}/${recordId}/${fieldId}/${versionNumber}`;
+        string resourcePath = string `/files/${getEncodedUri(tableId)}/${getEncodedUri(recordId)}/${getEncodedUri(fieldId)}/${getEncodedUri(versionNumber)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -578,10 +579,10 @@ public isolated client class Client {
     # + authorization - The Quickbase authentication scheme you are using to authenticate the request, as described on the [authorization page](../auth). 
     # + return - Successfully Deleted the File Attachment 
     remote isolated function deleteFile(string tableId, int recordId, int fieldId, int versionNumber, string qbRealmHostname, string authorization, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/files/${tableId}/${recordId}/${fieldId}/${versionNumber}`;
+        string resourcePath = string `/files/${getEncodedUri(tableId)}/${getEncodedUri(recordId)}/${getEncodedUri(fieldId)}/${getEncodedUri(versionNumber)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        json response = check self.clientEp->delete(resourcePath, httpHeaders);
+        json response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Deny users
@@ -598,7 +599,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deny and remove users from groups
@@ -610,13 +611,13 @@ public isolated client class Client {
     # + payload - A list of user IDs that need to be denied 
     # + return - Success 
     remote isolated function denyUsersFromGroups(boolean shouldDeleteFromGroups, string qbRealmHostname, string authorization, string[] payload, string? userAgent = ()) returns json|error {
-        string resourcePath = string `/users/deny/${shouldDeleteFromGroups}`;
+        string resourcePath = string `/users/deny/${getEncodedUri(shouldDeleteFromGroups)}`;
         map<any> headerValues = {"QB-Realm-Hostname": qbRealmHostname, "User-Agent": userAgent, "Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
 }

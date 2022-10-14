@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Request to update container information
 public type UpdateAContainerRequest record {
@@ -46,10 +48,13 @@ public type UpdateAContainerResponse record {
 # Container dimensions
 public type ContainerDimensions record {
     # This is the length of the container based on its Unit of Measurement (lengthUnit)
+    @constraint:Number {minValue: 0.1, maxValue: 108}
     decimal length?;
     # This is the width of the container based on its Unit of Measurement (widthUnit)
+    @constraint:Number {minValue: 0.1, maxValue: 108}
     decimal width?;
     # This is the height of the container based on its Unit of Measurement (heightUnit)
+    @constraint:Float {minValue: 0.1, maxValue: 108}
     float height?;
     # This is the weight of the container based on its Unit of Measurement (weightUnit)
     float weight?;
@@ -93,8 +98,10 @@ public type Get404ResponseModel record {
 # Container value
 public type ContainerValue record {
     # This is the cost value for the container. During the carton selection phase for an order, Shipwire will first consider containers with a lower cost, even if chosing one will end up making the shipping cost comparatively higher. (i.e. Shipwire will chose a container 1 with a $0 cost over a container 2 with a $1 cost, even if the shipping cost for using container 1 is higher than it would be using container 2.)
+    @constraint:Number {maxValue: 1000000.0}
     decimal costValue?;
     # This is the retail value for the container. Container retail value will be added to the shipping quote for the customer. If a merchant doesn't plan to charge customers for cartons/boxes, the container retail value should be set to $0.
+    @constraint:Number {maxValue: 1000000.0}
     decimal retailValue?;
     # This is the currency used in determining cost value for the container.
     string costValueCurrency?;

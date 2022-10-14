@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
 public type ReadMultipleUsersArr ReadMultipleUsers[];
 
 public type Error404 record {
-    Error404Error _error;
+    Error404Error 'error;
 };
 
 public type ReadSingleUser record {
@@ -31,11 +31,11 @@ public type ReadSingleUser record {
 };
 
 public type Error405 record {
-    Error405Error _error;
+    Error405Error 'error;
 };
 
 public type Error406 record {
-    Error406Error _error;
+    Error406Error 'error;
 };
 
 public type User record {
@@ -59,7 +59,7 @@ public type UserMeta record {
 };
 
 public type Error409 record {
-    Error409Error _error;
+    Error409Error 'error;
 };
 
 public type Success204 record {
@@ -90,7 +90,7 @@ public type ReadMultipleUsers record {
 };
 
 public type Error record {
-    ErrorError _error;
+    ErrorError 'error;
 };
 
 public type Error409Error record {
@@ -115,7 +115,7 @@ public type Emails record {
 };
 
 public type Error400 record {
-    Error400Error _error;
+    Error400Error 'error;
 };
 
 public type Success204Body record {
@@ -124,11 +124,11 @@ public type Success204Body record {
 };
 
 public type Error401 record {
-    Error401Error _error;
+    Error401Error 'error;
 };
 
 public type Error403 record {
-    Error403Error _error;
+    Error403Error 'error;
 };
 
 public type Error403Error record {

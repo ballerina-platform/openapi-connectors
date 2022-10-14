@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://example.com/oauth/token";
 |};
 
 # This is a generated connector for [ServiceNow REST API Quebec version] (https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.
@@ -85,7 +96,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object that includes all records of the table. Otherwise returns the relevant error. 
     remote isolated function getRecordList(string tableName, string? nameValuePairs = (), string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), decimal? sysparmLimit = (), boolean? sysparmNoCount = (), decimal? sysparmOffset = (), string? sysparmQuery = (), string? sysparmQueryCategory = (), boolean? sysparmQueryNoDomain = (), boolean? sysparmSuppressPaginationHeader = (), string? sysparmView = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/now/table/${tableName}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}`;
         map<anydata> queryParam = {"name-value pairs": nameValuePairs, "sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_limit": sysparmLimit, "sysparm_no_count": sysparmNoCount, "sysparm_offset": sysparmOffset, "sysparm_query": sysparmQuery, "sysparm_query_category": sysparmQueryCategory, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_suppress_pagination_header": sysparmSuppressPaginationHeader, "sysparm_view": sysparmView};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -107,14 +118,14 @@ public isolated client class Client {
     # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
     # + return - If successful, returns a JSON object that includes created record of the table. Otherwise returns the relevant error. 
     remote isolated function createRecord(string tableName, json payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
-        string resourcePath = string `/api/now/table/${tableName}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_view": sysparmView};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the record identified by the specified sys_id from the specified table.
@@ -129,7 +140,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object that includes specified record of the table. Otherwise returns the relevant error. 
     remote isolated function getRecordById(string tableName, string sysId, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}/${getEncodedUri(sysId)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -153,14 +164,14 @@ public isolated client class Client {
     # + payload - Name-value pairs for the field(s) to update in the associated table in JSON format. 
     # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
     remote isolated function updateRecord(string tableName, string sysId, json payload, string? sysparmDisplayValue = (), boolean? sysparmExcludeReferenceLink = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
-        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}/${getEncodedUri(sysId)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_exclude_reference_link": sysparmExcludeReferenceLink, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes the specified record from the specified table.
@@ -171,12 +182,12 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - **HTTP Status Code:** `204`. Meeting updated. 
     remote isolated function deleteRecord(string tableName, string sysId, boolean? sysparmQueryNoDomain = (), string? accept = ()) returns http:Response|error {
-        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}/${getEncodedUri(sysId)}`;
         map<anydata> queryParam = {"sysparm_query_no_domain": sysparmQueryNoDomain};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Updates the specified record with the name-value pairs included in the request body.
@@ -194,14 +205,14 @@ public isolated client class Client {
     # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
     # + return - If successful, returns a JSON object that includes updated record of the table. Otherwise returns the relevant error. 
     remote isolated function patchRecordById(string tableName, string sysId, json payload, string? sysparmDisplayValue = (), string? sysparmFields = (), boolean? sysparmInputDisplayValue = (), boolean? sysparmQueryNoDomain = (), string? sysparmView = (), string? accept = (), string? contentType = (), string? xNoResponseBody = ()) returns json|error {
-        string resourcePath = string `/api/now/table/${tableName}/${sysId}`;
+        string resourcePath = string `/api/now/table/${getEncodedUri(tableName)}/${getEncodedUri(sysId)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_fields": sysparmFields, "sysparm_input_display_value": sysparmInputDisplayValue, "sysparm_query_no_domain": sysparmQueryNoDomain, "sysparm_view": sysparmView};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-no-response-body": xNoResponseBody};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves records for the specified table and performs aggregate functions on the returned values.
@@ -221,7 +232,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object depends on specified table and specified request parameters. Otherwise returns the relevant error. 
     remote isolated function aggregate(string tableName, string? nameValuePairs = (), string? sysparmAvgFields = (), string? sysparmMinFields = (), string? sysparmMaxFields = (), string? sysparmSumFields = (), string? sysparmCount = (), string? sysparmDisplayValue = (), string? sysparmGroupBy = (), string? sysparmHaving = (), string? sysparmOrderby = (), string? sysparmQuery = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/now/stats/${tableName}`;
+        string resourcePath = string `/api/now/stats/${getEncodedUri(tableName)}`;
         map<anydata> queryParam = {"name-value pairs": nameValuePairs, "sysparm_avg_fields": sysparmAvgFields, "sysparm_min_fields": sysparmMinFields, "sysparm_max_fields": sysparmMaxFields, "sysparm_sum_fields": sysparmSumFields, "sysparm_count": sysparmCount, "sysparm_display_value": sysparmDisplayValue, "sysparm_group_by": sysparmGroupBy, "sysparm_having": sysparmHaving, "sysparm_orderby": sysparmOrderby, "sysparm_query": sysparmQuery};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -236,7 +247,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getImportSet(string stagingTableName, string sysId, string? accept = ()) returns json|error {
-        string resourcePath = string `/api/now/import/${stagingTableName}/${sysId}`;
+        string resourcePath = string `/api/now/import/${getEncodedUri(stagingTableName)}/${getEncodedUri(sysId)}`;
         map<any> headerValues = {"Accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -250,12 +261,12 @@ public isolated client class Client {
     # + payload - Name-value pairs to insert in the import fields in JSON format. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function createImportSet(string stagingTableName, json payload, string? accept = (), string? contentType = ()) returns json|error {
-        string resourcePath = string `/api/now/import/${stagingTableName}`;
+        string resourcePath = string `/api/now/import/${getEncodedUri(stagingTableName)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Inserts multiple records into a specified staging table and triggers transformation based on predefined transform maps or Robust Transform Engine (RTE) configurations in a single request.
@@ -268,14 +279,14 @@ public isolated client class Client {
     # + payload - Name-value pairs to insert in the import fields in JSON format. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function createMultipleImportSet(string stagingTableName, json payload, string? multiImportSetId = (), string? runAfter = (), string? accept = (), string? contentType = ()) returns json|error {
-        string resourcePath = string `/api/now/import/${stagingTableName}/insertMultiple`;
+        string resourcePath = string `/api/now/import/${getEncodedUri(stagingTableName)}/insertMultiple`;
         map<anydata> queryParam = {"multi_import_set_id": multiImportSetId, "run_after": runAfter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the activity stream for a specified Customer Service Management (CSM) case.
@@ -287,7 +298,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getCaseById(string id, string? sysparmActivityType = (), decimal? sysparmLimit = (), decimal? sysparmOffset = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/sn_customerservice/case/${id}/activities`;
+        string resourcePath = string `/api/sn_customerservice/case/${getEncodedUri(id)}/activities`;
         map<anydata> queryParam = {"sysparm_activity_type": sysparmActivityType, "sysparm_limit": sysparmLimit, "sysparm_offset": sysparmOffset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -307,7 +318,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getValuesByFieldNameInCase(string fieldName, string? sysparmDependentValue = (), decimal? sysparmLimit = (), decimal? sysparmOffset = (), string? sysparmReferenceFieldColumns = (), string? sysparmQuery = (), string? sysparmRefQualInput = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/sn_customerservice/case/field_values/${fieldName}`;
+        string resourcePath = string `/api/sn_customerservice/case/field_values/${getEncodedUri(fieldName)}`;
         map<anydata> queryParam = {"sysparm_dependent_value": sysparmDependentValue, "sysparm_limit": sysparmLimit, "sysparm_offset": sysparmOffset, "sysparm_reference_field_columns": sysparmReferenceFieldColumns, "sysparm_query": sysparmQuery, "sysparm_ref_qual_input": sysparmRefQualInput};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -328,7 +339,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getValuesByCaseIdAndFieldName(string fieldName, string id, string? sysparmDependentValue = (), decimal? sysparmLimit = (), decimal? sysparmOffset = (), string? sysparmReferenceFieldColumns = (), string? sysparmQuery = (), string? sysparmRefQualInput = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/sn_customerservice/case/${id}/field_values/${fieldName}`;
+        string resourcePath = string `/api/sn_customerservice/case/${getEncodedUri(id)}/field_values/${getEncodedUri(fieldName)}`;
         map<anydata> queryParam = {"sysparm_dependent_value": sysparmDependentValue, "sysparm_limit": sysparmLimit, "sysparm_offset": sysparmOffset, "sysparm_reference_field_columns": sysparmReferenceFieldColumns, "sysparm_query": sysparmQuery, "sysparm_ref_qual_input": sysparmRefQualInput};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -343,7 +354,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getCSMCaseById(string id, string? sysparmDisplayValue = (), string? accept = ()) returns json|error {
-        string resourcePath = string `/api/sn_customerservice/case/${id}`;
+        string resourcePath = string `/api/sn_customerservice/case/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept};
@@ -362,14 +373,14 @@ public isolated client class Client {
     # + payload - Field name and the associated value for each parameter to define in the specified record in JSON format. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function updateCSMCase(string id, json payload, string? sysparmDisplayValue = (), string? sysparmFields = (), string? sysparmGetCaseDetails = (), string? accept = (), string? contentType = ()) returns json|error {
-        string resourcePath = string `/api/sn_customerservice/case/${id}`;
+        string resourcePath = string `/api/sn_customerservice/case/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"sysparm_display_value": sysparmDisplayValue, "sysparm_fields": sysparmFields, "sysparm_get_case_details": sysparmGetCaseDetails};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a specified set of Customer Service Management (CSM) cases.
@@ -403,7 +414,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a specified set of Customer Service Management (CSM) contacts.
@@ -434,7 +445,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the specified Customer Service Management (CSM) contact.
@@ -443,7 +454,7 @@ public isolated client class Client {
     # + accept - Data format of the response body. 
     # + return - If successful, returns a JSON object. Otherwise returns the relevant error. 
     remote isolated function getCSMContactById(string id, string? accept = ()) returns json|error {
-        string resourcePath = string `/api/now/contact/${id}`;
+        string resourcePath = string `/api/now/contact/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -68,13 +68,13 @@ public isolated client class Client {
     # + payload - Extend and customize the defined notification by providing dynamic content. 
     # + return - Success 
     remote isolated function sendNotification(string notificationName, Notification payload) returns http:Response|error {
-        string resourcePath = string `/notifications/${notificationName}`;
+        string resourcePath = string `/notifications/${getEncodedUri(notificationName)}`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of all online action subscriptions
@@ -98,7 +98,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2002 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2002 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove an online action subscription
@@ -106,10 +106,10 @@ public isolated client class Client {
     # + subscriptionId - Id that was returned when creating the subscription. 
     # + return - Success 
     remote isolated function deleteSubscription(string subscriptionId) returns http:Response|error {
-        string resourcePath = string `/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"API-Key": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Execute an Automation Server action.
@@ -130,7 +130,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancel a scheduled Automation Server action.
@@ -145,7 +145,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

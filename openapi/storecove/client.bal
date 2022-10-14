@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Storcove API v2](https://app.storecove.com/docs) OpenAPI Specification.
@@ -120,7 +124,7 @@ public isolated client class Client {
     # + guid - InvoiceSubmission GUID 
     # + return - Success 
     remote isolated function showInvoiceSubmissionEvidence(string guid) returns InvoiceSubmissionEvidence|error {
-        string resourcePath = string `/invoice_submissions/${guid}/evidence`;
+        string resourcePath = string `/invoice_submissions/${getEncodedUri(guid)}/evidence`;
         InvoiceSubmissionEvidence response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -141,7 +145,7 @@ public isolated client class Client {
     # + id - legal_entity id 
     # + return - Success 
     remote isolated function getLegalEntity(int id) returns LegalEntity|error {
-        string resourcePath = string `/legal_entities/${id}`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(id)}`;
         LegalEntity response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -150,8 +154,8 @@ public isolated client class Client {
     # + id - legal_entity id 
     # + return - Success 
     remote isolated function deleteLegalEntity(int id) returns http:Response|error {
-        string resourcePath = string `/legal_entities/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/legal_entities/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update LegalEntity
@@ -160,7 +164,7 @@ public isolated client class Client {
     # + payload - LegalEntity updates 
     # + return - Success 
     remote isolated function updateLegalEntity(int id, LegalEntityUpdate payload) returns LegalEntity|error {
-        string resourcePath = string `/legal_entities/${id}`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -173,7 +177,7 @@ public isolated client class Client {
     # + payload - Administration to create 
     # + return - Success 
     remote isolated function createAdministration(int legalEntityId, AdministrationCreate payload) returns Administration|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/administrations`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/administrations`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -186,7 +190,7 @@ public isolated client class Client {
     # + id - The id of the Administration 
     # + return - Success 
     remote isolated function getAdministration(int legalEntityId, int id) returns Administration|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/administrations/${id}`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/administrations/${getEncodedUri(id)}`;
         Administration response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -196,8 +200,8 @@ public isolated client class Client {
     # + id - The id of the Administration 
     # + return - Success 
     remote isolated function deleteAdministration(int legalEntityId, int id) returns http:Response|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/administrations/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/administrations/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update Administration
@@ -207,7 +211,7 @@ public isolated client class Client {
     # + payload - Administration to update 
     # + return - Success 
     remote isolated function updateAdministration(int legalEntityId, int id, AdministrationUpdate payload) returns Administration|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/administrations/${id}`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/administrations/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -220,7 +224,7 @@ public isolated client class Client {
     # + payload - PeppolIdentifier to create 
     # + return - Success 
     remote isolated function createPeppolIdentifier(int legalEntityId, PeppolIdentifierCreate payload) returns PeppolIdentifier|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/peppol_identifiers`;
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/peppol_identifiers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -235,8 +239,8 @@ public isolated client class Client {
     # + identifier - PEPPOL identifier 
     # + return - Success 
     remote isolated function deletePeppolIdentifier(int legalEntityId, string superscheme, string scheme, string identifier) returns http:Response|error {
-        string resourcePath = string `/legal_entities/${legalEntityId}/peppol_identifiers/${superscheme}/${scheme}/${identifier}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/legal_entities/${getEncodedUri(legalEntityId)}/peppol_identifiers/${getEncodedUri(superscheme)}/${getEncodedUri(scheme)}/${getEncodedUri(identifier)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Purchase invoice data as JSON
@@ -245,7 +249,7 @@ public isolated client class Client {
     # + pmv - The PaymentMeans version. The default (and deprecated) version 1.0 will give BankPaymentMean, DirectDebitPaymentMean, CardPaymentMean, NppPaymentMean, SeBankGiroPaymentMean, SePlusGiroPaymentMean, SgCardPaymentMean, SgGiroPaymentMean, SgPaynowPaymentMean. Version 2.0 deprecates BankPaymentMean (now CreditTransferPaymentMean), CardPaymentMean (now CreditCardPaymentMean), NppPaymentMean (now AunzNppPayidPaymentMean), SeBankGiroPaymentMean (now SeBankgiroPaymentMean  -- note the lower 'g' in 'bankgiro'). It also adds OnlinePaymentServicePaymentMean, StandingAgreementPaymentMean, AunzNppPaytoPaymentMean, AunzBpayPaymentMean, AunzPostbillpayPaymentMean, AunzUriPaymentMean. 
     # + return - Success 
     remote isolated function getInvoiceJson(string guid, string pmv = "1.0") returns PurchaseInvoice|error {
-        string resourcePath = string `/purchase_invoices/${guid}`;
+        string resourcePath = string `/purchase_invoices/${getEncodedUri(guid)}`;
         map<anydata> queryParam = {"pmv": pmv};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PurchaseInvoice response = check self.clientEp->get(resourcePath);
@@ -257,7 +261,7 @@ public isolated client class Client {
     # + packaging - How to package the purchase invoice. Use "json" or "ubl"  
     # + return - Success 
     remote isolated function getInvoiceUbl(string guid, string packaging) returns PurchaseInvoiceUbl|error {
-        string resourcePath = string `/purchase_invoices/${guid}/${packaging}`;
+        string resourcePath = string `/purchase_invoices/${getEncodedUri(guid)}/${getEncodedUri(packaging)}`;
         PurchaseInvoiceUbl response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -268,7 +272,7 @@ public isolated client class Client {
     # + packageVersion - The version of the ubl package. 
     # + return - Success 
     remote isolated function getInvoiceUblVersioned(string guid, string packaging, string packageVersion) returns PurchaseInvoiceUbl|error {
-        string resourcePath = string `/purchase_invoices/${guid}/${packaging}/${packageVersion}`;
+        string resourcePath = string `/purchase_invoices/${getEncodedUri(guid)}/${getEncodedUri(packaging)}/${getEncodedUri(packageVersion)}`;
         PurchaseInvoiceUbl response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -285,8 +289,8 @@ public isolated client class Client {
     # + guid - WebhookInstance guid 
     # + return - Success 
     remote isolated function deleteWebhookInstance(string guid) returns http:Response|error {
-        string resourcePath = string `/webhook_instances/${guid}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/webhook_instances/${getEncodedUri(guid)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

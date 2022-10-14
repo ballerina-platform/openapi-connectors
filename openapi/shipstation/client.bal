@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [ShipStation API v1.0](https://www.shipstation.com/docs/api/) OpenAPI specification.
@@ -76,7 +80,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RegisterAccountresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RegisterAccountresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Lists all tags defined for this account.
@@ -137,7 +141,7 @@ public isolated client class Client {
     #
     # + customerId - The system generated identifier for the Customer. 
     remote isolated function getCustomer(int customerId) returns GetCustomerresponse|error {
-        string resourcePath = string `/customers/${customerId}`;
+        string resourcePath = string `/customers/${getEncodedUri(customerId)}`;
         GetCustomerresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -202,7 +206,7 @@ public isolated client class Client {
     #
     # + orderId - The system generated identifier for the order. 
     remote isolated function getOrder(int orderId) returns GetOrderresponse|error {
-        string resourcePath = string `/orders/${orderId}`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}`;
         GetOrderresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -210,8 +214,8 @@ public isolated client class Client {
     #
     # + orderId - The system generated identifier for the order. 
     remote isolated function deleteOrder(int orderId) returns DeleteOrderresponse|error {
-        string resourcePath = string `/orders/${orderId}`;
-        DeleteOrderresponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}`;
+        DeleteOrderresponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds a tag to an order
@@ -223,7 +227,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AddTagtoOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AddTagtoOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Assigns a user to an order
@@ -235,7 +239,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssignUsertoOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssignUsertoOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Creates a shipping label for a given order.
@@ -247,7 +251,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateLabelforOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateLabelforOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a new order or update an existing order. If the orderKey is specified, ShipStation will attempt to locate the order with the specified orderKey. If found, the existing order with that key will be updated. If the orderKey is not found, a new order will be created with that orderKey.
@@ -259,7 +263,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateOrUpdateOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateOrUpdateOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create or update multiple orders in one request. If the orderKey is specified, ShipStation will attempt to locate the order with the specified orderKey. If found, the existing order with that key will be updated. If the orderKey is not found, a new order will be created with that orderKey.
@@ -271,7 +275,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateOrUpdateMultipleOrdersresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateOrUpdateMultipleOrdersresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Change the status of the given order to On Hold until the date specified, when the status will automatically change to Awaiting Shipment.
@@ -283,7 +287,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        HoldOrderUntilresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        HoldOrderUntilresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List orders.
@@ -334,7 +338,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        MarkanOrderasShippedresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MarkanOrderasShippedresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Removes a tag from the specified order.
@@ -346,7 +350,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RemoveTagfromOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RemoveTagfromOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Change the status of the given order from On Hold to Awaiting Shipment
@@ -358,7 +362,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RestoreOrderfromOnHoldresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RestoreOrderfromOnHoldresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassigns a user from an order.
@@ -370,14 +374,14 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UnassignUserfromOrderresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UnassignUserfromOrderresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get product
     #
     # + productId - The system generated identifier for the Product. 
     remote isolated function getProduct(int productId) returns GetProductresponse|error {
-        string resourcePath = string `/products/${productId}`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}`;
         GetProductresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -385,13 +389,13 @@ public isolated client class Client {
     #
     # + productId - The system generated identifier for the Product. 
     remote isolated function updateProduct(int productId, string contentType, UpdateProductrequest payload) returns UpdateProductresponse|error {
-        string resourcePath = string `/products/${productId}`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}`;
         map<any> headerValues = {"Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateProductresponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UpdateProductresponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List products.
@@ -452,7 +456,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateShipmentLabelresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateShipmentLabelresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves shipping rates for the specified shipping details.
@@ -464,7 +468,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetRatesresponse[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetRatesresponse[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Voids the specified label by shipmentId.
@@ -476,14 +480,14 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        VoidLabelresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        VoidLabelresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get store
     #
     # + storeId - A unique ID generated by ShipStation and assigned to each store. 
     remote isolated function getStore(int storeId) returns GetStoreresponse|error {
-        string resourcePath = string `/stores/${storeId}`;
+        string resourcePath = string `/stores/${getEncodedUri(storeId)}`;
         GetStoreresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -491,13 +495,13 @@ public isolated client class Client {
     #
     # + storeId - A unique ID generated by ShipStation and assigned to each store. 
     remote isolated function updateStore(int storeId, string contentType, UpdateStorerequest payload) returns UpdateStoreresponse|error {
-        string resourcePath = string `/stores/${storeId}`;
+        string resourcePath = string `/stores/${getEncodedUri(storeId)}`;
         map<any> headerValues = {"Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateStoreresponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UpdateStoreresponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the refresh status of a given store.
@@ -523,7 +527,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RefreshStoreresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RefreshStoreresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the list of installed stores on the account.
@@ -553,7 +557,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DeactivateStoreresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DeactivateStoreresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reactivate store
@@ -565,7 +569,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ReactivateStoreresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ReactivateStoreresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List users
@@ -582,7 +586,7 @@ public isolated client class Client {
     #
     # + warehouseId - A unique ID generated by ShipStation and assigned to each Ship From Location (formerly known as warehouse). 
     remote isolated function getWarehouse(int warehouseId) returns GetWarehouseresponse|error {
-        string resourcePath = string `/warehouses/${warehouseId}`;
+        string resourcePath = string `/warehouses/${getEncodedUri(warehouseId)}`;
         GetWarehouseresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -590,21 +594,21 @@ public isolated client class Client {
     #
     # + warehouseId - A unique ID generated by ShipStation and assigned to each Ship From Location (formerly known as warehouse). 
     remote isolated function updateWarehouse(string contentType, int warehouseId, UpdateWarehouserequest payload) returns UpdateWarehouseresponse|error {
-        string resourcePath = string `/warehouses/${warehouseId}`;
+        string resourcePath = string `/warehouses/${getEncodedUri(warehouseId)}`;
         map<any> headerValues = {"Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateWarehouseresponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UpdateWarehouseresponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete warehouse
     #
     # + warehouseId - A unique ID generated by ShipStation and assigned to each Ship From Location (formerly known as warehouse). 
     remote isolated function deleteWarehouse(int warehouseId) returns DeleteWarehouseresponse|error {
-        string resourcePath = string `/warehouses/${warehouseId}`;
-        DeleteWarehouseresponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/warehouses/${getEncodedUri(warehouseId)}`;
+        DeleteWarehouseresponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create warehouse
@@ -616,7 +620,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateWarehouseresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateWarehouseresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a list of your Ship From Locations (formerly known as warehouses).
@@ -642,17 +646,17 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SubscribetoWebhookresponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SubscribetoWebhookresponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unsubscribe to Webhook
     #
     # + webhookId - A unique ID generated by ShipStation and assigned to each webhook. 
     remote isolated function unsubscribeToWebhook(int webhookId, string contentType) returns http:Response|error {
-        string resourcePath = string `/webhooks/${webhookId}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(webhookId)}`;
         map<any> headerValues = {"Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
 }

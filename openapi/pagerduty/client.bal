@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -54,13 +54,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The tags were added and/or removed. 
     remote isolated function createEntityTypeByIdChangeTags(string accept, string contentType, string entityType, string id, IdChangeTagsBody payload) returns json|error {
-        string resourcePath = string `/${entityType}/${id}/change_tags`;
+        string resourcePath = string `/${getEncodedUri(entityType)}/${getEncodedUri(id)}/change_tags`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get tags for entities
@@ -74,7 +74,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - An array of tags. 
     remote isolated function getEntityTypeByIdTags(string accept, string contentType, string entityType, string id, int? 'limit = (), int? offset = (), boolean total = false) returns InlineResponse200|error {
-        string resourcePath = string `/${entityType}/${id}/tags`;
+        string resourcePath = string `/${getEncodedUri(entityType)}/${getEncodedUri(id)}/tags`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -101,7 +101,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The account has the requested ability. 
     remote isolated function getAbility(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/abilities/${id}`;
+        string resourcePath = string `/abilities/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -141,7 +141,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an Add-on
@@ -151,7 +151,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The requested Add-on. 
     remote isolated function getAddon(string accept, string contentType, string id) returns AddonsBody|error {
-        string resourcePath = string `/addons/${id}`;
+        string resourcePath = string `/addons/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AddonsBody response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -165,13 +165,13 @@ public isolated client class Client {
     # + payload - The Add-on to be updated. 
     # + return - The Add-on that was updated. 
     remote isolated function updateAddon(string accept, string contentType, string id, AddonsIdBody payload) returns AddonsIdBody|error {
-        string resourcePath = string `/addons/${id}`;
+        string resourcePath = string `/addons/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AddonsIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AddonsIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an Add-on
@@ -181,10 +181,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Add-on was deleted successfully. 
     remote isolated function deleteAddon(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/addons/${id}`;
+        string resourcePath = string `/addons/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get aggregated incident data
@@ -201,7 +201,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get aggregated service data
@@ -218,7 +218,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get aggregated team data
@@ -235,7 +235,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2003 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get raw data - multiple incidents
@@ -252,7 +252,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2004 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2004 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get raw data - single incident
@@ -262,7 +262,7 @@ public isolated client class Client {
     # + contentType - Header Content type. 
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time.  You __MUST__ pass in this header and the above value.  Do not use this endpoint in production, as it may change! 
     remote isolated function getAnalyticsIncidentsById(string id, string accept, string contentType, string xEarlyAccess) returns AnalyticsRawIncident|error {
-        string resourcePath = string `/analytics/raw/incidents/${id}`;
+        string resourcePath = string `/analytics/raw/incidents/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         AnalyticsRawIncident response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -322,7 +322,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Business Service
@@ -332,7 +332,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The service business requested. 
     remote isolated function getBusinessService(string accept, string contentType, string id) returns InlineResponse2006|error {
-        string resourcePath = string `/business_services/${id}`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2006 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -345,13 +345,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Business Service that was updated. 
     remote isolated function updateBusinessService(string accept, string contentType, string id, BusinessServicesIdBody payload) returns InlineResponse2006|error {
-        string resourcePath = string `/business_services/${id}`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2006 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a Business Service
@@ -361,10 +361,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Business Service was deleted successfully. 
     remote isolated function deleteBusinessService(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/business_services/${id}`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Create Business Service Account Subscription
@@ -373,12 +373,12 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - OK 
     remote isolated function createBusinessServiceAccountSubscription(string accept, string id) returns InlineResponse2007|error {
-        string resourcePath = string `/business_services/${id}/account_subscription`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/account_subscription`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2007 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2007 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Business Service Account Subscription
@@ -387,10 +387,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The account was unsubscribed successfully. 
     remote isolated function removeBusinessServiceAccountSubscription(string accept, string id) returns http:Response|error {
-        string resourcePath = string `/business_services/${id}/account_subscription`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/account_subscription`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Business Service Subscribers
@@ -399,7 +399,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - OK 
     remote isolated function getBusinessServiceSubscribers(string accept, string id) returns InlineResponse2008|error {
-        string resourcePath = string `/business_services/${id}/subscribers`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/subscribers`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2008 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -412,13 +412,13 @@ public isolated client class Client {
     # + payload - The entities to subscribe. 
     # + return - OK 
     remote isolated function createBusinessServiceNotificationSubscribers(string accept, string id, IdSubscribersBody payload) returns InlineResponse2009|error {
-        string resourcePath = string `/business_services/${id}/subscribers`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/subscribers`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List the supporting Business Services for the given Business Service Id, sorted by impacted status.
@@ -430,7 +430,7 @@ public isolated client class Client {
     # + ids - The IDs of the resources. 
     # + return - OK 
     remote isolated function getBusinessServiceSupportingServiceImpacts(string accept, string id, string xEarlyAccess, string? additionalFields = (), string? ids = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/business_services/${id}/supporting_services/impacts`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/supporting_services/impacts`;
         map<anydata> queryParam = {"additional_fields[]": additionalFields, "ids[]": ids};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
@@ -445,13 +445,13 @@ public isolated client class Client {
     # + payload - The entities to unsubscribe. 
     # + return - OK 
     remote isolated function removeBusinessServiceNotificationSubscriber(string accept, string id, IdUnsubscribeBody payload) returns InlineResponse20011|error {
-        string resourcePath = string `/business_services/${id}/unsubscribe`;
+        string resourcePath = string `/business_services/${getEncodedUri(id)}/unsubscribe`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List Impactors affecting Business Services
@@ -510,7 +510,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20014 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20014 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes the account-level priority threshold for Business Service impact
@@ -522,7 +522,7 @@ public isolated client class Client {
         string resourcePath = string `/business_services/priority_thresholds`;
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Change Events
@@ -558,7 +558,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Change Event
@@ -568,7 +568,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Change Event requested. 
     remote isolated function getChangeEvent(string accept, string contentType, string id) returns InlineResponse20016|error {
-        string resourcePath = string `/change_events/${id}`;
+        string resourcePath = string `/change_events/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20016 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -582,13 +582,13 @@ public isolated client class Client {
     # + payload - The Change Event to be updated. 
     # + return - The Change Event that was updated. 
     remote isolated function updateChangeEvent(string accept, string contentType, string id, ChangeEventsIdBody payload) returns InlineResponse20016|error {
-        string resourcePath = string `/change_events/${id}`;
+        string resourcePath = string `/change_events/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20016 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20016 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List escalation policies
@@ -628,7 +628,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EscalationPoliciesBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EscalationPoliciesBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an escalation policy
@@ -639,7 +639,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - The escalation policy object. 
     remote isolated function getEscalationPolicy(string accept, string contentType, string id, string[]? include = ()) returns EscalationPoliciesBody|error {
-        string resourcePath = string `/escalation_policies/${id}`;
+        string resourcePath = string `/escalation_policies/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -656,13 +656,13 @@ public isolated client class Client {
     # + payload - The escalation policy to be updated. 
     # + return - The escalation policy that was updated. 
     remote isolated function updateEscalationPolicy(string accept, string contentType, string id, EscalationPoliciesIdBody payload) returns EscalationPoliciesIdBody|error {
-        string resourcePath = string `/escalation_policies/${id}`;
+        string resourcePath = string `/escalation_policies/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EscalationPoliciesIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        EscalationPoliciesIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an escalation policy
@@ -672,10 +672,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The escalation policy was deleted successfully. 
     remote isolated function deleteEscalationPolicy(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/escalation_policies/${id}`;
+        string resourcePath = string `/escalation_policies/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List audit records for an escalation policy
@@ -689,7 +689,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. If not specified, defaults to `now()` 
     # + return - Records matching the query criteria. 
     remote isolated function listEscalationPolicyAuditRecords(string accept, string contentType, string id, int? 'limit = (), string? cursor = (), string? since = (), string? until = ()) returns AuditRecordResponseSchema|error {
-        string resourcePath = string `/escalation_policies/${id}/audit/records`;
+        string resourcePath = string `/escalation_policies/${getEncodedUri(id)}/audit/records`;
         map<anydata> queryParam = {"limit": 'limit, "cursor": cursor, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -721,7 +721,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The extension vendor requested 
     remote isolated function getExtensionSchema(string accept, string contentType, string id) returns InlineResponse20019|error {
-        string resourcePath = string `/extension_schemas/${id}`;
+        string resourcePath = string `/extension_schemas/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20019 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -762,7 +762,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ExtensionsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ExtensionsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an extension
@@ -773,7 +773,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - The extension that was requested. 
     remote isolated function getExtension(string accept, string contentType, string id, string[]? include = ()) returns ExtensionsBody|error {
-        string resourcePath = string `/extensions/${id}`;
+        string resourcePath = string `/extensions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -790,13 +790,13 @@ public isolated client class Client {
     # + payload - The extension to be updated. 
     # + return - The extension that was updated. 
     remote isolated function updateExtension(string accept, string contentType, string id, ExtensionsIdBody payload) returns ExtensionsIdBody|error {
-        string resourcePath = string `/extensions/${id}`;
+        string resourcePath = string `/extensions/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ExtensionsIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ExtensionsIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an extension
@@ -806,10 +806,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The extension was deleted successfully. 
     remote isolated function deleteExtension(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/extensions/${id}`;
+        string resourcePath = string `/extensions/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Enable an extension
@@ -819,12 +819,12 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The extension that was successfully enabled. 
     remote isolated function enableExtension(string accept, string contentType, string id) returns ExtensionsIdBody|error {
-        string resourcePath = string `/extensions/${id}/enable`;
+        string resourcePath = string `/extensions/${getEncodedUri(id)}/enable`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        ExtensionsIdBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ExtensionsIdBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List incidents
@@ -875,7 +875,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20021 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20021 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create an Incident
@@ -891,7 +891,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an incident
@@ -901,7 +901,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The incident requested. 
     remote isolated function getIncident(string accept, string contentType, string id) returns InlineResponse2011|error {
-        string resourcePath = string `/incidents/${id}`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2011 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -915,13 +915,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The incident was updated. 
     remote isolated function updateIncident(string accept, string contentType, string id, string 'from, IncidentsIdBody payload) returns InlineResponse20022|error {
-        string resourcePath = string `/incidents/${id}`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20022 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20022 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List alerts for an incident
@@ -938,7 +938,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - A paginated array of the incident's alerts. 
     remote isolated function listIncidentAlerts(string accept, string contentType, string id, int? 'limit = (), int? offset = (), boolean total = false, string? alertKey = (), string[]? statuses = (), string[]? sortBy = (), string[]? include = ()) returns InlineResponse20023|error {
-        string resourcePath = string `/incidents/${id}/alerts`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/alerts`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total, "alert_key": alertKey, "statuses[]": statuses, "sort_by": sortBy, "include[]": include};
         map<Encoding> queryParamEncoding = {"statuses[]": {style: FORM, explode: true}, "sort_by": {style: FORM, explode: false}, "include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -958,7 +958,7 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - All of the updates succeeded. 
     remote isolated function updateIncidentAlerts(string accept, string contentType, string id, string 'from, IdAlertsBody payload, int? 'limit = (), int? offset = (), boolean total = false) returns InlineResponse20023|error {
-        string resourcePath = string `/incidents/${id}/alerts`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/alerts`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
@@ -966,7 +966,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20023 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20023 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an alert
@@ -977,7 +977,7 @@ public isolated client class Client {
     # + alertId - The id of the alert to retrieve. 
     # + return - The alert requested. 
     remote isolated function getIncidentAlert(string accept, string contentType, string id, string alertId) returns InlineResponse20024|error {
-        string resourcePath = string `/incidents/${id}/alerts/${alertId}`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/alerts/${getEncodedUri(alertId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20024 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -993,13 +993,13 @@ public isolated client class Client {
     # + payload - The parameters of the alert to update. 
     # + return - The alert that was updated. 
     remote isolated function updateIncidentAlert(string accept, string contentType, string id, string alertId, string 'from, AlertsAlertIdBody payload) returns AlertsAlertIdBody|error {
-        string resourcePath = string `/incidents/${id}/alerts/${alertId}`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/alerts/${getEncodedUri(alertId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AlertsAlertIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        AlertsAlertIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Manually change an Incident's Impact on a Business Service.
@@ -1011,13 +1011,13 @@ public isolated client class Client {
     # + payload - The `impacted` relation will cause the Business Service and any Services that it supports to become impacted by this incident. 
     # + return - OK 
     remote isolated function putIncidentManualBusinessServiceAssociation(string accept, string id, string businessServiceId, string xEarlyAccess, BusinessServiceIdImpactsBody payload) returns InlineResponse20025|error {
-        string resourcePath = string `/incidents/${id}/business_services/${businessServiceId}/impacts`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/business_services/${getEncodedUri(businessServiceId)}/impacts`;
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20025 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20025 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List Business Services impacted by the given Incident
@@ -1027,7 +1027,7 @@ public isolated client class Client {
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time. You __MUST__ pass in this header with the value `business-impact-early-access`. Do not use this endpoint in production, as it may change! 
     # + return - OK 
     remote isolated function getIncidentImpactedBusinessServices(string accept, string id, string xEarlyAccess) returns InlineResponse20026|error {
-        string resourcePath = string `/incidents/${id}/business_services/impacts`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/business_services/impacts`;
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20026 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1048,7 +1048,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - A paginated array of the incident's log entries. 
     remote isolated function listIncidentLogEntries(string accept, string contentType, string id, int? 'limit = (), int? offset = (), boolean total = false, string timeZone = "UTC", string? since = (), string? until = (), boolean isOverview = false, string[]? include = ()) returns InlineResponse20027|error {
-        string resourcePath = string `/incidents/${id}/log_entries`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/log_entries`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total, "time_zone": timeZone, "since": since, "until": until, "is_overview": isOverview, "include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1065,13 +1065,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The target incident, which now contains all the alerts from the source incident. 
     remote isolated function mergeIncidents(string accept, string contentType, string id, string 'from, IdMergeBody payload) returns InlineResponse20028|error {
-        string resourcePath = string `/incidents/${id}/merge`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/merge`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20028 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20028 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List notes for an incident
@@ -1081,7 +1081,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - An array of notes. 
     remote isolated function listIncidentNotes(string accept, string contentType, string id) returns InlineResponse20029|error {
-        string resourcePath = string `/incidents/${id}/notes`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/notes`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20029 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1095,13 +1095,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The new note. 
     remote isolated function createIncidentNote(string accept, string contentType, string id, string 'from, IdNotesBody payload) returns InlineResponse20030|error {
-        string resourcePath = string `/incidents/${id}/notes`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/notes`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20030 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20030 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Outlier Incident
@@ -1113,7 +1113,7 @@ public isolated client class Client {
     # + additionalDetails - Array of additional attributes to any of the returned incidents for related incidents. 
     # + return - Outlier Incident information calculated over the same Service as the given Incident. 
     remote isolated function getOutlierIncident(string accept, string contentType, string id, string? since = (), string[]? additionalDetails = ()) returns InlineResponse20031|error {
-        string resourcePath = string `/incidents/${id}/outlier_incident`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/outlier_incident`;
         map<anydata> queryParam = {"since": since, "additional_details[]": additionalDetails};
         map<Encoding> queryParamEncoding = {"additional_details[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1131,7 +1131,7 @@ public isolated client class Client {
     # + total - By default the `total` field in the response body is set to `null` to provide the fastest possible response times. Set `total` to `true` for this field to be populated with the total number of Past Incidents. 
     # + return - OK 
     remote isolated function getPastIncidents(string accept, string contentType, string id, int 'limit = 5, boolean total = false) returns InlineResponse20032|error {
-        string resourcePath = string `/incidents/${id}/past_incidents`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/past_incidents`;
         map<anydata> queryParam = {"limit": 'limit, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1147,7 +1147,7 @@ public isolated client class Client {
     # + contentType - Header Content type. 
     # + return - The array of Change Events returned by the query. 
     remote isolated function listIncidentRelatedChangeEvents(string id, string accept, string contentType, int? 'limit = ()) returns InlineResponse20033|error {
-        string resourcePath = string `/incidents/${id}/related_change_events`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/related_change_events`;
         map<anydata> queryParam = {"limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1163,7 +1163,7 @@ public isolated client class Client {
     # + additionalDetails - Array of additional attributes to any of the returned incidents for related incidents. 
     # + return - A list of Related Incidents and their relationships. 
     remote isolated function getRelatedIncidents(string accept, string contentType, string id, string[]? additionalDetails = ()) returns InlineResponse20034|error {
-        string resourcePath = string `/incidents/${id}/related_incidents`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/related_incidents`;
         map<anydata> queryParam = {"additional_details[]": additionalDetails};
         map<Encoding> queryParamEncoding = {"additional_details[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1180,13 +1180,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The new responder request for the given incident. 
     remote isolated function createIncidentResponderRequest(string accept, string contentType, string id, string 'from, IdResponderRequestsBody payload) returns InlineResponse20035|error {
-        string resourcePath = string `/incidents/${id}/responder_requests`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/responder_requests`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20035 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20035 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Snooze an incident
@@ -1197,13 +1197,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The incident that was successfully snoozed. 
     remote isolated function createIncidentSnooze(string accept, string contentType, string id, string 'from, IdSnoozeBody payload) returns InlineResponse2011|error {
-        string resourcePath = string `/incidents/${id}/snooze`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/snooze`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a status update on an incident
@@ -1214,13 +1214,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - The new status update for the specified incident. 
     remote isolated function createIncidentStatusUpdate(string accept, string contentType, string id, string 'from, IdStatusUpdatesBody payload) returns InlineResponse20036|error {
-        string resourcePath = string `/incidents/${id}/status_updates`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/status_updates`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20036 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20036 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List Notification Subscribers
@@ -1229,7 +1229,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - OK 
     remote isolated function getIncidentNotificationSubscribers(string accept, string id) returns InlineResponse20037|error {
-        string resourcePath = string `/incidents/${id}/status_updates/subscribers`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/status_updates/subscribers`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20037 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1242,13 +1242,13 @@ public isolated client class Client {
     # + payload - The entities to subscribe. 
     # + return - OK 
     remote isolated function createIncidentNotificationSubscribers(string accept, string id, StatusUpdatesSubscribersBody payload) returns InlineResponse2009|error {
-        string resourcePath = string `/incidents/${id}/status_updates/subscribers`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/status_updates/subscribers`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove Notification Subscriber
@@ -1258,13 +1258,13 @@ public isolated client class Client {
     # + payload - The entities to unsubscribe. 
     # + return - OK 
     remote isolated function removeIncidentNotificationSubscribers(string accept, string id, StatusUpdatesUnsubscribeBody payload) returns InlineResponse20011|error {
-        string resourcePath = string `/incidents/${id}/status_updates/unsubscribe`;
+        string resourcePath = string `/incidents/${getEncodedUri(id)}/status_updates/unsubscribe`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List log entries
@@ -1300,7 +1300,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - A single log entry. 
     remote isolated function getLogEntry(string accept, string contentType, string id, string timeZone = "UTC", string[]? include = ()) returns InlineResponse20038|error {
-        string resourcePath = string `/log_entries/${id}`;
+        string resourcePath = string `/log_entries/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"time_zone": timeZone, "include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1318,13 +1318,13 @@ public isolated client class Client {
     # + payload - The log entry channel to be updated. 
     # + return - The channel information modification was accepted. 
     remote isolated function updateLogEntryChannel(string accept, string contentType, string id, string 'from, IdChannelBody payload) returns http:Response|error {
-        string resourcePath = string `/log_entries/${id}/channel`;
+        string resourcePath = string `/log_entries/${getEncodedUri(id)}/channel`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List maintenance windows
@@ -1364,7 +1364,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        MaintenanceWindowsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        MaintenanceWindowsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a maintenance window
@@ -1375,7 +1375,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - The maintenance window that was updated. 
     remote isolated function getMaintenanceWindow(string accept, string contentType, string id, string[]? include = ()) returns MaintenanceWindowsBody|error {
-        string resourcePath = string `/maintenance_windows/${id}`;
+        string resourcePath = string `/maintenance_windows/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1392,13 +1392,13 @@ public isolated client class Client {
     # + payload - The maintenance window to be updated. 
     # + return - The maintenance window that was updated. 
     remote isolated function updateMaintenanceWindow(string accept, string contentType, string id, MaintenanceWindowsIdBody payload) returns MaintenanceWindowsIdBody|error {
-        string resourcePath = string `/maintenance_windows/${id}`;
+        string resourcePath = string `/maintenance_windows/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        MaintenanceWindowsIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        MaintenanceWindowsIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete or end a maintenance window
@@ -1408,10 +1408,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The maintenance window was deleted successfully. 
     remote isolated function deleteMaintenanceWindow(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/maintenance_windows/${id}`;
+        string resourcePath = string `/maintenance_windows/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List notifications
@@ -1510,7 +1510,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2012 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2012 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Response Play
@@ -1521,7 +1521,7 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. This is optional, and is only used for change tracking. 
     # + return - The Response Play requested. 
     remote isolated function getResponsePlay(string id, string accept, string contentType, string? 'from = ()) returns InlineResponse2012|error {
-        string resourcePath = string `/response_plays/${id}`;
+        string resourcePath = string `/response_plays/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2012 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1535,13 +1535,13 @@ public isolated client class Client {
     # + payload - The Response Play to be updated. 
     # + return - The Response Play that was updated. 
     remote isolated function updateResponsePlay(string id, string accept, string contentType, ResponsePlaysIdBody payload) returns InlineResponse2012|error {
-        string resourcePath = string `/response_plays/${id}`;
+        string resourcePath = string `/response_plays/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2012 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2012 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a Response Play
@@ -1551,10 +1551,10 @@ public isolated client class Client {
     # + contentType - Header Content type. 
     # + return - The Response Play was deleted successfully. 
     remote isolated function deleteResponsePlay(string id, string accept, string contentType) returns http:Response|error {
-        string resourcePath = string `/response_plays/${id}`;
+        string resourcePath = string `/response_plays/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Run a response play
@@ -1565,13 +1565,13 @@ public isolated client class Client {
     # + 'from - The email address of a valid user associated with the account making the request. 
     # + return - Informs the user if the response play has been run successfully. 
     remote isolated function runResponsePlay(string accept, string contentType, string responsePlayId, string 'from, ResponsePlayIdRunBody payload) returns InlineResponse20044|error {
-        string resourcePath = string `/response_plays/${responsePlayId}/run`;
+        string resourcePath = string `/response_plays/${getEncodedUri(responsePlayId)}/run`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "From": 'from, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20044 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20044 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List Rulesets
@@ -1603,7 +1603,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2013 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2013 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Ruleset
@@ -1613,7 +1613,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Ruleset object. 
     remote isolated function getRuleset(string accept, string contentType, string id) returns InlineResponse2013|error {
-        string resourcePath = string `/rulesets/${id}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2013 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1626,13 +1626,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Ruleset that was updated. 
     remote isolated function updateRuleset(string accept, string contentType, string id, RulesetsIdBody payload) returns InlineResponse2013|error {
-        string resourcePath = string `/rulesets/${id}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2013 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2013 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a Ruleset
@@ -1642,10 +1642,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Ruleset was deleted successfully. 
     remote isolated function deleteRuleset(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/rulesets/${id}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Event Rules
@@ -1658,7 +1658,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - A paginated array of Event Rule objects. 
     remote isolated function listRulesetEventRules(string accept, string contentType, string id, int? 'limit = (), int? offset = (), boolean total = false) returns InlineResponse20046|error {
-        string resourcePath = string `/rulesets/${id}/rules`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}/rules`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1673,13 +1673,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Event Rule that was created. 
     remote isolated function createRulesetEventRule(string accept, string contentType, string id, IdRulesBody payload) returns InlineResponse2014|error {
-        string resourcePath = string `/rulesets/${id}/rules`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}/rules`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2014 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2014 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an Event Rule
@@ -1690,7 +1690,7 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule object. 
     remote isolated function getRulesetEventRule(string accept, string contentType, string id, string ruleId) returns InlineResponse2014|error {
-        string resourcePath = string `/rulesets/${id}/rules/${ruleId}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2014 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1704,13 +1704,13 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule that was updated. 
     remote isolated function updateRulesetEventRule(string accept, string contentType, string id, string ruleId, RulesRuleIdBody payload) returns InlineResponse2014|error {
-        string resourcePath = string `/rulesets/${id}/rules/${ruleId}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2014 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2014 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an Event Rule
@@ -1721,10 +1721,10 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule was deleted successfully. 
     remote isolated function deleteRulesetEventRule(string accept, string contentType, string id, string ruleId) returns http:Response|error {
-        string resourcePath = string `/rulesets/${id}/rules/${ruleId}`;
+        string resourcePath = string `/rulesets/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List schedules
@@ -1763,7 +1763,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SchedulesBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SchedulesBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a schedule
@@ -1776,7 +1776,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The schedule object. 
     remote isolated function getSchedule(string accept, string contentType, string id, string timeZone = "UTC", string? since = (), string? until = ()) returns SchedulesBody|error {
-        string resourcePath = string `/schedules/${id}`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"time_zone": timeZone, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1793,7 +1793,7 @@ public isolated client class Client {
     # + payload - The schedule to be updated. 
     # + return - The updated schedule. 
     remote isolated function updateSchedule(string accept, string contentType, string id, SchedulesIdBody payload, boolean overflow = false) returns SchedulesIdBody|error {
-        string resourcePath = string `/schedules/${id}`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"overflow": overflow};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1801,7 +1801,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SchedulesIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        SchedulesIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a schedule
@@ -1811,10 +1811,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The schedule was deleted successfully. 
     remote isolated function deleteSchedule(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/schedules/${id}`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List audit records for a schedule
@@ -1828,7 +1828,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. If not specified, defaults to `now()` 
     # + return - Records matching the query criteria. 
     remote isolated function listSchedulesAuditRecords(string accept, string contentType, string id, int? 'limit = (), string? cursor = (), string? since = (), string? until = ()) returns AuditRecordResponseSchema|error {
-        string resourcePath = string `/schedules/${id}/audit/records`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}/audit/records`;
         map<anydata> queryParam = {"limit": 'limit, "cursor": cursor, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1847,7 +1847,7 @@ public isolated client class Client {
     # + overflow - Any on-call schedule entries that pass the date range bounds will be truncated at the bounds, unless the parameter overflow=true is passed. This parameter defaults to false. 
     # + return - The collection of override objects returned by the query. 
     remote isolated function listScheduleOverrides(string accept, string contentType, string id, string since, string until, boolean? editable = (), boolean? overflow = ()) returns InlineResponse2015|error {
-        string resourcePath = string `/schedules/${id}/overrides`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}/overrides`;
         map<anydata> queryParam = {"since": since, "until": until, "editable": editable, "overflow": overflow};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1863,13 +1863,13 @@ public isolated client class Client {
     # + payload - The overrides to be created 
     # + return - A list of overrides requested and a status code indicating whether they were created or rejected 
     remote isolated function createScheduleOverride(string accept, string contentType, string id, IdOverridesBody payload) returns InlineResponse2016[]|error {
-        string resourcePath = string `/schedules/${id}/overrides`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}/overrides`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2016[] response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2016[] response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an override
@@ -1880,10 +1880,10 @@ public isolated client class Client {
     # + overrideId - The override ID on the schedule. 
     # + return - The override was truncated. 
     remote isolated function deleteScheduleOverride(string accept, string contentType, string id, string overrideId) returns http:Response|error {
-        string resourcePath = string `/schedules/${id}/overrides/${overrideId}`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}/overrides/${getEncodedUri(overrideId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List users on call.
@@ -1895,7 +1895,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. 
     # + return - The users on the given schedule. 
     remote isolated function listScheduleUsers(string accept, string contentType, string id, string? since = (), string? until = ()) returns InlineResponse20048|error {
-        string resourcePath = string `/schedules/${id}/users`;
+        string resourcePath = string `/schedules/${getEncodedUri(id)}/users`;
         map<anydata> queryParam = {"since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -1921,7 +1921,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SchedulesPreviewBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SchedulesPreviewBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Associate service dependencies
@@ -1936,7 +1936,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20049 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20049 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Business Service dependencies
@@ -1946,7 +1946,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - An array of service relationships. 
     remote isolated function getBusinessServiceServiceDependencies(string accept, string contentType, string id) returns InlineResponse20050|error {
-        string resourcePath = string `/service_dependencies/business_services/${id}`;
+        string resourcePath = string `/service_dependencies/business_services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20050 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -1964,7 +1964,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20049 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20049 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get technical service dependencies
@@ -1974,7 +1974,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - An array of service relationships. 
     remote isolated function getTechnicalServiceServiceDependencies(string accept, string contentType, string id) returns InlineResponse20049|error {
-        string resourcePath = string `/service_dependencies/technical_services/${id}`;
+        string resourcePath = string `/service_dependencies/technical_services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20049 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2016,7 +2016,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ServicesBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ServicesBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a service
@@ -2027,7 +2027,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - The service requested. 
     remote isolated function getService(string accept, string contentType, string id, string[]? include = ()) returns ServicesBody|error {
-        string resourcePath = string `/services/${id}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2044,13 +2044,13 @@ public isolated client class Client {
     # + payload - The service to be updated. 
     # + return - The service that was updated. 
     remote isolated function updateService(string accept, string contentType, string id, ServicesIdBody payload) returns ServicesIdBody|error {
-        string resourcePath = string `/services/${id}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ServicesIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ServicesIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a service
@@ -2060,10 +2060,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The service was deleted successfully. 
     remote isolated function deleteService(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/services/${id}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List audit records for a service
@@ -2077,7 +2077,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. If not specified, defaults to `now()` 
     # + return - Records matching the query criteria. 
     remote isolated function listServiceAuditRecords(string accept, string contentType, string id, int? 'limit = (), string? cursor = (), string? since = (), string? until = ()) returns AuditRecordResponseSchema|error {
-        string resourcePath = string `/services/${id}/audit/records`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/audit/records`;
         map<anydata> queryParam = {"limit": 'limit, "cursor": cursor, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -2099,7 +2099,7 @@ public isolated client class Client {
     # + integrationIds - An array of integration IDs. Only results related to these integrations will be returned. 
     # + return - The array of Change Events returned by the query. 
     remote isolated function listServiceChangeEvents(string id, string accept, string contentType, string? since = (), string? until = (), int? 'limit = (), int? offset = (), boolean total = false, string[]? teamIds = (), string[]? integrationIds = ()) returns InlineResponse20015|error {
-        string resourcePath = string `/services/${id}/change_events`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/change_events`;
         map<anydata> queryParam = {"since": since, "until": until, "limit": 'limit, "offset": offset, "total": total, "team_ids[]": teamIds, "integration_ids[]": integrationIds};
         map<Encoding> queryParamEncoding = {"team_ids[]": {style: FORM, explode: true}, "integration_ids[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2116,13 +2116,13 @@ public isolated client class Client {
     # + payload - The integration to be created 
     # + return - The integration that was created. 
     remote isolated function createServiceIntegration(string accept, string contentType, string id, IdIntegrationsBody payload) returns IdIntegrationsBody|error {
-        string resourcePath = string `/services/${id}/integrations`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/integrations`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IdIntegrationsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IdIntegrationsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # View an integration
@@ -2134,7 +2134,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - The integration that was requested. 
     remote isolated function getServiceIntegration(string accept, string contentType, string id, string integrationId, string[]? include = ()) returns IdIntegrationsBody|error {
-        string resourcePath = string `/services/${id}/integrations/${integrationId}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/integrations/${getEncodedUri(integrationId)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2152,13 +2152,13 @@ public isolated client class Client {
     # + payload - The integration to be updated 
     # + return - The integration that was updated. 
     remote isolated function updateServiceIntegration(string accept, string contentType, string id, string integrationId, IntegrationsIntegrationIdBody payload) returns IntegrationsIntegrationIdBody|error {
-        string resourcePath = string `/services/${id}/integrations/${integrationId}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/integrations/${getEncodedUri(integrationId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IntegrationsIntegrationIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        IntegrationsIntegrationIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List Service's Event Rules
@@ -2171,7 +2171,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - A paginated array of Event Rule objects. 
     remote isolated function listServiceEventRules(string accept, string contentType, string id, int? 'limit = (), int? offset = (), boolean total = false) returns InlineResponse20052|error {
-        string resourcePath = string `/services/${id}/rules`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/rules`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -2186,13 +2186,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The Event Rule that was created. 
     remote isolated function createServiceEventRule(string accept, string contentType, string id, IdRulesBody1 payload) returns InlineResponse2017|error {
-        string resourcePath = string `/services/${id}/rules`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/rules`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2017 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2017 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an Event Rule from a Service
@@ -2203,7 +2203,7 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule object. 
     remote isolated function getServiceEventRule(string accept, string contentType, string id, string ruleId) returns InlineResponse2017|error {
-        string resourcePath = string `/services/${id}/rules/${ruleId}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2017 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2217,13 +2217,13 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule that was updated. 
     remote isolated function updateServiceEventRule(string accept, string contentType, string id, string ruleId, RulesRuleIdBody1 payload) returns InlineResponse2017|error {
-        string resourcePath = string `/services/${id}/rules/${ruleId}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2017 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2017 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an Event Rule from a Service
@@ -2234,10 +2234,10 @@ public isolated client class Client {
     # + ruleId - The id of the Event Rule to retrieve. 
     # + return - The Event Rule was deleted successfully. 
     remote isolated function deleteServiceEventRule(string accept, string contentType, string id, string ruleId) returns http:Response|error {
-        string resourcePath = string `/services/${id}/rules/${ruleId}`;
+        string resourcePath = string `/services/${getEncodedUri(id)}/rules/${getEncodedUri(ruleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Status Dashboards
@@ -2259,7 +2259,7 @@ public isolated client class Client {
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time. You __MUST__ pass in this header with the value `status-dashboards`. Do not use this endpoint in production, as it may change! 
     # + return - OK 
     remote isolated function getStatusDashboardById(string accept, string id, string xEarlyAccess) returns InlineResponse20054|error {
-        string resourcePath = string `/status_dashboards/${id}`;
+        string resourcePath = string `/status_dashboards/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20054 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2273,7 +2273,7 @@ public isolated client class Client {
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time. You __MUST__ pass in this header with the value `status-dashboards`. Do not use this endpoint in production, as it may change! 
     # + return - OK 
     remote isolated function getStatusDashboardServiceImpactsById(string accept, string id, string xEarlyAccess, string? additionalFields = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/status_dashboards/${id}/service_impacts`;
+        string resourcePath = string `/status_dashboards/${getEncodedUri(id)}/service_impacts`;
         map<anydata> queryParam = {"additional_fields[]": additionalFields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
@@ -2288,7 +2288,7 @@ public isolated client class Client {
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time. You __MUST__ pass in this header with the value `status-dashboards`. Do not use this endpoint in production, as it may change! 
     # + return - OK 
     remote isolated function getStatusDashboardByUrlSlug(string accept, string urlSlug, string xEarlyAccess) returns InlineResponse20054|error {
-        string resourcePath = string `/status_dashboards/url_slugs/${urlSlug}`;
+        string resourcePath = string `/status_dashboards/url_slugs/${getEncodedUri(urlSlug)}`;
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20054 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2302,7 +2302,7 @@ public isolated client class Client {
     # + xEarlyAccess - This header indicates that this API endpoint is __UNDER CONSTRUCTION__ and may change at any time. You __MUST__ pass in this header with the value `status-dashboards`. Do not use this endpoint in production, as it may change! 
     # + return - OK 
     remote isolated function getStatusDashboardServiceImpactsByUrlSlug(string accept, string urlSlug, string xEarlyAccess, string? additionalFields = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/status_dashboards/url_slugs/${urlSlug}/service_impacts`;
+        string resourcePath = string `/status_dashboards/url_slugs/${getEncodedUri(urlSlug)}/service_impacts`;
         map<anydata> queryParam = {"additional_fields[]": additionalFields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
@@ -2340,7 +2340,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TagsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TagsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a tag
@@ -2350,7 +2350,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The tag requested. 
     remote isolated function getTag(string accept, string contentType, string id) returns TagsBody|error {
-        string resourcePath = string `/tags/${id}`;
+        string resourcePath = string `/tags/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TagsBody response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2363,10 +2363,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The tag was deleted successfully. 
     remote isolated function deleteTag(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/tags/${id}`;
+        string resourcePath = string `/tags/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get connected entities
@@ -2380,7 +2380,7 @@ public isolated client class Client {
     # + entityType - Type of entity related with the tag 
     # + return - An array of connected entities. 
     remote isolated function getTagsByEntityType(string accept, string contentType, string id, string entityType, int? 'limit = (), int? offset = (), boolean total = false) returns InlineResponse20055|error {
-        string resourcePath = string `/tags/${id}/${entityType}`;
+        string resourcePath = string `/tags/${getEncodedUri(id)}/${getEncodedUri(entityType)}`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -2419,7 +2419,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TeamsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TeamsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a team
@@ -2430,7 +2430,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - The team requested. 
     remote isolated function getTeam(string accept, string contentType, string id, string[]? include = ()) returns TeamsBody|error {
-        string resourcePath = string `/teams/${id}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2447,13 +2447,13 @@ public isolated client class Client {
     # + payload - The team to be updated. 
     # + return - The team that was updated. 
     remote isolated function updateTeam(string accept, string contentType, string id, TeamsIdBody payload) returns TeamsIdBody|error {
-        string resourcePath = string `/teams/${id}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TeamsIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TeamsIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a team
@@ -2464,12 +2464,12 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The team was deleted successfully. 
     remote isolated function deleteTeam(string accept, string contentType, string id, string? reassignmentTeam = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${id}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"reassignment_team": reassignmentTeam};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List audit records for a team
@@ -2483,7 +2483,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. If not specified, defaults to `now()` 
     # + return - Records matching the query criteria. 
     remote isolated function listTeamsAuditRecords(string accept, string contentType, string id, int? 'limit = (), string? cursor = (), string? since = (), string? until = ()) returns AuditRecordResponseSchema|error {
-        string resourcePath = string `/teams/${id}/audit/records`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/audit/records`;
         map<anydata> queryParam = {"limit": 'limit, "cursor": cursor, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -2499,12 +2499,12 @@ public isolated client class Client {
     # + escalationPolicyId - The escalation policy ID on the team. 
     # + return - The escalation policy was added to the team. 
     remote isolated function updateTeamEscalationPolicy(string accept, string contentType, string id, string escalationPolicyId) returns http:Response|error {
-        string resourcePath = string `/teams/${id}/escalation_policies/${escalationPolicyId}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/escalation_policies/${getEncodedUri(escalationPolicyId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove an escalation policy from a team
@@ -2515,10 +2515,10 @@ public isolated client class Client {
     # + escalationPolicyId - The escalation policy ID on the team. 
     # + return - The escalation policy was removed from the team. 
     remote isolated function deleteTeamEscalationPolicy(string accept, string contentType, string id, string escalationPolicyId) returns http:Response|error {
-        string resourcePath = string `/teams/${id}/escalation_policies/${escalationPolicyId}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/escalation_policies/${getEncodedUri(escalationPolicyId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List members of a team
@@ -2532,7 +2532,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - A paginated array of users within the requested team. 
     remote isolated function listTeamUsers(string accept, string contentType, string id, int? 'limit = (), int? offset = (), boolean total = false, string[]? include = ()) returns InlineResponse20057|error {
-        string resourcePath = string `/teams/${id}/members`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/members`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "total": total, "include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2547,7 +2547,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - OK 
     remote isolated function getTeamNotificationSubscriptions(string accept, string id) returns InlineResponse20058|error {
-        string resourcePath = string `/teams/${id}/notification_subscriptions`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/notification_subscriptions`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20058 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2560,13 +2560,13 @@ public isolated client class Client {
     # + payload - The entities to subscribe to. 
     # + return - OK 
     remote isolated function createTeamNotificationSubscriptions(string accept, string id, IdNotificationSubscriptionsBody payload) returns InlineResponse2009|error {
-        string resourcePath = string `/teams/${id}/notification_subscriptions`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/notification_subscriptions`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unsubscribe the given Team from Notifications on the matching Subscribable entities.
@@ -2576,13 +2576,13 @@ public isolated client class Client {
     # + payload - The entities to unsubscribe from. 
     # + return - OK 
     remote isolated function removeTeamNotificationSubscriptions(string accept, string id, NotificationSubscriptionsUnsubscribeBody payload) returns InlineResponse20011|error {
-        string resourcePath = string `/teams/${id}/notification_subscriptions/unsubscribe`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/notification_subscriptions/unsubscribe`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Add a user to a team
@@ -2594,13 +2594,13 @@ public isolated client class Client {
     # + payload - The role of the user on the team. 
     # + return - The user was added to the team. 
     remote isolated function updateTeamUser(string accept, string contentType, string id, string userId, UsersUserIdBody payload) returns http:Response|error {
-        string resourcePath = string `/teams/${id}/users/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/users/${getEncodedUri(userId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a user from a team
@@ -2611,10 +2611,10 @@ public isolated client class Client {
     # + userId - The user ID on the team. 
     # + return - The user was removed to the team. 
     remote isolated function deleteTeamUser(string accept, string contentType, string id, string userId) returns http:Response|error {
-        string resourcePath = string `/teams/${id}/users/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/users/${getEncodedUri(userId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List users
@@ -2652,7 +2652,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UsersBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UsersBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a user
@@ -2663,7 +2663,7 @@ public isolated client class Client {
     # + include - Array of additional Models to include in response. 
     # + return - The user requested. 
     remote isolated function getUser(string accept, string contentType, string id, string[]? include = ()) returns UsersBody|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2680,13 +2680,13 @@ public isolated client class Client {
     # + payload - The user to be updated. 
     # + return - The user that was updated. 
     remote isolated function updateUser(string accept, string contentType, string id, UsersIdBody payload) returns UsersIdBody|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UsersIdBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        UsersIdBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a user
@@ -2696,10 +2696,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The user was deleted successfully. 
     remote isolated function deleteUser(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List audit records for a user
@@ -2713,7 +2713,7 @@ public isolated client class Client {
     # + until - The end of the date range over which you want to search. If not specified, defaults to `now()` 
     # + return - Records matching the query criteria. 
     remote isolated function listUsersAuditRecords(string accept, string contentType, string id, int? 'limit = (), string? cursor = (), string? since = (), string? until = ()) returns AuditRecordResponseSchema|error {
-        string resourcePath = string `/users/${id}/audit/records`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/audit/records`;
         map<anydata> queryParam = {"limit": 'limit, "cursor": cursor, "since": since, "until": until};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
@@ -2728,7 +2728,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - A list of contact methods. 
     remote isolated function getUserContactMethods(string accept, string contentType, string id) returns InlineResponse20060|error {
-        string resourcePath = string `/users/${id}/contact_methods`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/contact_methods`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20060 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2742,13 +2742,13 @@ public isolated client class Client {
     # + payload - The contact method to be created. 
     # + return - The contact method that was created. 
     remote isolated function createUserContactMethod(string accept, string contentType, string id, IdContactMethodsBody payload) returns InlineResponse2018|error {
-        string resourcePath = string `/users/${id}/contact_methods`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/contact_methods`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2018 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2018 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a user's contact method
@@ -2759,7 +2759,7 @@ public isolated client class Client {
     # + contactMethodId - The contact method ID on the user. 
     # + return - The user's contact method requested. 
     remote isolated function getUserContactMethod(string accept, string contentType, string id, string contactMethodId) returns InlineResponse2018|error {
-        string resourcePath = string `/users/${id}/contact_methods/${contactMethodId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/contact_methods/${getEncodedUri(contactMethodId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2018 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2774,13 +2774,13 @@ public isolated client class Client {
     # + payload - The user's contact method to be updated. 
     # + return - The user's contact method that was updated. 
     remote isolated function updateUserContactMethod(string accept, string contentType, string id, string contactMethodId, ContactMethodsContactMethodIdBody payload) returns InlineResponse2018|error {
-        string resourcePath = string `/users/${id}/contact_methods/${contactMethodId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/contact_methods/${getEncodedUri(contactMethodId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2018 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse2018 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a user's contact method
@@ -2791,10 +2791,10 @@ public isolated client class Client {
     # + contactMethodId - The contact method ID on the user. 
     # + return - The contact method was deleted successfully. 
     remote isolated function deleteUserContactMethod(string accept, string contentType, string id, string contactMethodId) returns http:Response|error {
-        string resourcePath = string `/users/${id}/contact_methods/${contactMethodId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/contact_methods/${getEncodedUri(contactMethodId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List a user's notification rules
@@ -2805,7 +2805,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - A list of notification rules. 
     remote isolated function getUserNotificationRules(string accept, string contentType, string id, string[]? include = ()) returns InlineResponse20061|error {
-        string resourcePath = string `/users/${id}/notification_rules`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_rules`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2822,13 +2822,13 @@ public isolated client class Client {
     # + payload - The notification rule to be created. 
     # + return - The notification rule that was created. 
     remote isolated function createUserNotificationRule(string accept, string contentType, string id, IdNotificationRulesBody payload) returns IdNotificationRulesBody|error {
-        string resourcePath = string `/users/${id}/notification_rules`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_rules`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IdNotificationRulesBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IdNotificationRulesBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a user's notification rule
@@ -2840,7 +2840,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - The user's notification rule requested. 
     remote isolated function getUserNotificationRule(string accept, string contentType, string id, string notificationRuleId, string[]? include = ()) returns IdNotificationRulesBody|error {
-        string resourcePath = string `/users/${id}/notification_rules/${notificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_rules/${getEncodedUri(notificationRuleId)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -2858,13 +2858,13 @@ public isolated client class Client {
     # + payload - The user's notification rule to be updated. 
     # + return - The user's notification rule that was updated. 
     remote isolated function updateUserNotificationRule(string accept, string contentType, string id, string notificationRuleId, NotificationRulesNotificationRuleIdBody payload) returns InlineResponse20062|error {
-        string resourcePath = string `/users/${id}/notification_rules/${notificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_rules/${getEncodedUri(notificationRuleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20062 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20062 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a user's notification rule
@@ -2875,10 +2875,10 @@ public isolated client class Client {
     # + notificationRuleId - The notification rule ID on the user. 
     # + return - The notification rule was deleted successfully. 
     remote isolated function deleteUserNotificationRule(string accept, string contentType, string id, string notificationRuleId) returns http:Response|error {
-        string resourcePath = string `/users/${id}/notification_rules/${notificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_rules/${getEncodedUri(notificationRuleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Notification Subscriptions
@@ -2887,7 +2887,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - OK 
     remote isolated function getUserNotificationSubscriptions(string accept, string id) returns InlineResponse20058|error {
-        string resourcePath = string `/users/${id}/notification_subscriptions`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_subscriptions`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20058 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2900,13 +2900,13 @@ public isolated client class Client {
     # + payload - The entities to subscribe to. 
     # + return - OK 
     remote isolated function createUserNotificationSubscriptions(string accept, string id, IdNotificationSubscriptionsBody1 payload) returns InlineResponse2009|error {
-        string resourcePath = string `/users/${id}/notification_subscriptions`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_subscriptions`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove Notification Subscriptions
@@ -2916,13 +2916,13 @@ public isolated client class Client {
     # + payload - The entities to unsubscribe from. 
     # + return - OK 
     remote isolated function unsubscribeUserNotificationSubscriptions(string accept, string id, NotificationSubscriptionsUnsubscribeBody1 payload) returns InlineResponse20011|error {
-        string resourcePath = string `/users/${id}/notification_subscriptions/unsubscribe`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/notification_subscriptions/unsubscribe`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List a user's active sessions
@@ -2932,7 +2932,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - A list of the user's active sessions. 
     remote isolated function getUserSessions(string accept, string contentType, string id) returns InlineResponse20063|error {
-        string resourcePath = string `/users/${id}/sessions`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/sessions`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20063 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2945,10 +2945,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The user sessions were all deleted successfully. 
     remote isolated function deleteUserSessions(string accept, string contentType, string id) returns http:Response|error {
-        string resourcePath = string `/users/${id}/sessions`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/sessions`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a user's session
@@ -2960,7 +2960,7 @@ public isolated client class Client {
     # + sessionId - The session ID for the user. 
     # + return - The user's session requested. 
     remote isolated function getUserSession(string accept, string contentType, string id, string 'type, string sessionId) returns InlineResponse20064|error {
-        string resourcePath = string `/users/${id}/sessions/${'type}/${sessionId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/sessions/${getEncodedUri('type)}/${getEncodedUri(sessionId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20064 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2975,10 +2975,10 @@ public isolated client class Client {
     # + sessionId - The session ID for the user. 
     # + return - The user session was deleted successfully. 
     remote isolated function deleteUserSession(string accept, string contentType, string id, string 'type, string sessionId) returns http:Response|error {
-        string resourcePath = string `/users/${id}/sessions/${'type}/${sessionId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/sessions/${getEncodedUri('type)}/${getEncodedUri(sessionId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List a user's status update notification rules
@@ -2990,7 +2990,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - A list of status update notification rules. 
     remote isolated function getUserStatusUpdateNotificationRules(string accept, string contentType, string id, string xEarlyAccess, string[]? include = ()) returns InlineResponse20065|error {
-        string resourcePath = string `/users/${id}/status_update_notification_rules`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/status_update_notification_rules`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3008,13 +3008,13 @@ public isolated client class Client {
     # + payload - The status update notification rule to be created. 
     # + return - The status update notification rule that was created. 
     remote isolated function createUserStatusUpdateNotificationRule(string accept, string contentType, string xEarlyAccess, string id, IdStatusUpdateNotificationRulesBody payload) returns InlineResponse2019|error {
-        string resourcePath = string `/users/${id}/status_update_notification_rules`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/status_update_notification_rules`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2019 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2019 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a user's status update notification rule
@@ -3027,7 +3027,7 @@ public isolated client class Client {
     # + include - Array of additional details to include. 
     # + return - The user's status update notification rule requested. 
     remote isolated function getUserStatusUpdateNotificationRule(string accept, string contentType, string xEarlyAccess, string id, string statusUpdateNotificationRuleId, string[]? include = ()) returns InlineResponse20066|error {
-        string resourcePath = string `/users/${id}/status_update_notification_rules/${statusUpdateNotificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/status_update_notification_rules/${getEncodedUri(statusUpdateNotificationRuleId)}`;
         map<anydata> queryParam = {"include[]": include};
         map<Encoding> queryParamEncoding = {"include[]": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -3046,13 +3046,13 @@ public isolated client class Client {
     # + payload - The user's status update notification rule to be updated. 
     # + return - The user's status update notification rule that was updated. 
     remote isolated function updateUserStatusUpdateNotificationRule(string accept, string contentType, string xEarlyAccess, string id, string statusUpdateNotificationRuleId, StatusUpdateNotificationRulesStatusUpdateNotificationRuleIdBody payload) returns InlineResponse20067|error {
-        string resourcePath = string `/users/${id}/status_update_notification_rules/${statusUpdateNotificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/status_update_notification_rules/${getEncodedUri(statusUpdateNotificationRuleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20067 response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        InlineResponse20067 response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a user's status update notification rule
@@ -3064,10 +3064,10 @@ public isolated client class Client {
     # + statusUpdateNotificationRuleId - The status update notification rule ID on the user. 
     # + return - The status update notification rule was deleted successfully. 
     remote isolated function deleteUserStatusUpdateNotificationRule(string accept, string contentType, string xEarlyAccess, string id, string statusUpdateNotificationRuleId) returns http:Response|error {
-        string resourcePath = string `/users/${id}/status_update_notification_rules/${statusUpdateNotificationRuleId}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/status_update_notification_rules/${getEncodedUri(statusUpdateNotificationRuleId)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "X-EARLY-ACCESS": xEarlyAccess, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get the current user
@@ -3110,7 +3110,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The vendor requested 
     remote isolated function getVendor(string accept, string contentType, string id) returns InlineResponse20069|error {
-        string resourcePath = string `/vendors/${id}`;
+        string resourcePath = string `/vendors/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20069 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3146,7 +3146,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        WebhookSubscriptionsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        WebhookSubscriptionsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a webhook subscription
@@ -3155,7 +3155,7 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The webhook subscription that was requested. 
     remote isolated function getWebhookSubscription(string accept, string id) returns WebhookSubscriptionsBody|error {
-        string resourcePath = string `/webhook_subscriptions/${id}`;
+        string resourcePath = string `/webhook_subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         WebhookSubscriptionsBody response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -3168,13 +3168,13 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The updated webhook subscription. 
     remote isolated function updateWebhookSubscription(string accept, string contentType, string id, WebhookSubscriptionUpdate payload) returns WebhookSubscriptionsBody|error {
-        string resourcePath = string `/webhook_subscriptions/${id}`;
+        string resourcePath = string `/webhook_subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Content-Type": contentType, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        WebhookSubscriptionsBody response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        WebhookSubscriptionsBody response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a webhook subscription
@@ -3183,10 +3183,10 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The webhook subscription was deleted successfully. 
     remote isolated function deleteWebhookSubscription(string accept, string id) returns http:Response|error {
-        string resourcePath = string `/webhook_subscriptions/${id}`;
+        string resourcePath = string `/webhook_subscriptions/${getEncodedUri(id)}`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Enable a webhook subscription
@@ -3195,12 +3195,12 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - The webhook subscription that was successfully enabled. 
     remote isolated function enableWebhookSubscription(string accept, string id) returns WebhookSubscriptionsBody|error {
-        string resourcePath = string `/webhook_subscriptions/${id}/enable`;
+        string resourcePath = string `/webhook_subscriptions/${getEncodedUri(id)}/enable`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        WebhookSubscriptionsBody response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        WebhookSubscriptionsBody response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Test a webhook subscription
@@ -3209,12 +3209,12 @@ public isolated client class Client {
     # + id - The ID of the resource. 
     # + return - Accepted 
     remote isolated function testWebhookSubscription(string accept, string id) returns http:Response|error {
-        string resourcePath = string `/webhook_subscriptions/${id}/ping`;
+        string resourcePath = string `/webhook_subscriptions/${getEncodedUri(id)}/ping`;
         map<any> headerValues = {"Accept": accept, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

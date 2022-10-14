@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -75,9 +75,9 @@ public type Post record {
     # The original home of this content, if it was originally published elsewhere.
     string canonicalUrl?;
     # The status of the post. Valid values are `public`, `draft`, or `unlisted`. The default is `public`.
-    string publishStatus?;
+    string publishStatus = "public";
     # The license of the post. Valid values are `all-rights-reserved`, `cc-40-by`, `cc-40-by-sa`, `cc-40-by-nd`, `cc-40-by-nc`, `cc-40-by-nc-nd`, `cc-40-by-nc-sa`, `cc-40-zero`, `public-domain`. The default is `all-rights-reserved`.
-    string license?;
+    string license = "all-rights-reserved";
 };
 
 # Publications provide a way for authors to work collaboratively within a common narrative framework, brand or point of view.

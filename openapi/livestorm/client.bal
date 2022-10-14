@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.api+json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an Event
@@ -82,7 +82,7 @@ public isolated client class Client {
     # + return - Get detail 
     @display {label: "Get Event By Event ID"}
     remote isolated function getEventByID(@display {label: "Event ID"} string id) returns InlineResponse2001|error {
-        string resourcePath = string `/events/${id}`;
+        string resourcePath = string `/events/${getEncodedUri(id)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -99,7 +99,7 @@ public isolated client class Client {
     # + include - Include Related Data 
     # + return - Fetch List 
     remote isolated function listSessionByEvent(string id, string? pageNumber = (), string? pageSize = (), string? filterStatus = (), string? filterDateFrom = (), string? filterDateTo = (), string[]? include = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/events/${id}/sessions`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/sessions`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterStatus": filterStatus, "filterDateFrom": filterDateFrom, "filterDateTo": filterDateTo, "include": include};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -114,12 +114,12 @@ public isolated client class Client {
     # + payload - Request payload to add event session 
     # + return - Create event session response 
     remote isolated function createEventSession(string id, byte[] payload) returns InlineResponse2011|error {
-        string resourcePath = string `/events/${id}/sessions`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/sessions`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.api+json");
-        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2011 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List People for a Session
@@ -133,7 +133,7 @@ public isolated client class Client {
     # + include - Include Related Data 
     # + return - Fetch List 
     remote isolated function listSessionPeople(string id, string? pageNumber = (), string? pageSize = (), string? filterRole = (), boolean? filterAttended = (), string? filterEmail = (), string[]? include = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/sessions/${id}/people`;
+        string resourcePath = string `/sessions/${getEncodedUri(id)}/people`;
         map<anydata> queryParam = {"pageNumber": pageNumber, "pageSize": pageSize, "filterRole": filterRole, "filterAttended": filterAttended, "filterEmail": filterEmail, "include": include};
         map<Encoding> queryParamEncoding = {"include": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -148,12 +148,12 @@ public isolated client class Client {
     # + payload - Request payload to add participant to session 
     # + return - Register participant response 
     remote isolated function registerPeopleForSession(string id, byte[] payload) returns InlineResponse2012|error {
-        string resourcePath = string `/sessions/${id}/people`;
+        string resourcePath = string `/sessions/${getEncodedUri(id)}/people`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.api+json");
-        InlineResponse2012 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2012 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

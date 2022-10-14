@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -286,7 +286,52 @@ public type InlineResponse2003 record {
     record {
         *Event;
         # Attributes
-        record {string role?; int? created_at?; int? updated_at?; string? timezone?; string? first_name?; string? last_name?; string? email?; string? avatar_link?; record {string event_id?; int created_at?; int updated_at?; record {string id?; string 'type?; string? value?; boolean required?;}[] fields?;} registrant_detail?; int messages_count?; int questions_count?; int votes_count?; int up_votes_count?;} attributes?;
+        record {
+            # 
+            string role?;
+            # 
+            int? created_at?;
+            # 
+            int? updated_at?;
+            # 
+            string? timezone?;
+            # 
+            string? first_name?;
+            # 
+            string? last_name?;
+            # 
+            string? email?;
+            # 
+            string? avatar_link?;
+            # 
+            record {
+                # 
+                string event_id?;
+                # 
+                int created_at?;
+                # 
+                int updated_at?;
+                # 
+                record {
+                    # 
+                    string id?;
+                    # 
+                    string 'type?;
+                    # 
+                    string? value?;
+                    # 
+                    boolean required?;
+                }[] fields?;
+            } registrant_detail?;
+            # 
+            int messages_count?;
+            # 
+            int questions_count?;
+            # 
+            int votes_count?;
+            # 
+            int up_votes_count?;
+        } attributes?;
     }[] data;
     # Metadata
     Meta meta?;
@@ -297,7 +342,34 @@ public type InlineResponse2002 record {
     record {
         *Event;
         # Attributes
-        record {string? event_type_id?; string status?; string timezone?; string room_link?; int attendees_count?; int? duration?; int estimated_started_at?; int? started_at?; int? ended_at?; int? canceled_at?; int created_at?; int updated_at?; int? registrants_count?;} attributes?;
+        record {
+            # 
+            string? event_type_id?;
+            # 
+            string status?;
+            # 
+            string timezone?;
+            # 
+            string room_link?;
+            # 
+            int attendees_count?;
+            # 
+            int? duration?;
+            # 
+            int estimated_started_at?;
+            # 
+            int? started_at?;
+            # 
+            int? ended_at?;
+            # 
+            int? canceled_at?;
+            # 
+            int created_at?;
+            # 
+            int updated_at?;
+            # 
+            int? registrants_count?;
+        } attributes?;
     }[] data;
     # Metadata
     Meta meta?;

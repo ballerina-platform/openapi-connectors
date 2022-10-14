@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -55,7 +55,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SMSVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SMSVerifyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Phone Verify
@@ -69,7 +69,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PhoneVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PhoneVerifyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # HLR Lookup
@@ -83,7 +83,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        HLRLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        HLRLookupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # SMS Message
@@ -97,7 +97,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        SMSMessageResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SMSMessageResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Verify Security Code
@@ -111,7 +111,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        VerifySecurityCodeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        VerifySecurityCodeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Phone Playback
@@ -125,7 +125,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PhonePlaybackResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PhonePlaybackResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # User Agent Info
@@ -139,7 +139,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        UserAgentInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserAgentInfoResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Email Validate
@@ -153,7 +153,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        EmailValidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EmailValidateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Phone Validate
@@ -167,7 +167,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        PhoneValidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PhoneValidateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Bad Word Filter
@@ -181,7 +181,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        BadWordFilterResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BadWordFilterResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Host Reputation
@@ -195,7 +195,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        HostReputationResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        HostReputationResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # IP Probe
@@ -209,7 +209,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        IPProbeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPProbeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Email Verify
@@ -223,7 +223,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        EmailVerifyResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EmailVerifyResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # IP Blocklist
@@ -237,7 +237,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        IPBlocklistResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPBlocklistResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # IP Blocklist Download
@@ -251,7 +251,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # IP Info
@@ -265,7 +265,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        IPInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IPInfoResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Geocode Reverse
@@ -279,7 +279,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        GeocodeReverseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GeocodeReverseResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Geocode Address
@@ -293,7 +293,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        GeocodeAddressResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GeocodeAddressResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Currency Convert
@@ -307,7 +307,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        ConvertResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ConvertResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # BIN Lookup
@@ -321,7 +321,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        BINLookupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BINLookupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # BIN List Download
@@ -335,7 +335,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # URL Info
@@ -349,7 +349,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        URLInfoResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        URLInfoResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # HTML Clean
@@ -363,7 +363,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Browser Bot
@@ -377,7 +377,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        BrowserBotResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BrowserBotResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

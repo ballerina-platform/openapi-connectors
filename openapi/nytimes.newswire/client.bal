@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -62,7 +62,7 @@ public isolated client class Client {
     # + offset - Sets the starting point of the result set 
     # + return - An array of Articles 
     remote isolated function filterContents(string 'source, string section, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
-        string resourcePath = string `/content/${'source}/${section}.json`;
+        string resourcePath = string `/content/${getEncodedUri('source)}/${getEncodedUri(section)}.json`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -77,7 +77,7 @@ public isolated client class Client {
     # + offset - Sets the starting point of the result set 
     # + return - An array of Articles 
     remote isolated function filterContentsByTime(string 'source, string section, int timePeriod, int 'limit = 20, int offset = 0) returns InlineResponse200|error {
-        string resourcePath = string `/content/${'source}/${section}/${timePeriod}.json`;
+        string resourcePath = string `/content/${getEncodedUri('source)}/${getEncodedUri(section)}/${getEncodedUri(timePeriod)}.json`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -15,15 +15,13 @@
 // under the License.
 
 import ballerina/http;
-import ballerina/url;
-import ballerina/lang.'string;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -50,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector from [Microsoft Dynamics 365 Business Central API v1.0](https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification.
@@ -67,6 +69,7 @@ public isolated client class Client {
     public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.businesscentral.dynamics.com/v2.0/sandbox/api/v1.0") returns error? {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
+        return;
     }
     # Returns a list of companies
     #
@@ -77,10 +80,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of companies 
     remote isolated function listCompanies(int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse200|error {
-        string  path = string `/companies`;
+        string resourcePath = string `/companies`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse200 response = check self.clientEp-> get(path, targetType = InlineResponse200);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type company for Dynamics 365 Business Central.
@@ -89,10 +93,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested company 
     remote isolated function getCompany(string companyId, string[]? 'select = ()) returns Company|error {
-        string  path = string `/companies(${companyId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Company response = check self.clientEp-> get(path, targetType = Company);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Company response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of items
@@ -106,26 +111,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of items 
     remote isolated function listItems(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2001|error {
-        string  path = string `/companies(${companyId})/items`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2001 response = check self.clientEp-> get(path, targetType = InlineResponse2001);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2001 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type item in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new item has been succesfully created 
-    remote isolated function postItem(string companyId, string contentType, PostItemRequest payload) returns Item|error {
-        string  path = string `/companies(${companyId})/items`;
+    remote isolated function postItem(string companyId, string contentType, json payload) returns Item|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Item response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Item);
+        request.setPayload(jsonBody, "application/json");
+        Item response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type item for Dynamics 365 Business Central.
@@ -136,10 +141,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested item 
     remote isolated function getItem(string companyId, string itemId, string[]? expand = (), string[]? 'select = ()) returns Item|error {
-        string  path = string `/companies(${companyId})/items(${itemId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Item response = check self.clientEp-> get(path, targetType = Item);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Item response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type item in Dynamics 365 Business Central
@@ -148,10 +154,8 @@ public isolated client class Client {
     # + itemId - (v1.0) id for item 
     # + return - (v1.0) Succesfully deleted the specified item 
     remote isolated function deleteItem(string companyId, string itemId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/items(${itemId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type item in Dynamics 365 Business Central
@@ -160,16 +164,15 @@ public isolated client class Client {
     # + itemId - (v1.0) id for item 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieditem 
-    remote isolated function patchItem(string companyId, string itemId, string contentType, string ifMatch, PatchItemRequest payload) returns Item|error {
-        string  path = string `/companies(${companyId})/items(${itemId})`;
+    remote isolated function patchItem(string companyId, string itemId, string contentType, string ifMatch, json payload) returns Item|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Item response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Item);
+        request.setPayload(jsonBody, "application/json");
+        Item response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of picture
@@ -183,10 +186,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of picture 
     remote isolated function listPictureForItem(string companyId, string itemId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2002|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/picture`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/picture`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type picture for Dynamics 365 Business Central.
@@ -197,10 +201,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested picture 
     remote isolated function getPictureForItem(string companyId, string itemId, string pictureId, string[]? 'select = ()) returns Picture|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/picture(${pictureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/picture(${getEncodedUri(pictureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Picture response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type picture in Dynamics 365 Business Central
@@ -210,10 +215,8 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + return - (v1.0) Succesfully deleted the specified picture 
     remote isolated function deletePictureForItem(string companyId, string itemId, string pictureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/picture(${pictureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/picture(${getEncodedUri(pictureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type picture in Dynamics 365 Business Central
@@ -223,16 +226,15 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpicture 
-    remote isolated function patchPictureForItem(string companyId, string itemId, string pictureId, string contentType, string ifMatch, PatchPictureForItemRequest payload) returns Picture|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/picture(${pictureId})`;
+    remote isolated function patchPictureForItem(string companyId, string itemId, string pictureId, string contentType, string ifMatch, json payload) returns Picture|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/picture(${getEncodedUri(pictureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Picture response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Picture);
+        request.setPayload(jsonBody, "application/json");
+        Picture response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of defaultDimensions
@@ -247,10 +249,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of defaultDimensions 
     remote isolated function listDefaultDimensionsForItem(string companyId, string itemId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2003|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/defaultDimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/defaultDimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -258,16 +261,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + itemId - (v1.0) id for item 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new defaultDimensions has been succesfully created 
-    remote isolated function postDefaultDimensionsForItem(string companyId, string itemId, string contentType, PostDefaultDimensionsForItemRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/defaultDimensions`;
+    remote isolated function postDefaultDimensionsForItem(string companyId, string itemId, string contentType, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/defaultDimensions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type defaultDimensions for Dynamics 365 Business Central.
@@ -280,10 +282,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested defaultDimensions 
     remote isolated function getDefaultDimensionsForItem(string companyId, string itemId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string[]? expand = (), string[]? 'select = ()) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DefaultDimensions response = check self.clientEp-> get(path, targetType = DefaultDimensions);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DefaultDimensions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type defaultDimensions in Dynamics 365 Business Central
@@ -294,10 +297,8 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + return - (v1.0) Succesfully deleted the specified defaultDimensions 
     remote isolated function deleteDefaultDimensionsForItem(string companyId, string itemId, string defaultdimensionsParentid, string defaultdimensionsDimensionid) returns http:Response|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -308,16 +309,15 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddefaultDimensions 
-    remote isolated function patchDefaultDimensionsForItem(string companyId, string itemId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, PatchDefaultDimensionsForItemRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/items(${itemId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+    remote isolated function patchDefaultDimensionsForItem(string companyId, string itemId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/items(${getEncodedUri(itemId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of picture
@@ -330,10 +330,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of picture 
     remote isolated function listPicture(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2002|error {
-        string  path = string `/companies(${companyId})/picture`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/picture`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type picture for Dynamics 365 Business Central.
@@ -343,10 +344,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested picture 
     remote isolated function getPicture(string companyId, string pictureId, string[]? 'select = ()) returns Picture|error {
-        string  path = string `/companies(${companyId})/picture(${pictureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/picture(${getEncodedUri(pictureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Picture response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type picture in Dynamics 365 Business Central
@@ -355,10 +357,8 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + return - (v1.0) Succesfully deleted the specified picture 
     remote isolated function deletePicture(string companyId, string pictureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/picture(${pictureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/picture(${getEncodedUri(pictureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type picture in Dynamics 365 Business Central
@@ -367,16 +367,15 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpicture 
-    remote isolated function patchPicture(string companyId, string pictureId, string contentType, string ifMatch, PatchPictureRequest payload) returns Picture|error {
-        string  path = string `/companies(${companyId})/picture(${pictureId})`;
+    remote isolated function patchPicture(string companyId, string pictureId, string contentType, string ifMatch, json payload) returns Picture|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/picture(${getEncodedUri(pictureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Picture response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Picture);
+        request.setPayload(jsonBody, "application/json");
+        Picture response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of defaultDimensions
@@ -390,26 +389,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of defaultDimensions 
     remote isolated function listDefaultDimensions(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2003|error {
-        string  path = string `/companies(${companyId})/defaultDimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/defaultDimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type defaultDimensions in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new defaultDimensions has been succesfully created 
-    remote isolated function postDefaultDimensions(string companyId, string contentType, PostDefaultDimensionsRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/defaultDimensions`;
+    remote isolated function postDefaultDimensions(string companyId, string contentType, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/defaultDimensions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type defaultDimensions for Dynamics 365 Business Central.
@@ -421,10 +420,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested defaultDimensions 
     remote isolated function getDefaultDimensions(string companyId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string[]? expand = (), string[]? 'select = ()) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DefaultDimensions response = check self.clientEp-> get(path, targetType = DefaultDimensions);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DefaultDimensions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type defaultDimensions in Dynamics 365 Business Central
@@ -434,10 +434,8 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + return - (v1.0) Succesfully deleted the specified defaultDimensions 
     remote isolated function deleteDefaultDimensions(string companyId, string defaultdimensionsParentid, string defaultdimensionsDimensionid) returns http:Response|error {
-        string  path = string `/companies(${companyId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -447,16 +445,15 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddefaultDimensions 
-    remote isolated function patchDefaultDimensions(string companyId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, PatchDefaultDimensionsRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+    remote isolated function patchDefaultDimensions(string companyId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customers
@@ -470,26 +467,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customers 
     remote isolated function listCustomers(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2004|error {
-        string  path = string `/companies(${companyId})/customers`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2004 response = check self.clientEp-> get(path, targetType = InlineResponse2004);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type customer in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new customer has been succesfully created 
-    remote isolated function postCustomer(string companyId, string contentType, PostCustomerRequest payload) returns Customer|error {
-        string  path = string `/companies(${companyId})/customers`;
+    remote isolated function postCustomer(string companyId, string contentType, json payload) returns Customer|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Customer response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Customer);
+        request.setPayload(jsonBody, "application/json");
+        Customer response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customer for Dynamics 365 Business Central.
@@ -500,10 +497,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customer 
     remote isolated function getCustomer(string companyId, string customerId, string[]? expand = (), string[]? 'select = ()) returns Customer|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Customer response = check self.clientEp-> get(path, targetType = Customer);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Customer response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type customer in Dynamics 365 Business Central
@@ -512,10 +510,8 @@ public isolated client class Client {
     # + customerId - (v1.0) id for customer 
     # + return - (v1.0) Succesfully deleted the specified customer 
     remote isolated function deleteCustomer(string companyId, string customerId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type customer in Dynamics 365 Business Central
@@ -523,17 +519,16 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + customerId - (v1.0) id for customer 
     # + contentType - (v1.0) application/json 
-    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated.
-    # + payload - Request payload 
+    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
     # + return - (v1.0) Succesfully updated the specifiedcustomer 
-    remote isolated function patchCustomer(string companyId, string customerId, string contentType, string ifMatch, PatchCustomerRequest payload) returns Customer|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})`;
+    remote isolated function patchCustomer(string companyId, string customerId, string contentType, string ifMatch, json payload) returns Customer|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Customer response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Customer);
+        request.setPayload(jsonBody, "application/json");
+        Customer response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customerFinancialDetails
@@ -547,10 +542,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerFinancialDetails 
     remote isolated function listCustomerFinancialDetailsForCustomer(string companyId, string customerId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2005|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/customerFinancialDetails`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/customerFinancialDetails`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerFinancialDetail for Dynamics 365 Business Central.
@@ -561,10 +557,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerFinancialDetail 
     remote isolated function getCustomerFinancialDetailForCustomer(string companyId, string customerId, string customerfinancialdetailId, string[]? 'select = ()) returns CustomerFinancialDetail|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/customerFinancialDetails(${customerfinancialdetailId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/customerFinancialDetails(${getEncodedUri(customerfinancialdetailId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerFinancialDetail response = check self.clientEp-> get(path, targetType = CustomerFinancialDetail);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerFinancialDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of picture
@@ -578,10 +575,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of picture 
     remote isolated function listPictureForCustomer(string companyId, string customerId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2002|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/picture`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/picture`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type picture for Dynamics 365 Business Central.
@@ -592,10 +590,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested picture 
     remote isolated function getPictureForCustomer(string companyId, string customerId, string pictureId, string[]? 'select = ()) returns Picture|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/picture(${pictureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/picture(${getEncodedUri(pictureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Picture response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type picture in Dynamics 365 Business Central
@@ -605,10 +604,8 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + return - (v1.0) Succesfully deleted the specified picture 
     remote isolated function deletePictureForCustomer(string companyId, string customerId, string pictureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/picture(${pictureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/picture(${getEncodedUri(pictureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type picture in Dynamics 365 Business Central
@@ -618,16 +615,15 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpicture 
-    remote isolated function patchPictureForCustomer(string companyId, string customerId, string pictureId, string contentType, string ifMatch, PatchPictureForCustomerRequest payload) returns Picture|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/picture(${pictureId})`;
+    remote isolated function patchPictureForCustomer(string companyId, string customerId, string pictureId, string contentType, string ifMatch, json payload) returns Picture|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/picture(${getEncodedUri(pictureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Picture response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Picture);
+        request.setPayload(jsonBody, "application/json");
+        Picture response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of defaultDimensions
@@ -642,10 +638,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of defaultDimensions 
     remote isolated function listDefaultDimensionsForCustomer(string companyId, string customerId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2003|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/defaultDimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/defaultDimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -653,16 +650,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + customerId - (v1.0) id for customer 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new defaultDimensions has been succesfully created 
-    remote isolated function postDefaultDimensionsForCustomer(string companyId, string customerId, string contentType, PostDefaultDimensionsForCustomerRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/defaultDimensions`;
+    remote isolated function postDefaultDimensionsForCustomer(string companyId, string customerId, string contentType, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/defaultDimensions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type defaultDimensions for Dynamics 365 Business Central.
@@ -675,10 +671,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested defaultDimensions 
     remote isolated function getDefaultDimensionsForCustomer(string companyId, string customerId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string[]? expand = (), string[]? 'select = ()) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DefaultDimensions response = check self.clientEp-> get(path, targetType = DefaultDimensions);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DefaultDimensions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type defaultDimensions in Dynamics 365 Business Central
@@ -689,10 +686,8 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + return - (v1.0) Succesfully deleted the specified defaultDimensions 
     remote isolated function deleteDefaultDimensionsForCustomer(string companyId, string customerId, string defaultdimensionsParentid, string defaultdimensionsDimensionid) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -703,16 +698,15 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddefaultDimensions 
-    remote isolated function patchDefaultDimensionsForCustomer(string companyId, string customerId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, PatchDefaultDimensionsForCustomerRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/customers(${customerId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+    remote isolated function patchDefaultDimensionsForCustomer(string companyId, string customerId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customers(${getEncodedUri(customerId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customerFinancialDetails
@@ -725,10 +719,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerFinancialDetails 
     remote isolated function listCustomerFinancialDetails(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2005|error {
-        string  path = string `/companies(${companyId})/customerFinancialDetails`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerFinancialDetails`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2005 response = check self.clientEp-> get(path, targetType = InlineResponse2005);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerFinancialDetail for Dynamics 365 Business Central.
@@ -738,10 +733,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerFinancialDetail 
     remote isolated function getCustomerFinancialDetail(string companyId, string customerfinancialdetailId, string[]? 'select = ()) returns CustomerFinancialDetail|error {
-        string  path = string `/companies(${companyId})/customerFinancialDetails(${customerfinancialdetailId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerFinancialDetails(${getEncodedUri(customerfinancialdetailId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerFinancialDetail response = check self.clientEp-> get(path, targetType = CustomerFinancialDetail);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerFinancialDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of vendors
@@ -755,26 +751,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of vendors 
     remote isolated function listVendors(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2006|error {
-        string  path = string `/companies(${companyId})/vendors`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2006 response = check self.clientEp-> get(path, targetType = InlineResponse2006);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2006 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type vendor in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
-    # + contentType - (v1.0) application/json
-    # + payload - Request payload 
+    # + contentType - (v1.0) application/json 
     # + return - (v1.0) A new vendor has been succesfully created 
-    remote isolated function postVendor(string companyId, string contentType, PostVendorRequest payload) returns Vendor|error {
-        string  path = string `/companies(${companyId})/vendors`;
+    remote isolated function postVendor(string companyId, string contentType, json payload) returns Vendor|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Vendor response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Vendor);
+        request.setPayload(jsonBody, "application/json");
+        Vendor response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type vendor for Dynamics 365 Business Central.
@@ -785,10 +781,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested vendor 
     remote isolated function getVendor(string companyId, string vendorId, string[]? expand = (), string[]? 'select = ()) returns Vendor|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Vendor response = check self.clientEp-> get(path, targetType = Vendor);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Vendor response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type vendor in Dynamics 365 Business Central
@@ -797,10 +794,8 @@ public isolated client class Client {
     # + vendorId - (v1.0) id for vendor 
     # + return - (v1.0) Succesfully deleted the specified vendor 
     remote isolated function deleteVendor(string companyId, string vendorId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type vendor in Dynamics 365 Business Central
@@ -809,16 +804,15 @@ public isolated client class Client {
     # + vendorId - (v1.0) id for vendor 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedvendor 
-    remote isolated function patchVendor(string companyId, string vendorId, string contentType, string ifMatch, PatchVendorRequest payload) returns Vendor|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})`;
+    remote isolated function patchVendor(string companyId, string vendorId, string contentType, string ifMatch, json payload) returns Vendor|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Vendor response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Vendor);
+        request.setPayload(jsonBody, "application/json");
+        Vendor response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of picture
@@ -832,10 +826,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of picture 
     remote isolated function listPictureForVendor(string companyId, string vendorId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2002|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/picture`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/picture`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type picture for Dynamics 365 Business Central.
@@ -846,10 +841,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested picture 
     remote isolated function getPictureForVendor(string companyId, string vendorId, string pictureId, string[]? 'select = ()) returns Picture|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/picture(${pictureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/picture(${getEncodedUri(pictureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Picture response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type picture in Dynamics 365 Business Central
@@ -859,10 +855,8 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + return - (v1.0) Succesfully deleted the specified picture 
     remote isolated function deletePictureForVendor(string companyId, string vendorId, string pictureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/picture(${pictureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/picture(${getEncodedUri(pictureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type picture in Dynamics 365 Business Central
@@ -872,16 +866,15 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpicture 
-    remote isolated function patchPictureForVendor(string companyId, string vendorId, string pictureId, string contentType, string ifMatch, PatchPictureForVendorRequest payload) returns Picture|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/picture(${pictureId})`;
+    remote isolated function patchPictureForVendor(string companyId, string vendorId, string pictureId, string contentType, string ifMatch, json payload) returns Picture|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/picture(${getEncodedUri(pictureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Picture response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Picture);
+        request.setPayload(jsonBody, "application/json");
+        Picture response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of defaultDimensions
@@ -896,10 +889,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of defaultDimensions 
     remote isolated function listDefaultDimensionsForVendor(string companyId, string vendorId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2003|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/defaultDimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/defaultDimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -907,16 +901,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + vendorId - (v1.0) id for vendor 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new defaultDimensions has been succesfully created 
-    remote isolated function postDefaultDimensionsForVendor(string companyId, string vendorId, string contentType, PostDefaultDimensionsForVendorRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/defaultDimensions`;
+    remote isolated function postDefaultDimensionsForVendor(string companyId, string vendorId, string contentType, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/defaultDimensions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type defaultDimensions for Dynamics 365 Business Central.
@@ -929,10 +922,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested defaultDimensions 
     remote isolated function getDefaultDimensionsForVendor(string companyId, string vendorId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string[]? expand = (), string[]? 'select = ()) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DefaultDimensions response = check self.clientEp-> get(path, targetType = DefaultDimensions);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DefaultDimensions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type defaultDimensions in Dynamics 365 Business Central
@@ -943,10 +937,8 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + return - (v1.0) Succesfully deleted the specified defaultDimensions 
     remote isolated function deleteDefaultDimensionsForVendor(string companyId, string vendorId, string defaultdimensionsParentid, string defaultdimensionsDimensionid) returns http:Response|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -957,16 +949,15 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddefaultDimensions 
-    remote isolated function patchDefaultDimensionsForVendor(string companyId, string vendorId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, PatchDefaultDimensionsForVendorRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/vendors(${vendorId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+    remote isolated function patchDefaultDimensionsForVendor(string companyId, string vendorId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendors(${getEncodedUri(vendorId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of companyInformation
@@ -979,10 +970,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of companyInformation 
     remote isolated function listCompanyInformation(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2007|error {
-        string  path = string `/companies(${companyId})/companyInformation`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/companyInformation`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2007 response = check self.clientEp-> get(path, targetType = InlineResponse2007);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2007 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type companyInformation for Dynamics 365 Business Central.
@@ -992,10 +984,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested companyInformation 
     remote isolated function getCompanyInformation(string companyId, string companyinformationId, string[]? 'select = ()) returns CompanyInformation|error {
-        string  path = string `/companies(${companyId})/companyInformation(${companyinformationId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/companyInformation(${getEncodedUri(companyinformationId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CompanyInformation response = check self.clientEp-> get(path, targetType = CompanyInformation);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CompanyInformation response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Updates an object of type companyInformation in Dynamics 365 Business Central
@@ -1004,16 +997,15 @@ public isolated client class Client {
     # + companyinformationId - (v1.0) id for companyInformation 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcompanyInformation 
-    remote isolated function patchCompanyInformation(string companyId, string companyinformationId, string contentType, string ifMatch, PatchCompanyInformationRequest payload) returns CompanyInformation|error {
-        string  path = string `/companies(${companyId})/companyInformation(${companyinformationId})`;
+    remote isolated function patchCompanyInformation(string companyId, string companyinformationId, string contentType, string ifMatch, json payload) returns CompanyInformation|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/companyInformation(${getEncodedUri(companyinformationId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CompanyInformation response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=CompanyInformation);
+        request.setPayload(jsonBody, "application/json");
+        CompanyInformation response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of salesInvoices
@@ -1027,26 +1019,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesInvoices 
     remote isolated function listSalesInvoices(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2008|error {
-        string  path = string `/companies(${companyId})/salesInvoices`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2008 response = check self.clientEp-> get(path, targetType = InlineResponse2008);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2008 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesInvoice in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesInvoice has been succesfully created 
-    remote isolated function postSalesInvoice(string companyId, string contentType, PostSalesInvoiceRequest payload) returns SalesInvoice|error {
-        string  path = string `/companies(${companyId})/salesInvoices`;
+    remote isolated function postSalesInvoice(string companyId, string contentType, json payload) returns SalesInvoice|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoice response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesInvoice);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoice response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesInvoice for Dynamics 365 Business Central.
@@ -1057,10 +1049,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesInvoice 
     remote isolated function getSalesInvoice(string companyId, string salesinvoiceId, string[]? expand = (), string[]? 'select = ()) returns SalesInvoice|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesInvoice response = check self.clientEp-> get(path, targetType = SalesInvoice);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesInvoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesInvoice in Dynamics 365 Business Central
@@ -1069,10 +1062,8 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully deleted the specified salesInvoice 
     remote isolated function deleteSalesInvoice(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesInvoice in Dynamics 365 Business Central
@@ -1081,16 +1072,15 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesInvoice 
-    remote isolated function patchSalesInvoice(string companyId, string salesinvoiceId, string contentType, string ifMatch, PatchSalesInvoiceRequest payload) returns SalesInvoice|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})`;
+    remote isolated function patchSalesInvoice(string companyId, string salesinvoiceId, string contentType, string ifMatch, json payload) returns SalesInvoice|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoice response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesInvoice);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoice response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the cancelAndSend action for salesInvoices entity
@@ -1099,10 +1089,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a cancelAndSend action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function cancelAndSendActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.cancelAndSend`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.cancelAndSend`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the cancel action for salesInvoices entity
@@ -1111,10 +1101,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a cancel action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function cancelActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.cancel`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the makeCorrectiveCreditMemo action for salesInvoices entity
@@ -1123,10 +1113,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a makeCorrectiveCreditMemo action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function makeCorrectiveCreditMemoActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.makeCorrectiveCreditMemo`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.makeCorrectiveCreditMemo`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the postAndSend action for salesInvoices entity
@@ -1135,10 +1125,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a postAndSend action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function postAndSendActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.postAndSend`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.postAndSend`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the post action for salesInvoices entity
@@ -1147,10 +1137,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a post action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function postActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.post`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.post`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the send action for salesInvoices entity
@@ -1159,10 +1149,10 @@ public isolated client class Client {
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + return - (v1.0) Succesfully performed a send action on the Dynamic 365 Business Central salesInvoices entity 
     remote isolated function sendActionSalesInvoices(string companyId, string salesinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/Microsoft.NAV.send`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/Microsoft.NAV.send`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of salesInvoiceLines
@@ -1177,10 +1167,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesInvoiceLines 
     remote isolated function listSalesInvoiceLinesForSalesInvoice(string companyId, string salesinvoiceId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2009|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/salesInvoiceLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/salesInvoiceLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2009 response = check self.clientEp-> get(path, targetType = InlineResponse2009);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2009 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesInvoiceLine in Dynamics 365 Business Central
@@ -1188,16 +1179,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + salesinvoiceId - (v1.0) id for salesInvoice 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesInvoiceLine has been succesfully created 
-    remote isolated function postSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string contentType, PostSalesInvoiceLineForSalesInvoiceRequest payload) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/salesInvoiceLines`;
+    remote isolated function postSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string contentType, json payload) returns SalesInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/salesInvoiceLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoiceLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoiceLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesInvoiceLine for Dynamics 365 Business Central.
@@ -1209,10 +1199,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesInvoiceLine 
     remote isolated function getSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string salesinvoicelineId, string[]? expand = (), string[]? 'select = ()) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/salesInvoiceLines('${salesinvoicelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesInvoiceLine response = check self.clientEp-> get(path, targetType = SalesInvoiceLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesInvoiceLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesInvoiceLine in Dynamics 365 Business Central
@@ -1222,10 +1213,8 @@ public isolated client class Client {
     # + salesinvoicelineId - (v1.0) id for salesInvoiceLine 
     # + return - (v1.0) Succesfully deleted the specified salesInvoiceLine 
     remote isolated function deleteSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string salesinvoicelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/salesInvoiceLines('${salesinvoicelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesInvoiceLine in Dynamics 365 Business Central
@@ -1235,16 +1224,15 @@ public isolated client class Client {
     # + salesinvoicelineId - (v1.0) id for salesInvoiceLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesInvoiceLine 
-    remote isolated function patchSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string salesinvoicelineId, string contentType, string ifMatch, PatchSalesInvoiceLineForSalesInvoiceRequest payload) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/salesInvoiceLines('${salesinvoicelineId}')`;
+    remote isolated function patchSalesInvoiceLineForSalesInvoice(string companyId, string salesinvoiceId, string salesinvoicelineId, string contentType, string ifMatch, json payload) returns SalesInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoiceLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoiceLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of pdfDocument
@@ -1258,10 +1246,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of pdfDocument 
     remote isolated function listPdfDocumentForSalesInvoice(string companyId, string salesinvoiceId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20010|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/pdfDocument`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/pdfDocument`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type pdfDocument for Dynamics 365 Business Central.
@@ -1272,10 +1261,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested pdfDocument 
     remote isolated function getPdfDocumentForSalesInvoice(string companyId, string salesinvoiceId, string pdfdocumentId, string[]? 'select = ()) returns PdfDocument|error {
-        string  path = string `/companies(${companyId})/salesInvoices(${salesinvoiceId})/pdfDocument(${pdfdocumentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoices(${getEncodedUri(salesinvoiceId)})/pdfDocument(${getEncodedUri(pdfdocumentId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PdfDocument response = check self.clientEp-> get(path, targetType = PdfDocument);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PdfDocument response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of salesInvoiceLines
@@ -1289,26 +1279,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesInvoiceLines 
     remote isolated function listSalesInvoiceLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2009|error {
-        string  path = string `/companies(${companyId})/salesInvoiceLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoiceLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2009 response = check self.clientEp-> get(path, targetType = InlineResponse2009);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2009 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesInvoiceLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesInvoiceLine has been succesfully created 
-    remote isolated function postSalesInvoiceLine(string companyId, string contentType, PostSalesInvoiceLineRequest payload) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoiceLines`;
+    remote isolated function postSalesInvoiceLine(string companyId, string contentType, json payload) returns SalesInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoiceLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoiceLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoiceLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesInvoiceLine for Dynamics 365 Business Central.
@@ -1319,10 +1309,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesInvoiceLine 
     remote isolated function getSalesInvoiceLine(string companyId, string salesinvoicelineId, string[]? expand = (), string[]? 'select = ()) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoiceLines('${salesinvoicelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesInvoiceLine response = check self.clientEp-> get(path, targetType = SalesInvoiceLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesInvoiceLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesInvoiceLine in Dynamics 365 Business Central
@@ -1331,10 +1322,8 @@ public isolated client class Client {
     # + salesinvoicelineId - (v1.0) id for salesInvoiceLine 
     # + return - (v1.0) Succesfully deleted the specified salesInvoiceLine 
     remote isolated function deleteSalesInvoiceLine(string companyId, string salesinvoicelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesInvoiceLines('${salesinvoicelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesInvoiceLine in Dynamics 365 Business Central
@@ -1343,16 +1332,15 @@ public isolated client class Client {
     # + salesinvoicelineId - (v1.0) id for salesInvoiceLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesInvoiceLine 
-    remote isolated function patchSalesInvoiceLine(string companyId, string salesinvoicelineId, string contentType, string ifMatch, PatchSalesInvoiceLineRequest payload) returns SalesInvoiceLine|error {
-        string  path = string `/companies(${companyId})/salesInvoiceLines('${salesinvoicelineId}')`;
+    remote isolated function patchSalesInvoiceLine(string companyId, string salesinvoicelineId, string contentType, string ifMatch, json payload) returns SalesInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesInvoiceLines('${getEncodedUri(salesinvoicelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesInvoiceLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesInvoiceLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of pdfDocument
@@ -1365,10 +1353,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of pdfDocument 
     remote isolated function listPdfDocument(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20010|error {
-        string  path = string `/companies(${companyId})/pdfDocument`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/pdfDocument`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type pdfDocument for Dynamics 365 Business Central.
@@ -1378,10 +1367,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested pdfDocument 
     remote isolated function getPdfDocument(string companyId, string pdfdocumentId, string[]? 'select = ()) returns PdfDocument|error {
-        string  path = string `/companies(${companyId})/pdfDocument(${pdfdocumentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/pdfDocument(${getEncodedUri(pdfdocumentId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PdfDocument response = check self.clientEp-> get(path, targetType = PdfDocument);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PdfDocument response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of customerPaymentJournals
@@ -1395,26 +1385,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerPaymentJournals 
     remote isolated function listCustomerPaymentJournals(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20011|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20011 response = check self.clientEp-> get(path, targetType = InlineResponse20011);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20011 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type customerPaymentJournal in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new customerPaymentJournal has been succesfully created 
-    remote isolated function postCustomerPaymentJournal(string companyId, string contentType, PostCustomerPaymentJournalRequest payload) returns CustomerPaymentJournal|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals`;
+    remote isolated function postCustomerPaymentJournal(string companyId, string contentType, json payload) returns CustomerPaymentJournal|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPaymentJournal response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CustomerPaymentJournal);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPaymentJournal response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerPaymentJournal for Dynamics 365 Business Central.
@@ -1425,10 +1415,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerPaymentJournal 
     remote isolated function getCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string[]? expand = (), string[]? 'select = ()) returns CustomerPaymentJournal|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerPaymentJournal response = check self.clientEp-> get(path, targetType = CustomerPaymentJournal);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerPaymentJournal response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type customerPaymentJournal in Dynamics 365 Business Central
@@ -1437,10 +1428,8 @@ public isolated client class Client {
     # + customerpaymentjournalId - (v1.0) id for customerPaymentJournal 
     # + return - (v1.0) Succesfully deleted the specified customerPaymentJournal 
     remote isolated function deleteCustomerPaymentJournal(string companyId, string customerpaymentjournalId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type customerPaymentJournal in Dynamics 365 Business Central
@@ -1449,16 +1438,15 @@ public isolated client class Client {
     # + customerpaymentjournalId - (v1.0) id for customerPaymentJournal 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcustomerPaymentJournal 
-    remote isolated function patchCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string contentType, string ifMatch, PatchCustomerPaymentJournalRequest payload) returns CustomerPaymentJournal|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})`;
+    remote isolated function patchCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string contentType, string ifMatch, json payload) returns CustomerPaymentJournal|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPaymentJournal response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=CustomerPaymentJournal);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPaymentJournal response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customerPayments
@@ -1473,10 +1461,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerPayments 
     remote isolated function listCustomerPaymentsForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20012|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})/customerPayments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})/customerPayments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20012 response = check self.clientEp-> get(path, targetType = InlineResponse20012);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20012 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type customerPayment in Dynamics 365 Business Central
@@ -1484,16 +1473,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + customerpaymentjournalId - (v1.0) id for customerPaymentJournal 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new customerPayment has been succesfully created 
-    remote isolated function postCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string contentType, PostCustomerPaymentForCustomerPaymentJournalRequest payload) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})/customerPayments`;
+    remote isolated function postCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string contentType, json payload) returns CustomerPayment|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})/customerPayments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPayment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CustomerPayment);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPayment response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerPayment for Dynamics 365 Business Central.
@@ -1505,10 +1493,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerPayment 
     remote isolated function getCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string customerpaymentId, string[]? expand = (), string[]? 'select = ()) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})/customerPayments(${customerpaymentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerPayment response = check self.clientEp-> get(path, targetType = CustomerPayment);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerPayment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type customerPayment in Dynamics 365 Business Central
@@ -1518,10 +1507,8 @@ public isolated client class Client {
     # + customerpaymentId - (v1.0) id for customerPayment 
     # + return - (v1.0) Succesfully deleted the specified customerPayment 
     remote isolated function deleteCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string customerpaymentId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})/customerPayments(${customerpaymentId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type customerPayment in Dynamics 365 Business Central
@@ -1531,16 +1518,15 @@ public isolated client class Client {
     # + customerpaymentId - (v1.0) id for customerPayment 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcustomerPayment 
-    remote isolated function patchCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string customerpaymentId, string contentType, string ifMatch, PatchCustomerPaymentForCustomerPaymentJournalRequest payload) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPaymentJournals(${customerpaymentjournalId})/customerPayments(${customerpaymentId})`;
+    remote isolated function patchCustomerPaymentForCustomerPaymentJournal(string companyId, string customerpaymentjournalId, string customerpaymentId, string contentType, string ifMatch, json payload) returns CustomerPayment|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPaymentJournals(${getEncodedUri(customerpaymentjournalId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPayment response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=CustomerPayment);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPayment response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customerPayments
@@ -1554,26 +1540,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerPayments 
     remote isolated function listCustomerPayments(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20012|error {
-        string  path = string `/companies(${companyId})/customerPayments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPayments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20012 response = check self.clientEp-> get(path, targetType = InlineResponse20012);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20012 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type customerPayment in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
-    # + contentType - (v1.0) application/json
-    # + payload - Request payload 
+    # + contentType - (v1.0) application/json 
     # + return - (v1.0) A new customerPayment has been succesfully created 
-    remote isolated function postCustomerPayment(string companyId, string contentType, PostCustomerPaymentRequest payload) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPayments`;
+    remote isolated function postCustomerPayment(string companyId, string contentType, json payload) returns CustomerPayment|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPayments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPayment response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CustomerPayment);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPayment response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerPayment for Dynamics 365 Business Central.
@@ -1584,10 +1570,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerPayment 
     remote isolated function getCustomerPayment(string companyId, string customerpaymentId, string[]? expand = (), string[]? 'select = ()) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPayments(${customerpaymentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerPayment response = check self.clientEp-> get(path, targetType = CustomerPayment);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerPayment response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type customerPayment in Dynamics 365 Business Central
@@ -1596,10 +1583,8 @@ public isolated client class Client {
     # + customerpaymentId - (v1.0) id for customerPayment 
     # + return - (v1.0) Succesfully deleted the specified customerPayment 
     remote isolated function deleteCustomerPayment(string companyId, string customerpaymentId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/customerPayments(${customerpaymentId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type customerPayment in Dynamics 365 Business Central
@@ -1608,16 +1593,15 @@ public isolated client class Client {
     # + customerpaymentId - (v1.0) id for customerPayment 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcustomerPayment 
-    remote isolated function patchCustomerPayment(string companyId, string customerpaymentId, string contentType, string ifMatch, PatchCustomerPaymentRequest payload) returns CustomerPayment|error {
-        string  path = string `/companies(${companyId})/customerPayments(${customerpaymentId})`;
+    remote isolated function patchCustomerPayment(string companyId, string customerpaymentId, string contentType, string ifMatch, json payload) returns CustomerPayment|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerPayments(${getEncodedUri(customerpaymentId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CustomerPayment response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=CustomerPayment);
+        request.setPayload(jsonBody, "application/json");
+        CustomerPayment response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of accounts
@@ -1630,10 +1614,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of accounts 
     remote isolated function listAccounts(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20013|error {
-        string  path = string `/companies(${companyId})/accounts`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/accounts`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20013 response = check self.clientEp-> get(path, targetType = InlineResponse20013);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20013 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type account for Dynamics 365 Business Central.
@@ -1643,10 +1628,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested account 
     remote isolated function getAccount(string companyId, string accountId, string[]? 'select = ()) returns Account|error {
-        string  path = string `/companies(${companyId})/accounts(${accountId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/accounts(${getEncodedUri(accountId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Account response = check self.clientEp-> get(path, targetType = Account);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Account response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of taxGroups
@@ -1659,26 +1645,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of taxGroups 
     remote isolated function listTaxGroups(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20014|error {
-        string  path = string `/companies(${companyId})/taxGroups`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxGroups`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20014 response = check self.clientEp-> get(path, targetType = InlineResponse20014);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20014 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type taxGroup in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new taxGroup has been succesfully created 
-    remote isolated function postTaxGroup(string companyId, string contentType, PostTaxGroupRequest payload) returns TaxGroup|error {
-        string  path = string `/companies(${companyId})/taxGroups`;
+    remote isolated function postTaxGroup(string companyId, string contentType, json payload) returns TaxGroup|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxGroups`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxGroup response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TaxGroup);
+        request.setPayload(jsonBody, "application/json");
+        TaxGroup response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type taxGroup for Dynamics 365 Business Central.
@@ -1688,10 +1674,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested taxGroup 
     remote isolated function getTaxGroup(string companyId, string taxgroupId, string[]? 'select = ()) returns TaxGroup|error {
-        string  path = string `/companies(${companyId})/taxGroups(${taxgroupId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxGroups(${getEncodedUri(taxgroupId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        TaxGroup response = check self.clientEp-> get(path, targetType = TaxGroup);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TaxGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type taxGroup in Dynamics 365 Business Central
@@ -1700,10 +1687,8 @@ public isolated client class Client {
     # + taxgroupId - (v1.0) id for taxGroup 
     # + return - (v1.0) Succesfully deleted the specified taxGroup 
     remote isolated function deleteTaxGroup(string companyId, string taxgroupId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/taxGroups(${taxgroupId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxGroups(${getEncodedUri(taxgroupId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type taxGroup in Dynamics 365 Business Central
@@ -1712,16 +1697,15 @@ public isolated client class Client {
     # + taxgroupId - (v1.0) id for taxGroup 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedtaxGroup 
-    remote isolated function patchTaxGroup(string companyId, string taxgroupId, string contentType, string ifMatch, PatchTaxGroupRequest payload) returns TaxGroup|error {
-        string  path = string `/companies(${companyId})/taxGroups(${taxgroupId})`;
+    remote isolated function patchTaxGroup(string companyId, string taxgroupId, string contentType, string ifMatch, json payload) returns TaxGroup|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxGroups(${getEncodedUri(taxgroupId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxGroup response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TaxGroup);
+        request.setPayload(jsonBody, "application/json");
+        TaxGroup response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of journals
@@ -1735,26 +1719,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of journals 
     remote isolated function listJournals(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20015|error {
-        string  path = string `/companies(${companyId})/journals`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20015 response = check self.clientEp-> get(path, targetType = InlineResponse20015);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20015 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type journal in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new journal has been succesfully created 
-    remote isolated function postJournal(string companyId, string contentType, PostJournalRequest payload) returns Journal|error {
-        string  path = string `/companies(${companyId})/journals`;
+    remote isolated function postJournal(string companyId, string contentType, json payload) returns Journal|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Journal response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Journal);
+        request.setPayload(jsonBody, "application/json");
+        Journal response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type journal for Dynamics 365 Business Central.
@@ -1765,10 +1749,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested journal 
     remote isolated function getJournal(string companyId, string journalId, string[]? expand = (), string[]? 'select = ()) returns Journal|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Journal response = check self.clientEp-> get(path, targetType = Journal);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Journal response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type journal in Dynamics 365 Business Central
@@ -1777,10 +1762,8 @@ public isolated client class Client {
     # + journalId - (v1.0) id for journal 
     # + return - (v1.0) Succesfully deleted the specified journal 
     remote isolated function deleteJournal(string companyId, string journalId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type journal in Dynamics 365 Business Central
@@ -1789,16 +1772,15 @@ public isolated client class Client {
     # + journalId - (v1.0) id for journal 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedjournal 
-    remote isolated function patchJournal(string companyId, string journalId, string contentType, string ifMatch, PatchJournalRequest payload) returns Journal|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})`;
+    remote isolated function patchJournal(string companyId, string journalId, string contentType, string ifMatch, json payload) returns Journal|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Journal response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Journal);
+        request.setPayload(jsonBody, "application/json");
+        Journal response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the post action for journals entity
@@ -1807,10 +1789,10 @@ public isolated client class Client {
     # + journalId - (v1.0) id for journal 
     # + return - (v1.0) Succesfully performed a post action on the Dynamic 365 Business Central journals entity 
     remote isolated function postActionJournals(string companyId, string journalId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/Microsoft.NAV.post`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/Microsoft.NAV.post`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of journalLines
@@ -1825,10 +1807,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of journalLines 
     remote isolated function listJournalLinesForJournal(string companyId, string journalId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20016|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20016 response = check self.clientEp-> get(path, targetType = InlineResponse20016);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20016 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type journalLine in Dynamics 365 Business Central
@@ -1836,16 +1819,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + journalId - (v1.0) id for journal 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new journalLine has been succesfully created 
-    remote isolated function postJournalLineForJournal(string companyId, string journalId, string contentType, PostJournalLineForJournalRequest payload) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines`;
+    remote isolated function postJournalLineForJournal(string companyId, string journalId, string contentType, json payload) returns JournalLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        JournalLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=JournalLine);
+        request.setPayload(jsonBody, "application/json");
+        JournalLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type journalLine for Dynamics 365 Business Central.
@@ -1857,10 +1839,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested journalLine 
     remote isolated function getJournalLineForJournal(string companyId, string journalId, string journallineId, string[]? expand = (), string[]? 'select = ()) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        JournalLine response = check self.clientEp-> get(path, targetType = JournalLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        JournalLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type journalLine in Dynamics 365 Business Central
@@ -1870,10 +1853,8 @@ public isolated client class Client {
     # + journallineId - (v1.0) id for journalLine 
     # + return - (v1.0) Succesfully deleted the specified journalLine 
     remote isolated function deleteJournalLineForJournal(string companyId, string journalId, string journallineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type journalLine in Dynamics 365 Business Central
@@ -1883,16 +1864,15 @@ public isolated client class Client {
     # + journallineId - (v1.0) id for journalLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedjournalLine 
-    remote isolated function patchJournalLineForJournal(string companyId, string journalId, string journallineId, string contentType, string ifMatch, PatchJournalLineForJournalRequest payload) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})`;
+    remote isolated function patchJournalLineForJournal(string companyId, string journalId, string journallineId, string contentType, string ifMatch, json payload) returns JournalLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        JournalLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=JournalLine);
+        request.setPayload(jsonBody, "application/json");
+        JournalLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of attachments
@@ -1907,10 +1887,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of attachments 
     remote isolated function listAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20017|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})/attachments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})/attachments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20017 response = check self.clientEp-> get(path, targetType = InlineResponse20017);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20017 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type attachments in Dynamics 365 Business Central
@@ -1919,16 +1900,15 @@ public isolated client class Client {
     # + journalId - (v1.0) id for journal 
     # + journallineId - (v1.0) id for journalLine 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new attachments has been succesfully created 
-    remote isolated function postAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string contentType, PostAttachmentsForJournalLineForJournalRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})/attachments`;
+    remote isolated function postAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string contentType, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})/attachments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type attachments for Dynamics 365 Business Central.
@@ -1941,10 +1921,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested attachments 
     remote isolated function getAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string attachmentsParentid, string attachmentsId, string[]? 'select = ()) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Attachments response = check self.clientEp-> get(path, targetType = Attachments);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Attachments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type attachments in Dynamics 365 Business Central
@@ -1956,10 +1937,8 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + return - (v1.0) Succesfully deleted the specified attachments 
     remote isolated function deleteAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string attachmentsParentid, string attachmentsId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type attachments in Dynamics 365 Business Central
@@ -1971,16 +1950,15 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedattachments 
-    remote isolated function patchAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, PatchAttachmentsForJournalLineForJournalRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journals(${journalId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
+    remote isolated function patchAttachmentsForJournalLineForJournal(string companyId, string journalId, string journallineId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journals(${getEncodedUri(journalId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of journalLines
@@ -1994,26 +1972,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of journalLines 
     remote isolated function listJournalLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20016|error {
-        string  path = string `/companies(${companyId})/journalLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20016 response = check self.clientEp-> get(path, targetType = InlineResponse20016);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20016 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type journalLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new journalLine has been succesfully created 
-    remote isolated function postJournalLine(string companyId, string contentType, PostJournalLineRequest payload) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journalLines`;
+    remote isolated function postJournalLine(string companyId, string contentType, json payload) returns JournalLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        JournalLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=JournalLine);
+        request.setPayload(jsonBody, "application/json");
+        JournalLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type journalLine for Dynamics 365 Business Central.
@@ -2024,10 +2002,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested journalLine 
     remote isolated function getJournalLine(string companyId, string journallineId, string[]? expand = (), string[]? 'select = ()) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        JournalLine response = check self.clientEp-> get(path, targetType = JournalLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        JournalLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type journalLine in Dynamics 365 Business Central
@@ -2036,10 +2015,8 @@ public isolated client class Client {
     # + journallineId - (v1.0) id for journalLine 
     # + return - (v1.0) Succesfully deleted the specified journalLine 
     remote isolated function deleteJournalLine(string companyId, string journallineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type journalLine in Dynamics 365 Business Central
@@ -2048,16 +2025,15 @@ public isolated client class Client {
     # + journallineId - (v1.0) id for journalLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedjournalLine 
-    remote isolated function patchJournalLine(string companyId, string journallineId, string contentType, string ifMatch, PatchJournalLineRequest payload) returns JournalLine|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})`;
+    remote isolated function patchJournalLine(string companyId, string journallineId, string contentType, string ifMatch, json payload) returns JournalLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        JournalLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=JournalLine);
+        request.setPayload(jsonBody, "application/json");
+        JournalLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of attachments
@@ -2071,10 +2047,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of attachments 
     remote isolated function listAttachmentsForJournalLine(string companyId, string journallineId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20017|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})/attachments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})/attachments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20017 response = check self.clientEp-> get(path, targetType = InlineResponse20017);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20017 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type attachments in Dynamics 365 Business Central
@@ -2082,16 +2059,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + journallineId - (v1.0) id for journalLine 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new attachments has been succesfully created 
-    remote isolated function postAttachmentsForJournalLine(string companyId, string journallineId, string contentType, PostAttachmentsForJournalLineRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})/attachments`;
+    remote isolated function postAttachmentsForJournalLine(string companyId, string journallineId, string contentType, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})/attachments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type attachments for Dynamics 365 Business Central.
@@ -2103,10 +2079,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested attachments 
     remote isolated function getAttachmentsForJournalLine(string companyId, string journallineId, string attachmentsParentid, string attachmentsId, string[]? 'select = ()) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Attachments response = check self.clientEp-> get(path, targetType = Attachments);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Attachments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type attachments in Dynamics 365 Business Central
@@ -2117,10 +2094,8 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + return - (v1.0) Succesfully deleted the specified attachments 
     remote isolated function deleteAttachmentsForJournalLine(string companyId, string journallineId, string attachmentsParentid, string attachmentsId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type attachments in Dynamics 365 Business Central
@@ -2131,16 +2106,15 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedattachments 
-    remote isolated function patchAttachmentsForJournalLine(string companyId, string journallineId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, PatchAttachmentsForJournalLineRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/journalLines(${journallineId})/attachments(${attachmentsParentid},${attachmentsId})`;
+    remote isolated function patchAttachmentsForJournalLine(string companyId, string journallineId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/journalLines(${getEncodedUri(journallineId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of attachments
@@ -2153,26 +2127,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of attachments 
     remote isolated function listAttachments(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20017|error {
-        string  path = string `/companies(${companyId})/attachments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/attachments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20017 response = check self.clientEp-> get(path, targetType = InlineResponse20017);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20017 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type attachments in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new attachments has been succesfully created 
-    remote isolated function postAttachments(string companyId, string contentType, PostAttachmentsRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/attachments`;
+    remote isolated function postAttachments(string companyId, string contentType, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/attachments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type attachments for Dynamics 365 Business Central.
@@ -2183,10 +2157,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested attachments 
     remote isolated function getAttachments(string companyId, string attachmentsParentid, string attachmentsId, string[]? 'select = ()) returns Attachments|error {
-        string  path = string `/companies(${companyId})/attachments(${attachmentsParentid},${attachmentsId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Attachments response = check self.clientEp-> get(path, targetType = Attachments);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Attachments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type attachments in Dynamics 365 Business Central
@@ -2196,10 +2171,8 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + return - (v1.0) Succesfully deleted the specified attachments 
     remote isolated function deleteAttachments(string companyId, string attachmentsParentid, string attachmentsId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/attachments(${attachmentsParentid},${attachmentsId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type attachments in Dynamics 365 Business Central
@@ -2209,16 +2182,15 @@ public isolated client class Client {
     # + attachmentsId - (v1.0) id for attachments 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedattachments 
-    remote isolated function patchAttachments(string companyId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, PatchAttachmentsRequest payload) returns Attachments|error {
-        string  path = string `/companies(${companyId})/attachments(${attachmentsParentid},${attachmentsId})`;
+    remote isolated function patchAttachments(string companyId, string attachmentsParentid, string attachmentsId, string contentType, string ifMatch, json payload) returns Attachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/attachments(${getEncodedUri(attachmentsParentid)},${getEncodedUri(attachmentsId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Attachments response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Attachments);
+        request.setPayload(jsonBody, "application/json");
+        Attachments response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of employees
@@ -2232,26 +2204,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of employees 
     remote isolated function listEmployees(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20018|error {
-        string  path = string `/companies(${companyId})/employees`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20018 response = check self.clientEp-> get(path, targetType = InlineResponse20018);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20018 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type employee in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new employee has been succesfully created 
-    remote isolated function postEmployee(string companyId, string contentType, PostEmployeeRequest payload) returns Employee|error {
-        string  path = string `/companies(${companyId})/employees`;
+    remote isolated function postEmployee(string companyId, string contentType, json payload) returns Employee|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Employee response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Employee);
+        request.setPayload(jsonBody, "application/json");
+        Employee response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type employee for Dynamics 365 Business Central.
@@ -2262,10 +2234,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested employee 
     remote isolated function getEmployee(string companyId, string employeeId, string[]? expand = (), string[]? 'select = ()) returns Employee|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Employee response = check self.clientEp-> get(path, targetType = Employee);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Employee response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type employee in Dynamics 365 Business Central
@@ -2274,10 +2247,8 @@ public isolated client class Client {
     # + employeeId - (v1.0) id for employee 
     # + return - (v1.0) Succesfully deleted the specified employee 
     remote isolated function deleteEmployee(string companyId, string employeeId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type employee in Dynamics 365 Business Central
@@ -2286,16 +2257,15 @@ public isolated client class Client {
     # + employeeId - (v1.0) id for employee 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedemployee 
-    remote isolated function patchEmployee(string companyId, string employeeId, string contentType, string ifMatch, PatchEmployeeRequest payload) returns Employee|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})`;
+    remote isolated function patchEmployee(string companyId, string employeeId, string contentType, string ifMatch, json payload) returns Employee|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Employee response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Employee);
+        request.setPayload(jsonBody, "application/json");
+        Employee response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of picture
@@ -2309,10 +2279,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of picture 
     remote isolated function listPictureForEmployee(string companyId, string employeeId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse2002|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/picture`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/picture`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2002 response = check self.clientEp-> get(path, targetType = InlineResponse2002);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type picture for Dynamics 365 Business Central.
@@ -2323,10 +2294,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested picture 
     remote isolated function getPictureForEmployee(string companyId, string employeeId, string pictureId, string[]? 'select = ()) returns Picture|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/picture(${pictureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/picture(${getEncodedUri(pictureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Picture response = check self.clientEp-> get(path, targetType = Picture);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Picture response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type picture in Dynamics 365 Business Central
@@ -2336,10 +2308,8 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + return - (v1.0) Succesfully deleted the specified picture 
     remote isolated function deletePictureForEmployee(string companyId, string employeeId, string pictureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/picture(${pictureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/picture(${getEncodedUri(pictureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type picture in Dynamics 365 Business Central
@@ -2349,16 +2319,15 @@ public isolated client class Client {
     # + pictureId - (v1.0) id for picture 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpicture 
-    remote isolated function patchPictureForEmployee(string companyId, string employeeId, string pictureId, string contentType, string ifMatch, PatchPictureForEmployeeRequest payload) returns Picture|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/picture(${pictureId})`;
+    remote isolated function patchPictureForEmployee(string companyId, string employeeId, string pictureId, string contentType, string ifMatch, json payload) returns Picture|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/picture(${getEncodedUri(pictureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Picture response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Picture);
+        request.setPayload(jsonBody, "application/json");
+        Picture response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of defaultDimensions
@@ -2373,10 +2342,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of defaultDimensions 
     remote isolated function listDefaultDimensionsForEmployee(string companyId, string employeeId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse2003|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/defaultDimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/defaultDimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse2003 response = check self.clientEp-> get(path, targetType = InlineResponse2003);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -2384,16 +2354,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + employeeId - (v1.0) id for employee 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new defaultDimensions has been succesfully created 
-    remote isolated function postDefaultDimensionsForEmployee(string companyId, string employeeId, string contentType, PostDefaultDimensionsForEmployeeRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/defaultDimensions`;
+    remote isolated function postDefaultDimensionsForEmployee(string companyId, string employeeId, string contentType, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/defaultDimensions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type defaultDimensions for Dynamics 365 Business Central.
@@ -2406,10 +2375,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested defaultDimensions 
     remote isolated function getDefaultDimensionsForEmployee(string companyId, string employeeId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string[]? expand = (), string[]? 'select = ()) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DefaultDimensions response = check self.clientEp-> get(path, targetType = DefaultDimensions);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DefaultDimensions response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type defaultDimensions in Dynamics 365 Business Central
@@ -2420,10 +2390,8 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + return - (v1.0) Succesfully deleted the specified defaultDimensions 
     remote isolated function deleteDefaultDimensionsForEmployee(string companyId, string employeeId, string defaultdimensionsParentid, string defaultdimensionsDimensionid) returns http:Response|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type defaultDimensions in Dynamics 365 Business Central
@@ -2434,16 +2402,15 @@ public isolated client class Client {
     # + defaultdimensionsDimensionid - (v1.0) dimensionId for defaultDimensions 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddefaultDimensions 
-    remote isolated function patchDefaultDimensionsForEmployee(string companyId, string employeeId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, PatchDefaultDimensionsForEmployeeRequest payload) returns DefaultDimensions|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/defaultDimensions(${defaultdimensionsParentid},${defaultdimensionsDimensionid})`;
+    remote isolated function patchDefaultDimensionsForEmployee(string companyId, string employeeId, string defaultdimensionsParentid, string defaultdimensionsDimensionid, string contentType, string ifMatch, json payload) returns DefaultDimensions|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/defaultDimensions(${getEncodedUri(defaultdimensionsParentid)},${getEncodedUri(defaultdimensionsDimensionid)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DefaultDimensions response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DefaultDimensions);
+        request.setPayload(jsonBody, "application/json");
+        DefaultDimensions response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of timeRegistrationEntries
@@ -2458,10 +2425,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of timeRegistrationEntries 
     remote isolated function listTimeRegistrationEntriesForEmployee(string companyId, string employeeId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20019|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/timeRegistrationEntries`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/timeRegistrationEntries`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20019 response = check self.clientEp-> get(path, targetType = InlineResponse20019);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20019 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type timeRegistrationEntry in Dynamics 365 Business Central
@@ -2469,16 +2437,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + employeeId - (v1.0) id for employee 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new timeRegistrationEntry has been succesfully created 
-    remote isolated function postTimeRegistrationEntryForEmployee(string companyId, string employeeId, string contentType, PostTimeRegistrationEntryForEmployeeRequest payload) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/timeRegistrationEntries`;
+    remote isolated function postTimeRegistrationEntryForEmployee(string companyId, string employeeId, string contentType, json payload) returns TimeRegistrationEntry|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/timeRegistrationEntries`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeRegistrationEntry response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TimeRegistrationEntry);
+        request.setPayload(jsonBody, "application/json");
+        TimeRegistrationEntry response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type timeRegistrationEntry for Dynamics 365 Business Central.
@@ -2490,10 +2457,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested timeRegistrationEntry 
     remote isolated function getTimeRegistrationEntryForEmployee(string companyId, string employeeId, string timeregistrationentryId, string[]? expand = (), string[]? 'select = ()) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/timeRegistrationEntries(${timeregistrationentryId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        TimeRegistrationEntry response = check self.clientEp-> get(path, targetType = TimeRegistrationEntry);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TimeRegistrationEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type timeRegistrationEntry in Dynamics 365 Business Central
@@ -2503,10 +2471,8 @@ public isolated client class Client {
     # + timeregistrationentryId - (v1.0) id for timeRegistrationEntry 
     # + return - (v1.0) Succesfully deleted the specified timeRegistrationEntry 
     remote isolated function deleteTimeRegistrationEntryForEmployee(string companyId, string employeeId, string timeregistrationentryId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/timeRegistrationEntries(${timeregistrationentryId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type timeRegistrationEntry in Dynamics 365 Business Central
@@ -2515,17 +2481,16 @@ public isolated client class Client {
     # + employeeId - (v1.0) id for employee 
     # + timeregistrationentryId - (v1.0) id for timeRegistrationEntry 
     # + contentType - (v1.0) application/json 
-    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated.
-    # + payload - Request payload 
+    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
     # + return - (v1.0) Succesfully updated the specifiedtimeRegistrationEntry 
-    remote isolated function patchTimeRegistrationEntryForEmployee(string companyId, string employeeId, string timeregistrationentryId, string contentType, string ifMatch, PatchTimeRegistrationEntryForEmployeeRequest payload) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/employees(${employeeId})/timeRegistrationEntries(${timeregistrationentryId})`;
+    remote isolated function patchTimeRegistrationEntryForEmployee(string companyId, string employeeId, string timeregistrationentryId, string contentType, string ifMatch, json payload) returns TimeRegistrationEntry|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/employees(${getEncodedUri(employeeId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeRegistrationEntry response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TimeRegistrationEntry);
+        request.setPayload(jsonBody, "application/json");
+        TimeRegistrationEntry response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of timeRegistrationEntries
@@ -2539,26 +2504,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of timeRegistrationEntries 
     remote isolated function listTimeRegistrationEntries(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20019|error {
-        string  path = string `/companies(${companyId})/timeRegistrationEntries`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/timeRegistrationEntries`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20019 response = check self.clientEp-> get(path, targetType = InlineResponse20019);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20019 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type timeRegistrationEntry in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new timeRegistrationEntry has been succesfully created 
-    remote isolated function postTimeRegistrationEntry(string companyId, string contentType, PostTimeRegistrationEntryRequest payload) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/timeRegistrationEntries`;
+    remote isolated function postTimeRegistrationEntry(string companyId, string contentType, json payload) returns TimeRegistrationEntry|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/timeRegistrationEntries`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeRegistrationEntry response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TimeRegistrationEntry);
+        request.setPayload(jsonBody, "application/json");
+        TimeRegistrationEntry response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type timeRegistrationEntry for Dynamics 365 Business Central.
@@ -2569,10 +2534,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested timeRegistrationEntry 
     remote isolated function getTimeRegistrationEntry(string companyId, string timeregistrationentryId, string[]? expand = (), string[]? 'select = ()) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/timeRegistrationEntries(${timeregistrationentryId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        TimeRegistrationEntry response = check self.clientEp-> get(path, targetType = TimeRegistrationEntry);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TimeRegistrationEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type timeRegistrationEntry in Dynamics 365 Business Central
@@ -2581,10 +2547,8 @@ public isolated client class Client {
     # + timeregistrationentryId - (v1.0) id for timeRegistrationEntry 
     # + return - (v1.0) Succesfully deleted the specified timeRegistrationEntry 
     remote isolated function deleteTimeRegistrationEntry(string companyId, string timeregistrationentryId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/timeRegistrationEntries(${timeregistrationentryId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type timeRegistrationEntry in Dynamics 365 Business Central
@@ -2593,16 +2557,15 @@ public isolated client class Client {
     # + timeregistrationentryId - (v1.0) id for timeRegistrationEntry 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedtimeRegistrationEntry 
-    remote isolated function patchTimeRegistrationEntry(string companyId, string timeregistrationentryId, string contentType, string ifMatch, PatchTimeRegistrationEntryRequest payload) returns TimeRegistrationEntry|error {
-        string  path = string `/companies(${companyId})/timeRegistrationEntries(${timeregistrationentryId})`;
+    remote isolated function patchTimeRegistrationEntry(string companyId, string timeregistrationentryId, string contentType, string ifMatch, json payload) returns TimeRegistrationEntry|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/timeRegistrationEntries(${getEncodedUri(timeregistrationentryId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TimeRegistrationEntry response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TimeRegistrationEntry);
+        request.setPayload(jsonBody, "application/json");
+        TimeRegistrationEntry response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of generalLedgerEntries
@@ -2616,10 +2579,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of generalLedgerEntries 
     remote isolated function listGeneralLedgerEntries(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20020|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntries`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntries`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20020 response = check self.clientEp-> get(path, targetType = InlineResponse20020);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20020 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type generalLedgerEntry for Dynamics 365 Business Central.
@@ -2630,10 +2594,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested generalLedgerEntry 
     remote isolated function getGeneralLedgerEntry(string companyId, int generalledgerentryId, string[]? expand = (), string[]? 'select = ()) returns GeneralLedgerEntry|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntries(${generalledgerentryId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntries(${getEncodedUri(generalledgerentryId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        GeneralLedgerEntry response = check self.clientEp-> get(path, targetType = GeneralLedgerEntry);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        GeneralLedgerEntry response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of currencies
@@ -2646,26 +2611,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of currencies 
     remote isolated function listCurrencies(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20021|error {
-        string  path = string `/companies(${companyId})/currencies`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/currencies`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20021 response = check self.clientEp-> get(path, targetType = InlineResponse20021);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20021 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type currency in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new currency has been succesfully created 
-    remote isolated function postCurrency(string companyId, string contentType, PostCurrencyRequest payload) returns Currency|error {
-        string  path = string `/companies(${companyId})/currencies`;
+    remote isolated function postCurrency(string companyId, string contentType, json payload) returns Currency|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/currencies`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Currency response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Currency);
+        request.setPayload(jsonBody, "application/json");
+        Currency response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type currency for Dynamics 365 Business Central.
@@ -2675,10 +2640,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested currency 
     remote isolated function getCurrency(string companyId, string currencyId, string[]? 'select = ()) returns Currency|error {
-        string  path = string `/companies(${companyId})/currencies(${currencyId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/currencies(${getEncodedUri(currencyId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Currency response = check self.clientEp-> get(path, targetType = Currency);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Currency response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type currency in Dynamics 365 Business Central
@@ -2687,10 +2653,8 @@ public isolated client class Client {
     # + currencyId - (v1.0) id for currency 
     # + return - (v1.0) Succesfully deleted the specified currency 
     remote isolated function deleteCurrency(string companyId, string currencyId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/currencies(${currencyId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/currencies(${getEncodedUri(currencyId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type currency in Dynamics 365 Business Central
@@ -2699,16 +2663,15 @@ public isolated client class Client {
     # + currencyId - (v1.0) id for currency 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcurrency 
-    remote isolated function patchCurrency(string companyId, string currencyId, string contentType, string ifMatch, PatchCurrencyRequest payload) returns Currency|error {
-        string  path = string `/companies(${companyId})/currencies(${currencyId})`;
+    remote isolated function patchCurrency(string companyId, string currencyId, string contentType, string ifMatch, json payload) returns Currency|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/currencies(${getEncodedUri(currencyId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Currency response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Currency);
+        request.setPayload(jsonBody, "application/json");
+        Currency response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of paymentMethods
@@ -2721,26 +2684,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of paymentMethods 
     remote isolated function listPaymentMethods(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20022|error {
-        string  path = string `/companies(${companyId})/paymentMethods`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentMethods`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20022 response = check self.clientEp-> get(path, targetType = InlineResponse20022);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20022 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type paymentMethod in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new paymentMethod has been succesfully created 
-    remote isolated function postPaymentMethod(string companyId, string contentType, PostPaymentMethodRequest payload) returns PaymentMethod|error {
-        string  path = string `/companies(${companyId})/paymentMethods`;
+    remote isolated function postPaymentMethod(string companyId, string contentType, json payload) returns PaymentMethod|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentMethods`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymentMethod response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PaymentMethod);
+        request.setPayload(jsonBody, "application/json");
+        PaymentMethod response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type paymentMethod for Dynamics 365 Business Central.
@@ -2750,10 +2713,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested paymentMethod 
     remote isolated function getPaymentMethod(string companyId, string paymentmethodId, string[]? 'select = ()) returns PaymentMethod|error {
-        string  path = string `/companies(${companyId})/paymentMethods(${paymentmethodId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentMethods(${getEncodedUri(paymentmethodId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PaymentMethod response = check self.clientEp-> get(path, targetType = PaymentMethod);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PaymentMethod response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type paymentMethod in Dynamics 365 Business Central
@@ -2762,10 +2726,8 @@ public isolated client class Client {
     # + paymentmethodId - (v1.0) id for paymentMethod 
     # + return - (v1.0) Succesfully deleted the specified paymentMethod 
     remote isolated function deletePaymentMethod(string companyId, string paymentmethodId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/paymentMethods(${paymentmethodId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentMethods(${getEncodedUri(paymentmethodId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type paymentMethod in Dynamics 365 Business Central
@@ -2774,16 +2736,15 @@ public isolated client class Client {
     # + paymentmethodId - (v1.0) id for paymentMethod 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpaymentMethod 
-    remote isolated function patchPaymentMethod(string companyId, string paymentmethodId, string contentType, string ifMatch, PatchPaymentMethodRequest payload) returns PaymentMethod|error {
-        string  path = string `/companies(${companyId})/paymentMethods(${paymentmethodId})`;
+    remote isolated function patchPaymentMethod(string companyId, string paymentmethodId, string contentType, string ifMatch, json payload) returns PaymentMethod|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentMethods(${getEncodedUri(paymentmethodId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymentMethod response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PaymentMethod);
+        request.setPayload(jsonBody, "application/json");
+        PaymentMethod response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of dimensions
@@ -2797,10 +2758,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of dimensions 
     remote isolated function listDimensions(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20023|error {
-        string  path = string `/companies(${companyId})/dimensions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20023 response = check self.clientEp-> get(path, targetType = InlineResponse20023);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20023 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type dimension for Dynamics 365 Business Central.
@@ -2811,10 +2773,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested dimension 
     remote isolated function getDimension(string companyId, string dimensionId, string[]? expand = (), string[]? 'select = ()) returns Dimension|error {
-        string  path = string `/companies(${companyId})/dimensions(${dimensionId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensions(${getEncodedUri(dimensionId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Dimension response = check self.clientEp-> get(path, targetType = Dimension);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Dimension response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dimensionValues
@@ -2828,10 +2791,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of dimensionValues 
     remote isolated function listDimensionValuesForDimension(string companyId, string dimensionId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20024|error {
-        string  path = string `/companies(${companyId})/dimensions(${dimensionId})/dimensionValues`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensions(${getEncodedUri(dimensionId)})/dimensionValues`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20024 response = check self.clientEp-> get(path, targetType = InlineResponse20024);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20024 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type dimensionValue for Dynamics 365 Business Central.
@@ -2842,10 +2806,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested dimensionValue 
     remote isolated function getDimensionValueForDimension(string companyId, string dimensionId, string dimensionvalueId, string[]? 'select = ()) returns DimensionValue|error {
-        string  path = string `/companies(${companyId})/dimensions(${dimensionId})/dimensionValues(${dimensionvalueId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensions(${getEncodedUri(dimensionId)})/dimensionValues(${getEncodedUri(dimensionvalueId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DimensionValue response = check self.clientEp-> get(path, targetType = DimensionValue);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DimensionValue response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dimensionValues
@@ -2858,10 +2823,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of dimensionValues 
     remote isolated function listDimensionValues(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20024|error {
-        string  path = string `/companies(${companyId})/dimensionValues`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionValues`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20024 response = check self.clientEp-> get(path, targetType = InlineResponse20024);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20024 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type dimensionValue for Dynamics 365 Business Central.
@@ -2871,10 +2837,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested dimensionValue 
     remote isolated function getDimensionValue(string companyId, string dimensionvalueId, string[]? 'select = ()) returns DimensionValue|error {
-        string  path = string `/companies(${companyId})/dimensionValues(${dimensionvalueId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionValues(${getEncodedUri(dimensionvalueId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DimensionValue response = check self.clientEp-> get(path, targetType = DimensionValue);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DimensionValue response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of dimensionLines
@@ -2888,26 +2855,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of dimensionLines 
     remote isolated function listDimensionLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20025|error {
-        string  path = string `/companies(${companyId})/dimensionLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20025 response = check self.clientEp-> get(path, targetType = InlineResponse20025);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20025 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type dimensionLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new dimensionLine has been succesfully created 
-    remote isolated function postDimensionLine(string companyId, string contentType, PostDimensionLineRequest payload) returns DimensionLine|error {
-        string  path = string `/companies(${companyId})/dimensionLines`;
+    remote isolated function postDimensionLine(string companyId, string contentType, json payload) returns DimensionLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DimensionLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=DimensionLine);
+        request.setPayload(jsonBody, "application/json");
+        DimensionLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type dimensionLine for Dynamics 365 Business Central.
@@ -2919,10 +2886,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested dimensionLine 
     remote isolated function getDimensionLine(string companyId, string dimensionlineParentid, string dimensionlineId, string[]? expand = (), string[]? 'select = ()) returns DimensionLine|error {
-        string  path = string `/companies(${companyId})/dimensionLines(${dimensionlineParentid},${dimensionlineId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionLines(${getEncodedUri(dimensionlineParentid)},${getEncodedUri(dimensionlineId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        DimensionLine response = check self.clientEp-> get(path, targetType = DimensionLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        DimensionLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type dimensionLine in Dynamics 365 Business Central
@@ -2932,10 +2900,8 @@ public isolated client class Client {
     # + dimensionlineId - (v1.0) id for dimensionLine 
     # + return - (v1.0) Succesfully deleted the specified dimensionLine 
     remote isolated function deleteDimensionLine(string companyId, string dimensionlineParentid, string dimensionlineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/dimensionLines(${dimensionlineParentid},${dimensionlineId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionLines(${getEncodedUri(dimensionlineParentid)},${getEncodedUri(dimensionlineId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type dimensionLine in Dynamics 365 Business Central
@@ -2945,16 +2911,15 @@ public isolated client class Client {
     # + dimensionlineId - (v1.0) id for dimensionLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieddimensionLine 
-    remote isolated function patchDimensionLine(string companyId, string dimensionlineParentid, string dimensionlineId, string contentType, string ifMatch, PatchDimensionLineRequest payload) returns DimensionLine|error {
-        string  path = string `/companies(${companyId})/dimensionLines(${dimensionlineParentid},${dimensionlineId})`;
+    remote isolated function patchDimensionLine(string companyId, string dimensionlineParentid, string dimensionlineId, string contentType, string ifMatch, json payload) returns DimensionLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/dimensionLines(${getEncodedUri(dimensionlineParentid)},${getEncodedUri(dimensionlineId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        DimensionLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=DimensionLine);
+        request.setPayload(jsonBody, "application/json");
+        DimensionLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of paymentTerms
@@ -2967,26 +2932,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of paymentTerms 
     remote isolated function listPaymentTerms(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20026|error {
-        string  path = string `/companies(${companyId})/paymentTerms`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentTerms`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20026 response = check self.clientEp-> get(path, targetType = InlineResponse20026);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20026 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type paymentTerm in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new paymentTerm has been succesfully created 
-    remote isolated function postPaymentTerm(string companyId, string contentType, PostPaymentTermRequest payload) returns PaymentTerm|error {
-        string  path = string `/companies(${companyId})/paymentTerms`;
+    remote isolated function postPaymentTerm(string companyId, string contentType, json payload) returns PaymentTerm|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentTerms`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymentTerm response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PaymentTerm);
+        request.setPayload(jsonBody, "application/json");
+        PaymentTerm response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type paymentTerm for Dynamics 365 Business Central.
@@ -2996,10 +2961,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested paymentTerm 
     remote isolated function getPaymentTerm(string companyId, string paymenttermId, string[]? 'select = ()) returns PaymentTerm|error {
-        string  path = string `/companies(${companyId})/paymentTerms(${paymenttermId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentTerms(${getEncodedUri(paymenttermId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PaymentTerm response = check self.clientEp-> get(path, targetType = PaymentTerm);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PaymentTerm response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type paymentTerm in Dynamics 365 Business Central
@@ -3008,10 +2974,8 @@ public isolated client class Client {
     # + paymenttermId - (v1.0) id for paymentTerm 
     # + return - (v1.0) Succesfully deleted the specified paymentTerm 
     remote isolated function deletePaymentTerm(string companyId, string paymenttermId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/paymentTerms(${paymenttermId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentTerms(${getEncodedUri(paymenttermId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type paymentTerm in Dynamics 365 Business Central
@@ -3020,16 +2984,15 @@ public isolated client class Client {
     # + paymenttermId - (v1.0) id for paymentTerm 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpaymentTerm 
-    remote isolated function patchPaymentTerm(string companyId, string paymenttermId, string contentType, string ifMatch, PatchPaymentTermRequest payload) returns PaymentTerm|error {
-        string  path = string `/companies(${companyId})/paymentTerms(${paymenttermId})`;
+    remote isolated function patchPaymentTerm(string companyId, string paymenttermId, string contentType, string ifMatch, json payload) returns PaymentTerm|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/paymentTerms(${getEncodedUri(paymenttermId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PaymentTerm response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PaymentTerm);
+        request.setPayload(jsonBody, "application/json");
+        PaymentTerm response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of shipmentMethods
@@ -3042,26 +3005,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of shipmentMethods 
     remote isolated function listShipmentMethods(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20027|error {
-        string  path = string `/companies(${companyId})/shipmentMethods`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/shipmentMethods`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20027 response = check self.clientEp-> get(path, targetType = InlineResponse20027);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20027 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type shipmentMethod in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new shipmentMethod has been succesfully created 
-    remote isolated function postShipmentMethod(string companyId, string contentType, PostShipmentMethodRequest payload) returns ShipmentMethod|error {
-        string  path = string `/companies(${companyId})/shipmentMethods`;
+    remote isolated function postShipmentMethod(string companyId, string contentType, json payload) returns ShipmentMethod|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/shipmentMethods`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShipmentMethod response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ShipmentMethod);
+        request.setPayload(jsonBody, "application/json");
+        ShipmentMethod response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type shipmentMethod for Dynamics 365 Business Central.
@@ -3071,10 +3034,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested shipmentMethod 
     remote isolated function getShipmentMethod(string companyId, string shipmentmethodId, string[]? 'select = ()) returns ShipmentMethod|error {
-        string  path = string `/companies(${companyId})/shipmentMethods(${shipmentmethodId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/shipmentMethods(${getEncodedUri(shipmentmethodId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        ShipmentMethod response = check self.clientEp-> get(path, targetType = ShipmentMethod);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ShipmentMethod response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type shipmentMethod in Dynamics 365 Business Central
@@ -3083,10 +3047,8 @@ public isolated client class Client {
     # + shipmentmethodId - (v1.0) id for shipmentMethod 
     # + return - (v1.0) Succesfully deleted the specified shipmentMethod 
     remote isolated function deleteShipmentMethod(string companyId, string shipmentmethodId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/shipmentMethods(${shipmentmethodId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/shipmentMethods(${getEncodedUri(shipmentmethodId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type shipmentMethod in Dynamics 365 Business Central
@@ -3095,16 +3057,15 @@ public isolated client class Client {
     # + shipmentmethodId - (v1.0) id for shipmentMethod 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedshipmentMethod 
-    remote isolated function patchShipmentMethod(string companyId, string shipmentmethodId, string contentType, string ifMatch, PatchShipmentMethodRequest payload) returns ShipmentMethod|error {
-        string  path = string `/companies(${companyId})/shipmentMethods(${shipmentmethodId})`;
+    remote isolated function patchShipmentMethod(string companyId, string shipmentmethodId, string contentType, string ifMatch, json payload) returns ShipmentMethod|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/shipmentMethods(${getEncodedUri(shipmentmethodId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ShipmentMethod response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ShipmentMethod);
+        request.setPayload(jsonBody, "application/json");
+        ShipmentMethod response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of itemCategories
@@ -3117,26 +3078,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of itemCategories 
     remote isolated function listItemCategories(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20028|error {
-        string  path = string `/companies(${companyId})/itemCategories`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/itemCategories`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20028 response = check self.clientEp-> get(path, targetType = InlineResponse20028);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20028 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type itemCategory in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new itemCategory has been succesfully created 
-    remote isolated function postItemCategory(string companyId, string contentType, PostItemCategoryRequest payload) returns ItemCategory|error {
-        string  path = string `/companies(${companyId})/itemCategories`;
+    remote isolated function postItemCategory(string companyId, string contentType, json payload) returns ItemCategory|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/itemCategories`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ItemCategory response = check self.clientEp->post(path, request, headers = accHeaders, targetType=ItemCategory);
+        request.setPayload(jsonBody, "application/json");
+        ItemCategory response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type itemCategory for Dynamics 365 Business Central.
@@ -3146,10 +3107,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested itemCategory 
     remote isolated function getItemCategory(string companyId, string itemcategoryId, string[]? 'select = ()) returns ItemCategory|error {
-        string  path = string `/companies(${companyId})/itemCategories(${itemcategoryId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/itemCategories(${getEncodedUri(itemcategoryId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        ItemCategory response = check self.clientEp-> get(path, targetType = ItemCategory);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ItemCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type itemCategory in Dynamics 365 Business Central
@@ -3158,10 +3120,8 @@ public isolated client class Client {
     # + itemcategoryId - (v1.0) id for itemCategory 
     # + return - (v1.0) Succesfully deleted the specified itemCategory 
     remote isolated function deleteItemCategory(string companyId, string itemcategoryId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/itemCategories(${itemcategoryId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/itemCategories(${getEncodedUri(itemcategoryId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type itemCategory in Dynamics 365 Business Central
@@ -3170,16 +3130,15 @@ public isolated client class Client {
     # + itemcategoryId - (v1.0) id for itemCategory 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifieditemCategory 
-    remote isolated function patchItemCategory(string companyId, string itemcategoryId, string contentType, string ifMatch, PatchItemCategoryRequest payload) returns ItemCategory|error {
-        string  path = string `/companies(${companyId})/itemCategories(${itemcategoryId})`;
+    remote isolated function patchItemCategory(string companyId, string itemcategoryId, string contentType, string ifMatch, json payload) returns ItemCategory|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/itemCategories(${getEncodedUri(itemcategoryId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        ItemCategory response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=ItemCategory);
+        request.setPayload(jsonBody, "application/json");
+        ItemCategory response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of cashFlowStatement
@@ -3192,10 +3151,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of cashFlowStatement 
     remote isolated function listCashFlowStatement(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20029|error {
-        string  path = string `/companies(${companyId})/cashFlowStatement`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/cashFlowStatement`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20029 response = check self.clientEp-> get(path, targetType = InlineResponse20029);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20029 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type cashFlowStatement for Dynamics 365 Business Central.
@@ -3205,10 +3165,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested cashFlowStatement 
     remote isolated function getCashFlowStatement(string companyId, int cashflowstatementLinenumber, string[]? 'select = ()) returns CashFlowStatement|error {
-        string  path = string `/companies(${companyId})/cashFlowStatement(${cashflowstatementLinenumber})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/cashFlowStatement(${getEncodedUri(cashflowstatementLinenumber)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CashFlowStatement response = check self.clientEp-> get(path, targetType = CashFlowStatement);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CashFlowStatement response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of countriesRegions
@@ -3221,26 +3182,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of countriesRegions 
     remote isolated function listCountriesRegions(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20030|error {
-        string  path = string `/companies(${companyId})/countriesRegions`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/countriesRegions`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20030 response = check self.clientEp-> get(path, targetType = InlineResponse20030);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20030 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type countryRegion in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new countryRegion has been succesfully created 
-    remote isolated function postCountryRegion(string companyId, string contentType, PostCountryRegionRequest payload) returns CountryRegion|error {
-        string  path = string `/companies(${companyId})/countriesRegions`;
+    remote isolated function postCountryRegion(string companyId, string contentType, json payload) returns CountryRegion|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/countriesRegions`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CountryRegion response = check self.clientEp->post(path, request, headers = accHeaders, targetType=CountryRegion);
+        request.setPayload(jsonBody, "application/json");
+        CountryRegion response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type countryRegion for Dynamics 365 Business Central.
@@ -3250,10 +3211,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested countryRegion 
     remote isolated function getCountryRegion(string companyId, string countryregionId, string[]? 'select = ()) returns CountryRegion|error {
-        string  path = string `/companies(${companyId})/countriesRegions(${countryregionId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/countriesRegions(${getEncodedUri(countryregionId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CountryRegion response = check self.clientEp-> get(path, targetType = CountryRegion);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CountryRegion response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type countryRegion in Dynamics 365 Business Central
@@ -3262,10 +3224,8 @@ public isolated client class Client {
     # + countryregionId - (v1.0) id for countryRegion 
     # + return - (v1.0) Succesfully deleted the specified countryRegion 
     remote isolated function deleteCountryRegion(string companyId, string countryregionId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/countriesRegions(${countryregionId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/countriesRegions(${getEncodedUri(countryregionId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type countryRegion in Dynamics 365 Business Central
@@ -3274,16 +3234,15 @@ public isolated client class Client {
     # + countryregionId - (v1.0) id for countryRegion 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedcountryRegion 
-    remote isolated function patchCountryRegion(string companyId, string countryregionId, string contentType, string ifMatch, PatchCountryRegionRequest payload) returns CountryRegion|error {
-        string  path = string `/companies(${companyId})/countriesRegions(${countryregionId})`;
+    remote isolated function patchCountryRegion(string companyId, string countryregionId, string contentType, string ifMatch, json payload) returns CountryRegion|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/countriesRegions(${getEncodedUri(countryregionId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CountryRegion response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=CountryRegion);
+        request.setPayload(jsonBody, "application/json");
+        CountryRegion response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of salesOrders
@@ -3297,26 +3256,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesOrders 
     remote isolated function listSalesOrders(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20031|error {
-        string  path = string `/companies(${companyId})/salesOrders`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20031 response = check self.clientEp-> get(path, targetType = InlineResponse20031);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20031 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesOrder in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesOrder has been succesfully created 
-    remote isolated function postSalesOrder(string companyId, string contentType, PostSalesOrderRequest payload) returns SalesOrder|error {
-        string  path = string `/companies(${companyId})/salesOrders`;
+    remote isolated function postSalesOrder(string companyId, string contentType, json payload) returns SalesOrder|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrder response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesOrder);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrder response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesOrder for Dynamics 365 Business Central.
@@ -3327,10 +3286,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesOrder 
     remote isolated function getSalesOrder(string companyId, string salesorderId, string[]? expand = (), string[]? 'select = ()) returns SalesOrder|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesOrder response = check self.clientEp-> get(path, targetType = SalesOrder);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesOrder response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesOrder in Dynamics 365 Business Central
@@ -3339,10 +3299,8 @@ public isolated client class Client {
     # + salesorderId - (v1.0) id for salesOrder 
     # + return - (v1.0) Succesfully deleted the specified salesOrder 
     remote isolated function deleteSalesOrder(string companyId, string salesorderId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesOrder in Dynamics 365 Business Central
@@ -3351,16 +3309,15 @@ public isolated client class Client {
     # + salesorderId - (v1.0) id for salesOrder 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesOrder 
-    remote isolated function patchSalesOrder(string companyId, string salesorderId, string contentType, string ifMatch, PatchSalesOrderRequest payload) returns SalesOrder|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})`;
+    remote isolated function patchSalesOrder(string companyId, string salesorderId, string contentType, string ifMatch, json payload) returns SalesOrder|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrder response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesOrder);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrder response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the shipAndInvoice action for salesOrders entity
@@ -3369,10 +3326,10 @@ public isolated client class Client {
     # + salesorderId - (v1.0) id for salesOrder 
     # + return - (v1.0) Succesfully performed a shipAndInvoice action on the Dynamic 365 Business Central salesOrders entity 
     remote isolated function shipAndInvoiceActionSalesOrders(string companyId, string salesorderId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/Microsoft.NAV.shipAndInvoice`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/Microsoft.NAV.shipAndInvoice`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of salesOrderLines
@@ -3387,10 +3344,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesOrderLines 
     remote isolated function listSalesOrderLinesForSalesOrder(string companyId, string salesorderId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20032|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/salesOrderLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/salesOrderLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20032 response = check self.clientEp-> get(path, targetType = InlineResponse20032);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20032 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesOrderLine in Dynamics 365 Business Central
@@ -3398,16 +3356,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + salesorderId - (v1.0) id for salesOrder 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesOrderLine has been succesfully created 
-    remote isolated function postSalesOrderLineForSalesOrder(string companyId, string salesorderId, string contentType, PostSalesOrderLineForSalesOrderRequest payload) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/salesOrderLines`;
+    remote isolated function postSalesOrderLineForSalesOrder(string companyId, string salesorderId, string contentType, json payload) returns SalesOrderLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/salesOrderLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrderLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesOrderLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrderLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesOrderLine for Dynamics 365 Business Central.
@@ -3419,10 +3376,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesOrderLine 
     remote isolated function getSalesOrderLineForSalesOrder(string companyId, string salesorderId, string salesorderlineId, string[]? expand = (), string[]? 'select = ()) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/salesOrderLines('${salesorderlineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesOrderLine response = check self.clientEp-> get(path, targetType = SalesOrderLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesOrderLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesOrderLine in Dynamics 365 Business Central
@@ -3432,10 +3390,8 @@ public isolated client class Client {
     # + salesorderlineId - (v1.0) id for salesOrderLine 
     # + return - (v1.0) Succesfully deleted the specified salesOrderLine 
     remote isolated function deleteSalesOrderLineForSalesOrder(string companyId, string salesorderId, string salesorderlineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/salesOrderLines('${salesorderlineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesOrderLine in Dynamics 365 Business Central
@@ -3445,16 +3401,15 @@ public isolated client class Client {
     # + salesorderlineId - (v1.0) id for salesOrderLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesOrderLine 
-    remote isolated function patchSalesOrderLineForSalesOrder(string companyId, string salesorderId, string salesorderlineId, string contentType, string ifMatch, PatchSalesOrderLineForSalesOrderRequest payload) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrders(${salesorderId})/salesOrderLines('${salesorderlineId}')`;
+    remote isolated function patchSalesOrderLineForSalesOrder(string companyId, string salesorderId, string salesorderlineId, string contentType, string ifMatch, json payload) returns SalesOrderLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrders(${getEncodedUri(salesorderId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrderLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesOrderLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrderLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of salesOrderLines
@@ -3468,26 +3423,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesOrderLines 
     remote isolated function listSalesOrderLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20032|error {
-        string  path = string `/companies(${companyId})/salesOrderLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrderLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20032 response = check self.clientEp-> get(path, targetType = InlineResponse20032);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20032 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesOrderLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesOrderLine has been succesfully created 
-    remote isolated function postSalesOrderLine(string companyId, string contentType, PostSalesOrderLineRequest payload) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrderLines`;
+    remote isolated function postSalesOrderLine(string companyId, string contentType, json payload) returns SalesOrderLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrderLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrderLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesOrderLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrderLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesOrderLine for Dynamics 365 Business Central.
@@ -3498,10 +3453,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesOrderLine 
     remote isolated function getSalesOrderLine(string companyId, string salesorderlineId, string[]? expand = (), string[]? 'select = ()) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrderLines('${salesorderlineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesOrderLine response = check self.clientEp-> get(path, targetType = SalesOrderLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesOrderLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesOrderLine in Dynamics 365 Business Central
@@ -3510,10 +3466,8 @@ public isolated client class Client {
     # + salesorderlineId - (v1.0) id for salesOrderLine 
     # + return - (v1.0) Succesfully deleted the specified salesOrderLine 
     remote isolated function deleteSalesOrderLine(string companyId, string salesorderlineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesOrderLines('${salesorderlineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesOrderLine in Dynamics 365 Business Central
@@ -3522,16 +3476,15 @@ public isolated client class Client {
     # + salesorderlineId - (v1.0) id for salesOrderLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesOrderLine 
-    remote isolated function patchSalesOrderLine(string companyId, string salesorderlineId, string contentType, string ifMatch, PatchSalesOrderLineRequest payload) returns SalesOrderLine|error {
-        string  path = string `/companies(${companyId})/salesOrderLines('${salesorderlineId}')`;
+    remote isolated function patchSalesOrderLine(string companyId, string salesorderlineId, string contentType, string ifMatch, json payload) returns SalesOrderLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesOrderLines('${getEncodedUri(salesorderlineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesOrderLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesOrderLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesOrderLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of retainedEarningsStatement
@@ -3544,10 +3497,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of retainedEarningsStatement 
     remote isolated function listRetainedEarningsStatement(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20033|error {
-        string  path = string `/companies(${companyId})/retainedEarningsStatement`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/retainedEarningsStatement`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20033 response = check self.clientEp-> get(path, targetType = InlineResponse20033);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20033 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type retainedEarningsStatement for Dynamics 365 Business Central.
@@ -3557,10 +3511,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested retainedEarningsStatement 
     remote isolated function getRetainedEarningsStatement(string companyId, int retainedearningsstatementLinenumber, string[]? 'select = ()) returns RetainedEarningsStatement|error {
-        string  path = string `/companies(${companyId})/retainedEarningsStatement(${retainedearningsstatementLinenumber})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/retainedEarningsStatement(${getEncodedUri(retainedearningsstatementLinenumber)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        RetainedEarningsStatement response = check self.clientEp-> get(path, targetType = RetainedEarningsStatement);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        RetainedEarningsStatement response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of unitsOfMeasure
@@ -3573,26 +3528,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of unitsOfMeasure 
     remote isolated function listUnitsOfMeasure(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20034|error {
-        string  path = string `/companies(${companyId})/unitsOfMeasure`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/unitsOfMeasure`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20034 response = check self.clientEp-> get(path, targetType = InlineResponse20034);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20034 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type unitOfMeasure in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new unitOfMeasure has been succesfully created 
-    remote isolated function postUnitOfMeasure(string companyId, string contentType, PostUnitOfMeasureRequest payload) returns UnitOfMeasure|error {
-        string  path = string `/companies(${companyId})/unitsOfMeasure`;
+    remote isolated function postUnitOfMeasure(string companyId, string contentType, json payload) returns UnitOfMeasure|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/unitsOfMeasure`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UnitOfMeasure response = check self.clientEp->post(path, request, headers = accHeaders, targetType=UnitOfMeasure);
+        request.setPayload(jsonBody, "application/json");
+        UnitOfMeasure response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type unitOfMeasure for Dynamics 365 Business Central.
@@ -3602,10 +3557,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested unitOfMeasure 
     remote isolated function getUnitOfMeasure(string companyId, string unitofmeasureId, string[]? 'select = ()) returns UnitOfMeasure|error {
-        string  path = string `/companies(${companyId})/unitsOfMeasure(${unitofmeasureId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/unitsOfMeasure(${getEncodedUri(unitofmeasureId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        UnitOfMeasure response = check self.clientEp-> get(path, targetType = UnitOfMeasure);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UnitOfMeasure response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type unitOfMeasure in Dynamics 365 Business Central
@@ -3614,10 +3570,8 @@ public isolated client class Client {
     # + unitofmeasureId - (v1.0) id for unitOfMeasure 
     # + return - (v1.0) Succesfully deleted the specified unitOfMeasure 
     remote isolated function deleteUnitOfMeasure(string companyId, string unitofmeasureId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/unitsOfMeasure(${unitofmeasureId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/unitsOfMeasure(${getEncodedUri(unitofmeasureId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type unitOfMeasure in Dynamics 365 Business Central
@@ -3626,16 +3580,15 @@ public isolated client class Client {
     # + unitofmeasureId - (v1.0) id for unitOfMeasure 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedunitOfMeasure 
-    remote isolated function patchUnitOfMeasure(string companyId, string unitofmeasureId, string contentType, string ifMatch, PatchUnitOfMeasureRequest payload) returns UnitOfMeasure|error {
-        string  path = string `/companies(${companyId})/unitsOfMeasure(${unitofmeasureId})`;
+    remote isolated function patchUnitOfMeasure(string companyId, string unitofmeasureId, string contentType, string ifMatch, json payload) returns UnitOfMeasure|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/unitsOfMeasure(${getEncodedUri(unitofmeasureId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        UnitOfMeasure response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=UnitOfMeasure);
+        request.setPayload(jsonBody, "application/json");
+        UnitOfMeasure response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of agedAccountsReceivable
@@ -3648,10 +3601,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of agedAccountsReceivable 
     remote isolated function listAgedAccountsReceivable(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20035|error {
-        string  path = string `/companies(${companyId})/agedAccountsReceivable`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/agedAccountsReceivable`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20035 response = check self.clientEp-> get(path, targetType = InlineResponse20035);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20035 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type agedAccountsReceivable for Dynamics 365 Business Central.
@@ -3661,10 +3615,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested agedAccountsReceivable 
     remote isolated function getAgedAccountsReceivable(string companyId, string agedaccountsreceivableCustomerid, string[]? 'select = ()) returns AgedAccountsReceivable|error {
-        string  path = string `/companies(${companyId})/agedAccountsReceivable(${agedaccountsreceivableCustomerid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/agedAccountsReceivable(${getEncodedUri(agedaccountsreceivableCustomerid)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        AgedAccountsReceivable response = check self.clientEp-> get(path, targetType = AgedAccountsReceivable);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AgedAccountsReceivable response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of agedAccountsPayable
@@ -3677,10 +3632,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of agedAccountsPayable 
     remote isolated function listAgedAccountsPayable(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20036|error {
-        string  path = string `/companies(${companyId})/agedAccountsPayable`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/agedAccountsPayable`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20036 response = check self.clientEp-> get(path, targetType = InlineResponse20036);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20036 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type agedAccountsPayable for Dynamics 365 Business Central.
@@ -3690,10 +3646,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested agedAccountsPayable 
     remote isolated function getAgedAccountsPayable(string companyId, string agedaccountspayableVendorid, string[]? 'select = ()) returns AgedAccountsPayable|error {
-        string  path = string `/companies(${companyId})/agedAccountsPayable(${agedaccountspayableVendorid})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/agedAccountsPayable(${getEncodedUri(agedaccountspayableVendorid)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        AgedAccountsPayable response = check self.clientEp-> get(path, targetType = AgedAccountsPayable);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        AgedAccountsPayable response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of balanceSheet
@@ -3706,10 +3663,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of balanceSheet 
     remote isolated function listBalanceSheet(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20037|error {
-        string  path = string `/companies(${companyId})/balanceSheet`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/balanceSheet`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20037 response = check self.clientEp-> get(path, targetType = InlineResponse20037);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20037 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type balanceSheet for Dynamics 365 Business Central.
@@ -3719,10 +3677,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested balanceSheet 
     remote isolated function getBalanceSheet(string companyId, int balancesheetLinenumber, string[]? 'select = ()) returns BalanceSheet|error {
-        string  path = string `/companies(${companyId})/balanceSheet(${balancesheetLinenumber})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/balanceSheet(${getEncodedUri(balancesheetLinenumber)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        BalanceSheet response = check self.clientEp-> get(path, targetType = BalanceSheet);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        BalanceSheet response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of trialBalance
@@ -3736,10 +3695,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of trialBalance 
     remote isolated function listTrialBalance(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20038|error {
-        string  path = string `/companies(${companyId})/trialBalance`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/trialBalance`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20038 response = check self.clientEp-> get(path, targetType = InlineResponse20038);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20038 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type trialBalance for Dynamics 365 Business Central.
@@ -3750,10 +3710,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested trialBalance 
     remote isolated function getTrialBalance(string companyId, string trialbalanceNumber, string[]? expand = (), string[]? 'select = ()) returns TrialBalance|error {
-        string  path = string `/companies(${companyId})/trialBalance('${trialbalanceNumber}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/trialBalance('${getEncodedUri(trialbalanceNumber)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        TrialBalance response = check self.clientEp-> get(path, targetType = TrialBalance);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TrialBalance response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of incomeStatement
@@ -3766,10 +3727,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of incomeStatement 
     remote isolated function listIncomeStatement(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20039|error {
-        string  path = string `/companies(${companyId})/incomeStatement`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/incomeStatement`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20039 response = check self.clientEp-> get(path, targetType = InlineResponse20039);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20039 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type incomeStatement for Dynamics 365 Business Central.
@@ -3779,10 +3741,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested incomeStatement 
     remote isolated function getIncomeStatement(string companyId, int incomestatementLinenumber, string[]? 'select = ()) returns IncomeStatement|error {
-        string  path = string `/companies(${companyId})/incomeStatement(${incomestatementLinenumber})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/incomeStatement(${getEncodedUri(incomestatementLinenumber)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        IncomeStatement response = check self.clientEp-> get(path, targetType = IncomeStatement);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        IncomeStatement response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of taxAreas
@@ -3795,26 +3758,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of taxAreas 
     remote isolated function listTaxAreas(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20040|error {
-        string  path = string `/companies(${companyId})/taxAreas`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxAreas`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20040 response = check self.clientEp-> get(path, targetType = InlineResponse20040);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20040 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type taxArea in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new taxArea has been succesfully created 
-    remote isolated function postTaxArea(string companyId, string contentType, PostTaxAreaRequest payload) returns TaxArea|error {
-        string  path = string `/companies(${companyId})/taxAreas`;
+    remote isolated function postTaxArea(string companyId, string contentType, json payload) returns TaxArea|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxAreas`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxArea response = check self.clientEp->post(path, request, headers = accHeaders, targetType=TaxArea);
+        request.setPayload(jsonBody, "application/json");
+        TaxArea response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type taxArea for Dynamics 365 Business Central.
@@ -3824,10 +3787,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested taxArea 
     remote isolated function getTaxArea(string companyId, string taxareaId, string[]? 'select = ()) returns TaxArea|error {
-        string  path = string `/companies(${companyId})/taxAreas(${taxareaId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxAreas(${getEncodedUri(taxareaId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        TaxArea response = check self.clientEp-> get(path, targetType = TaxArea);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        TaxArea response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type taxArea in Dynamics 365 Business Central
@@ -3836,10 +3800,8 @@ public isolated client class Client {
     # + taxareaId - (v1.0) id for taxArea 
     # + return - (v1.0) Succesfully deleted the specified taxArea 
     remote isolated function deleteTaxArea(string companyId, string taxareaId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/taxAreas(${taxareaId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxAreas(${getEncodedUri(taxareaId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type taxArea in Dynamics 365 Business Central
@@ -3848,16 +3810,15 @@ public isolated client class Client {
     # + taxareaId - (v1.0) id for taxArea 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedtaxArea 
-    remote isolated function patchTaxArea(string companyId, string taxareaId, string contentType, string ifMatch, PatchTaxAreaRequest payload) returns TaxArea|error {
-        string  path = string `/companies(${companyId})/taxAreas(${taxareaId})`;
+    remote isolated function patchTaxArea(string companyId, string taxareaId, string contentType, string ifMatch, json payload) returns TaxArea|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/taxAreas(${getEncodedUri(taxareaId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        TaxArea response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=TaxArea);
+        request.setPayload(jsonBody, "application/json");
+        TaxArea response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of salesQuotes
@@ -3871,26 +3832,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesQuotes 
     remote isolated function listSalesQuotes(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20041|error {
-        string  path = string `/companies(${companyId})/salesQuotes`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20041 response = check self.clientEp-> get(path, targetType = InlineResponse20041);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20041 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesQuote in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesQuote has been succesfully created 
-    remote isolated function postSalesQuote(string companyId, string contentType, PostSalesQuoteRequest payload) returns SalesQuote|error {
-        string  path = string `/companies(${companyId})/salesQuotes`;
+    remote isolated function postSalesQuote(string companyId, string contentType, json payload) returns SalesQuote|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuote response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesQuote);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuote response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesQuote for Dynamics 365 Business Central.
@@ -3901,10 +3862,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesQuote 
     remote isolated function getSalesQuote(string companyId, string salesquoteId, string[]? expand = (), string[]? 'select = ()) returns SalesQuote|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesQuote response = check self.clientEp-> get(path, targetType = SalesQuote);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesQuote response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesQuote in Dynamics 365 Business Central
@@ -3913,10 +3875,8 @@ public isolated client class Client {
     # + salesquoteId - (v1.0) id for salesQuote 
     # + return - (v1.0) Succesfully deleted the specified salesQuote 
     remote isolated function deleteSalesQuote(string companyId, string salesquoteId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesQuote in Dynamics 365 Business Central
@@ -3925,16 +3885,15 @@ public isolated client class Client {
     # + salesquoteId - (v1.0) id for salesQuote 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesQuote 
-    remote isolated function patchSalesQuote(string companyId, string salesquoteId, string contentType, string ifMatch, PatchSalesQuoteRequest payload) returns SalesQuote|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})`;
+    remote isolated function patchSalesQuote(string companyId, string salesquoteId, string contentType, string ifMatch, json payload) returns SalesQuote|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuote response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesQuote);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuote response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the makeInvoice action for salesQuotes entity
@@ -3943,10 +3902,10 @@ public isolated client class Client {
     # + salesquoteId - (v1.0) id for salesQuote 
     # + return - (v1.0) Succesfully performed a makeInvoice action on the Dynamic 365 Business Central salesQuotes entity 
     remote isolated function makeInvoiceActionSalesQuotes(string companyId, string salesquoteId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/Microsoft.NAV.makeInvoice`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/Microsoft.NAV.makeInvoice`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the makeOrder action for salesQuotes entity
@@ -3955,10 +3914,10 @@ public isolated client class Client {
     # + salesquoteId - (v1.0) id for salesQuote 
     # + return - (v1.0) Succesfully performed a makeOrder action on the Dynamic 365 Business Central salesQuotes entity 
     remote isolated function makeOrderActionSalesQuotes(string companyId, string salesquoteId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/Microsoft.NAV.makeOrder`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/Microsoft.NAV.makeOrder`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the send action for salesQuotes entity
@@ -3967,10 +3926,10 @@ public isolated client class Client {
     # + salesquoteId - (v1.0) id for salesQuote 
     # + return - (v1.0) Succesfully performed a send action on the Dynamic 365 Business Central salesQuotes entity 
     remote isolated function sendActionSalesQuotes(string companyId, string salesquoteId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/Microsoft.NAV.send`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/Microsoft.NAV.send`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of salesQuoteLines
@@ -3985,10 +3944,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesQuoteLines 
     remote isolated function listSalesQuoteLinesForSalesQuote(string companyId, string salesquoteId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20042|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/salesQuoteLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/salesQuoteLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20042 response = check self.clientEp-> get(path, targetType = InlineResponse20042);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20042 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesQuoteLine in Dynamics 365 Business Central
@@ -3996,16 +3956,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + salesquoteId - (v1.0) id for salesQuote 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesQuoteLine has been succesfully created 
-    remote isolated function postSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string contentType, PostSalesQuoteLineForSalesQuoteRequest payload) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/salesQuoteLines`;
+    remote isolated function postSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string contentType, json payload) returns SalesQuoteLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/salesQuoteLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuoteLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesQuoteLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuoteLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesQuoteLine for Dynamics 365 Business Central.
@@ -4017,10 +3976,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesQuoteLine 
     remote isolated function getSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string salesquotelineId, string[]? expand = (), string[]? 'select = ()) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/salesQuoteLines('${salesquotelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesQuoteLine response = check self.clientEp-> get(path, targetType = SalesQuoteLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesQuoteLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesQuoteLine in Dynamics 365 Business Central
@@ -4030,10 +3990,8 @@ public isolated client class Client {
     # + salesquotelineId - (v1.0) id for salesQuoteLine 
     # + return - (v1.0) Succesfully deleted the specified salesQuoteLine 
     remote isolated function deleteSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string salesquotelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/salesQuoteLines('${salesquotelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesQuoteLine in Dynamics 365 Business Central
@@ -4043,16 +4001,15 @@ public isolated client class Client {
     # + salesquotelineId - (v1.0) id for salesQuoteLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesQuoteLine 
-    remote isolated function patchSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string salesquotelineId, string contentType, string ifMatch, PatchSalesQuoteLineForSalesQuoteRequest payload) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/salesQuoteLines('${salesquotelineId}')`;
+    remote isolated function patchSalesQuoteLineForSalesQuote(string companyId, string salesquoteId, string salesquotelineId, string contentType, string ifMatch, json payload) returns SalesQuoteLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuoteLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesQuoteLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuoteLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of pdfDocument
@@ -4066,10 +4023,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of pdfDocument 
     remote isolated function listPdfDocumentForSalesQuote(string companyId, string salesquoteId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20010|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/pdfDocument`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/pdfDocument`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type pdfDocument for Dynamics 365 Business Central.
@@ -4080,10 +4038,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested pdfDocument 
     remote isolated function getPdfDocumentForSalesQuote(string companyId, string salesquoteId, string pdfdocumentId, string[]? 'select = ()) returns PdfDocument|error {
-        string  path = string `/companies(${companyId})/salesQuotes(${salesquoteId})/pdfDocument(${pdfdocumentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuotes(${getEncodedUri(salesquoteId)})/pdfDocument(${getEncodedUri(pdfdocumentId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PdfDocument response = check self.clientEp-> get(path, targetType = PdfDocument);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PdfDocument response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of salesQuoteLines
@@ -4097,26 +4056,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesQuoteLines 
     remote isolated function listSalesQuoteLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20042|error {
-        string  path = string `/companies(${companyId})/salesQuoteLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuoteLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20042 response = check self.clientEp-> get(path, targetType = InlineResponse20042);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20042 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesQuoteLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesQuoteLine has been succesfully created 
-    remote isolated function postSalesQuoteLine(string companyId, string contentType, PostSalesQuoteLineRequest payload) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuoteLines`;
+    remote isolated function postSalesQuoteLine(string companyId, string contentType, json payload) returns SalesQuoteLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuoteLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuoteLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesQuoteLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuoteLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesQuoteLine for Dynamics 365 Business Central.
@@ -4127,10 +4086,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesQuoteLine 
     remote isolated function getSalesQuoteLine(string companyId, string salesquotelineId, string[]? expand = (), string[]? 'select = ()) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuoteLines('${salesquotelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesQuoteLine response = check self.clientEp-> get(path, targetType = SalesQuoteLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesQuoteLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesQuoteLine in Dynamics 365 Business Central
@@ -4139,10 +4099,8 @@ public isolated client class Client {
     # + salesquotelineId - (v1.0) id for salesQuoteLine 
     # + return - (v1.0) Succesfully deleted the specified salesQuoteLine 
     remote isolated function deleteSalesQuoteLine(string companyId, string salesquotelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesQuoteLines('${salesquotelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesQuoteLine in Dynamics 365 Business Central
@@ -4151,16 +4109,15 @@ public isolated client class Client {
     # + salesquotelineId - (v1.0) id for salesQuoteLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesQuoteLine 
-    remote isolated function patchSalesQuoteLine(string companyId, string salesquotelineId, string contentType, string ifMatch, PatchSalesQuoteLineRequest payload) returns SalesQuoteLine|error {
-        string  path = string `/companies(${companyId})/salesQuoteLines('${salesquotelineId}')`;
+    remote isolated function patchSalesQuoteLine(string companyId, string salesquotelineId, string contentType, string ifMatch, json payload) returns SalesQuoteLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesQuoteLines('${getEncodedUri(salesquotelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesQuoteLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesQuoteLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesQuoteLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of salesCreditMemos
@@ -4174,26 +4131,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesCreditMemos 
     remote isolated function listSalesCreditMemos(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20043|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20043 response = check self.clientEp-> get(path, targetType = InlineResponse20043);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20043 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesCreditMemo in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesCreditMemo has been succesfully created 
-    remote isolated function postSalesCreditMemo(string companyId, string contentType, PostSalesCreditMemoRequest payload) returns SalesCreditMemo|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos`;
+    remote isolated function postSalesCreditMemo(string companyId, string contentType, json payload) returns SalesCreditMemo|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemo response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesCreditMemo);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemo response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesCreditMemo for Dynamics 365 Business Central.
@@ -4204,10 +4161,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesCreditMemo 
     remote isolated function getSalesCreditMemo(string companyId, string salescreditmemoId, string[]? expand = (), string[]? 'select = ()) returns SalesCreditMemo|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesCreditMemo response = check self.clientEp-> get(path, targetType = SalesCreditMemo);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesCreditMemo response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesCreditMemo in Dynamics 365 Business Central
@@ -4216,10 +4174,8 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully deleted the specified salesCreditMemo 
     remote isolated function deleteSalesCreditMemo(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesCreditMemo in Dynamics 365 Business Central
@@ -4228,16 +4184,15 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesCreditMemo 
-    remote isolated function patchSalesCreditMemo(string companyId, string salescreditmemoId, string contentType, string ifMatch, PatchSalesCreditMemoRequest payload) returns SalesCreditMemo|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})`;
+    remote isolated function patchSalesCreditMemo(string companyId, string salescreditmemoId, string contentType, string ifMatch, json payload) returns SalesCreditMemo|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemo response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesCreditMemo);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemo response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the cancelAndSend action for salesCreditMemos entity
@@ -4246,10 +4201,10 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully performed a cancelAndSend action on the Dynamic 365 Business Central salesCreditMemos entity 
     remote isolated function cancelAndSendActionSalesCreditMemos(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/Microsoft.NAV.cancelAndSend`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/Microsoft.NAV.cancelAndSend`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the cancel action for salesCreditMemos entity
@@ -4258,10 +4213,10 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully performed a cancel action on the Dynamic 365 Business Central salesCreditMemos entity 
     remote isolated function cancelActionSalesCreditMemos(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/Microsoft.NAV.cancel`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/Microsoft.NAV.cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the postAndSend action for salesCreditMemos entity
@@ -4270,10 +4225,10 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully performed a postAndSend action on the Dynamic 365 Business Central salesCreditMemos entity 
     remote isolated function postAndSendActionSalesCreditMemos(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/Microsoft.NAV.postAndSend`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/Microsoft.NAV.postAndSend`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the post action for salesCreditMemos entity
@@ -4282,10 +4237,10 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully performed a post action on the Dynamic 365 Business Central salesCreditMemos entity 
     remote isolated function postActionSalesCreditMemos(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/Microsoft.NAV.post`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/Microsoft.NAV.post`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Performs the send action for salesCreditMemos entity
@@ -4294,10 +4249,10 @@ public isolated client class Client {
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + return - (v1.0) Succesfully performed a send action on the Dynamic 365 Business Central salesCreditMemos entity 
     remote isolated function sendActionSalesCreditMemos(string companyId, string salescreditmemoId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/Microsoft.NAV.send`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/Microsoft.NAV.send`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of salesCreditMemoLines
@@ -4312,10 +4267,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesCreditMemoLines 
     remote isolated function listSalesCreditMemoLinesForSalesCreditMemo(string companyId, string salescreditmemoId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20044|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/salesCreditMemoLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/salesCreditMemoLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20044 response = check self.clientEp-> get(path, targetType = InlineResponse20044);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20044 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesCreditMemoLine in Dynamics 365 Business Central
@@ -4323,16 +4279,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + salescreditmemoId - (v1.0) id for salesCreditMemo 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesCreditMemoLine has been succesfully created 
-    remote isolated function postSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string contentType, PostSalesCreditMemoLineForSalesCreditMemoRequest payload) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/salesCreditMemoLines`;
+    remote isolated function postSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string contentType, json payload) returns SalesCreditMemoLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/salesCreditMemoLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemoLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesCreditMemoLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemoLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesCreditMemoLine for Dynamics 365 Business Central.
@@ -4344,10 +4299,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesCreditMemoLine 
     remote isolated function getSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string salescreditmemolineId, string[]? expand = (), string[]? 'select = ()) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/salesCreditMemoLines('${salescreditmemolineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesCreditMemoLine response = check self.clientEp-> get(path, targetType = SalesCreditMemoLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesCreditMemoLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesCreditMemoLine in Dynamics 365 Business Central
@@ -4357,10 +4313,8 @@ public isolated client class Client {
     # + salescreditmemolineId - (v1.0) id for salesCreditMemoLine 
     # + return - (v1.0) Succesfully deleted the specified salesCreditMemoLine 
     remote isolated function deleteSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string salescreditmemolineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/salesCreditMemoLines('${salescreditmemolineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesCreditMemoLine in Dynamics 365 Business Central
@@ -4370,16 +4324,15 @@ public isolated client class Client {
     # + salescreditmemolineId - (v1.0) id for salesCreditMemoLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesCreditMemoLine 
-    remote isolated function patchSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string salescreditmemolineId, string contentType, string ifMatch, PatchSalesCreditMemoLineForSalesCreditMemoRequest payload) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/salesCreditMemoLines('${salescreditmemolineId}')`;
+    remote isolated function patchSalesCreditMemoLineForSalesCreditMemo(string companyId, string salescreditmemoId, string salescreditmemolineId, string contentType, string ifMatch, json payload) returns SalesCreditMemoLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemoLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesCreditMemoLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemoLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of pdfDocument
@@ -4393,10 +4346,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of pdfDocument 
     remote isolated function listPdfDocumentForSalesCreditMemo(string companyId, string salescreditmemoId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20010|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/pdfDocument`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/pdfDocument`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type pdfDocument for Dynamics 365 Business Central.
@@ -4407,10 +4361,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested pdfDocument 
     remote isolated function getPdfDocumentForSalesCreditMemo(string companyId, string salescreditmemoId, string pdfdocumentId, string[]? 'select = ()) returns PdfDocument|error {
-        string  path = string `/companies(${companyId})/salesCreditMemos(${salescreditmemoId})/pdfDocument(${pdfdocumentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemos(${getEncodedUri(salescreditmemoId)})/pdfDocument(${getEncodedUri(pdfdocumentId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PdfDocument response = check self.clientEp-> get(path, targetType = PdfDocument);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PdfDocument response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of salesCreditMemoLines
@@ -4424,26 +4379,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of salesCreditMemoLines 
     remote isolated function listSalesCreditMemoLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20044|error {
-        string  path = string `/companies(${companyId})/salesCreditMemoLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemoLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20044 response = check self.clientEp-> get(path, targetType = InlineResponse20044);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20044 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type salesCreditMemoLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new salesCreditMemoLine has been succesfully created 
-    remote isolated function postSalesCreditMemoLine(string companyId, string contentType, PostSalesCreditMemoLineRequest payload) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemoLines`;
+    remote isolated function postSalesCreditMemoLine(string companyId, string contentType, json payload) returns SalesCreditMemoLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemoLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemoLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=SalesCreditMemoLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemoLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type salesCreditMemoLine for Dynamics 365 Business Central.
@@ -4454,10 +4409,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested salesCreditMemoLine 
     remote isolated function getSalesCreditMemoLine(string companyId, string salescreditmemolineId, string[]? expand = (), string[]? 'select = ()) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemoLines('${salescreditmemolineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        SalesCreditMemoLine response = check self.clientEp-> get(path, targetType = SalesCreditMemoLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        SalesCreditMemoLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type salesCreditMemoLine in Dynamics 365 Business Central
@@ -4466,10 +4422,8 @@ public isolated client class Client {
     # + salescreditmemolineId - (v1.0) id for salesCreditMemoLine 
     # + return - (v1.0) Succesfully deleted the specified salesCreditMemoLine 
     remote isolated function deleteSalesCreditMemoLine(string companyId, string salescreditmemolineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/salesCreditMemoLines('${salescreditmemolineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type salesCreditMemoLine in Dynamics 365 Business Central
@@ -4478,16 +4432,15 @@ public isolated client class Client {
     # + salescreditmemolineId - (v1.0) id for salesCreditMemoLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedsalesCreditMemoLine 
-    remote isolated function patchSalesCreditMemoLine(string companyId, string salescreditmemolineId, string contentType, string ifMatch, PatchSalesCreditMemoLineRequest payload) returns SalesCreditMemoLine|error {
-        string  path = string `/companies(${companyId})/salesCreditMemoLines('${salescreditmemolineId}')`;
+    remote isolated function patchSalesCreditMemoLine(string companyId, string salescreditmemolineId, string contentType, string ifMatch, json payload) returns SalesCreditMemoLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/salesCreditMemoLines('${getEncodedUri(salescreditmemolineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        SalesCreditMemoLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=SalesCreditMemoLine);
+        request.setPayload(jsonBody, "application/json");
+        SalesCreditMemoLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of generalLedgerEntryAttachments
@@ -4501,26 +4454,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of generalLedgerEntryAttachments 
     remote isolated function listGeneralLedgerEntryAttachments(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20045|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntryAttachments`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntryAttachments`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20045 response = check self.clientEp-> get(path, targetType = InlineResponse20045);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20045 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type generalLedgerEntryAttachments in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new generalLedgerEntryAttachments has been succesfully created 
-    remote isolated function postGeneralLedgerEntryAttachments(string companyId, string contentType, PostGeneralLedgerEntryAttachmentsRequest payload) returns GeneralLedgerEntryAttachments|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntryAttachments`;
+    remote isolated function postGeneralLedgerEntryAttachments(string companyId, string contentType, json payload) returns GeneralLedgerEntryAttachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntryAttachments`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GeneralLedgerEntryAttachments response = check self.clientEp->post(path, request, headers = accHeaders, targetType=GeneralLedgerEntryAttachments);
+        request.setPayload(jsonBody, "application/json");
+        GeneralLedgerEntryAttachments response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type generalLedgerEntryAttachments for Dynamics 365 Business Central.
@@ -4532,10 +4485,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested generalLedgerEntryAttachments 
     remote isolated function getGeneralLedgerEntryAttachments(string companyId, int generalledgerentryattachmentsGeneralledgerentrynumber, string generalledgerentryattachmentsId, string[]? expand = (), string[]? 'select = ()) returns GeneralLedgerEntryAttachments|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntryAttachments(${generalledgerentryattachmentsGeneralledgerentrynumber},${generalledgerentryattachmentsId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntryAttachments(${getEncodedUri(generalledgerentryattachmentsGeneralledgerentrynumber)},${getEncodedUri(generalledgerentryattachmentsId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        GeneralLedgerEntryAttachments response = check self.clientEp-> get(path, targetType = GeneralLedgerEntryAttachments);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        GeneralLedgerEntryAttachments response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type generalLedgerEntryAttachments in Dynamics 365 Business Central
@@ -4545,10 +4499,8 @@ public isolated client class Client {
     # + generalledgerentryattachmentsId - (v1.0) id for generalLedgerEntryAttachments 
     # + return - (v1.0) Succesfully deleted the specified generalLedgerEntryAttachments 
     remote isolated function deleteGeneralLedgerEntryAttachments(string companyId, int generalledgerentryattachmentsGeneralledgerentrynumber, string generalledgerentryattachmentsId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntryAttachments(${generalledgerentryattachmentsGeneralledgerentrynumber},${generalledgerentryattachmentsId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntryAttachments(${getEncodedUri(generalledgerentryattachmentsGeneralledgerentrynumber)},${getEncodedUri(generalledgerentryattachmentsId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type generalLedgerEntryAttachments in Dynamics 365 Business Central
@@ -4558,16 +4510,15 @@ public isolated client class Client {
     # + generalledgerentryattachmentsId - (v1.0) id for generalLedgerEntryAttachments 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedgeneralLedgerEntryAttachments 
-    remote isolated function patchGeneralLedgerEntryAttachments(string companyId, int generalledgerentryattachmentsGeneralledgerentrynumber, string generalledgerentryattachmentsId, string contentType, string ifMatch, PatchGeneralLedgerEntryAttachmentsRequest payload) returns GeneralLedgerEntryAttachments|error {
-        string  path = string `/companies(${companyId})/generalLedgerEntryAttachments(${generalledgerentryattachmentsGeneralledgerentrynumber},${generalledgerentryattachmentsId})`;
+    remote isolated function patchGeneralLedgerEntryAttachments(string companyId, int generalledgerentryattachmentsGeneralledgerentrynumber, string generalledgerentryattachmentsId, string contentType, string ifMatch, json payload) returns GeneralLedgerEntryAttachments|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/generalLedgerEntryAttachments(${getEncodedUri(generalledgerentryattachmentsGeneralledgerentrynumber)},${getEncodedUri(generalledgerentryattachmentsId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        GeneralLedgerEntryAttachments response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=GeneralLedgerEntryAttachments);
+        request.setPayload(jsonBody, "application/json");
+        GeneralLedgerEntryAttachments response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of purchaseInvoices
@@ -4581,26 +4532,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of purchaseInvoices 
     remote isolated function listPurchaseInvoices(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20046|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20046 response = check self.clientEp-> get(path, targetType = InlineResponse20046);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20046 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type purchaseInvoice in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new purchaseInvoice has been succesfully created 
-    remote isolated function postPurchaseInvoice(string companyId, string contentType, PostPurchaseInvoiceRequest payload) returns PurchaseInvoice|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices`;
+    remote isolated function postPurchaseInvoice(string companyId, string contentType, json payload) returns PurchaseInvoice|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoice response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PurchaseInvoice);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoice response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type purchaseInvoice for Dynamics 365 Business Central.
@@ -4611,10 +4562,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested purchaseInvoice 
     remote isolated function getPurchaseInvoice(string companyId, string purchaseinvoiceId, string[]? expand = (), string[]? 'select = ()) returns PurchaseInvoice|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PurchaseInvoice response = check self.clientEp-> get(path, targetType = PurchaseInvoice);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PurchaseInvoice response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type purchaseInvoice in Dynamics 365 Business Central
@@ -4623,10 +4575,8 @@ public isolated client class Client {
     # + purchaseinvoiceId - (v1.0) id for purchaseInvoice 
     # + return - (v1.0) Succesfully deleted the specified purchaseInvoice 
     remote isolated function deletePurchaseInvoice(string companyId, string purchaseinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type purchaseInvoice in Dynamics 365 Business Central
@@ -4635,16 +4585,15 @@ public isolated client class Client {
     # + purchaseinvoiceId - (v1.0) id for purchaseInvoice 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpurchaseInvoice 
-    remote isolated function patchPurchaseInvoice(string companyId, string purchaseinvoiceId, string contentType, string ifMatch, PatchPurchaseInvoiceRequest payload) returns PurchaseInvoice|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})`;
+    remote isolated function patchPurchaseInvoice(string companyId, string purchaseinvoiceId, string contentType, string ifMatch, json payload) returns PurchaseInvoice|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoice response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PurchaseInvoice);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoice response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Performs the post action for purchaseInvoices entity
@@ -4653,10 +4602,10 @@ public isolated client class Client {
     # + purchaseinvoiceId - (v1.0) id for purchaseInvoice 
     # + return - (v1.0) Succesfully performed a post action on the Dynamic 365 Business Central purchaseInvoices entity 
     remote isolated function postActionPurchaseInvoices(string companyId, string purchaseinvoiceId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/Microsoft.NAV.post`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/Microsoft.NAV.post`;
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> post(path, request, targetType = http:Response);
+        http:Response response = check self.clientEp-> post(resourcePath, request);
         return response;
     }
     # Returns a list of purchaseInvoiceLines
@@ -4671,10 +4620,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of purchaseInvoiceLines 
     remote isolated function listPurchaseInvoiceLinesForPurchaseInvoice(string companyId, string purchaseinvoiceId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20047|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/purchaseInvoiceLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/purchaseInvoiceLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20047 response = check self.clientEp-> get(path, targetType = InlineResponse20047);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20047 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type purchaseInvoiceLine in Dynamics 365 Business Central
@@ -4682,16 +4632,15 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + purchaseinvoiceId - (v1.0) id for purchaseInvoice 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new purchaseInvoiceLine has been succesfully created 
-    remote isolated function postPurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string contentType, PostPurchaseInvoiceLineForPurchaseInvoiceRequest payload) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/purchaseInvoiceLines`;
+    remote isolated function postPurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string contentType, json payload) returns PurchaseInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/purchaseInvoiceLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoiceLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PurchaseInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoiceLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type purchaseInvoiceLine for Dynamics 365 Business Central.
@@ -4703,10 +4652,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested purchaseInvoiceLine 
     remote isolated function getPurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string purchaseinvoicelineId, string[]? expand = (), string[]? 'select = ()) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PurchaseInvoiceLine response = check self.clientEp-> get(path, targetType = PurchaseInvoiceLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PurchaseInvoiceLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type purchaseInvoiceLine in Dynamics 365 Business Central
@@ -4716,10 +4666,8 @@ public isolated client class Client {
     # + purchaseinvoicelineId - (v1.0) id for purchaseInvoiceLine 
     # + return - (v1.0) Succesfully deleted the specified purchaseInvoiceLine 
     remote isolated function deletePurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string purchaseinvoicelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type purchaseInvoiceLine in Dynamics 365 Business Central
@@ -4728,17 +4676,16 @@ public isolated client class Client {
     # + purchaseinvoiceId - (v1.0) id for purchaseInvoice 
     # + purchaseinvoicelineId - (v1.0) id for purchaseInvoiceLine 
     # + contentType - (v1.0) application/json 
-    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated.
-    # + payload - Request payload 
+    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
     # + return - (v1.0) Succesfully updated the specifiedpurchaseInvoiceLine 
-    remote isolated function patchPurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string purchaseinvoicelineId, string contentType, string ifMatch, PatchPurchaseInvoiceLineForPurchaseInvoiceRequest payload) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
+    remote isolated function patchPurchaseInvoiceLineForPurchaseInvoice(string companyId, string purchaseinvoiceId, string purchaseinvoicelineId, string contentType, string ifMatch, json payload) returns PurchaseInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoiceLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PurchaseInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoiceLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of pdfDocument
@@ -4752,10 +4699,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of pdfDocument 
     remote isolated function listPdfDocumentForPurchaseInvoice(string companyId, string purchaseinvoiceId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20010|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/pdfDocument`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/pdfDocument`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20010 response = check self.clientEp-> get(path, targetType = InlineResponse20010);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20010 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type pdfDocument for Dynamics 365 Business Central.
@@ -4766,10 +4714,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested pdfDocument 
     remote isolated function getPdfDocumentForPurchaseInvoice(string companyId, string purchaseinvoiceId, string pdfdocumentId, string[]? 'select = ()) returns PdfDocument|error {
-        string  path = string `/companies(${companyId})/purchaseInvoices(${purchaseinvoiceId})/pdfDocument(${pdfdocumentId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoices(${getEncodedUri(purchaseinvoiceId)})/pdfDocument(${getEncodedUri(pdfdocumentId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PdfDocument response = check self.clientEp-> get(path, targetType = PdfDocument);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PdfDocument response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of purchaseInvoiceLines
@@ -4783,26 +4732,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of purchaseInvoiceLines 
     remote isolated function listPurchaseInvoiceLines(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? expand = (), string[]? 'select = ()) returns InlineResponse20047|error {
-        string  path = string `/companies(${companyId})/purchaseInvoiceLines`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoiceLines`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20047 response = check self.clientEp-> get(path, targetType = InlineResponse20047);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20047 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type purchaseInvoiceLine in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new purchaseInvoiceLine has been succesfully created 
-    remote isolated function postPurchaseInvoiceLine(string companyId, string contentType, PostPurchaseInvoiceLineRequest payload) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoiceLines`;
+    remote isolated function postPurchaseInvoiceLine(string companyId, string contentType, json payload) returns PurchaseInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoiceLines`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoiceLine response = check self.clientEp->post(path, request, headers = accHeaders, targetType=PurchaseInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoiceLine response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type purchaseInvoiceLine for Dynamics 365 Business Central.
@@ -4813,10 +4762,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested purchaseInvoiceLine 
     remote isolated function getPurchaseInvoiceLine(string companyId, string purchaseinvoicelineId, string[]? expand = (), string[]? 'select = ()) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
         map<anydata> queryParam = {"$expand": expand, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        PurchaseInvoiceLine response = check self.clientEp-> get(path, targetType = PurchaseInvoiceLine);
+        map<Encoding> queryParamEncoding = {"$expand": {style: FORM, explode: false}, "$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        PurchaseInvoiceLine response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type purchaseInvoiceLine in Dynamics 365 Business Central
@@ -4825,10 +4775,8 @@ public isolated client class Client {
     # + purchaseinvoicelineId - (v1.0) id for purchaseInvoiceLine 
     # + return - (v1.0) Succesfully deleted the specified purchaseInvoiceLine 
     remote isolated function deletePurchaseInvoiceLine(string companyId, string purchaseinvoicelineId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type purchaseInvoiceLine in Dynamics 365 Business Central
@@ -4837,16 +4785,15 @@ public isolated client class Client {
     # + purchaseinvoicelineId - (v1.0) id for purchaseInvoiceLine 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedpurchaseInvoiceLine 
-    remote isolated function patchPurchaseInvoiceLine(string companyId, string purchaseinvoicelineId, string contentType, string ifMatch, PatchPurchaseInvoiceLineRequest payload) returns PurchaseInvoiceLine|error {
-        string  path = string `/companies(${companyId})/purchaseInvoiceLines('${purchaseinvoicelineId}')`;
+    remote isolated function patchPurchaseInvoiceLine(string companyId, string purchaseinvoicelineId, string contentType, string ifMatch, json payload) returns PurchaseInvoiceLine|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/purchaseInvoiceLines('${getEncodedUri(purchaseinvoicelineId)}')`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        PurchaseInvoiceLine response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=PurchaseInvoiceLine);
+        request.setPayload(jsonBody, "application/json");
+        PurchaseInvoiceLine response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of projects
@@ -4859,26 +4806,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of projects 
     remote isolated function listProjects(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20048|error {
-        string  path = string `/companies(${companyId})/projects`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/projects`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20048 response = check self.clientEp-> get(path, targetType = InlineResponse20048);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20048 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type project in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new project has been succesfully created 
-    remote isolated function postProject(string companyId, string contentType, PostProjectRequest payload) returns Project|error {
-        string  path = string `/companies(${companyId})/projects`;
+    remote isolated function postProject(string companyId, string contentType, json payload) returns Project|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/projects`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->post(path, request, headers = accHeaders, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type project for Dynamics 365 Business Central.
@@ -4888,10 +4835,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested project 
     remote isolated function getProject(string companyId, string projectId, string[]? 'select = ()) returns Project|error {
-        string  path = string `/companies(${companyId})/projects(${projectId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/projects(${getEncodedUri(projectId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        Project response = check self.clientEp-> get(path, targetType = Project);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        Project response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type project in Dynamics 365 Business Central
@@ -4900,10 +4848,8 @@ public isolated client class Client {
     # + projectId - (v1.0) id for project 
     # + return - (v1.0) Succesfully deleted the specified project 
     remote isolated function deleteProject(string companyId, string projectId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/projects(${projectId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/projects(${getEncodedUri(projectId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type project in Dynamics 365 Business Central
@@ -4911,17 +4857,16 @@ public isolated client class Client {
     # + companyId - (v1.0) id for company 
     # + projectId - (v1.0) id for project 
     # + contentType - (v1.0) application/json 
-    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated.
-    # + payload - Request payload 
+    # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
     # + return - (v1.0) Succesfully updated the specifiedproject 
-    remote isolated function patchProject(string companyId, string projectId, string contentType, string ifMatch, PatchProjectRequest payload) returns Project|error {
-        string  path = string `/companies(${companyId})/projects(${projectId})`;
+    remote isolated function patchProject(string companyId, string projectId, string contentType, string ifMatch, json payload) returns Project|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/projects(${getEncodedUri(projectId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        Project response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=Project);
+        request.setPayload(jsonBody, "application/json");
+        Project response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of bankAccounts
@@ -4934,26 +4879,26 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of bankAccounts 
     remote isolated function listBankAccounts(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20049|error {
-        string  path = string `/companies(${companyId})/bankAccounts`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/bankAccounts`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20049 response = check self.clientEp-> get(path, targetType = InlineResponse20049);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20049 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Creates an object of type bankAccount in Dynamics 365 Business Central
     #
     # + companyId - (v1.0) id for company 
     # + contentType - (v1.0) application/json 
-    # + payload - Request payload
     # + return - (v1.0) A new bankAccount has been succesfully created 
-    remote isolated function postBankAccount(string companyId, string contentType, PostBankAccountRequest payload) returns BankAccount|error {
-        string  path = string `/companies(${companyId})/bankAccounts`;
+    remote isolated function postBankAccount(string companyId, string contentType, json payload) returns BankAccount|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/bankAccounts`;
         map<any> headerValues = {"Content-Type": contentType};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BankAccount response = check self.clientEp->post(path, request, headers = accHeaders, targetType=BankAccount);
+        request.setPayload(jsonBody, "application/json");
+        BankAccount response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve the properties and relationships of an object of type bankAccount for Dynamics 365 Business Central.
@@ -4963,10 +4908,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested bankAccount 
     remote isolated function getBankAccount(string companyId, string bankaccountId, string[]? 'select = ()) returns BankAccount|error {
-        string  path = string `/companies(${companyId})/bankAccounts(${bankaccountId})`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/bankAccounts(${getEncodedUri(bankaccountId)})`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        BankAccount response = check self.clientEp-> get(path, targetType = BankAccount);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        BankAccount response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Deletes an object of type bankAccount in Dynamics 365 Business Central
@@ -4975,10 +4921,8 @@ public isolated client class Client {
     # + bankaccountId - (v1.0) id for bankAccount 
     # + return - (v1.0) Succesfully deleted the specified bankAccount 
     remote isolated function deleteBankAccount(string companyId, string bankaccountId) returns http:Response|error {
-        string  path = string `/companies(${companyId})/bankAccounts(${bankaccountId})`;
-        http:Request request = new;
-        //TODO: Update the request as needed;
-        http:Response response = check self.clientEp-> delete(path, request, targetType = http:Response);
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/bankAccounts(${getEncodedUri(bankaccountId)})`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an object of type bankAccount in Dynamics 365 Business Central
@@ -4987,16 +4931,15 @@ public isolated client class Client {
     # + bankaccountId - (v1.0) id for bankAccount 
     # + contentType - (v1.0) application/json 
     # + ifMatch - (v1.0) Required. When this request header is included and the eTag provided does not match the current tag on the entity, this will not be updated. 
-    # + payload - Request payload
     # + return - (v1.0) Succesfully updated the specifiedbankAccount 
-    remote isolated function patchBankAccount(string companyId, string bankaccountId, string contentType, string ifMatch, PatchBankAccountRequest payload) returns BankAccount|error {
-        string  path = string `/companies(${companyId})/bankAccounts(${bankaccountId})`;
+    remote isolated function patchBankAccount(string companyId, string bankaccountId, string contentType, string ifMatch, json payload) returns BankAccount|error {
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/bankAccounts(${getEncodedUri(bankaccountId)})`;
         map<any> headerValues = {"Content-Type": contentType, "If-Match": ifMatch};
-        map<string|string[]> accHeaders = getMapForHeaders(headerValues);
+        map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        BankAccount response = check self.clientEp->patch(path, request, headers = accHeaders, targetType=BankAccount);
+        request.setPayload(jsonBody, "application/json");
+        BankAccount response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Returns a list of customerSales
@@ -5009,10 +4952,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of customerSales 
     remote isolated function listCustomerSales(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20050|error {
-        string  path = string `/companies(${companyId})/customerSales`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerSales`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20050 response = check self.clientEp-> get(path, targetType = InlineResponse20050);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20050 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type customerSale for Dynamics 365 Business Central.
@@ -5024,10 +4968,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested customerSale 
     remote isolated function getCustomerSale(string companyId, string customersaleCustomerid, string customersaleCustomernumber, string customersaleName, string[]? 'select = ()) returns CustomerSale|error {
-        string  path = string `/companies(${companyId})/customerSales(${customersaleCustomerid},'${customersaleCustomernumber}','${customersaleName}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/customerSales(${getEncodedUri(customersaleCustomerid)},'${getEncodedUri(customersaleCustomernumber)}','${getEncodedUri(customersaleName)}')`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        CustomerSale response = check self.clientEp-> get(path, targetType = CustomerSale);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerSale response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Returns a list of vendorPurchases
@@ -5040,10 +4985,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned a list of vendorPurchases 
     remote isolated function listVendorPurchases(string companyId, int? top = (), int? skip = (), int? 'limit = (), string? filter = (), string[]? 'select = ()) returns InlineResponse20051|error {
-        string  path = string `/companies(${companyId})/vendorPurchases`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendorPurchases`;
         map<anydata> queryParam = {"$top": top, "$skip": skip, "$limit": 'limit, "$filter": filter, "$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        InlineResponse20051 response = check self.clientEp-> get(path, targetType = InlineResponse20051);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        InlineResponse20051 response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Retrieve the properties and relationships of an object of type vendorPurchase for Dynamics 365 Business Central.
@@ -5055,58 +5001,11 @@ public isolated client class Client {
     # + 'select - (v1.0) Selected properties to be retrieved 
     # + return - (v1.0) Succesfully returned the requested vendorPurchase 
     remote isolated function getVendorPurchase(string companyId, string vendorpurchaseVendorid, string vendorpurchaseVendornumber, string vendorpurchaseName, string[]? 'select = ()) returns VendorPurchase|error {
-        string  path = string `/companies(${companyId})/vendorPurchases(${vendorpurchaseVendorid},'${vendorpurchaseVendornumber}','${vendorpurchaseName}')`;
+        string resourcePath = string `/companies(${getEncodedUri(companyId)})/vendorPurchases(${getEncodedUri(vendorpurchaseVendorid)},'${getEncodedUri(vendorpurchaseVendornumber)}','${getEncodedUri(vendorpurchaseName)}')`;
         map<anydata> queryParam = {"$select": 'select};
-        path = path + check getPathForQueryParam(queryParam);
-        VendorPurchase response = check self.clientEp-> get(path, targetType = VendorPurchase);
+        map<Encoding> queryParamEncoding = {"$select": {style: FORM, explode: false}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        VendorPurchase response = check self.clientEp->get(resourcePath);
         return response;
     }
-}
-
-# Generate query path with query parameter.
-#
-# + queryParam - Query parameter map 
-# + return - Returns generated Path or error at failure of client initialization 
-isolated function  getPathForQueryParam(map<anydata> queryParam)  returns  string|error {
-    string[] param = [];
-    param[param.length()] = "?";
-    foreach  var [key, value] in  queryParam.entries() {
-        if  value  is  () {
-            _ = queryParam.remove(key);
-        } else {
-            if  string:startsWith( key, "'") {
-                 param[param.length()] = string:substring(key, 1, key.length());
-            } else {
-                param[param.length()] = key;
-            }
-            param[param.length()] = "=";
-            if  value  is  string {
-                string updateV =  check url:encode(value, "UTF-8");
-                param[param.length()] = updateV;
-            } else {
-                param[param.length()] = value.toString();
-            }
-            param[param.length()] = "&";
-        }
-    }
-    _ = param.remove(param.length()-1);
-    if  param.length() ==  1 {
-        _ = param.remove(0);
-    }
-    string restOfPath = string:'join("", ...param);
-    return restOfPath;
-}
-
-# Generate header map for given header values.
-#
-# + headerParam - Headers  map 
-# + return - Returns generated map or error at failure of client initialization 
-isolated function  getMapForHeaders(map<any> headerParam)  returns  map<string|string[]> {
-    map<string|string[]> headerMap = {};
-    foreach  var [key, value] in  headerParam.entries() {
-        if  value  is  string ||  value  is  string[] {
-            headerMap[key] = value;
-        }
-    }
-    return headerMap;
 }

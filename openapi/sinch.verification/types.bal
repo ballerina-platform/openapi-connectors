@@ -14,8 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/constraint;
-
 public type CalloutrequesteventresponseCallout record {
     # Indicates the language that should be used for the text-to-speech message. Currently, only `en-US` is supported.
     string locale?;

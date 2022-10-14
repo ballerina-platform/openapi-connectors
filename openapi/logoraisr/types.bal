@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ResultResponse record {
     # Url from which the result file can be downloaded.
     @constraint:String {maxLength: 256, minLength: 1}

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -128,7 +132,7 @@ public isolated client class Client {
         string resourcePath = string `/configurations`;
         map<anydata> queryParam = {"connectorType": connectorType, "connectorId": connectorId, "connectorVersion": connectorVersion, "processingDirection": processingDirection, "processingMode": processingMode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the status of all existing synchronization runs
@@ -160,7 +164,7 @@ public isolated client class Client {
     # + test - If true a dry run without any changes will be performed 
     # + return - The synchronization run was successfully started and is now in progress 
     remote isolated function startSynchronizationRun(string id, boolean test = false) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/start`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/start`;
         map<anydata> queryParam = {"test": test};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -173,7 +177,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - The synchronization run exists and progress information was searched. 
     remote isolated function getSynchronizationRunProgress(string id) returns SyncRunInboundProgressReport|error {
-        string resourcePath = string `/synchronizationRuns/${id}/progress`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/progress`;
         SyncRunInboundProgressReport response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -182,7 +186,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - The synchronization run was successfully stopped. 
     remote isolated function stopSynchronizationRun(string id) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/stop`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/stop`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -193,7 +197,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the status of an existing synchronization run. 
     remote isolated function getSynchronizationRunStatus(string id) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/status`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/status`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -202,7 +206,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the results of a finished synchronization run. 
     remote isolated function getSynchronizationRunResults(string id) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/results`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/results`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -211,7 +215,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the url to the results of a finished synchronization run or in case the run exists but is not yet finished a null value for the url. 
     remote isolated function getSynchronizationRunResultsUrl(string id) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/resultsUrl`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/resultsUrl`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -222,7 +226,7 @@ public isolated client class Client {
     # + id - The ID of the synchronization run 
     # + return - Returns the warnings of a synchronization run. 
     remote isolated function getSynchronizationRunWarnings(string id, int offset = 0, int 'limit = 100) returns http:Response|error {
-        string resourcePath = string `/synchronizationRuns/${id}/warnings`;
+        string resourcePath = string `/synchronizationRuns/${getEncodedUri(id)}/warnings`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);

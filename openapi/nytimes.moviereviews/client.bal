@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -48,7 +48,7 @@ public isolated client class Client {
     # + resourceType - all | full-time | part-time | [reviewer-name] Specify all to get all Times reviewers, or specify full-time or part-time to get that subset. Specify a reviewer's name to get details about a particular reviewer. 
     # + return - An array of Movie Critics 
     remote isolated function criticsPicks(string resourceType) returns InlineResponse200|error {
-        string resourcePath = string `/critics/${resourceType}.json`;
+        string resourcePath = string `/critics/${getEncodedUri(resourceType)}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + 'order - Sets the sort order of the results. Results ordered by-title are in ascending alphabetical order. Results ordered by one of the date parameters are in reverse chronological order. If you do not specify a sort order, the results will be ordered by publication-date. 
     # + return - An array of Movies 
     remote isolated function getMovieReviews(string resourceType, int offset = 20, string 'order = "by-publication-date") returns InlineResponse2001|error {
-        string resourcePath = string `/reviews/${resourceType}.json`;
+        string resourcePath = string `/reviews/${getEncodedUri(resourceType)}.json`;
         map<anydata> queryParam = {"offset": offset, "order": 'order, "api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);

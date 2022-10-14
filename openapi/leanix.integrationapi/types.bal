@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type StatusResponseArr StatusResponse[];
 
 # A template representing one or more identifiers of Fact Sheets
@@ -21,12 +23,14 @@ public type IdentifierSetTemplate record {
     # The template that generates one or more fact sheet identifiers using the ExternalID of the fact sheets
     ExternalIdSetTemplate 'external?;
     # Internal identifiers of the Fact Sheet assigned by LeanIX
+    @constraint:String {maxLength: 500}
     string internal?;
 };
 
 public type RelationInboundProcessor record {
     *InboundProcessor;
     # The relation type
+    @constraint:String {maxLength: 500}
     string 'type;
     # A template representing a unique identifier of a Fact Sheet when evaluated
     IdentifierTemplate 'from;
@@ -45,9 +49,7 @@ public type FactSheetOwnerDeletion record {
 };
 
 # Upload the outbound result LDFI to the default cloud storage provided by LeanIX
-public type LeanIxStorageDataConsumer record {
-    *DataConsumer;
-};
+public type LeanIxStorageDataConsumer DataConsumer;
 
 # The criteria to select fact sheets and activate the deletion.
 public type FactSheetDeletionScope record {
@@ -60,8 +62,10 @@ public type FactSheetDeletionScope record {
 # An object that contains information about how the value should be expanded according to a list field
 public type ValueForEachTemplate record {
     # The JUEL expressing targeting a list
+    @constraint:String {maxLength: 500}
     string elementOf?;
     # The filter to apply to each element
+    @constraint:String {maxLength: 500}
     string filter?;
 };
 
@@ -80,7 +84,7 @@ public type Input record {
     # The data flow direction, could be [inbound, outbound]
     string processingDirection;
     # The processing mode, could be [partial, full]
-    string processingMode?;
+    string processingMode = "partial";
 };
 
 public type SynchronizationRun record {
@@ -116,21 +120,28 @@ public type OutboundDocumentFilter record {
 # Defines a filter for the content data that this processor is able to evaluate
 public type FilterConfig record {
     # The regular expression of the content type this filter config should accept
+    @constraint:String {maxLength: 500}
     string 'type?;
     # The regular expression of the content id this filter config should accept
+    @constraint:String {maxLength: 500}
     string id?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
     # An EL expression to describe the onRead filter settings.
+    @constraint:String {maxLength: 500}
     string onRead?;
     # An EL expression to limit Fact Sheets that have changes since a given data. ISO-8601 duration format PnDTnHnMn is used
+    @constraint:String {maxLength: 500}
     string updatedAtDuration?;
 };
 
 public type KeyValueTemplate record {
     # The basic expression of key
+    @constraint:String {maxLength: 500}
     string 'key;
     # The basic expression of value
+    @constraint:String {maxLength: 500}
     string value;
 };
 
@@ -139,6 +150,7 @@ public type IdentifierWithSearchScopeTemplate record {
     # The template that generates the fact sheet identifier using the ExternalID of the fact sheet
     ExternalIdTemplate 'external?;
     # An internal identifier of the Fact Sheet assigned by LeanIX
+    @constraint:String {maxLength: 500}
     string internal?;
     # The criteria for selecting fact sheets and filter in combination with LDIF data
     SearchScope search?;
@@ -147,8 +159,10 @@ public type IdentifierWithSearchScopeTemplate record {
 # A value template describes the mapping from an incoming object to a single value or a json object
 public type ValueTemplate record {
     # An EL expression that evaluates to a single value. Use 'map' to evaluate to whole json object
+    @constraint:String {maxLength: 500}
     string expr?;
     # If this regex does not match on the evaluated 'expr' then this value template is ignored. Can not be used with 'map'
+    @constraint:String {maxLength: 500}
     string regexMatch?;
     # The combination of a matching and a replacement pattern. The default matching pattern selects the whole string in group 1, while the default replace pattern replaces the matches with group 1
     RegexReplace regexReplace?;
@@ -157,6 +171,7 @@ public type ValueTemplate record {
     # An object that contains information about how the value should be expanded according to a list field
     ValueForEachTemplate forEach?;
     # An EL expression that evaluates to an arbitrary data object.
+    @constraint:String {maxLength: 500}
     string 'object?;
 };
 
@@ -183,16 +198,20 @@ public type MetricRules record {
 public type OutboundInput record {
     *Input;
     # The type of connector that is used
+    @constraint:String {maxLength: 500}
     string connectorType;
     # The identifier of the connector instance
+    @constraint:String {maxLength: 500}
     string connectorId;
     # The version of the connector that is expected to process this LDIF file
+    @constraint:String {maxLength: 500}
     string connectorVersion;
     # The direction of the data flow.
     string processingDirection;
     # Optional additional options to parse this LDIF request
-    string processingMode?;
+    string processingMode = "partial";
     # A customer added, arbitrary description for any kind of grouping, notification or note purpose
+    @constraint:String {maxLength: 500}
     string description?;
 };
 
@@ -224,6 +243,7 @@ public type DocumentDeletionScope record {
     # The criteria for selection of entities. In case you use facetFilters inside, it is possible to use Juel expressions inside 'keys', for example: ${customFields.factSheetType}
     Scope scope?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
 };
 
@@ -256,7 +276,7 @@ public type ProcessorConfiguration record {
     # The data flow direction, could be [inbound, outbound]
     string processingDirection;
     # The processing mode, could be [partial, full]
-    string processingMode?;
+    string processingMode = "partial";
 };
 
 # The ratio limits for each type of deletion scope
@@ -284,7 +304,7 @@ public type InboundProcessorConfiguration record {
     # The data flow direction, must be [inbound]
     string processingDirection;
     # The processing mode, could be [partial, full]
-    string processingMode?;
+    string processingMode = "partial";
     # The list of processors used to evaluate the LDIF data
     InboundProcessor[] processors?;
     # The deletion scope definition used to delete untouched entities on a 'full' sync mode
@@ -314,21 +334,26 @@ public type FastRunStatsReport record {
 public type LeanIxDataInterchangeFormat record {
     *Input;
     # The type of connector that is used
+    @constraint:String {maxLength: 500}
     string connectorType;
     # The identifier of the connector instance
+    @constraint:String {maxLength: 500}
     string connectorId;
     # The version of the connector that is expected to process this LDIF file
+    @constraint:String {maxLength: 500}
     string connectorVersion;
     # The target API version
+    @constraint:String {maxLength: 500}
     string lxVersion;
     # The optional target workspace
     string lxWorkspace?;
     # A customer added, arbitrary description for any kind of grouping, notification or note purpose
+    @constraint:String {maxLength: 500}
     string description?;
     # The direction of the data flow
     string processingDirection;
     # Optional additional options to parse this LDIF request
-    string processingMode?;
+    string processingMode = "partial";
     ChunkInformation chunkInformation?;
     # Global variables accessible from all data processors.
     record {} customFields?;
@@ -375,13 +400,16 @@ public type StorageManagerResponse record {
 # The combination of a matching and a replacement pattern. The default matching pattern selects the whole string in group 1, while the default replace pattern replaces the matches with group 1
 public type RegexReplace record {
     # The matching pattern
+    @constraint:String {maxLength: 500}
     string 'match?;
     # The replacement pattern
+    @constraint:String {maxLength: 500}
     string replace?;
 };
 
 public type KeyTemplate record {
     # The basic expression that is evaluated by the EL based on the content data
+    @constraint:String {maxLength: 500}
     string expr;
     # The combination of a matching and a replacement pattern. The default matching pattern selects the whole string in group 1, while the default replace pattern replaces the matches with group 1
     RegexReplace regexReplace?;
@@ -392,6 +420,7 @@ public type IdentifierTemplate record {
     # The template that generates the fact sheet identifier using the ExternalID of the fact sheet
     ExternalIdTemplate 'external?;
     # An internal identifier of the Fact Sheet assigned by LeanIX
+    @constraint:String {maxLength: 500}
     string internal?;
 };
 
@@ -405,10 +434,13 @@ public type RequiredRelationInfo record {
     # Whether to get constraining relations of relations
     boolean constrainingRelations?;
     # An EL expression to describe which relation fields from the data model are selected
+    @constraint:String {maxLength: 500}
     string multipleFields?;
     # An EL expression to describe which relation type to filter for
+    @constraint:String {maxLength: 500}
     string multipleFilters?;
     # An EL expression to describe which factSheet fields on the target factSheet are selected
+    @constraint:String {maxLength: 500}
     string multipleTargetFields?;
 };
 
@@ -417,6 +449,7 @@ public type ImpactDeletionScope record {
     # The criteria for selection of entities. In case you use facetFilters inside, it is possible to use Juel expressions inside 'keys', for example: ${customFields.factSheetType}
     Scope scope?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
 };
 
@@ -486,7 +519,7 @@ public type OutboundProcessorConfiguration record {
     # The data flow direction, must be [outbound]
     string processingDirection;
     # The processing mode, could be [partial]
-    string processingMode?;
+    string processingMode = "partial";
     # A list of facet filters to limit which Fact Sheets are considered for output
     record {} scope;
     # The list of processors used to evaluate the LDIF data
@@ -500,13 +533,14 @@ public type OutboundProcessorConfiguration record {
 public type OutboundFieldTemplate record {
     KeyTemplate 'key;
     # Either 'list' or 'selectFirst'. Defines if the field should be written as a list or as a single element.
-    string mode?;
+    @constraint:String {maxLength: 500}
+    string mode = "selectFirst";
     # A list of expressions for multiple values, e.g. for multi select fields
     ValueTemplate[] values?;
     # An object that contains information about how the value should be expanded according to a list field
     ValueForEachTemplate forEach?;
     # Whether this value is optional. If true, then missing value error will not be reported
-    boolean optional?;
+    boolean optional = false;
 };
 
 # Definition of the provider which provides the inbound LDIF
@@ -531,6 +565,7 @@ public type InboundProcessor record {
     # Whether this processor is executed or not. Default is true.
     boolean enabled?;
     # An EL expression which targets a content property with a list. Processing will be done for each element in the list.
+    @constraint:String {maxLength: 500}
     string forEach?;
     # A list of variables. Each variable consists of a key and a value. Both fields can contain EL expressions. The expression in key must be evaluated to a single element while the expression in value will be evaluated to a list. The EL expressions are evaluated after a processor has run for a data object and the values will be provided in the next run of the running synchronization.
     VariableKeyValueTemplate[] variables?;
@@ -547,6 +582,7 @@ public type RelationDeletionScope record {
     # The criteria for selection of entities. In case you use facetFilters inside, it is possible to use Juel expressions inside 'keys', for example: ${customFields.factSheetType}
     Scope scope?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
 };
 
@@ -558,7 +594,7 @@ public type InputWithProcessorConfig record {
 # A combination of tag and tag group.
 public type TagScope record {
     # The group name or the regular expression pattern 
-    string 'group?;
+    string group?;
     # The tag name or the regular expression pattern 
     string tag?;
 };
@@ -570,14 +606,14 @@ public type SynchronizationRunWithConfiguration record {
 };
 
 # Upload the outbound result LDFI to the target Azure storage account and container
-public type AzureStorageDataConsumer record {
-    *DataConsumer;
-};
+public type AzureStorageDataConsumer DataConsumer;
 
 public type VariableKeyValueTemplate record {
     # The basic expression of key
+    @constraint:String {maxLength: 500}
     string 'key;
     # The basic expression of value
+    @constraint:String {maxLength: 500}
     string value;
 };
 
@@ -594,11 +630,12 @@ public type ChunkInformation record {
 public type PatchTemplate record {
     KeyTemplate 'key;
     # Defines the operation that is used. Data can be added or updated
-    string op?;
+    @constraint:String {maxLength: 500}
+    string op = "replace";
     # A list of expressions for multiple values, e.g. for multi select fields
     ValueTemplate[] values;
     # Whether this value is optional. If true, then missing value error will not be reported
-    boolean optional?;
+    boolean optional = false;
     # An object that contains information about how the value should be expanded according to a list field
     ValueForEachTemplate forEach?;
 };
@@ -636,6 +673,7 @@ public type ReadFactSheetSection record {
     # A flag to determine the fallback response in the function lx.toOrdinal(...). A true (default if absent) makes the value returned by lx.toOrdinal(...) to be zero for non-found cases. False will make the returned value equals NULL.
     boolean noNullForOrdinal?;
     # An EL expression to describe which factSheet fields from the data model are selected
+    @constraint:String {maxLength: 500}
     string multipleFields?;
 };
 
@@ -649,6 +687,7 @@ public type ExternalIdSetTemplate record {
 # Define the target location to which the outbound result LDIF should be uploaded to
 public type DataConsumer record {
     # The type of data consumer (one of 'leanixStorage' or 'azureStorage').
+    @constraint:String {maxLength: 500}
     string 'type;
 };
 
@@ -669,6 +708,7 @@ public type SubscriptionDeletionScope record {
     # The criteria for selection of entities. In case you use facetFilters inside, it is possible to use Juel expressions inside 'keys', for example: ${customFields.factSheetType}
     Scope scope?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
 };
 
@@ -702,8 +742,9 @@ public type OutboundProcessor record {
     # A list of fields that are constructed an exported Fact Sheet
     OutboundFieldTemplate[] output?;
     # A flag to determine the fallback response in the function lx.toOrdinal(...). A true (default if absent) makes the value returned by lx.toOrdinal(...) to be zero for non-found cases. False will make the returned value equals NULL.
-    boolean noNullForOrdinal?;
+    boolean noNullForOrdinal = true;
     # An EL expression to describe which factSheet fields from the data model are selected
+    @constraint:String {maxLength: 500}
     string multipleFields?;
 };
 
@@ -718,6 +759,7 @@ public type TagDeletionScope record {
     # The criteria for selection of entities. In case you use facetFilters inside, it is possible to use Juel expressions inside 'keys', for example: ${customFields.factSheetType}
     Scope scope?;
     # An EL expression to describe the advanced filter settings.
+    @constraint:String {maxLength: 500}
     string advanced?;
 };
 
@@ -764,6 +806,7 @@ public type SubscriptionInboundProcessor record {
 public type FactSheetInboundProcessor record {
     *InboundProcessor;
     # An expression resolving to a Fact Sheet type present in the data model of your LeanIX workspace
+    @constraint:String {maxLength: 500}
     string 'type;
     # A template representing the conditions for obtaining the fact sheets to been evaluated. Includes an identifier for internal, external Id, or a search criteria to obtain multiple fact sheets to evaluate
     IdentifierWithSearchScopeTemplate identifier;

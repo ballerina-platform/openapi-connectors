@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type ColumnItemArr ColumnItem[];
 
@@ -56,6 +58,9 @@ public type GroupNameArr GroupName[];
 
 public type UserArr User[];
 
+@constraint:String {minLength: 1}
+public type JqlqueriestoparseQueriesItemsString string;
+
 # Properties of a workflow status.
 public type WorkflowStatusProperties record {
     # Whether issues are editable in this status.
@@ -79,7 +84,7 @@ public type EventNotification record {
     #  *  `GroupCustomField` The `parameter` is the ID of the custom field.
     string 'parameter?;
     # The specified group.
-    GroupName 'group?;
+    GroupName group?;
     # The custom user or group field.
     FieldDetails 'field?;
     # The email address.
@@ -103,6 +108,7 @@ public type UserKey record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string 'key?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Returns *unknown* if the record is deleted and corrupted, for example, as the result of a server import.
+    @constraint:String {maxLength: 128}
     string accountId?;
 };
 
@@ -178,7 +184,8 @@ public type Status record {
 # Details of configurations for a custom field.
 public type CustomFieldConfigurations record {
     # The list of custom field configuration details.
-    ContextualConfiguration[1000] configurations;
+    @constraint:Array {maxLength: 1000, minLength: 1}
+    ContextualConfiguration[] configurations;
 };
 
 # Details of a changed worklog.
@@ -559,7 +566,7 @@ public type BulkIssuePropertyUpdateRequest record {
     anydata value?;
     # EXPERIMENTAL. The Jira expression to calculate the value of the property. The value of the expression must be an object that can be converted to JSON, such as a number, boolean, string, list, or map. The context variables available to the expression are `issue` and `user`. Issues for which the expression returns a value whose JSON representation is longer than 32768 characters are ignored.
     string expression?;
-    # Bulk operation filter details.
+    # The bulk operation filter.
     IssueFilterForBulkPropertySet filter?;
 };
 
@@ -636,7 +643,7 @@ public type ProjectRole record {
     # Whether the roles are configurable for this project.
     boolean roleConfigurable?;
     # Whether this role is the default role for the project
-    boolean 'default?;
+    boolean default?;
 };
 
 # The ID of an issue type scheme.
@@ -930,7 +937,7 @@ public type DeprecatedWorkflow record {
     # The scope where this workflow applies
     Scope scope?;
     # Whether default or not
-    boolean 'default?;
+    boolean default?;
 };
 
 # A page of items.
@@ -1516,7 +1523,7 @@ public type JsonNode record {
     # Big integer value in node.
     int bigIntegerValue?;
     # Double value in node.
-    float doubleValue?;
+    decimal doubleValue?;
     # Decimal value in node.
     decimal decimalValue?;
     # Boolean value in node.
@@ -1528,7 +1535,7 @@ public type JsonNode record {
     # Long representation of value in node.
     int valueAsLong?;
     # :Double representation of value in node.
-    float valueAsDouble?;
+    decimal valueAsDouble?;
     # Boolean representation of value in node.
     boolean valueAsBoolean?;
     # Field names in node.
@@ -1863,9 +1870,9 @@ public type PageBeanIssueTypeSchemeProjects record {
 # Details of the time tracking configuration.
 public type TimeTrackingConfiguration record {
     # The number of hours in a working day.
-    float workingHoursPerDay;
+    decimal workingHoursPerDay;
     # The number of days in a working week.
-    float workingDaysPerWeek;
+    decimal workingDaysPerWeek;
     # The format that will appear on an issue's *Time Spent* field.
     string timeFormat;
     # The default unit of time applied to logged time.
@@ -2030,7 +2037,7 @@ public type UpdateScreenTypes record {
     # The ID of the view screen. To remove the screen association, pass a null.
     string view?;
     # The ID of the default screen. When specified, must include a screen ID as a default screen is required.
-    string 'default?;
+    string default?;
 };
 
 # Details of a workflow status.
@@ -2125,6 +2132,7 @@ public type UpdateUserToGroupBean record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string name?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+    @constraint:String {maxLength: 128}
     string accountId?;
 };
 
@@ -2238,6 +2246,7 @@ public type UserDetails record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string 'key?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+    @constraint:String {maxLength: 128}
     string accountId?;
     # The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
     string emailAddress?;
@@ -2515,6 +2524,7 @@ public type UserBean record {
     # Whether the user is active.
     boolean active?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+    @constraint:String {maxLength: 128}
     string accountId?;
     # The avatars of the user.
     UserBeanAvatarUrls avatarUrls?;
@@ -2558,7 +2568,7 @@ public type SharePermission record {
     # For a request, specify the `id` for the role. You must also specify the `project` object and `id` for the project that the role is in.
     ProjectRole role?;
     # The group that the filter is shared with. For a request, specify the `name` property for the group.
-    GroupName 'group?;
+    GroupName group?;
 };
 
 # A comment.
@@ -2772,6 +2782,7 @@ public type UpdateProjectDetails record {
     # This parameter is deprecated because of privacy changes. Use `leadAccountId` instead. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. The user name of the project lead. Cannot be provided with `leadAccountId`.
     string lead?;
     # The account ID of the project lead. Cannot be provided with `lead`.
+    @constraint:String {maxLength: 128}
     string leadAccountId?;
     # A link to information about this project, such as project documentation
     string url?;
@@ -2969,7 +2980,7 @@ public type UpdateCustomFieldDetails record {
 # A list of JQL queries to parse.
 public type JqlQueriesToParse record {
     # A list of queries to parse.
-    string[] queries;
+    JqlqueriestoparseQueriesItemsString[] queries;
 };
 
 public type EntityPropertyDetails record {
@@ -3082,6 +3093,7 @@ public type ProjectAvatars record {
 # Details of the user associated with the role.
 public type ProjectRoleUser record {
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Returns *unknown* if the record is deleted and corrupted, for example, as the result of a server import.
+    @constraint:String {maxLength: 128}
     string accountId?;
 };
 
@@ -3593,7 +3605,7 @@ public type ActorsMap record {
     # The user account ID of the user to add.
     string[] user?;
     # The name of the group to add.
-    string[] 'group?;
+    string[] group?;
 };
 
 # Mapping of an issue type to a context.
@@ -4677,7 +4689,7 @@ public type FilterSubscription record {
     # The user subscribing to filter.
     User user?;
     # The group subscribing to filter.
-    GroupName 'group?;
+    GroupName group?;
 };
 
 public type JiraExpressionEvalRequestBean record {
@@ -4795,7 +4807,7 @@ public type ScreenTypes record {
     # The ID of the view screen.
     int view?;
     # The ID of the default screen. Required when creating a screen scheme.
-    int 'default?;
+    int default?;
 };
 
 # A workflow with transition rules.
@@ -4861,6 +4873,7 @@ public type ProjectComponent record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string leadUserName?;
     # The accountId of the component's lead user. The accountId uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+    @constraint:String {maxLength: 128}
     string leadAccountId?;
     # The nominal user type used to determine the assignee for issues created with this component. See `realAssigneeType` for details on how the type of the user, and hence the user, assigned to issues is determined. Can take the following values:
     # 
@@ -5026,6 +5039,7 @@ public type CreateProjectDetails record {
     # This parameter is deprecated because of privacy changes. Use `leadAccountId` instead. See the [migration guide](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details. The user name of the project lead. Either `lead` or `leadAccountId` must be set when creating a project. Cannot be provided with `leadAccountId`.
     string lead?;
     # The account ID of the project lead. Either `lead` or `leadAccountId` must be set when creating a project. Cannot be provided with `lead`.
+    @constraint:String {maxLength: 128}
     string leadAccountId?;
     # A link to information about this project, such as project documentation
     string url?;
@@ -5243,6 +5257,7 @@ public type User record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string 'key?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. Required in requests.
+    @constraint:String {maxLength: 128}
     string accountId?;
     # The user account type. Can take the following values:
     # 
@@ -5254,6 +5269,7 @@ public type User record {
     string name?;
     # The email address of the user. Depending on the user’s privacy setting, this may be returned as null.
     string emailAddress?;
+    # The avatars of the user.
     AvatarUrlsBean avatarUrls?;
     # The display name of the user. Depending on the user’s privacy setting, this may return an alternative value.
     string displayName?;
@@ -5263,8 +5279,9 @@ public type User record {
     string timeZone?;
     # The locale of the user. Depending on the user’s privacy setting, this may be returned as null.
     string locale?;
-    # A simple wrapper group name.
+    # The groups that the user belongs to.
     SimpleListWrapperGroupName groups?;
+    # The application roles the user is assigned to.
     SimpleListWrapperApplicationRole applicationRoles?;
     # Expand options that include additional user details in the response.
     string expand?;
@@ -5274,7 +5291,7 @@ public type ActorInputBean record {
     # The account IDs of the users to add as default actors. This parameter accepts a comma-separated list. For example, `"user":["5b10a2844c20165700ede21g", "5b109f2e9729b51b54dc274d"]`.
     string[] user?;
     # The name of the group to add as a default actor. This parameter accepts a comma-separated list. For example, `"group":["project-admin", "jira-developers"]`.
-    string[] 'group?;
+    string[] group?;
 };
 
 # A screen.
@@ -5342,13 +5359,14 @@ public type ProjectRoleDetails record {
     # The translated name of the project role.
     string translatedName?;
     # Whether this role is the default role for the project.
-    boolean 'default?;
+    boolean default?;
 };
 
 # Lists of issues and entity properties. See [Entity properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/) for more information.
 public type IssueEntityProperties record {
     # A list of entity property IDs.
-    int[10000] entitiesIds?;
+    @constraint:Array {maxLength: 10000, minLength: 1}
+    int[] entitiesIds?;
     # A list of entity property keys and values.
     record {} properties?;
 };

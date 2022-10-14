@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -54,7 +54,7 @@ public isolated client class Client {
     # + area - Area 
     # + return - the list of available timezones in JSON format 
     remote isolated function getTimezoneByArea(string area) returns ListJsonResponse|error {
-        string resourcePath = string `/timezone/${area}`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}`;
         ListJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -63,7 +63,7 @@ public isolated client class Client {
     # + area - Area 
     # + return - the list of available timezones in plain text 
     remote isolated function getTimezoneByAreaAsText(string area) returns ListTextResponse|error {
-        string resourcePath = string `/timezone/${area}.txt`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}.txt`;
         ListTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -73,7 +73,7 @@ public isolated client class Client {
     # + location - location 
     # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTime(string area, string location) returns DateTimeJsonResponse|error {
-        string resourcePath = string `/timezone/${area}/${location}`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}/${getEncodedUri(location)}`;
         DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -83,7 +83,7 @@ public isolated client class Client {
     # + location - Location 
     # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeAsText(string area, string location) returns DateTimeTextResponse|error {
-        string resourcePath = string `/timezone/${area}/${location}.txt`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}/${getEncodedUri(location)}.txt`;
         DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -94,7 +94,7 @@ public isolated client class Client {
     # + region - Region 
     # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTimeByRegion(string area, string location, string region) returns DateTimeJsonResponse|error {
-        string resourcePath = string `/timezone/${area}/${location}/${region}`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}/${getEncodedUri(location)}/${getEncodedUri(region)}`;
         DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -105,7 +105,7 @@ public isolated client class Client {
     # + region - Region 
     # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeByRegionAsText(string area, string location, string region) returns DateTimeTextResponse|error {
-        string resourcePath = string `/timezone/${area}/${location}/${region}.txt`;
+        string resourcePath = string `/timezone/${getEncodedUri(area)}/${getEncodedUri(location)}/${getEncodedUri(region)}.txt`;
         DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -130,7 +130,7 @@ public isolated client class Client {
     # + ipv4 - IPv4 address 
     # + return - the current time for the timezone requested in JSON format 
     remote isolated function getCurrentTimeBasedOnIpv4(string ipv4) returns DateTimeJsonResponse|error {
-        string resourcePath = string `/ip/${ipv4}`;
+        string resourcePath = string `/ip/${getEncodedUri(ipv4)}`;
         DateTimeJsonResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -139,7 +139,7 @@ public isolated client class Client {
     # + ipv4 - IPv4 address 
     # + return - the current time for the timezone requested in plain text 
     remote isolated function getCurrentTimeBasedOnIpv4AsText(string ipv4) returns DateTimeTextResponse|error {
-        string resourcePath = string `/ip/${ipv4}.txt`;
+        string resourcePath = string `/ip/${getEncodedUri(ipv4)}.txt`;
         DateTimeTextResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

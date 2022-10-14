@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
 
 public type Category record {
     string CategoryName?;
-    float Score?;
+    decimal Score?;
 };
 
 public type DocumentResult record {
@@ -27,11 +27,11 @@ public type DocumentResult record {
     string DetectedLanguage?;
     string DocSentimentPolarity?;
     string DocSentimentResultString?;
-    float DocSentimentValue?;
+    decimal DocSentimentValue?;
     SentencePart[] Entities?;
     string ErrorMessage?;
     SentencePart[] Keywords?;
-    float Magnitude?;
+    decimal Magnitude?;
     PartOfSpeech[] PartsOfSpeech?;
     string ResultTextHtml?;
     SlangWord[] SlangWords?;
@@ -73,20 +73,20 @@ public type PartOfSpeech record {
     string Object?;
     string ObjectSentimentPolarity?;
     string ObjectSentimentResultString?;
-    float ObjectSentimentValue?;
+    decimal ObjectSentimentValue?;
     string Subject?;
     string Text?;
 };
 
 public type SentencePart record {
     string KeywordType?;
-    float Magnitude?;
+    decimal Magnitude?;
     int Mentions?;
     string SentencePartType?;
     string SentenceText?;
     string SentimentPolarity?;
     string SentimentResult?;
-    float SentimentValue?;
+    decimal SentimentValue?;
     string Text?;
 };
 
@@ -102,11 +102,11 @@ public type Document record {
 };
 
 public type Sentence record {
-    float Magnitude?;
+    decimal Magnitude?;
     int SentenceNumber?;
     string SentimentPolarity?;
     string SentimentResultString?;
-    float SentimentValue?;
+    decimal SentimentValue?;
     string Text?;
 };
 

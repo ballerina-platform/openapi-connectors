@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [YNAB API v1.0.0](https://api.youneedabudget.com) OpenAPI specification.
@@ -94,7 +98,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The requested budget 
     remote isolated function getBudgetById(string budgetId, int? lastKnowledgeOfServer = ()) returns BudgetDetailResponse|error {
-        string resourcePath = string `/budgets/${budgetId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BudgetDetailResponse response = check self.clientEp->get(resourcePath);
@@ -105,7 +109,7 @@ public isolated client class Client {
     # + budgetId - The id of the budget. "last-used" can be used to specify the last used budget and "default" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget). 
     # + return - The requested budget settings 
     remote isolated function getBudgetSettingsById(string budgetId) returns BudgetSettingsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/settings`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/settings`;
         BudgetSettingsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -115,7 +119,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested accounts 
     remote isolated function getAccounts(string budgetId, int? lastKnowledgeOfServer = ()) returns AccountsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/accounts`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/accounts`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AccountsResponse response = check self.clientEp->get(resourcePath);
@@ -127,7 +131,7 @@ public isolated client class Client {
     # + payload - The account to create. 
     # + return - The account was successfully created 
     remote isolated function createAccount(string budgetId, byte[] payload) returns AccountResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/accounts`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/accounts`;
         http:Request request = new;
         request.setPayload(payload);
         AccountResponse response = check self.clientEp->post(resourcePath, request);
@@ -139,7 +143,7 @@ public isolated client class Client {
     # + accountId - The id of the account 
     # + return - The requested account 
     remote isolated function getAccountById(string budgetId, string accountId) returns AccountResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/accounts/${accountId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/accounts/${getEncodedUri(accountId)}`;
         AccountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -149,7 +153,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The categories grouped by category group 
     remote isolated function getCategories(string budgetId, int? lastKnowledgeOfServer = ()) returns CategoriesResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/categories`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/categories`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CategoriesResponse response = check self.clientEp->get(resourcePath);
@@ -161,7 +165,7 @@ public isolated client class Client {
     # + categoryId - The id of the category 
     # + return - The requested category 
     remote isolated function getCategoryById(string budgetId, string categoryId) returns CategoryResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/categories/${categoryId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/categories/${getEncodedUri(categoryId)}`;
         CategoryResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -172,7 +176,7 @@ public isolated client class Client {
     # + categoryId - The id of the category 
     # + return - The requested month category 
     remote isolated function getMonthCategoryById(string budgetId, string month, string categoryId) returns CategoryResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/months/${month}/categories/${categoryId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/months/${getEncodedUri(month)}/categories/${getEncodedUri(categoryId)}`;
         CategoryResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -184,7 +188,7 @@ public isolated client class Client {
     # + payload - The category to update.  Only `budgeted` amount can be updated and any other fields specified will be ignored. 
     # + return - The month category was successfully updated 
     remote isolated function updateMonthCategory(string budgetId, string month, string categoryId, byte[] payload) returns SaveCategoryResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/months/${month}/categories/${categoryId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/months/${getEncodedUri(month)}/categories/${getEncodedUri(categoryId)}`;
         http:Request request = new;
         request.setPayload(payload);
         SaveCategoryResponse response = check self.clientEp->patch(resourcePath, request);
@@ -196,7 +200,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The requested list of payees 
     remote isolated function getPayees(string budgetId, int? lastKnowledgeOfServer = ()) returns PayeesResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payees`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payees`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PayeesResponse response = check self.clientEp->get(resourcePath);
@@ -208,7 +212,7 @@ public isolated client class Client {
     # + payeeId - The id of the payee 
     # + return - The requested payee 
     remote isolated function getPayeeById(string budgetId, string payeeId) returns PayeeResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payees/${payeeId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payees/${getEncodedUri(payeeId)}`;
         PayeeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -217,7 +221,7 @@ public isolated client class Client {
     # + budgetId - The id of the budget. "last-used" can be used to specify the last used budget and "default" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget). 
     # + return - The list of payee locations 
     remote isolated function getPayeeLocations(string budgetId) returns PayeeLocationsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payee_locations`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payee_locations`;
         PayeeLocationsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -227,7 +231,7 @@ public isolated client class Client {
     # + payeeLocationId - id of payee location 
     # + return - The payee location 
     remote isolated function getPayeeLocationById(string budgetId, string payeeLocationId) returns PayeeLocationResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payee_locations/${payeeLocationId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payee_locations/${getEncodedUri(payeeLocationId)}`;
         PayeeLocationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -237,7 +241,7 @@ public isolated client class Client {
     # + payeeId - id of payee 
     # + return - The list of requested payee locations 
     remote isolated function getPayeeLocationsByPayee(string budgetId, string payeeId) returns PayeeLocationsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payees/${payeeId}/payee_locations`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payees/${getEncodedUri(payeeId)}/payee_locations`;
         PayeeLocationsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -247,7 +251,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of budget months 
     remote isolated function getBudgetMonths(string budgetId, int? lastKnowledgeOfServer = ()) returns MonthSummariesResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/months`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/months`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MonthSummariesResponse response = check self.clientEp->get(resourcePath);
@@ -259,7 +263,7 @@ public isolated client class Client {
     # + month - The budget month in ISO format (e.g. 2016-12-01) ("current" can also be used to specify the current calendar month (UTC)) 
     # + return - The budget month detail 
     remote isolated function getBudgetMonth(string budgetId, string month) returns MonthDetailResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/months/${month}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/months/${getEncodedUri(month)}`;
         MonthDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -271,7 +275,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested transactions 
     remote isolated function getTransactions(string budgetId, string? sinceDate = (), string? 'type = (), int? lastKnowledgeOfServer = ()) returns TransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions`;
         map<anydata> queryParam = {"since_date": sinceDate, "type": 'type, "last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + payload - The transaction or transactions to create.  To create a single transaction you can specify a value for the `transaction` object and to create multiple transactions you can specify an array of `transactions`.  It is expected that you will only provide a value for one of these objects. 
     # + return - The transaction or transactions were successfully created 
     remote isolated function createTransaction(string budgetId, byte[] payload) returns SaveTransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions`;
         http:Request request = new;
         request.setPayload(payload);
         SaveTransactionsResponse response = check self.clientEp->post(resourcePath, request);
@@ -295,7 +299,7 @@ public isolated client class Client {
     # + payload - The transactions to update. Each transaction must have either an `id` or `import_id` specified. If `id` is specified as null an `import_id` value can be provided which will allow transaction(s) to be updated by their `import_id`. If an `id` is specified, it will always be used for lookup. 
     # + return - The transactions were successfully updated 
     remote isolated function updateTransactions(string budgetId, byte[] payload) returns SaveTransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions`;
         http:Request request = new;
         request.setPayload(payload);
         SaveTransactionsResponse response = check self.clientEp->patch(resourcePath, request);
@@ -306,7 +310,7 @@ public isolated client class Client {
     # + budgetId - The id of the budget. "last-used" can be used to specify the last used budget and "default" can be used if default budget selection is enabled (see: https://api.youneedabudget.com/#oauth-default-budget). 
     # + return - The request was successful but there were no transactions to import 
     remote isolated function importTransactions(string budgetId) returns TransactionsImportResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions/import`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions/import`;
         http:Request request = new;
         //TODO: Update the request as needed;
         TransactionsImportResponse response = check self.clientEp-> post(resourcePath, request);
@@ -318,7 +322,7 @@ public isolated client class Client {
     # + transactionId - The id of the transaction 
     # + return - The requested transaction 
     remote isolated function getTransactionById(string budgetId, string transactionId) returns TransactionResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions/${transactionId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions/${getEncodedUri(transactionId)}`;
         TransactionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -329,7 +333,7 @@ public isolated client class Client {
     # + payload - The transaction to update 
     # + return - The transaction was successfully updated 
     remote isolated function updateTransaction(string budgetId, string transactionId, byte[] payload) returns TransactionResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions/${transactionId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions/${getEncodedUri(transactionId)}`;
         http:Request request = new;
         request.setPayload(payload);
         TransactionResponse response = check self.clientEp->put(resourcePath, request);
@@ -341,7 +345,7 @@ public isolated client class Client {
     # + payload - The list of transactions to create 
     # + return - The bulk request was processed successfully 
     remote isolated function bulkCreateTransactions(string budgetId, byte[] payload) returns BulkResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/transactions/bulk`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/transactions/bulk`;
         http:Request request = new;
         request.setPayload(payload);
         BulkResponse response = check self.clientEp->post(resourcePath, request);
@@ -356,7 +360,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested transactions 
     remote isolated function getTransactionsByAccount(string budgetId, string accountId, string? sinceDate = (), string? 'type = (), int? lastKnowledgeOfServer = ()) returns TransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/accounts/${accountId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/accounts/${getEncodedUri(accountId)}/transactions`;
         map<anydata> queryParam = {"since_date": sinceDate, "type": 'type, "last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -371,7 +375,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested transactions 
     remote isolated function getTransactionsByCategory(string budgetId, string categoryId, string? sinceDate = (), string? 'type = (), int? lastKnowledgeOfServer = ()) returns HybridTransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/categories/${categoryId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/categories/${getEncodedUri(categoryId)}/transactions`;
         map<anydata> queryParam = {"since_date": sinceDate, "type": 'type, "last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         HybridTransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -386,7 +390,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested transactions 
     remote isolated function getTransactionsByPayee(string budgetId, string payeeId, string? sinceDate = (), string? 'type = (), int? lastKnowledgeOfServer = ()) returns HybridTransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/payees/${payeeId}/transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/payees/${getEncodedUri(payeeId)}/transactions`;
         map<anydata> queryParam = {"since_date": sinceDate, "type": 'type, "last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         HybridTransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -398,7 +402,7 @@ public isolated client class Client {
     # + lastKnowledgeOfServer - The starting server knowledge.  If provided, only entities that have changed since `last_knowledge_of_server` will be included. 
     # + return - The list of requested scheduled transactions 
     remote isolated function getScheduledTransactions(string budgetId, int? lastKnowledgeOfServer = ()) returns ScheduledTransactionsResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/scheduled_transactions`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/scheduled_transactions`;
         map<anydata> queryParam = {"last_knowledge_of_server": lastKnowledgeOfServer};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ScheduledTransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -410,7 +414,7 @@ public isolated client class Client {
     # + scheduledTransactionId - The id of the scheduled transaction 
     # + return - The requested Scheduled Transaction 
     remote isolated function getScheduledTransactionById(string budgetId, string scheduledTransactionId) returns ScheduledTransactionResponse|error {
-        string resourcePath = string `/budgets/${budgetId}/scheduled_transactions/${scheduledTransactionId}`;
+        string resourcePath = string `/budgets/${getEncodedUri(budgetId)}/scheduled_transactions/${getEncodedUri(scheduledTransactionId)}`;
         ScheduledTransactionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

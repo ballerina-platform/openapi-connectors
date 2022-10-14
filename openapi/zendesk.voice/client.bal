@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification.
@@ -106,7 +110,7 @@ public isolated client class Client {
     # + phoneNumberId - ID of a phone number 
     # + return - Returns phone number by id 
     remote isolated function showPhoneNumber(string phoneNumberId) returns PhoneNumber|error {
-        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${getEncodedUri(phoneNumberId)}.json`;
         PhoneNumber response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -115,8 +119,8 @@ public isolated client class Client {
     # + phoneNumberId - ID of a phone number 
     # + return - Returns detail of phone number deleted 
     remote isolated function deletePhoneNumberById(string phoneNumberId) returns PhoneNumber|error {
-        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${phoneNumberId}.json`;
-        PhoneNumber response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/channels/voice/phone_numbers/${getEncodedUri(phoneNumberId)}.json`;
+        PhoneNumber response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List greeting categories.
@@ -132,7 +136,7 @@ public isolated client class Client {
     # + greetingCategoriesId - ID of the greeting category 
     # + return - Returns greeting category by id 
     remote isolated function showGreetingCategory(string greetingCategoriesId) returns GreetingCategory|error {
-        string resourcePath = string `/api/v2/channels/voice/greeting_categories/${greetingCategoriesId}.json`;
+        string resourcePath = string `/api/v2/channels/voice/greeting_categories/${getEncodedUri(greetingCategoriesId)}.json`;
         GreetingCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -161,7 +165,7 @@ public isolated client class Client {
     # + greetingsId - ID of a greeting 
     # + return - Returns greeting by id 
     remote isolated function showGreeting(string greetingsId) returns Greeting|error {
-        string resourcePath = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
+        string resourcePath = string `/api/v2/channels/voice/greetings/${getEncodedUri(greetingsId)}.json`;
         Greeting response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -170,8 +174,8 @@ public isolated client class Client {
     # + greetingsId - ID of a greeting 
     # + return - Returns detail of greeting deleted 
     remote isolated function deleteGreetingById(string greetingsId) returns Greeting|error {
-        string resourcePath = string `/api/v2/channels/voice/greetings/${greetingsId}.json`;
-        Greeting response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/channels/voice/greetings/${getEncodedUri(greetingsId)}.json`;
+        Greeting response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay Accounts Payable REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -72,7 +76,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function submitInvoiceInstance(string id, SubmitSupplierInvoiceRequest payload) returns SubmitSupplierInvoiceRequest|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/submit`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/submit`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function viewSupplierInvoiceRequests(string id, string subresourceID) returns string|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}?type=viewContent`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/attachments/${getEncodedUri(subresourceID)}?type=viewContent`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -142,7 +146,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceRequestAttachment(string id, string subresourceID) returns AttachmentSummary|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments/${subresourceID}`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/attachments/${getEncodedUri(subresourceID)}`;
         AttachmentSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -157,7 +161,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceRequestAttachmentByID(string id, int? 'limit = (), int? offset = ()) returns string|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/attachmentst`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/attachmentst`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         string response = check self.clientEp->get(resourcePath);
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceLines(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/lines`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/lines`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);
@@ -181,7 +185,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceInstance(string id) returns InvoiceRequestSummary|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}`;
         InvoiceRequestSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -192,7 +196,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceAttachments(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/attachments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp->get(resourcePath);
@@ -203,7 +207,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createsNewAttachmentSupplierInvoice(string id, CreateAttachmentSummary payload) returns CreateAttachmentSummary|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/attachments`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/attachments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -216,7 +220,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupplierInvoiceLineInstance(string id, string subresourceID) returns ViewLineSummary|error {
-        string resourcePath = string `/supplierInvoiceRequests/${id}/lines/${subresourceID}`;
+        string resourcePath = string `/supplierInvoiceRequests/${getEncodedUri(id)}/lines/${getEncodedUri(subresourceID)}`;
         ViewLineSummary response = check self.clientEp->get(resourcePath);
         return response;
     }

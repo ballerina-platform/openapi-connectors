@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,66 +16,66 @@
 
 public type ErrorModelReference record {
     # A description of the error
-    string? _error;
+    string 'error;
 };
 
 public type ViewLedgerAccount record {
     # The name of the ledger account.
-    string? ledgerAccountName?;
+    string ledgerAccountName?;
     # The resulting worktags configured for an account posting rule.
-    WorkTagSummary[]? resultingWorktags?;
+    WorkTagSummary[] resultingWorktags?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse2001 record {
-    ViewLedgerAccount[]? data?;
-    int? total?;
+    ViewLedgerAccount[] data?;
+    int total?;
 };
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type CurrencySummary record {
     # ID
-    string? code?;
+    string code?;
     # Precision
-    int? precision?;
+    int precision?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse200 record {
-    CurrencySummary[]? data?;
-    int? total?;
+    CurrencySummary[] data?;
+    int total?;
 };
 
 public type MultipleInstanceModelReference record {
-    int? total?;
-    InstanceModelReference[]? data?;
+    int total?;
+    InstanceModelReference[] data?;
 };
 
 public type WorkTagSummary record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[]? errors?;
+    ErrorModelReference[] errors?;
 };

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Information about the network `number` is currently connected to.
 public type NiCurrentCarrierProperties record {
@@ -78,13 +80,14 @@ public type NiStandardAdvancedStatus int;
 # Basic
 public type NiResponseXmlBasic record {
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id?;
     # The `number` in your request in international format.
     string international_format_number?;
     # An object containing the `number` in your request in the format used by the country the number belongs to.
     NiresponsexmlbasicLocalNumber local_number?;
     # The error code and status of your request
-    NiresponsexmlbasicError _error?;
+    NiresponsexmlbasicError 'error?;
 };
 
 # Information about the roaming status for number. This is applicable to mobile numbers only.
@@ -187,13 +190,14 @@ public type NiresponsexmladvancedCallerIdentity record {
 # Standard
 public type NiResponseXmlStandard record {
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id?;
     # The `number` in your request in international format.
     string international_format_number?;
     # An object containing the `number` in your request in the format used by the country the number belongs to.
     NiresponsexmlbasicLocalNumber local_number?;
     # The error code and status of your request
-    NiresponsexmlbasicError _error?;
+    NiresponsexmlbasicError 'error?;
     # If there is an internal lookup error, the `refund_price` will reflect the lookup price. If `cnam` is requested for a non-US number the `refund_price` will reflect the `cnam` price. If both of these conditions occur, `refund_price` is the sum of the lookup price and `cnam` price.
     string request_price?;
     # Your account balance in EUR after this request.
@@ -227,6 +231,7 @@ public type NiResponseJsonAdvanced record {
     # The status description of your request.
     string status_message;
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id;
     # The `number` in your request in international format.
     string international_format_number;
@@ -304,6 +309,7 @@ public type NiResponseJsonBasic record {
     # The status description of your request.
     string status_message?;
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id?;
     # The `number` in your request in international format.
     string international_format_number?;
@@ -321,6 +327,7 @@ public type NiResponseJsonBasic record {
 
 public type NiResponseAsync record {
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id?;
     # The `number` in your request
     string number?;
@@ -353,13 +360,14 @@ public type NiresponsexmladvancedPorted record {
 # Advanced
 public type NiResponseXmlAdvanced record {
     # The unique identifier for your request. This is a alphanumeric string up to 40 characters.
+    @constraint:String {maxLength: 40}
     string request_id?;
     # The `number` in your request in international format.
     string international_format_number?;
     # An object containing the `number` in your request in the format used by the country the number belongs to.
     NiresponsexmlbasicLocalNumber local_number?;
     # The error code and status of your request
-    NiresponsexmlbasicError _error?;
+    NiresponsexmlbasicError 'error?;
     # If there is an internal lookup error, the `refund_price` will reflect the lookup price. If `cnam` is requested for a non-US number the `refund_price` will reflect the `cnam` price. If both of these conditions occur, `refund_price` is the sum of the lookup price and `cnam` price.
     string request_price?;
     # Your account balance in EUR after this request.

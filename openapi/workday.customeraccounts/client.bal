@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay Customer Accounts REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -72,7 +76,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePaymentRemittanceLine(string id, string subresourceID) returns ViewRemittanceDetails|error {
-        string resourcePath = string `/payments/${id}/remittanceDetails/${subresourceID}`;
+        string resourcePath = string `/payments/${getEncodedUri(id)}/remittanceDetails/${getEncodedUri(subresourceID)}`;
         ViewRemittanceDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -81,7 +85,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePaymentInstance(string id) returns ViewCustomerPayment|error {
-        string resourcePath = string `/payments/${id}`;
+        string resourcePath = string `/payments/${getEncodedUri(id)}`;
         ViewCustomerPayment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -90,7 +94,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSingleCustomerInstance(string id) returns CustomerView|error {
-        string resourcePath = string `/customers/${id}`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}`;
         CustomerView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -99,7 +103,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoiceOrAdjustmentInstance(string id) returns CustomerInvoice|error {
-        string resourcePath = string `/invoices/${id}`;
+        string resourcePath = string `/invoices/${getEncodedUri(id)}`;
         CustomerInvoice response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -108,7 +112,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePDFInstance(string id) returns string|error {
-        string resourcePath = string `/invoicePDFs/${id}`;
+        string resourcePath = string `/invoicePDFs/${getEncodedUri(id)}`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -151,7 +155,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePrintRun(string id, string subresourceID) returns PrintRun|error {
-        string resourcePath = string `/invoices/${id}/printRuns/${subresourceID}`;
+        string resourcePath = string `/invoices/${getEncodedUri(id)}/printRuns/${getEncodedUri(subresourceID)}`;
         PrintRun response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -162,7 +166,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInvoicePrintRunForSpecifiedInvoice(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/invoices/${id}/printRuns`;
+        string resourcePath = string `/invoices/${getEncodedUri(id)}/printRuns`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);
@@ -186,7 +190,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createCustomerInvoice(string id, CreateRemittanceDetails payload) returns CreateRemittanceDetails|error {
-        string resourcePath = string `/payments/${id}/remittanceDetails`;
+        string resourcePath = string `/payments/${getEncodedUri(id)}/remittanceDetails`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

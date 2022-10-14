@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,7 @@ public type BookDepreciationSetting record {
     # The method of depreciation applied to this asset. See Depreciation Methods
     string depreciationMethod?;
     # The rate of depreciation (e.g. 0.05)
-    float depreciationRate?;
+    decimal depreciationRate?;
     # Effective life of the asset in years (e.g. 5)
     int effectiveLifeYears?;
 };
@@ -76,19 +76,19 @@ public type AssetType record {
 
 public type BookDepreciationDetail record {
     # The value of the asset you want to depreciate, if this is less than the cost of the asset.
-    float costLimit?;
+    decimal costLimit?;
     # All depreciation occurring in the current financial year.
-    float currentAccumDepreciationAmount?;
+    decimal currentAccumDepreciationAmount?;
     # When an asset is disposed, this will be the sell price minus the purchase price if a profit was made.
-    float currentCapitalGain?;
+    decimal currentCapitalGain?;
     # When an asset is disposed, this will be the lowest one of sell price or purchase price, minus the current book value.
-    float currentGainLoss?;
+    decimal currentGainLoss?;
     # YYYY-MM-DD
     string depreciationStartDate?;
     # All depreciation prior to the current financial year.
-    float priorAccumDepreciationAmount?;
+    decimal priorAccumDepreciationAmount?;
     # The value of the asset remaining when you've fully depreciated it.
-    float residualValue?;
+    decimal residualValue?;
 };
 
 public type Assets record {
@@ -132,7 +132,7 @@ public type Setting record {
 
 public type Asset record {
     # The accounting value of the asset
-    float accountingBookValue?;
+    decimal accountingBookValue?;
     # The Xero-generated Id for the asset
     string assetId?;
     # The name of the asset
@@ -150,13 +150,13 @@ public type Asset record {
     # The date the asset was disposed
     string disposalDate?;
     # The price the asset was disposed at
-    float disposalPrice?;
+    decimal disposalPrice?;
     # Boolean to indicate whether delete is enabled
     boolean isDeleteEnabledForDate?;
     # The date the asset was purchased YYYY-MM-DD
     string purchaseDate?;
     # The purchase price of the asset
-    float purchasePrice?;
+    decimal purchasePrice?;
     # The asset's serial number
     string serialNumber?;
     # The date the asset’s warranty expires (if needed) YYYY-MM-DD

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type TrackingFields record {
     # Tracking fields type
@@ -114,12 +116,14 @@ public type UpdateMeetingRequest record {
     # Email or userId if you want to schedule meeting for another user.
     string schedule_for?;
     # Meeting description.
+    @constraint:String {maxLength: 2000}
     string agenda?;
     # Meeting duration (minutes). Used for scheduled meetings only.
     int duration?;
     # Meeting passcode. Passcode may only contain the following characters: [a-z A-Z 0-9 @ - _ *] and can have a maximum of 10 characters.
     # 
     # **Note:** If the account owner or the admin has configured [minimum passcode requirement settings](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604), the passcode value provided here must meet those requirements. <br><br>If the requirements are enabled, you can view those requirements by calling either the [Get User Settings API](https://marketplace.zoom.us/docs/api-reference/zoom-api/users/usersettings) or the  [Get Account Settings](https://marketplace.zoom.us/docs/api-reference/zoom-api/accounts/accountsettings) API. 
+    @constraint:String {maxLength: 10}
     string password?;
     # Recurrence related meeting informations
     ReccurenceDetails recurrence?;
@@ -167,6 +171,7 @@ public type UserDetails record {
     # The employee's unique ID. The this field only returns when SAML single sign-on (SSO) is enabled or the `login_type` value is `101` (SSO).
     string employee_unique_id?;
     # The user's first name.
+    @constraint:String {maxLength: 64}
     string first_name?;
     # The IDs of groups where the user is a member.
     string[] group_ids?;
@@ -181,6 +186,7 @@ public type UserDetails record {
     # The user's last login time. This field has a three-day buffer period. For example, if user first logged in on `2020-01-01` and then logged out and logged in on `2020-01-02`, this value will still reflect the login time of `2020-01-01`. However, if the user logs in on `2020-01-04`, the value of this field will reflect the corresponding login time since it exceeds the three-day buffer period.
     string last_login_time?;
     # The user's last name.
+    @constraint:String {maxLength: 64}
     string last_name?;
     # This field is returned if the user is enrolled in the [Zoom United](https://zoom.us/pricing/zoom-bundles) plan.
     string plan_united_type?;
@@ -275,6 +281,7 @@ public type RequestedMeetingDetails record {
     # Timezone to format start_time
     string timezone?;
     # Meeting topic
+    @constraint:String {maxLength: 200}
     string topic?;
     # Tracking fields
     RequestedMeetingTrackingDetails[] tracking_fields?;
@@ -287,6 +294,7 @@ public type ReccurenceDetails record {
     # Select the final date on which the meeting will recur before it is canceled. Should be in UTC time, such as 2017-11-25T12:00:00Z. (Cannot be used with "end_times".)
     string end_date_time?;
     # Select how many times the meeting should recur before it is canceled. (Cannot be used with "end_date_time".)
+    @constraint:Int {maxValue: 365}
     int end_times = 1;
     # Use this field **only if you're scheduling a recurring meeting of type** `3` to state which day in a month, the meeting should recur. The value range is from 1 to 31.
     # 
@@ -326,8 +334,10 @@ public type CustomAttributeDetails record {
 
 public type CustomKeys record {
     # Custom key associated with the user.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # Value of the custom key associated with the user.
+    @constraint:String {maxLength: 256}
     string value?;
 };
 
@@ -339,8 +349,10 @@ public type CreateMeetingResponse record {
 
 public type MeetingmetricdetailsTrackingFields record {
     # Label of the tracking field.
+    @constraint:String {maxLength: 64}
     string 'field?;
     # Value of the tracking field.
+    @constraint:String {maxLength: 256}
     string value?;
 };
 
@@ -411,6 +423,7 @@ public type ListWebinarParticipantsResponse record {
     # The number of pages returned for this request.
     int page_count?;
     # The total number of records returned from a single API call.
+    @constraint:Int {maxValue: 300}
     int page_size?;
     # ParticipantsDetails
     PartcipantDetails[] participants?;
@@ -421,10 +434,13 @@ public type ListWebinarParticipantsResponse record {
 # Meeting live stream.
 public type UpdateMeetingLiveStreamDetailsRequest record {
     # The livestream page URL.
+    @constraint:String {maxLength: 1024}
     string page_url?;
     # Stream name and key.
+    @constraint:String {maxLength: 512}
     string stream_key;
     # Streaming URL.
+    @constraint:String {maxLength: 1024}
     string stream_url;
 };
 
@@ -463,6 +479,7 @@ public type MeetingSettings record {
     # Contact name for registration
     string contact_name?;
     # Custom keys and values assigned to the meeting.
+    @constraint:Array {maxLength: 10}
     CustomKeys[] custom_keys?;
     # Choose between enhanced encryption and [end-to-end encryption](https://support.zoom.us/hc/en-us/articles/360048660871) when starting or a meeting. When using end-to-end encryption, several features (e.g. cloud recording, phone/SIP/H.323 dial-in) will be **automatically disabled**. The value of this field can be one of the following:
     # `enhanced_encryption`: Enhanced encryption. Encryption is stored in the cloud if you enable this option. 
@@ -520,8 +537,10 @@ public type MeetingSettings record {
 
 public type MeetingmetricdetailsCustomKeys record {
     # Custom key associated with the meeting.
+    @constraint:String {maxLength: 64}
     string 'key?;
     # Value of the custom key associated with the meeting.
+    @constraint:String {maxLength: 256}
     string value?;
 };
 
@@ -677,6 +696,7 @@ public type MeetingParticipantsDetails record {
     # The participant's connection type.
     string connection_type?;
     # The participant's SDK identifier. This value can be alphanumeric, up to a maximum length of 15 characters.
+    @constraint:String {maxLength: 15}
     string customer_key?;
     # The data center where participant's meeting data is stored.
     string data_center?;
@@ -811,6 +831,7 @@ public type MeetingMetricDetails record {
     # Host display name.
     string host?;
     # Custom keys and values assigned to the meeting.
+    @constraint:Array {maxLength: 10}
     MeetingmetricdetailsCustomKeys[] custom_keys?;
     # Department of the host.
     string dept?;
@@ -901,14 +922,17 @@ public type RegistrantDetails record {
     # Custom questions.
     RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
+    @constraint:String {maxLength: 128}
     string email;
     # Registrant's first name.
+    @constraint:String {maxLength: 64}
     string first_name;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
     string job_title?;
     # Registrant's last name.
+    @constraint:String {maxLength: 64}
     string last_name?;
     # Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`
     string no_of_employees?;
@@ -1046,6 +1070,7 @@ public type PaginationObject record {
     # This field has been deprecated.
     int page_number?;
     # The number of records returned with a single API call.
+    @constraint:Int {maxValue: 300}
     int page_size?;
     # The total number of all the records available across pages.
     int total_records?;
@@ -1068,14 +1093,17 @@ public type AddMeetingRegistrantRequest record {
     # Custom questions.
     RegistrantCustomQuestion[] custom_questions?;
     # A valid email address of the registrant.
+    @constraint:String {maxLength: 128}
     string email;
     # Registrant's first name.
+    @constraint:String {maxLength: 64}
     string first_name;
     # Registrant's Industry.
     string industry?;
     # Registrant's job title.
     string job_title?;
     # Registrant's last name.
+    @constraint:String {maxLength: 64}
     string last_name?;
     # Number of Employees: `1-20`, `21-50`, `51-100`, `101-500`, `500-1,000`, `1,001-5,000`, `5,001-10,000`, `More than 10,000`
     string no_of_employees?;
@@ -1212,10 +1240,12 @@ public type MeetingMetadata record {
 # Base object for meeting
 public type MeetingDetails record {
     # Meeting description.
+    @constraint:String {maxLength: 2000}
     string agenda?;
     # Meeting duration (minutes). Used for scheduled meetings only.
     int duration?;
     # Passcode to join the meeting.
+    @constraint:String {maxLength: 10}
     string password?;
     # Recurrence related meeting informations
     ReccurenceDetails recurrence?;

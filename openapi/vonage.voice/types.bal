@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Connect to a Phone (PSTN) number
 public type EndpointPhoneFrom record {
@@ -65,9 +67,9 @@ public type VoiceName string;
 public type StartStreamRequest record {
     string[] stream_url;
     # the number of times to play the file, 0 for infinite
-    int loop?;
+    int loop = 1;
     # Set the audio level of the stream in the range `-1 >= level <= 1` with a precision of 0.1. The default value is 0.
-    string level?;
+    string level = "0";
 };
 
 public type DTMFResponse record {
@@ -97,6 +99,7 @@ public type To record {
 };
 
 # Websocket URI
+@constraint:String {maxLength: 50, minLength: 1}
 public type AddressWebsocket string;
 
 public type GetcallresponseLinksSelf record {
@@ -122,6 +125,7 @@ public type UpdatecallrequesttransferanswerurlDestination record {
 public type Rate string;
 
 # The SIP URI to connect to
+@constraint:String {maxLength: 50, minLength: 1}
 public type AddressSip string;
 
 public type GetcallsresponseLinks record {
@@ -149,13 +153,15 @@ public type CreateCallRequestBase record {
     # [Event webhook](/voice/voice-api/webhook-reference#event-webhook).
     string[] event_url?;
     # The HTTP method used to send event information to `event_url`.
-    string event_method?;
+    string event_method = "POST";
     # Configure the behavior when Vonage detects that the call is answered by voicemail. If `continue`, Vonage sends an HTTP request to `event_url` with the Call event machine. If `hangup`, Vonage ends the call.
     string machine_detection?;
     # Set the number of seconds that elapse before Vonage hangs up after the call state changes to answered.
-    int length_timer?;
+    @constraint:Int {minValue: 1, maxValue: 7200}
+    int length_timer = 7200;
     # Set the number of seconds that elapse before Vonage hangs up after the call state changes to ‘ringing’.
-    int ringing_timer?;
+    @constraint:Int {minValue: 1, maxValue: 120}
+    int ringing_timer = 60;
 };
 
 # Connect to a Websocket
@@ -240,6 +246,7 @@ public type EndpointSip record {
 };
 
 # The phone number to connect to
+@constraint:String {maxLength: 15, minLength: 7}
 public type AddressE164 string;
 
 # The language to use
@@ -274,9 +281,9 @@ public type StartTalkRequest record {
     # <strong>DEPRECATED</strong> The voice & language to use
     VoiceName voice_name?;
     # The number of times to repeat the text the file, 0 for infinite
-    int loop?;
+    int loop = 1;
     # The volume level that the speech is played. This can be any value between `-1` to `1` in `0.1` increments, with `0` being the default.
-    string level?;
+    string level = "0";
 };
 
 public type Body CreateCallRequestNcco|CreateCallRequestAnswerUrl;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -57,7 +57,7 @@ public isolated client class Client {
     # + docId - Id of document to fetch 
     # + return - document response contained readability details for the document 
     remote isolated function getDocById(int docId) returns DocumentResponseDetailed|error {
-        string resourcePath = string `/documents/${docId}`;
+        string resourcePath = string `/documents/${getEncodedUri(docId)}`;
         map<any> headerValues = {"apiKey": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         DocumentResponseDetailed response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -94,7 +94,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets search results for a particular document/dictionary
@@ -104,7 +104,7 @@ public isolated client class Client {
     # + matchingOnly - Only returning paragraphs containing a match 
     # + return - scan response 
     remote isolated function getSearchResultsById(int docId, int dictionaryId, boolean matchingOnly) returns http:Response|error {
-        string resourcePath = string `/searches/${docId}/${dictionaryId}`;
+        string resourcePath = string `/searches/${getEncodedUri(docId)}/${getEncodedUri(dictionaryId)}`;
         map<anydata> queryParam = {"matchingOnly": matchingOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"apiKey": self.apiKeyConfig.apiKey};
@@ -133,7 +133,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        NewScanResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        NewScanResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get data from a previously run scan
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + scanId - Id of scan to fetch 
     # + return - scan response 
     remote isolated function getScanById(int scanId) returns ScanResponseDetailed|error {
-        string resourcePath = string `/webscans/${scanId}`;
+        string resourcePath = string `/webscans/${getEncodedUri(scanId)}`;
         map<any> headerValues = {"apiKey": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ScanResponseDetailed response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -153,7 +153,7 @@ public isolated client class Client {
     # + urlId - Id of url to fetch 
     # + return - scan response 
     remote isolated function getScanUrlById(int scanId, int urlId) returns WebUrlDetail|error {
-        string resourcePath = string `/webscans/${scanId}/webUrls/${urlId}`;
+        string resourcePath = string `/webscans/${getEncodedUri(scanId)}/webUrls/${getEncodedUri(urlId)}`;
         map<any> headerValues = {"apiKey": self.apiKeyConfig.apiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         WebUrlDetail response = check self.clientEp->get(resourcePath, httpHeaders);

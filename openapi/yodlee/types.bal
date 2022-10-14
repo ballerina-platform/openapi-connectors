@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type TransactionCategorizationRuleArr TransactionCategorizationRule[];
 
@@ -33,10 +35,10 @@ public type Account record {
     string aggregationSource?;
     Money amountDue?;
     # Annual percentage yield (APY) is a normalized representation of an interest rate, based on a compounding period of one year. APY generally refers to the rate paid to a depositor by a financial institution on an account.<br><b>Applicable containers</b>: bank<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float annualPercentageYield?;
+    decimal annualPercentageYield?;
     Money annuityBalance?;
     # The annual percentage rate (APR) is the yearly rate of interest on the credit card account.<br><b>Additional Details:</b> The yearly percentage rate charged when a balance is held on a credit card. This rate of interest is applied every month on the outstanding credit card balance.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float apr?;
+    decimal apr?;
     # The providerAccountIds that share the account with the primary providerAccountId that was created when the user had added the account for the first time.<br><b>Additional Details</b>: This attribute is returned in the response only if the account deduplication feature is enabled and the same account is mapped to more than one provider account IDs indicating the account is owned by more than one user, for example, joint accounts.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: All Containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
     int[] associatedProviderAccountId?;
     AutoRefresh autoRefresh?;
@@ -48,7 +50,7 @@ public type Account record {
     BankTransferCode[] bankTransferCode?;
     Money cash?;
     # Annual percentage rate applied to cash withdrawals on the card.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float cashApr?;
+    decimal cashApr?;
     Money cashValue?;
     # The classification of the account such as personal, corporate, etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, reward, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>
     string classification?;
@@ -65,7 +67,7 @@ public type Account record {
     AccountDataset[] dataset?;
     Money deathBenefit?;
     # Derived APR will be an estimated purchase APR based on consumers credit card transactions and credit card purchase.<br><b>Aggregated / Manual / Derived</b>: Derived<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float derivedApr?;
+    decimal derivedApr?;
     # The name or identification of the account owner, as it appears at the FI site. <br><b>Note:</b> The account holder name can be full or partial based on how it is displayed in the account summary page of the FI site. In most cases, the FI site does not display the full account holder name in the account summary page.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, insurance, loan,  reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
     string displayedName?;
     # The date on which the due amount has to be paid. <br><b>Additional Details:</b><br><b>Credit Card:</b> The monthly date by when the minimum payment is due to be paid on the credit card account. <br><b>Loan:</b> The date on or before which the due amount should be paid.<br><b>Note:</b> The due date at the account-level can differ from the due date field at the statement-level, as the information in the aggregated card account data provides an up-to-date information to the consumer.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
@@ -97,7 +99,7 @@ public type Account record {
     Money interestPaidLastYear?;
     Money interestPaidYTD?;
     # <br><b>Bank:</b> The interest rate offered by a FI to its depositors on a bank account.<br><b>Loan:</b> Interest rate applied on the loan.<br><b>Additional Details:</b><br><b>Note:</b> The Interest Rate field is only applicable for the following account types: savings, checking, money market, and certificate of deposit.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float interestRate?;
+    decimal interestRate?;
     # The type of the interest rate, for example, fixed or variable.<br><b>Applicable containers</b>: loan<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>
     string interestRateType?;
     # The account to be considered as an asset or liability.<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
@@ -254,11 +256,11 @@ public type Security record {
     # The method in which interest is accrued or earned.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string accrualMethod?;
     # Agency factor of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float agencyFactor?;
+    decimal agencyFactor?;
     # Next call date of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string callDate?;
     # Next call price of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float callPrice?;
+    decimal callPrice?;
     # cdsc fund flag of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     boolean cdscFundFlag?;
     # <b>true</b>:Closed for all investors , <b>false</b>: Open to all investors.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -284,7 +286,7 @@ public type Security record {
     # ISO 4217 currency code indicating income currency of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string incomeCurrency?;
     # The rate of interest paid annually, expressed as a percentage of the bond's par or face value.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float interestRate?;
+    decimal interestRate?;
     # Indicates whether the security is a dummy security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     boolean isDummySecurity?;
     # Flag indicating a dummy security.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -296,7 +298,7 @@ public type Security record {
     # Issue date of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string issueDate?;
     # Price units corresponding to the security style. This is used to derive actual price of the security from market value.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float issueTypeMultiplier?;
+    decimal issueTypeMultiplier?;
     # Last coupon date of security.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string lastCouponDate?;
     # The last updated date of the security.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -346,10 +348,10 @@ public type DataExtractsAccount record {
     string aggregationSource?;
     Money amountDue?;
     # Annual percentage yield (APY) is a normalized representation of an interest rate, based on a compounding period of one year. APY generally refers to the rate paid to a depositor by a financial institution on an account.<br><b>Applicable containers</b>: bank<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float annualPercentageYield?;
+    decimal annualPercentageYield?;
     Money annuityBalance?;
     # The annual percentage rate (APR) is the yearly rate of interest on the credit card account.<br><b>Additional Details:</b> The yearly percentage rate charged when a balance is held on a credit card. This rate of interest is applied every month on the outstanding credit card balance.<br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float apr?;
+    decimal apr?;
     # The providerAccountIds that share the account with the primary providerAccountId that was created when the user had added the account for the first time.<br><b>Additional Details</b>: This attribute is returned in the response only if the account deduplication feature is enabled and the same account is mapped to more than one provider account IDs indicating the account is owned by more than one user, for example, joint accounts.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: All Containers<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
     int[] associatedProviderAccountId?;
     Money availableBalance?;
@@ -360,7 +362,7 @@ public type DataExtractsAccount record {
     BankTransferCode[] bankTransferCode?;
     Money cash?;
     # Annual percentage rate applied to cash withdrawals on the card.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float cashApr?;
+    decimal cashApr?;
     Money cashValue?;
     # The classification of the account such as personal, corporate, etc.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, reward, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>
     string classification?;
@@ -377,7 +379,7 @@ public type DataExtractsAccount record {
     AccountDataset[] dataset?;
     Money deathBenefit?;
     # Derived APR will be an estimated purchase APR based on consumers credit card transactions and credit card purchase.<br><b>Aggregated / Manual / Derived</b>: Derived<br><b>Applicable containers</b>: creditCard<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float derivedApr?;
+    decimal derivedApr?;
     # The name or identification of the account owner, as it appears at the FI site. <br><b>Note:</b> The account holder name can be full or partial based on how it is displayed in the account summary page of the FI site. In most cases, the FI site does not display the full account holder name in the account summary page.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, creditCard, investment, insurance, loan,  reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
     string displayedName?;
     # The date on which the due amount has to be paid. <br><b>Additional Details:</b><br><b>Credit Card:</b> The monthly date by when the minimum payment is due to be paid on the credit card account. <br><b>Loan:</b> The date on or before which the due amount should be paid.<br><b>Note:</b> The due date at the account-level can differ from the due date field at the statement-level, as the information in the aggregated card account data provides an up-to-date information to the consumer.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: creditCard, loan, insurance<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
@@ -404,7 +406,7 @@ public type DataExtractsAccount record {
     Money interestPaidLastYear?;
     Money interestPaidYTD?;
     # <br><b>Bank:</b> The interest rate offered by a FI to its depositors on a bank account.<br><b>Loan:</b> Interest rate applied on the loan.<br><b>Additional Details:</b><br><b>Note:</b> The Interest Rate field is only applicable for the following account types: savings, checking, money market, and certificate of deposit.<br><br><b>Aggregated / Manual</b>: Aggregated<br><b>Applicable containers</b>: bank, loan<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float interestRate?;
+    decimal interestRate?;
     # The type of the interest rate, for example, fixed or variable.<br><b>Applicable containers</b>: loan<br><b>Aggregated / Manual</b>: Aggregated<br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul><b>Applicable Values</b><br>
     string interestRateType?;
     # The account to be considered as an asset or liability.<br><b>Applicable containers</b>: All Containers<br><b>Aggregated / Manual</b>: Both <br><b>Endpoints</b>:<br><ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
@@ -540,6 +542,7 @@ public type ApiKeyOutput record {
     # ApiKey or the issuer key used to generate the JWT token for authentication.<br><br><b>Endpoints</b>:<ul><li>GET /auth/apiKey</li><li>POST /auth/apiKey</li></ul>
     string 'key?;
     # Public key uploaded by the customer while generating ApiKey.<br><br><b>Endpoints</b>:<ul><li>GET /auth/apiKey</li><li>POST /auth/apiKey</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string publicKey?;
 };
 
@@ -570,7 +573,7 @@ public type TransactionCategorizationRuleInfo record {
 };
 
 public type VerifyTransactionCriteria record {
-    float amount;
+    decimal amount;
     # Indicates if the transaction appears as a debit or a credit transaction in the account. <br><br><b>Applicable containers</b>: bank,creditCard,investment,insurance,loan<br><b>Applicable Values</b><br>
     string baseType?;
     string date;
@@ -588,9 +591,9 @@ public type Capability record {
 
 public type Coordinates record {
     # Latitude of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,loan<br>
-    float latitude?;
+    decimal latitude?;
     # Longitude of the merchant<br><br><b>Applicable containers</b>: bank,creditCard,loan<br>
-    float longitude?;
+    decimal longitude?;
 };
 
 public type DataExtractsEventLinks record {
@@ -627,16 +630,18 @@ public type UserRequestPreferences record {
     # The currency of the user. This currency will be respected while providing the response for derived API services.<br><b>Applicable Values</b><br>
     string currency?;
     # The dateformat of the user.This attribute is just a place holder and has no impact on any other API services.
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string dateFormat?;
     # The locale of the user. This locale will be considered for localization features like providing the provider information in the supported locale or providing category names in the transaction related services.<br><b>Applicable Values</b><br>
     string locale?;
     # The timezone of the user. This attribute is just a place holder and has no impact on any other API services.
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string timeZone?;
 };
 
 public type RewardBalance record {
     # The actual reward balance.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
-    float balance?;
+    decimal balance?;
     # The balance required to reach a reward level.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
     string balanceToLevel?;
     # The balance required to qualify for a reward such as retaining membership, business reward, etc.<br><br><b>Account Type</b>: Aggregated<br><b>Applicable containers</b>: reward<br><b>Endpoints</b>:<ul><li>GET accounts</li><li>GET accounts/{accountId}</li><li>GET dataExtracts/userData</li></ul>
@@ -767,7 +772,9 @@ public type AutoRefresh record {
 };
 
 public type Cobrand record {
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string cobrandLogin;
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string cobrandPassword;
     # The customer's locale that will be considered for the localization functionality.<br><br><b>Endpoints</b>:<ul><li>POST cobrand/login</li></ul>
     string locale?;
@@ -981,6 +988,7 @@ public type Merchant record {
 
 public type CobrandNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET cobrand/config/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
     # Name of the event for which the customers must subscribe to receive notifications.<br><b>Valid Value:</b> Notification Events Name<br><br><b>Endpoints</b>:<ul><li>GET cobrand/config/notifications/events</li></ul><b>Applicable Values</b><br>
     string name?;
@@ -1028,14 +1036,14 @@ public type Statement record {
     int accountId?;
     Money amountDue?;
     # The APR applied to the balance on the credit card account, as available in the statement.<br><b>Note:</b> In case of variable APR, the APR available on the statement might differ from the APR available at the account-level.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
-    float apr?;
+    decimal apr?;
     # The end date of the statement period.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
     string billingPeriodEnd?;
     # The start date of the statement period.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
     string billingPeriodStart?;
     Money cashAdvance?;
     # The APR applicable to cash withdrawals on the credit card account.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
-    float cashApr?;
+    decimal cashApr?;
     # The date by when the minimum payment is due to be paid.<br><b>Note:</b> The due date that appears in the statement may differ from the due date at the account-level.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
     string dueDate?;
     # Unique identifier for the statement.<br><br><b>Applicable containers</b>: creditCard,  loan, insurance<br>
@@ -1091,6 +1099,7 @@ public type DerivedNetworth record {
 public type UserRegistration record {
     UserAddress address?;
     string email?;
+    @constraint:String {maxLength: 150, minLength: 3}
     string loginName;
     Name name?;
     UserRequestPreferences preferences?;
@@ -1108,6 +1117,7 @@ public type TotalCount record {
 
 public type ConfigsNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
     # Name of the event for which the customers must subscribe to receive notifications.<br><b>Valid Value:</b> Notification Events Name<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul><b>Applicable Values</b><br>
     string name?;
@@ -1266,6 +1276,7 @@ public type DataExtractsUserData record {
 
 public type UpdateCobrandNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET cobrand/config/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
 };
 
@@ -1288,11 +1299,13 @@ public type AccountAddress record {
 
 public type ApiKeyRequest record {
     # Public key uploaded by the customer while generating ApiKey.<br><br><b>Endpoints</b>:<ul><li>GET /auth/apiKey</li><li>POST /auth/apiKey</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string publicKey?;
 };
 
 public type CreateCobrandNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET cobrand/config/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
 };
 
@@ -1329,10 +1342,12 @@ public type UserResponsePreferences record {
     # The currency of the user. This currency will be respected while providing the response for derived API services.<br><b>Applicable Values</b><br>
     string currency?;
     # The dateformat of the user.This attribute is just a place holder and has no impact on any other API services.
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string dateFormat?;
     # The locale of the user. This locale will be considered for localization features like providing the provider information in the supported locale or providing category names in the transaction related services.<br><b>Applicable Values</b><br>
     string locale?;
     # The timezone of the user. This attribute is just a place holder and has no impact on any other API services.
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string timeZone?;
 };
 
@@ -1403,7 +1418,7 @@ public type DataExtractsTransaction record {
     Money price?;
     Money principal?;
     # The quantity associated with the transaction.<br><b>Note</b>: The quantity field applies only to trade-related transactions.<br><br><b>Applicable containers</b>: investment<br>
-    float quantity?;
+    decimal quantity?;
     Money runningBalance?;
     # SEDOL stands for Stock Exchange Daily Official List, a list of security identifiers used in the United Kingdom and Ireland for clearing purposes.<br><br><b>Applicable containers</b>: investment<br>
     string sedol?;
@@ -1452,10 +1467,10 @@ public type DerivedHolding record {
     Money accruedInterest?;
     AssetClassification assetClassification?;
     # The quantity of tradeable units in a contract.<br><b>Note</b>: The contract quantity field is only applicable to commodity and currency.<br><br><b>Applicable containers</b>: investment<br>
-    float contractQuantity?;
+    decimal contractQuantity?;
     Money costBasis?;
     # The stated interest rate for a bond.<br><br><b>Applicable containers</b>: investment<br>
-    float couponRate?;
+    decimal couponRate?;
     # The date on which the holding is created in the Yodlee system.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string createdDate?;
     # The CUSIP (Committee on Uniform Securities Identification Procedures) identifies most the financial instruments in the United States and Canada.<br><br><b>Applicable containers</b>: investment<br>
@@ -1465,7 +1480,7 @@ public type DerivedHolding record {
     # The enrichedDescription is the security description of the normalized holding<br><br><b>Applicable containers</b>: investment, insurance<br>
     string enrichedDescription?;
     # The quantity of the employee stock options that are already exercised or bought by the employee.<br><b>Note</b>: Once the employee stock options is exercised, they are either converted to cash value or equity positions depending on the FI. The exercised quantity field is only applicable to employee stock options.<br><br><b>Applicable containers</b>: investment<br>
-    float exercisedQuantity?;
+    decimal exercisedQuantity?;
     # The date on which an option, right or warrant expires.<br><b>Note</b>: The expiration date field is only applicable to options and employee stock options.<br><br><b>Applicable containers</b>: investment<br>
     string expirationDate?;
     # The date on which equity awards like ESOP, RSU, etc., are issued or granted.<br><b>Note</b>: The grant date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
@@ -1475,7 +1490,7 @@ public type DerivedHolding record {
     # Unique identifier for the security added in the system. This is the primary key of the holding resource.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int id?;
     # The interest rate on a CD.<br><b>Note</b>: The interest rate field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
-    float interestRate?;
+    decimal interestRate?;
     # Indicates that the holding is a short trading.<br><br><b>Applicable containers</b>: investment<br>
     boolean isShort?;
     # The ISIN (International Securities Identification Number) is used worldwide to identify specific securities. It is equivalent to CUSIP for international markets.<br><br><b>Note</b>: The ISIN field is only applicable to the trade related transactions<br><br><b>Applicable containers</b>: investment<br>
@@ -1492,7 +1507,7 @@ public type DerivedHolding record {
     # Unique identifier for the user's association with the provider.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int providerAccountId?;
     # The quantity held for the holding.<br><b>Note</b>: Only for bonds the quantity field indicates the normalized quantity and not the quantity aggregated from the site. The quantity field is only applicable to restricted stock units/awards, performance units, currency, and commodity.<br>For insurance container, the field is only applicable for insurance annuity and variable life insurance types.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float quantity?;
+    decimal quantity?;
     # Indicates the security style of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string securityStyle?;
     # Indicates the security type of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -1506,13 +1521,13 @@ public type DerivedHolding record {
     # The fixed duration for which the bond or CD is issued.<br><b>Note</b>: The term field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
     string term?;
     # Indicates the number of unvested quantity or units.<br><b>Note</b>: The unvested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float unvestedQuantity?;
+    decimal unvestedQuantity?;
     Money unvestedValue?;
     Money value?;
     # The quantity of units or shares that are already vested on a vest date.<br><b>Note</b>: The vested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedQuantity?;
+    decimal vestedQuantity?;
     # The number of vested shares that can be exercised by the employee. It is usually equal to the vested quantity.<br><b>Note</b>: The vested shares exercisable field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedSharesExercisable?;
+    decimal vestedSharesExercisable?;
     Money vestedValue?;
     # The date on which a RSU, RSA, or an employee stock options become vested.<br><b>Note</b>: The vesting date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
     string vestingDate?;
@@ -1520,6 +1535,7 @@ public type DerivedHolding record {
 
 public type UpdateConfigsNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
 };
 
@@ -1572,7 +1588,9 @@ public type PaymentProfile record {
 };
 
 public type UpdateAccountInfo record {
+    @constraint:String {maxLength: 100, minLength: 1}
     string accountName?;
+    @constraint:String {maxLength: 100}
     string accountNumber?;
     string accountStatus?;
     AccountAddress address?;
@@ -1584,7 +1602,9 @@ public type UpdateAccountInfo record {
     Money homeValue?;
     string includeInNetWorth?;
     string isEbillEnrolled?;
+    @constraint:String {maxLength: 250}
     string memo?;
+    @constraint:String {maxLength: 50}
     string nickname?;
 };
 
@@ -1636,6 +1656,7 @@ public type UpdateCategoryRequest record {
 
 public type VerificationAccount record {
     string accountName?;
+    @constraint:String {maxLength: 17, minLength: 3}
     string accountNumber;
     string accountType;
     VerificationBankTransferCode bankTransferCode;
@@ -1699,7 +1720,7 @@ public type Transaction record {
     Money price?;
     Money principal?;
     # The quantity associated with the transaction.<br><b>Note</b>: The quantity field applies only to trade-related transactions.<br><br><b>Applicable containers</b>: investment<br>
-    float quantity?;
+    decimal quantity?;
     Money runningBalance?;
     # SEDOL stands for Stock Exchange Daily Official List, a list of security identifiers used in the United Kingdom and Ireland for clearing purposes.<br><br><b>Applicable containers</b>: investment<br>
     string sedol?;
@@ -1809,8 +1830,11 @@ public type ProviderAccountPreferences record {
 };
 
 public type CreateAccountInfo record {
+    @constraint:String {maxLength: 100, minLength: 1}
     string accountName;
+    @constraint:String {maxLength: 100}
     string accountNumber?;
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string accountType;
     AccountAddress address?;
     Money amountDue?;
@@ -1819,7 +1843,9 @@ public type CreateAccountInfo record {
     string frequency?;
     Money homeValue?;
     string includeInNetWorth?;
+    @constraint:String {maxLength: 250}
     string memo?;
+    @constraint:String {maxLength: 50}
     string nickname?;
     string valuationType?;
 };
@@ -1860,6 +1886,7 @@ public type VerificationStatusResponse record {
 
 public type Field record {
     # Identifier for the field.<br><br><b>Endpoints</b>:<ul><li>GET providerAccounts/{providerAccountId}</li><li>GET providers/{providerId}</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string id?;
     # Image displayed at the endsite.<br><br><b>Endpoints</b>:<ul><li>GET providerAccounts/{providerAccountId}</li></ul>
     string image?;
@@ -1888,7 +1915,7 @@ public type Field record {
 };
 
 public type Money record {
-    float amount;
+    decimal amount;
     string currency;
 };
 
@@ -1898,6 +1925,7 @@ public type CreatedAccountResponse record {
 
 public type CreateConfigsNotificationEvent record {
     # URL to which the notification should be posted.<br><br><b>Endpoints</b>:<ul><li>GET configs/notifications/events</li></ul>
+    @constraint:String {maxLength: 2147483647, minLength: 1}
     string callbackUrl?;
 };
 
@@ -2015,10 +2043,10 @@ public type Holding record {
     # Asset classification applied to the holding. <br><br><b>Applicable containers</b>: investment<br>
     AssetClassification[] assetClassification?;
     # The quantity of tradeable units in a contract.<br><b>Note</b>: The contract quantity field is only applicable to commodity and currency.<br><br><b>Applicable containers</b>: investment<br>
-    float contractQuantity?;
+    decimal contractQuantity?;
     Money costBasis?;
     # The stated interest rate for a bond.<br><br><b>Applicable containers</b>: investment<br>
-    float couponRate?;
+    decimal couponRate?;
     # The date on which the holding is created in the Yodlee system.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string createdDate?;
     # The CUSIP (Committee on Uniform Securities Identification Procedures) identifies most the financial instruments in the United States and Canada.<br><br><b>Applicable containers</b>: investment<br>
@@ -2028,7 +2056,7 @@ public type Holding record {
     # The enrichedDescription is the security description of the normalized holding<br><br><b>Applicable containers</b>: investment, insurance<br>
     string enrichedDescription?;
     # The quantity of the employee stock options that are already exercised or bought by the employee.<br><b>Note</b>: Once the employee stock options is exercised, they are either converted to cash value or equity positions depending on the FI. The exercised quantity field is only applicable to employee stock options.<br><br><b>Applicable containers</b>: investment<br>
-    float exercisedQuantity?;
+    decimal exercisedQuantity?;
     # The date on which an option, right or warrant expires.<br><b>Note</b>: The expiration date field is only applicable to options and employee stock options.<br><br><b>Applicable containers</b>: investment<br>
     string expirationDate?;
     # The date on which equity awards like ESOP, RSU, etc., are issued or granted.<br><b>Note</b>: The grant date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
@@ -2038,7 +2066,7 @@ public type Holding record {
     # Unique identifier for the security added in the system. This is the primary key of the holding resource.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int id?;
     # The interest rate on a CD.<br><b>Note</b>: The interest rate field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
-    float interestRate?;
+    decimal interestRate?;
     # Indicates that the holding is a short trading.<br><br><b>Applicable containers</b>: investment<br>
     boolean isShort?;
     # The ISIN (International Securities Identification Number) is used worldwide to identify specific securities. It is equivalent to CUSIP for international markets.<br><br><b>Note</b>: The ISIN field is only applicable to the trade related transactions<br><br><b>Applicable containers</b>: investment<br>
@@ -2055,7 +2083,7 @@ public type Holding record {
     # Unique identifier for the user's association with the provider.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int providerAccountId?;
     # The quantity held for the holding.<br><b>Note</b>: Only for bonds the quantity field indicates the normalized quantity and not the quantity aggregated from the site. The quantity field is only applicable to restricted stock units/awards, performance units, currency, and commodity.<br>For insurance container, the field is only applicable for insurance annuity and variable life insurance types.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float quantity?;
+    decimal quantity?;
     # Indicates the security style of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string securityStyle?;
     # Indicates the security type of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -2069,13 +2097,13 @@ public type Holding record {
     # The fixed duration for which the bond or CD is issued.<br><b>Note</b>: The term field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
     string term?;
     # Indicates the number of unvested quantity or units.<br><b>Note</b>: The unvested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float unvestedQuantity?;
+    decimal unvestedQuantity?;
     Money unvestedValue?;
     Money value?;
     # The quantity of units or shares that are already vested on a vest date.<br><b>Note</b>: The vested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedQuantity?;
+    decimal vestedQuantity?;
     # The number of vested shares that can be exercised by the employee. It is usually equal to the vested quantity.<br><b>Note</b>: The vested shares exercisable field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedSharesExercisable?;
+    decimal vestedSharesExercisable?;
     Money vestedValue?;
     # The date on which a RSU, RSA, or an employee stock options become vested.<br><b>Note</b>: The vesting date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
     string vestingDate?;
@@ -2166,7 +2194,7 @@ public type DerivedHoldingsAccount record {
 
 public type AssetClassification record {
     # The allocation percentage of the holding.<br><br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>
-    float allocation?;
+    decimal allocation?;
     # The type of classification to which the investment belongs (assetClass, country, sector, and style).<br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>
     string classificationType?;
     # The value for each classificationType.<br><b>Required Feature Enablement</b>: Asset classification feature<br><br><b>Applicable containers</b>: investment<br>
@@ -2184,6 +2212,7 @@ public type VerifyAccountRequest record {
 };
 
 public type TransactionCategoryRequest record {
+    @constraint:String {maxLength: 50, minLength: 1}
     string categoryName?;
     int parentCategoryId;
     string 'source?;
@@ -2195,10 +2224,10 @@ public type DataExtractsHolding record {
     Money accruedIncome?;
     Money accruedInterest?;
     # The quantity of tradeable units in a contract.<br><b>Note</b>: The contract quantity field is only applicable to commodity and currency.<br><br><b>Applicable containers</b>: investment<br>
-    float contractQuantity?;
+    decimal contractQuantity?;
     Money costBasis?;
     # The stated interest rate for a bond.<br><br><b>Applicable containers</b>: investment<br>
-    float couponRate?;
+    decimal couponRate?;
     # The date on which the holding is created in the Yodlee system.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string createdDate?;
     # The CUSIP (Committee on Uniform Securities Identification Procedures) identifies most the financial instruments in the United States and Canada.<br><br><b>Applicable containers</b>: investment<br>
@@ -2208,7 +2237,7 @@ public type DataExtractsHolding record {
     # The enrichedDescription is the security description of the normalized holding<br><br><b>Applicable containers</b>: investment, insurance<br>
     string enrichedDescription?;
     # The quantity of the employee stock options that are already exercised or bought by the employee.<br><b>Note</b>: Once the employee stock options is exercised, they are either converted to cash value or equity positions depending on the FI. The exercised quantity field is only applicable to employee stock options.<br><br><b>Applicable containers</b>: investment<br>
-    float exercisedQuantity?;
+    decimal exercisedQuantity?;
     # The date on which an option, right or warrant expires.<br><b>Note</b>: The expiration date field is only applicable to options and employee stock options.<br><br><b>Applicable containers</b>: investment<br>
     string expirationDate?;
     # The date on which equity awards like ESOP, RSU, etc., are issued or granted.<br><b>Note</b>: The grant date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
@@ -2218,7 +2247,7 @@ public type DataExtractsHolding record {
     # Unique identifier for the security added in the system. This is the primary key of the holding resource.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int id?;
     # The interest rate on a CD.<br><b>Note</b>: The interest rate field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
-    float interestRate?;
+    decimal interestRate?;
     # Indicates that the holding is a short trading.<br><br><b>Applicable containers</b>: investment<br>
     boolean isShort?;
     # The ISIN (International Securities Identification Number) is used worldwide to identify specific securities. It is equivalent to CUSIP for international markets.<br><br><b>Note</b>: The ISIN field is only applicable to the trade related transactions<br><br><b>Applicable containers</b>: investment<br>
@@ -2235,7 +2264,7 @@ public type DataExtractsHolding record {
     # Unique identifier for the user's association with the provider.<br><br><b>Applicable containers</b>: investment, insurance<br>
     int providerAccountId?;
     # The quantity held for the holding.<br><b>Note</b>: Only for bonds the quantity field indicates the normalized quantity and not the quantity aggregated from the site. The quantity field is only applicable to restricted stock units/awards, performance units, currency, and commodity.<br>For insurance container, the field is only applicable for insurance annuity and variable life insurance types.<br><br><b>Applicable containers</b>: investment, insurance<br>
-    float quantity?;
+    decimal quantity?;
     # Indicates the security style of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
     string securityStyle?;
     # Indicates the security type of holding identified through the security service.<br><br><b>Applicable containers</b>: investment, insurance<br>
@@ -2249,13 +2278,13 @@ public type DataExtractsHolding record {
     # The fixed duration for which the bond or CD is issued.<br><b>Note</b>: The term field is only applicable to CD.<br><br><b>Applicable containers</b>: investment<br>
     string term?;
     # Indicates the number of unvested quantity or units.<br><b>Note</b>: The unvested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float unvestedQuantity?;
+    decimal unvestedQuantity?;
     Money unvestedValue?;
     Money value?;
     # The quantity of units or shares that are already vested on a vest date.<br><b>Note</b>: The vested quantity field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedQuantity?;
+    decimal vestedQuantity?;
     # The number of vested shares that can be exercised by the employee. It is usually equal to the vested quantity.<br><b>Note</b>: The vested shares exercisable field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
-    float vestedSharesExercisable?;
+    decimal vestedSharesExercisable?;
     Money vestedValue?;
     # The date on which a RSU, RSA, or an employee stock options become vested.<br><b>Note</b>: The vesting date field is only applicable to employee stock options, restricted stock units/awards, performance units, etc.<br><br><b>Applicable containers</b>: investment<br>
     string vestingDate?;

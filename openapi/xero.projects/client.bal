@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://identity.xero.com/connect/token";
 |};
 
 # This is a generated connector for [Xero Projects API v2.16.0](https://developer.xero.com/documentation/api/projects/overview) OpenAPI specification.
@@ -98,7 +109,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Project response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Project response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a single project
@@ -107,7 +118,7 @@ public isolated client class Client {
     # + projectId - You can specify an individual project by appending the projectId to the endpoint 
     # + return - OK/success, returns a list of project objects 
     remote isolated function getProject(string xeroTenantId, string projectId) returns Project|error {
-        string resourcePath = string `/Projects/${projectId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Project response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -120,13 +131,13 @@ public isolated client class Client {
     # + payload - Request of type ProjectCreateOrUpdate 
     # + return - Success - return response 204 no content 
     remote isolated function updateProject(string xeroTenantId, string projectId, ProjectCreateOrUpdate payload) returns http:Response|error {
-        string resourcePath = string `/Projects/${projectId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # creates a project for the specified contact
@@ -136,13 +147,13 @@ public isolated client class Client {
     # + payload - Update the status of an existing Project 
     # + return - Success - return response 204 no content 
     remote isolated function patchProject(string xeroTenantId, string projectId, ProjectPatch payload) returns http:Response|error {
-        string resourcePath = string `/Projects/${projectId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a list of all project users
@@ -170,7 +181,7 @@ public isolated client class Client {
     # + chargeType - Can be `TIME`, `FIXED` or `NON_CHARGEABLE`, defines how the task will be charged. Use `TIME` when you want to charge per hour and `FIXED` to charge as a fixed amount. If the task will not be charged use `NON_CHARGEABLE`. 
     # + return - OK/success, returns a list of task objects 
     remote isolated function getTasks(string xeroTenantId, string projectId, int? page = (), int? pageSize = (), string? taskIds = (), ChargeType? chargeType = ()) returns Tasks|error {
-        string resourcePath = string `/Projects/${projectId}/Tasks`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Tasks`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize, "taskIds": taskIds, "chargeType": chargeType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
@@ -185,7 +196,7 @@ public isolated client class Client {
     # + taskId - You can specify an individual task by appending the taskId to the endpoint, i.e. GET https://.../tasks/{taskID} 
     # + return - OK/success, returns a list of task objects 
     remote isolated function getTask(string xeroTenantId, string projectId, string taskId) returns Task|error {
-        string resourcePath = string `/Projects/${projectId}/Tasks/${taskId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Tasks/${getEncodedUri(taskId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Task response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + dateBeforeUtc - ISO 8601 UTC date. Finds all time entries on or before this date filtered on the `dateUtc` field. 
     # + return - OK/success, returns a list of time entry objects 
     remote isolated function getTimeEntries(string xeroTenantId, string projectId, string? userId = (), string? taskId = (), string? invoiceId = (), string? contactId = (), int? page = (), int? pageSize = (), string[]? states = (), boolean? isChargeable = (), string? dateAfterUtc = (), string? dateBeforeUtc = ()) returns TimeEntries|error {
-        string resourcePath = string `/Projects/${projectId}/Time`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Time`;
         map<anydata> queryParam = {"userId": userId, "taskId": taskId, "invoiceId": invoiceId, "contactId": contactId, "page": page, "pageSize": pageSize, "states": states, "isChargeable": isChargeable, "dateAfterUtc": dateAfterUtc, "dateBeforeUtc": dateBeforeUtc};
         map<Encoding> queryParamEncoding = {"states": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -223,13 +234,13 @@ public isolated client class Client {
     # + payload - The time entry object you are creating 
     # + return - OK/success, returns the newly created time entry 
     remote isolated function createTimeEntry(string xeroTenantId, string projectId, TimeEntryCreateOrUpdate payload) returns TimeEntry|error {
-        string resourcePath = string `/Projects/${projectId}/Time`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Time`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TimeEntry response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TimeEntry response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a single time entry for a specific project
@@ -239,7 +250,7 @@ public isolated client class Client {
     # + timeEntryId - You can specify an individual time entry by appending the id to the endpoint 
     # + return - OK/success, returns a single time entry 
     remote isolated function getTimeEntry(string xeroTenantId, string projectId, string timeEntryId) returns TimeEntry|error {
-        string resourcePath = string `/Projects/${projectId}/Time/${timeEntryId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Time/${getEncodedUri(timeEntryId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TimeEntry response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -253,13 +264,13 @@ public isolated client class Client {
     # + payload - The time entry object you are updating 
     # + return - Success - return response 204 no content 
     remote isolated function updateTimeEntry(string xeroTenantId, string projectId, string timeEntryId, TimeEntryCreateOrUpdate payload) returns http:Response|error {
-        string resourcePath = string `/Projects/${projectId}/Time/${timeEntryId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Time/${getEncodedUri(timeEntryId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes a time entry for a specific project
@@ -269,10 +280,10 @@ public isolated client class Client {
     # + timeEntryId - You can specify an individual task by appending the id to the endpoint 
     # + return - Success - return response 204 no content 
     remote isolated function deleteTimeEntry(string xeroTenantId, string projectId, string timeEntryId) returns http:Response|error {
-        string resourcePath = string `/Projects/${projectId}/Time/${timeEntryId}`;
+        string resourcePath = string `/Projects/${getEncodedUri(projectId)}/Time/${getEncodedUri(timeEntryId)}`;
         map<any> headerValues = {"Xero-Tenant-Id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
 }

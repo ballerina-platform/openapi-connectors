@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,12 @@
 
 import ballerina/url;
 
-type SimpleBasicType string|boolean|int|float|decimal;
-
 # Represents encoding mechanism details.
 type Encoding record {
     # Defines how multiple values are delimited
     string style = FORM;
     # Specifies whether arrays and objects should generate as separate fields
     boolean explode = true;
-    # Specifies the custom content type
-    string contentType?;
-    # Specifies the custom headers
-    map<any> headers?;
 };
 
 enum EncodingStyle {
@@ -36,6 +30,8 @@ enum EncodingStyle {
     SPACEDELIMITED,
     PIPEDELIMITED
 }
+
+type SimpleBasicType string|boolean|int|float|decimal;
 
 final Encoding & readonly defaultEncoding = {};
 
@@ -171,12 +167,12 @@ isolated function getSerializedRecordArray(string parent, record {}[] value, str
 #
 # + value - Value to be encoded
 # + return - Encoded string
-isolated function getEncodedUri(anydata value) returns string {
-    string|error encoded = url:encode(value.toString(), "UTF8");
+isolated function getEncodedUri(string value) returns string {
+    string|error encoded = url:encode(value, "UTF8");
     if (encoded is string) {
         return encoded;
     } else {
-        return value.toString();
+        return value;
     }
 }
 

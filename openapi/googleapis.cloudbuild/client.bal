@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Build REST API v1](https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
@@ -83,7 +94,7 @@ public isolated client class Client {
     # + parent - The parent of the collection of `Builds`. Format: `projects/{project}/locations/location` 
     # + return - Successful response 
     remote isolated function listBuilds(string projectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = (), string? parent = ()) returns ListBuildsResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}/builds`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/builds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken, "parent": parent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListBuildsResponse response = check self.clientEp->get(resourcePath);
@@ -103,7 +114,7 @@ public isolated client class Client {
     # + payload - Build to be created 
     # + return - Successful response 
     remote isolated function createBuild(string projectId, Build payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = ()) returns Operation|error {
-        string resourcePath = string `/v1/projects/${projectId}/builds`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/builds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -126,7 +137,7 @@ public isolated client class Client {
     # + name - The name of the `Build` to retrieve. Format: `projects/{project}/locations/{location}/builds/{build}` 
     # + return - Successful response 
     remote isolated function getBuild(string projectId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? name = ()) returns Build|error {
-        string resourcePath = string `/v1/projects/${projectId}/builds/${id}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/builds/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Build response = check self.clientEp->get(resourcePath);
@@ -146,7 +157,7 @@ public isolated client class Client {
     # + payload - Build to be cancelled 
     # + return - Successful response 
     remote isolated function cancelBuild(string projectId, string id, CancelBuildRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Build|error {
-        string resourcePath = string `/v1/projects/${projectId}/builds/${id}:cancel`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/builds/${getEncodedUri(id)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -169,7 +180,7 @@ public isolated client class Client {
     # + payload - Build to be retried 
     # + return - Successful response 
     remote isolated function retryBuild(string projectId, string id, RetryBuildRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/projects/${projectId}/builds/${id}:retry`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/builds/${getEncodedUri(id)}:retry`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -193,7 +204,7 @@ public isolated client class Client {
     # + parent - The parent of the collection of `Triggers`. Format: `projects/{project}/locations/{location}` 
     # + return - Successful response 
     remote isolated function listTriggers(string projectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), string? parent = ()) returns ListBuildTriggersResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "parent": parent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListBuildTriggersResponse response = check self.clientEp->get(resourcePath);
@@ -213,7 +224,7 @@ public isolated client class Client {
     # + payload - Trigger to be created 
     # + return - Successful response 
     remote isolated function createTrigger(string projectId, BuildTrigger payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = ()) returns BuildTrigger|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -236,7 +247,7 @@ public isolated client class Client {
     # + name - The name of the `Trigger` to retrieve. Format: `projects/{project}/locations/{location}/triggers/{trigger}` 
     # + return - Successful response 
     remote isolated function getTrigger(string projectId, string triggerId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? name = ()) returns BuildTrigger|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers/${triggerId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers/${getEncodedUri(triggerId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BuildTrigger response = check self.clientEp->get(resourcePath);
@@ -256,10 +267,10 @@ public isolated client class Client {
     # + name - The name of the `Trigger` to delete. Format: `projects/{project}/locations/{location}/triggers/{trigger}` 
     # + return - Successful response 
     remote isolated function deleteTrigger(string projectId, string triggerId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? name = ()) returns http:Response|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers/${triggerId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers/${getEncodedUri(triggerId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a `BuildTrigger` by its project ID and trigger ID. This API is experimental.
@@ -276,7 +287,7 @@ public isolated client class Client {
     # + payload - Trigger to be updated 
     # + return - Successful response 
     remote isolated function updateTrigger(string projectId, string triggerId, BuildTrigger payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BuildTrigger|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers/${triggerId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers/${getEncodedUri(triggerId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -300,7 +311,7 @@ public isolated client class Client {
     # + payload - Trigger to be ran 
     # + return - Successful response 
     remote isolated function runTrigger(string projectId, string triggerId, RepoSource payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? name = ()) returns Operation|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers/${triggerId}:run`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers/${getEncodedUri(triggerId)}:run`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -325,7 +336,7 @@ public isolated client class Client {
     # + payload - Webhook to be created 
     # + return - Successful response 
     remote isolated function receiveWebhookTrigger(string projectId, string trigger, HttpBody payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? name = (), string? secret = ()) returns http:Response|error {
-        string resourcePath = string `/v1/projects/${projectId}/triggers/${trigger}:webhook`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/triggers/${getEncodedUri(trigger)}:webhook`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "name": name, "secret": secret};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -370,7 +381,7 @@ public isolated client class Client {
     # + triggerId - Required. Identifier (`id` or `name`) of the `BuildTrigger` to get. 
     # + return - Successful response 
     remote isolated function getWorkerPool(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = (), string? triggerId = ()) returns WorkerPool|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId, "triggerId": triggerId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         WorkerPool response = check self.clientEp->get(resourcePath);
@@ -391,10 +402,10 @@ public isolated client class Client {
     # + validateOnly - If set, validate the request and preview the response, but do not actually post it. 
     # + return - Successful response 
     remote isolated function deleteWorkerPool(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? allowMissing = (), string? etag = (), boolean? validateOnly = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "allowMissing": allowMissing, "etag": etag, "validateOnly": validateOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Operation response = check self.clientEp->delete(resourcePath);
+        Operation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a `WorkerPool`.
@@ -412,7 +423,7 @@ public isolated client class Client {
     # + payload - WorkerPool to be updated 
     # + return - Successful response 
     remote isolated function updateWorkerPool(string name, WorkerPool payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = (), boolean? validateOnly = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask, "validateOnly": validateOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -434,7 +445,7 @@ public isolated client class Client {
     # + payload - WorkerPool to be approved 
     # + return - Successful response 
     remote isolated function approveBuild(string name, ApproveBuildRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}:approve`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:approve`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -455,7 +466,7 @@ public isolated client class Client {
     # + name - The name of the operation resource to be cancelled. 
     # + return - Successful response 
     remote isolated function cancelOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}:cancel`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -476,7 +487,7 @@ public isolated client class Client {
     # + payload - Build to be retried 
     # + return - Successful response 
     remote isolated function retryBuildByName(string name, RetryBuildRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}:retry`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:retry`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -498,7 +509,7 @@ public isolated client class Client {
     # + payload - Trigger to be run 
     # + return - Successful response 
     remote isolated function runTriggerByName(string name, RunBuildTriggerRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}:run`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:run`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -523,7 +534,7 @@ public isolated client class Client {
     # + payload - Webhook trigger to be received 
     # + return - Successful response 
     remote isolated function receiveWebhookTriggerByName(string name, HttpBody payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = (), string? secret = (), string? trigger = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}:webhook`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:webhook`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId, "secret": secret, "trigger": trigger};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -548,7 +559,7 @@ public isolated client class Client {
     # + projectId - Required. ID of the project. 
     # + return - Successful response 
     remote isolated function listBuildsByPath(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = (), string? projectId = ()) returns ListBuildsResponse|error {
-        string resourcePath = string `/v1/${parent}/builds`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/builds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListBuildsResponse response = check self.clientEp->get(resourcePath);
@@ -568,7 +579,7 @@ public isolated client class Client {
     # + payload - Build to be created 
     # + return - Successful response 
     remote isolated function createBuildByPath(string parent, Build payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/builds`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/builds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -590,7 +601,7 @@ public isolated client class Client {
     # + projectId - ID of the project 
     # + return - Successful response 
     remote isolated function listGithubEnterpriseConfigs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = ()) returns ListGithubEnterpriseConfigsResponse|error {
-        string resourcePath = string `/v1/${parent}/githubEnterpriseConfigs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/githubEnterpriseConfigs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListGithubEnterpriseConfigsResponse response = check self.clientEp->get(resourcePath);
@@ -610,7 +621,7 @@ public isolated client class Client {
     # + payload - Github Enterprise Config to be created 
     # + return - Successful response 
     remote isolated function createGithubEnterpriseConfig(string parent, GitHubEnterpriseConfig payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/githubEnterpriseConfigs`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/githubEnterpriseConfigs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -634,7 +645,7 @@ public isolated client class Client {
     # + projectId - Required. ID of the project for which to list BuildTriggers. 
     # + return - Successful response 
     remote isolated function listTriggersByPath(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), string? projectId = ()) returns ListBuildTriggersResponse|error {
-        string resourcePath = string `/v1/${parent}/triggers`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/triggers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListBuildTriggersResponse response = check self.clientEp->get(resourcePath);
@@ -654,7 +665,7 @@ public isolated client class Client {
     # + payload - Trigger to be created 
     # + return - Successful response 
     remote isolated function createTriggerByPath(string parent, BuildTrigger payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = ()) returns BuildTrigger|error {
-        string resourcePath = string `/v1/${parent}/triggers`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/triggers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -677,7 +688,7 @@ public isolated client class Client {
     # + pageToken - A page token, received from a previous `ListWorkerPools` call. Provide this to retrieve the subsequent page. 
     # + return - Successful response 
     remote isolated function listWorkerPools(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListWorkerPoolsResponse|error {
-        string resourcePath = string `/v1/${parent}/workerPools`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/workerPools`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListWorkerPoolsResponse response = check self.clientEp->get(resourcePath);
@@ -698,7 +709,7 @@ public isolated client class Client {
     # + payload - WorkerPool to be created 
     # + return - Successful response 
     remote isolated function createWorkerPool(string parent, WorkerPool payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? validateOnly = (), string? workerPoolId = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/workerPools`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/workerPools`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "validateOnly": validateOnly, "workerPoolId": workerPoolId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -722,7 +733,7 @@ public isolated client class Client {
     # + payload - Trigger to be updated 
     # + return - Successful response 
     remote isolated function updateTriggerByName(string resourceName, BuildTrigger payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? projectId = (), string? triggerId = ()) returns BuildTrigger|error {
-        string resourcePath = string `/v1/${resourceName}`;
+        string resourcePath = string `/v1/${getEncodedUri(resourceName)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "projectId": projectId, "triggerId": triggerId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

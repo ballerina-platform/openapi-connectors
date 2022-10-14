@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -96,7 +96,7 @@ public isolated client class Client {
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
     remote isolated function getObjectById(string feedbackSubmissionId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
-        string resourcePath = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/${getEncodedUri(feedbackSubmissionId)}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty, "hapikey": self.apiKeyConfig.hapikey};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -111,7 +111,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
     remote isolated function associationsGetAll(string feedbackSubmissionId, string toObjectType, string? after = (), int 'limit = 500) returns AssociatedIdArrayWithForwardPaging|error {
-        string resourcePath = string `/crm/v3/objects/feedback_submissions/${feedbackSubmissionId}/associations/${toObjectType}`;
+        string resourcePath = string `/crm/v3/objects/feedback_submissions/${getEncodedUri(feedbackSubmissionId)}/associations/${getEncodedUri(toObjectType)}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AssociatedIdArrayWithForwardPaging response = check self.clientEp->get(resourcePath);

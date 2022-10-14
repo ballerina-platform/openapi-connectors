@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.hubapi.com/oauth/v1/token";
 |};
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
@@ -95,7 +106,7 @@ public isolated client class Client {
     # + objectType - Fully qualified name or object type ID of your schema. 
     # + return - successful operation 
     remote isolated function getById(string objectType) returns ObjectSchema|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}`;
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}`;
         ObjectSchema response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -105,10 +116,10 @@ public isolated client class Client {
     # + archived - Whether to return only results that have been archived. 
     # + return - No content 
     remote isolated function archive(string objectType, boolean archived = false) returns http:Response|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}`;
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}`;
         map<anydata> queryParam = {"archived": archived};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a schema
@@ -117,7 +128,7 @@ public isolated client class Client {
     # + payload - Attributes to update in schema 
     # + return - successful operation 
     remote isolated function update(string objectType, ObjectTypeDefinitionPatch payload) returns ObjectTypeDefinition|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}`;
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -130,7 +141,7 @@ public isolated client class Client {
     # + payload - Attributes that define the association. 
     # + return - successful operation 
     remote isolated function associationsCreateassociation(string objectType, AssociationDefinitionEgg payload) returns AssociationDefinition|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}/associations`;
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}/associations`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -143,8 +154,8 @@ public isolated client class Client {
     # + associationIdentifier - Unique ID of the association to remove. 
     # + return - No content 
     remote isolated function associationsArchiveassociation(string objectType, string associationIdentifier) returns http:Response|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}/associations/${associationIdentifier}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}/associations/${getEncodedUri(associationIdentifier)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Purge schemas
@@ -155,8 +166,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function purge(string objectType) returns http:Response|error {
-        string resourcePath = string `/crm/v3/schemas/${objectType}/purge`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/crm/v3/schemas/${getEncodedUri(objectType)}/purge`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -55,7 +55,7 @@ public isolated client class Client {
     # + hotelId - (Required) The unique identifier of this hotel on the Impala platform. 
     # + return - OK 
     remote isolated function getHotel(string hotelId, string? 'start = (), string? end = ()) returns Hotel|error {
-        string resourcePath = string `/hotels/${hotelId}`;
+        string resourcePath = string `/hotels/${getEncodedUri(hotelId)}`;
         map<anydata> queryParam = {"start": 'start, "end": end};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
@@ -75,7 +75,7 @@ public isolated client class Client {
     # + hotelId - (Required) The uuid of hotel for which rate plans are being fetched. 
     # + return - OK 
     remote isolated function listRatePlans(string hotelId, decimal? updatedatLt = (), decimal? updatedatLte = (), decimal? updatedatEq = (), decimal? updatedatGt = (), decimal? updatedatGte = (), int? size = (), int? offset = ()) returns RatePlanInfo|error {
-        string resourcePath = string `/hotels/${hotelId}/rate-plans`;
+        string resourcePath = string `/hotels/${getEncodedUri(hotelId)}/rate-plans`;
         map<anydata> queryParam = {"updatedAt[lt]": updatedatLt, "updatedAt[lte]": updatedatLte, "updatedAt[eq]": updatedatEq, "updatedAt[gt]": updatedatGt, "updatedAt[gte]": updatedatGte, "size": size, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
@@ -127,7 +127,7 @@ public isolated client class Client {
     # + bookingId - (Required) The unique identifier of the booking you would like to retrieve. 
     # + return - OK 
     remote isolated function getBooking(string bookingId) returns Booking|error {
-        string resourcePath = string `/bookings/${bookingId}`;
+        string resourcePath = string `/bookings/${getEncodedUri(bookingId)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Booking response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -140,13 +140,13 @@ public isolated client class Client {
     # + payload - Payload on updating a booking  
     # + return - OK 
     remote isolated function updateBooking(string bookingId, UpdateBookingPayload payload, string? contentType = ()) returns Booking|error {
-        string resourcePath = string `/bookings/${bookingId}`;
+        string resourcePath = string `/bookings/${getEncodedUri(bookingId)}`;
         map<any> headerValues = {"Content-Type": contentType, "x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Booking response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        Booking response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancel a booking
@@ -154,10 +154,10 @@ public isolated client class Client {
     # + bookingId - (Required) The unique identifier of the booking you would like to update. 
     # + return - OK 
     remote isolated function cancelBooking(string bookingId) returns Booking|error {
-        string resourcePath = string `/bookings/${bookingId}`;
+        string resourcePath = string `/bookings/${getEncodedUri(bookingId)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        Booking response = check self.clientEp->delete(resourcePath, httpHeaders);
+        Booking response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Change a booking with rate details
@@ -167,13 +167,13 @@ public isolated client class Client {
     # + payload - Payload on updating a booking with rate details 
     # + return - OK 
     remote isolated function updateBookingWithRateDetails(string bookingId, UpdateBookingWithRateDetailsPayload payload, string? contentType = ()) returns Booking|error {
-        string resourcePath = string `/bookings/${bookingId}/with-rate-details`;
+        string resourcePath = string `/bookings/${getEncodedUri(bookingId)}/with-rate-details`;
         map<any> headerValues = {"Content-Type": contentType, "x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Booking response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        Booking response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Change a booking contact
@@ -183,13 +183,13 @@ public isolated client class Client {
     # + payload - Payload on updating a booking with booking contact 
     # + return - OK 
     remote isolated function updateBookingContact(string bookingId, BookingidBookingcontactBody payload, string? contentType = ()) returns Booking|error {
-        string resourcePath = string `/bookings/${bookingId}/booking-contact`;
+        string resourcePath = string `/bookings/${getEncodedUri(bookingId)}/booking-contact`;
         map<any> headerValues = {"Content-Type": contentType, "x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Booking response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        Booking response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List all bookings
@@ -238,7 +238,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Booking response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Booking response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a booking with rate details
@@ -253,7 +253,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Booking response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Booking response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List all hotel agreements for a deal request
@@ -261,7 +261,7 @@ public isolated client class Client {
     # + dealRequestId - (Required) The unique identifier for this deal request 
     # + return - OK 
     remote isolated function listHotelAgreements(string dealRequestId) returns ListOfHotelAgreements|error {
-        string resourcePath = string `/deal-requests/${dealRequestId}/agreements`;
+        string resourcePath = string `/deal-requests/${getEncodedUri(dealRequestId)}/agreements`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ListOfHotelAgreements response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -273,7 +273,7 @@ public isolated client class Client {
     # + agreementId - (Required) The unique identifier for this hotel agreement 
     # + return - OK 
     remote isolated function getHotelAgreement(string dealRequestId, string agreementId) returns HotelAgreement|error {
-        string resourcePath = string `/deal-requests/${dealRequestId}/agreements/${agreementId}`;
+        string resourcePath = string `/deal-requests/${getEncodedUri(dealRequestId)}/agreements/${getEncodedUri(agreementId)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         HotelAgreement response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -284,7 +284,7 @@ public isolated client class Client {
     # + dealRequestId - (Required) The unique identifier for this deal request 
     # + return - OK 
     remote isolated function getDealRequest(string dealRequestId) returns DealRequest|error {
-        string resourcePath = string `/deal-requests/${dealRequestId}`;
+        string resourcePath = string `/deal-requests/${getEncodedUri(dealRequestId)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         DealRequest response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -329,7 +329,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Payment response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Payment response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2PasswordGrantConfig|http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    OAuth2PasswordGrantConfig|http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,24 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Password Grant Configs
+public type OAuth2PasswordGrantConfig record {|
+    *http:OAuth2PasswordGrantConfig;
+    # Token URL
+    string tokenUrl = "https://api.getgo.com/oauth/v2/token";
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.getgo.com/oauth/v2/token";
 |};
 
 # This is a generated connector for [GoToMeeting API v1.0](https://developer.goto.com/GoToMeetingV1) OpenAPI specification.  
@@ -107,7 +125,7 @@ public isolated client class Client {
         string resourcePath = string `/organizers`;
         map<anydata> queryParam = {"email": email};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get organizer
@@ -118,7 +136,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrganizer(int organizerKey) returns Organizer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}`;
         Organizer[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -131,7 +149,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function updateOrganizer(int organizerKey, OrganizerStatus payload) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -146,8 +164,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function deleteOrganizer(int organizerKey) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get attendees by organizer
@@ -157,7 +175,7 @@ public isolated client class Client {
     # + endDate - A required end of date range in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getAttendeesByOrganizer(int organizerKey, string startDate, string endDate) returns AttendeeByOrganizer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/attendees`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/attendees`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AttendeeByOrganizer[] response = check self.clientEp->get(resourcePath);
@@ -170,7 +188,7 @@ public isolated client class Client {
     # + endDate - Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getHistoricalMeetingsByOrganizer(int organizerKey, string startDate, string endDate) returns HistoricalMeeting[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/historicalMeetings`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/historicalMeetings`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         HistoricalMeeting[] response = check self.clientEp->get(resourcePath);
@@ -181,7 +199,7 @@ public isolated client class Client {
     # + organizerKey - The key of the organizer 
     # + return - OK 
     remote isolated function getUpcomingMeetingsByOrganizer(int organizerKey) returns UpcomingMeeting[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/upcomingMeetings`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/upcomingMeetings`;
         UpcomingMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -197,7 +215,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getMeetingsByOrganizer(int organizerKey, boolean? scheduled = (), boolean? history = (), string? startDate = (), string? endDate = ()) returns MeetingByOrganizer[]|error {
-        string resourcePath = string `/organizers/${organizerKey}/meetings`;
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/meetings`;
         map<anydata> queryParam = {"scheduled": scheduled, "history": history, "startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MeetingByOrganizer[] response = check self.clientEp->get(resourcePath);
@@ -209,8 +227,8 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionById(int organizerKey, int sessionId) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/sessions/${getEncodedUri(sessionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Remove attendee list of a meeting session
@@ -219,8 +237,8 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionAttendeesById(int organizerKey, int sessionId) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}/attendees`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/sessions/${getEncodedUri(sessionId)}/attendees`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Delete recordings of a meeting session
@@ -229,8 +247,8 @@ public isolated client class Client {
     # + sessionId - The session ID 
     # + return - No Content 
     remote isolated function deleteSessionRecordingsById(int organizerKey, int sessionId) returns http:Response|error {
-        string resourcePath = string `/organizers/${organizerKey}/sessions/${sessionId}/recordings`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/organizers/${getEncodedUri(organizerKey)}/sessions/${getEncodedUri(sessionId)}/recordings`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get groups
@@ -251,7 +269,7 @@ public isolated client class Client {
     # + endDate - End of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getAttendeesByGroup(int groupKey, string? startDate = (), string? endDate = ()) returns AttendeeByGroup[]|error {
-        string resourcePath = string `/groups/${groupKey}/attendees`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/attendees`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AttendeeByGroup[] response = check self.clientEp->get(resourcePath);
@@ -264,7 +282,7 @@ public isolated client class Client {
     # + endDate - Required end of date range, in ISO8601 UTC format, e.g. 2015-07-01T23:00:00Z 
     # + return - OK 
     remote isolated function getHistoricalMeetingsByGroup(int groupKey, string startDate, string endDate) returns HistoricalMeetingByGroup[]|error {
-        string resourcePath = string `/groups/${groupKey}/historicalMeetings`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/historicalMeetings`;
         map<anydata> queryParam = {"startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         HistoricalMeetingByGroup[] response = check self.clientEp->get(resourcePath);
@@ -275,7 +293,7 @@ public isolated client class Client {
     # + groupKey - The key of the group 
     # + return - OK 
     remote isolated function getUpcomingMeetingsByGroup(int groupKey) returns UpcomingMeetingByGroup[]|error {
-        string resourcePath = string `/groups/${groupKey}/upcomingMeetings`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/upcomingMeetings`;
         UpcomingMeetingByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -291,7 +309,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getMeetingsByGroup(int groupKey, boolean? scheduled = (), boolean? history = (), string? startDate = (), string? endDate = ()) returns HistoryMeetingByGroup[]|error {
-        string resourcePath = string `/groups/${groupKey}/meetings`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/meetings`;
         map<anydata> queryParam = {"scheduled": scheduled, "history": history, "startDate": startDate, "endDate": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         HistoryMeetingByGroup[] response = check self.clientEp->get(resourcePath);
@@ -305,7 +323,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getOrganizersByGroup(int groupKey) returns OrganizerByGroup[]|error {
-        string resourcePath = string `/groups/${groupKey}/organizers`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/organizers`;
         OrganizerByGroup[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -318,7 +336,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function createOrganizerInGroup(int groupKey, OrganizerReq payload) returns OrganizerShort[]|error {
-        string resourcePath = string `/groups/${groupKey}/organizers`;
+        string resourcePath = string `/groups/${getEncodedUri(groupKey)}/organizers`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -379,7 +397,7 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function getMeeting(int meetingId) returns MeetingById[]|error {
-        string resourcePath = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
         MeetingById[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -389,7 +407,7 @@ public isolated client class Client {
     # + payload - The meeting details 
     # + return - No Content 
     remote isolated function updateMeeting(int meetingId, MeetingReqUpdate payload) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -401,8 +419,8 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - No Content 
     remote isolated function deleteMeeting(int meetingId) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Start meeting
@@ -410,7 +428,7 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function startMeeting(int meetingId) returns StartUrl|error {
-        string resourcePath = string `/meetings/${meetingId}/start`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/start`;
         StartUrl response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -419,7 +437,7 @@ public isolated client class Client {
     # + meetingId - The meeting ID 
     # + return - OK 
     remote isolated function getAttendeesByMeetings(int meetingId) returns AttendeeByMeeting[]|error {
-        string resourcePath = string `/meetings/${meetingId}/attendees`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/attendees`;
         AttendeeByMeeting[] response = check self.clientEp->get(resourcePath);
         return response;
     }

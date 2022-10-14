@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Vault API v1](https://developers.google.com/vault/reference/rest) OpenAPI specification.
@@ -125,7 +136,7 @@ public isolated client class Client {
     # + view - Specifies how much information about the matter to return in the response. 
     # + return - Successful response 
     remote isolated function getMatter(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Matter|error {
-        string resourcePath = string `/v1/matters/${matterId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Matter response = check self.clientEp->get(resourcePath);
@@ -144,7 +155,7 @@ public isolated client class Client {
     # + payload - Matter to be updated 
     # + return - Successful response 
     remote isolated function updateMatter(string matterId, Matter payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Matter|error {
-        string resourcePath = string `/v1/matters/${matterId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -165,10 +176,10 @@ public isolated client class Client {
     # + matterId - The matter ID 
     # + return - Successful response 
     remote isolated function deleteMatter(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Matter|error {
-        string resourcePath = string `/v1/matters/${matterId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Matter response = check self.clientEp->delete(resourcePath);
+        Matter response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists details about the exports in the specified matter.
@@ -185,7 +196,7 @@ public isolated client class Client {
     # + pageToken - The pagination token as returned in the response. 
     # + return - Successful response 
     remote isolated function listExports(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListExportsResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/exports`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/exports`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListExportsResponse response = check self.clientEp->get(resourcePath);
@@ -204,7 +215,7 @@ public isolated client class Client {
     # + payload - Export to be created 
     # + return - Successful response 
     remote isolated function createExport(string matterId, Export payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Export|error {
-        string resourcePath = string `/v1/matters/${matterId}/exports`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/exports`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -226,7 +237,7 @@ public isolated client class Client {
     # + exportId - The export ID. 
     # + return - Successful response 
     remote isolated function getExport(string matterId, string exportId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Export|error {
-        string resourcePath = string `/v1/matters/${matterId}/exports/${exportId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/exports/${getEncodedUri(exportId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Export response = check self.clientEp->get(resourcePath);
@@ -245,10 +256,10 @@ public isolated client class Client {
     # + exportId - The export ID. 
     # + return - Successful response 
     remote isolated function deleteExport(string matterId, string exportId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/matters/${matterId}/exports/${exportId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/exports/${getEncodedUri(exportId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists the holds in a matter.
@@ -266,7 +277,7 @@ public isolated client class Client {
     # + view - The amount of detail to return for a hold. 
     # + return - Successful response 
     remote isolated function listHolds(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), string? view = ()) returns ListHoldsResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListHoldsResponse response = check self.clientEp->get(resourcePath);
@@ -285,7 +296,7 @@ public isolated client class Client {
     # + payload - Hold to be created 
     # + return - Successful response 
     remote isolated function createHold(string matterId, Hold payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Hold|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -308,7 +319,7 @@ public isolated client class Client {
     # + view - The amount of detail to return for a hold. 
     # + return - Successful response 
     remote isolated function getHold(string matterId, string holdId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Hold|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Hold response = check self.clientEp->get(resourcePath);
@@ -328,7 +339,7 @@ public isolated client class Client {
     # + payload - Hold to be updated 
     # + return - Successful response 
     remote isolated function updateHold(string matterId, string holdId, Hold payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Hold|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -350,10 +361,10 @@ public isolated client class Client {
     # + holdId - The hold ID. 
     # + return - Successful response 
     remote isolated function deleteHold(string matterId, string holdId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists the accounts covered by a hold. This can list only individually-specified accounts covered by the hold. If the hold covers an organizational unit, use the [Admin SDK](https://developers.google.com/admin-sdk/). to list the members of the organizational unit on hold.
@@ -369,7 +380,7 @@ public isolated client class Client {
     # + holdId - The hold ID. 
     # + return - Successful response 
     remote isolated function listAccounts(string matterId, string holdId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ListHeldAccountsResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}/accounts`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}/accounts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListHeldAccountsResponse response = check self.clientEp->get(resourcePath);
@@ -389,7 +400,7 @@ public isolated client class Client {
     # + payload - Account to be created 
     # + return - Successful response 
     remote isolated function createAccount(string matterId, string holdId, HeldAccount payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns HeldAccount|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}/accounts`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}/accounts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -412,10 +423,10 @@ public isolated client class Client {
     # + accountId - The ID of the account to remove from the hold. 
     # + return - Successful response 
     remote isolated function deleteAccount(string matterId, string holdId, string accountId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}/accounts/${accountId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}/accounts/${getEncodedUri(accountId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds accounts to a hold. Returns a list of accounts that have been successfully added. Accounts can be added only to an existing account-based hold.
@@ -432,7 +443,7 @@ public isolated client class Client {
     # + payload - Account to be created 
     # + return - Successful response 
     remote isolated function addHeldAccount(string matterId, string holdId, AddHeldAccountsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AddHeldAccountsResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}:addHeldAccounts`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}:addHeldAccounts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -455,7 +466,7 @@ public isolated client class Client {
     # + payload - Account to be removed 
     # + return - Successful response 
     remote isolated function removeHeldAccount(string matterId, string holdId, RemoveHeldAccountsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns RemoveHeldAccountsResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/holds/${holdId}:removeHeldAccounts`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/holds/${getEncodedUri(holdId)}:removeHeldAccounts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -478,7 +489,7 @@ public isolated client class Client {
     # + pageToken - The pagination token as returned in the previous response. An empty token means start from the beginning. 
     # + return - Successful response 
     remote isolated function listSavedQueries(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListSavedQueriesResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}/savedQueries`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/savedQueries`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSavedQueriesResponse response = check self.clientEp->get(resourcePath);
@@ -497,7 +508,7 @@ public isolated client class Client {
     # + payload - Query 
     # + return - Successful response 
     remote isolated function createSavedQueries(string matterId, SavedQuery payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SavedQuery|error {
-        string resourcePath = string `/v1/matters/${matterId}/savedQueries`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/savedQueries`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -519,7 +530,7 @@ public isolated client class Client {
     # + savedQueryId - ID of the saved query to retrieve. 
     # + return - Successful response 
     remote isolated function getSavedQueries(string matterId, string savedQueryId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SavedQuery|error {
-        string resourcePath = string `/v1/matters/${matterId}/savedQueries/${savedQueryId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/savedQueries/${getEncodedUri(savedQueryId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SavedQuery response = check self.clientEp->get(resourcePath);
@@ -538,10 +549,10 @@ public isolated client class Client {
     # + savedQueryId - ID of the saved query to delete. 
     # + return - Successful response 
     remote isolated function deleteSavedQueries(string matterId, string savedQueryId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/matters/${matterId}/savedQueries/${savedQueryId}`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}/savedQueries/${getEncodedUri(savedQueryId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds an account as a matter collaborator.
@@ -557,7 +568,7 @@ public isolated client class Client {
     # + payload - Account to be added 
     # + return - Successful response 
     remote isolated function addVaultPermission(string matterId, AddMatterPermissionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MatterPermission|error {
-        string resourcePath = string `/v1/matters/${matterId}:addPermissions`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:addPermissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -578,7 +589,7 @@ public isolated client class Client {
     # + matterId - The matter ID. 
     # + return - Successful response 
     remote isolated function closeMatter(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CloseMatterResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}:close`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:close`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -599,7 +610,7 @@ public isolated client class Client {
     # + payload - Accounts to be counted 
     # + return - Successful response 
     remote isolated function countMatters(string matterId, CountArtifactsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/matters/${matterId}:count`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:count`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -621,7 +632,7 @@ public isolated client class Client {
     # + payload - Account to be removed 
     # + return - Successful response 
     remote isolated function removeMatterPermission(string matterId, RemoveMatterPermissionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/matters/${matterId}:removePermissions`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:removePermissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -642,7 +653,7 @@ public isolated client class Client {
     # + matterId - The matter ID. 
     # + return - Successful response 
     remote isolated function reopenMatter(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReopenMatterResponse|error {
-        string resourcePath = string `/v1/matters/${matterId}:reopen`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:reopen`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -662,7 +673,7 @@ public isolated client class Client {
     # + matterId - The matter ID. 
     # + return - Successful response 
     remote isolated function undeleteMatter(string matterId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Matter|error {
-        string resourcePath = string `/v1/matters/${matterId}:undelete`;
+        string resourcePath = string `/v1/matters/${getEncodedUri(matterId)}:undelete`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -685,7 +696,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function listVaultOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListOperationsResponse|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListOperationsResponse response = check self.clientEp->get(resourcePath);
@@ -703,10 +714,10 @@ public isolated client class Client {
     # + name - The name of the operation resource to be deleted. 
     # + return - Successful response 
     remote isolated function deleteVaultOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Starts asynchronous cancellation on a long-running operation. The server makes a best effort to cancel the operation, but success is not guaranteed. If the server doesn't support this method, it returns `google.rpc.Code.UNIMPLEMENTED`. Clients can use Operations.GetOperation or other methods to check whether the cancellation succeeded or whether the operation completed despite cancellation. On successful cancellation, the operation is not deleted; instead, it becomes an operation with an Operation.error value with a google.rpc.Status.code of 1, corresponding to `Code.CANCELLED`.
@@ -721,7 +732,7 @@ public isolated client class Client {
     # + name - The name of the operation resource to be cancelled. 
     # + return - Successful response 
     remote isolated function cancelVaultOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}:cancel`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

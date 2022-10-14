@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Insightly API v3.1](https://api.insightly.com/v3.1/Help?_ga=2.145122291.690415835.1637494899-1873531480.1637320890#!/Overview/Introduction) OpenAPI specification.
@@ -76,7 +80,7 @@ public isolated client class Client {
     # + countTotal - Optional,true if total number of records should be returned in the response headers. 
     # + return - Request succeeded. 
     remote isolated function getEntities(string objectName, boolean brief = false, int? skip = (), int? top = (), boolean countTotal = false) returns CustomObjectsRecords[]|error {
-        string resourcePath = string `/${objectName}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}`;
         map<anydata> queryParam = {"brief": brief, "skip": skip, "top": top, "count_total": countTotal};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
@@ -88,7 +92,7 @@ public isolated client class Client {
     # + payload - The record to update (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function updateEntity(string objectName, Customobjectsrecords1 payload) returns CustomObjectsRecords|error {
-        string resourcePath = string `/${objectName}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -101,7 +105,7 @@ public isolated client class Client {
     # + payload - The record to add (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function addEntity(string objectName, Customobjectsrecords2 payload) returns CustomObjectsRecords|error {
-        string resourcePath = string `/${objectName}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -114,7 +118,7 @@ public isolated client class Client {
     # + id - The record's ID 
     # + return - Request succeeded. 
     remote isolated function getEntity(string objectName, int id) returns CustomObjectsRecords|error {
-        string resourcePath = string `/${objectName}/${id}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}/${getEncodedUri(id)}`;
         CustomObjectsRecords response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -124,8 +128,8 @@ public isolated client class Client {
     # + id - Entity's ID 
     # + return - Delete succeeded. 
     remote isolated function deleteEntity(string objectName, int id) returns http:Response|error {
-        string resourcePath = string `/${objectName}/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(objectName)}/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets a record's translation in a specific language
@@ -135,7 +139,7 @@ public isolated client class Client {
     # + language - The requested language 
     # + return - Request succeeded. 
     remote isolated function getTranslation(string objectName, int id, string language) returns CustomObjectsRecords[]|error {
-        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}/${getEncodedUri(id)}/Translations/${getEncodedUri(language)}`;
         CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -146,7 +150,7 @@ public isolated client class Client {
     # + payload - The record to update (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function updateTranslation(string objectName, string language, string id, Customobjectsrecords3 payload) returns CustomObjectsRecords[]|error {
-        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}/${getEncodedUri(id)}/Translations/${getEncodedUri(language)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -160,7 +164,7 @@ public isolated client class Client {
     # + payload - The record to add (just include the JSON object as the request body) 
     # + return - Request succeeded. 
     remote isolated function addTranslation(string objectName, string language, string id, CustomObjectsRecords1 payload) returns CustomObjectsRecords[]|error {
-        string resourcePath = string `/${objectName}/${id}/Translations/${language}`;
+        string resourcePath = string `/${getEncodedUri(objectName)}/${getEncodedUri(id)}/Translations/${getEncodedUri(language)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -179,7 +183,7 @@ public isolated client class Client {
     # + countTotal - Optional, true if total number of records should be returned in the response headers. 
     # + return - Request succeeded. 
     remote isolated function getCustomObjectsRecordsBySearch(string objectName, string? fieldName = (), string? fieldValue = (), string? updatedAfterUtc = (), boolean brief = false, int? skip = (), int? top = (), boolean countTotal = false) returns CustomObjectsRecords[]|error {
-        string resourcePath = string `/${objectName}/Search`;
+        string resourcePath = string `/${getEncodedUri(objectName)}/Search`;
         map<anydata> queryParam = {"field_name": fieldName, "field_value": fieldValue, "updated_after_utc": updatedAfterUtc, "brief": brief, "skip": skip, "top": top, "count_total": countTotal};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomObjectsRecords[] response = check self.clientEp->get(resourcePath);
@@ -189,7 +193,7 @@ public isolated client class Client {
     #
     # + return - Request succeeded. 
     remote isolated function getCustomFields(string objectName) returns APICustomFieldMetadata[]|error {
-        string resourcePath = string `/CustomFields/${objectName}`;
+        string resourcePath = string `/CustomFields/${getEncodedUri(objectName)}`;
         APICustomFieldMetadata[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -199,7 +203,7 @@ public isolated client class Client {
     # + fieldName - The custom field name 
     # + return - Request succeeded. 
     remote isolated function getCustomfieldBySearch(string objectName, string fieldName) returns CustomFieldMetadata|error {
-        string resourcePath = string `/CustomFields/${objectName}/Search`;
+        string resourcePath = string `/CustomFields/${getEncodedUri(objectName)}/Search`;
         map<anydata> queryParam = {"fieldName": fieldName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CustomFieldMetadata response = check self.clientEp->get(resourcePath);
@@ -218,7 +222,7 @@ public isolated client class Client {
     # + customObjectName - The custom object name 
     # + return - Request succeeded. 
     remote isolated function getCustomObject(string customObjectName) returns CustomObject|error {
-        string resourcePath = string `/CustomObjects/${customObjectName}`;
+        string resourcePath = string `/CustomObjects/${getEncodedUri(customObjectName)}`;
         CustomObject response = check self.clientEp->get(resourcePath);
         return response;
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -101,7 +101,7 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - successful operation 
     remote isolated function getEventsExternaleventid(string externalEventId, string externalAccountId) returns PublicMarketingEventReadResponse|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PublicMarketingEventReadResponse response = check self.clientEp->get(resourcePath);
@@ -113,7 +113,7 @@ public isolated client class Client {
     # + payload - The details of the marketing event to upsert 
     # + return - successful operation 
     remote isolated function updateEventsExternaleventid(string externalEventId, MarketingEventCreateRequest payload) returns PublicMarketingEventResponse|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -128,10 +128,10 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - No content 
     remote isolated function deleteEventsExternaleventid(string externalEventId, string externalAccountId) returns http:Response|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a marketing event
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + payload - The details of the marketing event to update 
     # + return - successful operation 
     remote isolated function updateEvents(string externalEventId, string externalAccountId, MarketingEventUpdateRequest payload) returns PublicMarketingEventResponse|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -156,7 +156,7 @@ public isolated client class Client {
     # + externalAccountId - The account id associated with the marketing event 
     # + return - successful operation 
     remote isolated function eventsExternaleventidCancel(string externalEventId, string externalAccountId) returns MarketingEventDefaultResponse|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/cancel`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}/cancel`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -172,7 +172,7 @@ public isolated client class Client {
     # + payload - The details of the contacts to subscribe to the event 
     # + return - An error occurred. 
     remote isolated function externaleventidSubscriberstateEmailUpsert(string externalEventId, string subscriberState, string externalAccountId, MarketingEventEmailSubscriberBatch payload) returns http:Response|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/email-upsert`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}/${getEncodedUri(subscriberState)}/email-upsert`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -189,7 +189,7 @@ public isolated client class Client {
     # + payload - The details of the contacts to subscribe to the event 
     # + return - An error occurred. 
     remote isolated function eventsExternaleventidSubscriberstateUpsert(string externalEventId, string subscriberState, string externalAccountId, MarketingEventSubscriberBatch payload) returns http:Response|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${externalEventId}/${subscriberState}/upsert`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/events/${getEncodedUri(externalEventId)}/${getEncodedUri(subscriberState)}/upsert`;
         map<anydata> queryParam = {"externalAccountId": externalAccountId, "hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -203,7 +203,7 @@ public isolated client class Client {
     # + appId - The id of the application to retrieve the settings for. 
     # + return - successful operation 
     remote isolated function getAppidSettings(int appId) returns EventDetailSettings|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/${getEncodedUri(appId)}/settings`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EventDetailSettings response = check self.clientEp->get(resourcePath);
@@ -215,7 +215,7 @@ public isolated client class Client {
     # + payload - The new application settings 
     # + return - successful operation 
     remote isolated function postAppidSettings(int appId, EventDetailSettingsUrl payload) returns EventDetailSettings|error {
-        string resourcePath = string `/marketing/v3/marketing-events-beta/${appId}/settings`;
+        string resourcePath = string `/marketing/v3/marketing-events-beta/${getEncodedUri(appId)}/settings`;
         map<anydata> queryParam = {"hapikey": self.apiKeyConfig.hapikey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

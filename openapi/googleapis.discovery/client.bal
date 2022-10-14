@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -58,7 +58,7 @@ public isolated client class Client {
     # + 'version - The version of the API. 
     # + return - Successful response 
     remote isolated function getAPIDescription(string api, string 'version, string? alt = (), string? fields = (), string? quotaUser = (), string? userIp = ()) returns RestDescription|error {
-        string resourcePath = string `/apis/${api}/${'version}/rest`;
+        string resourcePath = string `/apis/${getEncodedUri(api)}/${getEncodedUri('version)}/rest`;
         map<anydata> queryParam = {"alt": alt, "fields": fields, "quotaUser": quotaUser, "userIp": userIp};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RestDescription response = check self.clientEp->get(resourcePath);

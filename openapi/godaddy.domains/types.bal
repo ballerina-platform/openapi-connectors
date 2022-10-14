@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type DomainSummaryArr DomainSummary[];
 
@@ -31,11 +33,12 @@ public type DomainTransferIn record {
     string authCode;
     Consent consent;
     # Can be more than 1 but no more than 10 years total including current registration length
+    @constraint:Int {minValue: 1, maxValue: 10}
     int period?;
     # Whether or not privacy has been requested
-    boolean privacy?;
+    boolean privacy = false;
     # Whether or not the domain should be configured to automatically renew
-    boolean renewAuto?;
+    boolean renewAuto = true;
     Contact contactAdmin?;
     Contact contactBilling?;
     Contact contactRegistrant?;
@@ -135,9 +138,10 @@ public type DomainPurchase record {
     # For internationalized domain names with non-ascii characters, the domain name is converted to punycode before format and pattern validation rules are checked
     string domain;
     string[] nameServers?;
+    @constraint:Int {minValue: 1, maxValue: 10}
     int period?;
-    boolean privacy?;
-    boolean renewAuto?;
+    boolean privacy = false;
+    boolean renewAuto = true;
 };
 
 public type ErrorFieldDomainContactsValidate record {
@@ -234,6 +238,7 @@ public type DNSRecord record {
     string data;
     string name;
     # Service port (SRV only)
+    @constraint:Int {minValue: 1, maxValue: 65535}
     int port?;
     # Record priority (MX and SRV only)
     int priority?;
@@ -250,6 +255,7 @@ public type DNSRecord record {
 public type DNSRecordCreateTypeName record {
     string data;
     # Service port (SRV only)
+    @constraint:Int {minValue: 1, maxValue: 65535}
     int port?;
     # Record priority (MX and SRV only)
     int priority?;
@@ -284,6 +290,7 @@ public type Error record {
 
 public type DomainRenew record {
     # Number of years to extend the Domain. Must not exceed maximum for TLD. When omitted, defaults to `period` specified during original purchase
+    @constraint:Int {minValue: 1, maxValue: 10}
     int period?;
 };
 
@@ -331,7 +338,7 @@ public type DomainDetail record {
     # Name of the domain
     string domain;
     # Unique identifier for this Domain
-    float domainId;
+    decimal domainId;
     # Whether or not the domain is protected from expiration
     boolean expirationProtected;
     # Date and time when this domain will expire
@@ -384,7 +391,7 @@ public type DomainAvailableResponse record {
     # Whether or not the domain name is available
     boolean available;
     # Currency in which the `price` is listed. Only returned if tld is offered
-    string currency?;
+    string currency = "USD";
     # Whether or not the `available` answer has been definitively verified with the registry
     boolean definitive;
     # Domain name
@@ -410,6 +417,7 @@ public type DNSRecordCreateType record {
     string data;
     string name;
     # Service port (SRV only)
+    @constraint:Int {minValue: 1, maxValue: 65535}
     int port?;
     # Record priority (MX and SRV only)
     int priority?;
@@ -424,7 +432,7 @@ public type DNSRecordCreateType record {
 
 public type DomainPurchaseResponse record {
     # Currency in which the `total` is listed
-    string currency?;
+    string currency = "USD";
     # Number items included in the order
     int itemCount;
     # Unique identifier of the order processed to purchase the domain
@@ -471,7 +479,7 @@ public type DomainSummary record {
     # Name of the domain
     string domain;
     # Unique identifier for this Domain
-    float domainId;
+    decimal domainId;
     # Whether or not the domain is protected from expiration
     boolean expirationProtected;
     # Date and time when this domain will expire
@@ -525,7 +533,7 @@ public type VerificationRealName record {
 };
 
 public type Domain record {
-    float id?;
+    decimal id?;
 };
 
 public type JsonDataType record {

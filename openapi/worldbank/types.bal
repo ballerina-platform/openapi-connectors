@@ -61,3 +61,15 @@ public type Indicator record {
     # Value represent by the indicator
     string value;
 };
+
+type JsonArr json[];
+
+type ErrorResponse record {
+    ErrorMessage[] message;
+};
+
+type ErrorMessage record {
+    string id;
+    string 'key;
+    string value;
+};

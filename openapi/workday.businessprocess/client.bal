@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay Business Process REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -114,7 +118,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompletedStepsBusinessProcess(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/events/${id}/completedSteps`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/completedSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp->get(resourcePath);
@@ -139,7 +143,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAttachmentBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/events/${id}/attachments`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/attachments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2004 response = check self.clientEp->get(resourcePath);
@@ -150,7 +154,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessTypeByID(string id) returns BusinessProcessTypeDetails|error {
-        string resourcePath = string `/types/${id}`;
+        string resourcePath = string `/types/${getEncodedUri(id)}`;
         BusinessProcessTypeDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -159,7 +163,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEventStepByID(string id) returns EventStepsView|error {
-        string resourcePath = string `/eventSteps/${id}`;
+        string resourcePath = string `/eventSteps/${getEncodedUri(id)}`;
         EventStepsView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCommentsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/events/${id}/comments`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/comments`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp->get(resourcePath);
@@ -183,7 +187,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInProcessStepsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2006|error {
-        string resourcePath = string `/events/${id}/inProgressSteps`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/inProgressSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2006 response = check self.clientEp->get(resourcePath);
@@ -194,7 +198,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function deniesBusinessProcess(string id, BusinessProcessStepsDeny payload) returns BusinessProcessStepsDeny|error {
-        string resourcePath = string `/eventSteps/${id}/deny`;
+        string resourcePath = string `/eventSteps/${getEncodedUri(id)}/deny`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -219,7 +223,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getRemainingStepsBusinessProcessEvent(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2007|error {
-        string resourcePath = string `/events/${id}/remainingSteps`;
+        string resourcePath = string `/events/${getEncodedUri(id)}/remainingSteps`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2007 response = check self.clientEp->get(resourcePath);
@@ -233,7 +237,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAttachmentCategories(string id, string? eventTarget = (), int? 'limit = (), int? offset = ()) returns InlineResponse2008|error {
-        string resourcePath = string `/types/${id}/attachmentCategories`;
+        string resourcePath = string `/types/${getEncodedUri(id)}/attachmentCategories`;
         map<anydata> queryParam = {"eventTarget": eventTarget, "limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2008 response = check self.clientEp->get(resourcePath);
@@ -244,7 +248,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessProcessEvent(string id) returns EventDetails|error {
-        string resourcePath = string `/events/${id}`;
+        string resourcePath = string `/events/${getEncodedUri(id)}`;
         EventDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -253,7 +257,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function approveBusinessProcess(string id, BusinessProcessStepsApprove payload) returns BusinessProcessStepsApprove|error {
-        string resourcePath = string `/eventSteps/${id}/approve`;
+        string resourcePath = string `/eventSteps/${getEncodedUri(id)}/approve`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -265,7 +269,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function sendBackBusinessProcessEvent(string id, BusinessProcessStepSendBack payload) returns BusinessProcessStepSendBack|error {
-        string resourcePath = string `/eventSteps/${id}/sendBack`;
+        string resourcePath = string `/eventSteps/${getEncodedUri(id)}/sendBack`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + fileRequestId - The request ID of the file upload to be queried. 
     # + return - The status information is returned for the requested file upload. 
     remote isolated function getFileuploadstatus(int fileRequestId) returns json|error? {
-        string resourcePath = string `/api/integration/v1/fileupload/status/${fileRequestId}`;
+        string resourcePath = string `/api/integration/v1/fileupload/status/${getEncodedUri(fileRequestId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json? response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -77,7 +77,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "text/plain");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update transfer batch status
@@ -85,12 +85,12 @@ public isolated client class Client {
     # + batchId - The batch ID of the transfer accounting batch. 
     # + return - The status of the transfer batch is changed to `Transferred`. 
     remote isolated function putTransferbatchstatus(int batchId) returns json|error {
-        string resourcePath = string `/api/integration/v1/journal/batch/status/${batchId}`;
+        string resourcePath = string `/api/integration/v1/journal/batch/status/${getEncodedUri(batchId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get transfer batch
@@ -100,7 +100,7 @@ public isolated client class Client {
     # + pagesize - The number of records to be downloaded per request. The default is 1000 and the maximum is 10000. 
     # + return - Operation is successful. 
     remote isolated function getTransferbatch(int batchid, int pagenum, int? pagesize = ()) returns json|error {
-        string resourcePath = string `/api/integration/v1/journal/batch/${batchid}/${pagenum}`;
+        string resourcePath = string `/api/integration/v1/journal/batch/${getEncodedUri(batchid)}/${getEncodedUri(pagenum)}`;
         map<any> headerValues = {"pagesize": pagesize, "token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -117,7 +117,7 @@ public isolated client class Client {
     # + count - Set to `true` to get the row count of the BI view for the specified time period.  **Note:** Setting this parameter to `true` might cause timeout errors for large volume scenarios. 
     # + return - BI view data is returned in CSV format. 
     remote isolated function getBiviews(string tmplName, int clientId, string fromDate, string toDate, int pagenum, int? pagesize = (), boolean count = false) returns http:Response|error {
-        string resourcePath = string `/api/integration/v1/biviews/${tmplName}`;
+        string resourcePath = string `/api/integration/v1/biviews/${getEncodedUri(tmplName)}`;
         map<anydata> queryParam = {"clientId": clientId, "fromDate": fromDate, "toDate": toDate, "pagenum": pagenum, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"pagesize": pagesize, "token": self.apiKeyConfig.token};
@@ -135,7 +135,7 @@ public isolated client class Client {
     # + count - Set to `true` to get the row count of the BI view for the specified time period.  **Note:** Setting this parameter to `true` might cause timeout errors for large volume scenarios. 
     # + return - BI view data is returned in CSV format. 
     remote isolated function postBiviews(string tmplName, int clientId, string fromDate, string toDate, int pagenum, string[] payload, boolean count = false) returns http:Response|error {
-        string resourcePath = string `/api/integration/v1/biviews/${tmplName}`;
+        string resourcePath = string `/api/integration/v1/biviews/${getEncodedUri(tmplName)}`;
         map<anydata> queryParam = {"clientId": clientId, "fromDate": fromDate, "toDate": toDate, "pagenum": pagenum, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"token": self.apiKeyConfig.token};
@@ -143,7 +143,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json; charset=utf-8");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get transfer batch list
@@ -161,7 +161,7 @@ public isolated client class Client {
     # + batchId - The batch ID of the transfer accounting batch. 
     # + return - Operation is successful. 
     remote isolated function getTransferbatchfile(int batchId) returns json|error? {
-        string resourcePath = string `/api/integration/v1/download/transferbatchfile/${batchId}`;
+        string resourcePath = string `/api/integration/v1/download/transferbatchfile/${getEncodedUri(batchId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json? response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -185,7 +185,7 @@ public isolated client class Client {
     # + filename - The name of the report file to be downloaded. 
     # + return - Operation is successful. Report is downloaded. 
     remote isolated function getDownloadreports(string filename) returns http:Response|error {
-        string resourcePath = string `/api/integration/v1/reports/download/${filename}`;
+        string resourcePath = string `/api/integration/v1/reports/download/${getEncodedUri(filename)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -196,7 +196,7 @@ public isolated client class Client {
     # + reportId - The ID of the report to be downloaded. You can get the report ID in the <a href="https://www.zuora.com/developer/revpro-api/#operation/GET_ReportList">Get report list</a> response. 
     # + return - The URL to download the report file. The signed URL will be valid for 30 minutes from the time when it is generated. 
     remote isolated function getReportsurl(int reportId) returns json|error {
-        string resourcePath = string `/api/integration/v2/reports/signedurl/${reportId}`;
+        string resourcePath = string `/api/integration/v2/reports/signedurl/${getEncodedUri(reportId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -207,7 +207,7 @@ public isolated client class Client {
     # + errortype - The type of errors that you want to retrieve. 
     # + return - Staging errors of the specified type are returned. 
     remote isolated function getStaggingerror(string errortype) returns json|error? {
-        string resourcePath = string `/api/integration/v1/stage/error/${errortype}`;
+        string resourcePath = string `/api/integration/v1/stage/error/${getEncodedUri(errortype)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json? response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -241,7 +241,7 @@ public isolated client class Client {
     # + taskId - The continuation token that was returned in the initial request. 
     # + return - The details of active tasks that are associated with the continuation token are returned. 
     remote isolated function getTaskdetails(string taskId) returns json|error? {
-        string resourcePath = string `/api/integration/v2/biviews-status/${taskId}`;
+        string resourcePath = string `/api/integration/v2/biviews-status/${getEncodedUri(taskId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json? response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -252,10 +252,10 @@ public isolated client class Client {
     # + taskId - The continuation token that is associated with the tasks to be canceled. 
     # + return - The tasks associated with the specified continuation token are canceled. 
     remote isolated function deleteTask(string taskId) returns http:Response|error {
-        string resourcePath = string `/api/integration/v2/biviews-status/${taskId}`;
+        string resourcePath = string `/api/integration/v2/biviews-status/${getEncodedUri(taskId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get row count
@@ -266,7 +266,7 @@ public isolated client class Client {
     # + toDate - The date on which the data query ends. 
     # + return - The row count of the specified BI view is returned. 
     remote isolated function getRowcount(string tmplName, int clientId, string fromDate = "2016-07-26T00:00:00.000Z", string toDate = "2018-07-26T00:00:00.000Z") returns http:Response|error {
-        string resourcePath = string `/api/integration/v2/biviews/count/${tmplName}`;
+        string resourcePath = string `/api/integration/v2/biviews/count/${getEncodedUri(tmplName)}`;
         map<anydata> queryParam = {"clientId": clientId, "fromDate": fromDate, "toDate": toDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"token": self.apiKeyConfig.token};
@@ -286,7 +286,7 @@ public isolated client class Client {
     # + outputType - The output format of the download. 
     # + return - The queried BI view data is returned in the desired format. 
     remote isolated function getBiview(string tmpleName, int clientId, string fromDate, string toDate, string? continuationToken = (), int pagenum = 1, int? pageSize = (), string outputType = "gzip") returns http:Response|error {
-        string resourcePath = string `/api/integration/v2/biviews/${tmpleName}`;
+        string resourcePath = string `/api/integration/v2/biviews/${getEncodedUri(tmpleName)}`;
         map<anydata> queryParam = {"clientId": clientId, "fromDate": fromDate, "toDate": toDate, "pagenum": pagenum, "pageSize": pageSize, "outputType": outputType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"continuation-token": continuationToken, "token": self.apiKeyConfig.token};
@@ -299,7 +299,7 @@ public isolated client class Client {
     # + tmpleName - Name of the BI view. 
     # + return - The list of columns is returned for the requested BI view. 
     remote isolated function getColumnlist(string tmpleName) returns http:Response|error {
-        string resourcePath = string `/api/integration/v2/biviews/${tmpleName}/describe-columns`;
+        string resourcePath = string `/api/integration/v2/biviews/${getEncodedUri(tmpleName)}/describe-columns`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -315,7 +315,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json; charset=utf-8");
-        RevenueJobResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RevenueJobResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get data collection job details
@@ -323,7 +323,7 @@ public isolated client class Client {
     # + jobId - The ID of the data collection job that you want to query. This is the ID that is returned when you submitted the data collection job. 
     # + return - The request is submitted successfully. 
     remote isolated function getCollectiondetails(int jobId) returns RevenueJobDetail|error {
-        string resourcePath = string `/api/integration/v1/job/collection/template/${jobId}`;
+        string resourcePath = string `/api/integration/v1/job/collection/template/${getEncodedUri(jobId)}`;
         map<any> headerValues = {"token": self.apiKeyConfig.token};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         RevenueJobDetail response = check self.clientEp->get(resourcePath, httpHeaders);

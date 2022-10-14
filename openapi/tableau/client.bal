@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -44,7 +44,7 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceGetanalyticsextensionsconnection(string connectionLuid, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionitem|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${connectionLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${getEncodedUri(connectionLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TableauAnalyticsextensionsV1Connectionitem response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -55,12 +55,12 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceUpdateanalyticsextensionsconnection(string connectionLuid, byte[] payload, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionitem|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${connectionLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${getEncodedUri(connectionLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json");
-        TableauAnalyticsextensionsV1Connectionitem response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionitem response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete analytics extension connection from site
@@ -68,10 +68,10 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceDeleteanalyticsextensionsconnection(string connectionLuid, string? xTableauAuth = ()) returns http:Response|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${connectionLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/connections/${getEncodedUri(connectionLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get allowed dashboard extension on site
@@ -79,7 +79,7 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function dashboardextensionssitesettingsserviceGetdashboardextensionssafelistitem(string safeListItemLuid, string? xTableauAuth = ()) returns TableauExtensionsDashboardV1Safelistitem|error {
-        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${safeListItemLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${getEncodedUri(safeListItemLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TableauExtensionsDashboardV1Safelistitem response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -90,12 +90,12 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function dashboardextensionssitesettingsserviceUpdatedashboardextensionssafelistitem(string safeListItemLuid, byte[] payload, string? xTableauAuth = ()) returns TableauExtensionsDashboardV1Safelistitem|error {
-        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${safeListItemLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${getEncodedUri(safeListItemLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json");
-        TableauExtensionsDashboardV1Safelistitem response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauExtensionsDashboardV1Safelistitem response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Disallow dashboard extension on site
@@ -103,10 +103,10 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function dashboardextensionssitesettingsserviceDeletedashboardextensionssafelistitem(string safeListItemLuid, string? xTableauAuth = ()) returns http:Response|error {
-        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${safeListItemLuid}`;
+        string resourcePath = string `/api/-/settings/site/extensions/dashboard/safeListItems/${getEncodedUri(safeListItemLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List analytics extension connections of workbook
@@ -114,7 +114,7 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceGetconnectionoptionsforworkbook(string workbookLuid, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionmetadatalist|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${workbookLuid}/connections`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${getEncodedUri(workbookLuid)}/connections`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -125,7 +125,7 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceGetselectedconnectionforworkbook(string workbookLuid, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionmetadatalist|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${workbookLuid}/selected_connection`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${getEncodedUri(workbookLuid)}/selected_connection`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -136,12 +136,12 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceUpdateworkbookwithconnection(string workbookLuid, byte[] payload, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionmetadatalist|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${workbookLuid}/selected_connection`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${getEncodedUri(workbookLuid)}/selected_connection`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.analyticsextensions.v1.ConnectionMapping+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove current analytics extension connection for workbook
@@ -149,10 +149,10 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function analyticsextensionsserviceDeleteconnectionfromworkbook(string workbookLuid, string? xTableauAuth = ()) returns http:Response|error {
-        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${workbookLuid}/selected_connection`;
+        string resourcePath = string `/api/-/settings/site/extensions/analytics/workbooks/${getEncodedUri(workbookLuid)}/selected_connection`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get enabled state of analytics extensions on site
@@ -176,7 +176,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.analyticsextensions.v1.SiteSettings+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List dashboard extension settings of site
@@ -200,7 +200,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.extensions.dashboard.v1.SiteSettings+json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List blocked dashboard extensions on server
@@ -224,7 +224,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.extensions.dashboard.v1.BlockListItem+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Lists allowed dashboard extensions on site
@@ -248,7 +248,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.extensions.dashboard.v1.SafeListItem+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List analytics extension connections on site
@@ -272,7 +272,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.analyticsextensions.v1.ConnectionItem+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get enabled state of analytics extensions on server
@@ -296,7 +296,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.analyticsextensions.v1.ServerSettings+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get blocked dashboard extension on server
@@ -304,7 +304,7 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function dashboardextensionsserversettingsserviceGetdashboardextensionsblocklistitem(string blockListItemLuid, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionmetadatalist|error {
-        string resourcePath = string `/api/-/settings/server/extensions/dashboard/blockListItems/${blockListItemLuid}`;
+        string resourcePath = string `/api/-/settings/server/extensions/dashboard/blockListItems/${getEncodedUri(blockListItemLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -315,10 +315,10 @@ public isolated client class Client {
     # + xTableauAuth - The Tableau authentication header. The value is a credentials token from a Tableau server's response to an authentication request.   The Content-Type and Accept headers should be the mediatype of the request and response except in cases where you want to  [explicitly allow other versions of the resource](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_concepts_versions.htm#per_resource_versioning). 
     # + return - Successful. 
     remote isolated function dashboardextensionsserversettingsserviceDeletedashboardextensionsblocklistitem(string blockListItemLuid, string? xTableauAuth = ()) returns TableauAnalyticsextensionsV1Connectionmetadatalist|error {
-        string resourcePath = string `/api/-/settings/server/extensions/dashboard/blockListItems/${blockListItemLuid}`;
+        string resourcePath = string `/api/-/settings/server/extensions/dashboard/blockListItems/${getEncodedUri(blockListItemLuid)}`;
         map<any> headerValues = {"X-Tableau-Auth": xTableauAuth};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->delete(resourcePath, httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List settings for dashboard extensions on server
@@ -342,7 +342,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         request.setPayload(payload, "application/vnd.tableau.extensions.dashboard.v1.ServerSettings+json");
-        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TableauAnalyticsextensionsV1Connectionmetadatalist response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
 }

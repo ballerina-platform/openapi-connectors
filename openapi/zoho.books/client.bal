@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.zoho.com/oauth/v2/token";
 |};
 
 # This is a generated connector for [Zoho Books API] OpenAPI specification.
@@ -99,7 +110,7 @@ public isolated client class Client {
     # + organizationId - Unique identifier for an organization 
     # + return - Returns information of a contact 
     remote isolated function getContact(int contactsId, int organizationId) returns Contact|error {
-        string resourcePath = string `/api/v3/contacts/${contactsId}`;
+        string resourcePath = string `/api/v3/contacts/${getEncodedUri(contactsId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Contact response = check self.clientEp->get(resourcePath);
@@ -112,7 +123,7 @@ public isolated client class Client {
     # + payload - Update contact data in JSON format 
     # + return - Success 
     remote isolated function updateContact(int contactsId, int organizationId, Contact payload) returns Contact|error {
-        string resourcePath = string `/api/v3/contacts/${contactsId}`;
+        string resourcePath = string `/api/v3/contacts/${getEncodedUri(contactsId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -127,10 +138,10 @@ public isolated client class Client {
     # + organizationId - Unique identifier for an organization 
     # + return - Successful response 
     remote isolated function deleteContact(int contactsId, int organizationId) returns SuccessOperation|error {
-        string resourcePath = string `/api/v3/contacts/${contactsId}`;
+        string resourcePath = string `/api/v3/contacts/${getEncodedUri(contactsId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SuccessOperation response = check self.clientEp->delete(resourcePath);
+        SuccessOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Invoices.
@@ -165,7 +176,7 @@ public isolated client class Client {
     # + organizationId - Unique identifier for an organization 
     # + return - Returns information of a invoice 
     remote isolated function getInvoice(int invoiceId, int organizationId) returns Invoice|error {
-        string resourcePath = string `/api/v3/invoices/${invoiceId}`;
+        string resourcePath = string `/api/v3/invoices/${getEncodedUri(invoiceId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Invoice response = check self.clientEp->get(resourcePath);
@@ -178,7 +189,7 @@ public isolated client class Client {
     # + payload - Update invoice data in JSON format 
     # + return - Success 
     remote isolated function updateInvoice(int invoiceId, int organizationId, Invoice payload) returns Invoice|error {
-        string resourcePath = string `/api/v3/invoices/${invoiceId}`;
+        string resourcePath = string `/api/v3/invoices/${getEncodedUri(invoiceId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -193,10 +204,10 @@ public isolated client class Client {
     # + organizationId - Unique identifier for an organization 
     # + return - Successful response 
     remote isolated function deleteInvoice(int invoiceId, int organizationId) returns SuccessOperation|error {
-        string resourcePath = string `/api/v3/invoices/${invoiceId}`;
+        string resourcePath = string `/api/v3/invoices/${getEncodedUri(invoiceId)}`;
         map<anydata> queryParam = {"organization_id": organizationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SuccessOperation response = check self.clientEp->delete(resourcePath);
+        SuccessOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

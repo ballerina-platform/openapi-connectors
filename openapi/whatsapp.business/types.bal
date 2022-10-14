@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -87,9 +87,9 @@ public type WebhookLocation record {
     # Address of the location
     string address?;
     # Latitude of location being sent
-    float latitude?;
+    decimal latitude?;
     # Longitude of location being sent
-    float longitude?;
+    decimal longitude?;
     # Name of the location
     string name?;
     # URL for the website where the user downloaded the location information
@@ -181,7 +181,7 @@ public type WebhookVideo record {
 # Parameters required to check contact.
 public type CheckContactRequestBody record {
     # Blocking determines whether the request should wait for the processing to complete (synchronous) or not (asynchronous).
-    string blocking?;
+    string blocking = "no_wait";
     # Array of contact phone numbers. The numbers can be in any standard telephone number format.
     string[] contacts;
 };
@@ -617,7 +617,7 @@ public type SendMessageRequestBody record {
     # Determines whether the recipient is an individual or a group
     # Specifying recipient_type in the request is optional when the value is individual.
     # However, recipient_type is required when using group. If sending a text message to a group, see the Sending Group Messages documentation.
-    string recipient_type?;
+    string recipient_type = "individual";
     # Text
     Text text?;
     # When recipient_type is individual, this field is the WhatsApp ID (phone number) returned from contacts endpoint. When recipient_type is group, this field is the WhatsApp group ID.
@@ -794,7 +794,7 @@ public type LocalizableParam record {
     # The Whatsapp Business API Client will attempt to format the date/time based on a specified localization.
     DateTimeObject date_time?;
     # Default text if localization fails
-    string 'default;
+    string default;
 };
 
 # Represents backup settings

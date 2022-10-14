@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # Move your app forward with the Uber API
@@ -69,7 +73,7 @@ public isolated client class Client {
     # + latitude - Latitude component of location. 
     # + longitude - Longitude component of location. 
     # + return - An array of products 
-    remote isolated function getProducts(float latitude, float longitude) returns Product[]|error {
+    remote isolated function getProducts(decimal latitude, decimal longitude) returns Product[]|error {
         string resourcePath = string `/products`;
         map<anydata> queryParam = {"latitude": latitude, "longitude": longitude};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -83,7 +87,7 @@ public isolated client class Client {
     # + endLatitude - Latitude component of end location. 
     # + endLongitude - Longitude component of end location. 
     # + return - An array of price estimates by product 
-    remote isolated function getPrices(float startLatitude, float startLongitude, float endLatitude, float endLongitude) returns PriceEstimate[]|error {
+    remote isolated function getPrices(decimal startLatitude, decimal startLongitude, decimal endLatitude, decimal endLongitude) returns PriceEstimate[]|error {
         string resourcePath = string `/estimates/price`;
         map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "end_latitude": endLatitude, "end_longitude": endLongitude};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -97,7 +101,7 @@ public isolated client class Client {
     # + customerUuid - Unique customer identifier to be used for experience customization. 
     # + productId - Unique identifier representing a specific product for a given latitude & longitude. 
     # + return - An array of products 
-    remote isolated function getTimes(float startLatitude, float startLongitude, string? customerUuid = (), string? productId = ()) returns Product[]|error {
+    remote isolated function getTimes(decimal startLatitude, decimal startLongitude, string? customerUuid = (), string? productId = ()) returns Product[]|error {
         string resourcePath = string `/estimates/time`;
         map<anydata> queryParam = {"start_latitude": startLatitude, "start_longitude": startLongitude, "customer_uuid": customerUuid, "product_id": productId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);

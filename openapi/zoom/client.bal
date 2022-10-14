@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|http:JwtIssuerConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://zoom.us/oauth/token";
 |};
 
 # This is a generated connector for [Zoom API Version 2.0.0](https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification.
@@ -113,7 +124,7 @@ public isolated client class Client {
     # + return - HTTP Status Code:200. Meeting participants returned. Only available for paid accounts that have enabled the dashboard feature. 
     @display {label: "List Dashboard Meeting Participants"}
     remote isolated function listDashboardMeetingParticipants(MeetingId meetingId, @display {label: "Meeting Type"} string 'type = "live", @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Include Fields"} string? includeFields = ()) returns ListDashboardMeetingParticipantsResponse|error {
-        string resourcePath = string `/metrics/meetings/${meetingId}/participants`;
+        string resourcePath = string `/metrics/meetings/${getEncodedUri(meetingId)}/participants`;
         map<anydata> queryParam = {"type": 'type, "page_size": pageSize, "next_page_token": nextPageToken, "include_fields": includeFields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListDashboardMeetingParticipantsResponse response = check self.clientEp->get(resourcePath);
@@ -129,7 +140,7 @@ public isolated client class Client {
     # + return - HTTP Status Code:200. List of meetings returned. 
     @display {label: "List Meetings"}
     remote isolated function listMeetings(@display {label: "User Id"} string userId, @display {label: "Meeting Type"} string 'type = "live", @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = (), @display {label: "Page Number"} string? pageNumber = ()) returns ListMeetingsResponse|error {
-        string resourcePath = string `/users/${userId}/meetings`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/meetings`;
         map<anydata> queryParam = {"type": 'type, "page_size": pageSize, "next_page_token": nextPageToken, "page_number": pageNumber};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListMeetingsResponse response = check self.clientEp->get(resourcePath);
@@ -142,7 +153,7 @@ public isolated client class Client {
     # + return - HTTP Status Code:201 - Meeting created. 
     @display {label: "Create Meeting"}
     remote isolated function createMeeting(@display {label: "User Id"} string userId, @display {label: "Meeting Details"} MeetingDetails payload) returns CreateMeetingResponse|error {
-        string resourcePath = string `/users/${userId}/meetings`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/meetings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -160,7 +171,7 @@ public isolated client class Client {
     # + return - HTTP Status Code:200. Successfully listed meeting registrants. 
     @display {label: "List Meeting Registrants"}
     remote isolated function listMeetingRegistrants(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Registrant Status"} string status = "approved", @display {label: "Page Size"} int pageSize = 30, @display {label: "Page Number"} int pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListMeetingRegistrantsResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "status": status, "page_size": pageSize, "page_number": pageNumber, "next_page_token": nextPageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListMeetingRegistrantsResponse response = check self.clientEp->get(resourcePath);
@@ -174,7 +185,7 @@ public isolated client class Client {
     # + return - Meeting registrant's details 
     @display {label: "Add Meeting Registrant"}
     remote isolated function addMeetingRegistrant(@display {label: "Meeting Id"} int meetingId, AddMeetingRegistrantRequest payload, @display {label: "Occurence Id"} string? occurrenceIds = ()) returns AddMeetingRegistrantResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants`;
         map<anydata> queryParam = {"occurrence_ids": occurrenceIds};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -189,7 +200,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`. Meeting Registrant Question object returned 
     @display {label: "List Registrant Questions"}
     remote isolated function getMeetingRegistrantsQuestions(@display {label: "Meeting Id"} int meetingId) returns RegistrantQuestions|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants/questions`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants/questions`;
         RegistrantQuestions response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -200,7 +211,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting Registrant Questions Updated 
     @display {label: "Update Registration Questions"}
     remote isolated function updateMeetingRegistrantQuestions(@display {label: "Meeting Id"} int meetingId, RegistrantQuestions payload) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants/questions`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants/questions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -215,7 +226,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Registrant status updated. 
     @display {label: "Update Meeting Registrant's Status"}
     remote isolated function updateMeetingRegistrantStatus(@display {label: "Meting Id"} int meetingId, UpdateMeetingRegistrantstatusRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants/status`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants/status`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -232,10 +243,10 @@ public isolated client class Client {
     # + return - **HTTP status code:** `204` OK 
     @display {label: "Delete Meeting Registrant"}
     remote isolated function deleteMeetingregistrant(@display {label: "Meeting Id"} int meetingId, @display {label: "Registrant Id"} string registrantId, @display {label: "occurence Id"} string? occurrenceId = ()) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/registrants/${registrantId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/registrants/${getEncodedUri(registrantId)}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a meeting
@@ -246,7 +257,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200` Meeting object returned. 
     @display {label: "Get Meeting Details"}
     remote isolated function getMeetingById(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Show Previous Occurrences"} boolean? showPreviousOccurrences = ()) returns GetMeetingDetailsResponse|error {
-        string resourcePath = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "show_previous_occurrences": showPreviousOccurrences};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetMeetingDetailsResponse response = check self.clientEp->get(resourcePath);
@@ -261,10 +272,10 @@ public isolated client class Client {
     # + return - **HTTP Status Code**: `204` Meeting deleted. 
     @display {label: "Delete Meeting"}
     remote isolated function deleteMeeting(@display {label: "Meeting Id"} int meetingId, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Schedule for Reminder"} boolean? scheduleForReminder = (), @display {label: "Meeting Cancellation Reminder"} string? cancelMeetingReminder = ()) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "schedule_for_reminder": scheduleForReminder, "cancel_meeting_reminder": cancelMeetingReminder};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a meeting
@@ -275,7 +286,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting updated. 
     @display {label: "Update Meeting"}
     remote isolated function updateMeeting(@display {label: "Meeting Id"} int meetingId, UpdateMeetingRequest payload, @display {label: "Occurrence Id"} string? occurrenceId = ()) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -291,7 +302,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting updated. 
     @display {label: "Update Meeting Status"}
     remote isolated function updateMeetingStatus(@display {label: "Meeting Id"} int meetingId, UpdateMeetingstatusRequest payload) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/status`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/status`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -304,7 +315,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`. List of ended meeting instances returned. 
     @display {label: "List Past Meetings"}
     remote isolated function listPastMeetings(@display {label: "Meeting Id"} int meetingId) returns ListPastMeetingsResponse|error {
-        string resourcePath = string `/past_meetings/${meetingId}/instances`;
+        string resourcePath = string `/past_meetings/${getEncodedUri(meetingId)}/instances`;
         ListPastMeetingsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -314,7 +325,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200` **OK**. Polls returned successfully. 
     @display {label: "List Meeting Polls"}
     remote isolated function listPastMeetingPolls(@display {label: "Meeting Id"} string meetingId) returns ListPastMeetingPollsResponse|error {
-        string resourcePath = string `/past_meetings/${meetingId}/polls`;
+        string resourcePath = string `/past_meetings/${getEncodedUri(meetingId)}/polls`;
         ListPastMeetingPollsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -324,7 +335,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`. Meeting details returned. 
     @display {label: "Get Past Meeting Details"}
     remote isolated function getPastMeetingDetails(@display {label: "Meeting UUID"} string meetingUUID) returns PastMeetingDetailsResponse|error {
-        string resourcePath = string `/past_meetings/${meetingUUID}`;
+        string resourcePath = string `/past_meetings/${getEncodedUri(meetingUUID)}`;
         PastMeetingDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -336,7 +347,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`. Meeting participants' report returned. 
     @display {label: "List Past Meeting Participants"}
     remote isolated function listPastMeetingParticipants(@display {label: "Meeting UUID"} string meetingUUID, @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListPastMeetingParticipantsResponse|error {
-        string resourcePath = string `/past_meetings/${meetingUUID}/participants`;
+        string resourcePath = string `/past_meetings/${getEncodedUri(meetingUUID)}/participants`;
         map<anydata> queryParam = {"page_size": pageSize, "next_page_token": nextPageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListPastMeetingParticipantsResponse response = check self.clientEp->get(resourcePath);
@@ -348,7 +359,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:**. List polls of a Meeting  returned 
     @display {label: "Get Meeting Polls"}
     remote isolated function getMeetingPolls(@display {label: "Meeting Id"} int meetingId) returns MeetingPollsResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/polls`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/polls`;
         MeetingPollsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -359,7 +370,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `201`. Meeting Poll Created 
     @display {label: "Create Meeting Poll"}
     remote isolated function createMeetingPoll(@display {label: "Meeting Id"} int meetingId, CreateMeetingPollRequest payload) returns CreateMeetingPollResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/polls`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/polls`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -373,7 +384,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`. Meeting Poll object returned 
     @display {label: "Get Meeting Poll"}
     remote isolated function getMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns GetMeetingPollResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/polls/${pollId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/polls/${getEncodedUri(pollId)}`;
         GetMeetingPollResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -385,7 +396,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting Poll Updated 
     @display {label: "Update Meeting Poll"}
     remote isolated function updateMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId, UpdateMeetingPollRequest payload) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/polls/${pollId}`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/polls/${getEncodedUri(pollId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -399,8 +410,8 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting Poll deleted 
     @display {label: "Delete Meeting Poll"}
     remote isolated function deleteMeetingPoll(@display {label: "Meeting Id"} int meetingId, @display {label: "Poll Id"} string pollId) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/polls/${pollId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/polls/${getEncodedUri(pollId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Perform batch poll creation
@@ -410,7 +421,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `201`. Meeting Poll Created 
     @display {label: "Create Batch Polls"}
     remote isolated function createBatchPolls(@display {label: "Meeting Id"} string meetingId, CreateBatchPollsRequest payload) returns CreateBatchPollsResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/batch_polls`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/batch_polls`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -423,7 +434,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`<br> Meeting invitation returned. 
     @display {label: "Get Meeting Invitation"}
     remote isolated function getMeetingInvitation(@display {label: "Meeting Id"} int meetingId) returns GetMeetingInvitationResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/invitation`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/invitation`;
         GetMeetingInvitationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -433,7 +444,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200` **OK**.  Live Stream details returned. 
     @display {label: "Get Live Stream Details"}
     remote isolated function getLiveStreamDetails(@display {label: "Meeting Id"} string meetingId) returns GetLiveStreamDetailsResponse|error {
-        string resourcePath = string `/meetings/${meetingId}/livestream`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/livestream`;
         GetLiveStreamDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -444,7 +455,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `204`. Meeting live stream updated. 
     @display {label: "Update Meeting Live Stream"}
     remote isolated function updateMeetingLiveStream(@display {label: "Meeting Id"} int meetingId, UpdateMeetingLiveStreamDetailsRequest payload) returns http:Response|error {
-        string resourcePath = string `/meetings/${meetingId}/livestream`;
+        string resourcePath = string `/meetings/${getEncodedUri(meetingId)}/livestream`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -463,7 +474,7 @@ public isolated client class Client {
     # + return - HTTP Status Code: `200` Webinar plan subscription is missing. Enable webinar for this user once the subscription is added. 
     @display {label: "List Webinar Meeting Registrants"}
     remote isolated function listWebinarRegistrants(@display {label: "Webinar Id"} int webinarId, @display {label: "Meeting Occurence Id"} string? occurrenceId = (), @display {label: "Status"} string status = "approved", @display {label: "Tracking Source Id"} string? trackingSourceId = (), @display {label: "Page Size"} int pageSize = 30, @display {label: "Page Number"} int pageNumber = 1, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarRegistrantsResponse|error {
-        string resourcePath = string `/webinars/${webinarId}/registrants`;
+        string resourcePath = string `/webinars/${getEncodedUri(webinarId)}/registrants`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "status": status, "tracking_source_id": trackingSourceId, "page_size": pageSize, "page_number": pageNumber, "next_page_token": nextPageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListWebinarRegistrantsResponse response = check self.clientEp->get(resourcePath);
@@ -477,7 +488,7 @@ public isolated client class Client {
     # + return - Webinar participants' details 
     @display {label: "List Webinar Participants"}
     remote isolated function listWebinarParticipants(@display {label: "Webinar Id"} string webinarId, @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarParticipantsResponse|error {
-        string resourcePath = string `/past_webinars/${webinarId}/participants`;
+        string resourcePath = string `/past_webinars/${getEncodedUri(webinarId)}/participants`;
         map<anydata> queryParam = {"page_size": pageSize, "next_page_token": nextPageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListWebinarParticipantsResponse response = check self.clientEp->get(resourcePath);
@@ -492,7 +503,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200`  Success. **Error Code:** `200`  Webinar plan subscription is missing. Enable webinar for this user once the subscription is added:{userId}. 
     @display {label: "List Webinar Absentees"}
     remote isolated function listWebinarAbsentees(@display {label: "Webinar UUID"} string webinarUUID, @display {label: "Occurence Id"} string? occurrenceId = (), @display {label: "Page Size"} int pageSize = 30, @display {label: "Next Page Token"} string? nextPageToken = ()) returns ListWebinarAbsentees|error {
-        string resourcePath = string `/past_webinars/${webinarUUID}/absentees`;
+        string resourcePath = string `/past_webinars/${getEncodedUri(webinarUUID)}/absentees`;
         map<anydata> queryParam = {"occurrence_id": occurrenceId, "page_size": pageSize, "next_page_token": nextPageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListWebinarAbsentees response = check self.clientEp->get(resourcePath);
@@ -504,7 +515,7 @@ public isolated client class Client {
     # + return - **HTTP Status Code:** `200` **OK** 
     @display {label: "List Meeting Templates"}
     remote isolated function listMeetingTemplates(@display {label: "User Id"} string userId) returns ListMeetingTemplatesResponse|error {
-        string resourcePath = string `/users/${userId}/meeting_templates`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/meeting_templates`;
         ListMeetingTemplatesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

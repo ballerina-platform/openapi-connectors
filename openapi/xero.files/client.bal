@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://identity.xero.com/connect/token";
 |};
 
 # This is a generated connector for [Xero Files API v2.16.1](https://developer.xero.com/documentation/api/files/overview) OpenAPI specification.
@@ -96,7 +107,7 @@ public isolated client class Client {
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
-        FileObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FileObject response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves a file by a unique file ID
@@ -105,7 +116,7 @@ public isolated client class Client {
     # + fileId - File id for single object 
     # + return - search results matching criteria 
     remote isolated function getFile(string xeroTenantId, string fileId) returns FileObject|error {
-        string resourcePath = string `/Files/${fileId}`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         FileObject response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -118,13 +129,13 @@ public isolated client class Client {
     # + payload - A record of type `FileObject` which contains details to update a file 
     # + return - A successful request 
     remote isolated function updateFile(string xeroTenantId, string fileId, FileObject payload) returns FileObject|error {
-        string resourcePath = string `/Files/${fileId}`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        FileObject response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        FileObject response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes a specific file
@@ -133,10 +144,10 @@ public isolated client class Client {
     # + fileId - File id for single object 
     # + return - Successful deletion - return response 204 no content 
     remote isolated function deleteFile(string xeroTenantId, string fileId) returns http:Response|error {
-        string resourcePath = string `/Files/${fileId}`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Uploads a File to a specific folder
@@ -146,13 +157,13 @@ public isolated client class Client {
     # + payload - A record of type `UploadObject` which contains details to upload a file to specific folder 
     # + return - A successful request 
     remote isolated function uploadFileToFolder(string xeroTenantId, string folderId, UploadObject payload) returns FileObject|error {
-        string resourcePath = string `/Files/${folderId}`;
+        string resourcePath = string `/Files/${getEncodedUri(folderId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
-        FileObject response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        FileObject response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the content of a specific file
@@ -161,7 +172,7 @@ public isolated client class Client {
     # + fileId - File id for single object 
     # + return - returns the byte array of the specific file based on id 
     remote isolated function getFileContent(string xeroTenantId, string fileId) returns string|error {
-        string resourcePath = string `/Files/${fileId}/Content`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}/Content`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -173,7 +184,7 @@ public isolated client class Client {
     # + fileId - File id for single object 
     # + return - search results matching criteria 
     remote isolated function getFileAssociations(string xeroTenantId, string fileId) returns Association[]|error {
-        string resourcePath = string `/Files/${fileId}/Associations`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}/Associations`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Association[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -186,13 +197,13 @@ public isolated client class Client {
     # + payload - A record of type `Association` which contains details to create a new file association 
     # + return - A successful request 
     remote isolated function createFileAssociation(string xeroTenantId, string fileId, Association payload) returns Association|error {
-        string resourcePath = string `/Files/${fileId}/Associations`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}/Associations`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Association response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Association response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes an existing file association
@@ -202,10 +213,10 @@ public isolated client class Client {
     # + objectId - Object id for single object 
     # + return - Successful deletion - return response 204 no content 
     remote isolated function deleteFileAssociation(string xeroTenantId, string fileId, string objectId) returns http:Response|error {
-        string resourcePath = string `/Files/${fileId}/Associations/${objectId}`;
+        string resourcePath = string `/Files/${getEncodedUri(fileId)}/Associations/${getEncodedUri(objectId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieves an association object using a unique object ID
@@ -214,7 +225,7 @@ public isolated client class Client {
     # + objectId - Object id for single object 
     # + return - search results matching criteria 
     remote isolated function getAssociationsByObject(string xeroTenantId, string objectId) returns Association[]|error {
-        string resourcePath = string `/Associations/${objectId}`;
+        string resourcePath = string `/Associations/${getEncodedUri(objectId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Association[] response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -246,7 +257,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Folder response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Folder response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves specific folder by using a unique folder ID
@@ -255,7 +266,7 @@ public isolated client class Client {
     # + folderId - Folder id for single object 
     # + return - search results matching criteria 
     remote isolated function getFolder(string xeroTenantId, string folderId) returns Folder|error {
-        string resourcePath = string `/Folders/${folderId}`;
+        string resourcePath = string `/Folders/${getEncodedUri(folderId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Folder response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -268,13 +279,13 @@ public isolated client class Client {
     # + payload - A record of type `Folder` which contains details to update a existing folder 
     # + return - return the updated object 
     remote isolated function updateFolder(string xeroTenantId, string folderId, Folder payload) returns Folder|error {
-        string resourcePath = string `/Folders/${folderId}`;
+        string resourcePath = string `/Folders/${getEncodedUri(folderId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        Folder response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        Folder response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Deletes a folder
@@ -283,10 +294,10 @@ public isolated client class Client {
     # + folderId - Folder id for single object 
     # + return - Successful deletion - return response 204 no content 
     remote isolated function deleteFolder(string xeroTenantId, string folderId) returns http:Response|error {
-        string resourcePath = string `/Folders/${folderId}`;
+        string resourcePath = string `/Folders/${getEncodedUri(folderId)}`;
         map<any> headerValues = {"xero-tenant-id": xeroTenantId};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Retrieves inbox folder

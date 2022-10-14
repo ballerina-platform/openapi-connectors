@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -70,7 +70,7 @@ public isolated client class Client {
     # + return - Get movie by movie ID response 
     @display {label: "Get Movie Details"}
     remote isolated function getMovieByMovieId(@display {label: "Movie ID"} int movieId) returns InlineResponse2002|error {
-        string resourcePath = string `/movie/${movieId}`;
+        string resourcePath = string `/movie/${getEncodedUri(movieId)}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp->get(resourcePath);
@@ -95,7 +95,7 @@ public isolated client class Client {
     # + return - Get TV show by details response 
     @display {label: "Get TV Show Episode"}
     remote isolated function getTvShowEpisode(@display {label: "TV Show ID"} int tvId, @display {label: "Season Number"} int seasonNumber, @display {label: "Episode Number"} int episodeNumber) returns InlineResponse2004|error {
-        string resourcePath = string `/tv/${tvId}/season/${seasonNumber}/episode/${episodeNumber}`;
+        string resourcePath = string `/tv/${getEncodedUri(tvId)}/season/${getEncodedUri(seasonNumber)}/episode/${getEncodedUri(episodeNumber)}`;
         map<anydata> queryParam = {"api_key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2004 response = check self.clientEp->get(resourcePath);

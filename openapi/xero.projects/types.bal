@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -32,20 +32,20 @@ public type Task record {
     # Can be `TIME`, `FIXED` or `NON_CHARGEABLE`, defines how the task will be charged. Use `TIME` when you want to charge per hour and `FIXED` to charge as a fixed amount. If the task will not be charged use `NON_CHARGEABLE`.
     ChargeType chargeType?;
     # An estimated time to perform the task
-    float estimateMinutes?;
+    decimal estimateMinutes?;
     # Identifier of the project task belongs to.
     string projectId?;
     # Total minutes which have been logged against the task. Logged by assigning a time entry to a task
-    float totalMinutes?;
+    decimal totalMinutes?;
     Amount totalAmount?;
     # Minutes on this task which have been invoiced.
-    float minutesInvoiced?;
+    decimal minutesInvoiced?;
     # Minutes on this task which have not been invoiced.
-    float minutesToBeInvoiced?;
+    decimal minutesToBeInvoiced?;
     # Minutes logged against this task if its charge type is `FIXED`.
-    float fixedMinutes?;
+    decimal fixedMinutes?;
     # Minutes logged against this task if its charge type is `NON_CHARGEABLE`.
-    float nonChargeableMinutes?;
+    decimal nonChargeableMinutes?;
     Amount amountToBeInvoiced?;
     Amount amountInvoiced?;
     # Status of the task. When a task of ChargeType is `FIXED` and the rate amount is invoiced the status will be set to `INVOICED` and can't be modified. A task with ChargeType of `TIME` or `NON_CHARGEABLE` cannot have a status of `INVOICED`. A `LOCKED` state indicates that the task is currently changing state (for example being invoiced) and can't be modified.
@@ -70,7 +70,7 @@ public type TaskCreateOrUpdate record {
 public type Amount record {
     # 3 letter alpha code for the ISO-4217 currency code, e.g. USD, AUD.
     CurrencyCode currency?;
-    float value?;
+    decimal value?;
 };
 
 public type TimeEntryCreateOrUpdate record {
@@ -103,7 +103,7 @@ public type ProjectCreateOrUpdate record {
     string contactId?;
     # Name of the project.
     string name;
-    float estimateAmount?;
+    decimal estimateAmount?;
     # Deadline for the project. UTC Date Time in ISO-8601 format.
     string deadlineUtc?;
 };

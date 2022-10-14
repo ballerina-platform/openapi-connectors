@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,11 +48,15 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay payroll REST API v2](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 # The Payroll service enables you to access and manage payroll information,such as pay groups, payroll inputs, and tax rates.
-@display {label: "Workday Payroll", iconPath: "“icon.png”"}
+@display {label: "Workday Payroll", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
@@ -72,7 +76,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupBySubResourceID(string id, string subresourceID) returns PayGroupViewDetail|error {
-        string resourcePath = string `/jobs/${id}/payGroup/${subresourceID}`;
+        string resourcePath = string `/jobs/${getEncodedUri(id)}/payGroup/${getEncodedUri(subresourceID)}`;
         PayGroupViewDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -81,7 +85,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupByID(string id) returns PayGroupViewDetail|error {
-        string resourcePath = string `/payGroups/${id}`;
+        string resourcePath = string `/payGroups/${getEncodedUri(id)}`;
         PayGroupViewDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -93,7 +97,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupByJobID(string id, string? effective = (), int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string resourcePath = string `/jobs/${id}/payGroup`;
+        string resourcePath = string `/jobs/${getEncodedUri(id)}/payGroup`;
         map<anydata> queryParam = {"effective": effective, "limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -126,7 +130,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayGroupDetailsByID(string id) returns PayGroupDetailView|error {
-        string resourcePath = string `/payGroupDetails/${id}`;
+        string resourcePath = string `/payGroupDetails/${getEncodedUri(id)}`;
         PayGroupDetailView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSingleJobByID(string id) returns JobData|error {
-        string resourcePath = string `/jobs/${id}`;
+        string resourcePath = string `/jobs/${getEncodedUri(id)}`;
         JobData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -198,7 +202,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPayRollInputInstance(string id) returns PayrollInputView|error {
-        string resourcePath = string `/payrollInputs/${id}`;
+        string resourcePath = string `/payrollInputs/${getEncodedUri(id)}`;
         PayrollInputView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -207,8 +211,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteExistingPayroll(string id) returns http:Response|error {
-        string resourcePath = string `/payrollInputs/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/payrollInputs/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Partially updates an existing payroll input instance.
@@ -216,7 +220,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateAnExistingPayroll(string id, PayrollInputView payload) returns PayrollInputView|error {
-        string resourcePath = string `/payrollInputs/${id}`;
+        string resourcePath = string `/payrollInputs/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

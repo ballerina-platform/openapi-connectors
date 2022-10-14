@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Vonage Voice API v1.3.6](https://nexmo-api-specification.herokuapp.com/api/voice) OpenAPI specification.
@@ -102,7 +106,7 @@ public isolated client class Client {
     # + uuid - UUID of the Call 
     # + return - Ok 
     remote isolated function getCall(string uuid) returns GetCallResponse|error {
-        string resourcePath = string `/${uuid}`;
+        string resourcePath = string `/${getEncodedUri(uuid)}`;
         GetCallResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + payload - Request Body 
     # + return - No Content 
     remote isolated function updateCall(string uuid, UuidBody payload) returns http:Response|error {
-        string resourcePath = string `/${uuid}`;
+        string resourcePath = string `/${getEncodedUri(uuid)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -125,7 +129,7 @@ public isolated client class Client {
     # + payload - action to perform 
     # + return - Ok 
     remote isolated function startStream(string uuid, StartStreamRequest payload) returns StartStreamResponse|error {
-        string resourcePath = string `/${uuid}/stream`;
+        string resourcePath = string `/${getEncodedUri(uuid)}/stream`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -137,8 +141,8 @@ public isolated client class Client {
     # + uuid - UUID of the Call Leg 
     # + return - Ok 
     remote isolated function stopStream(string uuid) returns StopStreamResponse|error {
-        string resourcePath = string `/${uuid}/stream`;
-        StopStreamResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(uuid)}/stream`;
+        StopStreamResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Play text to speech into a call
@@ -147,7 +151,7 @@ public isolated client class Client {
     # + payload - Action to perform 
     # + return - Ok 
     remote isolated function startTalk(string uuid, StartTalkRequest payload) returns StartTalkResponse|error {
-        string resourcePath = string `/${uuid}/talk`;
+        string resourcePath = string `/${getEncodedUri(uuid)}/talk`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -159,8 +163,8 @@ public isolated client class Client {
     # + uuid - UUID of the Call Leg 
     # + return - Ok 
     remote isolated function stopTalk(string uuid) returns StopTalkResponse|error {
-        string resourcePath = string `/${uuid}/talk`;
-        StopTalkResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(uuid)}/talk`;
+        StopTalkResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Play DTMF tones into a call
@@ -169,7 +173,7 @@ public isolated client class Client {
     # + payload - action to perform 
     # + return - Ok 
     remote isolated function startDTMF(string uuid, DTMFRequest payload) returns DTMFResponse|error {
-        string resourcePath = string `/${uuid}/dtmf`;
+        string resourcePath = string `/${getEncodedUri(uuid)}/dtmf`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

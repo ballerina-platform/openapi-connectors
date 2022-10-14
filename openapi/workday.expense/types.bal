@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,33 +14,35 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ErrorModelReference record {
     # A description of the error
-    string? _error;
+    string 'error;
 };
 
 public type ReportServiceRepresentation record {
     # Total Amount for the Expense Report
     record {} totalAmount?;
-    ExpenseReportStatus? expenseReportStatus?;
+    ExpenseReportStatus expenseReportStatus?;
     # Creation Date label to be used for REST API
-    string? creationDate?;
+    string creationDate?;
     # Memo label to be used for REST API
-    string? expenseReportMemo?;
+    string expenseReportMemo?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type SubmitExpenseReportRepresentation record {
-    ExpenseReport? expenseReport?;
+    ExpenseReport expenseReport?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type Company record {
@@ -57,9 +59,9 @@ public type ContentType record {
 
 public type WorkTagsRepresentation record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type WorkTag record {
@@ -68,17 +70,17 @@ public type WorkTag record {
 
 # collection something or other
 public type InlineResponse200 record {
-    ReportServiceRepresentation[]? data?;
-    int? total?;
+    ReportServiceRepresentation[] data?;
+    int total?;
 };
 
 public type ExpenseItemsServiceRepresentation record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type Image record {
@@ -87,30 +89,31 @@ public type Image record {
 
 public type ExpenseEntryImage record {
     # File length of the attachment
-    int? fileLength?;
+    int fileLength?;
     # File name of the attachment
-    string? fileName?;
-    ContentType? contentType?;
+    @constraint:String {maxLength: 255}
+    string fileName?;
+    ContentType contentType?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ReportPostServiceRepresentation record {
-    Payee? payee?;
+    Payee payee?;
     # Memo label to be used for REST API
-    string? expenseReportMemo?;
+    string expenseReportMemo?;
     # Creation Date label to be used for REST API
-    string? creationDate?;
-    WorkTag? worktag?;
-    Company? company?;
+    string creationDate?;
+    WorkTag worktag?;
+    Company company?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type TravelBookingRecord record {
@@ -127,38 +130,38 @@ public type ScanStatus record {
 
 public type EntryServicePUTRepresentation record {
     # CRF for Entries REST operation to expose Attachment related to Optical Character Recognition
-    ExpenseEntryImage[]? attachments?;
+    ExpenseEntryImage[] attachments?;
     # Amount for Expense Entry
     record {} amount?;
     # Expense Merchant Name
-    string? merchant?;
-    ExpenseItem? expenseItem?;
+    string merchant?;
+    ExpenseItem expenseItem?;
     # Date of Expense Entry
-    string? date;
+    string date;
     # Memo for the Entry
-    string? memo?;
-    Image? image?;
+    string memo?;
+    Image image?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[]? errors?;
+    ErrorModelReference[] errors?;
 };
 
 public type ExpenseItem record {
@@ -171,85 +174,85 @@ public type ExpenseReportStatus record {
 
 public type PostExpenseReportLineRepresentation record {
     # Date the Expense Report Line was created
-    string? date?;
-    ExpenseItem? expenseItem?;
-    TravelBookingRecord? travelBookingRecord?;
+    string date?;
+    ExpenseItem expenseItem?;
+    TravelBookingRecord travelBookingRecord?;
     # Memo for the Expense Report Line
-    string? memo?;
-    QuickExpense? quickExpense?;
-    CreditCardTransaction? creditCardTransaction?;
+    string memo?;
+    QuickExpense quickExpense?;
+    CreditCardTransaction creditCardTransaction?;
     # Total amount to be reimbursed to the requestee
     record {} totalAmount?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type EntryServiceRepresentation record {
     # CRF for Entries REST operation to expose Attachment related to Optical Character Recognition
-    ExpenseEntryImage[]? attachments?;
+    ExpenseEntryImage[] attachments?;
     # Boolean value indicating whether the Mobile Expense has an OCR image.
-    boolean? hasOCRReceipt?;
+    boolean hasOCRReceipt?;
     # Amount for Expense Entry
     record {} amount?;
-    ScanStatus? scanStatus?;
+    ScanStatus scanStatus?;
     # Memo for the Entry
-    string? memo?;
-    ExpenseItem? expenseItem?;
+    string memo?;
+    ExpenseItem expenseItem?;
     # Date of Expense Entry
-    string? date?;
+    string date?;
     # Expense Merchant Name
-    string? merchant?;
+    string merchant?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ItemValues record {
     # The number of instances returned by this facet
-    int? count?;
+    int count?;
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the facet
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type ExpenseEntryServiceRepresentation record {
-    ExpenseEntryStatus? expenseEntryStatus?;
+    ExpenseEntryStatus expenseEntryStatus?;
     # Amount for Expense Entry
     record {} amount?;
     # Memo for the Entry
-    string? memo?;
-    EntryType? entryType?;
+    string memo?;
+    EntryType entryType?;
     # Date of Expense Entry
-    string? date?;
-    ScanStatus? scanStatus?;
+    string date?;
+    ScanStatus scanStatus?;
     # CRF for Entries REST operation to expose Attachment related to Optical Character Recognition
-    ExpenseEntryImage[]? attachments?;
+    ExpenseEntryImage[] attachments?;
     # Expense Merchant Name
-    string? merchant?;
-    ExpenseItem? expenseItem?;
+    string merchant?;
+    ExpenseItem expenseItem?;
     # Boolean value indicating whether the Mobile Expense has an OCR image.
-    boolean? hasOCRReceipt?;
+    boolean hasOCRReceipt?;
     # A link to the instance
-    string? href?;
+    string href?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
-public type FacetsModelReference FacetsModelReferenceInner[]?;
+public type FacetsModelReference FacetsModelReferenceInner[];
 
 public type MultipleInstanceModelReference record {
-    int? total?;
-    InstanceModelReference[]? data?;
+    int total?;
+    InstanceModelReference[] data?;
 };
 
 public type EntryType record {
@@ -258,14 +261,14 @@ public type EntryType record {
 
 # collection something or other
 public type InlineResponse2001 record {
-    ExpenseEntryServiceRepresentation[]? data?;
-    int? total?;
+    ExpenseEntryServiceRepresentation[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2002 record {
-    ExpenseItemsServiceRepresentation[]? data?;
-    int? total?;
+    ExpenseItemsServiceRepresentation[] data?;
+    int total?;
 };
 
 public type Payee record {
@@ -279,10 +282,10 @@ public type ExpenseEntryStatus record {
 # This object represents the possible facets for this resource
 public type FacetsModelReferenceInner record {
     # A description of the facet
-    string? descriptor?;
+    string descriptor?;
     # The alias used to select the facet
-    string? facetParameter?;
-    ItemValues[]? values?;
+    string facetParameter?;
+    ItemValues[] values?;
 };
 
 public type ExpenseReport record {

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type Message record {
     # The number the message was sent to. Numbers are specified in E.164 format.
@@ -66,27 +68,32 @@ public type DeliveryReceipt record {
 
 public type NewMessage record {
     # Your API key
+    @constraint:String {maxLength: 8, minLength: 8}
     string api_key;
     # Your API secret. Required unless `sig` is provided
+    @constraint:String {maxLength: 32, minLength: 6}
     string api_secret?;
     # The hash of the request parameters in alphabetical order, a timestamp and the signature secret. See [Signing Requests](/concepts/guides/signing-messages) for more details.
+    @constraint:String {maxLength: 60, minLength: 16}
     string sig?;
     # The name or number the message should be sent from. Alphanumeric senderID's are not supported in all countries, see [Global Messaging](/messaging/sms/guides/global-messaging#country-specific-features) for more details. If alphanumeric, spaces will be ignored. Numbers are specified in E.164 format.
     string 'from;
     # The number that the message should be sent to. Numbers are specified in E.164 format.
+    @constraint:String {maxLength: 15, minLength: 7}
     string to;
     # The body of the message being sent. If your message contains characters that can be encoded according to the GSM Standard and Extended tables then you can set the `type` to `text`. If your message contains characters outside this range, then you will need to set the `type` to `unicode`.
     string text?;
     # **Advanced**: The duration in milliseconds the delivery of an SMS will be attempted.§§ By default Vonage attempts delivery for 72 hours, however the maximum effective value depends on the operator and is typically 24 - 48 hours. We recommend this value should be kept at its default or at least 30 minutes.
-    int ttl?;
+    @constraint:Int {minValue: 20000, maxValue: 604800000}
+    int ttl = 259200000;
     # **Advanced**: Boolean indicating if you like to receive a [Delivery Receipt](/messaging/sms/building-blocks/receive-a-delivery-receipt).
-    boolean statusReportReq?;
+    boolean statusReportReq = true;
     # **Advanced**: The webhook endpoint the delivery receipt for this sms is sent to. This parameter overrides the webhook endpoint you set in Dashboard.
     string callback?;
     # **Advanced**: The Data Coding Scheme value of the message
     int messageClass?;
     # **Advanced**: The format of the message body
-    string 'type?;
+    string 'type = "text";
     # **Advanced**: A business card in [vCard format](https://en.wikipedia.org/wiki/VCard). Depends on `type` parameter having the value `vcard`.
     string vcard?;
     # **Advanced**: A calendar event in [vCal format](https://en.wikipedia.org/wiki/VCal). Depends on `type` parameter having the value `vcal`.

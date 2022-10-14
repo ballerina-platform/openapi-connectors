@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "/oauth/token";
 |};
 
 # This is a generated connector for [Formstack REST API v2.0](https://formstack.readme.io/docs/api-overview) OpenAPI specification.
@@ -85,7 +96,7 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function getFormById(int id) returns Form|error {
-        string resourcePath = string `/form/${id}.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}.json`;
         Form response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -95,7 +106,7 @@ public isolated client class Client {
     # + payload - Form Request 
     # + return - Successful response 
     remote isolated function updateFormById(int id, FormRequest payload) returns SuccessOperation|error {
-        string resourcePath = string `/form/${id}.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -107,8 +118,8 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function deleteFormById(int id) returns SuccessOperation|error {
-        string resourcePath = string `/form/${id}.json`;
-        SuccessOperation response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/form/${getEncodedUri(id)}.json`;
+        SuccessOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a copy of the specified form
@@ -116,7 +127,7 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function copyFormById(int id) returns Operation|error {
-        string resourcePath = string `/form/${id}/copy.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}/copy.json`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Operation response = check self.clientEp-> post(resourcePath, request);
@@ -127,7 +138,7 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function getBasicFormById(int id) returns Form|error {
-        string resourcePath = string `/form/${id}/basic.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}/basic.json`;
         Form response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -136,7 +147,7 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function getHtmlFormById(int id) returns HtmlForm|error {
-        string resourcePath = string `/form/${id}/html.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}/html.json`;
         HtmlForm response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -157,7 +168,7 @@ public isolated client class Client {
     # + id - Folder ID 
     # + return - Successful response 
     remote isolated function getFolderById(int id) returns Folder|error {
-        string resourcePath = string `/folder/${id}.json`;
+        string resourcePath = string `/folder/${getEncodedUri(id)}.json`;
         Folder response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -167,7 +178,7 @@ public isolated client class Client {
     # + payload - Folder Request 
     # + return - Successful response 
     remote isolated function updateFolderById(int id, FolderRequest payload) returns SuccessOperation|error {
-        string resourcePath = string `/folder/${id}.json`;
+        string resourcePath = string `/folder/${getEncodedUri(id)}.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -179,8 +190,8 @@ public isolated client class Client {
     # + id - Folder ID 
     # + return - Successful response 
     remote isolated function deleteFolderById(int id) returns SuccessOperation|error {
-        string resourcePath = string `/folder/${id}.json`;
-        SuccessOperation response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/folder/${getEncodedUri(id)}.json`;
+        SuccessOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all fields for the specified form
@@ -188,7 +199,7 @@ public isolated client class Client {
     # + id - Form ID 
     # + return - Successful response 
     remote isolated function getAllFields(int id) returns Fields|error {
-        string resourcePath = string `/form/${id}/field.json`;
+        string resourcePath = string `/form/${getEncodedUri(id)}/field.json`;
         Fields response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -197,7 +208,7 @@ public isolated client class Client {
     # + id - Field ID 
     # + return - Successful response 
     remote isolated function getFieldById(int id) returns Field|error {
-        string resourcePath = string `/field/${id}.json`;
+        string resourcePath = string `/field/${getEncodedUri(id)}.json`;
         Field response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + payload - Field Request 
     # + return - Successful response 
     remote isolated function updateFieldById(int id, FieldRequest payload) returns SuccessOperation|error {
-        string resourcePath = string `/field/${id}.json`;
+        string resourcePath = string `/field/${getEncodedUri(id)}.json`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -219,8 +230,8 @@ public isolated client class Client {
     # + id - Field ID 
     # + return - Successful response 
     remote isolated function deleteFieldById(int id) returns SuccessOperation|error {
-        string resourcePath = string `/field/${id}.json`;
-        SuccessOperation response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/field/${getEncodedUri(id)}.json`;
+        SuccessOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

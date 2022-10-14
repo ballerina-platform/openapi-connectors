@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,19 @@
 # Contains a list of forms libraries.
 public type FormLibrarySummaryList record {
     # A list of form libraries.
-    FormLibrarySummary[]? formsLibrarySummaries?;
+    FormLibrarySummary[] formsLibrarySummaries?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # The `TimeZones` resource enables you to list the time zones that you can assign to an office.
@@ -37,25 +37,25 @@ public type TimeZones record {
     # The id of the time zone for the office address.
     # 
     # Example: `eastern` (for the Eastern US Time Zone)
-    string? timeZoneId?;
+    string timeZoneId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # This request object contains details about the person who you want to invite.
 public type ClassicAgentToInvite record {
     # (Required) The user's first name.
-    string? firstName;
+    string firstName;
     # (Required) The user's last name.
-    string? lastName;
+    string lastName;
     # (Required) The user's email address.
-    string? email;
+    string email;
     # (Required) The id of the office. This is the id that the system generated when you created the office.
-    int? officeId;
+    int officeId;
     # Company type ID
-    string? companyTypeId?;
+    string companyTypeId?;
     # (Required) When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The `eSignPermissionProfileId` is the id of the eSignature permission set to assign to the member.
-    string? eSignPermissionProfileId?;
+    string eSignPermissionProfileId?;
 };
 
 # Result from getting a form group.
@@ -63,115 +63,115 @@ public type FormGroup record {
     # The ID of the form group.
     # 
     # Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
-    string? formGroupId?;
+    string formGroupId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # An array of office IDs.
-    int[]? officeIds?;
+    int[] officeIds?;
     # A list of forms.
-    GroupForm[]? forms?;
+    GroupForm[] forms?;
 };
 
 # A task list template is a custom task list that can be added to rooms.
 public type TaskListTemplates record {
     # The id of the task list template.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The total number of tasks in the task list template.
-    int? taskCount?;
+    int taskCount?;
     # The number of tasks in the task list template that have documents associated with them.
-    int? tasksWithDocumentsCount?;
+    int tasksWithDocumentsCount?;
 };
 
 # The Users resource provides methods that enable you to add, update, delete, and manage users. A user is a person who is either added to a room (as a participant), or who is a member of a company.
 public type Users record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # When set to **true**, an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
-    boolean? isLockedOut?;
+    boolean isLockedOut?;
     # Valid values are 'Active', 'Pending'
-    string? status?;
+    string status?;
     # Access level
-    AccessLevel? accessLevel?;
+    AccessLevel accessLevel?;
     # The id of the user's default office.
-    int? defaultOfficeId?;
+    int defaultOfficeId?;
     # In Rooms Version 5, this is the id of the custom job title for a Manager role within your company. For example, your company might have the custom job titles "Transaction Coordinator" and "Office Manager".
     # 
     # **Note**: If you are using Rooms Version 5, you must enter a `titleId` when using the Users::InviteClassicManager method. (The `titleId` property is empty for Agent users on Rooms Version 5.) If you are using Rooms Version 6, use the Users::InviteUser method with the `roleId` property instead.
-    int? titleId?;
+    int titleId?;
     # In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # The URL for the user's profile image.
-    string? profileImageUrl?;
+    string profileImageUrl?;
     # An array of office ids for the offices in which a user with an `Office` or `Contributor` `accessLevel` has been granted the ability to participate.
-    int[]? offices?;
+    int[] offices?;
     # An array of region ids for the regions in which a user with the `Region accessLevel` has been granted the ability to participate.
-    int[]? regions?;
+    int[] regions?;
     # This object contains details about user permissions. These permissions are associated only with Rooms v5.
-    ClassicManagerPermissions? permissions?;
+    ClassicManagerPermissions permissions?;
 };
 
 # Contains information about a document.
 public type Document record {
     # The ID of the document.
-    int? documentId?;
+    int documentId?;
     # The file name associated with the document.
-    string? name;
+    string name;
     # The id of the room associated with the document.
-    int? roomId?;
+    int roomId?;
     # The id of the user who owns the document.
-    int? ownerId?;
+    int ownerId?;
     # The size of the document in bytes.
-    int? size?;
+    int size?;
     # The id of the folder that holds the document.
-    int? folderId?;
+    int folderId?;
     # The date and time when the document was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-11-11T17:15:14.82`
-    string? createdDate?;
+    string createdDate?;
     # When set to **true**, indicates that the document is signed.
-    boolean? isSigned?;
+    boolean isSigned?;
     # Content type
-    string? contentType?;
+    string contentType?;
     # The base64-encoded contents of the document. This property is only included in the response when you use the `includeContents` query parameter and set it to **true**.
-    string? base64Contents;
+    string base64Contents;
 };
 
 # This object contains details about a room.
 public type RoomSummary record {
     # The id of the room.
-    int? roomId?;
+    int roomId?;
     # The name of the room.
-    string? name?;
+    string name?;
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # The UTC DateTime when the room was submitted for review.
     # 
     # **Note**: In Rooms v5, this is when an agent submitted the room to a manager. In Rooms v6, this is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true**.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # The UTC date and time when the room was closed.
-    string? closedDate?;
+    string closedDate?;
     # The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
-    string? rejectedDate?;
+    string rejectedDate?;
     # The id of the user who created the room.
-    int? createdByUserId?;
+    int createdByUserId?;
     # The id of the user who rejected the room.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # The reason why a room was closed. Possible values are:
     # 
     # - `sold`: Property sold.
@@ -195,9 +195,9 @@ public type RoomSummary record {
     # - `attiss`: Attorney review issues.
     # - `proplsd`: Property leased. Use for the list side of the transaction.
     # - `tenlease`: Tenant signed lease. Use when an agent helps renters find a to lease.   
-    string? closedStatusId?;
+    string closedStatusId?;
     # Field data last updated date
-    string? fieldDataLastUpdatedDate?;
+    string fieldDataLastUpdatedDate?;
 };
 
 # The `States` resource provides a method that enables you to retrieve a list of states and state ids that the Rooms API uses.
@@ -205,51 +205,51 @@ public type States record {
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # This resource provides a method that returns a URL for a new external form fill session, based on the `roomId` and `formId` that you specify in the `formFillSessionForCreate` request body.
 public type ExternalFormFillSessions record {
     # URL for a new external form fill session
-    string? url?;
+    string url?;
 };
 
 # Object that contains a summary of information about a requested group of offices in the Rooms account.
 public type OfficeSummaryList record {
     # A list of `OfficeSummary` objects containing summary information about an office.
-    OfficeSummary[]? officeSummaries?;
+    OfficeSummary[] officeSummaries?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The index position within the total result set from which returned values start.
-    int? startPosition?;
+    int startPosition?;
     # The index position within the total result set at which returned values end.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Object that contains a summary of information about a requested group of regions in the Rooms account.
 public type RegionSummaryList record {
     # A list of `RegionSummary` objects containing summary information on a region; the elements of this object are identical to those of the `Regions` object.
-    RegionSummary[]? regionSummaries?;
+    RegionSummary[] regionSummaries?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains details about a supported currency.
@@ -257,11 +257,11 @@ public type Currency record {
     # The three-letter code for the currency.
     # 
     # Example: `CAD`
-    string? currencyId?;
+    string currencyId?;
     # The name of the currency.
     # 
     # Example: `Canadian Dollar`
-    string? name?;
+    string name?;
 };
 
 # Contains details about a form in a form library.
@@ -269,15 +269,15 @@ public type FormSummary record {
     # The id of the form.
     # 
     # Example: `301f560d-xxxx-xxxx-xxxx-063a47cc12c2`
-    string? libraryFormId?;
+    string libraryFormId?;
     # The name of the form. 
     # 
     # Example: `Short Sale Supplement to Marketing Agreement`
-    string? name?;
+    string name?;
     # The date and time when the form was last updated.
     # 
     # Example: `2017-08-11T19:58:36.18`
-    string? lastUpdatedDate?;
+    string lastUpdatedDate?;
 };
 
 # Contains information about a special circumstance type.
@@ -285,7 +285,7 @@ public type SpecialCircumstanceType record {
     # The id of the special circumstance type.
     # 
     # Example: `ss` (for `Short Sale`)
-    string? specialCircumstanceTypeId?;
+    string specialCircumstanceTypeId?;
     # The name of the special circumstance type. Possible values are:
     # 
     # - `Short Sale`
@@ -297,41 +297,43 @@ public type SpecialCircumstanceType record {
     # - `Estate Sale`
     # - `Relocation`
     # - `Contingency`
-    string? name?;
+    string name?;
 };
 
+# 
 public type TaskStatuses record {
-    string? taskStatusId?;
+    # 
+    string taskStatusId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains details about how a field is configured.
 public type FieldConfiguration record {
     # The maximum value allowed for the field.
-    float? maxValue?;
+    decimal maxValue?;
     # The minimum value allowed for the field.
-    float? minValue?;
+    decimal minValue?;
     # This property is used for validation. When you set a number value for this property, the value for the field must be a multiple of it.
-    float? multipleOf?;
+    decimal multipleOf?;
     # The maximum length of the field.
-    int? maxLength?;
+    int maxLength?;
     # The minimum length of the field.
-    int? minLength?;
+    int minLength?;
     # The regular expression pattern to use to validate the value of the field.
-    string? pattern?;
+    string pattern?;
     # When set to **true**, the field is a parent field on which one or more child fields depend.
-    boolean? isPublisher?;
+    boolean isPublisher?;
     # This property applies to child fields. It contains information about the parent field that must have a value set in order for this field to have a value. For example, you must specify a country before you can select a state.
-    DependsOn[]? dependsOn?;
+    DependsOn[] dependsOn?;
     # An array of options in a list.
-    SelectListFieldOption[]? options?;
+    SelectListFieldOption[] options?;
 };
 
 # Contains the URL for the new form fill session.
 public type ExternalFormFillSession record {
     # The URL for the new form fill session.
-    string? url?;
+    string url?;
 };
 
 # This resource provides a method that enables you retrieve a list of closing statuses, or valid reasons for closing a room.
@@ -339,9 +341,9 @@ public type ClosingStatuses record {
     # The id of the closing status.
     # 
     # Example: `exp`
-    string? closingStatusId?;
+    string closingStatusId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains information about a seller decision type.
@@ -349,7 +351,7 @@ public type SellerDecisionType record {
     # The id of the seller decision type.
     # 
     # Example: `appr` (for `Approved`)
-    string? sellerDecisionTypeId?;
+    string sellerDecisionTypeId?;
     # The name of the seller decision type. Possible values are:
     # 
     # - `Pending`
@@ -357,16 +359,17 @@ public type SellerDecisionType record {
     # - `Countered`
     # - `Rejected`
     # - `Pending Rejection`
-    string? name?;
+    string name?;
 };
 
+# 
 public type Regions record {
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # String that specifies the region name.
-    string? name;
+    string name;
     # UTC datetime that the region was created (for example "2019-06-27T19:32:46.943"). Note that the service assigns this value, so it is read-only.
-    string? createdDate?;
+    string createdDate?;
 };
 
 # This object contains information about a role.
@@ -376,52 +379,52 @@ public type Roles record {
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # The legacy name of the role in Rooms Version 5.
-    string? legacyRoleId?;
+    string legacyRoleId?;
     # The name of the role. 
     # 
     # Examples: 
     # 
     # - `Agent`
     # - `Default Admin`
-    string? name?;
+    string name?;
     # When **true**, the role is the default for account administrators.
-    boolean? isDefaultForAdmin?;
+    boolean isDefaultForAdmin?;
     # When set to **true**, the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-    boolean? isExternal?;
+    boolean isExternal?;
     # The UTC DateTime when the role was created.
-    string? createdDate?;
+    string createdDate?;
     # When set to **true**, indicates that this role is currently assigned to a user.
-    boolean? isAssigned?;
+    boolean isAssigned?;
     # Contains details about permissions.
-    Permissions? permissions?;
+    Permissions permissions?;
 };
 
 # Contains information about a task list.
 public type TaskListSummary record {
     # The id of the task list.
-    int? taskListId?;
+    int taskListId?;
     # The name of the task list.
-    string? name?;
+    string name?;
     # The id of the task list template.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
     # The UTC DateTime when the task list was submitted for review.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # The UTC DateTime when the task list was approved.
-    string? approvalDate?;
+    string approvalDate?;
     # The date on which the reviewer rejected the task list.
-    string? rejectedDate?;
+    string rejectedDate?;
     # The UTC date and time when the task list was created. This is a read-only value that the service assigns.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? createdDate?;
+    string createdDate?;
     # The id of the user who approved the task list.
-    int? approvedByUserId?;
+    int approvedByUserId?;
     # The id of the user who rejected the task list.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # Contains a user comment about the task list.
-    string? comment?;
+    string comment?;
 };
 
 # Contains details about an option in a list.
@@ -433,11 +436,11 @@ public type SelectListFieldOption record {
     # The title or name of the list option.
     # 
     # Example: `Australia`
-    string? title?;
+    string title?;
     # The order of the list option in the list.
     # 
     # Example: `3`
-    int? 'order?;
+    int 'order?;
 };
 
 # Contains information about a time zone.
@@ -445,45 +448,45 @@ public type TimeZone record {
     # The id of the time zone.
     # 
     # Example: `brisbane`
-    string? timeZoneId?;
+    string timeZoneId?;
     # The name of the time zone.
     # 
     # Example: `Eastern Australia (Brisbane)`
-    string? name?;
+    string name?;
 };
 
 # Contains details about the role that you want to create.
 public type RoleForCreate record {
     # The name of the role.
-    string? name?;
+    string name?;
     # When set to **true**, the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-    boolean? isExternal?;
+    boolean isExternal?;
     # Contains details about permissions.
-    Permissions? permissions?;
+    Permissions permissions?;
 };
 
 # A list of room folder results.
 public type RoomFolderList record {
     # An array of room folders.
-    RoomFolder[]? folders?;
+    RoomFolder[] folders?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains information about the task list template to use to create the new task list.
 public type TaskListForCreate record {
     # (Required) The id of the task list template.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
 };
 
 # Contains details about a supported country.
@@ -491,262 +494,263 @@ public type Country record {
     # The two-letter code for the country. 
     # 
     # Example: `NZ`
-    string? countryId?;
+    string countryId?;
     # The name of the country. 
     # 
     # Example: `New Zealand`
-    string? name?;
+    string name?;
 };
 
 # This object describes errors that occur. It is valid only for responses and ignored in requests.
 public type ApiError record {
     # The code associated with the error condition.
-    string? errorCode?;
+    string errorCode?;
     # A brief message describing the error condition.
-    string? message?;
+    string message?;
 };
 
 # A list of documents in a room.
 public type RoomDocumentList record {
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
     # An array of room documents.
-    RoomDocument[]? documents?;
+    RoomDocument[] documents?;
 };
 
 # Contains information about an office.
 public type Office record {
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The name of the office.
-    string? name;
+    string name;
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # First line of the office street address.
-    string? address1?;
+    string address1?;
     # Second line of the office street address.
-    string? address2?;
+    string address2?;
     # City name or metropolitan area of the office address.
-    string? city?;
+    string city?;
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # Postal code or ZIP code of the office address.
-    string? postalCode?;
+    string postalCode?;
     # The two-letter country code of the office address (for example, "UK" for United Kingdom).
-    string? countryId?;
+    string countryId?;
     # The id of the time zone for the office address.
     # 
     # Example: `eastern` (for the Eastern US Time Zone)
-    string? timeZoneId?;
+    string timeZoneId?;
     # Phone number of the office.
-    string? phone?;
+    string phone?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
 };
 
 # This request object contains the details to use for the update.
 public type RoleForUpdate record {
     # The name of the role.
-    string? name?;
+    string name?;
     # When set to **true**, the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-    boolean? isExternal?;
+    boolean isExternal?;
     # Contains details about permissions.
-    Permissions? permissions?;
+    Permissions permissions?;
 };
 
 # Product version
-public type ProductVersion string?;
+public type ProductVersion string;
 
 # Contains details about a field set.
 public type FieldSet record {
     # The id of the field set.
     # 
     # Example: `4aef602b-xxxx-xxxx-xxxx-08d76696f678`
-    string? fieldSetId?;
+    string fieldSetId?;
     # The title or name of the field set.
-    string? title?;
+    string title?;
     # An array of fields.
-    Field[]? fields?;
+    Field[] fields?;
 };
 
 # The information to use for the invitation.
 public type RoomInvite record {
     # The user's email address.
-    string? email;
+    string email;
     # The user's first name.
-    string? firstName;
+    string firstName;
     # The user's last name.
-    string? lastName;
+    string lastName;
     # In Rooms Version 6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who are not part of your organization.
     # 
     # **Note**: If you are using Rooms Version 6, you must enter a `roleId` in requests. If you are using Rooms Version 5, you must use one of the Users::InviteClassic methods with the `titleId` property instead.
-    int? roleId;
+    int roleId;
     # Required for a real estate company; otherwise ignored.
-    string? transactionSideId?;
+    string transactionSideId?;
 };
 
 # Contains information about whether the field is required when a room is created or submitted for review.
 public type CustomData record {
     # When set to **true**, the field is required when a new room is created.
-    boolean? isRequiredOnCreate?;
+    boolean isRequiredOnCreate?;
     # When set to **true**, the field is required when a room is submitted for review.
-    boolean? isRequiredOnSubmit?;
+    boolean isRequiredOnSubmit?;
 };
 
 # This complex type contains details about rooms.
 public type RoomSummaryList record {
     # An array of `roomSummary` objects.
-    RoomSummary[]? rooms?;
+    RoomSummary[] rooms?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
+# 
 public type DocumentUser record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The ID of the document.
-    int? documentId?;
+    int documentId?;
     # The file name associated with the document.
-    string? name?;
+    string name?;
     # **True** if the user `userId` has access to this document.
-    boolean? hasAccess?;
+    boolean hasAccess?;
     # **True** if the user `userId` has can approve a task for this document.
-    boolean? canApproveTask?;
+    boolean canApproveTask?;
     # **True** if the user `userId` can assign this document to a task list.
-    boolean? canAssignToTaskList?;
+    boolean canAssignToTaskList?;
     # **True** if the user `userId` can make a copy of this document.
-    boolean? canCopy?;
+    boolean canCopy?;
     # **True** if the user `userId` can delete this document.
-    boolean? canDelete?;
+    boolean canDelete?;
     # **True** if the user `userId` can remove this document from a task list.
-    boolean? canRemoveFromTaskList?;
+    boolean canRemoveFromTaskList?;
     # **True** if the user `userId` can remove approval for this document.
-    boolean? canRemoveApproval?;
+    boolean canRemoveApproval?;
     # **True** if the user `userId` can rename this document.
-    boolean? canRename?;
+    boolean canRename?;
     # **True** if the user `userId` can share this document.
-    boolean? canShare?;
+    boolean canShare?;
     # **True** if the user `userId` can view activity on this document.
-    boolean? canViewActivity?;
+    boolean canViewActivity?;
 };
 
 # The `TaskResponsibilityTypes` resource enables you to return a list of responsibility types that you can assign to users when you add them to a task. 
 public type TaskResponsibilityTypes record {
     # The id of the task responsibility type.
-    string? taskResponsibilityTypeId?;
+    string taskResponsibilityTypeId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains a list of origins of leads.
 public type GlobalOriginsOfLeads record {
     # A list of origins of leads.
-    OriginOfLead[]? originsOfLeads?;
+    OriginOfLead[] originsOfLeads?;
 };
 
 # Information about the sent invitation.
 public type RoomInviteResponse record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The id of the room.
-    int? roomId?;
+    int roomId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # The id of the transaction side. Valid values are:
     # 
     # - `buy`
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
     # In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
 };
 
 # Room document owner
 public type RoomDocumentOwner record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # The company name.
-    string? companyName?;
+    string companyName?;
     # The source of the user's profile picture.
-    string? imageSrc?;
+    string imageSrc?;
 };
 
 # A complex element containing summary information on an office; the elements of this object are identical to those of the `Offices` object.
 public type OfficeSummary record {
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # First line of the office street address.
-    string? address1?;
+    string address1?;
     # Second line of the office street address.
-    string? address2?;
+    string address2?;
     # City name or metropolitan area of the office address.
-    string? city?;
+    string city?;
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # Postal code or ZIP code of the office address.
-    string? postalCode?;
+    string postalCode?;
     # The two-letter country code of the office address (for example, "UK" for United Kingdom).
-    string? countryId?;
+    string countryId?;
     # The id of the time zone for the office address.
     # 
     # Example: `eastern` (for the Eastern US Time Zone)
-    string? timeZoneId?;
+    string timeZoneId?;
     # Phone number of the office.
-    string? phone?;
+    string phone?;
     # UTC datetime that the office was created (for example, "2019-07-17T17:45:42.783"). Note that the service assigns this value, so it is read-only.
-    string? createdDate?;
+    string createdDate?;
 };
 
 # This object contains information about the office that you want to add a member to or remove a member from.
 public type DesignatedOffice record {
     # (Required) The id of the office. This is the id that the system generated when you created the office.
-    int? officeId;
+    int officeId;
 };
 
 # Group information to assign form
@@ -754,9 +758,9 @@ public type FormGroupFormToAssign record {
     # The id of the form.
     # 
     # Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-    string? formId;
+    string formId;
     # **True** if the form is required.
-    boolean? isRequired?;
+    boolean isRequired?;
 };
 
 # The `FormGroups` resource enables you to create and manage custom groups of association forms.
@@ -764,18 +768,18 @@ public type FormGroups record {
     # The ID of the form group.
     # 
     # Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
-    string? formGroupId?;
+    string formGroupId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The number of forms in the form library. 
     # 
     # Example: `50`
-    int? formCount?;
+    int formCount?;
 };
 
 public type RoomidPictureBody record {
     # Image
-    string? file?;
+    string file?;
 };
 
 # Contains key-value pairs that specify the properties of the room and their values.
@@ -809,16 +813,18 @@ public type FieldDataForCreate record {
     record {} data?;
 };
 
+# 
 public type TaskStatus record {
-    string? taskStatusId?;
+    # 
+    string taskStatusId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains a list of financing types.
 public type GlobalFinancingTypes record {
     # A list of financing types.
-    FinancingType[]? financingTypes?;
+    FinancingType[] financingTypes?;
 };
 
 # The `Currencies` method provides a resource that enables you to retrieve a list currencies that you can use for listing, offer, and loan amounts.
@@ -826,46 +832,49 @@ public type Currencies record {
     # The three-letter code for the currency.
     # 
     # Example: `CAD`
-    string? currencyId?;
+    string currencyId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
+# 
 public type RoomFolders record {
-    int? roomFolderId?;
+    # 
+    int roomFolderId?;
     # The name of the office.
-    string? name?;
-    boolean? isDefault?;
+    string name?;
+    # 
+    boolean isDefault?;
 };
 
 # The Rooms resource provides methods that enable you to create and manage rooms. In Rooms for Real Estate, a room is a collaborative digital space corresponding to a specific property. In Rooms for Mortgages, a room corresponds to a specific loan.
 public type Rooms record {
     # The id of the room.
-    int? roomId?;
+    int roomId?;
     # The id of the company.
-    int? companyId?;
+    int companyId?;
     # The name of the room.
     # 
     # Maximum Length: 100 characters.
-    string? name?;
+    string name?;
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # The UTC DateTime when the room was submitted for review.
     # 
     # **Note**: In Rooms v5, this is when an agent submitted the room to a manager. In Rooms v6, this is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true**.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # The UTC date and time when the room was closed.
-    string? closedDate?;
+    string closedDate?;
     # The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
-    string? rejectedDate?;
+    string rejectedDate?;
     # The id of the user who created the room.
-    int? createdByUserId?;
+    int createdByUserId?;
     # The id of the user who rejected the room.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # The reason why a room was closed. Possible values are:
     # 
     # - `sold`: Property sold.
@@ -889,9 +898,9 @@ public type Rooms record {
     # - `attiss`: Attorney review issues.
     # - `proplsd`: Property leased. Use for the list side of the transaction.
     # - `tenlease`: Tenant signed lease. Use when an agent helps renters find a to lease.   
-    string? closedStatusId?;
+    string closedStatusId?;
     # The field data associated with a room. See [Rooms::GetRoomFieldData](/rooms-api/reference/Rooms/Rooms/GetRoomFieldData).
-    FieldData? fieldData?;
+    FieldData fieldData?;
 };
 
 # The field data associated with a room. See [Rooms::GetRoomFieldData](/rooms-api/reference/Rooms/Rooms/GetRoomFieldData).
@@ -930,132 +939,133 @@ public type FormDetails record {
     # The id of the form.
     # 
     # Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-    string? formId?;
+    string formId?;
     # The name of the form.
     # 
     # Example: `MORe Private Network Addendum`
-    string? name?;
+    string name?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? lastUpdatedDate?;
+    string lastUpdatedDate?;
     # The UTC DateTime when the form was made available or published. (It is possible for a form to be published but not yet available.)
-    string? availableOnDate?;
+    string availableOnDate?;
     # The name of the organization that owns the form.
     # 
     # Example: `Mainstreet organization of Realtors`
-    string? ownerName?;
+    string ownerName?;
     # The version of the form. 
     # 
     # Example: `1`
-    string? 'version?;
+    string 'version?;
     # The number of pages in the form.
     # 
     # Example: `2`
-    int? numberOfPages?;
+    int numberOfPages?;
 };
 
-public type FieldsCustomDataFilterType string?;
+# 
+public type FieldsCustomDataFilterType string;
 
 # An individual document in a room.
 public type RoomDocument record {
     # The ID of the document.
-    int? documentId?;
+    int documentId?;
     # The file name of the document.
     # 
     # Example: `Short Sale Supplement to Marketing Agreement.pdf`
-    string? name?;
+    string name?;
     # The id of the user who owns the document.
-    int? ownerId?;
+    int ownerId?;
     # The size of the document in bytes.
-    int? size?;
+    int size?;
     # The id of the folder the document is in.
-    int? folderId?;
+    int folderId?;
     # The UTC date and time that the document was created or uploaded. 
     # 
     # Example: `2019-07-25T22:18:56.95Z`
-    string? createdDate?;
+    string createdDate?;
     # When set to **true**, this property indicates that the document is signed.
-    boolean? isSigned?;
+    boolean isSigned?;
     # The id of the corresponding DocuSign form.
-    string? docuSignFormId?;
+    string docuSignFormId?;
     # **True** if the document is archived.
-    boolean? isArchived?;
+    boolean isArchived?;
     # **True** if the document is virtual.
-    boolean? isVirtual?;
+    boolean isVirtual?;
     # Room document owner
-    RoomDocumentOwner? owner?;
+    RoomDocumentOwner owner?;
 };
 
 # Request object for FormGroup::CreateFormGroup.
 public type FormGroupForCreate record {
     # The name of the group.
-    string? name;
+    string name;
 };
 
 # Contains information about a task list.
 public type TaskSummary record {
     # The id of the task list.
-    int? taskId?;
+    int taskId?;
     # The name of the task list.
-    string? name?;
+    string name?;
     # When set to **true**, the task must be completed and reviewed before it can be closed.
-    boolean? requiresApproval?;
+    boolean requiresApproval?;
     # The id of the due date type (such as Actual Close Date or Contract Date).
-    string? dueDateTypeId?;
+    string dueDateTypeId?;
     # The number of days before or after the due date (specified by the `dueDateTypeId`) within which the task must be completed. A negative number indicates that the task must be completed within a certain number of days before the due date. A positive number indicates that the task must be completed within a certain number of days after the due date.
-    int? dueDateOffset?;
+    int dueDateOffset?;
     # A specific calendar due date for the task.
     # 
     # In the API, this value is a UTC DateTime that does not actually include a time.
     # 
     # Example: 2019-07-17T00:00:00.000Z
-    string? fixedDueDate?;
+    string fixedDueDate?;
     # The id of the user who owns the task.
-    int? ownerUserId?;
+    int ownerUserId?;
     # The UTC DateTime when the task was completed.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? completionDate?;
+    string completionDate?;
     # The UTC DateTime when the task was approved.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? approvalDate?;
+    string approvalDate?;
     # The date on which the reviewer rejected the task.
-    string? rejectedDate?;
+    string rejectedDate?;
     # 	
     # The UTC date and time when the task was created. This is a read-only value that the service assigns.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? createdDate?;
+    string createdDate?;
     # When set to **true**, the task is associated with a document.
-    boolean? isDocumentTask?;
+    boolean isDocumentTask?;
     # When set to **true**, the task is optional. If the task is completed (if a document is added or the task is marked complete), it must be reviewed before it can be closed.
-    boolean? requiresReview?;
+    boolean requiresReview?;
 };
 
 # Contains details about a task list template.
 public type TaskListTemplate record {
     # The id of the task list template.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
     # The name of the task list template.
-    string? name?;
+    string name?;
     # The total number of tasks in the task list template.
-    int? taskCount?;
+    int taskCount?;
     # The number of tasks in the task list template that have documents associated with them.
-    int? tasksWithDocumentsCount?;
+    int tasksWithDocumentsCount?;
 };
 
 # This request object contains the details about the new room.
 public type RoomForCreate record {
     # (Required) The name of the room.
-    string? name;
+    string name;
     # (Required) The id of the role that the owner has in the room.
-    int? roleId;
+    int roleId;
     # The id of the transaction side. Valid values are:
     # 
     # - `buy`
@@ -1064,93 +1074,93 @@ public type RoomForCreate record {
     # - `refi`
     # 
     # **Note**: This property is required for real estate companies, and otherwise ignored.
-    string? transactionSideId?;
+    string transactionSideId?;
     # The id of the user who owns the room.
-    int? ownerId?;
+    int ownerId?;
     # (Optional) The id of the template to use to create the room.
-    int? templateId?;
+    int templateId?;
     # (Optional) The id of the office associated with the room. Required when creating a room on behalf of someone else or a Manager-owned room. 
-    int? officeId?;
+    int officeId?;
     # Contains key-value pairs that specify the properties of the room and their values.
-    FieldDataForCreate? fieldData?;
+    FieldDataForCreate fieldData?;
 };
 
 # This complex type contains details about the users associated with a room.
 public type RoomUsersResult record {
     # An array of `RoomUser` objects.
-    RoomUserSummary[]? users?;
+    RoomUserSummary[] users?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains details about a role.
 public type RoleSummary record {
     # In Rooms v6, this is the id of the company role assigned to the user.
-    int? roleId?;
+    int roleId?;
     # The legacy name of the role in Rooms Version 5.
-    string? legacyRoleId?;
+    string legacyRoleId?;
     # The name of the role.
-    string? name?;
+    string name?;
     # When **true**, the role is the default for account administrators.
-    boolean? isDefaultForAdmin?;
+    boolean isDefaultForAdmin?;
     # When set to **true**, the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-    boolean? isExternal?;
+    boolean isExternal?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
 };
 
 # Information about accounts.
 public type Accounts record {
     # The id of the company.
-    int? companyId?;
+    int companyId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # Product version
-    ProductVersion? companyVersion?;
+    ProductVersion companyVersion?;
     # The globally-unique identifier (GUID) for the DocuSign Rooms account.
-    string? docuSignAccountGuid?;
+    string docuSignAccountGuid?;
     # The id of the company's default field set. A field set is a set of data fields and the information about those data fields that the system uses to configure rooms. It corresponds to the **Admin > Company > Room Details** area in the console.
-    string? defaultFieldSetId?;
+    string defaultFieldSetId?;
     # Require office library assignments
-    boolean? requireOfficeLibraryAssignments?;
+    boolean requireOfficeLibraryAssignments?;
 };
 
 # The room template resources provides a method that enables you to retrieve the room templates associated with an account.
 public type RoomTemplates record {
     # The id of the room template.
-    int? roomTemplateId?;
+    int roomTemplateId?;
     # The name of the room template.
-    string? name?;
+    string name?;
     # The total number of task templates that the room template uses.
-    int? taskTemplateCount?;
+    int taskTemplateCount?;
 };
 
 # Contains details about a company account.
 public type AccountSummary record {
     # The id of the company.
-    int? companyId?;
+    int companyId?;
     # The name of the company.
-    string? name?;
+    string name?;
     # Product version
-    ProductVersion? companyVersion?;
+    ProductVersion companyVersion?;
     # The globally-unique identifier (GUID) for the DocuSign Rooms account.
-    string? docuSignAccountGuid?;
+    string docuSignAccountGuid?;
     # The id of the company's default field set. A field set is a set of data fields and the information about those data fields that the system uses to configure rooms. It corresponds to the **Admin > Company > Room Details** area in the console.
-    string? defaultFieldSetId?;
+    string defaultFieldSetId?;
     # Require office library assignments
-    boolean? requireOfficeLibraryAssignments?;
+    boolean requireOfficeLibraryAssignments?;
 };
 
 # The `OriginsOfLeads` resource enables you to get a list of origins of leads (such as Trulia or Zillow) that you can specify for rooms.
@@ -1158,21 +1168,23 @@ public type OriginsOfLeads record {
     # The id of the origin of lead.
     # 
     # Example: `tru` (for `Trulia`)
-    string? originOfLeadId?;
+    string originOfLeadId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
+# 
 public type GlobalTaskStatuses record {
-    TaskStatus[]? taskStatuses?;
+    # 
+    TaskStatus[] taskStatuses?;
 };
 
 # The `Countries` resource provide a method that enables you to retrieve a list of countries in which you can create an office.
 public type Countries record {
     # The two-letter country code of the office address (for example, "UK" for United Kingdom).
-    string? countryId?;
+    string countryId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # This resource provides a method that returns a list of date types that you can use with tasks, such as `Actual Close Date` and `Task Due Date`.
@@ -1180,37 +1192,37 @@ public type TaskDateTypes record {
     # The id of the task date type.
     # 
     # Example: `tdd` (for `Task Due Date`)
-    string? taskDateTypeId?;
+    string taskDateTypeId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # This response object contains details about the new task list.
 public type TaskList record {
     # The id of the task list.
-    int? taskListId?;
+    int taskListId?;
     # The name of the task list.
-    string? name?;
+    string name?;
     # The id of the task list template used to create the task list.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
     # The UTC DateTime when the task list was submitted for review.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # The UTC DateTime when the task list was approved.
-    string? approvalDate?;
+    string approvalDate?;
     # The UTC DateTime when the reviewer rejected the task list. 
-    string? rejectedDate?;
+    string rejectedDate?;
     # The UTC date and time when the task list was created. This is a read-only value that the service assigns.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? createdDate?;
+    string createdDate?;
     # The id of the user who approved the task list.
-    int? approvedByUserId?;
+    int approvedByUserId?;
     # The id of the user who rejected the task list.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # Contains a comment about the task list.
-    string? comment?;
+    string comment?;
     # A list of tasks in the task list.
-    TaskSummary[]? tasks?;
+    TaskSummary[] tasks?;
 };
 
 # The field data to update. When updating field data, specify only the fields being updated.
@@ -1247,46 +1259,46 @@ public type FieldDataForUpdate record {
 # Contains details about a user.
 public type UserSummary record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # When set to **true**, an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
-    boolean? isLockedOut?;
+    boolean isLockedOut?;
     # The user's status. Possible values are:
     # 
     # - `Active`
     # - `Pending`
-    string? status?;
+    string status?;
     # Access level
-    AccessLevel? accessLevel?;
+    AccessLevel accessLevel?;
     # The id of the user's default office.
-    int? defaultOfficeId?;
+    int defaultOfficeId?;
     # In Rooms Version 5, this is the id of the custom job title for a Manager role within your company. For example, your company might have the custom job titles "Transaction Coordinator" and "Office Manager".
     # 
     # **Note**: If you are using Rooms Version 5, you must enter a `titleId` when using the Users::InviteClassicManager method. (The `titleId` property is empty for Agent users on Rooms Version 5.) If you are using Rooms Version 6, use the Users::InviteUser method with the `roleId` property instead.
-    int? titleId?;
+    int titleId?;
     # In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # The URL for the user's profile image.
-    string? profileImageUrl?;
+    string profileImageUrl?;
 };
 
 # When you create or invite a new member in Rooms, the system creates an eSignature account for the member at the same time.
 public type ESignPermissionProfiles record {
     # When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The `eSignPermissionProfileId` is the id of the eSignature permission set to assign to the member.
-    string? eSignPermissionProfileId?;
+    string eSignPermissionProfileId?;
     # The name of the eSignature permission profile.
-    string? name?;
+    string name?;
     # This object contains details about the permissions associated with a eSignature permission profile.
-    ESignAccountRoleSettings? settings?;
+    ESignAccountRoleSettings settings?;
 };
 
 # Contains information about a property type.
@@ -1294,7 +1306,7 @@ public type PropertyType record {
     # The id of the property type.
     # 
     # Example: `resd` (for `Residential Detached`)
-    string? propertyTypeId?;
+    string propertyTypeId?;
     # The name of the property type. Possible values are:
     # 
     # - `Residential Detached`
@@ -1306,13 +1318,13 @@ public type PropertyType record {
     # - `Commercial`
     # - `Condominium`
     # - `Mobile Home`
-    string? name?;
+    string name?;
 };
 
 # Contains a list of each type of object and the number of objects of that type referencing the office.
 public type OfficeReferenceCountList record {
     # A list of each type of object and the number of objects of that type referencing the office.
-    OfficeReferenceCount[]? referencesCounts?;
+    OfficeReferenceCount[] referencesCounts?;
 };
 
 # This resource provides a method that enables you to retrieve a list of financing types.
@@ -1320,14 +1332,15 @@ public type FinancingTypes record {
     # The id of the financing type.
     # 
     # Example: `conv` (for `Conventional`)
-    string? financingTypeId?;
+    string financingTypeId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
+# 
 public type FormGroupForUpdate record {
     # The name of the office.
-    string? name;
+    string name;
 };
 
 # Contains information about a task date type.
@@ -1335,7 +1348,7 @@ public type TaskDateType record {
     # The id of the task date type.
     # 
     # Example: `tdd` (for `Task Due Date`)
-    string? taskDateTypeId?;
+    string taskDateTypeId?;
     # The name of the task date type. 
     # 
     # Possible values are:
@@ -1350,7 +1363,7 @@ public type TaskDateType record {
     # - `Listing Date`
     # - `Listing Expiration Date`
     # - `Offer Date`
-    string? name?;
+    string name?;
 };
 
 # The `SpecialCircumstanceTypes` resource provides a method that enables you to retrieve a list of special circumstance types, such as `Short Sale` and `Foreclosure`. These are the values that you can select for the **Special circumstances** field that appears on the **Room Details** page.
@@ -1358,29 +1371,30 @@ public type SpecialCircumstanceTypes record {
     # The id of the special circumstance type.
     # 
     # Example: `ss` (for `Short Sale`)
-    string? specialCircumstanceTypeId?;
+    string specialCircumstanceTypeId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
-public type AccountStatus string?;
+# 
+public type AccountStatus string;
 
 # Contains a list of forms in a form library.
 public type FormSummaryList record {
     # A list of forms.
-    FormSummary[]? forms?;
+    FormSummary[] forms?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains information about an origin of lead.
@@ -1388,7 +1402,7 @@ public type OriginOfLead record {
     # The id of the origin of lead.
     # 
     # Example: `tru` (for `Trulia`)
-    string? originOfLeadId?;
+    string originOfLeadId?;
     # The name of the origin of lead. Possible values are:
     # 
     # - `Realtor.com`
@@ -1407,35 +1421,35 @@ public type OriginOfLead record {
     # - `Prospecting`
     # - `Other`
     # - `REO (Real Estate Owned)`
-    string? name?;
+    string name?;
 };
 
 # Contains details about the office that you want to create.
 public type OfficeForCreate record {
     # The name of the office.
-    string? name;
+    string name;
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # First line of the office street address.
-    string? address1?;
+    string address1?;
     # Second line of the office street address.
-    string? address2?;
+    string address2?;
     # City name or metropolitan area of the office address.
-    string? city?;
+    string city?;
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # Postal code or ZIP code of the office address.
-    string? postalCode?;
+    string postalCode?;
     # The two-letter country code of the office address (for example, "UK" for United Kingdom).
-    string? countryId?;
+    string countryId?;
     # The id of the time zone for the office address.
     # 
     # Example: `eastern` (for the Eastern US Time Zone)
-    string? timeZoneId?;
+    string timeZoneId?;
     # Phone number of the office.
-    string? phone?;
+    string phone?;
 };
 
 # This object contains details about user permissions. These permissions are associated only with Rooms v5.
@@ -1443,39 +1457,39 @@ public type ClassicManagerPermissions record {
     # When set to **true**, the user is visible in company rooms.
     # 
     # **Note**: Inherited managers are automatically added to rooms and are visible in those rooms unless this setting is set to **false**. Inherited managers are users who oversee others and have the **auto-access to rooms of members the user manages** permission enabled.
-    boolean? isVisibleInTransactionRooms?;
+    boolean isVisibleInTransactionRooms?;
     # When set to **true**, the user can delete company rooms.
-    boolean? canDeleteCompanyRooms?;
+    boolean canDeleteCompanyRooms?;
     # When set to **true**, the user can delete company documents.
-    boolean? canDeleteCompanyDocuments?;
+    boolean canDeleteCompanyDocuments?;
     # When set to **true**, the user can manage company rooms.
-    boolean? canManageCompanyRooms?;
+    boolean canManageCompanyRooms?;
     # When set to **true**, the user can manage the company's account.
-    boolean? canManageCompanyAccount?;
+    boolean canManageCompanyAccount?;
     # When set to **true**, the user can manage the company's shared library.
-    boolean? canManageCompanySharedLibrary?;
+    boolean canManageCompanySharedLibrary?;
     # When set to **true**, the user can manage other users on the company's account.
-    boolean? canManageCompanyMembers?;
+    boolean canManageCompanyMembers?;
     # When set to **true**, the user can close company rooms.
-    boolean? canCloseCompanyRooms?;
+    boolean canCloseCompanyRooms?;
     # When set to **true**, the user can approve company checklists.
-    boolean? canApproveCompanyChecklists?;
+    boolean canApproveCompanyChecklists?;
     # When set to **true**, the user is a system administrator for the company.
-    boolean? isCompanySystemAdmin?;
+    boolean isCompanySystemAdmin?;
     # When set to **true**, the user is a region manager.
-    boolean? isRegionManager?;
+    boolean isRegionManager?;
     # When set to **true**, the user is an office manager.
-    boolean? isOfficeManager?;
+    boolean isOfficeManager?;
     # When set to **true**, the user is automatically added to new company rooms and is visible in those rooms.
-    boolean? autoAccessToCompanyRooms?;
+    boolean autoAccessToCompanyRooms?;
 };
 
 # A complex element containing the number and type of each object referencing the office.
 public type OfficeReferenceCount record {
     # The type of object referencing the office.
-    string? referenceType?;
+    string referenceType?;
     # The number of objects of this type referencing the office.
-    int? referencedCount?;
+    int referencedCount?;
 };
 
 # The `ContactSides` resource provides a method that enables you to retrieve a list of valid values for transaction contact sides.
@@ -1483,15 +1497,15 @@ public type ContactSides record {
     # The id of the contact side.
     # 
     # Example: `L`
-    string? contactSideId?;
+    string contactSideId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains a list of supported currencies.
 public type GlobalCurrencies record {
     # A list of currency objects.
-    Currency[]? currencies?;
+    Currency[] currencies?;
 };
 
 # This request object contains the information that you want to update for the room user.
@@ -1501,241 +1515,241 @@ public type RoomUserForUpdate record {
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # The id of the transaction side. Valid values are:
     # 
     # - `buy`
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
 };
 
 # Contains information about a task responsibility type.
 public type TaskResponsibilityType record {
     # The id of the task responsibility type.
-    string? taskResponsibilityTypeId?;
+    string taskResponsibilityTypeId?;
     # The name of the task responsibility type. The possible values are:
     # 
     # - `Assignee`
     # - `Watcher`
     # - `Reviewer`
-    string? name?;
+    string name?;
 };
 
 # Contains details about permissions.
 public type Permissions record {
     # When set to **true**, users can see the **Invite** button on the room's **People** tab and can invite people into a room.
-    boolean? canAddUsersToRooms?;
+    boolean canAddUsersToRooms?;
     # When set to **true**, users can see the **New** button on the **Rooms** tab and can create a room.
-    boolean? canCreateRooms?;
+    boolean canCreateRooms?;
     # When set to **true**, users can submit rooms for review that are owned by them or someone they manage.
-    boolean? canSubmitRoomsForReview?;
+    boolean canSubmitRoomsForReview?;
     # When set to **true**, users can review and close rooms that are owned by them or someone they manage.
-    boolean? canCloseRooms?;
+    boolean canCloseRooms?;
     # When set to **true**, users can reopen rooms that are owned by them or someone they manage.
-    boolean? canReopenRooms?;
+    boolean canReopenRooms?;
     # When set to **true**, the user can delete rooms that are owned by them or someone they manage.
-    boolean? canDeleteOwnedRooms?;
+    boolean canDeleteOwnedRooms?;
     # When set to **true**, users are automatically added to new rooms when someone with an internal role in their office or region creates or is invited to a room.
-    boolean? autoAccessToRooms?;
+    boolean autoAccessToRooms?;
     # When set to **true**, users can export the details, people, and history of a room to a PDF or CSV file.
-    boolean? canExportRoomActivityDetailsPeople?;
+    boolean canExportRoomActivityDetailsPeople?;
     # When set to **true**, users who also have the `autoAccessToRooms` permission enabled are visible in those rooms.
-    boolean? isVisibleInRooms?;
+    boolean isVisibleInRooms?;
     # When set to **true**, users see a **Copy** room option in the room **Actions** menu, which copies the room's detail information to populate a new room.
-    boolean? canCopyRoomDetails?;
+    boolean canCopyRoomDetails?;
     # When set to **true**, users see a **Edit** room option in the room **Actions** menu, which edits the room's role information.
-    boolean? canEditAnyRoomRole?;
+    boolean canEditAnyRoomRole?;
     # When set to **true**, users see a **Edit** room option in the room **Actions** menu, which edits the invited room's role information.
-    boolean? canEditInvitedRoomRole?;
+    boolean canEditInvitedRoomRole?;
     # When set to **true**, users see a **Edit** room option in the room **Actions** menu, which edits the room's side information.
-    boolean? canEditRoomSide?;
+    boolean canEditRoomSide?;
     # When set to **true**, users see a **Manage** room option in the room **Actions** menu, which edits the room's access information.
-    boolean? canManageAnyUserRoomAccess?;
+    boolean canManageAnyUserRoomAccess?;
     # When set to **true**, users see a **Manage** room option in the room **Actions** menu, which edits the invited room's access information.
-    boolean? canManageInvitedUserRoomAccess?;
+    boolean canManageInvitedUserRoomAccess?;
     # When set to **true**, shows if he is hidden in room.
-    boolean? isHiddenInRoom?;
+    boolean isHiddenInRoom?;
     # When set to **true**, users see a **Manage** room option.
-    boolean? canManageRoomOwners?;
+    boolean canManageRoomOwners?;
     # When set to **true**, users see a **Delete** room option.
-    boolean? canDeleteRooms?;
+    boolean canDeleteRooms?;
     # When set to **true**, users see a **ConnectToMortgageCadence** room option.
-    boolean? canConnectToMortgageCadence?;
+    boolean canConnectToMortgageCadence?;
     # When set to **true**, users can view all room detail fields that the company Admin has set to **Use**.
-    boolean? canViewRoomDetails?;
+    boolean canViewRoomDetails?;
     # When set to **true**, users can view and make edits to any room detail fields.
-    boolean? canViewAndEditRoomDetails?;
+    boolean canViewAndEditRoomDetails?;
     # When set to **true**, users see a **SendRoomDetailsToLoneWolf** room option.
-    boolean? canSendRoomDetailsToLoneWolf?;
+    boolean canSendRoomDetailsToLoneWolf?;
     # When set to **true**, users can add documents to rooms and share the documents that they own with other people in the room.
-    boolean? canAddDocuments?;
+    boolean canAddDocuments?;
     # When set to **true**, users can add documents from form groups to rooms.
-    boolean? canAddDocumentsFromFormGroups?;
+    boolean canAddDocumentsFromFormGroups?;
     # When set to **true**, users can add documents from form libraries to rooms.
-    boolean? canAddDocumentsFromFormLibraries?;
+    boolean canAddDocumentsFromFormLibraries?;
     # When a user for whom this permission is set to **true** adds a document, the document is automatically shared with other room users that are in the user's office.
-    boolean? documentsViewableByOthersInRoomFromOffice?;
+    boolean documentsViewableByOthersInRoomFromOffice?;
     # When a user for whom this permission is set to **true** adds a document, the document is automatically seen and owned by those users' peers. Peers are others in the same office or region who have the same access level as the user.
-    boolean? documentsAutoOwnedByPeers?;
+    boolean documentsAutoOwnedByPeers?;
     # When set to **true**, users can delete documents that they own from rooms.
-    boolean? canDeleteOwnedDocuments?;
+    boolean canDeleteOwnedDocuments?;
     # When set to **true**, users can manage all documents, including ones that another user has shared with them.
-    boolean? canManageSharedDocs?;
+    boolean canManageSharedDocs?;
     # When set to **true**, users have access to **Admin > Forms** and can manage form groups and form libraries for the company.
-    boolean? canManageFormGroups?;
+    boolean canManageFormGroups?;
     # When set to **true**, users can share documents that they do not own (documents that another user has shared with them).
-    boolean? canShareDocsNotOwned?;
+    boolean canShareDocsNotOwned?;
     # When set to **true**, users can add tasks to any task list, including lists that they do not own.
-    boolean? canAddTasksToAnyTaskLists?;
+    boolean canAddTasksToAnyTaskLists?;
     # When set to **true**, users can edit editable tasks.
-    boolean? canEditEditableTasks?;
+    boolean canEditEditableTasks?;
     # When set to **true**, users can edit tasks in rooms, even if the task owner has not marked the task as editable.
-    boolean? canEditAnyTasks?;
+    boolean canEditAnyTasks?;
     # When set to **true**, users can delete deletable tasks.
-    boolean? canDeleteDeletableTasks?;
+    boolean canDeleteDeletableTasks?;
     # When set to **true**, users can delete tasks, even if the task owner has not marked the task as deletable.
-    boolean? canDeleteAnyTasks?;
+    boolean canDeleteAnyTasks?;
     # When set to **true**, users see the **Attach Task List** option in the room's **Actions** menu and can apply task lists to rooms.
-    boolean? canApplyTaskList?;
+    boolean canApplyTaskList?;
     # When set to **true**, users can use the **Remove Task List** option in the room's **Actions** menu to remove task lists owned by others.
     # 
     # **Note**: Users can already remove task lists that they own.
-    boolean? canRemoveAnyTaskList?;
+    boolean canRemoveAnyTaskList?;
     # When set to **true**, users can use the **Submit Task List** option in the room's **Actions** menu to submit task lists for review.
-    boolean? canSubmitTaskList?;
+    boolean canSubmitTaskList?;
     # When set to **true**, users can use the **Submit Task List** option in the room's **Actions** menu to submit task lists for review.
-    boolean? canAutoSubmitTaskList?;
+    boolean canAutoSubmitTaskList?;
     # When set to **true**, users can approve or decline a task list. Declining a task list sends it back to open status for the assignee to complete. The assignee also receives a notification.
-    boolean? canReviewTaskList?;
+    boolean canReviewTaskList?;
     # When set to **true** and a room is approved, the task lists associated with the room auto-approve if all of the tasks are approved.
-    boolean? canAutoApproveTaskList?;
+    boolean canAutoApproveTaskList?;
     # When set to **true**, users have access to the **Admin > Company > Task List Templates** menu so that they can create, edit, and delete task list templates for all regions and offices.
-    boolean? canManageTaskTemplatesForAllRegionsAllOffices?;
+    boolean canManageTaskTemplatesForAllRegionsAllOffices?;
     # When set to **true**, users can apply a room template when they create a room.
-    boolean? canApplyRoomTemplates?;
+    boolean canApplyRoomTemplates?;
     # When set to **true**, users can add tasks to rooms.
-    boolean? canAddTasksToRooms?;
+    boolean canAddTasksToRooms?;
     # When set to **true**, users can review tasks of rooms.
-    boolean? canReviewAnyTask?;
+    boolean canReviewAnyTask?;
     # When set to **true**, users can add manage docs on any task of rooms.
-    boolean? canManageDocsOnAnyTask?;
+    boolean canManageDocsOnAnyTask?;
     # When set to **true**, users can add other users with a lower access level than their own to offices or regions that they oversee and set those users' roles.
-    boolean? canAddMemberAndSetRoleLowerAccessLevel?;
+    boolean canAddMemberAndSetRoleLowerAccessLevel?;
     # When set to **true**, users can add other users with the same access level as their own to offices or regions that they oversee and set those users' roles.
-    boolean? canAddMemberAndSetRoleSameAccessLevel?;
+    boolean canAddMemberAndSetRoleSameAccessLevel?;
     # When set to **true**, users can edit the roles of other users who have a lower access level than their own and that belong to offices or regions that they oversee.
-    boolean? canChangeMemberRoleLowerAccessLevel?;
+    boolean canChangeMemberRoleLowerAccessLevel?;
     # When set to **true**, users can edit the roles of other users who have the same access level as their own and that belong to offices or regions that they oversee.
-    boolean? canChangeMemberRoleSameAccessLevel?;
+    boolean canChangeMemberRoleSameAccessLevel?;
     # When set to **true**, users can change the access level, office, region, and eSignature permission set of other users who have a lower access level than their own.
-    boolean? canManageMemberLowerAccessLevel?;
+    boolean canManageMemberLowerAccessLevel?;
     # When set to **true**, users can change the access level, office, region, and eSignature permission set of other users who have the same access level as their own.
-    boolean? canManageMemberSameAccessLevel?;
+    boolean canManageMemberSameAccessLevel?;
     # When set to **true**, users can remove other users who have a lower access level than their own and that belong to offices or regions that they oversee from the company account.
-    boolean? canRemoveCompanyMemberLowerAccessLevel?;
+    boolean canRemoveCompanyMemberLowerAccessLevel?;
     # When set to **true**, users can remove other users who have the same access level as their own and that belong to offices or regions that they oversee from the company account.
-    boolean? canRemoveCompanyMemberSameAccessLevel?;
+    boolean canRemoveCompanyMemberSameAccessLevel?;
     # When set to **true**, users can access the **Company Settings** tab under **Rooms > Admin > Company** to manage company account settings and change the company name, contact information, currency, offices, and regions.
-    boolean? canManageAccount?;
+    boolean canManageAccount?;
     # When set to **true**, users can access the **Company Logo** section in **Company Settings** to add or change the company logo.
-    boolean? canManageLogo?;
+    boolean canManageLogo?;
     # When set to **true**, users can add manage roles and permissions of rooms.
-    boolean? canManageRolesAndPermissions?;
+    boolean canManageRolesAndPermissions?;
     # When set to **true**, users see the **Room Details** tab under **Rooms > Admin > Company** and can use it to configure room details. They can also add additional contact fields.
-    boolean? canManageRoomDetails?;
+    boolean canManageRoomDetails?;
     # When set to **true**, users see the **Room Templates** option in the **Rooms > Admin** menu, which enables them to add, edit, and delete room templates.
-    boolean? canManageRoomTemplates?;
+    boolean canManageRoomTemplates?;
     # When set to **true**, users can add manage integration settings of rooms.
-    boolean? canManageIntegrationSettings?;
+    boolean canManageIntegrationSettings?;
 };
 
 # Contains a list of task list templates.
 public type TaskListTemplateList record {
     # A list of task list templates.
-    TaskListTemplate[]? taskListTemplates?;
+    TaskListTemplate[] taskListTemplates?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # This complex type contains information about assignable roles.
 public type AssignableRoles record {
     # The id of the invitee's company-level role. This property lets the requester know what room-level role will give the user the same permissions that they have at the company level. A value is returned only when both the requester and the invitee are internal to the company.
-    int? currentRoleId?;
+    int currentRoleId?;
     # An array of `role` objects.
-    RoleSummary[]? roles?;
+    RoleSummary[] roles?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Access level
-public type AccessLevel string?;
+public type AccessLevel string;
 
 # Details about a contact side.
 public type ContactSide record {
     # The id of the contact side.
     # 
     # Example: `L`
-    string? contactSideId?;
+    string contactSideId?;
     # The name of the contact side.
     # 
     # Example: `Listing`
-    string? name?;
+    string name?;
 };
 
 # Details about a locked account.
 public type LockedOutDetails record {
     # The reason the account was locked.
-    string? reason;
+    string reason;
 };
 
 # Contains details about a company role.
 public type Role record {
     # In Rooms v6, this is the id of the company role assigned to the user.
-    int? roleId?;
+    int roleId?;
     # The legacy name of the role in Rooms Version 5.
-    string? legacyRoleId?;
+    string legacyRoleId?;
     # The name of the role.
-    string? name?;
+    string name?;
     # When **true**, the role is the default for account administrators.
-    boolean? isDefaultForAdmin?;
+    boolean isDefaultForAdmin?;
     # When set to **true**, the role is an external role. You assign external roles to people from outside your company when you invite them into a room.
-    boolean? isExternal?;
+    boolean isExternal?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # When set to **true**, indicates that this role is currently assigned to a user.
-    boolean? isAssigned?;
+    boolean isAssigned?;
     # Contains details about permissions.
-    Permissions? permissions?;
+    Permissions permissions?;
 };
 
 # This object contains information about the region associated with the member.
 public type DesignatedRegion record {
     # (Required) The id of the region. This is the id that the system generated when you created the region.
-    int? regionId;
+    int regionId;
 };
 
 # The fields resource provides a method that enables you to retrieve a specific field set. This is a set of fields that can appear on a room's **Details** tab.
@@ -1743,25 +1757,25 @@ public type Fields record {
     # The id of the field.
     # 
     # Example: `10318d28-xxxx-xxxx-xxxx-d3df664f602c`
-    string? fieldId?;
+    string fieldId?;
     # The id of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the id that they use to add this field definition to the field set. The original field definition associated with this id contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
-    string? fieldDefinitionId?;
+    string fieldDefinitionId?;
     # Title of the fields
-    string? title?;
+    string title?;
     # The name that the Rooms API uses for the field. 
     # 
     # Example: `companyContactName`
     # 
     # **Note**: When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab.
-    string? apiName?;
+    string apiName?;
     # Type of the fields
-    string? 'type?;
+    string 'type?;
     # An array of fields.
-    Field[]? fields?;
+    Field[] fields?;
     # Contains details about how a field is configured.
-    FieldConfiguration? configuration?;
+    FieldConfiguration configuration?;
     # Contains information about whether the field is required when a room is created or submitted for review.
-    CustomData? customData?;
+    CustomData customData?;
 };
 
 # The `TransactionSides` resource provides a method that enables you to list possible real estate transaction sides. 
@@ -1772,25 +1786,25 @@ public type TransactionSides record {
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
 # Contains a list of room contact types.
 public type GlobalRoomContactTypes record {
     # A list of room contact types.
-    RoomContactType[]? roomContactTypes?;
+    RoomContactType[] roomContactTypes?;
 };
 
 # Contains details about a room template.
 public type RoomTemplate record {
     # The id of the room template.
-    int? roomTemplateId?;
+    int roomTemplateId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The total number of task templates that the room template uses.
-    int? taskTemplateCount?;
+    int taskTemplateCount?;
 };
 
 # Contains information about a state.
@@ -1798,7 +1812,7 @@ public type State record {
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # The name of the state. Possible values are:
     # 
     # - `Alberta`
@@ -1893,47 +1907,47 @@ public type State record {
     # - `West Virginia`
     # - `Wisconsin`
     # - `Wyoming`
-    string? name?;
+    string name?;
 };
 
 # Contains a list of task list summaries.
 public type TaskListSummaryList record {
     # A list of task list summaries.
-    TaskListSummary[]? taskListSummaries?;
+    TaskListSummary[] taskListSummaries?;
 };
 
 # This request object contains details about the person who you want to invite.
 public type ClassicAdminToInvite record {
     # (Required) The user's first name.
-    string? firstName;
+    string firstName;
     # (Required) The user's last name.
-    string? lastName;
+    string lastName;
     # (Required) The user's email address.
-    string? email;
+    string email;
 };
 
 # Contains information about a region.
 public type Region record {
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # The name of the office.
-    string? name;
+    string name;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
 };
 
 # Contains a list of supported countries.
 public type GlobalCountries record {
     # An array of country objects.
-    Country[]? countries?;
+    Country[] countries?;
 };
 
 # Contains a list of transaction sides.
 public type GlobalTransactionSides record {
     # A list of transaction sides.
-    TransactionSide[]? transactionSides?;
+    TransactionSide[] transactionSides?;
 };
 
 # Contains information about a room contact type.
@@ -1941,7 +1955,7 @@ public type RoomContactType record {
     # The id of the room contact type.
     # 
     # Example: `lisagent` (for `Listing Agent`)
-    string? id?;
+    string id?;
     # The name of the room contact type. Possible values are:
     # 
     # - `Seller`
@@ -1958,7 +1972,7 @@ public type RoomContactType record {
     # - `Escrow Provider`
     # - `Buyer Broker`
     # - `Listing Broker`
-    string? name?;
+    string name?;
 };
 
 # The `OriginsOfLeads` resource enables you to get a list of property types (such as ????) that you can specify for rooms.
@@ -1966,52 +1980,53 @@ public type PropertyTypes record {
     # The id of the property type.
     # 
     # Example: `resd` (for `Residential Detached`)
-    string? propertyTypeId?;
+    string propertyTypeId?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
-public type RoomStatus string?;
+# 
+public type RoomStatus string;
 
 # Contains details about a user.
 public type User record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # When set to **true**, an administrator has locked the user's account. For example, an administrator might want to lock an agent's account after they leave the brokerage until they determine how to transfer the agent's rooms and data to another active user.
-    boolean? isLockedOut?;
+    boolean isLockedOut?;
     # The user's status. Read only. Possible values are:
     # 
     # - `Active`: The user is active.
     # - `Pending`: The user has been invited but has not yet accepted the invitation.
-    string? status?;
+    string status?;
     # Access level
-    AccessLevel? accessLevel?;
+    AccessLevel accessLevel?;
     # The id of the user's default office.
-    int? defaultOfficeId?;
+    int defaultOfficeId?;
     # In Rooms Version 5, this is the id of the custom job title for a Manager role within your company. For example, your company might have the custom job titles "Transaction Coordinator" and "Office Manager".
     # 
     # **Note**: If you are using Rooms Version 5, you must enter a `titleId` when using the Users::InviteClassicManager method. (The `titleId` property is empty for Agent users on Rooms Version 5.) If you are using Rooms Version 6, use the Users::InviteUser method with the `roleId` property instead.
-    int? titleId?;
+    int titleId?;
     # In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # The URL for the user's profile image.
-    string? profileImageUrl?;
+    string profileImageUrl?;
     # An array of office ids for the offices in which a user with an `Office` or `Contributor` `accessLevel` has been granted the ability to participate.
-    int[]? offices?;
+    int[] offices?;
     # An array of region ids for the regions in which a user with the `Region accessLevel` has been granted the ability to participate.
-    int[]? regions?;
+    int[] regions?;
     # This object contains details about user permissions. These permissions are associated only with Rooms v5.
-    ClassicManagerPermissions? permissions?;
+    ClassicManagerPermissions permissions?;
 };
 
 # Description of a single form in a group.
@@ -2019,39 +2034,39 @@ public type GroupForm record {
     # The id of the form.
     # 
     # Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-    string? formId?;
+    string formId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # **True** if the form is required.
-    boolean? isRequired?;
+    boolean isRequired?;
     # The UTC date and time when the item was last updated. This is a read-only value that the service assigns.
     # 
     # Example: 2019-07-17T17:45:42.783Z
-    string? lastUpdatedDate?;
+    string lastUpdatedDate?;
 };
 
 # Contains a list of seller decision types.
 public type GlobalSellerDecisionTypes record {
     # A list of seller decision types.
-    SellerDecisionType[]? sellerDecisionTypes?;
+    SellerDecisionType[] sellerDecisionTypes?;
 };
 
 # This request object contains the information to use to update a user's default office. 
 public type UserForUpdate record {
     # (Required) The id of the user's default office.
-    int? defaultOfficeId;
+    int defaultOfficeId;
 };
 
 # Contains details about the form that you want to add.
 public type FormForAdd record {
     # (Required) The id of the form.
-    string? formId;
+    string formId;
 };
 
 # Contains a list of time zones.
 public type GlobalTimeZones record {
     # A list of time zones.
-    TimeZone[]? timeZones?;
+    TimeZone[] timeZones?;
 };
 
 # The `FormLibraries` resource enables you to access standard real estate industry association forms and add them to rooms. 
@@ -2059,37 +2074,37 @@ public type FormLibraries record {
     # The id of the form library.
     # 
     # Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
-    string? formsLibraryId?;
+    string formsLibraryId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The number of forms in the form library. 
     # 
     # Example: `50`
-    int? formCount?;
+    int formCount?;
 };
 
 # Contains a list of form groups.
 public type FormGroupSummaryList record {
     # A list of form groups.
-    FormGroupSummary[]? formGroups?;
+    FormGroupSummary[] formGroups?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains a list of special circumstance types.
 public type GlobalSpecialCircumstanceTypes record {
     # A list of special circumstance types.
-    SpecialCircumstanceType[]? specialCircumstanceTypes?;
+    SpecialCircumstanceType[] specialCircumstanceTypes?;
 };
 
 # Contains the details required to create a form fill session.
@@ -2097,47 +2112,47 @@ public type ExternalFormFillSessionForCreate record {
     # (Required) The id of the form.
     # 
     # Example: `5be324eb-xxxx-xxxx-xxxx-208065181be9`
-    string? formId;
+    string formId;
     # (Required) The id of the room.
-    int? roomId;
+    int roomId;
     # (Optional) This property specifies the origin on which the page is allowed to display in a frame.
-    string? xFrameAllowedUrl?;
+    string xFrameAllowedUrl?;
 };
 
 # This complex type contains information about room templates.
 public type RoomTemplatesSummaryList record {
     # An array of `roomTemplate` objects.
-    RoomTemplate[]? roomTemplates?;
+    RoomTemplate[] roomTemplates?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains details about a field in a field set.
 public type Field record {
     # An id that uniquely identifies the instance of a `fieldDefinition` within a field set.
-    string? fieldId?;
+    string fieldId?;
     # The id of the DocuSign field definition from which this field derives. When an Admin user configures a field set by using the API, this is the id that they use to add this field definition to the field set. The original field definition associated with this id contains more information about the field, such as the default title, default API name, and configurations such as the maximum length or the maximum value allowed.
-    string? fieldDefinitionId?;
+    string fieldDefinitionId?;
     # The human-readable title or name of the field.
     # 
     # Example: `Company contact name`
-    string? title?;
+    string title?;
     # The name that the Rooms API uses for the field. 
     # 
     # Example: `companyContactName`
     # 
     # **Note**: When you create a new room, you use the `apiName` values for fields to specify the details that you want to appear on the room's **Details** tab.
-    string? apiName?;
+    string apiName?;
     # The type of field. The valid values are:
     # 
     # - `Date`
@@ -2149,110 +2164,110 @@ public type Field record {
     # - `TextArea`
     # - `Percentage`
     # - `Integer`
-    string? 'type?;
+    string 'type?;
     # An array of subfields.
-    Field[]? fields?;
+    Field[] fields?;
     # Contains details about how a field is configured.
-    FieldConfiguration? configuration?;
+    FieldConfiguration configuration?;
     # Contains information about whether the field is required when a room is created or submitted for review.
-    CustomData? customData?;
+    CustomData customData?;
 };
 
 # Contains a list of supported states.
 public type GlobalStates record {
     # A list of states.
-    State[]? states?;
+    State[] states?;
 };
 
 # A complex element containing the number and type of each object referencing the region.
 public type RegionReferenceCount record {
     # The type of object referencing the region.
-    string? referenceType?;
+    string referenceType?;
     # The number of objects of this type referencing the region.
-    int? referenceCount?;
+    int referenceCount?;
 };
 
 # Contains a list of each type of object and the number of objects of that type referencing the region.
 public type RegionReferenceCountList record {
     # A list of each type of object and the number of objects of that type referencing the region.
-    RegionReferenceCount[]? referenceCounts?;
+    RegionReferenceCount[] referenceCounts?;
 };
 
 # Information about a room folder.
 public type RoomFolder record {
     # The ID of the folder.
-    int? roomFolderId?;
+    int roomFolderId?;
     # The name of the folder.
-    string? name?;
+    string name?;
     # When **true**, this is the default folder.
-    boolean? isDefault?;
+    boolean isDefault?;
 };
 
 # This request object contains information about the user that you are inviting.
 public type UserToInvite record {
     # (Required) The user's first name.
-    string? firstName;
+    string firstName;
     # (Required) The user's last name.
-    string? lastName;
+    string lastName;
     # (Required) The user's email address.
-    string? email;
+    string email;
     # (Required) In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who are not part of your organization.
-    int? roleId;
+    int roleId;
     # Access level
-    AccessLevel? accessLevel;
+    AccessLevel accessLevel;
     # (Required) The id of the user's default office.
-    int? defaultOfficeId;
+    int defaultOfficeId;
     # An array of region ids for the regions in which a user with the `Region accessLevel` has been granted the ability to participate. If the value for `accessLevel` is `Region`, this property is required.
-    int[]? regions?;
+    int[] regions?;
     # An array of office ids for the offices in which a user with an `Office` or `Contributor` `accessLevel` has been granted the ability to participate. If the value for `accessLevel` is `Office`, this property is required.
-    int[]? offices?;
+    int[] offices?;
     # (Required) When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The eSignPermissionProfileId is the id of the eSignature permission set to assign to the member.
-    string? eSignPermissionProfileId;
+    string eSignPermissionProfileId;
     # URL to redirect to after inviting.
-    string? redirectUrl?;
+    string redirectUrl?;
 };
 
 public type DocumentsContentsBody record {
     # Document
-    string? file?;
+    string file?;
 };
 
 # The `TaskLists` resource helps you keep track of the documents and activities you must complete before you can close a room.
 public type TaskLists record {
     # The id of the task list.
-    int? taskListId?;
+    int taskListId?;
     # The name of the office.
-    string? name?;
+    string name?;
     # The id of the task list template.
-    int? taskListTemplateId?;
+    int taskListTemplateId?;
     # The UTC DateTime when the room was submitted for review.
     # 
     # **Note**: In Rooms v5, this is when an agent submitted the room to a manager. In Rooms v6, this is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true**.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # Approval date
-    string? approvalDate?;
+    string approvalDate?;
     # The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
-    string? rejectedDate?;
+    string rejectedDate?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # Approved by user ID
-    int? approvedByUserId?;
+    int approvedByUserId?;
     # The id of the user who rejected the room.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # Task comments
-    string? comment?;
+    string comment?;
     # A list of tasks in the task list.
-    TaskSummary[]? tasks?;
+    TaskSummary[] tasks?;
 };
 
 # Contains a list of task date types.
 public type GlobalTaskDateTypes record {
     # A list of task date types.
-    TaskDateType[]? taskDateTypes?;
+    TaskDateType[] taskDateTypes?;
 };
 
 # Contains information about a seller decision type.
@@ -2260,43 +2275,43 @@ public type SellerDecisionTypes record {
     # The id of the seller decision type.
     # 
     # Example: `appr` (for `Approved`)
-    string? sellerDecisionTypeId?;
+    string sellerDecisionTypeId?;
     # The name of the seller decision type.
-    string? name?;
+    string name?;
 };
 
 # This object contains a list of eSignature permission profiles.
 public type ESignPermissionProfileList record {
     # An array of eSignature `permissionProfile` objects.
-    ESignPermissionProfile[]? permissionProfiles?;
+    ESignPermissionProfile[] permissionProfiles?;
 };
 
 # Contains details about a room.
 public type Room record {
     # The id of the room.
-    int? roomId?;
+    int roomId?;
     # The id of the company.
-    int? companyId?;
+    int companyId?;
     # The name of the room.
-    string? name?;
+    string name?;
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The UTC date and time when the item was created. This is a read-only value that the service assigns.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
-    string? createdDate?;
+    string createdDate?;
     # The UTC DateTime when the room was submitted for review.
     # 
     # **Note**: In Rooms v5, this is when an agent submitted the room to a manager. In Rooms v6, this is when a member with a role for which the **Submit rooms for review** permission is set to **true** submitted the room to a member with a role for which the **Review and close rooms** permission is set to **true**.
-    string? submittedForReviewDate?;
+    string submittedForReviewDate?;
     # The UTC date and time when the room was closed.
-    string? closedDate?;
+    string closedDate?;
     # The date on which the reviewer rejected the room. For example, a reviewer might reject closing a room if documentation is missing or the details are inaccurate.
-    string? rejectedDate?;
+    string rejectedDate?;
     # The id of the user who created the room.
-    int? createdByUserId?;
+    int createdByUserId?;
     # The id of the user who rejected the room.
-    int? rejectedByUserId?;
+    int rejectedByUserId?;
     # The reason why a room was closed. Possible values are:
     # 
     # - `sold`: Property sold.
@@ -2320,52 +2335,52 @@ public type Room record {
     # - `attiss`: Attorney review issues.
     # - `proplsd`: Property leased. Use for the list side of the transaction.
     # - `tenlease`: Tenant signed lease. Use when an agent helps renters find a to lease.   
-    string? closedStatusId?;
+    string closedStatusId?;
     # The field data associated with a room. See [Rooms::GetRoomFieldData](/rooms-api/reference/Rooms/Rooms/GetRoomFieldData).
-    FieldData? fieldData?;
+    FieldData fieldData?;
 };
 
 # This object contains details about a specific room member.
 public type RoomUser record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # The id of the transaction side. Valid values are:
     # 
     # - `buy`
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
     # The id of the user's role.
-    int? roleId?;
+    int roleId?;
     # When set to **true**, indicates that the user's access to the room has been revoked.
-    boolean? isRevoked?;
+    boolean isRevoked?;
     # The `userId` of the person who invited the room user to the room.
-    int? invitedByUserId?;
+    int invitedByUserId?;
 };
 
 # Contains a list of property types.
 public type GlobalPropertyTypes record {
     # A list of property types.
-    PropertyType[]? propertyTypes?;
+    PropertyType[] propertyTypes?;
 };
 
 # Contains a list of activity types.
 public type GlobalActivityTypes record {
     # A list of activity types.
-    ActivityType[]? activityTypes?;
+    ActivityType[] activityTypes?;
 };
 
 # Contains a list of task responsibility types.
 public type GlobalTaskResponsibilityTypes record {
     # A list of task responsibility types.
-    TaskResponsibilityType[]? taskResponsibilityTypes?;
+    TaskResponsibilityType[] taskResponsibilityTypes?;
 };
 
 # Details about an activity type.
@@ -2373,24 +2388,24 @@ public type ActivityType record {
     # The id of the activity type.
     # 
     # Example: `movefrominbx`
-    string? activityTypeId?;
+    string activityTypeId?;
     # The name of the activity type.
     # 
     # Example: `Document Moved from Inbox`
-    string? name?;
+    string name?;
 };
 
 # Contains a list of contact sides.
 public type GlobalContactSides record {
     # A list of contact sides.
-    ContactSide[]? contactSides?;
+    ContactSide[] contactSides?;
 };
 
 # Details for removal.
 public type RoomUserRemovalDetail record {
     # The date on which the users room access should be revoked
     # in ISO 8601 fomat: `1973-12-31T07:54Z`.
-    string? revocationDate?;
+    string revocationDate?;
 };
 
 # This object contains details about the permissions associated with a eSignature permission profile.
@@ -2400,7 +2415,7 @@ public type ESignAccountRoleSettings record {
     # - `DS Admin` permission profile: **true**
     # - `DS Sender` permission profile: **false**
     # - `DS Viewer` permission profile: **false**
-    boolean? allowAccountManagement?;
+    boolean allowAccountManagement?;
 };
 
 # Contains information about a closing status, or reason for closing a room.
@@ -2408,39 +2423,39 @@ public type ClosingStatus record {
     # The id of the closing status.
     # 
     # Example: `exp`
-    string? closingStatusId?;
+    string closingStatusId?;
     # The name of the closing status.
     # 
     # Example: `Listing Expired`
-    string? name?;
+    string name?;
 };
 
 # A complex element containing summary information on a region; the elements of this object are identical to those of the `Regions` object.
 public type RegionSummary record {
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # String that specifies the region name.
-    string? name?;
+    string name?;
     # UTC datetime that the region was created (for example "2019-06-27T19:32:46.943"). Note that the service assigns this value, so it is read-only.
-    string? createdDate?;
+    string createdDate?;
 };
 
 # Contains a list of users.
 public type UserSummaryList record {
     # A list of users.
-    UserSummary[]? userSummaries?;
+    UserSummary[] userSummaries?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # Contains information about a financing type.
@@ -2448,7 +2463,7 @@ public type FinancingType record {
     # The id of the financing type.
     # 
     # Example: `conv` (for `Conventional`)
-    string? financingTypeId?;
+    string financingTypeId?;
     # The name of the financing type. Possible values are:
     # 
     # - `Cash`
@@ -2458,16 +2473,17 @@ public type FinancingType record {
     # - `USDA`
     # - `Bitcoin`
     # - `Other`
-    string? name?;
+    string name?;
 };
 
 # This response object contains the URL for the uploaded picture.
 public type RoomPicture record {
     # The URL for the uploaded picture.
-    string? url?;
+    string url?;
 };
 
-public type MemberSortingOption string?;
+# 
+public type MemberSortingOption string;
 
 # Contains information about a real estate transaction side.
 public type TransactionSide record {
@@ -2477,14 +2493,14 @@ public type TransactionSide record {
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
     # The name of the transaction side. Valid values are:
     # 
     # - `List Side`
     # - `Buy Side`
     # - `List & Buy Side`
     # - `Refinance`
-    string? name?;
+    string name?;
 };
 
 # Contains information about a parent field on which this field depends.
@@ -2494,114 +2510,114 @@ public type DependsOn record {
     # Example: `visibility`
     # 
     # For example, in the console, you must select a country for a list of states to become visible.
-    string? actionType?;
+    string actionType?;
     # The name that the Rooms API uses for the parent field.
     # 
     # Example: `country`
-    string? parentApiName?;
+    string parentApiName?;
 };
 
 # User information to grant access
 public type DocumentUserForCreate record {
     # The id of the user.
-    int? userId;
+    int userId;
 };
 
 # This complex type contains details about the roles that are associated with an account.
 public type RoleSummaryList record {
     # An array of `role` objects.
-    RoleSummary[]? roles?;
+    RoleSummary[] roles?;
     # The number of results returned in this response.
-    int? resultSetSize?;
+    int resultSetSize?;
     # The starting zero-based index position of the results set. When this property is used as a query parameter, the default value is `0`.
-    int? startPosition?;
+    int startPosition?;
     # The last zero-based index position in the result set.
-    int? endPosition?;
+    int endPosition?;
     # The URI for the next chunk of records based on the search request. This property is `null` for the last set of search results.
-    string? nextUri?;
+    string nextUri?;
     # The URI for the previous chunk of records based on the search request. This property is `null` for the first set of search results.
-    string? priorUri?;
+    string priorUri?;
     # Total row count
-    int? totalRowCount?;
+    int totalRowCount?;
 };
 
 # This request object contains details about the person who you want to invite.
 public type ClassicManagerToInvite record {
     # (Required) The user's first name.
-    string? firstName;
+    string firstName;
     # (Required) The user's last name.
-    string? lastName;
+    string lastName;
     # (Required) The user's email address.
-    string? email;
+    string email;
     # (Required) The id of the user's default office.
-    int? defaultOfficeId;
+    int defaultOfficeId;
     # (Required) In Rooms v5, this is the id of the custom job title for a Manager role within your company. For example, your company might have the custom job titles "Transaction Coordinator" and "Office Manager".
     # 
     # **Note**: If you are using Rooms v6, use the Users::InviteUser method with the roleId property instead.
-    int? titleId;
+    int titleId;
     # Access level
-    AccessLevel? accessLevel;
+    AccessLevel accessLevel;
     # This object contains details about user permissions. These permissions are associated only with Rooms v5.
-    ClassicManagerPermissions? permissions;
+    ClassicManagerPermissions permissions;
     # An array of office ids for the offices to which the user belongs.
     # 
     # **Note**: You only specify the `offices` property when the user's `accessLevel` is `office`.
-    int[]? offices?;
+    int[] offices?;
     # An array of region ids for the regions to which the user belongs.
     # 
     # **Note**: You only specify the `regions` property when the user's `accessLevel` is `region`.
-    int[]? regions?;
+    int[] regions?;
     # (Required) When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The eSignPermissionProfileId is the id of the eSignature permission set to assign to the member.
-    string? eSignPermissionProfileId?;
+    string eSignPermissionProfileId?;
 };
 
 # Contains a list of valid closing statuses, or reasons for closing a room.
 public type GlobalClosingStatuses record {
     # A list of closing statuses (reasons for closing a room).
-    ClosingStatus[]? closingStatuses?;
+    ClosingStatus[] closingStatuses?;
 };
 
 # Contains details about a room user.
 public type RoomUserSummary record {
     # The id of the user.
-    int? userId?;
+    int userId?;
     # The user's email address.
-    string? email?;
+    string email?;
     # The user's first name.
-    string? firstName?;
+    string firstName?;
     # The user's last name.
-    string? lastName?;
+    string lastName?;
     # The id of the transaction side. Valid values are:
     # 
     # - `buy`
     # - `sell`
     # - `listbuy`
     # - `refi`
-    string? transactionSideId?;
+    string transactionSideId?;
     # In Rooms v6, this is the id of the company role assigned to the user.
     # 
     # You can assign external roles to users who aren't a part of your organization.
     # 
     # **Note**: If you are using Rooms v6, you must enter a `roleId` in requests. If you are using Rooms v5, you must enter a value for the `titleId` property instead.
-    int? roleId?;
+    int roleId?;
     # In Rooms Version 5, this is the id of the custom job title for a Manager role within your company. For example, your company might have the custom job titles "Transaction Coordinator" and "Office Manager".
     # 
     # **Note**: If you are using Rooms Version 5, you must enter a `titleId` when using the Users::InviteClassicManager method. (The `titleId` property is empty for Agent users on Rooms Version 5.) If you are using Rooms Version 6, use the Users::InviteUser method with the `roleId` property instead.
-    int? titleId?;
+    int titleId?;
     # The company name.
-    string? companyName?;
+    string companyName?;
     # Role name
-    string? roleName?;
+    string roleName?;
 };
 
 # When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. This object contains information about the eSignature permission profile, which controls member access to the eSignature account. 
 public type ESignPermissionProfile record {
     # When an administrator or authorized member invites a new user to become an account member, the system also creates an eSignature account for the invitee at the same time. The `eSignPermissionProfileId` is the id of the eSignature permission set to assign to the member.
-    string? eSignPermissionProfileId?;
+    string eSignPermissionProfileId?;
     # The name of the eSignature permission profile. Valid values are:
-    string? name?;
+    string name?;
     # This object contains details about the permissions associated with a eSignature permission profile.
-    ESignAccountRoleSettings? settings?;
+    ESignAccountRoleSettings settings?;
 };
 
 # Contains details about a form group.
@@ -2609,15 +2625,15 @@ public type FormGroupSummary record {
     # The ID of the form group.
     # 
     # Example: `7b879c89-xxxx-xxxx-xxxx-819d6a85e0a1`
-    string? formGroupId?;
+    string formGroupId?;
     # The name of the form group. 
     # 
     # Example: `Apartment Rental`
-    string? name?;
+    string name?;
     # The number of forms in the form group.
     # 
     # Example: `10`
-    int? formCount?;
+    int formCount?;
 };
 
 # Contains details about a specific form library.
@@ -2625,15 +2641,15 @@ public type FormLibrarySummary record {
     # The id of the form library.
     # 
     # Example: `402c6e2f-xxxx-xxxx-xxxx-ff3f249f6da9`
-    string? formsLibraryId?;
+    string formsLibraryId?;
     # The name of the form library.
     # 
     # Example: `MOR - Mainstreet Organization of Realtors`
-    string? name?;
+    string name?;
     # The number of forms in the form library. 
     # 
     # Example: `50`
-    int? formCount?;
+    int formCount?;
 };
 
 # The `RoomContactTypes` resource provides a method that enables you to retrieve a list of room contact types, such as Buyer, Seller, and Listing Agent.
@@ -2641,45 +2657,46 @@ public type RoomContactTypes record {
     # The id of the room contact type.
     # 
     # Example: `lisagent` (for `Listing Agent`)
-    string? id?;
+    string id?;
     # The name of the office.
-    string? name?;
+    string name?;
 };
 
-public type RoomUserSortingOption string?;
+# 
+public type RoomUserSortingOption string;
 
 # Object that contains information about an office in the Rooms account.
 public type Offices record {
     # The id of the office. This is the id that the system generated when you created the office.
-    int? officeId?;
+    int officeId?;
     # The name of the office.
-    string? name;
+    string name;
     # The id of the region. This is the id that the system generated when you created the region.
-    int? regionId?;
+    int regionId?;
     # First line of the office street address.
-    string? address1?;
+    string address1?;
     # Second line of the office street address.
-    string? address2?;
+    string address2?;
     # City name or metropolitan area of the office address.
-    string? city?;
+    string city?;
     # A concatenation of the two-letter country code with the state/province/region of the office address.
     # 
     # Example: `US-OH` (for Ohio)
-    string? stateId?;
+    string stateId?;
     # Postal code or ZIP code of the office address.
-    string? postalCode?;
+    string postalCode?;
     # The two-letter country code of the office address (for example, "UK" for United Kingdom).
-    string? countryId?;
+    string countryId?;
     # The id of the time zone for the office address.
     # 
     # Example: `eastern` (for the Eastern US Time Zone)
-    string? timeZoneId?;
+    string timeZoneId?;
     # Phone number of the office.
-    string? phone?;
+    string phone?;
     # The UTC DateTime when the office was created.
     # 
     # Example: `2019-07-17T17:45:42.783Z`
     # 
     # **Note**: This value is read-only.
-    string? createdDate?;
+    string createdDate?;
 };

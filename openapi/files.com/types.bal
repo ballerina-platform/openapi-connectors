@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -1892,11 +1892,11 @@ public type UsageSnapshotEntity record {
     # Site usage report created at date/time
     string created_at?;
     # Site usage report highest usage in time period
-    float high_water_user_count?;
+    decimal high_water_user_count?;
     # Current site usage as of report
-    float current_storage?;
+    decimal current_storage?;
     # Site usage report highest usage in time period
-    float high_water_storage?;
+    decimal high_water_storage?;
     # Number of downloads in report time period
     int total_downloads?;
     # Number of uploads in time period
@@ -1906,11 +1906,11 @@ public type UsageSnapshotEntity record {
     # A map of root folders to their total usage
     record {} usage_by_top_level_dir?;
     # Usage for root folder
-    float root_storage?;
+    decimal root_storage?;
     # Usage for files that are deleted but uploaded within last 30 days
-    float deleted_files_counted_in_minimum?;
+    decimal deleted_files_counted_in_minimum?;
     # Usage for files that are deleted but retained as backups
-    float deleted_files_storage?;
+    decimal deleted_files_storage?;
 };
 
 # List site full action history.
@@ -2117,6 +2117,7 @@ public type FilesFilepathBody1 record {
     int parts?;
     # User provided modification time.
     string provided_mtime?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;
@@ -2203,6 +2204,7 @@ public type FilesFilepathBody2 record {
     int parts?;
     # User provided modification time.
     string provided_mtime?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;
@@ -2228,6 +2230,7 @@ public type BeginUploadFilepathBody1 record {
     int part?;
     # How many parts to fetch?
     int parts?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;
@@ -2249,6 +2252,7 @@ public type BeginUploadFilepathBody2 record {
     int part?;
     # How many parts to fetch?
     int parts?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;
@@ -2381,19 +2385,19 @@ public type BandwidthSnapshotEntity record {
     # Site bandwidth ID
     int id?;
     # Site bandwidth report bytes received
-    float bytes_received?;
+    decimal bytes_received?;
     # Site bandwidth report bytes sent
-    float bytes_sent?;
+    decimal bytes_sent?;
     # Site sync bandwidth report bytes received
-    float sync_bytes_received?;
+    decimal sync_bytes_received?;
     # Site sync bandwidth report bytes sent
-    float sync_bytes_sent?;
+    decimal sync_bytes_sent?;
     # Site bandwidth report get requests
-    float requests_get?;
+    decimal requests_get?;
     # Site bandwidth report put requests
-    float requests_put?;
+    decimal requests_put?;
     # Site bandwidth report other requests
-    float requests_other?;
+    decimal requests_other?;
     # Time the site bandwidth report was logged
     string logged_at?;
     # Site bandwidth report created at date/time
@@ -2653,7 +2657,7 @@ public type SiteEntity record {
     # Number of prior passwords to disallow
     int max_prior_passwords?;
     # Next billing amount
-    float next_billing_amount?;
+    decimal next_billing_amount?;
     # Next billing date
     string next_billing_date?;
     # Allow users to use Office for the web?
@@ -2717,7 +2721,7 @@ public type SiteEntity record {
     # SMTP server username
     string smtp_username?;
     # Session expiry in hours
-    float session_expiry?;
+    decimal session_expiry?;
     # Is SSL required?  Disabling this is insecure.
     boolean ssl_required?;
     # Site subdomain
@@ -3019,9 +3023,9 @@ public type AccountLineItemEntity record {
     # Line item Id
     int id?;
     # Line item amount
-    float amount?;
+    decimal amount?;
     # Line item balance
-    float balance?;
+    decimal balance?;
     # Line item created at
     string created_at?;
     # Line item currency
@@ -4713,7 +4717,7 @@ public type SiteBody2 record {
     # Allow users to use Office for the web?
     boolean office_integration_available?;
     # Session expiry in hours
-    float session_expiry?;
+    decimal session_expiry?;
     # Is SSL required?  Disabling this is insecure.
     boolean ssl_required?;
     # Is TLS disabled(site setting)?
@@ -4929,7 +4933,7 @@ public type SiteBody1 record {
     # Allow users to use Office for the web?
     boolean office_integration_available?;
     # Session expiry in hours
-    float session_expiry?;
+    decimal session_expiry?;
     # Is SSL required?  Disabling this is insecure.
     boolean ssl_required?;
     # Is TLS disabled(site setting)?
@@ -5114,7 +5118,7 @@ public type ApiKeyBody2 record {
 # Associated payment line items
 public type PaymentLineItemEntity record {
     # Payment line item amount
-    float amount?;
+    decimal amount?;
     # Payment line item created at date/time
     string created_at?;
     # Invoice ID
@@ -5432,7 +5436,7 @@ public type SiteBody record {
     # Allow users to use Office for the web?
     boolean office_integration_available?;
     # Session expiry in hours
-    float session_expiry?;
+    decimal session_expiry?;
     # Is SSL required?  Disabling this is insecure.
     boolean ssl_required?;
     # Is TLS disabled(site setting)?
@@ -5728,6 +5732,7 @@ public type FilesFilepathBody record {
     int parts?;
     # User provided modification time.
     string provided_mtime?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;
@@ -5773,7 +5778,7 @@ public type PublicKeysIdBody2 record {
 # Associated invoice line items
 public type InvoiceLineItemEntity record {
     # Invoice line item amount
-    float amount?;
+    decimal amount?;
     # Invoice line item created at date/time
     string created_at?;
     # Invoice line item description
@@ -5984,6 +5989,7 @@ public type BeginUploadFilepathBody record {
     int part?;
     # How many parts to fetch?
     int parts?;
+    # 
     string ref?;
     # File byte offset to restart from.
     int restart?;

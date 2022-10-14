@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.ebay.com/identity/v1/oauth2/token";
 |};
 
 # This is a generated connector for [eBay Analytics API v1.2.0](https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification.
@@ -74,7 +85,7 @@ public isolated client class Client {
     # + evaluationType - Use this path parameter to specify the type of the seller evaluation you want returned, either: CURRENT &ndash; A monthly evaluation that occurs on the 20th of every month. PROJECTED &ndash; A daily evaluation that provides a projection of how the seller is currently performing with regards to the upcoming evaluation period. 
     # + return - Success 
     remote isolated function getCustomerServiceMetric(string customerServiceMetricType, string evaluationMarketplaceId, string evaluationType) returns GetCustomerServiceMetricResponse|error {
-        string resourcePath = string `/customer_service_metric/${customerServiceMetricType}/${evaluationType}`;
+        string resourcePath = string `/customer_service_metric/${getEncodedUri(customerServiceMetricType)}/${getEncodedUri(evaluationType)}`;
         map<anydata> queryParam = {"evaluation_marketplace_id": evaluationMarketplaceId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetCustomerServiceMetricResponse response = check self.clientEp->get(resourcePath);
@@ -94,7 +105,7 @@ public isolated client class Client {
     # + program - This input value specifies the region used to determine the seller's standards profile. Supply one of the four following values, PROGRAM_DE, PROGRAM_UK, PROGRAM_US, or PROGRAM_GLOBAL. 
     # + return - Success 
     remote isolated function getSellerStandardsProfile(string cycle, string program) returns StandardsProfile|error? {
-        string resourcePath = string `/seller_standards_profile/${program}/${cycle}`;
+        string resourcePath = string `/seller_standards_profile/${getEncodedUri(program)}/${getEncodedUri(cycle)}`;
         StandardsProfile? response = check self.clientEp->get(resourcePath);
         return response;
     }

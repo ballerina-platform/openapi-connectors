@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,7 @@ public type ContactAddress record {
 # This complex type defines an order from which a seller is including one or more line items in a single package to be shipped.
 public type Order record {
     # The e-commerce platform or environment where the order was created. Use the value EBAY to get the rates available for eBay orders.
-    string 'channel?;
+    string channel?;
     # The unique ID of the order supplied by the channel of origin. For eBay orders, this would be the orderId.
     string orderId?;
 };

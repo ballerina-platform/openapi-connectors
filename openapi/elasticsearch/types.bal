@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -323,7 +323,7 @@ public type DtsDimensionCosts record {
     # DTS Rate
     DtsRate rate;
     # Costs associated to the Data Transfer and Storage (DTS) dimensions for an organization
-    float cost;
+    decimal cost;
     # Type of the DTS dimension usage
     string 'type;
     # DTS quantity
@@ -733,7 +733,7 @@ public type DeploymentCreateResources record {
 # Costs associated to a set of deployments for an organization. All of the costs are expressed in Elastic Consumption Unit (ECU).
 public type DeploymentsCosts record {
     # Total cost for all deployments
-    float total_cost;
+    decimal total_cost;
     # Costs of the list of deployments
     DeploymentCosts[] deployments;
 };
@@ -747,11 +747,11 @@ public type InstanceConfigurationInfo record {
     # Node types (master, data) for the instance
     string[] node_types?;
     # Settings for the instance storage multiplier
-    float storage_multiplier?;
+    decimal storage_multiplier?;
     # The type of instance (elasticsearch, kibana)
     string instance_type;
     # Settings for the instance CPU multiplier
-    float cpu_multiplier?;
+    decimal cpu_multiplier?;
     # The maximum number of availability zones in which this instance configuration has allocators. This field will be missing unless explicitly requested with the show_max_zones parameter.
     int max_zones?;
     # Unique identifier for the instance configuration
@@ -844,7 +844,7 @@ public type ItemCosts record {
     # Resource name
     string name;
     # Resource price
-    float price;
+    decimal price;
     # Period
     Period period;
     # Number of instances
@@ -852,7 +852,7 @@ public type ItemCosts record {
     # Resource usage in hours
     int hours;
     # Price per hour
-    float price_per_hour;
+    decimal price_per_hour;
 };
 
 # A URL to access the service of a resource
@@ -1160,7 +1160,7 @@ public type DeploymentCosts record {
     # Elasticsearch deployment name
     string deployment_name;
     # Price per hour
-    float hourly_rate;
+    decimal hourly_rate;
 };
 
 # Additional configuration for the new deployment object.
@@ -1227,7 +1227,7 @@ public type DtsRate record {
     # Rate in human readable format
     string formatted_value;
     # Raw rate
-    float value;
+    decimal value;
 };
 
 # The index curation settings for an Elasticsearch cluster.
@@ -1296,13 +1296,13 @@ public type SimplifiedLineItem record {
     # Start of the line item's validity
     string 'start;
     # Elastic Consumption Unit (ECU) Balance
-    float ecu_balance;
+    decimal ecu_balance;
     # Expiration of the line item
     string end;
     # Line Item ID
     string id;
     # Original Elastic Consumption Unit (ECU) quantity
-    float ecu_quantity;
+    decimal ecu_quantity;
 };
 
 # Information about the current, pending, and past Elasticsearch cluster plans.
@@ -1812,13 +1812,13 @@ public type AppSearchSystemSettings record {
 # The top level costs overview for an organization. All of the costs, credits, trials are expressed in Elastic Consumption Unit (ECU).
 public type CostsOverview record {
     # Trial costs for the organization
-    float trials;
+    decimal trials;
     # Costs overview for an organization. All of the costs, credits, trials are expressed in Elastic Consumption Unit (ECU).
     Costs costs;
     # The available balance for an organization
     Balance balance?;
     # Hourly rate applied.
-    float hourly_rate;
+    decimal hourly_rate;
 };
 
 # A request to update an account
@@ -1942,7 +1942,7 @@ public type ClusterInstanceDiskInfo record {
     # If known, the amount of total disk space available to the container in MB
     int disk_space_available?;
     # The storage multiplier originally defined to calculate disk space.
-    float storage_multiplier;
+    decimal storage_multiplier;
     # The amount of disk space being used by the service in MB
     int disk_space_used;
 };
@@ -2621,11 +2621,11 @@ public type EmptyResponse record {
 # The available balance for an organization
 public type Balance record {
     # Available balance
-    float available;
+    decimal available;
     # A collection of order line items for for an organization
     SimplifiedLineItem[] line_items;
     # Remaining balance
-    float remaining;
+    decimal remaining;
 };
 
 # A query that matches all documents.
@@ -2707,11 +2707,11 @@ public type ElasticsearchClusterTopologyElement record {
 # Costs overview for an organization. All of the costs, credits, trials are expressed in Elastic Consumption Unit (ECU).
 public type Costs record {
     # Total costs
-    float total;
+    decimal total;
     # Total costs associated to the Elastic Cloud resources
-    float resources;
+    decimal resources;
     # Total costs associated to Data Transfer and Storage (DTS)
-    float data_transfer_and_storage;
+    decimal data_transfer_and_storage;
 };
 
 # Information about the Elasticsearch cluster snapshot retention.

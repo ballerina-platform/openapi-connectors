@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://account-d.docusign.com/oauth/token";
 |};
 
 # This is a generated connector for [DocuSign Click API](https://developers.docusign.com/docs/click-api/) OpenAPI specification. DocuSign Click lets you capture consent to standard agreement terms with a single click terms and conditions, terms of service, terms of use, privacy policies, and more. The Click API lets you include this customizable clickwrap solution in your DocuSign integrations.
@@ -84,7 +95,7 @@ public isolated client class Client {
     # + toDate - Optional. The latest date to return agreements from. 
     # + return - Successful response. 
     remote isolated function getClickwraps(string accountId, string? fromDate = (), string? ownerUserId = (), string? pageNumber = (), string? status = (), string? toDate = ()) returns ClickwrapVersionsResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps`;
         map<anydata> queryParam = {"from_date": fromDate, "ownerUserId": ownerUserId, "page_number": pageNumber, "status": status, "to_date": toDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ClickwrapVersionsResponse response = check self.clientEp->get(resourcePath);
@@ -96,7 +107,7 @@ public isolated client class Client {
     # + payload - Request body for working with clickwrap. 
     # + return - Successful response. 
     remote isolated function postClickwrap(string accountId, ClickwrapRequest payload) returns ClickwrapVersionSummaryResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -109,10 +120,10 @@ public isolated client class Client {
     # + clickwrapIds - A comma-separated list of clickwrap IDs to delete. 
     # + return - Successful response. 
     remote isolated function deleteClickwraps(string accountId, string? clickwrapIds = ()) returns ClickwrapsDeleteResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps`;
         map<anydata> queryParam = {"clickwrapIds": clickwrapIds};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        ClickwrapsDeleteResponse response = check self.clientEp->delete(resourcePath);
+        ClickwrapsDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets a  single clickwrap object.
@@ -121,7 +132,7 @@ public isolated client class Client {
     # + clickwrapId - The ID of the clickwrap. 
     # + return - Successful response. 
     remote isolated function getClickwrap(string accountId, string clickwrapId) returns ClickwrapVersionResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}`;
         ClickwrapVersionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -132,7 +143,7 @@ public isolated client class Client {
     # + payload - Clieckwrap transfer payload 
     # + return - Successful response. 
     remote isolated function putClickwrap(string accountId, string clickwrapId, ClickwrapTransferRequest payload) returns ClickwrapVersionSummaryResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -146,10 +157,10 @@ public isolated client class Client {
     # + versions - A comma-separated list of versions to delete. 
     # + return - Successful response. 
     remote isolated function deleteClickwrap(string accountId, string clickwrapId, string? versions = ()) returns ClickwrapVersionsDeleteResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}`;
         map<anydata> queryParam = {"versions": versions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        ClickwrapVersionsDeleteResponse response = check self.clientEp->delete(resourcePath);
+        ClickwrapVersionsDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Checks if a user has agreed to a clickwrap.
@@ -159,7 +170,7 @@ public isolated client class Client {
     # + payload - User agreement payload 
     # + return - Successful response. 
     remote isolated function checkIfUserHasAgreed(string accountId, string clickwrapId, UserAgreementRequest payload) returns UserAgreementResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/agreements`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/agreements`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -173,7 +184,7 @@ public isolated client class Client {
     # + clickwrapId - The ID of the clickwrap. 
     # + return - Successful response. 
     remote isolated function getUserAgreement(string accountId, string agreementId, string clickwrapId) returns UserAgreementResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/agreements/${agreementId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/agreements/${getEncodedUri(agreementId)}`;
         UserAgreementResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -184,7 +195,7 @@ public isolated client class Client {
     # + clickwrapId - The ID of the clickwrap. 
     # + return - Successful response. 
     remote isolated function getAgreementPdf(string accountId, string agreementId, string clickwrapId) returns http:Response|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/agreements/${agreementId}/download`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/agreements/${getEncodedUri(agreementId)}/download`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -199,7 +210,7 @@ public isolated client class Client {
     # + toDate - Optional. The latest date to return agreements from. 
     # + return - Successful response. 
     remote isolated function getClickwrapAgreements(string accountId, string clickwrapId, string? clientUserId = (), string? fromDate = (), string? pageNumber = (), string? status = (), string? toDate = ()) returns ClickwrapAgreementsResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/users`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/users`;
         map<anydata> queryParam = {"client_user_id": clientUserId, "from_date": fromDate, "page_number": pageNumber, "status": status, "to_date": toDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ClickwrapAgreementsResponse response = check self.clientEp->get(resourcePath);
@@ -212,7 +223,7 @@ public isolated client class Client {
     # + payload - Request body for working with clickwrap. 
     # + return - Successful response. 
     remote isolated function createClickwrapVersion(string accountId, string clickwrapId, ClickwrapRequest payload) returns ClickwrapVersionSummaryResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -226,10 +237,10 @@ public isolated client class Client {
     # + clickwrapVersionIds - A comma-separated list of clickwrap version IDs to delete. 
     # + return - Successful response. 
     remote isolated function deleteClickwrapVersions(string accountId, string clickwrapId, string? clickwrapVersionIds = ()) returns ClickwrapVersionsDeleteResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions`;
         map<anydata> queryParam = {"clickwrapVersionIds": clickwrapVersionIds};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        ClickwrapVersionsDeleteResponse response = check self.clientEp->delete(resourcePath);
+        ClickwrapVersionsDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets a specific version from a clickwrap.
@@ -239,7 +250,7 @@ public isolated client class Client {
     # + versionId - The ID of the version. 
     # + return - Successful response. 
     remote isolated function getClickwrapVersion(string accountId, string clickwrapId, string versionId) returns ClickwrapVersionResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions/${versionId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions/${getEncodedUri(versionId)}`;
         ClickwrapVersionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -251,7 +262,7 @@ public isolated client class Client {
     # + payload - Request body for working with clickwrap. 
     # + return - Successful response. 
     remote isolated function updateClickwrapVersion(string accountId, string clickwrapId, string versionId, ClickwrapRequest payload) returns ClickwrapVersionSummaryResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions/${versionId}`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions/${getEncodedUri(versionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -265,8 +276,8 @@ public isolated client class Client {
     # + versionId - The ID of the version. 
     # + return - Successful response. 
     remote isolated function deleteClickwrapVersion(string accountId, string clickwrapId, string versionId) returns ClickwrapVersionDeleteResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions/${versionId}`;
-        ClickwrapVersionDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions/${getEncodedUri(versionId)}`;
+        ClickwrapVersionDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets the agreement responses for a clickwrap version.
@@ -281,7 +292,7 @@ public isolated client class Client {
     # + toDate - Optional. The latest date to return agreements from. 
     # + return - Successful response. 
     remote isolated function getClickwrapVersionUserAgreements(string accountId, string clickwrapId, string versionId, string? clientUserId = (), string? fromDate = (), string? pageNumber = (), string? status = (), string? toDate = ()) returns ClickwrapAgreementsResponse|error {
-        string resourcePath = string `/v1/accounts/${accountId}/clickwraps/${clickwrapId}/versions/${versionId}/users`;
+        string resourcePath = string `/v1/accounts/${getEncodedUri(accountId)}/clickwraps/${getEncodedUri(clickwrapId)}/versions/${getEncodedUri(versionId)}/users`;
         map<anydata> queryParam = {"client_user_id": clientUserId, "from_date": fromDate, "page_number": pageNumber, "status": status, "to_date": toDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ClickwrapAgreementsResponse response = check self.clientEp->get(resourcePath);

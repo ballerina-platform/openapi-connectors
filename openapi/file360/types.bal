@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type ArchiveApplicationsArr ArchiveApplications[];
 
@@ -603,6 +605,7 @@ public type RetrievalTemplate record {
     # Is this a personal template
     boolean IsPersonalTemplate?;
     # Maximum number of hits to return.  Max 50000
+    @constraint:Int {minValue: 1, maxValue: 50000}
     int MaxHits?;
     # Include only documents on legal hold in hit list
     boolean OnlyLegalHoldDocuments?;

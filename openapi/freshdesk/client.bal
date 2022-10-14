@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Freshdesk API v2.0](https://developers.freshdesk.com/api/#intro) OpenAPI specification.
@@ -92,7 +96,7 @@ public isolated client class Client {
     # + id - Unique identifier for a ticket 
     # + return - Ticket detail 
     remote isolated function getTicket(int id) returns Ticket|error {
-        string resourcePath = string `/api/v2/tickets/${id}`;
+        string resourcePath = string `/api/v2/tickets/${getEncodedUri(id)}`;
         Ticket response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -101,8 +105,8 @@ public isolated client class Client {
     # + id - Unique identifier for a ticket 
     # + return - The resource was deleted successfully. 
     remote isolated function deleteTicket(int id) returns http:Response|error {
-        string resourcePath = string `/api/v2/tickets/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/tickets/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List contacts
@@ -118,7 +122,7 @@ public isolated client class Client {
     # + id - Unique identifier for a contact 
     # + return - Contact detail 
     remote isolated function getContact(int id) returns Contact|error {
-        string resourcePath = string `/api/v2/contacts/${id}`;
+        string resourcePath = string `/api/v2/contacts/${getEncodedUri(id)}`;
         Contact response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -127,8 +131,8 @@ public isolated client class Client {
     # + id - Unique identifier for a contact 
     # + return - The resource was deleted successfully. 
     remote isolated function deleteContact(int id) returns http:Response|error {
-        string resourcePath = string `/api/v2/contacts/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/contacts/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

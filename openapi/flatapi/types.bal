@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type AssignmentSubmissionArr AssignmentSubmission[];
 
@@ -374,8 +376,10 @@ public type AssignmentCopy record {
 # Creation of a classroom
 public type ClassCreation record {
     # The name of the new class
+    @constraint:String {maxLength: 255}
     string name;
     # The section of the new class
+    @constraint:String {maxLength: 255}
     string section?;
 };
 
@@ -595,7 +599,7 @@ public type ScoreTrackUpdate record {
     # Title of the track
     string title?;
     # True if the track should be used as default audio source
-    boolean 'default?;
+    boolean default?;
     # State of the track
     ScoreTrackState state?;
     ScoreTrackPoint[] synchronizationPoints?;
@@ -604,6 +608,7 @@ public type ScoreTrackUpdate record {
 # Creation of a couple of LTI 1.x OAuth credentials
 public type LtiCredentialsCreation record {
     # Name of the couple of credentials
+    @constraint:String {maxLength: 300}
     string name;
     # LMS name
     LmsName lms;
@@ -621,7 +626,7 @@ public type ResourceCollaborator record {
     # Public User details
     UserPublic user?;
     # A group of users
-    Group 'group?;
+    Group group?;
     # If the collaborator is not a user of Flat yet, this field will contain his email.
     string userEmail?;
     # If this property is `true`, this is still a pending invitation
@@ -630,6 +635,7 @@ public type ResourceCollaborator record {
 
 public type CollectionCreation record {
     # The title of the collection
+    @constraint:String {maxLength: 300, minLength: 1}
     string title;
     # The collection main privacy mode(private).
     CollectionPrivacy privacy;
@@ -638,6 +644,7 @@ public type CollectionCreation record {
 # Edit the collection metadata
 public type CollectionModification record {
     # The title of the collection
+    @constraint:String {maxLength: 300, minLength: 1}
     string title?;
     # The collection main privacy mode(private).
     CollectionPrivacy privacy?;
@@ -660,6 +667,7 @@ public type ScoreModification record {
     # When using the `privacy` mode `privateLink`, this property can be used to set a custom sharing key, otherwise a new key will be generated.
     string sharingKey?;
     # Description of the creation
+    @constraint:String {maxLength: 2000}
     string description?;
     # Tags describing the score
     string[] tags?;
@@ -832,10 +840,13 @@ public type UserAdminUpdate record {
     # User's Organization Role (for Edu users only)
     OrganizationRoles? organizationRole?;
     # Username of the account
+    @constraint:String {maxLength: 30, minLength: 1}
     string username?;
     # First name of the user
+    @constraint:String {maxLength: 60}
     string firstname?;
     # Last name of the user
+    @constraint:String {maxLength: 60}
     string lastname?;
     # Email of the account
     string email?;
@@ -849,8 +860,10 @@ public type ScoreCommentUpdate record {
     # The unique indentifier of the revision of the score where the comment was added. If this property is unspecified or contains "last", the API will automatically take the last revision created.
     string revision?;
     # The comment text that can includes mentions using the following format: `@[id:username]`.
+    @constraint:String {maxLength: 10000, minLength: 1}
     string comment?;
     # A raw version of the comment, that can be displayed without the mentions. If you use mentions, this property must be set.
+    @constraint:String {maxLength: 10000, minLength: 1}
     string rawComment?;
     # The context of the comment (for inline/contextualized comments). A context will include all the information related to the location of the comment (i.e. score parts, range of measure, time position).
     ScoreCommentContext context?;
@@ -930,7 +943,7 @@ public type ResourceCollaboratorCreation record {
     # The unique identifier of a Flat user
     string user?;
     # The unique identifier of a Flat group
-    string 'group?;
+    string group?;
     # Fill this field to invite an individual user by email.
     string userEmail?;
     # Token received in an invitation to join the score.
@@ -976,7 +989,7 @@ public type ScoreTrack record {
     # The modification date of the track
     string modificationDate?;
     # True if the track should be used as default audio source
-    boolean 'default?;
+    boolean default?;
     # State of the track
     ScoreTrackState state?;
     # The type of an audio track
@@ -1049,7 +1062,7 @@ public type ScoreTrackCreation record {
     # Title of the track
     string title?;
     # True if the track should be used as default audio source
-    boolean 'default?;
+    boolean default?;
     # State of the track
     ScoreTrackState state?;
     # The URL of the track
@@ -1085,10 +1098,13 @@ public type AssignmentsubmissionupdateComments record {
 # User creation
 public type UserCreation record {
     # Username of the new account
+    @constraint:String {maxLength: 30, minLength: 1}
     string username;
     # First name of the user
+    @constraint:String {maxLength: 60}
     string firstname?;
     # Last name of the user
+    @constraint:String {maxLength: 60}
     string lastname?;
     # Email of the new account
     string email?;
@@ -1260,8 +1276,10 @@ public type UserBasics record {
 # Update of a classroom
 public type ClassUpdate record {
     # The name of the class
+    @constraint:String {maxLength: 255}
     string name?;
     # The section of the class
+    @constraint:String {maxLength: 255}
     string section?;
 };
 

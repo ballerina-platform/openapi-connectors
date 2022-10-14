@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -20,9 +20,9 @@ import ballerina/mime;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,9 +49,20 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# This is a generated connector for [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification. DocuSign Rooms streamlines real estate and mortgage workflows by connecting all parties in a digital, secure, and central workspace. With the DocuSign Rooms API, it’s easy to integrate Rooms functionality into your own solutions.
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://account-d.docusign.com/oauth/token";
+|};
+
+# This is a generated connector for [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification.  DocuSign Rooms streamlines real estate and mortgage workflows by connecting all parties in a digital, secure, and central workspace. With the DocuSign Rooms API, it’s easy to integrate Rooms functionality into your own solutions.
 @display {label: "DocuSign Rooms", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
@@ -72,7 +83,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Account information successfully retrieved 
     remote isolated function getAccountInformation(string accountId) returns AccountSummary|error {
-        string resourcePath = string `/v2/accounts/${accountId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}`;
         AccountSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -83,7 +94,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Document successfully retrieved. 
     remote isolated function getDocument(int documentId, string accountId, boolean includeContents = false) returns Document|error {
-        string resourcePath = string `/v2/accounts/${accountId}/documents/${documentId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/documents/${getEncodedUri(documentId)}`;
         map<anydata> queryParam = {"includeContents": includeContents};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Document response = check self.clientEp->get(resourcePath);
@@ -95,8 +106,8 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Document has been successfully deleted. 
     remote isolated function deleteDocument(int documentId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/documents/${documentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/documents/${getEncodedUri(documentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Grants a user access to a document.
@@ -106,7 +117,7 @@ public isolated client class Client {
     # + payload - User information to grant access 
     # + return - User successfully granted access to document. 
     remote isolated function createUserAccessToDocument(int documentId, string accountId, DocumentUserForCreate payload) returns DocumentUser|error {
-        string resourcePath = string `/v2/accounts/${accountId}/documents/${documentId}/users`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/documents/${getEncodedUri(documentId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -118,7 +129,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Permission profiles successfully retrieved. 
     remote isolated function getEsignPermissionProfiles(string accountId) returns ESignPermissionProfileList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/esign_permission_profiles`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/esign_permission_profiles`;
         ESignPermissionProfileList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -128,7 +139,7 @@ public isolated client class Client {
     # + payload - Details required to create a form fill session. 
     # + return - Success 
     remote isolated function createExternalFormFillSession(string accountId, ExternalFormFillSessionForCreate payload) returns ExternalFormFillSession|error {
-        string resourcePath = string `/v2/accounts/${accountId}/external_form_fill_sessions`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/external_form_fill_sessions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -142,7 +153,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - FieldSet successfully retrieved. 
     remote isolated function getFieldSet(string fieldSetId, string accountId, string[]? fieldsCustomDataFilters = ()) returns FieldSet|error {
-        string resourcePath = string `/v2/accounts/${accountId}/field_sets/${fieldSetId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/field_sets/${getEncodedUri(fieldSetId)}`;
         map<anydata> queryParam = {"fieldsCustomDataFilters": fieldsCustomDataFilters};
         map<Encoding> queryParamEncoding = {"fieldsCustomDataFilters": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -156,7 +167,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Successfully retrieved Form Groups. 
     remote isolated function getFormGroups(string accountId, int count = 100, int startPosition = 0) returns FormGroupSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FormGroupSummaryList response = check self.clientEp->get(resourcePath);
@@ -168,7 +179,7 @@ public isolated client class Client {
     # + payload - Request object for FormGroup::CreateFormGroup. 
     # + return - Successfully created form group. 
     remote isolated function createFormGroup(string accountId, FormGroupForCreate payload) returns FormGroup|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -181,7 +192,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Successfully retrieved form group. 
     remote isolated function getFormGroup(string formGroupId, string accountId) returns FormGroup|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}`;
         FormGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -192,7 +203,7 @@ public isolated client class Client {
     # + payload - Details about a form group 
     # + return - Successfully updated form group. 
     remote isolated function renameFormGroup(string formGroupId, string accountId, FormGroupForUpdate payload) returns FormGroup|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -205,8 +216,8 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Successfully deleted form group. 
     remote isolated function deleteFormgroup(string formGroupId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Removes a form from a form group.
@@ -216,7 +227,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Form was successfully removed from the form group 
     remote isolated function removeFormInFormGroup(string formGroupId, string formId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}/unassign_form/${formId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}/unassign_form/${getEncodedUri(formId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -229,7 +240,7 @@ public isolated client class Client {
     # + payload - Group information to assign form 
     # + return - Successfully assigned form to form group. 
     remote isolated function assignFormToFormGroup(string formGroupId, string accountId, FormGroupFormToAssign payload) returns FormGroupFormToAssign|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}/assign_form`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}/assign_form`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -243,7 +254,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Office was successfully assigned to the form group 
     remote isolated function grantOfficeAccessToFormGroup(string formGroupId, int officeId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}/grant_office_access/${officeId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}/grant_office_access/${getEncodedUri(officeId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -256,7 +267,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Office was successfully removed from the form group 
     remote isolated function revokeOfficeAccessFromFormGroup(string formGroupId, int officeId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_groups/${formGroupId}/revoke_office_access/${officeId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_groups/${getEncodedUri(formGroupId)}/revoke_office_access/${getEncodedUri(officeId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -269,7 +280,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Successfully retrieved Form Libraries. 
     remote isolated function getFormLibraries(string accountId, int count = 100, int startPosition = 0) returns FormLibrarySummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_libraries`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_libraries`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FormLibrarySummaryList response = check self.clientEp->get(resourcePath);
@@ -283,7 +294,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Successfully retrieved library  
     remote isolated function getFormsInFormLibraryForms(string formLibraryId, string accountId, int count = 100, int startPosition = 0) returns FormSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/form_libraries/${formLibraryId}/forms`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/form_libraries/${getEncodedUri(formLibraryId)}/forms`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FormSummaryList response = check self.clientEp->get(resourcePath);
@@ -295,7 +306,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Form based on FormId 
     remote isolated function getFormDetails(string formId, string accountId) returns FormDetails|error {
-        string resourcePath = string `/v2/accounts/${accountId}/forms/${formId}/details`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/forms/${getEncodedUri(formId)}/details`;
         FormDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -436,7 +447,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Offices successfully retrieved. 
     remote isolated function getOffices(string accountId, int count = 100, int startPosition = 0, boolean onlyAccessible = false, string? search = ()) returns OfficeSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/offices`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/offices`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition, "onlyAccessible": onlyAccessible, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OfficeSummaryList response = check self.clientEp->get(resourcePath);
@@ -448,7 +459,7 @@ public isolated client class Client {
     # + payload - Details about the office that you want to create. 
     # + return - Office successfully created. 
     remote isolated function createOffice(string accountId, OfficeForCreate payload) returns Office|error {
-        string resourcePath = string `/v2/accounts/${accountId}/offices`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/offices`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -461,7 +472,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Office successfully retrieved. 
     remote isolated function getOffice(int officeId, string accountId) returns Office|error {
-        string resourcePath = string `/v2/accounts/${accountId}/offices/${officeId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/offices/${getEncodedUri(officeId)}`;
         Office response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -471,8 +482,8 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Office successfully deleted. 
     remote isolated function deleteOffice(int officeId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/offices/${officeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/offices/${getEncodedUri(officeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves the number and type of objects that reference an office.
@@ -481,7 +492,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Reference counts successfully retrieved. 
     remote isolated function getReferenceCounts(int officeId, string accountId) returns OfficeReferenceCountList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/offices/${officeId}/reference_counts`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/offices/${getEncodedUri(officeId)}/reference_counts`;
         OfficeReferenceCountList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -493,7 +504,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Regions successfully retrieved. 
     remote isolated function getRegions(string accountId, int count = 100, int startPosition = 0, boolean managedOnly = false) returns RegionSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/regions`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/regions`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition, "managedOnly": managedOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RegionSummaryList response = check self.clientEp->get(resourcePath);
@@ -505,7 +516,7 @@ public isolated client class Client {
     # + payload - Information about a region. 
     # + return - The region was successfully created 
     remote isolated function createRegion(string accountId, Region payload) returns Region|error {
-        string resourcePath = string `/v2/accounts/${accountId}/regions`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/regions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -518,7 +529,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - The region was found. 
     remote isolated function getRegion(int regionId, string accountId) returns Region|error {
-        string resourcePath = string `/v2/accounts/${accountId}/regions/${regionId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/regions/${getEncodedUri(regionId)}`;
         Region response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -528,8 +539,8 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Region successfully deleted. 
     remote isolated function deleteRegion(int regionId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/regions/${regionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/regions/${getEncodedUri(regionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves the number and type of objects that reference a region.
@@ -538,7 +549,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Reference counts successfully retrieved. 
     remote isolated function getRegionReferenceCounts(int regionId, string accountId) returns RegionReferenceCountList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/regions/${regionId}/reference_counts`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/regions/${getEncodedUri(regionId)}/reference_counts`;
         RegionReferenceCountList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -551,7 +562,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Roles successfully retrieved. 
     remote isolated function getRoles(string accountId, boolean onlyAssignable = false, string? filter = (), int startPosition = 0, int count = 100) returns RoleSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/roles`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/roles`;
         map<anydata> queryParam = {"onlyAssignable": onlyAssignable, "filter": filter, "startPosition": startPosition, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoleSummaryList response = check self.clientEp->get(resourcePath);
@@ -563,7 +574,7 @@ public isolated client class Client {
     # + payload - Details about the role that you want to create. 
     # + return - Role successfully created. 
     remote isolated function createRole(string accountId, RoleForCreate payload) returns Role|error {
-        string resourcePath = string `/v2/accounts/${accountId}/roles`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/roles`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -577,7 +588,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Role successfully retrieved. 
     remote isolated function getRole(int roleId, string accountId, boolean includeIsAssigned = false) returns Role|error {
-        string resourcePath = string `/v2/accounts/${accountId}/roles/${roleId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/roles/${getEncodedUri(roleId)}`;
         map<anydata> queryParam = {"includeIsAssigned": includeIsAssigned};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Role response = check self.clientEp->get(resourcePath);
@@ -590,7 +601,7 @@ public isolated client class Client {
     # + payload - The details to use for the update. 
     # + return - Role successfully updated. 
     remote isolated function updateRole(int roleId, string accountId, RoleForUpdate payload) returns Role|error {
-        string resourcePath = string `/v2/accounts/${accountId}/roles/${roleId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/roles/${getEncodedUri(roleId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -603,8 +614,8 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Role successfully deleted. 
     remote isolated function deleteRole(int roleId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/roles/${roleId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/roles/${getEncodedUri(roleId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets a room's field data.
@@ -613,7 +624,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Field data successfully retrieved. 
     remote isolated function getRoomFieldData(int roomId, string accountId) returns FieldData|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/field_data`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/field_data`;
         FieldData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -624,7 +635,7 @@ public isolated client class Client {
     # + payload - The field data to update. When updating field data, specify only the fields being updated. 
     # + return - Field data successfully updated. 
     remote isolated function updateRoomFieldData(int roomId, string accountId, FieldDataForUpdate payload) returns FieldData|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/field_data`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/field_data`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -639,7 +650,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Room folders successfully retrieved. 
     remote isolated function getRoomFolders(int roomId, string accountId, int startPosition = 0, int count = 100) returns RoomFolderList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/room_folders`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/room_folders`;
         map<anydata> queryParam = {"startPosition": startPosition, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoomFolderList response = check self.clientEp->get(resourcePath);
@@ -652,7 +663,7 @@ public isolated client class Client {
     # + payload - Details about the form that you want to add. 
     # + return - Success 
     remote isolated function addFormToRoom(int roomId, string accountId, FormForAdd payload) returns RoomDocument|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/forms`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/forms`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -669,7 +680,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - The room user was successfully retrieved. 
     remote isolated function getRoomUsers(int roomId, string accountId, int count = 100, int startPosition = 0, string? filter = (), string? sort = ()) returns RoomUsersResult|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/users`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/users`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition, "filter": filter, "sort": sort};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoomUsersResult response = check self.clientEp->get(resourcePath);
@@ -682,7 +693,7 @@ public isolated client class Client {
     # + payload - The information to use for the invitation. 
     # + return - Success 
     remote isolated function inviteUserToRoom(int roomId, string accountId, RoomInvite payload) returns RoomInviteResponse|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/users`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -697,7 +708,7 @@ public isolated client class Client {
     # + payload - This request object contains the information that you want to update for the room user. 
     # + return - The room user was successfully updated. 
     remote isolated function putRoomUser(int roomId, int userId, string accountId, RoomUserForUpdate payload) returns RoomUser|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/users/${userId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/users/${getEncodedUri(userId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -712,7 +723,7 @@ public isolated client class Client {
     # + payload - Details for removal. 
     # + return - The room user's access was successfully revoked. 
     remote isolated function revokeRoomUserAccess(int roomId, int userId, string accountId, RoomUserRemovalDetail payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/users/${userId}/revoke_access`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/users/${getEncodedUri(userId)}/revoke_access`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -726,7 +737,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - The room user's access was successfully restored. 
     remote isolated function restoreRoomUserAccess(int roomId, int userId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/users/${userId}/restore_access`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/users/${getEncodedUri(userId)}/restore_access`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -745,7 +756,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Rooms successfully retrieved. 
     remote isolated function getRooms(string accountId, int count = 100, int startPosition = 0, string? roomStatus = (), int? officeId = (), string? fieldDataChangedStartDate = (), string? fieldDataChangedEndDate = (), string? roomClosedStartDate = (), string? roomClosedEndDate = ()) returns RoomSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition, "roomStatus": roomStatus, "officeId": officeId, "fieldDataChangedStartDate": fieldDataChangedStartDate, "fieldDataChangedEndDate": fieldDataChangedEndDate, "roomClosedStartDate": roomClosedStartDate, "roomClosedEndDate": roomClosedEndDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoomSummaryList response = check self.clientEp->get(resourcePath);
@@ -757,7 +768,7 @@ public isolated client class Client {
     # + payload - Details about the new room. 
     # + return - Room successfully created. 
     remote isolated function createRoom(string accountId, RoomForCreate payload) returns Room|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -771,7 +782,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Room successfully retrieved. 
     remote isolated function getRoom(int roomId, string accountId, boolean includeFieldData = false) returns Room|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}`;
         map<anydata> queryParam = {"includeFieldData": includeFieldData};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Room response = check self.clientEp->get(resourcePath);
@@ -783,8 +794,8 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Room successfully deleted. 
     remote isolated function deleteRoom(int roomId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets assignable room-level roles in v6.
@@ -797,7 +808,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Assignable roles successfully retrieved. 
     remote isolated function roomsGetAssignableRoles(int roomId, string accountId, string? assigneeEmail = (), string? filter = (), int startPosition = 0, int count = 100) returns AssignableRoles|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/assignable_roles`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/assignable_roles`;
         map<anydata> queryParam = {"assigneeEmail": assigneeEmail, "filter": filter, "startPosition": startPosition, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AssignableRoles response = check self.clientEp->get(resourcePath);
@@ -811,7 +822,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Documents successfully retrieved. 
     remote isolated function roomsGetDocuments(int roomId, string accountId, int count = 100, int startPosition = 0) returns RoomDocumentList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/documents`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/documents`;
         map<anydata> queryParam = {"count": count, "startPosition": startPosition};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoomDocumentList response = check self.clientEp->get(resourcePath);
@@ -824,7 +835,7 @@ public isolated client class Client {
     # + payload - Contains information about a document. 
     # + return - Document successfully added. 
     remote isolated function addDocumentToroom(int roomId, string accountId, Document payload) returns RoomDocument|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/documents`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/documents`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -838,7 +849,7 @@ public isolated client class Client {
     # + payload - Document Content 
     # + return - Document successfully added. 
     remote isolated function addDocumentToRoomViaFileUpload(int roomId, string accountId, DocumentsContentsBody payload) returns RoomDocument|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/documents/contents`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/documents/contents`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -852,7 +863,7 @@ public isolated client class Client {
     # + payload - Image content 
     # + return - Picture successfully updated. 
     remote isolated function updatePicture(int roomId, string accountId, RoomidPictureBody payload) returns RoomPicture|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/picture`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/picture`;
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
@@ -865,7 +876,7 @@ public isolated client class Client {
     # + accountId - (Required) The id of the account. 
     # + return - FieldSet successfully retrieved. 
     remote isolated function getRoomFieldSet(int roomId, string accountId) returns FieldSet|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/field_set`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/field_set`;
         FieldSet response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -875,7 +886,7 @@ public isolated client class Client {
     # + accountId - (Required) The id of the account. 
     # + return - Task lists successfully retrieved. 
     remote isolated function getTaskLists(int roomId, string accountId) returns TaskListSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/task_lists`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/task_lists`;
         TaskListSummaryList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -886,7 +897,7 @@ public isolated client class Client {
     # + payload - Information about the task list template to use to create the new task list. 
     # + return - Task lists successfully created. 
     remote isolated function createTaskList(int roomId, string accountId, TaskListForCreate payload) returns TaskList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/rooms/${roomId}/task_lists`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/rooms/${getEncodedUri(roomId)}/task_lists`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -903,7 +914,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - Successfully retrieved room templates for the caller 
     remote isolated function getRoomTemplates(string accountId, int? officeId = (), boolean onlyAssignable = false, boolean onlyEnabled = true, int count = 100, int startPosition = 0) returns RoomTemplatesSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/room_templates`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/room_templates`;
         map<anydata> queryParam = {"officeId": officeId, "onlyAssignable": onlyAssignable, "onlyEnabled": onlyEnabled, "count": count, "startPosition": startPosition};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RoomTemplatesSummaryList response = check self.clientEp->get(resourcePath);
@@ -915,8 +926,8 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - Task list successfully deleted. 
     remote isolated function deleteTaskList(int taskListId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/task_lists/${taskListId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/task_lists/${getEncodedUri(taskListId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets task list templates.
@@ -926,7 +937,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally-unique identifier (GUID) for the account. 
     # + return - Successfully returned list of task list  
     remote isolated function getTaskListTemplates(string accountId, int startPosition = 0, int count = 100) returns TaskListTemplateList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/task_list_templates`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/task_list_templates`;
         map<anydata> queryParam = {"startPosition": startPosition, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TaskListTemplateList response = check self.clientEp->get(resourcePath);
@@ -947,7 +958,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally-unique identifier (GUID) for the account. 
     # + return - Users information successfully retrieved. 
     remote isolated function getUsers(string accountId, string? filter = (), string? sort = (), int? defaultOfficeId = (), string? accessLevel = (), int? titleId = (), int? roleId = (), string? status = (), boolean? lockedOnly = (), int startPosition = 0, int count = 100) returns UserSummaryList|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users`;
         map<anydata> queryParam = {"filter": filter, "sort": sort, "defaultOfficeId": defaultOfficeId, "accessLevel": accessLevel, "titleId": titleId, "roleId": roleId, "status": status, "lockedOnly": lockedOnly, "startPosition": startPosition, "count": count};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserSummaryList response = check self.clientEp->get(resourcePath);
@@ -959,7 +970,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally-unique identifier (GUID) for the account. 
     # + return - User information successfully retrieved. 
     remote isolated function getUser(int userId, string accountId) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}`;
         User response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -970,7 +981,7 @@ public isolated client class Client {
     # + payload - This request object contains the information to use to update a user's default office.  
     # + return - User information successfully updated. 
     remote isolated function updateUser(int userId, string accountId, UserForUpdate payload) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -983,8 +994,8 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - The User was successfully removed. 
     remote isolated function removeUser(int userId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Invites a user to a v6 company account.
@@ -993,7 +1004,7 @@ public isolated client class Client {
     # + payload - Information about the user that you are inviting. 
     # + return - User successfully invited. 
     remote isolated function inviteUserToAccount(string accountId, UserToInvite payload) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/invite_user`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/invite_user`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1006,7 +1017,7 @@ public isolated client class Client {
     # + payload - Details about the person who you want to invite. 
     # + return - User successfully invited. 
     remote isolated function inviteClassicAdmin(string accountId, ClassicAdminToInvite payload) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/invite_classic_admin`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/invite_classic_admin`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1019,7 +1030,7 @@ public isolated client class Client {
     # + payload - Details about the person who you want to invite. 
     # + return - User successfully invited. 
     remote isolated function inviteclassicManager(string accountId, ClassicManagerToInvite payload) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/invite_classic_manager`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/invite_classic_manager`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1032,7 +1043,7 @@ public isolated client class Client {
     # + payload - Details about the person who you want to invite. 
     # + return - User successfully invited. 
     remote isolated function inviteClassicAgent(string accountId, ClassicAgentToInvite payload) returns User|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/invite_classic_agent`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/invite_classic_agent`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1045,7 +1056,7 @@ public isolated client class Client {
     # + accountId - (Required) The globally unique identifier (GUID) for the account. 
     # + return - User successfully reinvited. 
     remote isolated function reinviteUser(int userId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/reinvite`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/reinvite`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -1058,7 +1069,7 @@ public isolated client class Client {
     # + payload - Information about the office that you want to add a member to or remove a member from. 
     # + return - User successfully added to the office. 
     remote isolated function addUserToOffice(int userId, string accountId, DesignatedOffice payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/add_to_office`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/add_to_office`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1072,7 +1083,7 @@ public isolated client class Client {
     # + payload - Information about the office that you want to add a member to or remove a member from. 
     # + return - User successfully removed from the office. 
     remote isolated function removeUserFromOffice(int userId, string accountId, DesignatedOffice payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/remove_from_office`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/remove_from_office`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1086,7 +1097,7 @@ public isolated client class Client {
     # + payload - Information about the region associated with the member. 
     # + return - User successfully added to the region. 
     remote isolated function addUserToRegion(int userId, string accountId, DesignatedRegion payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/add_to_region`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/add_to_region`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1100,7 +1111,7 @@ public isolated client class Client {
     # + payload - Information about the region associated with the member. 
     # + return - User successfully removed from the region. 
     remote isolated function removeUserFromRegion(int userId, string accountId, DesignatedRegion payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/remove_from_region`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/remove_from_region`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1114,7 +1125,7 @@ public isolated client class Client {
     # + payload - Details about a locked account. 
     # + return - User has been successfully locked out. 
     remote isolated function lockUser(int userId, string accountId, LockedOutDetails payload) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/lock`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/lock`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -1127,7 +1138,7 @@ public isolated client class Client {
     # + accountId - The globally unique identifier (GUID) for the account. 
     # + return - User has been successfully unlocked. 
     remote isolated function unlockUser(int userId, string accountId) returns http:Response|error {
-        string resourcePath = string `/v2/accounts/${accountId}/users/${userId}/unlock`;
+        string resourcePath = string `/v2/accounts/${getEncodedUri(accountId)}/users/${getEncodedUri(userId)}/unlock`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);

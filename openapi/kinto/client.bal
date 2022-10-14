@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -134,7 +134,7 @@ public isolated client class Client {
     # + collection - Collection 
     # + return - UNDOCUMENTED RESPONSE 
     remote isolated function getCollectionChangeset(string bid, string cid, string expected, string? since = (), int? 'limit = (), string? bucket = (), string? collection = ()) returns http:Response|error {
-        string resourcePath = string `/buckets/${bid}/collections/${cid}/changeset`;
+        string resourcePath = string `/buckets/${getEncodedUri(bid)}/collections/${getEncodedUri(cid)}/changeset`;
         map<anydata> queryParam = {"_since": since, "_expected": expected, "_limit": 'limit, "bucket": bucket, "collection": collection};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -155,7 +155,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return a list of matching objects. 
     remote isolated function getCollections(string bucketId, int? 'limit = (), string[]? sort = (), string? token = (), int? since = (), int? to = (), int? before = (), string? id = (), int? lastModified = (), string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Schema2|error {
-        string resourcePath = string `/buckets/${bucketId}/collections`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections`;
         map<anydata> queryParam = {"_limit": 'limit, "_sort": sort, "_token": token, "_since": since, "_to": to, "_before": before, "id": id, "last_modified": lastModified, "_fields": fields};
         map<Encoding> queryParamEncoding = {"_sort": {style: FORM, explode: false}, "_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -180,7 +180,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return a list of matching objects. 
     remote isolated function getRecords(string bucketId, string collectionId, int? 'limit = (), string[]? sort = (), string? token = (), int? since = (), int? to = (), int? before = (), string? id = (), int? lastModified = (), string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Schema3|error {
-        string resourcePath = string `/buckets/${bucketId}/collections/${collectionId}/records`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections/${getEncodedUri(collectionId)}/records`;
         map<anydata> queryParam = {"_limit": 'limit, "_sort": sort, "_token": token, "_since": since, "_to": to, "_before": before, "id": id, "last_modified": lastModified, "_fields": fields};
         map<Encoding> queryParamEncoding = {"_sort": {style: FORM, explode: false}, "_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -198,7 +198,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return the target object. 
     remote isolated function getRecord(string bucketId, string collectionId, string id, string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns ObjectSchema|error {
-        string resourcePath = string `/buckets/${bucketId}/collections/${collectionId}/records/${id}`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections/${getEncodedUri(collectionId)}/records/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"_fields": fields};
         map<Encoding> queryParamEncoding = {"_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -213,7 +213,7 @@ public isolated client class Client {
     # + id - ID 
     # + return - UNDOCUMENTED RESPONSE 
     remote isolated function createAttachment(string bucketId, string collectionId, string id) returns http:Response|error {
-        string resourcePath = string `/buckets/${bucketId}/collections/${collectionId}/records/${id}/attachment`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections/${getEncodedUri(collectionId)}/records/${getEncodedUri(id)}/attachment`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -225,8 +225,8 @@ public isolated client class Client {
     # + id - ID 
     # + return - UNDOCUMENTED RESPONSE 
     remote isolated function deleteAttachment(string bucketId, string collectionId, string id) returns http:Response|error {
-        string resourcePath = string `/buckets/${bucketId}/collections/${collectionId}/records/${id}/attachment`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections/${getEncodedUri(collectionId)}/records/${getEncodedUri(id)}/attachment`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     #
@@ -237,7 +237,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return the target object. 
     remote isolated function getCollection(string bucketId, string id, string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Objectschema1|error {
-        string resourcePath = string `/buckets/${bucketId}/collections/${id}`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/collections/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"_fields": fields};
         map<Encoding> queryParamEncoding = {"_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -261,7 +261,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return a list of matching objects. 
     remote isolated function getGroups(string bucketId, int? 'limit = (), string[]? sort = (), string? token = (), int? since = (), int? to = (), int? before = (), string? id = (), int? lastModified = (), string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Schema4|error {
-        string resourcePath = string `/buckets/${bucketId}/groups`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/groups`;
         map<anydata> queryParam = {"_limit": 'limit, "_sort": sort, "_token": token, "_since": since, "_to": to, "_before": before, "id": id, "last_modified": lastModified, "_fields": fields};
         map<Encoding> queryParamEncoding = {"_sort": {style: FORM, explode: false}, "_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -278,7 +278,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return the target object. 
     remote isolated function getGroup(string bucketId, string id, string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Objectschema2|error {
-        string resourcePath = string `/buckets/${bucketId}/groups/${id}`;
+        string resourcePath = string `/buckets/${getEncodedUri(bucketId)}/groups/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"_fields": fields};
         map<Encoding> queryParamEncoding = {"_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -294,7 +294,7 @@ public isolated client class Client {
     # + ifNoneMatch - If none match 
     # + return - Return the target object. 
     remote isolated function getBucket(string id, string[]? fields = (), string? ifMatch = (), string? ifNoneMatch = ()) returns Objectschema3|error {
-        string resourcePath = string `/buckets/${id}`;
+        string resourcePath = string `/buckets/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"_fields": fields};
         map<Encoding> queryParamEncoding = {"_fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -320,7 +320,7 @@ public isolated client class Client {
     # + metricsParam - Automatically added 
     # + return - UNDOCUMENTED RESPONSE 
     remote isolated function getBlocklist(string prefix, string apiVer, string applicationGuid, string applicationVer, string metrics, string apiVerD, string metricsParam) returns http:Response|error {
-        string resourcePath = string `/${prefix}/${apiVerD}/${applicationGuid}/${applicationVer}/${metricsParam}`;
+        string resourcePath = string `/${getEncodedUri(prefix)}/${getEncodedUri(apiVerD)}/${getEncodedUri(applicationGuid)}/${getEncodedUri(applicationVer)}/${getEncodedUri(metricsParam)}`;
         map<anydata> queryParam = {"api_ver": apiVer, "metrics": metrics};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);

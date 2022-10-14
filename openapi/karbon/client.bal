@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Karbon API v3.0](https://developers.karbonhq.com/api) OpenAPI specification.
@@ -96,7 +100,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KarbonApiContactsV2Clientgroupdto response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KarbonApiContactsV2Clientgroupdto response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single Client Group by supplied Key
@@ -106,7 +110,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getClientGroupByKey(string accessKey, string 'key, string? expand = ()) returns KarbonApiContactsV2Clientgroupdto|error {
-        string resourcePath = string `/v3/ClientGroups/${'key}`;
+        string resourcePath = string `/v3/ClientGroups/${getEncodedUri('key)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -121,13 +125,13 @@ public isolated client class Client {
     # + payload - The new (full) details of the Client Group to update with. 
     # + return - Client Group successfully updated 
     remote isolated function putClientGroups(string accessKey, string 'key, KarbonApiContactsV2Clientgroupdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/ClientGroups/${'key}`;
+        string resourcePath = string `/v3/ClientGroups/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform a Partial update of a Client Group
@@ -137,13 +141,13 @@ public isolated client class Client {
     # + payload - The new details of the Client Group to update. NOTE only the properties to be updated need to be provided 
     # + return - Client Group successfully updated 
     remote isolated function patchClientGroups(string accessKey, string 'key, KarbonApiContactsV2Clientgroupdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/ClientGroups/${'key}`;
+        string resourcePath = string `/v3/ClientGroups/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Client Group from the supplied User Defined Identifier
@@ -153,7 +157,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getClientGroupByUserDefinedIdentifier(string accessKey, string userDefinedIdentifier, string? expand = ()) returns KarbonApiContactsV2Clientgroupdto|error {
-        string resourcePath = string `/v3/ClientGroups/GetClientGroupByUserDefinedIdentifier(UserDefinedIdentifier='${userDefinedIdentifier}')`;
+        string resourcePath = string `/v3/ClientGroups/GetClientGroupByUserDefinedIdentifier(UserDefinedIdentifier='${getEncodedUri(userDefinedIdentifier)}')`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -190,7 +194,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single Contact by supplied Key
@@ -200,7 +204,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getContactByKey(string accessKey, string 'key, string? expand = ()) returns json|error {
-        string resourcePath = string `/v3/Contacts/${'key}`;
+        string resourcePath = string `/v3/Contacts/${getEncodedUri('key)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -215,13 +219,13 @@ public isolated client class Client {
     # + payload - The new (full) details of the Contact to update with. 
     # + return - Contact successfully updated 
     remote isolated function putContacts(string accessKey, string 'key, KarbonApiContactsV2Contactdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/Contacts/${'key}`;
+        string resourcePath = string `/v3/Contacts/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform a Partial update of a Contact
@@ -231,13 +235,13 @@ public isolated client class Client {
     # + payload - The new details of the Contact to update. NOTE only the properties to be updated need to be provided 
     # + return - Contact successfully updated 
     remote isolated function patchContacts(string accessKey, string 'key, KarbonApiContactsV2Contactdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/Contacts/${'key}`;
+        string resourcePath = string `/v3/Contacts/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a contact from the supplied User Defined Identifier
@@ -247,7 +251,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getContactByUserDefinedIdentifier(string accessKey, string userDefinedIdentifier, string? expand = ()) returns json|error {
-        string resourcePath = string `/v3/Contacts/GetContactByUserDefinedIdentifier(UserDefinedIdentifier='${userDefinedIdentifier}')`;
+        string resourcePath = string `/v3/Contacts/GetContactByUserDefinedIdentifier(UserDefinedIdentifier='${getEncodedUri(userDefinedIdentifier)}')`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -267,7 +271,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KarbonApiContentitemsNotedto response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KarbonApiContentitemsNotedto response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get and/or Filter a Paged List of Organizations
@@ -299,7 +303,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single organization by supplied Key
@@ -309,7 +313,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getOrganizationByKey(string accessKey, string 'key, string? expand = ()) returns json|error {
-        string resourcePath = string `/v3/Organizations/${'key}`;
+        string resourcePath = string `/v3/Organizations/${getEncodedUri('key)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -324,13 +328,13 @@ public isolated client class Client {
     # + payload - The new (full) details of the Organization to update with. 
     # + return - Organization successfully updated 
     remote isolated function putOrganizations(string accessKey, string 'key, KarbonApiContactsV2Organizationdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/Organizations/${'key}`;
+        string resourcePath = string `/v3/Organizations/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform a Partial update of an Organization
@@ -340,13 +344,13 @@ public isolated client class Client {
     # + payload - The new details of the Organization to update. NOTE only the properties to be updated need to be provided 
     # + return - Organization successfully updated 
     remote isolated function organizationsPatch(string accessKey, string 'key, KarbonApiContactsV2Organizationdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/Organizations/${'key}`;
+        string resourcePath = string `/v3/Organizations/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get an organization from the supplied User Defined Identifier
@@ -356,7 +360,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getOrganizationByUserDefinedIdentifier(string accessKey, string userDefinedIdentifier, string? expand = ()) returns json|error {
-        string resourcePath = string `/v3/Organizations/GetOrganizationByUserDefinedIdentifier(UserDefinedIdentifier='${userDefinedIdentifier}')`;
+        string resourcePath = string `/v3/Organizations/GetOrganizationByUserDefinedIdentifier(UserDefinedIdentifier='${getEncodedUri(userDefinedIdentifier)}')`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -389,7 +393,7 @@ public isolated client class Client {
     # + expand - Indicates the related entities to be represented inline. The maximum depth is 2. 
     # + return - OK 
     remote isolated function getTimesheetByKey(string accessKey, string 'key, string? expand = ()) returns KarbonApiTimeV3Timesheetdto|error {
-        string resourcePath = string `/v3/Timesheets/${'key}`;
+        string resourcePath = string `/v3/Timesheets/${getEncodedUri('key)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"AccessKey": accessKey};
@@ -424,7 +428,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single Webhook Subscription
@@ -450,7 +454,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KarbonApiModelsContactsV3Webhooksubscriptiondto response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KarbonApiModelsContactsV3Webhooksubscriptiondto response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get and/or Filter a Paged List of Work
@@ -482,7 +486,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KarbonApiModelsWorkV3Workitemdto response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KarbonApiModelsWorkV3Workitemdto response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single Work Item by supplied Key
@@ -491,7 +495,7 @@ public isolated client class Client {
     # + 'key - The Work Key 
     # + return - OK 
     remote isolated function getWorkItemByKey(string accessKey, string 'key) returns KarbonApiModelsWorkV3Workitemdto|error {
-        string resourcePath = string `/v3/WorkItems/${'key}`;
+        string resourcePath = string `/v3/WorkItems/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         KarbonApiModelsWorkV3Workitemdto response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -504,13 +508,13 @@ public isolated client class Client {
     # + payload - The new (full) details of the WorkItem to update with. 
     # + return - Work Item successfully updated 
     remote isolated function putWorkItems(string accessKey, string 'key, KarbonApiModelsWorkV3Workitemdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/WorkItems/${'key}`;
+        string resourcePath = string `/v3/WorkItems/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Perform a Partial update of a Work Item
@@ -520,13 +524,13 @@ public isolated client class Client {
     # + payload - The new details of the Work Item to update. NOTE only the properties to be updated need to be provided 
     # + return - WorkItem successfully updated 
     remote isolated function patchWorkItems(string accessKey, string 'key, KarbonApiModelsWorkV3Workitemdto payload) returns http:Response|error {
-        string resourcePath = string `/v3/WorkItems/${'key}`;
+        string resourcePath = string `/v3/WorkItems/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets a single Work Schedule by supplied Key
@@ -535,7 +539,7 @@ public isolated client class Client {
     # + 'key - The Work Schedule Key 
     # + return - OK 
     remote isolated function getWorkScheduleByKey(string accessKey, string 'key) returns KarbonApiWorkV3Workscheduledto|error {
-        string resourcePath = string `/v3/WorkSchedules/${'key}`;
+        string resourcePath = string `/v3/WorkSchedules/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         KarbonApiWorkV3Workscheduledto response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -553,7 +557,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a Work Schedule
@@ -568,7 +572,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        KarbonApiWorkV3Workscheduledto response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        KarbonApiWorkV3Workscheduledto response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get and/or Filter a Paged List of Work Templates
@@ -594,7 +598,7 @@ public isolated client class Client {
     # + 'key - The Work Template Key 
     # + return - OK 
     remote isolated function getWorkTemplateByKey(string accessKey, string 'key) returns KarbonApiWorkV3Worktemplatedto|error {
-        string resourcePath = string `/v3/WorkTemplates/${'key}`;
+        string resourcePath = string `/v3/WorkTemplates/${getEncodedUri('key)}`;
         map<any> headerValues = {"AccessKey": accessKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         KarbonApiWorkV3Worktemplatedto response = check self.clientEp->get(resourcePath, httpHeaders);

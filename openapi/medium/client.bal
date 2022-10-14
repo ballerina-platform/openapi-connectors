@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://medium.com/v1/tokens";
 |};
 
 # This is a generated connector for [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
@@ -80,7 +91,7 @@ public isolated client class Client {
     # + userId - A unique identifier for the user. 
     # + return - If success returns a list of publications that the user is subscribed to, writes to, or edits otherwise the relevant error 
     remote isolated function getPublicationList(string userId) returns PublicationResponse|error {
-        string resourcePath = string `/users/${userId}/publications`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/publications`;
         PublicationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -89,7 +100,7 @@ public isolated client class Client {
     # + publicationId - A unique identifier for the publication. 
     # + return - If success returns a list of contributors 
     remote isolated function getContributorList(string publicationId) returns ContributorResponse|error {
-        string resourcePath = string `/publications/${publicationId}/contributors`;
+        string resourcePath = string `/publications/${getEncodedUri(publicationId)}/contributors`;
         ContributorResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -99,7 +110,7 @@ public isolated client class Client {
     # + payload - Creates a post for user. 
     # + return - If success returns a Post record that includes the newly created post detail otherwise the relevant error 
     remote isolated function createUserPost(string authorId, Post payload) returns PostResponse|error {
-        string resourcePath = string `/users/${authorId}/posts`;
+        string resourcePath = string `/users/${getEncodedUri(authorId)}/posts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

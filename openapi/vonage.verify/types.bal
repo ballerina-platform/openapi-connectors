@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,9 +14,12 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 # Error
 public type RequestErrorResponse record {
     # The unique ID of the Verify request. This may be blank in an error situation
+    @constraint:String {maxLength: 32}
     string request_id?;
     # Code | Text | Description
     # -- | -- | --
@@ -89,6 +92,7 @@ public type ControlRequest record {
 # Success
 public type RequestResponse record {
     # The unique ID of the Verify request. You need this `request_id` for the Verify check.
+    @constraint:String {maxLength: 32}
     string request_id?;
     # Indicates the outcome of the request; zero is success
     string status?;
@@ -104,20 +108,23 @@ public type Psd2Request record {
     # If you do not provide `number` in international format or you are not sure if `number` is correctly formatted, specify the two-character country code in `country`. Verify will then format the number for you.
     string country?;
     # An alphanumeric string to indicate to the user the name of the recipient that they are confirming a payment to.
+    @constraint:String {maxLength: 18}
     string payee;
     # The decimal amount of the payment to be confirmed, in Euros
     float amount;
     # The length of the verification code.
-    int code_length?;
+    int code_length = 4;
     # By default, the SMS or text-to-speech (TTS) message is generated in the locale that matches the `number`. For example, the text message or TTS message for a `33*` number is sent in French. Use this parameter to explicitly control the language used.
     # *Note: Voice calls in English for `bg-bg`, `ee-et`, `ga-ie`, `lv-lv`, `lt-lt`, `mt-mt`, `sk-sk`, `sk-si`
-    string lg?;
+    string lg = "en-gb";
     # How long the generated verification code is valid for, in seconds. When you specify both `pin_expiry` and `next_event_wait` then `pin_expiry` must be an integer multiple of `next_event_wait` otherwise `pin_expiry` is defaulted to equal next_event_wait. See [changing the event timings](https://developer.nexmo.com/verify/guides/changing-default-timings).
-    int pin_expiry?;
+    @constraint:Int {minValue: 60, maxValue: 3600}
+    int pin_expiry = 300;
     # Specifies the wait time in seconds between attempts to deliver the verification code.
-    int next_event_wait?;
+    @constraint:Int {minValue: 60, maxValue: 900}
+    int next_event_wait = 300;
     # Selects the predefined sequence of SMS and TTS (Text To Speech) actions to use in order to convey the PIN to your user. For example, an id of 1 identifies the workflow SMS - TTS - TTS. For a list of all workflows and their associated ids, please visit the [developer portal](https://developer.nexmo.com/verify/guides/workflows-and-events).
-    int workflow_id?;
+    int workflow_id = 1;
 };
 
 # Success
@@ -208,8 +215,10 @@ public type CheckRequest record {
     # You can find your API secret in your [account dashboard](https://dashboard.nexmo.com)
     ApiSecret api_secret;
     # The Verify request to check. This is the `request_id` you received in the response to the Verify request.
+    @constraint:String {maxLength: 32}
     string request_id;
     # The verification code entered by your user.
+    @constraint:String {maxLength: 6, minLength: 4}
     string code;
     # (This field is no longer used)
     string ip_address?;
@@ -237,19 +246,23 @@ public type VerifyRequest record {
     # If you do not provide `number` in international format or you are not sure if `number` is correctly formatted, specify the two-character country code in `country`. Verify will then format the number for you.
     string country?;
     # An 18-character alphanumeric string you can use to personalize the verification request SMS body, to help users identify your company or application name. For example: "Your `Acme Inc` PIN is ..."
+    @constraint:String {maxLength: 18}
     string brand;
     # An 11-character alphanumeric string that represents the [identity of the sender](https://developer.nexmo.com/messaging/sms/guides/custom-sender-id) of the verification request. Depending on the destination of the phone number you are sending the verification SMS to, restrictions might apply.
-    string sender_id?;
+    @constraint:String {maxLength: 11}
+    string sender_id = "VERIFY";
     # The length of the verification code.
-    int code_length?;
+    int code_length = 4;
     # By default, the SMS or text-to-speech (TTS) message is generated in the locale that matches the `number`. For example, the text message or TTS message for a `33*` number is sent in French. Use this parameter to explicitly control the language used for the Verify request. A list of languages is available: <https://developer.nexmo.com/verify/guides/verify-languages>
-    string lg?;
+    string lg = "en-us";
     # How long the generated verification code is valid for, in seconds. When you specify both `pin_expiry` and `next_event_wait` then `pin_expiry` must be an integer multiple of `next_event_wait` otherwise `pin_expiry` is defaulted to equal next_event_wait. See [changing the event timings](https://developer.nexmo.com/verify/guides/changing-default-timings).
-    int pin_expiry?;
+    @constraint:Int {minValue: 60, maxValue: 3600}
+    int pin_expiry = 300;
     # Specifies the wait time in seconds between attempts to deliver the verification code.
-    int next_event_wait?;
+    @constraint:Int {minValue: 60, maxValue: 900}
+    int next_event_wait = 300;
     # Selects the predefined sequence of SMS and TTS (Text To Speech) actions to use in order to convey the PIN to your user. For example, an id of 1 identifies the workflow SMS - TTS - TTS. For a list of all workflows and their associated ids, please visit the [developer portal](https://developer.nexmo.com/verify/guides/workflows-and-events).
-    int workflow_id?;
+    int workflow_id = 1;
 };
 
 # This field may not be present, depending on your pricing model.

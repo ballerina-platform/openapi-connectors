@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.zoho.com/oauth/v2/token";
 |};
 
 # This is a generated connector for [Zoho People](https://www.zoho.com/people/overview.html) OpenAPI specification.
@@ -74,7 +85,7 @@ public isolated client class Client {
     # + payload - Input data in stringify JSON format or XML format 
     # + return - Success 
     remote isolated function insertRecord(string inputType, string formLinkName, InputData payload) returns FormRecordResponse|error {
-        string resourcePath = string `/forms/${inputType}/${formLinkName}/insertRecord`;
+        string resourcePath = string `/forms/${getEncodedUri(inputType)}/${getEncodedUri(formLinkName)}/insertRecord`;
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
@@ -89,7 +100,7 @@ public isolated client class Client {
     # + payload - Input data in stringify JSON format or XML format 
     # + return - Success 
     remote isolated function updateRecord(string inputType, string formLinkName, int recordId, InputData payload) returns FormRecordResponse|error {
-        string resourcePath = string `/forms/${inputType}/${formLinkName}/updateRecord`;
+        string resourcePath = string `/forms/${getEncodedUri(inputType)}/${getEncodedUri(formLinkName)}/updateRecord`;
         map<anydata> queryParam = {"recordId": recordId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -121,7 +132,7 @@ public isolated client class Client {
     # + modifiedtime - To fetch records added & modified after the given time . value should be  timestamp in milliseconds 
     # + return - Success 
     remote isolated function getBulkRecords(string formLinkName, int? sIndex = (), int? 'limit = (), string? searchColumn = (), string? searchValue = (), int? modifiedtime = ()) returns Records|error {
-        string resourcePath = string `/forms/${formLinkName}/getRecords`;
+        string resourcePath = string `/forms/${getEncodedUri(formLinkName)}/getRecords`;
         map<anydata> queryParam = {"sIndex": sIndex, "limit": 'limit, "SearchColumn": searchColumn, "SearchValue": searchValue, "modifiedtime": modifiedtime};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Records response = check self.clientEp->get(resourcePath);
@@ -133,7 +144,7 @@ public isolated client class Client {
     # + recordId - Specifies the record Id of the record being fetched. The record Id can be identified using the getBulkRecords operation. 
     # + return - Success 
     remote isolated function getSingleRecord(string formLinkName, int recordId) returns Records|error {
-        string resourcePath = string `/forms/${formLinkName}/getDataByID`;
+        string resourcePath = string `/forms/${getEncodedUri(formLinkName)}/getDataByID`;
         map<anydata> queryParam = {"recordId": recordId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Records response = check self.clientEp->get(resourcePath);
@@ -145,7 +156,7 @@ public isolated client class Client {
     # + recordId - Specifies the record Id of the record being fetched. The record Id can be identified using the getBulkRecords operation. 
     # + return - Success 
     remote isolated function getRecordByID(string formLinkName, int recordId) returns Records|error {
-        string resourcePath = string `/forms/${formLinkName}/getRecordByID`;
+        string resourcePath = string `/forms/${getEncodedUri(formLinkName)}/getRecordByID`;
         map<anydata> queryParam = {"recordId": recordId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Records response = check self.clientEp->get(resourcePath);
@@ -306,7 +317,7 @@ public isolated client class Client {
     # + userId - Specify the record ID of the candidate employee 
     # + return - Success​ 
     remote isolated function triggerOnboarding(string onboardingType, int userId) returns OnboardingResponse|error {
-        string resourcePath = string `/${onboardingType}/triggerOnboarding`;
+        string resourcePath = string `/${getEncodedUri(onboardingType)}/triggerOnboarding`;
         map<anydata> queryParam = {"userId": userId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

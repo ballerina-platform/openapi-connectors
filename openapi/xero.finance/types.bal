@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,7 @@ public type CashValidationResponseArr CashValidationResponse[];
 
 public type StatementBalanceResponse record {
     # Total closing balance of the account. This includes both reconciled and unreconciled bank statement lines. The closing balance will always be represented as a positive number, with it’s debit/credit status defined in the statementBalanceDebitCredit field.
-    float value?;
+    decimal value?;
     # The DEBIT or CREDIT status of the account. Cash accounts in credit have a negative balance.
     string? 'type?;
 };
@@ -63,13 +63,13 @@ public type CashflowActivity record {
     # Name of the cashflow activity type. It will be either Operating Activities, Investing Activities or Financing Activities
     string? name?;
     # Total value of the activity type
-    float total?;
+    decimal total?;
     CashflowType[]? cashflowTypes?;
 };
 
 public type PnlAccountType record {
     # Total movement on this account type
-    float total?;
+    decimal total?;
     # Name of this account type, it will be either Trading Income or Other Income for Revenue section / Direct Cost or Operating Expenses for Expense section
     string? title?;
     # A list of the movement on each account detail during the query period. Refer to the account detail element below
@@ -78,7 +78,7 @@ public type PnlAccountType record {
 
 public type TrialBalanceEntry record {
     # Net movement or net balance in the account
-    float value?;
+    decimal value?;
     # Sign (Debit/Credit) of the movement of balance in the account
     string? entryType?;
 };
@@ -89,9 +89,9 @@ public type CurrentStatementResponse record {
     # Looking at the most recent bank statement, this field indicates the last date which transactions on this statement pertain to. This date is represented in ISO 8601 format.
     string? endDate?;
     # Looking at the most recent bank statement, this field indicates the balance before the transactions on the statement are applied (note, this is not always populated by the bank in every single instance (~10%)).
-    float startBalance?;
+    decimal startBalance?;
     # Looking at the most recent bank statement, this field indicates the balance after the transactions on the statement are applied (note, this is not always populated by the bank in every single instance (~10%)).
-    float endBalance?;
+    decimal endBalance?;
     # Looking at the most recent bank statement, this field indicates when the document was imported into Xero.  This date is represented in ISO 8601 format.
     string? importedDateTimeUtc?;
     # Looking at the most recent bank statement, this field indicates the source of the data (direct bank feed, indirect bank feed, file upload, or manual keying).
@@ -112,12 +112,12 @@ public type CashflowAccount record {
     # Reporting code used for cash flow classification
     string? reportingCode?;
     # Total amount for the account
-    float total?;
+    decimal total?;
 };
 
 public type PnlAccountClass record {
     # Total revenue/expense value
-    float total?;
+    decimal total?;
     # Contains trading income and other income for revenue section / operating expenses and direct cost for expense section if the data is available for each section. Refer to the account type element below
     PnlAccountType[]? accountTypes?;
 };
@@ -128,7 +128,7 @@ public type BalanceSheetAccountType record {
     # A list of all accounts of this type. Refer to the Account section below for each account element detail.
     BalanceSheetAccountDetail[]? accounts?;
     # Total value of all the accounts in this type
-    float total?;
+    decimal total?;
 };
 
 public type PnlAccount record {
@@ -143,7 +143,7 @@ public type PnlAccount record {
     # Reporting code (Shown if set)
     string? reportingCode?;
     # Total movement on this account
-    float total?;
+    decimal total?;
 };
 
 public type BalanceSheetAccountDetail record {
@@ -156,7 +156,7 @@ public type BalanceSheetAccountDetail record {
     # Reporting code
     string? reportingCode?;
     # Total movement on this account
-    float total?;
+    decimal total?;
 };
 
 public type AccountUsage record {
@@ -167,15 +167,15 @@ public type AccountUsage record {
     # The currency code this usage item contains data for
     string? currencyCode?;
     # Total received
-    float? totalReceived?;
+    decimal? totalReceived?;
     # Count of received
     int? countReceived?;
     # Total paid
-    float? totalPaid?;
+    decimal? totalPaid?;
     # Count of paid
     int? countPaid?;
     # Total value of manual journals
-    float? totalManualJournal?;
+    decimal? totalManualJournal?;
     # Count of manual journals
     int? countManualJournal?;
     # The name of the account
@@ -213,38 +213,38 @@ public type BankStatementResponse record {
 
 public type StatementLinesResponse record {
     # Sum of the amounts of all statement lines where both the reconciled flag is set to FALSE, and the amount is positive.
-    float unreconciledAmountPos?;
+    decimal unreconciledAmountPos?;
     # Sum of the amounts of all statement lines where both the reconciled flag is set to FALSE, and the amount is negative.
-    float unreconciledAmountNeg?;
+    decimal unreconciledAmountNeg?;
     # Count of all statement lines where the reconciled flag is set to FALSE.
     int unreconciledLines?;
     # Sum-product of age of statement line in days multiplied by transaction amount, divided by the sum of transaction amount - in for those statement lines in which the reconciled flag is set to FALSE, and the amount is positive. Provides an indication of the age of unreconciled transactions.
-    float avgDaysUnreconciledPos?;
+    decimal avgDaysUnreconciledPos?;
     # Sum-product of age of statement line in days multiplied by transaction amount, divided by the sum of transaction amount - in for those statement lines in which the reconciled flag is set to FALSE, and the amount is negative. Provides an indication of the age of unreconciled transactions.
-    float avgDaysUnreconciledNeg?;
+    decimal avgDaysUnreconciledNeg?;
     # UTC Date which is the earliest transaction date of a statement line for which the reconciled flag is set to FALSE.  This date is represented in ISO 8601 format.
     string? earliestUnreconciledTransaction?;
     # UTC Date which is the latest transaction date of a statement line for which the reconciled flag is set to FALSE.  This date is represented in ISO 8601 format.
     string? latestUnreconciledTransaction?;
     # Sum of the amounts of all deleted statement lines.  Transactions may be deleted due to duplication or otherwise.
-    float deletedAmount?;
+    decimal deletedAmount?;
     # Sum of the amounts of all statement lines.  This is used as a metric of comparison to the unreconciled figures above.
-    float totalAmount?;
+    decimal totalAmount?;
     DataSourceResponse dataSource?;
     # UTC Date which is the earliest transaction date of a statement line for which the reconciled flag is set to TRUE.  This date is represented in ISO 8601 format.
     string? earliestReconciledTransaction?;
     # UTC Date which is the latest transaction date of a statement line for which the reconciled flag is set to TRUE.  This date is represented in ISO 8601 format.
     string? latestReconciledTransaction?;
     # Sum of the amounts of all statement lines where both the reconciled flag is set to TRUE, and the amount is positive.
-    float reconciledAmountPos?;
+    decimal reconciledAmountPos?;
     # Sum of the amounts of all statement lines where both the reconciled flag is set to TRUE, and the amount is negative.
-    float reconciledAmountNeg?;
+    decimal reconciledAmountNeg?;
     # Count of all statement lines where the reconciled flag is set to TRUE
     int reconciledLines?;
     # Sum of the amounts of all statement lines where the amount is positive
-    float totalAmountPos?;
+    decimal totalAmountPos?;
     # Sum of the amounts of all statement lines where the amount is negative.
-    float totalAmountNeg?;
+    decimal totalAmountNeg?;
 };
 
 public type AccountUsageResponse record {
@@ -259,27 +259,27 @@ public type AccountUsageResponse record {
 
 public type TrialBalanceMovement record {
     # Debit amount
-    float debits?;
+    decimal debits?;
     # Credit amount
-    float credits?;
+    decimal credits?;
     TrialBalanceEntry movement?;
     # Value of movement. Expense and Asset accounts code debits as positive. Revenue, Liability, and Equity accounts code debits as negative
-    float signedMovement?;
+    decimal signedMovement?;
 };
 
 public type BalanceSheetAccountGroup record {
     BalanceSheetAccountType[]? accountTypes?;
     # Total value of all the accounts in this type
-    float total?;
+    decimal total?;
 };
 
 public type CashBalance record {
     # Opening balance of cash and cash equivalents
-    float openingCashBalance?;
+    decimal openingCashBalance?;
     # Closing balance of cash and cash equivalents
-    float closingCashBalance?;
+    decimal closingCashBalance?;
     # Net movement of cash and cash equivalents for the period
-    float netCashMovement?;
+    decimal netCashMovement?;
 };
 
 public type UserActivitiesResponse record {
@@ -316,9 +316,9 @@ public type UserResponse record {
     # Number of documents created.
     int numberOfDocumentsCreated?;
     # Net value of documents created.
-    float? netValueDocumentsCreated?;
+    decimal? netValueDocumentsCreated?;
     # Absolute value of documents created.
-    float? absoluteValueDocumentsCreated?;
+    decimal? absoluteValueDocumentsCreated?;
     PracticeResponse[]? attachedPractices?;
     HistoryRecordResponse[]? historyRecords?;
 };
@@ -349,7 +349,7 @@ public type TrialBalanceAccount record {
     string? accountName?;
     TrialBalanceEntry balance?;
     # Value of balance. Expense and Asset accounts code debits as positive. Revenue, Liability, and Equity accounts code debits as negative
-    float signedBalance?;
+    decimal signedBalance?;
     TrialBalanceMovement accountMovement?;
 };
 
@@ -370,7 +370,7 @@ public type CashflowType record {
     # Name of the activity
     string? name?;
     # Total value of the activity
-    float total?;
+    decimal total?;
     # List of the accounts in this activity
     CashflowAccount[]? accounts?;
 };
@@ -379,35 +379,35 @@ public type ProblemType string;
 
 public type DataSourceResponse record {
     # Sum of the amounts of all statement lines where the source of the data was a direct bank feed in to Xero.   This gives an indication on the certainty of correctness of the data.
-    float directBankFeed?;
+    decimal directBankFeed?;
     # Sum of the amounts of all statement lines where the source of the data was a indirect bank feed to Xero (usually via Yodlee).   This gives an indication on the certainty of correctness of the data.
-    float indirectBankFeed?;
+    decimal indirectBankFeed?;
     # Sum of the amounts of all statement lines where the source of the data was a CSV file upload in to Xero.   This gives an indication on the certainty of correctness of the data.
-    float fileUpload?;
+    decimal fileUpload?;
     # Sum of the amounts of all statement lines where the source of the data was manually keyed in to Xero.   This gives an indication on the certainty of correctness of the data.
-    float manual?;
+    decimal manual?;
     # Sum of the amounts of all statement lines where the source of the data was a direct bank feed in to Xero.  This gives an indication on the certainty of correctness of the data.  Only positive transactions are included.
-    float directBankFeedPos?;
+    decimal directBankFeedPos?;
     # Sum of the amounts of all statement lines where the source of the data was a indirect bank feed to Xero (usually via Yodlee).   This gives an indication on the certainty of correctness of the data. Only positive transactions are included.
-    float indirectBankFeedPos?;
+    decimal indirectBankFeedPos?;
     # Sum of the amounts of all statement lines where the source of the data was a CSV file upload in to Xero.   This gives an indication on the certainty of correctness of the data. Only positive transactions are included.
-    float fileUploadPos?;
+    decimal fileUploadPos?;
     # Sum of the amounts of all statement lines where the source of the data was manually keyed in to Xero.   This gives an indication on the certainty of correctness of the data. Only positive transactions are included.
-    float manualPos?;
+    decimal manualPos?;
     # Sum of the amounts of all statement lines where the source of the data was a direct bank feed in to Xero.   This gives an indication on the certainty of correctness of the data.  Only negative transactions are included.
-    float directBankFeedNeg?;
+    decimal directBankFeedNeg?;
     # Sum of the amounts of all statement lines where the source of the data was a indirect bank feed to Xero (usually via Yodlee).   This gives an indication on the certainty of correctness of the data.  Only negative transactions are included.
-    float indirectBankFeedNeg?;
+    decimal indirectBankFeedNeg?;
     # Sum of the amounts of all statement lines where the source of the data was a CSV file upload in to Xero.   This gives an indication on the certainty of correctness of the data.  Only negative transactions are included.
-    float fileUploadNeg?;
+    decimal fileUploadNeg?;
     # Sum of the amounts of all statement lines where the source of the data was manually keyed in to Xero.   This gives an indication on the certainty of correctness of the data.  Only negative transactions are included.
-    float manualNeg?;
+    decimal manualNeg?;
     # Sum of the amounts of all statement lines where the source of the data was any other category.   This gives an indication on the certainty of correctness of the data.  Only positive transactions are included.
-    float otherPos?;
+    decimal otherPos?;
     # Sum of the amounts of all statement lines where the source of the data was any other category.   This gives an indication on the certainty of correctness of the data.  Only negative transactions are included.
-    float otherNeg?;
+    decimal otherNeg?;
     # Sum of the amounts of all statement lines where the source of the data was any other category.   This gives an indication on the certainty of correctness of the data.
-    float other?;
+    decimal other?;
 };
 
 public type Problem record {
@@ -432,13 +432,13 @@ public type PracticeResponse record {
 
 public type CashAccountResponse record {
     # Total value of transactions in the journals which are not reconciled to bank statement lines, and have a positive (debit) value.
-    float unreconciledAmountPos?;
+    decimal unreconciledAmountPos?;
     # Total value of transactions in the journals which are not reconciled to bank statement lines, and have a negative (credit) value.
-    float unreconciledAmountNeg?;
+    decimal unreconciledAmountNeg?;
     # Starting (or historic) balance from the journals (manually keyed in by users on account creation - unverified).
-    float startingBalance?;
+    decimal startingBalance?;
     # Current cash at bank accounting value from the journals.
-    float accountBalance?;
+    decimal accountBalance?;
     # Currency which the cashAccount transactions relate to.
     string? balanceCurrency?;
 };
@@ -449,7 +449,7 @@ public type ProfitAndLossResponse record {
     # End date of the report
     string endDate?;
     # Net profit loss value
-    float netProfitLoss?;
+    decimal netProfitLoss?;
     PnlAccountClass revenue?;
     PnlAccountClass expense?;
 };

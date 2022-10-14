@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Zendesk Support API v2](https://developer.zendesk.com/api-reference/) OpenAPI specification.
@@ -103,7 +107,7 @@ public isolated client class Client {
     # + userId - User Id 
     # + return - Returns user belong to the user id 
     remote isolated function getUserById(string userId) returns User|error {
-        string resourcePath = string `/api/v2/users/${userId}.json`;
+        string resourcePath = string `/api/v2/users/${getEncodedUri(userId)}.json`;
         User response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -112,8 +116,8 @@ public isolated client class Client {
     # + userId - User Id 
     # + return - Returns detail of user deleted 
     remote isolated function deleteUserById(string userId) returns User|error {
-        string resourcePath = string `/api/v2/users/${userId}.json`;
-        User response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v2/users/${getEncodedUri(userId)}.json`;
+        User response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Tickets.
@@ -142,7 +146,7 @@ public isolated client class Client {
     # + payload - The information for update ticket request 
     # + return - Returns deatil of updated ticket by ticket id 
     remote isolated function updateTicket(string ticketId, UpdateTicketInfo payload) returns json|error {
-        string resourcePath = string `/api/v2/tickets/${ticketId}`;
+        string resourcePath = string `/api/v2/tickets/${getEncodedUri(ticketId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

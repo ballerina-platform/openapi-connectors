@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Yodlee Core API v1.1.0](https://www.yodlee.com/) OpenAPI specification
@@ -131,7 +135,7 @@ public isolated client class Client {
     # + include - profile, holder, fullAccountNumber, fullAccountNumberList, paymentProfile, autoRefresh<br><b>Note:</b>fullAccountNumber is deprecated and is replaced with fullAccountNumberList in include parameter and response. 
     # + return - OK 
     remote isolated function getAccount(int accountId, string? include = ()) returns AccountResponse|error {
-        string resourcePath = string `/accounts/${accountId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}`;
         map<anydata> queryParam = {"include": include};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AccountResponse response = check self.clientEp->get(resourcePath);
@@ -143,7 +147,7 @@ public isolated client class Client {
     # + payload - accountRequest 
     # + return - OK 
     remote isolated function updateAccount(int accountId, UpdateAccountRequest payload) returns http:Response|error {
-        string resourcePath = string `/accounts/${accountId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -155,8 +159,8 @@ public isolated client class Client {
     # + accountId - accountId 
     # + return - OK 
     remote isolated function deleteAccount(int accountId) returns http:Response|error {
-        string resourcePath = string `/accounts/${accountId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get API Keys
@@ -184,8 +188,8 @@ public isolated client class Client {
     # + 'key - key 
     # + return - OK 
     remote isolated function deleteApiKey(string 'key) returns http:Response|error {
-        string resourcePath = string `/auth/apiKey/${'key}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/auth/apiKey/${getEncodedUri('key)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Generate Access Token
@@ -203,7 +207,7 @@ public isolated client class Client {
     # + return - No Content 
     remote isolated function deleteToken() returns http:Response|error {
         string resourcePath = string `/auth/token`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Subscribed Events
@@ -229,7 +233,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function updateSubscribedEvent(string eventName, UpdateCobrandNotificationEventRequest payload) returns http:Response|error {
-        string resourcePath = string `/cobrand/config/notifications/events/${eventName}`;
+        string resourcePath = string `/cobrand/config/notifications/events/${getEncodedUri(eventName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -245,7 +249,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function createSubscriptionEvent(string eventName, CreateCobrandNotificationEventRequest payload) returns http:Response|error {
-        string resourcePath = string `/cobrand/config/notifications/events/${eventName}`;
+        string resourcePath = string `/cobrand/config/notifications/events/${getEncodedUri(eventName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -260,8 +264,8 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function deleteSubscribedEvent(string eventName) returns http:Response|error {
-        string resourcePath = string `/cobrand/config/notifications/events/${eventName}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/cobrand/config/notifications/events/${getEncodedUri(eventName)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Cobrand Login
@@ -314,7 +318,7 @@ public isolated client class Client {
     # + payload - eventRequest 
     # + return - OK 
     remote isolated function updateSubscribedNotificationEvent(string eventName, UpdateConfigsNotificationEventRequest payload) returns http:Response|error {
-        string resourcePath = string `/configs/notifications/events/${eventName}`;
+        string resourcePath = string `/configs/notifications/events/${getEncodedUri(eventName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -327,7 +331,7 @@ public isolated client class Client {
     # + payload - eventRequest 
     # + return - OK 
     remote isolated function createSubscriptionNotificationEvent(string eventName, CreateConfigsNotificationEventRequest payload) returns http:Response|error {
-        string resourcePath = string `/configs/notifications/events/${eventName}`;
+        string resourcePath = string `/configs/notifications/events/${getEncodedUri(eventName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -339,8 +343,8 @@ public isolated client class Client {
     # + eventName - eventName 
     # + return - OK 
     remote isolated function deleteSubscribedNotificationEvent(string eventName) returns http:Response|error {
-        string resourcePath = string `/configs/notifications/events/${eventName}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/configs/notifications/events/${getEncodedUri(eventName)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Public Key
@@ -447,7 +451,7 @@ public isolated client class Client {
     # + documentId - documentId 
     # + return - OK 
     remote isolated function downloadDocument(string documentId) returns DocumentDownloadResponse|error {
-        string resourcePath = string `/documents/${documentId}`;
+        string resourcePath = string `/documents/${getEncodedUri(documentId)}`;
         DocumentDownloadResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -456,8 +460,8 @@ public isolated client class Client {
     # + documentId - documentId 
     # + return - OK 
     remote isolated function deleteDocument(string documentId) returns http:Response|error {
-        string resourcePath = string `/documents/${documentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/documents/${getEncodedUri(documentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Holdings
@@ -547,7 +551,7 @@ public isolated client class Client {
     # + requestId - The unique identifier for the request that returns contextual data 
     # + return - OK 
     remote isolated function getProviderAccount(int providerAccountId, string? include = (), string? requestId = ()) returns ProviderAccountDetailResponse|error {
-        string resourcePath = string `/providerAccounts/${providerAccountId}`;
+        string resourcePath = string `/providerAccounts/${getEncodedUri(providerAccountId)}`;
         map<anydata> queryParam = {"include": include, "requestId": requestId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ProviderAccountDetailResponse response = check self.clientEp->get(resourcePath);
@@ -558,8 +562,8 @@ public isolated client class Client {
     # + providerAccountId - providerAccountId 
     # + return - OK 
     remote isolated function deleteProviderAccount(int providerAccountId) returns http:Response|error {
-        string resourcePath = string `/providerAccounts/${providerAccountId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/providerAccounts/${getEncodedUri(providerAccountId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update Preferences
@@ -568,7 +572,7 @@ public isolated client class Client {
     # + payload - preferences 
     # + return - OK 
     remote isolated function updatePreferences(int providerAccountId, ProviderAccountPreferencesRequest payload) returns http:Response|error {
-        string resourcePath = string `/providerAccounts/${providerAccountId}/preferences`;
+        string resourcePath = string `/providerAccounts/${getEncodedUri(providerAccountId)}/preferences`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -614,7 +618,7 @@ public isolated client class Client {
     # + providerId - providerId 
     # + return - OK 
     remote isolated function getProvider(int providerId) returns ProviderDetailResponse|error {
-        string resourcePath = string `/providers/${providerId}`;
+        string resourcePath = string `/providers/${getEncodedUri(providerId)}`;
         ProviderDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -719,7 +723,7 @@ public isolated client class Client {
     # + payload - transactionCategoriesRuleRequest 
     # + return - Updated Successfully 
     remote isolated function updateTransactionCategorizationRule(int ruleId, TransactionCategorizationRuleRequest payload) returns http:Response|error {
-        string resourcePath = string `/transactions/categories/rules/${ruleId}`;
+        string resourcePath = string `/transactions/categories/rules/${getEncodedUri(ruleId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -732,7 +736,7 @@ public isolated client class Client {
     # + ruleId - Unique id of the categorization rule 
     # + return - Run Successfully 
     remote isolated function runTransactionCategorizationRule(string action, int ruleId) returns http:Response|error {
-        string resourcePath = string `/transactions/categories/rules/${ruleId}`;
+        string resourcePath = string `/transactions/categories/rules/${getEncodedUri(ruleId)}`;
         map<anydata> queryParam = {"action": action};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -745,8 +749,8 @@ public isolated client class Client {
     # + ruleId - ruleId 
     # + return - Deleted Successfully 
     remote isolated function deleteTransactionCategorizationRule(int ruleId) returns http:Response|error {
-        string resourcePath = string `/transactions/categories/rules/${ruleId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/transactions/categories/rules/${getEncodedUri(ruleId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Transaction Categorization Rules
@@ -762,8 +766,8 @@ public isolated client class Client {
     # + categoryId - categoryId 
     # + return - Deleted Successfully 
     remote isolated function deleteTransactionCategory(int categoryId) returns http:Response|error {
-        string resourcePath = string `/transactions/categories/${categoryId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/transactions/categories/${getEncodedUri(categoryId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Transactions Count
@@ -793,7 +797,7 @@ public isolated client class Client {
     # + payload - transactionRequest 
     # + return - Updated Successfully 
     remote isolated function updateTransaction(int transactionId, TransactionRequest payload) returns http:Response|error {
-        string resourcePath = string `/transactions/${transactionId}`;
+        string resourcePath = string `/transactions/${getEncodedUri(transactionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -873,7 +877,7 @@ public isolated client class Client {
     # + return - No Content 
     remote isolated function unregister() returns http:Response|error {
         string resourcePath = string `/user/unregister`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Verification Status
@@ -919,7 +923,7 @@ public isolated client class Client {
     # + payload - verificationParam 
     # + return - OK 
     remote isolated function initiateAccountVerification(string providerAccountId, VerifyAccountRequest payload) returns VerifyAccountResponse|error {
-        string resourcePath = string `/verifyAccount/${providerAccountId}`;
+        string resourcePath = string `/verifyAccount/${getEncodedUri(providerAccountId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

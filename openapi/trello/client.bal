@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -111,7 +111,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getBoardsByIdBoard(string idBoard, string? actions = (), string? actionsEntities = (), string? actionsDisplay = (), string actionsFormat = "list", string? actionsSince = (), string actionsLimit = "50", string actionFields = "all", string? actionMember = (), string actionMemberFields = "avatarHash, fullName, initials and username", string? actionMembercreator = (), string actionMembercreatorFields = "avatarHash, fullName, initials and username", string cards = "none", string cardFields = "all", string? cardAttachments = (), string cardAttachmentFields = "all", string cardChecklists = "none", string? cardStickers = (), string boardStars = "none", string labels = "none", string labelFields = "all", string labelsLimit = "50", string lists = "none", string listFields = "all", string memberships = "none", string? membershipsMember = (), string membershipsMemberFields = "fullName and username", string members = "none", string memberFields = "avatarHash, initials, fullName, username and confirmed", string membersInvited = "none", string membersinvitedFields = "avatarHash, initials, fullName and username", string checklists = "none", string checklistFields = "all", string? organization = (), string organizationFields = "name and displayName", string organizationMemberships = "none", string? myPrefs = (), string fields = "name, desc, descData, closed, idOrganization, pinned, url, shortUrl, prefs and labelNames") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}`;
         map<anydata> queryParam = {"actions": actions, "actions_entities": actionsEntities, "actions_display": actionsDisplay, "actions_format": actionsFormat, "actions_since": actionsSince, "actions_limit": actionsLimit, "action_fields": actionFields, "action_member": actionMember, "action_member_fields": actionMemberFields, "action_memberCreator": actionMembercreator, "action_memberCreator_fields": actionMembercreatorFields, "cards": cards, "card_fields": cardFields, "card_attachments": cardAttachments, "card_attachment_fields": cardAttachmentFields, "card_checklists": cardChecklists, "card_stickers": cardStickers, "boardStars": boardStars, "labels": labels, "label_fields": labelFields, "labels_limit": labelsLimit, "lists": lists, "list_fields": listFields, "memberships": memberships, "memberships_member": membershipsMember, "memberships_member_fields": membershipsMemberFields, "members": members, "member_fields": memberFields, "membersInvited": membersInvited, "membersInvited_fields": membersinvitedFields, "checklists": checklists, "checklist_fields": checklistFields, "organization": organization, "organization_fields": organizationFields, "organization_memberships": organizationMemberships, "myPrefs": myPrefs, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -123,7 +123,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsByIdBoard(string idBoard, Boards payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -151,7 +151,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getBoardsActionsByIdBoard(string idBoard, string? entities = (), string? display = (), string filter = "all", string fields = "all", string 'limit = "50", string format = "list", string? since = (), string? before = (), string page = "0", string? idModels = (), string? member = (), string memberFields = "avatarHash, fullName, initials and username", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/actions`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/actions`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "fields": fields, "limit": 'limit, "format": format, "since": since, "before": before, "page": page, "idModels": idModels, "member": member, "member_fields": memberFields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -163,7 +163,7 @@ public isolated client class Client {
     # + filter - One of: mine or none 
     # + return - Success 
     remote isolated function getBoardsBoardStarsByIdBoard(string idBoard, string filter = "mine") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/boardStars`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/boardStars`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -174,7 +174,7 @@ public isolated client class Client {
     # + idBoard - Board_id 
     # + return - Success 
     remote isolated function addBoardsCalendarKeyGenerateByIdBoard(string idBoard) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/calendarKey/generate`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/calendarKey/generate`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -200,7 +200,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getBoardsCardsByIdBoard(string idBoard, string? actions = (), string? attachments = (), string attachmentFields = "all", string? stickers = (), string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? 'limit = (), string? since = (), string? before = (), string filter = "visible", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/cards`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "stickers": stickers, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "limit": 'limit, "since": since, "before": before, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -212,7 +212,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getBoardsCardsByIdBoardByFilter(string idBoard, string filter) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/cards/${filter}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/cards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -240,7 +240,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getBoardsCardsByIdBoardByIdCard(string idBoard, string idCard, string? attachments = (), string attachmentFields = "all", string? actions = (), string? actionsEntities = (), string? actionsDisplay = (), string actionsLimit = "50", string actionFields = "all", string actionMembercreatorFields = "avatarHash, fullName, initials and username", string? members = (), string memberFields = "avatarHash, initials, fullName and username", string? checkItemStates = (), string checkitemstateFields = "all", string? labels = (), string checklists = "none", string checklistFields = "all", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/cards/${idCard}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/cards/${getEncodedUri(idCard)}`;
         map<anydata> queryParam = {"attachments": attachments, "attachment_fields": attachmentFields, "actions": actions, "actions_entities": actionsEntities, "actions_display": actionsDisplay, "actions_limit": actionsLimit, "action_fields": actionFields, "action_memberCreator_fields": actionMembercreatorFields, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checkItemState_fields": checkitemstateFields, "labels": labels, "checklists": checklists, "checklist_fields": checklistFields, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -257,7 +257,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: idBoard, idCard, name or pos 
     # + return - Success 
     remote isolated function getBoardsChecklistsByIdBoard(string idBoard, string cards = "none", string cardFields = "all", string checkItems = "all", string checkitemFields = "name, nameData, pos and state", string filter = "all", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/checklists`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/checklists`;
         map<anydata> queryParam = {"cards": cards, "card_fields": cardFields, "checkItems": checkItems, "checkItem_fields": checkitemFields, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -269,7 +269,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Checklists" to be added. 
     # + return - Success 
     remote isolated function addBoardsChecklistsByIdBoard(string idBoard, BoardsChecklists payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/checklists`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/checklists`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -284,7 +284,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Closed" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsClosedByIdBoard(string idBoard, BoardsClosed payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/closed`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/closed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -300,7 +300,7 @@ public isolated client class Client {
     # + ixLastUpdate - A number from -1 to Infinity 
     # + return - Success 
     remote isolated function getBoardsDeltasByIdBoard(string idBoard, string tags, string ixLastUpdate) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/deltas`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/deltas`;
         map<anydata> queryParam = {"tags": tags, "ixLastUpdate": ixLastUpdate, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -312,7 +312,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Desc" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsDescByIdBoard(string idBoard, BoardsDesc payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/desc`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/desc`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -326,7 +326,7 @@ public isolated client class Client {
     # + idBoard - Board_id 
     # + return - Success 
     remote isolated function addBoardsEmailKeyGenerateByIdBoard(string idBoard) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/emailKey/generate`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/emailKey/generate`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -340,7 +340,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards ID Organization" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsIdOrganizationByIdBoard(string idBoard, BoardsIdorganization payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/idOrganization`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/idOrganization`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -355,7 +355,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Blue" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesBlueByIdBoard(string idBoard, LabelnamesBlue payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/blue`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/blue`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -370,7 +370,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Green" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesGreenByIdBoard(string idBoard, LabelnamesGreen payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/green`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/green`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -385,7 +385,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Orange" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesOrangeByIdBoard(string idBoard, LabelnamesOrange payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/orange`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/orange`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -400,7 +400,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Purple" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesPurpleByIdBoard(string idBoard, LabelnamesPurple payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/purple`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/purple`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -415,7 +415,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Red" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesRedByIdBoard(string idBoard, LabelnamesRed payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/red`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/red`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -430,7 +430,7 @@ public isolated client class Client {
     # + payload - Attributes of "Label Names Yellow" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsLabelNamesYellowByIdBoard(string idBoard, LabelnamesYellow payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labelNames/yellow`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labelNames/yellow`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -446,7 +446,7 @@ public isolated client class Client {
     # + 'limit - A number from 0 to 1000 
     # + return - Success 
     remote isolated function getBoardsLabelsByIdBoard(string idBoard, string fields = "all", string 'limit = "50") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labels`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labels`;
         map<anydata> queryParam = {"fields": fields, "limit": 'limit, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -458,7 +458,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Labels" to be added. 
     # + return - Success 
     remote isolated function addBoardsLabelsByIdBoard(string idBoard, BoardsLabels payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labels`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labels`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -474,7 +474,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: color, idBoard, name or uses 
     # + return - Success 
     remote isolated function getBoardsLabelsByIdBoardByIdLabel(string idBoard, string idLabel, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/labels/${idLabel}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/labels/${getEncodedUri(idLabel)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -489,7 +489,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, idBoard, name, pos or subscribed 
     # + return - Success 
     remote isolated function getBoardsListsByIdBoard(string idBoard, string cards = "none", string cardFields = "all", string filter = "open", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/lists`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/lists`;
         map<anydata> queryParam = {"cards": cards, "card_fields": cardFields, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -501,7 +501,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Lists" to be added. 
     # + return - Success 
     remote isolated function addBoardsListsByIdBoard(string idBoard, BoardsLists payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/lists`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/lists`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -516,7 +516,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getBoardsListsByIdBoardByFilter(string idBoard, string filter) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/lists/${filter}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/lists/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -527,7 +527,7 @@ public isolated client class Client {
     # + idBoard - Board_id 
     # + return - Success 
     remote isolated function addBoardsMarkAsViewedByIdBoard(string idBoard) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/markAsViewed`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/markAsViewed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -543,7 +543,7 @@ public isolated client class Client {
     # + activity - True or false ; works for premium organizations only. 
     # + return - Success 
     remote isolated function getBoardsMembersByIdBoard(string idBoard, string filter = "all", string fields = "fullName and username", string? activity = ()) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "activity": activity, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -555,7 +555,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Members" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMembersByIdBoard(string idBoard, BoardsMembers payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -570,7 +570,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getBoardsMembersByIdBoardByFilter(string idBoard, string filter) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members/${filter}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -583,7 +583,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Members" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMembersByIdBoardByIdMember(string idBoard, string idMember, BoardsMembers payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members/${idMember}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -598,10 +598,10 @@ public isolated client class Client {
     # + idMember - IdMember 
     # + return - Success 
     remote isolated function deleteBoardsMembersByIdBoardByIdMember(string idBoard, string idMember) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members/${idMember}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get boards members cards by ID board by ID member
@@ -623,7 +623,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getBoardsMembersCardsByIdBoardByIdMember(string idBoard, string idMember, string? actions = (), string? attachments = (), string attachmentFields = "all", string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? board = (), string boardFields = "name, desc, closed, idOrganization, pinned, url and prefs", string? list = (), string listFields = "all", string filter = "visible", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/members/${idMember}/cards`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/members/${getEncodedUri(idMember)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "board": board, "board_fields": boardFields, "list": list, "list_fields": listFields, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -635,7 +635,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, avatarSource, bio, bioData, confirmed, email, fullName, gravatarHash, idBoards, idBoardsPinned, idOrganizations, idPremOrgsAdmin, initials, loginTypes, memberType, oneTimeMessagesDismissed, prefs, premiumFeatures, products, status, status, trophies, uploadedAvatarHash, url or username 
     # + return - Success 
     remote isolated function getBoardsMembersInvitedByIdBoard(string idBoard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/membersInvited`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/membersInvited`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -647,7 +647,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getBoardsMembersInvitedByIdBoardByField(string idBoard, string 'field) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/membersInvited/${'field}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/membersInvited/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -661,7 +661,7 @@ public isolated client class Client {
     # + memberFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getBoardsMembershipsByIdBoard(string idBoard, string filter = "all", string? member = (), string memberFields = "fullName and username") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/memberships`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/memberships`;
         map<anydata> queryParam = {"filter": filter, "member": member, "member_fields": memberFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -675,7 +675,7 @@ public isolated client class Client {
     # + memberFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getBoardsMembershipsByIdBoardByIdMembership(string idBoard, string idMembership, string? member = (), string memberFields = "fullName and username") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/memberships/${idMembership}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/memberships/${getEncodedUri(idMembership)}`;
         map<anydata> queryParam = {"member": member, "member_fields": memberFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -688,7 +688,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Memberships" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMembershipsByIdBoardByIdMembership(string idBoard, string idMembership, BoardsMemberships payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/memberships/${idMembership}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/memberships/${getEncodedUri(idMembership)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -702,7 +702,7 @@ public isolated client class Client {
     # + idBoard - Board_id 
     # + return - Success 
     remote isolated function getBoardsMyPrefsByIdBoard(string idBoard) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -714,7 +714,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Email Position" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsEmailPositionByIdBoard(string idBoard, MyprefsEmailposition payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/emailPosition`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/emailPosition`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -729,7 +729,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs ID Email List" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsIdEmailListByIdBoard(string idBoard, MyprefsIdemaillist payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/idEmailList`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/idEmailList`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -744,7 +744,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Show List Guide" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsShowListGuideByIdBoard(string idBoard, MyprefsShowlistguide payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/showListGuide`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/showListGuide`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -759,7 +759,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Show Sidebar" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsShowSidebarByIdBoard(string idBoard, MyprefsShowsidebar payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/showSidebar`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/showSidebar`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -774,7 +774,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Show Sidebar Activity" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsShowSidebarActivityByIdBoard(string idBoard, MyprefsShowsidebaractivity payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/showSidebarActivity`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/showSidebarActivity`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -789,7 +789,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Show Sidebar Board Actions" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsShowSidebarBoardActionsByIdBoard(string idBoard, MyprefsShowsidebarboardactions payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/showSidebarBoardActions`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/showSidebarBoardActions`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -804,7 +804,7 @@ public isolated client class Client {
     # + payload - Attributes of "My Prefs Show Sidebar Members" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsMyPrefsShowSidebarMembersByIdBoard(string idBoard, MyprefsShowsidebarmembers payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/myPrefs/showSidebarMembers`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/myPrefs/showSidebarMembers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -819,7 +819,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Name" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsNameByIdBoard(string idBoard, BoardsName payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/name`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -834,7 +834,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: billableMemberCount, desc, descData, displayName, idBoards, invitations, invited, logoHash, memberships, name, powerUps, prefs, premiumFeatures, products, url or website 
     # + return - Success 
     remote isolated function getBoardsOrganizationByIdBoard(string idBoard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/organization`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/organization`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -846,7 +846,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getBoardsOrganizationByIdBoardByField(string idBoard, string 'field) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/organization/${'field}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/organization/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -858,7 +858,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Power Ups" to be added. 
     # + return - Success 
     remote isolated function addBoardsPowerUpsByIdBoard(string idBoard, BoardsPowerups payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/powerUps`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/powerUps`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -873,10 +873,10 @@ public isolated client class Client {
     # + powerUp - PowerUp 
     # + return - Success 
     remote isolated function deleteBoardsPowerUpsByIdBoardByPowerUp(string idBoard, string powerUp) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/powerUps/${powerUp}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/powerUps/${getEncodedUri(powerUp)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update boards prefs background by ID board
@@ -885,7 +885,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Background" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsBackgroundByIdBoard(string idBoard, PrefsBackground payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/background`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/background`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -900,7 +900,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Calendar Feed Enabled" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsCalendarFeedEnabledByIdBoard(string idBoard, PrefsCalendarfeedenabled payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/calendarFeedEnabled`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/calendarFeedEnabled`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -915,7 +915,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Card Aging" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsCardAgingByIdBoard(string idBoard, PrefsCardaging payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/cardAging`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/cardAging`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -930,7 +930,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Card Covers" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsCardCoversByIdBoard(string idBoard, PrefsCardcovers payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/cardCovers`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/cardCovers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -945,7 +945,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Comments" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsCommentsByIdBoard(string idBoard, PrefsComments payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/comments`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/comments`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -960,7 +960,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Invitations" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsInvitationsByIdBoard(string idBoard, PrefsInvitations payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/invitations`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/invitations`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -975,7 +975,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Permission Level" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsPermissionLevelByIdBoard(string idBoard, PrefsPermissionlevel payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/permissionLevel`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/permissionLevel`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -990,7 +990,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Self Join" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsSelfJoinByIdBoard(string idBoard, PrefsSelfjoin payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/selfJoin`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/selfJoin`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1005,7 +1005,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Voting" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsPrefsVotingByIdBoard(string idBoard, PrefsVoting payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/prefs/voting`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/prefs/voting`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1020,7 +1020,7 @@ public isolated client class Client {
     # + payload - Attributes of "Boards Subscribed" to be updated. 
     # + return - Success 
     remote isolated function updateBoardsSubscribedByIdBoard(string idBoard, BoardsSubscribed payload) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/subscribed`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/subscribed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1035,7 +1035,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getBoardsByIdBoardByField(string idBoard, string 'field) returns http:Response|error {
-        string resourcePath = string `/boards/${idBoard}/${'field}`;
+        string resourcePath = string `/boards/${getEncodedUri(idBoard)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1083,7 +1083,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getCardsByIdCard(string idCard, string? actions = (), string? actionsEntities = (), string? actionsDisplay = (), string actionsLimit = "50", string actionFields = "all", string actionMembercreatorFields = "avatarHash, fullName, initials and username", string? attachments = (), string attachmentFields = "all", string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? membersVoted = (), string membervotedFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checkitemstateFields = "all", string checklists = "none", string checklistFields = "all", string? board = (), string boardFields = "name, desc, descData, closed, idOrganization, pinned, url and prefs", string? list = (), string listFields = "all", string? stickers = (), string stickerFields = "all", string fields = "badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idBoard, idChecklists, idLabels, idList, idMembers, idShort, idAttachmentCover, manualCoverAttachment, labels, name, pos, shortUrl and url") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}`;
         map<anydata> queryParam = {"actions": actions, "actions_entities": actionsEntities, "actions_display": actionsDisplay, "actions_limit": actionsLimit, "action_fields": actionFields, "action_memberCreator_fields": actionMembercreatorFields, "attachments": attachments, "attachment_fields": attachmentFields, "members": members, "member_fields": memberFields, "membersVoted": membersVoted, "memberVoted_fields": membervotedFields, "checkItemStates": checkItemStates, "checkItemState_fields": checkitemstateFields, "checklists": checklists, "checklist_fields": checklistFields, "board": board, "board_fields": boardFields, "list": list, "list_fields": listFields, "stickers": stickers, "sticker_fields": stickerFields, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1095,7 +1095,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards" to be updated. 
     # + return - Success 
     remote isolated function updateCardsByIdCard(string idCard, Cards payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1109,10 +1109,10 @@ public isolated client class Client {
     # + idCard - Card ID or shortlink 
     # + return - Success 
     remote isolated function deleteCardsByIdCard(string idCard) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get cards actions by ID card
@@ -1134,7 +1134,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getCardsActionsByIdCard(string idCard, string? entities = (), string? display = (), string filter = "commentCard and updateCard:idList", string fields = "all", string 'limit = "50", string format = "list", string? since = (), string? before = (), string page = "0", string? idModels = (), string? member = (), string memberFields = "avatarHash, fullName, initials and username", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/actions`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/actions`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "fields": fields, "limit": 'limit, "format": format, "since": since, "before": before, "page": page, "idModels": idModels, "member": member, "member_fields": memberFields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1146,7 +1146,7 @@ public isolated client class Client {
     # + payload - Attributes of "Actions Comments" to be added. 
     # + return - Success 
     remote isolated function addCardsActionsCommentsByIdCard(string idCard, ActionsComments payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/actions/comments`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/actions/comments`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1162,7 +1162,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Actions Comments" to be updated. 
     # + return - Success 
     remote isolated function updateCardsActionsCommentsByIdCardByIdAction(string idCard, string idAction, CardsActionsComments payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/actions/${idAction}/comments`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/actions/${getEncodedUri(idAction)}/comments`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1177,10 +1177,10 @@ public isolated client class Client {
     # + idAction - IdAction 
     # + return - Success 
     remote isolated function deleteCardsActionsCommentsByIdCardByIdAction(string idCard, string idAction) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/actions/${idAction}/comments`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/actions/${getEncodedUri(idAction)}/comments`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get cards attachments by ID card
@@ -1190,7 +1190,7 @@ public isolated client class Client {
     # + filter - A boolean value or &quot;cover&quot; for only card cover attachments 
     # + return - Success 
     remote isolated function getCardsAttachmentsByIdCard(string idCard, string fields = "all", string? filter = ()) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/attachments`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/attachments`;
         map<anydata> queryParam = {"fields": fields, "filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1202,7 +1202,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Attachments" to be added. 
     # + return - Success 
     remote isolated function addCardsAttachmentsByIdCard(string idCard, CardsAttachments payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/attachments`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/attachments`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1218,7 +1218,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: bytes, date, edgeColor, idMember, isUpload, mimeType, name, previews or url 
     # + return - Success 
     remote isolated function getCardsAttachmentsByIdCardByIdAttachment(string idCard, string idAttachment, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/attachments/${idAttachment}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/attachments/${getEncodedUri(idAttachment)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1230,10 +1230,10 @@ public isolated client class Client {
     # + idAttachment - IdAttachment 
     # + return - Success 
     remote isolated function deleteCardsAttachmentsByIdCardByIdAttachment(string idCard, string idAttachment) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/attachments/${idAttachment}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/attachments/${getEncodedUri(idAttachment)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get cards board by ID card
@@ -1242,7 +1242,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getCardsBoardByIdCard(string idCard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/board`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/board`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1254,7 +1254,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getCardsBoardByIdCardByField(string idCard, string 'field) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/board/${'field}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/board/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1266,7 +1266,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: idCheckItem or state 
     # + return - Success 
     remote isolated function getCardsCheckItemStatesByIdCard(string idCard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checkItemStates`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checkItemStates`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1280,7 +1280,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklist ID Checklist Current Check Item" to be updated. 
     # + return - Success 
     remote isolated function updateCardsChecklistCheckItemByIdCardByIdChecklistCurrentByIdCheckItem(string idCard, string idChecklistCurrent, string idCheckItem, CardsChecklistIdchecklistcurrentCheckitem payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklistCurrent}/checkItem/${idCheckItem}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklistCurrent)}/checkItem/${getEncodedUri(idCheckItem)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1296,7 +1296,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklist Check Item" to be added. 
     # + return - Success 
     remote isolated function addCardsChecklistCheckItemByIdCardByIdChecklist(string idCard, string idChecklist, CardsChecklistCheckitem payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1312,10 +1312,10 @@ public isolated client class Client {
     # + idCheckItem - IdCheckItem 
     # + return - Success 
     remote isolated function deleteCardsChecklistCheckItemByIdCardByIdChecklistByIdCheckItem(string idCard, string idChecklist, string idCheckItem) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem/${idCheckItem}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem/${getEncodedUri(idCheckItem)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add cards checklist check item convert to card by ID card by ID checklist by ID check item
@@ -1325,7 +1325,7 @@ public isolated client class Client {
     # + idCheckItem - IdCheckItem 
     # + return - Success 
     remote isolated function addCardsChecklistCheckItemConvertToCardByIdCardByIdChecklistByIdCheckItem(string idCard, string idChecklist, string idCheckItem) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem/${idCheckItem}/convertToCard`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem/${getEncodedUri(idCheckItem)}/convertToCard`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1341,7 +1341,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklist Check Item Name" to be updated. 
     # + return - Success 
     remote isolated function updateCardsChecklistCheckItemNameByIdCardByIdChecklistByIdCheckItem(string idCard, string idChecklist, string idCheckItem, CardsChecklistCheckitemName payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem/${idCheckItem}/name`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem/${getEncodedUri(idCheckItem)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1358,7 +1358,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklist Check Item Pos" to be updated. 
     # + return - Success 
     remote isolated function updateCardsChecklistCheckItemPosByIdCardByIdChecklistByIdCheckItem(string idCard, string idChecklist, string idCheckItem, CardsChecklistCheckitemPos payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem/${idCheckItem}/pos`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem/${getEncodedUri(idCheckItem)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1375,7 +1375,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklist Check Item State" to be updated. 
     # + return - Success 
     remote isolated function updateCardsChecklistCheckItemStateByIdCardByIdChecklistByIdCheckItem(string idCard, string idChecklist, string idCheckItem, CardsChecklistCheckitemState payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklist/${idChecklist}/checkItem/${idCheckItem}/state`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklist/${getEncodedUri(idChecklist)}/checkItem/${getEncodedUri(idCheckItem)}/state`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1395,7 +1395,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: idBoard, idCard, name or pos 
     # + return - Success 
     remote isolated function getCardsChecklistsByIdCard(string idCard, string cards = "none", string cardFields = "all", string checkItems = "all", string checkitemFields = "name, nameData, pos and state", string filter = "all", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklists`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklists`;
         map<anydata> queryParam = {"cards": cards, "card_fields": cardFields, "checkItems": checkItems, "checkItem_fields": checkitemFields, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1407,7 +1407,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Checklists" to be added. 
     # + return - Success 
     remote isolated function addCardsChecklistsByIdCard(string idCard, CardsChecklists payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklists`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklists`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1422,10 +1422,10 @@ public isolated client class Client {
     # + idChecklist - IdChecklist 
     # + return - Success 
     remote isolated function deleteCardsChecklistsByIdCardByIdChecklist(string idCard, string idChecklist) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/checklists/${idChecklist}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/checklists/${getEncodedUri(idChecklist)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update cards closed by ID card
@@ -1434,7 +1434,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Closed" to be updated. 
     # + return - Success 
     remote isolated function updateCardsClosedByIdCard(string idCard, CardsClosed payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/closed`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/closed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1449,7 +1449,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Desc" to be updated. 
     # + return - Success 
     remote isolated function updateCardsDescByIdCard(string idCard, CardsDesc payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/desc`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/desc`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1464,7 +1464,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Due" to be updated. 
     # + return - Success 
     remote isolated function updateCardsDueByIdCard(string idCard, CardsDue payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/due`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/due`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1479,7 +1479,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID Attachment Cover" to be updated. 
     # + return - Success 
     remote isolated function updateCardsIdAttachmentCoverByIdCard(string idCard, CardsIdattachmentcover payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idAttachmentCover`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idAttachmentCover`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1494,7 +1494,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID Board" to be updated. 
     # + return - Success 
     remote isolated function updateCardsIdBoardByIdCard(string idCard, CardsIdboard payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idBoard`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idBoard`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1509,7 +1509,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID Labels" to be added. 
     # + return - Success 
     remote isolated function addCardsIdLabelsByIdCard(string idCard, CardsIdlabels payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idLabels`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idLabels`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1524,10 +1524,10 @@ public isolated client class Client {
     # + idLabel - IdLabel 
     # + return - Success 
     remote isolated function deleteCardsIdLabelsByIdCardByIdLabel(string idCard, string idLabel) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idLabels/${idLabel}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idLabels/${getEncodedUri(idLabel)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update cards ID list by ID card
@@ -1536,7 +1536,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID List" to be updated. 
     # + return - Success 
     remote isolated function updateCardsIdListByIdCard(string idCard, CardsIdlist payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idList`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idList`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1551,7 +1551,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID Members" to be updated. 
     # + return - Success 
     remote isolated function updateCardsIdMembersByIdCard(string idCard, CardsIdmembers payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idMembers`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idMembers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1566,7 +1566,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards ID Members" to be added. 
     # + return - Success 
     remote isolated function addCardsIdMembersByIdCard(string idCard, CardsIdmembers payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idMembers`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idMembers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1581,10 +1581,10 @@ public isolated client class Client {
     # + idMember - IdMember 
     # + return - Success 
     remote isolated function deleteCardsIdMembersByIdCardByIdMember(string idCard, string idMember) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/idMembers/${idMember}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/idMembers/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update cards labels by ID card
@@ -1593,7 +1593,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Labels" to be updated. 
     # + return - Success 
     remote isolated function updateCardsLabelsByIdCard(string idCard, CardsLabels payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/labels`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/labels`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1608,7 +1608,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Labels" to be added. 
     # + return - Success 
     remote isolated function addCardsLabelsByIdCard(string idCard, CardsLabels payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/labels`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/labels`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1623,10 +1623,10 @@ public isolated client class Client {
     # + color - Color 
     # + return - Success 
     remote isolated function deleteCardsLabelsByIdCardByColor(string idCard, string color) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/labels/${color}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/labels/${getEncodedUri(color)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get cards list by ID card
@@ -1635,7 +1635,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, idBoard, name, pos or subscribed 
     # + return - Success 
     remote isolated function getCardsListByIdCard(string idCard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/list`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/list`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1647,7 +1647,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getCardsListByIdCardByField(string idCard, string 'field) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/list/${'field}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/list/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1658,7 +1658,7 @@ public isolated client class Client {
     # + idCard - Card ID or shortlink 
     # + return - Success 
     remote isolated function addCardsMarkAssociatedNotificationsReadByIdCard(string idCard) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/markAssociatedNotificationsRead`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/markAssociatedNotificationsRead`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1672,7 +1672,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getCardsMembersByIdCard(string idCard, string fields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/members`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/members`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1684,7 +1684,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getCardsMembersVotedByIdCard(string idCard, string fields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/membersVoted`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/membersVoted`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1696,7 +1696,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Members Voted" to be added. 
     # + return - Success 
     remote isolated function addCardsMembersVotedByIdCard(string idCard, CardsMembersvoted payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/membersVoted`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/membersVoted`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1711,10 +1711,10 @@ public isolated client class Client {
     # + idMember - IdMember 
     # + return - Success 
     remote isolated function deleteCardsMembersVotedByIdCardByIdMember(string idCard, string idMember) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/membersVoted/${idMember}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/membersVoted/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update cards name by ID card
@@ -1723,7 +1723,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Name" to be updated. 
     # + return - Success 
     remote isolated function updateCardsNameByIdCard(string idCard, CardsName payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/name`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1738,7 +1738,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Pos" to be updated. 
     # + return - Success 
     remote isolated function updateCardsPosByIdCard(string idCard, CardsPos payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/pos`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1753,7 +1753,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: image, imageScaled, imageUrl, left, rotate, top or zIndex 
     # + return - Success 
     remote isolated function getCardsStickersByIdCard(string idCard, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/stickers`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/stickers`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1765,7 +1765,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Stickers" to be added. 
     # + return - Success 
     remote isolated function addCardsStickersByIdCard(string idCard, CardsStickers payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/stickers`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/stickers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1781,7 +1781,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: image, imageScaled, imageUrl, left, rotate, top or zIndex 
     # + return - Success 
     remote isolated function getCardsStickersByIdCardByIdSticker(string idCard, string idSticker, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/stickers/${idSticker}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/stickers/${getEncodedUri(idSticker)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1794,7 +1794,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Stickers" to be updated. 
     # + return - Success 
     remote isolated function updateCardsStickersByIdCardByIdSticker(string idCard, string idSticker, CardsStickers payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/stickers/${idSticker}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/stickers/${getEncodedUri(idSticker)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1809,10 +1809,10 @@ public isolated client class Client {
     # + idSticker - IdSticker 
     # + return - Success 
     remote isolated function deleteCardsStickersByIdCardByIdSticker(string idCard, string idSticker) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/stickers/${idSticker}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/stickers/${getEncodedUri(idSticker)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update cards subscribed by ID card
@@ -1821,7 +1821,7 @@ public isolated client class Client {
     # + payload - Attributes of "Cards Subscribed" to be updated. 
     # + return - Success 
     remote isolated function updateCardsSubscribedByIdCard(string idCard, CardsSubscribed payload) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/subscribed`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/subscribed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1836,7 +1836,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getCardsByIdCardByField(string idCard, string 'field) returns http:Response|error {
-        string resourcePath = string `/cards/${idCard}/${'field}`;
+        string resourcePath = string `/cards/${getEncodedUri(idCard)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1866,7 +1866,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: idBoard, idCard, name or pos 
     # + return - Success 
     remote isolated function getChecklistsByIdChecklist(string idChecklist, string cards = "none", string cardFields = "all", string checkItems = "all", string checkitemFields = "name, nameData, pos and state", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}`;
         map<anydata> queryParam = {"cards": cards, "card_fields": cardFields, "checkItems": checkItems, "checkItem_fields": checkitemFields, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1878,7 +1878,7 @@ public isolated client class Client {
     # + payload - Attributes of "Checklists" to be updated. 
     # + return - Success 
     remote isolated function updateChecklistsByIdChecklist(string idChecklist, Checklists payload) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1892,10 +1892,10 @@ public isolated client class Client {
     # + idChecklist - IdChecklist 
     # + return - Success 
     remote isolated function deleteChecklistsByIdChecklist(string idChecklist) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get checklists board by ID checklist
@@ -1904,7 +1904,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getChecklistsBoardByIdChecklist(string idChecklist, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/board`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/board`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1916,7 +1916,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getChecklistsBoardByIdChecklistByField(string idChecklist, string 'field) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/board/${'field}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/board/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1940,7 +1940,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getChecklistsCardsByIdChecklist(string idChecklist, string? actions = (), string? attachments = (), string attachmentFields = "all", string? stickers = (), string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? 'limit = (), string? since = (), string? before = (), string filter = "open", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/cards`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "stickers": stickers, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "limit": 'limit, "since": since, "before": before, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1952,7 +1952,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getChecklistsCardsByIdChecklistByFilter(string idChecklist, string filter) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/cards/${filter}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/cards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1965,7 +1965,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: name, nameData, pos, state or type 
     # + return - Success 
     remote isolated function getChecklistsCheckItemsByIdChecklist(string idChecklist, string filter = "all", string fields = "name, nameData, pos and state") returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/checkItems`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/checkItems`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -1977,7 +1977,7 @@ public isolated client class Client {
     # + payload - Attributes of "Checklists Check Items" to be added. 
     # + return - Success 
     remote isolated function addChecklistsCheckItemsByIdChecklist(string idChecklist, ChecklistsCheckitems payload) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/checkItems`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/checkItems`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1993,7 +1993,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: name, nameData, pos, state or type 
     # + return - Success 
     remote isolated function getChecklistsCheckItemsByIdChecklistByIdCheckItem(string idChecklist, string idCheckItem, string fields = "name, nameData, pos and state") returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/checkItems/${idCheckItem}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/checkItems/${getEncodedUri(idCheckItem)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2005,10 +2005,10 @@ public isolated client class Client {
     # + idCheckItem - IdCheckItem 
     # + return - Success 
     remote isolated function deleteChecklistsCheckItemsByIdChecklistByIdCheckItem(string idChecklist, string idCheckItem) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/checkItems/${idCheckItem}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/checkItems/${getEncodedUri(idCheckItem)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update checklists ID card by ID checklist
@@ -2017,7 +2017,7 @@ public isolated client class Client {
     # + payload - Attributes of "Checklists ID Card" to be updated. 
     # + return - Success 
     remote isolated function updateChecklistsIdCardByIdChecklist(string idChecklist, ChecklistsIdcard payload) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/idCard`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/idCard`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2032,7 +2032,7 @@ public isolated client class Client {
     # + payload - Attributes of "Checklists Name" to be updated. 
     # + return - Success 
     remote isolated function updateChecklistsNameByIdChecklist(string idChecklist, ChecklistsName payload) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/name`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2047,7 +2047,7 @@ public isolated client class Client {
     # + payload - Attributes of "Checklists Pos" to be updated. 
     # + return - Success 
     remote isolated function updateChecklistsPosByIdChecklist(string idChecklist, ChecklistsPos payload) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/pos`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2062,7 +2062,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getChecklistsByIdChecklistByField(string idChecklist, string 'field) returns http:Response|error {
-        string resourcePath = string `/checklists/${idChecklist}/${'field}`;
+        string resourcePath = string `/checklists/${getEncodedUri(idChecklist)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2088,7 +2088,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: color, idBoard, name or uses 
     # + return - Success 
     remote isolated function getLabelsByIdLabel(string idLabel, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2100,7 +2100,7 @@ public isolated client class Client {
     # + payload - Attributes of "Labels" to be updated. 
     # + return - Success 
     remote isolated function updateLabelsByIdLabel(string idLabel, Labels payload) returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2114,10 +2114,10 @@ public isolated client class Client {
     # + idLabel - IdLabel 
     # + return - Success 
     remote isolated function deleteLabelsByIdLabel(string idLabel) returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get labels board by ID label
@@ -2126,7 +2126,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getLabelsBoardByIdLabel(string idLabel, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}/board`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}/board`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2138,7 +2138,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getLabelsBoardByIdLabelByField(string idLabel, string 'field) returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}/board/${'field}`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}/board/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2150,7 +2150,7 @@ public isolated client class Client {
     # + payload - Attributes of "Labels Color" to be updated. 
     # + return - Success 
     remote isolated function updateLabelsColorByIdLabel(string idLabel, LabelsColor payload) returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}/color`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}/color`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2165,7 +2165,7 @@ public isolated client class Client {
     # + payload - Attributes of "Labels Name" to be updated. 
     # + return - Success 
     remote isolated function updateLabelsNameByIdLabel(string idLabel, LabelsName payload) returns http:Response|error {
-        string resourcePath = string `/labels/${idLabel}/name`;
+        string resourcePath = string `/labels/${getEncodedUri(idLabel)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2198,7 +2198,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, idBoard, name, pos or subscribed 
     # + return - Success 
     remote isolated function getListsByIdList(string idList, string cards = "none", string cardFields = "all", string? board = (), string boardFields = "name, desc, descData, closed, idOrganization, pinned, url and prefs", string fields = "name, closed, idBoard and pos") returns http:Response|error {
-        string resourcePath = string `/lists/${idList}`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}`;
         map<anydata> queryParam = {"cards": cards, "card_fields": cardFields, "board": board, "board_fields": boardFields, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2210,7 +2210,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists" to be updated. 
     # + return - Success 
     remote isolated function updateListsByIdList(string idList, Lists payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2238,7 +2238,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getListsActionsByIdList(string idList, string? entities = (), string? display = (), string filter = "all", string fields = "all", string 'limit = "50", string format = "list", string? since = (), string? before = (), string page = "0", string? idModels = (), string? member = (), string memberFields = "avatarHash, fullName, initials and username", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/actions`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/actions`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "fields": fields, "limit": 'limit, "format": format, "since": since, "before": before, "page": page, "idModels": idModels, "member": member, "member_fields": memberFields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2249,7 +2249,7 @@ public isolated client class Client {
     # + idList - IdList 
     # + return - Success 
     remote isolated function addListsArchiveAllCardsByIdList(string idList) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/archiveAllCards`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/archiveAllCards`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2263,7 +2263,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getListsBoardByIdList(string idList, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/board`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/board`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2275,7 +2275,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getListsBoardByIdListByField(string idList, string 'field) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/board/${'field}`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/board/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2299,7 +2299,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getListsCardsByIdList(string idList, string? actions = (), string? attachments = (), string attachmentFields = "all", string? stickers = (), string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? 'limit = (), string? since = (), string? before = (), string filter = "open", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/cards`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "stickers": stickers, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "limit": 'limit, "since": since, "before": before, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2311,7 +2311,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Cards" to be added. 
     # + return - Success 
     remote isolated function addListsCardsByIdList(string idList, ListsCards payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/cards`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/cards`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2326,7 +2326,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getListsCardsByIdListByFilter(string idList, string filter) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/cards/${filter}`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/cards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2338,7 +2338,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Closed" to be updated. 
     # + return - Success 
     remote isolated function updateListsClosedByIdList(string idList, ListsClosed payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/closed`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/closed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2353,7 +2353,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists ID Board" to be updated. 
     # + return - Success 
     remote isolated function updateListsIdBoardByIdList(string idList, ListsIdboard payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/idBoard`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/idBoard`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2368,7 +2368,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Move All Cards" to be added. 
     # + return - Success 
     remote isolated function addListsMoveAllCardsByIdList(string idList, ListsMoveallcards payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/moveAllCards`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/moveAllCards`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2383,7 +2383,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Name" to be updated. 
     # + return - Success 
     remote isolated function updateListsNameByIdList(string idList, ListsName payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/name`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2398,7 +2398,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Pos" to be updated. 
     # + return - Success 
     remote isolated function updateListsPosByIdList(string idList, ListsPos payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/pos`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2413,7 +2413,7 @@ public isolated client class Client {
     # + payload - Attributes of "Lists Subscribed" to be updated. 
     # + return - Success 
     remote isolated function updateListsSubscribedByIdList(string idList, ListsSubscribed payload) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/subscribed`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/subscribed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2428,7 +2428,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getListsByIdListByField(string idList, string 'field) returns http:Response|error {
-        string resourcePath = string `/lists/${idList}/${'field}`;
+        string resourcePath = string `/lists/${getEncodedUri(idList)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2491,7 +2491,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, avatarSource, bio, bioData, confirmed, email, fullName, gravatarHash, idBoards, idBoardsPinned, idOrganizations, idPremOrgsAdmin, initials, loginTypes, memberType, oneTimeMessagesDismissed, prefs, premiumFeatures, products, status, status, trophies, uploadedAvatarHash, url or username 
     # + return - Success 
     remote isolated function getMembersByIdMember(string idMember, string? actions = (), string? actionsEntities = (), string? actionsDisplay = (), string actionsLimit = "50", string actionFields = "all", string? actionSince = (), string? actionBefore = (), string cards = "none", string cardFields = "all", string? cardMembers = (), string cardMemberFields = "avatarHash, fullName, initials and username", string? cardAttachments = (), string cardAttachmentFields = "url and previews", string? cardStickers = (), string? boards = (), string boardFields = "name, closed, idOrganization and pinned", string? boardActions = (), string? boardActionsEntities = (), string? boardActionsDisplay = (), string boardActionsFormat = "list", string? boardActionsSince = (), string boardActionsLimit = "50", string boardActionFields = "all", string boardLists = "none", string boardMemberships = "none", string? boardOrganization = (), string boardOrganizationFields = "name and displayName", string? boardsInvited = (), string boardsinvitedFields = "name, closed, idOrganization and pinned", string? boardStars = (), string? savedSearches = (), string organizations = "none", string organizationFields = "all", string? organizationPaidAccount = (), string organizationsInvited = "none", string organizationsinvitedFields = "all", string? notifications = (), string? notificationsEntities = (), string? notificationsDisplay = (), string notificationsLimit = "50", string notificationFields = "all", string? notificationMembercreator = (), string notificationMembercreatorFields = "avatarHash, fullName, initials and username", string? notificationBefore = (), string? notificationSince = (), string tokens = "none", string? paidAccount = (), string boardBackgrounds = "none", string customBoardBackgrounds = "none", string customStickers = "none", string customEmoji = "none", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"actions": actions, "actions_entities": actionsEntities, "actions_display": actionsDisplay, "actions_limit": actionsLimit, "action_fields": actionFields, "action_since": actionSince, "action_before": actionBefore, "cards": cards, "card_fields": cardFields, "card_members": cardMembers, "card_member_fields": cardMemberFields, "card_attachments": cardAttachments, "card_attachment_fields": cardAttachmentFields, "card_stickers": cardStickers, "boards": boards, "board_fields": boardFields, "board_actions": boardActions, "board_actions_entities": boardActionsEntities, "board_actions_display": boardActionsDisplay, "board_actions_format": boardActionsFormat, "board_actions_since": boardActionsSince, "board_actions_limit": boardActionsLimit, "board_action_fields": boardActionFields, "board_lists": boardLists, "board_memberships": boardMemberships, "board_organization": boardOrganization, "board_organization_fields": boardOrganizationFields, "boardsInvited": boardsInvited, "boardsInvited_fields": boardsinvitedFields, "boardStars": boardStars, "savedSearches": savedSearches, "organizations": organizations, "organization_fields": organizationFields, "organization_paid_account": organizationPaidAccount, "organizationsInvited": organizationsInvited, "organizationsInvited_fields": organizationsinvitedFields, "notifications": notifications, "notifications_entities": notificationsEntities, "notifications_display": notificationsDisplay, "notifications_limit": notificationsLimit, "notification_fields": notificationFields, "notification_memberCreator": notificationMembercreator, "notification_memberCreator_fields": notificationMembercreatorFields, "notification_before": notificationBefore, "notification_since": notificationSince, "tokens": tokens, "paid_account": paidAccount, "boardBackgrounds": boardBackgrounds, "customBoardBackgrounds": customBoardBackgrounds, "customStickers": customStickers, "customEmoji": customEmoji, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2503,7 +2503,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members" to be updated. 
     # + return - Success 
     remote isolated function updateMembersByIdMember(string idMember, Members payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2531,7 +2531,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getMembersActionsByIdMember(string idMember, string? entities = (), string? display = (), string filter = "all", string fields = "all", string 'limit = "50", string format = "list", string? since = (), string? before = (), string page = "0", string? idModels = (), string? member = (), string memberFields = "avatarHash, fullName, initials and username", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/actions`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/actions`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "fields": fields, "limit": 'limit, "format": format, "since": since, "before": before, "page": page, "idModels": idModels, "member": member, "member_fields": memberFields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2543,7 +2543,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Avatar" to be added. 
     # + return - Success 
     remote isolated function addMembersAvatarByIdMember(string idMember, MembersAvatar payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/avatar`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/avatar`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2558,7 +2558,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Avatar Source" to be updated. 
     # + return - Success 
     remote isolated function updateMembersAvatarSourceByIdMember(string idMember, MembersAvatarsource payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/avatarSource`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/avatarSource`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2573,7 +2573,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Bio" to be updated. 
     # + return - Success 
     remote isolated function updateMembersBioByIdMember(string idMember, MembersBio payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/bio`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/bio`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2588,7 +2588,7 @@ public isolated client class Client {
     # + filter - One of: all, custom, default, none or premium 
     # + return - Success 
     remote isolated function getMembersBoardBackgroundsByIdMember(string idMember, string filter = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardBackgrounds`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardBackgrounds`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2600,7 +2600,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Backgrounds" to be added. 
     # + return - Success 
     remote isolated function addMembersBoardBackgroundsByIdMember(string idMember, MembersBoardbackgrounds payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardBackgrounds`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardBackgrounds`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2616,7 +2616,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: brightness, fullSizeUrl, scaled or tile 
     # + return - Success 
     remote isolated function getMembersBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2629,7 +2629,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Backgrounds" to be updated. 
     # + return - Success 
     remote isolated function updateMembersBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground, MembersBoardbackgrounds payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2644,10 +2644,10 @@ public isolated client class Client {
     # + idBoardBackground - IdBoardBackground 
     # + return - Success 
     remote isolated function deleteMembersBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get members board stars by ID member
@@ -2655,7 +2655,7 @@ public isolated client class Client {
     # + idMember - IdMember or username 
     # + return - Success 
     remote isolated function getMembersBoardStarsByIdMember(string idMember) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2667,7 +2667,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Stars" to be added. 
     # + return - Success 
     remote isolated function addMembersBoardStarsByIdMember(string idMember, MembersBoardstars payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2682,7 +2682,7 @@ public isolated client class Client {
     # + idBoardStar - IdBoardStar 
     # + return - Success 
     remote isolated function getMembersBoardStarsByIdMemberByIdBoardStar(string idMember, string idBoardStar) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars/${idBoardStar}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars/${getEncodedUri(idBoardStar)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2695,7 +2695,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Stars" to be updated. 
     # + return - Success 
     remote isolated function updateMembersBoardStarsByIdMemberByIdBoardStar(string idMember, string idBoardStar, MembersBoardstars payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars/${idBoardStar}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars/${getEncodedUri(idBoardStar)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2710,10 +2710,10 @@ public isolated client class Client {
     # + idBoardStar - IdBoardStar 
     # + return - Success 
     remote isolated function deleteMembersBoardStarsByIdMemberByIdBoardStar(string idMember, string idBoardStar) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars/${idBoardStar}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars/${getEncodedUri(idBoardStar)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update members board stars ID board by ID member by ID board star
@@ -2723,7 +2723,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Stars ID Board" to be updated. 
     # + return - Success 
     remote isolated function updateMembersBoardStarsIdBoardByIdMemberByIdBoardStar(string idMember, string idBoardStar, MembersBoardstarsIdboard payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars/${idBoardStar}/idBoard`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars/${getEncodedUri(idBoardStar)}/idBoard`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2739,7 +2739,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Board Stars Pos" to be updated. 
     # + return - Success 
     remote isolated function updateMembersBoardStarsPosByIdMemberByIdBoardStar(string idMember, string idBoardStar, MembersBoardstarsPos payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardStars/${idBoardStar}/pos`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardStars/${getEncodedUri(idBoardStar)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2765,7 +2765,7 @@ public isolated client class Client {
     # + lists - One of: all, closed, none or open 
     # + return - Success 
     remote isolated function getMembersBoardsByIdMember(string idMember, string filter = "all", string fields = "all", string? actions = (), string? actionsEntities = (), string actionsLimit = "50", string actionsFormat = "list", string? actionsSince = (), string actionFields = "all", string memberships = "none", string? organization = (), string organizationFields = "name and displayName", string lists = "none") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boards`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boards`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "actions": actions, "actions_entities": actionsEntities, "actions_limit": actionsLimit, "actions_format": actionsFormat, "actions_since": actionsSince, "action_fields": actionFields, "memberships": memberships, "organization": organization, "organization_fields": organizationFields, "lists": lists, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2777,7 +2777,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getMembersBoardsByIdMemberByFilter(string idMember, string filter) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boards/${filter}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2789,7 +2789,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getMembersBoardsInvitedByIdMember(string idMember, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardsInvited`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardsInvited`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2801,7 +2801,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getMembersBoardsInvitedByIdMemberByField(string idMember, string 'field) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/boardsInvited/${'field}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/boardsInvited/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2825,7 +2825,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getMembersCardsByIdMember(string idMember, string? actions = (), string? attachments = (), string attachmentFields = "all", string? stickers = (), string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? 'limit = (), string? since = (), string? before = (), string filter = "visible", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/cards`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "stickers": stickers, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "limit": 'limit, "since": since, "before": before, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2837,7 +2837,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getMembersCardsByIdMemberByFilter(string idMember, string filter) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/cards/${filter}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/cards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2849,7 +2849,7 @@ public isolated client class Client {
     # + filter - One of: all or none 
     # + return - Success 
     remote isolated function getMembersCustomBoardBackgroundsByIdMember(string idMember, string filter = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customBoardBackgrounds`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customBoardBackgrounds`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2861,7 +2861,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Custom Board Backgrounds" to be added. 
     # + return - Success 
     remote isolated function addMembersCustomBoardBackgroundsByIdMember(string idMember, MembersCustomboardbackgrounds payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customBoardBackgrounds`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customBoardBackgrounds`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2877,7 +2877,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: brightness, fullSizeUrl, scaled or tile 
     # + return - Success 
     remote isolated function getMembersCustomBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customBoardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customBoardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2890,7 +2890,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Custom Board Backgrounds" to be updated. 
     # + return - Success 
     remote isolated function updateMembersCustomBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground, MembersCustomboardbackgrounds payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customBoardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customBoardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2905,10 +2905,10 @@ public isolated client class Client {
     # + idBoardBackground - IdBoardBackground 
     # + return - Success 
     remote isolated function deleteMembersCustomBoardBackgroundsByIdMemberByIdBoardBackground(string idMember, string idBoardBackground) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customBoardBackgrounds/${idBoardBackground}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customBoardBackgrounds/${getEncodedUri(idBoardBackground)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get members custom emoji by ID member
@@ -2917,7 +2917,7 @@ public isolated client class Client {
     # + filter - One of: all or none 
     # + return - Success 
     remote isolated function getMembersCustomEmojiByIdMember(string idMember, string filter = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customEmoji`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customEmoji`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2929,7 +2929,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Custom Emoji" to be added. 
     # + return - Success 
     remote isolated function addMembersCustomEmojiByIdMember(string idMember, MembersCustomemoji payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customEmoji`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customEmoji`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2945,7 +2945,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: name or url 
     # + return - Success 
     remote isolated function getMembersCustomEmojiByIdMemberByIdCustomEmoji(string idMember, string idCustomEmoji, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customEmoji/${idCustomEmoji}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customEmoji/${getEncodedUri(idCustomEmoji)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2957,7 +2957,7 @@ public isolated client class Client {
     # + filter - One of: all or none 
     # + return - Success 
     remote isolated function getMembersCustomStickersByIdMember(string idMember, string filter = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customStickers`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customStickers`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2969,7 +2969,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Custom Stickers" to be added. 
     # + return - Success 
     remote isolated function addMembersCustomStickersByIdMember(string idMember, MembersCustomstickers payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customStickers`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customStickers`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2985,7 +2985,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: scaled or url 
     # + return - Success 
     remote isolated function getMembersCustomStickersByIdMemberByIdCustomSticker(string idMember, string idCustomSticker, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customStickers/${idCustomSticker}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customStickers/${getEncodedUri(idCustomSticker)}`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -2997,10 +2997,10 @@ public isolated client class Client {
     # + idCustomSticker - IdCustomSticker 
     # + return - Success 
     remote isolated function deleteMembersCustomStickersByIdMemberByIdCustomSticker(string idMember, string idCustomSticker) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/customStickers/${idCustomSticker}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/customStickers/${getEncodedUri(idCustomSticker)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get members deltas by ID member
@@ -3010,7 +3010,7 @@ public isolated client class Client {
     # + ixLastUpdate - A number from -1 to Infinity 
     # + return - Success 
     remote isolated function getMembersDeltasByIdMember(string idMember, string tags, string ixLastUpdate) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/deltas`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/deltas`;
         map<anydata> queryParam = {"tags": tags, "ixLastUpdate": ixLastUpdate, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3022,7 +3022,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Full Name" to be updated. 
     # + return - Success 
     remote isolated function updateMembersFullNameByIdMember(string idMember, MembersFullname payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/fullName`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/fullName`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3037,7 +3037,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Initials" to be updated. 
     # + return - Success 
     remote isolated function updateMembersInitialsByIdMember(string idMember, MembersInitials payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/initials`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/initials`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3062,7 +3062,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getMembersNotificationsByIdMember(string idMember, string? entities = (), string? display = (), string filter = "all", string readFilter = "all", string fields = "all", string 'limit = "50", string page = "0", string? before = (), string? since = (), string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/notifications`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/notifications`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "read_filter": readFilter, "fields": fields, "limit": 'limit, "page": page, "before": before, "since": since, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3074,7 +3074,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getMembersNotificationsByIdMemberByFilter(string idMember, string filter) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/notifications/${filter}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/notifications/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3086,7 +3086,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members One Time Messages Dismissed" to be added. 
     # + return - Success 
     remote isolated function addMembersOneTimeMessagesDismissedByIdMember(string idMember, MembersOnetimemessagesdismissed payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/oneTimeMessagesDismissed`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/oneTimeMessagesDismissed`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3103,7 +3103,7 @@ public isolated client class Client {
     # + paidAccount - True or false 
     # + return - Success 
     remote isolated function getMembersOrganizationsByIdMember(string idMember, string filter = "all", string fields = "all", string? paidAccount = ()) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/organizations`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/organizations`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "paid_account": paidAccount, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3115,7 +3115,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getMembersOrganizationsByIdMemberByFilter(string idMember, string filter) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/organizations/${filter}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/organizations/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3127,7 +3127,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: billableMemberCount, desc, descData, displayName, idBoards, invitations, invited, logoHash, memberships, name, powerUps, prefs, premiumFeatures, products, url or website 
     # + return - Success 
     remote isolated function getMembersOrganizationsInvitedByIdMember(string idMember, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/organizationsInvited`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/organizationsInvited`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3139,7 +3139,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getMembersOrganizationsInvitedByIdMemberByField(string idMember, string 'field) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/organizationsInvited/${'field}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/organizationsInvited/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3151,7 +3151,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Color Blind" to be updated. 
     # + return - Success 
     remote isolated function updateMembersPrefsColorBlindByIdMember(string idMember, PrefsColorblind payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/prefs/colorBlind`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/prefs/colorBlind`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3166,7 +3166,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Locale" to be updated. 
     # + return - Success 
     remote isolated function updateMembersPrefsLocaleByIdMember(string idMember, PrefsLocale payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/prefs/locale`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/prefs/locale`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3181,7 +3181,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Minutes Between Summaries" to be updated. 
     # + return - Success 
     remote isolated function updateMembersPrefsMinutesBetweenSummariesByIdMember(string idMember, PrefsMinutesbetweensummaries payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/prefs/minutesBetweenSummaries`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/prefs/minutesBetweenSummaries`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3195,7 +3195,7 @@ public isolated client class Client {
     # + idMember - IdMember or username 
     # + return - Success 
     remote isolated function getMembersSavedSearchesByIdMember(string idMember) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3207,7 +3207,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Saved Searches" to be added. 
     # + return - Success 
     remote isolated function addMembersSavedSearchesByIdMember(string idMember, MembersSavedsearches payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3222,7 +3222,7 @@ public isolated client class Client {
     # + idSavedSearch - IdSavedSearch 
     # + return - Success 
     remote isolated function getMembersSavedSearchesByIdMemberByIdSavedSearch(string idMember, string idSavedSearch) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3235,7 +3235,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Saved Searches" to be updated. 
     # + return - Success 
     remote isolated function updateMembersSavedSearchesByIdMemberByIdSavedSearch(string idMember, string idSavedSearch, MembersSavedsearches payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3250,10 +3250,10 @@ public isolated client class Client {
     # + idSavedSearch - IdSavedSearch 
     # + return - Success 
     remote isolated function deleteMembersSavedSearchesByIdMemberByIdSavedSearch(string idMember, string idSavedSearch) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update members saved searches name by ID member by ID saved search
@@ -3263,7 +3263,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Saved Searches Name" to be updated. 
     # + return - Success 
     remote isolated function updateMembersSavedSearchesNameByIdMemberByIdSavedSearch(string idMember, string idSavedSearch, MembersSavedsearchesName payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}/name`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3279,7 +3279,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Saved Searches Pos" to be updated. 
     # + return - Success 
     remote isolated function updateMembersSavedSearchesPosByIdMemberByIdSavedSearch(string idMember, string idSavedSearch, MembersSavedsearchesPos payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}/pos`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}/pos`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3295,7 +3295,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Saved Searches Query" to be updated. 
     # + return - Success 
     remote isolated function updateMembersSavedSearchesQueryByIdMemberByIdSavedSearch(string idMember, string idSavedSearch, MembersSavedsearchesQuery payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/savedSearches/${idSavedSearch}/query`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/savedSearches/${getEncodedUri(idSavedSearch)}/query`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3310,7 +3310,7 @@ public isolated client class Client {
     # + filter - One of: all or none 
     # + return - Success 
     remote isolated function getMembersTokensByIdMember(string idMember, string filter = "all") returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/tokens`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/tokens`;
         map<anydata> queryParam = {"filter": filter, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3322,7 +3322,7 @@ public isolated client class Client {
     # + payload - Attributes of "Members Username" to be updated. 
     # + return - Success 
     remote isolated function updateMembersUsernameByIdMember(string idMember, MembersUsername payload) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/username`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/username`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3337,7 +3337,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getMembersByIdMemberByField(string idMember, string 'field) returns http:Response|error {
-        string resourcePath = string `/members/${idMember}/${'field}`;
+        string resourcePath = string `/members/${getEncodedUri(idMember)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3374,7 +3374,7 @@ public isolated client class Client {
     # + memberFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getNotificationsByIdNotification(string idNotification, string? display = (), string? entities = (), string fields = "all", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username", string? board = (), string boardFields = "name", string? list = (), string? card = (), string cardFields = "name", string? organization = (), string organizationFields = "displayName", string? member = (), string memberFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}`;
         map<anydata> queryParam = {"display": display, "entities": entities, "fields": fields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "board": board, "board_fields": boardFields, "list": list, "card": card, "card_fields": cardFields, "organization": organization, "organization_fields": organizationFields, "member": member, "member_fields": memberFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3386,7 +3386,7 @@ public isolated client class Client {
     # + payload - Attributes of "Notifications" to be updated. 
     # + return - Success 
     remote isolated function updateNotificationsByIdNotification(string idNotification, Notifications payload) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3401,7 +3401,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, dateLastActivity, dateLastView, desc, descData, idOrganization, invitations, invited, labelNames, memberships, name, pinned, powerUps, prefs, shortLink, shortUrl, starred, subscribed or url 
     # + return - Success 
     remote isolated function getNotificationsBoardByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/board`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/board`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3413,7 +3413,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsBoardByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/board/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/board/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3425,7 +3425,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getNotificationsCardByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/card`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/card`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3437,7 +3437,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsCardByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/card/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/card/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3448,7 +3448,7 @@ public isolated client class Client {
     # + idNotification - IdNotification 
     # + return - Success 
     remote isolated function getNotificationsDisplayByIdNotification(string idNotification) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/display`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/display`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3459,7 +3459,7 @@ public isolated client class Client {
     # + idNotification - IdNotification 
     # + return - Success 
     remote isolated function getNotificationsEntitiesByIdNotification(string idNotification) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/entities`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/entities`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3471,7 +3471,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: closed, idBoard, name, pos or subscribed 
     # + return - Success 
     remote isolated function getNotificationsListByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/list`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/list`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3483,7 +3483,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsListByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/list/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/list/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3495,7 +3495,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, avatarSource, bio, bioData, confirmed, email, fullName, gravatarHash, idBoards, idBoardsPinned, idOrganizations, idPremOrgsAdmin, initials, loginTypes, memberType, oneTimeMessagesDismissed, prefs, premiumFeatures, products, status, status, trophies, uploadedAvatarHash, url or username 
     # + return - Success 
     remote isolated function getNotificationsMemberByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/member`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/member`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3507,7 +3507,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsMemberByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/member/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/member/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3519,7 +3519,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, avatarSource, bio, bioData, confirmed, email, fullName, gravatarHash, idBoards, idBoardsPinned, idOrganizations, idPremOrgsAdmin, initials, loginTypes, memberType, oneTimeMessagesDismissed, prefs, premiumFeatures, products, status, status, trophies, uploadedAvatarHash, url or username 
     # + return - Success 
     remote isolated function getNotificationsMemberCreatorByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/memberCreator`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/memberCreator`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3531,7 +3531,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsMemberCreatorByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/memberCreator/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/memberCreator/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3543,7 +3543,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: billableMemberCount, desc, descData, displayName, idBoards, invitations, invited, logoHash, memberships, name, powerUps, prefs, premiumFeatures, products, url or website 
     # + return - Success 
     remote isolated function getNotificationsOrganizationByIdNotification(string idNotification, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/organization`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/organization`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3555,7 +3555,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsOrganizationByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/organization/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/organization/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3567,7 +3567,7 @@ public isolated client class Client {
     # + payload - Attributes of "Notifications Unread" to be updated. 
     # + return - Success 
     remote isolated function updateNotificationsUnreadByIdNotification(string idNotification, NotificationsUnread payload) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/unread`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/unread`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3582,7 +3582,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getNotificationsByIdNotificationByField(string idNotification, string 'field) returns http:Response|error {
-        string resourcePath = string `/notifications/${idNotification}/${'field}`;
+        string resourcePath = string `/notifications/${getEncodedUri(idNotification)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3632,7 +3632,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: billableMemberCount, desc, descData, displayName, idBoards, invitations, invited, logoHash, memberships, name, powerUps, prefs, premiumFeatures, products, url or website 
     # + return - Success 
     remote isolated function getOrganizationsByIdOrg(string idOrg, string? actions = (), string? actionsEntities = (), string? actionsDisplay = (), string actionsLimit = "50", string actionFields = "all", string memberships = "none", string? membershipsMember = (), string membershipsMemberFields = "fullName and username", string members = "none", string memberFields = "avatarHash, fullName, initials, username and confirmed", string? memberActivity = (), string membersInvited = "none", string membersinvitedFields = "avatarHash, initials, fullName and username", string boards = "none", string boardFields = "all", string? boardActions = (), string? boardActionsEntities = (), string? boardActionsDisplay = (), string boardActionsFormat = "list", string? boardActionsSince = (), string boardActionsLimit = "50", string boardActionFields = "all", string boardLists = "none", string? paidAccount = (), string fields = "name, displayName, desc, descData, url, website, logoHash, products and powerUps") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}`;
         map<anydata> queryParam = {"actions": actions, "actions_entities": actionsEntities, "actions_display": actionsDisplay, "actions_limit": actionsLimit, "action_fields": actionFields, "memberships": memberships, "memberships_member": membershipsMember, "memberships_member_fields": membershipsMemberFields, "members": members, "member_fields": memberFields, "member_activity": memberActivity, "membersInvited": membersInvited, "membersInvited_fields": membersinvitedFields, "boards": boards, "board_fields": boardFields, "board_actions": boardActions, "board_actions_entities": boardActionsEntities, "board_actions_display": boardActionsDisplay, "board_actions_format": boardActionsFormat, "board_actions_since": boardActionsSince, "board_actions_limit": boardActionsLimit, "board_action_fields": boardActionFields, "board_lists": boardLists, "paid_account": paidAccount, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3644,7 +3644,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsByIdOrg(string idOrg, Organizations payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3658,10 +3658,10 @@ public isolated client class Client {
     # + idOrg - IdOrg or name 
     # + return - Success 
     remote isolated function deleteOrganizationsByIdOrg(string idOrg) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get organizations actions by ID org
@@ -3683,7 +3683,7 @@ public isolated client class Client {
     # + membercreatorFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getOrganizationsActionsByIdOrg(string idOrg, string? entities = (), string? display = (), string filter = "all", string fields = "all", string 'limit = "50", string format = "list", string? since = (), string? before = (), string page = "0", string? idModels = (), string? member = (), string memberFields = "avatarHash, fullName, initials and username", string? memberCreator = (), string membercreatorFields = "avatarHash, fullName, initials and username") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/actions`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/actions`;
         map<anydata> queryParam = {"entities": entities, "display": display, "filter": filter, "fields": fields, "limit": 'limit, "format": format, "since": since, "before": before, "page": page, "idModels": idModels, "member": member, "member_fields": memberFields, "memberCreator": memberCreator, "memberCreator_fields": membercreatorFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3706,7 +3706,7 @@ public isolated client class Client {
     # + lists - One of: all, closed, none or open 
     # + return - Success 
     remote isolated function getOrganizationsBoardsByIdOrg(string idOrg, string filter = "all", string fields = "all", string? actions = (), string? actionsEntities = (), string actionsLimit = "50", string actionsFormat = "list", string? actionsSince = (), string actionFields = "all", string memberships = "none", string? organization = (), string organizationFields = "name and displayName", string lists = "none") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/boards`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/boards`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "actions": actions, "actions_entities": actionsEntities, "actions_limit": actionsLimit, "actions_format": actionsFormat, "actions_since": actionsSince, "action_fields": actionFields, "memberships": memberships, "organization": organization, "organization_fields": organizationFields, "lists": lists, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3718,7 +3718,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getOrganizationsBoardsByIdOrgByFilter(string idOrg, string filter) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/boards/${filter}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/boards/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3731,7 +3731,7 @@ public isolated client class Client {
     # + ixLastUpdate - A number from -1 to Infinity 
     # + return - Success 
     remote isolated function getOrganizationsDeltasByIdOrg(string idOrg, string tags, string ixLastUpdate) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/deltas`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/deltas`;
         map<anydata> queryParam = {"tags": tags, "ixLastUpdate": ixLastUpdate, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3743,7 +3743,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Desc" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsDescByIdOrg(string idOrg, OrganizationsDesc payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/desc`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/desc`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3758,7 +3758,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Display Name" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsDisplayNameByIdOrg(string idOrg, OrganizationsDisplayname payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/displayName`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/displayName`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3773,7 +3773,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Logo" to be added. 
     # + return - Success 
     remote isolated function addOrganizationsLogoByIdOrg(string idOrg, OrganizationsLogo payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/logo`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/logo`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3787,10 +3787,10 @@ public isolated client class Client {
     # + idOrg - IdOrg or name 
     # + return - Success 
     remote isolated function deleteOrganizationsLogoByIdOrg(string idOrg) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/logo`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/logo`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get organizations members by ID org
@@ -3801,7 +3801,7 @@ public isolated client class Client {
     # + activity - True or false ; works for premium organizations only. 
     # + return - Success 
     remote isolated function getOrganizationsMembersByIdOrg(string idOrg, string filter = "all", string fields = "fullName and username", string? activity = ()) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members`;
         map<anydata> queryParam = {"filter": filter, "fields": fields, "activity": activity, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3813,7 +3813,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Members" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsMembersByIdOrg(string idOrg, OrganizationsMembers payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3828,7 +3828,7 @@ public isolated client class Client {
     # + filter - Filter 
     # + return - Success 
     remote isolated function getOrganizationsMembersByIdOrgByFilter(string idOrg, string filter) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${filter}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(filter)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3841,7 +3841,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Members" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsMembersByIdOrgByIdMember(string idOrg, string idMember, OrganizationsMembers payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${idMember}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3856,10 +3856,10 @@ public isolated client class Client {
     # + idMember - IdMember 
     # + return - Success 
     remote isolated function deleteOrganizationsMembersByIdOrgByIdMember(string idOrg, string idMember) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${idMember}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(idMember)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Delete organizations members all by ID org by ID member
@@ -3868,10 +3868,10 @@ public isolated client class Client {
     # + idMember - IdMember 
     # + return - Success 
     remote isolated function deleteOrganizationsMembersAllByIdOrgByIdMember(string idOrg, string idMember) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${idMember}/all`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(idMember)}/all`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get organizations members cards by ID org by ID member
@@ -3893,7 +3893,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: badges, checkItemStates, closed, dateLastActivity, desc, descData, due, email, idAttachmentCover, idBoard, idChecklists, idLabels, idList, idMembers, idMembersVoted, idShort, labels, manualCoverAttachment, name, pos, shortLink, shortUrl, subscribed or url 
     # + return - Success 
     remote isolated function getOrganizationsMembersCardsByIdOrgByIdMember(string idOrg, string idMember, string? actions = (), string? attachments = (), string attachmentFields = "all", string? members = (), string memberFields = "avatarHash, fullName, initials and username", string? checkItemStates = (), string checklists = "none", string? board = (), string boardFields = "name, desc, closed, idOrganization, pinned, url and prefs", string? list = (), string listFields = "all", string filter = "visible", string fields = "all") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${idMember}/cards`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(idMember)}/cards`;
         map<anydata> queryParam = {"actions": actions, "attachments": attachments, "attachment_fields": attachmentFields, "members": members, "member_fields": memberFields, "checkItemStates": checkItemStates, "checklists": checklists, "board": board, "board_fields": boardFields, "list": list, "list_fields": listFields, "filter": filter, "fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3906,7 +3906,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Members Deactivated" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsMembersDeactivatedByIdOrgByIdMember(string idOrg, string idMember, OrganizationsMembersDeactivated payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/members/${idMember}/deactivated`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/members/${getEncodedUri(idMember)}/deactivated`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3921,7 +3921,7 @@ public isolated client class Client {
     # + fields - All or a comma-separated list of: avatarHash, avatarSource, bio, bioData, confirmed, email, fullName, gravatarHash, idBoards, idBoardsPinned, idOrganizations, idPremOrgsAdmin, initials, loginTypes, memberType, oneTimeMessagesDismissed, prefs, premiumFeatures, products, status, status, trophies, uploadedAvatarHash, url or username 
     # + return - Success 
     remote isolated function getOrganizationsMembersInvitedByIdOrg(string idOrg, string fields = "all") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/membersInvited`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/membersInvited`;
         map<anydata> queryParam = {"fields": fields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3933,7 +3933,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getOrganizationsMembersInvitedByIdOrgByField(string idOrg, string 'field) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/membersInvited/${'field}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/membersInvited/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3947,7 +3947,7 @@ public isolated client class Client {
     # + memberFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getOrganizationsMembershipsByIdOrg(string idOrg, string filter = "all", string? member = (), string memberFields = "fullName and username") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/memberships`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/memberships`;
         map<anydata> queryParam = {"filter": filter, "member": member, "member_fields": memberFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3961,7 +3961,7 @@ public isolated client class Client {
     # + memberFields - All or a comma-separated list of: avatarHash, bio, bioData, confirmed, fullName, idPremOrgsAdmin, initials, memberType, products, status, url or username 
     # + return - Success 
     remote isolated function getOrganizationsMembershipsByIdOrgByIdMembership(string idOrg, string idMembership, string? member = (), string memberFields = "fullName and username") returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/memberships/${idMembership}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/memberships/${getEncodedUri(idMembership)}`;
         map<anydata> queryParam = {"member": member, "member_fields": memberFields, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -3974,7 +3974,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Memberships" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsMembershipsByIdOrgByIdMembership(string idOrg, string idMembership, OrganizationsMemberships payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/memberships/${idMembership}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/memberships/${getEncodedUri(idMembership)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3989,7 +3989,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Name" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsNameByIdOrg(string idOrg, OrganizationsName payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/name`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/name`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4004,7 +4004,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Associated Domain" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsAssociatedDomainByIdOrg(string idOrg, PrefsAssociateddomain payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/associatedDomain`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/associatedDomain`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4018,10 +4018,10 @@ public isolated client class Client {
     # + idOrg - IdOrg or name 
     # + return - Success 
     remote isolated function deleteOrganizationsPrefsAssociatedDomainByIdOrg(string idOrg) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/associatedDomain`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/associatedDomain`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update organizations prefs board visibility restrict org by ID org
@@ -4030,7 +4030,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Board Visibility Restrict" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsBoardVisibilityRestrictOrgByIdOrg(string idOrg, PrefsBoardvisibilityrestrict payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/boardVisibilityRestrict/org`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/boardVisibilityRestrict/org`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4045,7 +4045,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Board Visibility Restrict" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsBoardVisibilityRestrictPrivateByIdOrg(string idOrg, PrefsBoardvisibilityrestrict payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/boardVisibilityRestrict/private`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/boardVisibilityRestrict/private`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4060,7 +4060,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Board Visibility Restrict" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsBoardVisibilityRestrictPublicByIdOrg(string idOrg, PrefsBoardvisibilityrestrict payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/boardVisibilityRestrict/public`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/boardVisibilityRestrict/public`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4075,7 +4075,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs External Members Disabled" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsExternalMembersDisabledByIdOrg(string idOrg, PrefsExternalmembersdisabled payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/externalMembersDisabled`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/externalMembersDisabled`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4090,7 +4090,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Google Apps Version" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsGoogleAppsVersionByIdOrg(string idOrg, PrefsGoogleappsversion payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/googleAppsVersion`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/googleAppsVersion`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4105,7 +4105,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Org Invite Restrict" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsOrgInviteRestrictByIdOrg(string idOrg, PrefsOrginviterestrict payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/orgInviteRestrict`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/orgInviteRestrict`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4120,10 +4120,10 @@ public isolated client class Client {
     # + value - An email address with optional expansion tokens 
     # + return - Success 
     remote isolated function deleteOrganizationsPrefsOrgInviteRestrictByIdOrg(string idOrg, string value) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/orgInviteRestrict`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/orgInviteRestrict`;
         map<anydata> queryParam = {"value": value, "key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update organizations prefs permission level by ID org
@@ -4132,7 +4132,7 @@ public isolated client class Client {
     # + payload - Attributes of "Prefs Permission Level" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsPrefsPermissionLevelByIdOrg(string idOrg, PrefsPermissionlevel payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/prefs/permissionLevel`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/prefs/permissionLevel`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4147,7 +4147,7 @@ public isolated client class Client {
     # + payload - Attributes of "Organizations Website" to be updated. 
     # + return - Success 
     remote isolated function updateOrganizationsWebsiteByIdOrg(string idOrg, OrganizationsWebsite payload) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/website`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/website`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4162,7 +4162,7 @@ public isolated client class Client {
     # + 'field - Field 
     # + return - Success 
     remote isolated function getOrganizationsByIdOrgByField(string idOrg, string 'field) returns http:Response|error {
-        string resourcePath = string `/organizations/${idOrg}/${'field}`;
+        string resourcePath = string `/organizations/${getEncodedUri(idOrg)}/${getEncodedUri('field)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -4243,7 +4243,7 @@ public isolated client class Client {
     # + payload - Attributes of "Sessions" to be updated. 
     # + return - Success 
     remote isolated function updateSessionsByIdSession(string idSession, Sessions payload) returns http:Response|error {
-        string resourcePath = string `/sessions/${idSession}`;
+        string resourcePath = string `/sessions/${getEncodedUri(idSession)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4258,7 +4258,7 @@ public isolated client class Client {
     # + payload - Attributes of "Sessions Status" to be updated. 
     # + return - Success 
     remote isolated function updateSessionsStatusByIdSession(string idSession, SessionsStatus payload) returns http:Response|error {
-        string resourcePath = string `/sessions/${idSession}/status`;
+        string resourcePath = string `/sessions/${getEncodedUri(idSession)}/status`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -4272,7 +4272,7 @@ public isolated client class Client {
     # + iD - ID 
     # + return - Success 
     remote isolated function getTypesById(string iD) returns http:Response|error {
-        string resourcePath = string `/types/${iD}`;
+        string resourcePath = string `/types/${getEncodedUri(iD)}`;
         map<anydata> queryParam = {"key": self.apiKeyConfig.'key, "token": self.apiKeyConfig.token};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);

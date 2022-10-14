@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -661,7 +661,7 @@ public type Project record {
     # The URI of the project.
     string uri;
     # The owner of the project.
-    record {*User;} user;
+    User user;
 };
 
 public type MevideosRatingsMpaa record {
@@ -679,7 +679,7 @@ public type MevideosRatingsMpaa record {
 
 public type AuthError record {
     # The name of the error.
-    string _error;
+    string 'error;
     # The description of the error.
     string error_description;
 };
@@ -746,7 +746,7 @@ public type Group record {
     # The group's display name.
     string name;
     # The active picture for this group.
-    record {*Picture;} pictures;
+    Picture pictures;
     # The group's privacy settings.
     GroupPrivacy privacy;
     # The resource key of the group.
@@ -754,7 +754,7 @@ public type Group record {
     # The canonical relative URI of this group.
     string uri;
     # The owner of the group.
-    record {*User;} user?;
+    User user?;
 };
 
 # A list of resource URIs related to the video.
@@ -762,7 +762,7 @@ public type VideoMetadataInteractions record {
     # The Buy interaction for a On Demand video.
     VideoMetadataInteractionsBuy? buy;
     # When a video is referenced by a channel URI, if the user is a moderator of the channel, include information about removing the video from the channel.
-    VideoMetadataInteractionsChannel? 'channel;
+    VideoMetadataInteractionsChannel? channel;
     # Information about whether the authenticated user has liked this video.
     VideoMetadataInteractionsLike like;
     # The Rent interaction for an On Demand video.
@@ -1317,7 +1317,7 @@ public type Video record {
     # The video's duration in seconds.
     decimal duration;
     # Information about embedding this video.
-    record {*EmbedSettings;} embed;
+    EmbedSettings embed;
     # The video's height in pixels.
     decimal height;
     # The video's primary language.
@@ -1344,11 +1344,11 @@ public type Video record {
     # The video's title.
     string name;
     # Information about the folder that contains this video.
-    record {*Project;} parent_folder?;
+    Project parent_folder?;
     # The privacy-enabled password to watch this video. Only users can see their own video passwords. This data requires a bearer token with the `private` scope.
     string password?;
     # The active picture for this video.
-    record {*Picture;} pictures;
+    Picture pictures;
     # The video's privacy setting.
     VideoPrivacy privacy;
     # The time in ISO 8601 format when the video was released.
@@ -1381,7 +1381,7 @@ public type Video record {
     # The video's canonical relative URI.
     string uri;
     # The video owner.
-    record {*User;} user;
+    User user;
     # The video's width in pixels.
     decimal width;
 };
@@ -1457,12 +1457,12 @@ public type OnDemandSeason record {
     # The season container's relative URI.
     string uri;
     # The creator of this On Demand page.
-    record {*User;} user;
+    User user;
 };
 
 public type OnDemandPage record {
     # The background image for the On Demand page on Vimeo.
-    record {*Picture;} background;
+    Picture background;
     # The primary and secondary colors used for rendering this On Demand page.
     OndemandpageColors colors;
     # An array of the page's content ratings.
@@ -1476,7 +1476,7 @@ public type OnDemandPage record {
     # Information about this On Demand page's episodes, if the page is for a series.
     OndemandpageEpisodes episodes;
     # This On Demand page's film, if it is a film.
-    record {*Video;} film?;
+    Video film?;
     # All the genres assigned to this page.
     OnDemandGenre[] genres;
     # The link to the page on Vimeo.
@@ -1488,7 +1488,7 @@ public type OnDemandPage record {
     # A descriptive title of this On Demand page.
     string name;
     # The active poster for this On Demand page.
-    record {*Picture;} pictures;
+    Picture pictures;
     OndemandpagePreorder preorder;
     OndemandpagePublished published;
     # The rating of this page.
@@ -1502,9 +1502,9 @@ public type OnDemandPage record {
     # The graphical theme for this On Demand page.
     string theme;
     # The thumbnail image for the On Demand page on Vimeo.
-    record {*Picture;} thumbnail;
+    Picture thumbnail;
     # The trailer for this On Demand page.
-    record {*Video;} trailer;
+    Video trailer;
     # Whether this On Demand page is for a film or a series.
     # 
     # Option descriptions:
@@ -1514,7 +1514,7 @@ public type OnDemandPage record {
     # The relative URI of the On Demand page.
     string uri;
     # The user who created this On Demand page.
-    record {*User;} user;
+    User user;
 };
 
 public type MevideosEmbedLogos record {
@@ -1905,7 +1905,7 @@ public type OnDemandVideo record {
     # An array of HTTP methods permitted on this URI.
     string[] options?;
     # The active picture for this video.
-    record {*Picture;} pictures?;
+    Picture pictures?;
     # The user's most recent play position in seconds for this video.
     decimal play_progress;
     # Describes the manual position of this video relative to the other videos owned by this On Demand page.
@@ -1926,7 +1926,7 @@ public type OnDemandVideo record {
     # The video container's relative URI.
     string uri;
     # The owner of the video.
-    record {*User;} user?;
+    User user?;
 };
 
 public type TextTrack record {
@@ -1973,7 +1973,7 @@ public type OndemandpagesondemandIdvideosvideoIdRent record {
 
 public type UploadAttempt record {
     # The video to upload.
-    record {*Video;} clip?;
+    Video clip?;
     # The completion URI of the upload.
     string complete_uri?;
     # The HTML upload form.
@@ -1985,7 +1985,7 @@ public type UploadAttempt record {
     # The upload URI.
     string uri;
     # The owner of the uploaded video.
-    record {*User;} user;
+    User user;
 };
 
 public type OndemandIdRegionsBody record {
@@ -2158,7 +2158,7 @@ public type Presets record {
     # The canonical relative URI of the presets object.
     string uri;
     # The owner of the preset.
-    record {*User;} user;
+    User user;
 };
 
 # Information about this comment's replies.
@@ -2252,23 +2252,23 @@ public type UserMetadataConnectionsLikes record {
 
 public type Activity31 record {
     # The category that this event occurred for. This will be preset for only "category" activity types.
-    record {*Category;} category?;
+    Category category?;
     # The channel that this event occurred for. This will be present for only "channel" activity types.
-    record {*Channel;} 'channel?;
+    Channel channel?;
     # Video associated with ths activity.
-    record {*Video;} clip;
+    Video clip;
     # The group that this event occurred for. This will be present for only "group" activity types.
-    record {*Group;} 'group?;
+    Group group?;
     # The activity's metadata.
     Activity31Metadata metadata;
     # The tag that this event occurred for. This will be present for only "tag" activity types.
-    record {*Tag;} tag?;
+    Tag tag?;
     # Time that the event occurred.
     string time;
     # Activity type
     string 'type;
     # The user that this event occurred for. This will be present for "like", "appearance", and "share" activity types.
-    record {*User;} user?;
+    User user?;
 };
 
 public type MeProjectsBody record {
@@ -2376,7 +2376,7 @@ public type OndemandpageMetadata record {
     # A collection of information that is connected to this resource, including videos, genres, and pictures connections.
     OndemandpageMetadataConnections connections;
     # The user's available purchase interactions.
-    record {*PurchaseInteraction;} interactions;
+    PurchaseInteraction interactions;
 };
 
 # A list of resource URIs related to the On Demand promotion.
@@ -2789,7 +2789,7 @@ public type VideoVersions record {
     # Whether this video version is the currently active one.
     boolean active;
     # The API app associated with the video version.
-    record {*ApiApp;} app;
+    ApiApp app;
     # The time in ISO 8601 for when the video version was created.
     string created_time;
     # The duration of the video version in seconds.
@@ -2803,7 +2803,7 @@ public type VideoVersions record {
     # The time in ISO 8601 format when the video version was last modified.
     string modified_time;
     # The Play representation.
-    record {*Play;} play;
+    Play play;
     # The upload information for this version.
     VideoversionsUpload? upload;
     # The time in ISO 8601 format when the video version was uploaded.
@@ -2811,7 +2811,7 @@ public type VideoVersions record {
     # The version's canonical relative URI.
     string uri;
     # The owner of the video version.
-    record {*User;} user;
+    User user;
 };
 
 public type ChannelIdCategoriesBody record {
@@ -2953,7 +2953,7 @@ public type Album record {
     # The time in ISO 8601 format that the album was created.
     string created_time;
     # The custom logo for this album.
-    record {*Picture;} custom_logo;
+    Picture custom_logo;
     # A brief description of the album's content.
     string? description;
     # The custom domain a user has selected for their album.
@@ -2981,7 +2981,7 @@ public type Album record {
     # The album's display name.
     string name;
     # The active image for the album; defaults to the thumbnail of the last video added to the album.
-    record {*Picture;} pictures;
+    Picture pictures;
     # The privacy settings of the album.
     AlbumPrivacy privacy;
     # The album resource key.
@@ -2999,7 +2999,7 @@ public type Album record {
     # Whether the user has opted in to use a custom domain for their album.
     boolean use_custom_domain;
     # The owner of the album.
-    record {*User;} user;
+    User user;
     # Whether an album should show the brand color in the web layout.
     boolean web_brand_color;
     # Whether an album's custom logo should be shown in the web layout.
@@ -3101,7 +3101,7 @@ public type VideoTranscode record {
 
 public type LegacyError record {
     # User-friendly error message
-    string _error;
+    string 'error;
 };
 
 # Metadata information about this video.
@@ -3144,7 +3144,7 @@ public type Channel record {
     # A brief explanation of the channel's content.
     string? description;
     # The banner that appears by default at the top of the channel page.
-    record {*Picture;} header;
+    Picture header;
     # The URL to access the channel in a browser.
     string link;
     # Metadata about the channel.
@@ -3154,7 +3154,7 @@ public type Channel record {
     # The display name that identifies the channel.
     string name;
     # The active image for the channel; defaults to the thumbnail of the last video added to the channel.
-    record {*Picture;} pictures;
+    Picture pictures;
     # The privacy settings of the channel.
     ChannelPrivacy privacy;
     # The channel resource key.
@@ -3164,7 +3164,7 @@ public type Channel record {
     # The unique identifier to access the channel resource.
     string uri;
     # The Vimeo user who owns the channel.
-    record {*User;} user;
+    User user;
 };
 
 public type PresetsSettingsLogos record {
@@ -3296,7 +3296,7 @@ public type OndemandvideoBuy record {
 
 public type Category record {
     # The active icon for the category.
-    record {*Picture;} icon?;
+    Picture icon?;
     # The last time, in ISO 8601 format, that a video was featured.
     string last_video_featured_time;
     # The URL to access the category in a browser.
@@ -3308,7 +3308,7 @@ public type Category record {
     # The container of this category's parent category, if the current category is a subcategory.
     CategoryParent? parent;
     # The active picture for this category; defaults to vertical color bars.
-    record {*Picture;} pictures;
+    Picture pictures;
     # The resource key of the category.
     string resource_key;
     # All the subcategories that belong to this category, if the current category is a top-level parent.
@@ -3358,7 +3358,7 @@ public type User record {
     # The user's display name.
     string name;
     # The active portrait of this user.
-    record {*Picture;} pictures;
+    Picture pictures;
     UserPreferences preferences?;
     # The user's resource key string.
     string resource_key;
@@ -3438,9 +3438,9 @@ public type Credit record {
     # The unique identifier to access the credits resource.
     string uri;
     # The Vimeo user associated with this credit.
-    record {*User;} user?;
+    User user?;
     # The video associated with this credit.
-    record {*Video;} video?;
+    Video video?;
 };
 
 public type VideoIdPicturesBody1 record {
@@ -3480,7 +3480,7 @@ public type Auth record {
     # The access token string.
     string access_token;
     # The API application associated with the token.
-    record {*ApiApp;} app;
+    ApiApp app;
     # The date and time that the token expires.
     string expires_on?;
     # The refresh token string.
@@ -3493,7 +3493,7 @@ public type Auth record {
     #  * `bearer` - The token is of the `bearer` type.
     string token_type;
     # The user associated with the token.
-    record {*User;} user?;
+    User user?;
 };
 
 # Information about the videos that have been shared with this user.
@@ -3581,7 +3581,7 @@ public type Comment record {
     # The unique identifier to access the comment resource.
     string uri;
     # The user who posted the comment.
-    record {*User;} user;
+    User user;
 };
 
 # A collection of information that is connected to this resource.
@@ -3623,7 +3623,7 @@ public type Error record {
     # The error message that developers receive.
     string developer_message;
     # The error message that non-developer users receive.
-    string _error;
+    string 'error;
     # The error code.
     decimal error_code;
     # A link to more information about the error.

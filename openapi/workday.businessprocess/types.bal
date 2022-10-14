@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type Task record {
     *InstanceModelReference;
 };
@@ -28,45 +30,45 @@ public type ContentType record {
 
 public type AttachmentCategoryView record {
     # The Reference ID to use for lookups within our Workday Web Services. For ~supervisory organizations~, this is also the 'Organization ID'
-    string? referenceID?;
+    string referenceID?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type EventStepsSummary record {
-    StepEvent? stepEvent?;
+    StepEvent stepEvent?;
     # The date when the event record was created.
-    string? creationDate?;
+    string creationDate?;
     # This CRF returns the step help text that is configured for the Workflow Step of the Event Record.
-    string? stepHelpText?;
-    OverallProcess? overallProcess?;
+    string stepHelpText?;
+    OverallProcess overallProcess?;
     # The date the delayed step will trigger.
-    string? delayedDate?;
+    string delayedDate?;
     # The date when this step was completed
-    string? completedDate?;
-    Task? task?;
+    string completedDate?;
+    Task task?;
     # The people this event is currently awaiting for action.
-    AwaitingPerson[]? awaitingPersons?;
-    BusinessProcessStep? businessProcessStep?;
-    StepType? stepType?;
-    BusinessProcess? businessProcess?;
+    AwaitingPerson[] awaitingPersons?;
+    BusinessProcessStep businessProcessStep?;
+    StepType stepType?;
+    BusinessProcess businessProcess?;
     # The order that parallel steps display in the Inbox. This will be populated only if this Business Process Type allows configuration of Parallel Step Inbox Order. If there are multiple steps from the business process definition that are associated to this event step, this field returns no value.
-    string? parallelStepInboxOrder?;
-    CompletedByPerson? completedByPerson?;
+    string parallelStepInboxOrder?;
+    CompletedByPerson completedByPerson?;
     # Returns the comments for the business process event step
-    Comments[]? comments?;
-    Status? status?;
+    Comments[] comments?;
+    Status status?;
     # Retired. We retire this report field because when there are multiple steps on the business process definition that are associated with this event step, this report field doesn't return the order for each associated step. We recommend that you use the Order report field instead.
-    string? 'order?;
+    string 'order?;
     # Returns the due date for this step.
-    string? dueDate?;
-    Event? event?;
+    string dueDate?;
+    Event event?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type Initiator record {
@@ -75,9 +77,9 @@ public type Initiator record {
 
 public type SubBusinessProcess record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type To record {
@@ -87,7 +89,7 @@ public type To record {
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[]? errors?;
+    ErrorModelReference[] errors?;
 };
 
 public type Status record {
@@ -104,23 +106,23 @@ public type BusinessProcessStepRef record {
 
 public type BusinessProcessStepSendBack record {
     # Returns user's comment for Event Record.
-    string? reason;
-    To? to;
-    StatusReadOnly? status?;
+    string reason;
+    To to;
+    StatusReadOnly status?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type BusinessProcessStepsApprove record {
-    EventStatus? eventStatus?;
+    EventStatus eventStatus?;
     # Returns user's comment for Event Record.
-    string? comment?;
+    string comment?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type For record {
@@ -129,16 +131,16 @@ public type For record {
 
 public type BusinessProcessStepsDeny record {
     # Returns user's comment for Event Record.
-    string? comment?;
-    StepAction? stepAction?;
-    EventStatus? eventStatus?;
+    string comment?;
+    StepAction stepAction?;
+    EventStatus eventStatus?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
-public type FacetsModelReference FacetsModelReferenceInner[]?;
+public type FacetsModelReference FacetsModelReferenceInner[];
 
 public type OverallBusinessProcess record {
     *InstanceModelReference;
@@ -149,29 +151,29 @@ public type UploadedBy record {
 };
 
 public type MultipleInstanceModelReference record {
-    int? total?;
-    InstanceModelReference[]? data?;
+    int total?;
+    InstanceModelReference[] data?;
 };
 
 public type EventDetails record {
     # Returns other Business Processes (sub-processes) part of this process, including processes multiple levels down.
-    SubBusinessProcess[]? subBusinessProcesses?;
+    SubBusinessProcess[] subBusinessProcesses?;
     # The date the business process needs to be completed.
-    string? dueDate?;
-    For? for?;
-    OverallBusinessProcess? overallBusinessProcess?;
+    string dueDate?;
+    For for?;
+    OverallBusinessProcess overallBusinessProcess?;
     # The date and time the business process was completed.
-    string? completedDate?;
+    string completedDate?;
     # Date the business process was initiated.
-    string? creationDate?;
-    Status? status?;
-    Initiator? initiator?;
+    string creationDate?;
+    Status status?;
+    Initiator initiator?;
     # The date this business process takes effect.
-    string? effectiveDate?;
+    string effectiveDate?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type StepAction record {
@@ -180,16 +182,16 @@ public type StepAction record {
 
 public type SecurityGroupView record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type AwaitingPerson record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type OverallProcess record {
@@ -206,13 +208,13 @@ public type Person record {
 
 public type ErrorModelReference record {
     # A description of the error
-    string? _error;
+    string 'error;
 };
 
 # collection something or other
 public type InlineResponse2008 record {
-    AttachmentCategoryView[]? data?;
-    int? total?;
+    AttachmentCategoryView[] data?;
+    int total?;
 };
 
 public type Category record {
@@ -221,49 +223,49 @@ public type Category record {
 
 public type CompletedStepsView record {
     # The people this event is currently awaiting for action.
-    AwaitingPerson[]? awaitingPersons?;
-    Event? event?;
+    AwaitingPerson[] awaitingPersons?;
+    Event event?;
     # The date when this step was completed
-    string? completedDate?;
+    string completedDate?;
     # The date when the event record was created.
-    string? creationDate?;
-    Status? status?;
-    CompletedByPerson? completedByPerson?;
+    string creationDate?;
+    Status status?;
+    CompletedByPerson completedByPerson?;
     # Retired. We retire this report field because when there are multiple steps on the business process definition that are associated with this event step, this report field doesn't return the order for each associated step. We recommend that you use the Order report field instead.
-    string? 'order?;
+    string 'order?;
     # The order that parallel steps display in the Inbox. This will be populated only if this Business Process Type allows configuration of Parallel Step Inbox Order. If there are multiple steps from the business process definition that are associated to this event step, this field returns no value.
-    string? parallelStepInboxOrder?;
+    string parallelStepInboxOrder?;
     # Returns the comments for the business process event step
-    Comments[]? comments?;
+    Comments[] comments?;
     # Returns the due date for this step.
-    string? dueDate?;
+    string dueDate?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type StepsInProgressView record {
     # The date the delayed step will trigger.
-    string? delayedDate?;
+    string delayedDate?;
     # Returns the due date for this step.
-    string? dueDate?;
+    string dueDate?;
     # Returns if the event step has been anonymously assigned.
-    boolean? anonymous?;
-    BusinessProcessStepRef? businessProcessStep?;
+    boolean anonymous?;
+    BusinessProcessStepRef businessProcessStep?;
     # Retired. We retire this report field because when there are multiple steps on the business process definition that are associated with this event step, this report field doesn't return the order for each associated step. We recommend that you use the Order report field instead.
-    string? 'order?;
+    string 'order?;
     # The order that parallel steps display in the Inbox. This will be populated only if this Business Process Type allows configuration of Parallel Step Inbox Order. If there are multiple steps from the business process definition that are associated to this event step, this field returns no value.
-    string? parallelStepInboxOrder?;
+    string parallelStepInboxOrder?;
     # The people this event is currently awaiting for action.
-    AwaitingPerson[]? awaitingPersons?;
+    AwaitingPerson[] awaitingPersons?;
     # The date when the event record was created.
-    string? creationDate?;
-    Status? status?;
+    string creationDate?;
+    Status status?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type StepType record {
@@ -276,15 +278,15 @@ public type EventStatus record {
 
 # collection something or other
 public type InlineResponse200 record {
-    EventStepsSummary[]? data?;
-    int? total?;
+    EventStepsSummary[] data?;
+    int total?;
 };
 
 public type BusinessProcessStep2 record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type CompletedByPerson record {
@@ -292,28 +294,29 @@ public type CompletedByPerson record {
 };
 
 public type EventAttachmentsView record {
-    UploadedBy? uploadedBy?;
+    UploadedBy uploadedBy?;
     # Event attachment description
-    string? description?;
-    Category? category?;
-    ContentType? contentType?;
+    string description?;
+    Category category?;
+    ContentType contentType?;
     # File length of the attachment
-    int? fileLength?;
+    int fileLength?;
     # File name of the attachment
-    string? fileName?;
+    @constraint:String {maxLength: 255}
+    string fileName?;
     # Returns Date the Business Process Attachment was updated.
-    string? uploadDate?;
+    string uploadDate?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type DueDate record {
@@ -322,64 +325,64 @@ public type DueDate record {
 
 public type RemainingStepView record {
     # Returns true if this step completes the business process.
-    boolean? completionStep?;
-    StepType? stepType?;
+    boolean completionStep?;
+    StepType stepType?;
     # Returns the security groups that can perform the workflow step.
-    SecurityGroupView[]? groups?;
+    SecurityGroupView[] groups?;
     # Returns the alternate name of the workflow step for the business process definition.
-    string? step?;
-    DueDate? dueDate?;
+    string step?;
+    DueDate dueDate?;
     # This report field controls ordering of parallel steps in Inbox. It will be populated only if this Business Process Type allows configuration of Parallel Step Inbox Order.
-    string? parallelStepInboxOrder?;
+    string parallelStepInboxOrder?;
     # Returns the order of this step within the business process definition it is part of.
-    string? 'order?;
+    string 'order?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type Comments record {
-    Person? person?;
+    Person person?;
     # Comment
-    string? comment?;
+    string comment?;
     # Gives the moment at which the instance was originally created.
-    string? commentDate?;
+    string commentDate?;
 };
 
 public type EventStepsView record {
     # The date the delayed step will trigger.
-    string? delayedDate?;
-    StepEvent? stepEvent?;
-    BusinessProcessStep? businessProcessStep?;
+    string delayedDate?;
+    StepEvent stepEvent?;
+    BusinessProcessStep businessProcessStep?;
     # The order that parallel steps display in the Inbox. This will be populated only if this Business Process Type allows configuration of Parallel Step Inbox Order. If there are multiple steps from the business process definition that are associated to this event step, this field returns no value.
-    string? parallelStepInboxOrder?;
-    Status? status?;
+    string parallelStepInboxOrder?;
+    Status status?;
     # Returns the due date for this step.
-    string? dueDate?;
-    StepType? stepType?;
+    string dueDate?;
+    StepType stepType?;
     # Retired. We retire this report field because when there are multiple steps on the business process definition that are associated with this event step, this report field doesn't return the order for each associated step. We recommend that you use the Order report field instead.
-    string? 'order?;
+    string 'order?;
     # This CRF returns the step help text that is configured for the Workflow Step of the Event Record.
-    string? stepHelpText?;
-    BusinessProcess? businessProcess?;
+    string stepHelpText?;
+    BusinessProcess businessProcess?;
     # The date when this step was completed
-    string? completedDate?;
-    Task? task?;
+    string completedDate?;
+    Task task?;
     # The people this event is currently awaiting for action.
-    AwaitingPerson[]? awaitingPersons?;
-    OverallProcess? overallProcess?;
+    AwaitingPerson[] awaitingPersons?;
+    OverallProcess overallProcess?;
     # Returns the comments for the business process event step
-    Comments[]? comments?;
-    Event? event?;
-    CompletedByPerson? completedByPerson?;
-    Questionnaire? questionnaire?;
+    Comments[] comments?;
+    Event event?;
+    CompletedByPerson completedByPerson?;
+    Questionnaire questionnaire?;
     # The date when the event record was created.
-    string? creationDate?;
+    string creationDate?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type BusinessProcessStep record {
@@ -388,17 +391,17 @@ public type BusinessProcessStep record {
 
 public type BusinessProcessTypeDetails record {
     # The help text for the initiation step of a business process.
-    string? helpText?;
+    string helpText?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse2001 record {
-    EventDetails[]? data?;
-    int? total?;
+    EventDetails[] data?;
+    int total?;
 };
 
 public type Event record {
@@ -407,58 +410,58 @@ public type Event record {
 
 # collection something or other
 public type InlineResponse2003 record {
-    BusinessProcessTypeView[]? data?;
-    int? total?;
+    BusinessProcessTypeView[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2002 record {
-    CompletedStepsView[]? data?;
-    int? total?;
+    CompletedStepsView[] data?;
+    int total?;
 };
 
 public type BusinessProcessTypeView record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse2005 record {
-    Comments[]? data?;
-    int? total?;
+    Comments[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2004 record {
-    EventAttachmentsView[]? data?;
-    int? total?;
+    EventAttachmentsView[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2007 record {
-    RemainingStepView[]? data?;
-    int? total?;
+    RemainingStepView[] data?;
+    int total?;
 };
 
 # This object represents the possible facets for this resource
 public type FacetsModelReferenceInner record {
     # A description of the facet
-    string? descriptor?;
+    string descriptor?;
     # The alias used to select the facet
-    string? facetParameter?;
+    string facetParameter?;
     # the facet values
     record {
         # The number of instances returned by this facet
-        int? count?;
+        int count?;
         # wid / id / reference id
-        string? id;
+        string id;
         # A description of the facet
-        string? descriptor?;
+        string descriptor?;
         # A link to the instance
-        string? href?;
-    }[]? values?;
+        string href?;
+    }[] values?;
 };
 
 public type BusinessProcess record {
@@ -467,6 +470,6 @@ public type BusinessProcess record {
 
 # collection something or other
 public type InlineResponse2006 record {
-    StepsInProgressView[]? data?;
-    int? total?;
+    StepsInProgressView[] data?;
+    int total?;
 };

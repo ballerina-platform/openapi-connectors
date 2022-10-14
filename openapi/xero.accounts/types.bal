@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,26 +14,37 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type AddressForOrganisation record {
     # define the type of address
     string AddressType?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine1?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine2?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine3?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine4?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string City?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string Region?;
     # max length = 50
+    @constraint:String {maxLength: 50}
     string PostalCode?;
     # max length = 50, [A-Z], [a-z] only
+    @constraint:String {maxLength: 50}
     string Country?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string AttentionTo?;
 };
 
@@ -41,6 +52,7 @@ public type Account record {
     # Customer defined alpha numeric account code e.g 200 or SALES (max length = 10)
     string Code?;
     # Name of account (max length = 150)
+    @constraint:String {maxLength: 150}
     string Name?;
     # The Xero identifier for an account – specified as a string following  the endpoint name   e.g. /297c2dc5-cc47-4afd-8ec8-74990b8761e9
     string AccountID?;
@@ -93,6 +105,7 @@ public type Invoice record {
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
     LineAmountTypes LineAmountTypes?;
     # ACCREC – Unique alpha numeric code identifying invoice (when missing will auto-generate from your Organisation Invoice Settings) (max length = 255)
+    @constraint:String {maxLength: 255}
     string InvoiceNumber?;
     # ACCREC only – additional reference number
     string Reference?;
@@ -103,7 +116,7 @@ public type Invoice record {
     # 3 letter alpha code for the currency – see list of currency codes
     CurrencyCode CurrencyCode?;
     # The currency rate for a multicurrency invoice. If no rate is specified, the XE.com day rate is used. (max length = [18].[6])
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # See Invoice Status Codes
     string Status?;
     # Boolean to set whether the invoice in the Xero app should be marked as “sent”. This can be set only on invoices that have been approved
@@ -113,17 +126,17 @@ public type Invoice record {
     # Shown on bills (Accounts Payable) when this has been set
     string PlannedPaymentDate?;
     # CIS deduction for UK contractors
-    float CISDeduction?;
+    decimal CISDeduction?;
     # CIS Deduction rate for the organisation
-    float CISRate?;
+    decimal CISRate?;
     # Total of invoice excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on invoice
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of Invoice tax inclusive (i.e. SubTotal + TotalTax). This will be ignored if it doesn’t equal the sum of the LineAmounts
-    float Total?;
+    decimal Total?;
     # Total of discounts applied on the invoice line items
-    float TotalDiscount?;
+    decimal TotalDiscount?;
     # Xero generated unique identifier for invoice
     string InvoiceID?;
     # Xero generated unique identifier for repeating invoices
@@ -139,13 +152,13 @@ public type Invoice record {
     # See Overpayments
     Overpayment[] Overpayments?;
     # Amount remaining to be paid on invoice
-    float AmountDue?;
+    decimal AmountDue?;
     # Sum of payments received for invoice
-    float AmountPaid?;
+    decimal AmountPaid?;
     # The date the invoice was fully paid. Only returned on fully paid invoices
     string FullyPaidOnDate?;
     # Sum of all credit notes, over-payments and pre-payments applied to invoice
-    float AmountCredited?;
+    decimal AmountCredited?;
     # Last modified date UTC format
     string UpdatedDateUTC?;
     # Details of credit notes that have been applied to an invoice
@@ -166,22 +179,31 @@ public type Address record {
     # define the type of address
     string AddressType?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine1?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine2?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine3?;
     # max length = 500
+    @constraint:String {maxLength: 500}
     string AddressLine4?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string City?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string Region?;
     # max length = 50
+    @constraint:String {maxLength: 50}
     string PostalCode?;
     # max length = 50, [A-Z], [a-z] only
+    @constraint:String {maxLength: 50}
     string Country?;
     # max length = 255
+    @constraint:String {maxLength: 255}
     string AttentionTo?;
 };
 
@@ -235,27 +257,31 @@ public type CurrencyCode string;
 
 public type Item record {
     # User defined item code (max length = 30)
+    @constraint:String {maxLength: 30}
     string Code;
     # The inventory asset account for the item. The account must be of type INVENTORY. The  COGSAccountCode in PurchaseDetails is also required to create a tracked item
     string InventoryAssetAccountCode?;
     # The name of the item (max length = 50)
+    @constraint:String {maxLength: 50}
     string Name?;
     # Boolean value, defaults to true. When IsSold is true the item will be available on sales transactions in the Xero UI. If IsSold is updated to false then Description and SalesDetails values will be nulled.
     boolean IsSold?;
     # Boolean value, defaults to true. When IsPurchased is true the item is available for purchase transactions in the Xero UI. If IsPurchased is updated to false then PurchaseDescription and PurchaseDetails values will be nulled.
     boolean IsPurchased?;
     # The sales description of the item (max length = 4000)
+    @constraint:String {maxLength: 4000}
     string Description?;
     # The purchase description of the item (max length = 4000)
+    @constraint:String {maxLength: 4000}
     string PurchaseDescription?;
     Purchase PurchaseDetails?;
     Purchase SalesDetails?;
     # True for items that are tracked as inventory. An item will be tracked as inventory if the InventoryAssetAccountCode and COGSAccountCode are set.
     boolean IsTrackedAsInventory?;
     # The value of the item on hand. Calculated using average cost accounting.
-    float TotalCostPool?;
+    decimal TotalCostPool?;
     # The quantity of the item on hand
-    float QuantityOnHand?;
+    decimal QuantityOnHand?;
     # Last modified date in UTC format
     string UpdatedDateUTC?;
     # The Xero identifier for an Item
@@ -282,7 +308,7 @@ public type ConversionBalances record {
     # The account code for a account
     string AccountCode?;
     # The opening balances of the account. Debits are positive, credits are negative values
-    float Balance?;
+    decimal Balance?;
     # An array to specify multiple currency balances of an account
     BalanceDetails[] BalanceDetails?;
 };
@@ -307,6 +333,7 @@ public type TrackingOption record {
     # The Xero identifier for a tracking option e.g. ae777a87-5ef3-4fa0-a4f0-d10e1f13073a
     string TrackingOptionID?;
     # The name of the tracking option e.g. Marketing, East (max length = 100)
+    @constraint:String {maxLength: 100}
     string Name?;
     # The status of a tracking option
     string Status?;
@@ -360,8 +387,10 @@ public type Employee record {
     # Current status of an employee – see contact status types
     string Status?;
     # First name of an employee (max length = 255)
+    @constraint:String {maxLength: 255}
     string FirstName?;
     # Last name of an employee (max length = 255)
+    @constraint:String {maxLength: 255}
     string LastName?;
     ExternalLink ExternalLink?;
     string UpdatedDateUTC?;
@@ -396,7 +425,7 @@ public type CISOrgSetting record {
     # true or false - Boolean that describes if the organisation is a CIS SubContractor
     boolean CISSubContractorEnabled?;
     # CIS Deduction rate for the organisation
-    float Rate?;
+    decimal Rate?;
 };
 
 public type Journals record {
@@ -438,11 +467,11 @@ public type ExpenseClaim record {
     # Last modified date UTC format
     string UpdatedDateUTC?;
     # The total of an expense claim being paid
-    float Total?;
+    decimal Total?;
     # The amount due to be paid for an expense claim
-    float AmountDue?;
+    decimal AmountDue?;
     # The amount still to pay for an expense claim
-    float AmountPaid?;
+    decimal AmountPaid?;
     # The date when the expense claim is due to be paid YYYY-MM-DD
     string PaymentDueDate?;
     # The date the expense claim will be reported in Xero YYYY-MM-DD
@@ -490,6 +519,7 @@ public type BudgetBalance record {
     # Budgeted amount
     int UnitAmount?;
     # Any footnotes associated with this balance
+    @constraint:String {maxLength: 255}
     string Notes?;
 };
 
@@ -507,6 +537,7 @@ public type Budget record {
     # Type of Budget. OVERALL or TRACKING
     string Type?;
     # The Budget description
+    @constraint:String {maxLength: 255}
     string Description?;
     # UTC timestamp of last update to budget
     string UpdatedDateUTC?;
@@ -520,6 +551,7 @@ public type LineItemTracking record {
     # The Xero identifier for a tracking category option
     string TrackingOptionID?;
     # The name of the tracking category
+    @constraint:String {maxLength: 100}
     string Name?;
     # See Tracking Options
     string Option?;
@@ -538,11 +570,11 @@ public type Overpayment record {
     # See Overpayment Line Items
     LineItem[] LineItems?;
     # The subtotal of the overpayment excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # The total tax on the overpayment
-    float TotalTax?;
+    decimal TotalTax?;
     # The total of the overpayment (subtotal + total tax)
-    float Total?;
+    decimal Total?;
     # UTC timestamp of last update to the overpayment
     string UpdatedDateUTC?;
     # 3 letter alpha code for the currency – see list of currency codes
@@ -550,13 +582,13 @@ public type Overpayment record {
     # Xero generated unique identifier
     string OverpaymentID?;
     # The currency rate for a multicurrency overpayment. If no rate is specified, the XE.com day rate is used
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # The remaining credit balance on the overpayment
-    float RemainingCredit?;
+    decimal RemainingCredit?;
     # See Allocations
     Allocation[] Allocations?;
     # The amount of applied to an invoice
-    float AppliedAmount?;
+    decimal AppliedAmount?;
     # See Payments
     Payment[] Payments?;
     # boolean to indicate if a overpayment has an attachment
@@ -582,8 +614,10 @@ public type BatchPaymentDetails record {
     # (Non-NZ Only) These details are sent to the org’s bank as a reference for the batch payment transaction. They will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement imported into Xero. Maximum field length = 18
     string Details?;
     # (NZ Only) Optional references for the batch payment transaction. It will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement you import into Xero.
+    @constraint:String {maxLength: 12}
     string Code?;
     # (NZ Only) Optional references for the batch payment transaction. It will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement you import into Xero.
+    @constraint:String {maxLength: 12}
     string Reference?;
 };
 
@@ -603,7 +637,7 @@ public type ManualJournal record {
     # Boolean – default is true if not specified
     boolean ShowOnCashBasisReports?;
     # Boolean to indicate if a manual journal has an attachment
-    boolean HasAttachments?;
+    boolean HasAttachments = false;
     # Last modified date UTC format
     string UpdatedDateUTC?;
     # The Xero identifier for a Manual Journal
@@ -668,15 +702,15 @@ public type PurchaseOrder record {
     # Xero generated unique identifier for purchase order
     string PurchaseOrderID?;
     # The currency rate for a multicurrency purchase order. If no rate is specified, the XE.com day rate is used.
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # Total of purchase order excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on purchase order
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of Purchase Order tax inclusive (i.e. SubTotal + TotalTax)
-    float Total?;
+    decimal Total?;
     # Total of discounts applied on the purchase order line items
-    float TotalDiscount?;
+    decimal TotalDiscount?;
     # boolean to indicate if a purchase order has an attachment
     boolean HasAttachments?;
     # Last modified date UTC format
@@ -704,11 +738,11 @@ public type Prepayment record {
     # See Prepayment Line Items
     LineItem[] LineItems?;
     # The subtotal of the prepayment excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # The total tax on the prepayment
-    float TotalTax?;
+    decimal TotalTax?;
     # The total of the prepayment(subtotal + total tax)
-    float Total?;
+    decimal Total?;
     # Returns Invoice number field. Reference field isn't available.
     string Reference?;
     # UTC timestamp of last update to the prepayment
@@ -718,15 +752,15 @@ public type Prepayment record {
     # Xero generated unique identifier
     string PrepaymentID?;
     # The currency rate for a multicurrency prepayment. If no rate is specified, the XE.com day rate is used
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # The remaining credit balance on the prepayment
-    float RemainingCredit?;
+    decimal RemainingCredit?;
     # See Allocations
     Allocation[] Allocations?;
     # See Payments
     Payment[] Payments?;
     # The amount of applied to an invoice
-    float AppliedAmount?;
+    decimal AppliedAmount?;
     # boolean to indicate if a prepayment has an attachment
     boolean HasAttachments?;
     # See Attachments
@@ -762,15 +796,15 @@ public type CreditNote record {
     # See Invoice Line Items
     LineItem[] LineItems?;
     # The subtotal of the credit note excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # The total tax on the credit note
-    float TotalTax?;
+    decimal TotalTax?;
     # The total of the Credit Note(subtotal + total tax)
-    float Total?;
+    decimal Total?;
     # CIS deduction for UK contractors
-    float CISDeduction?;
+    decimal CISDeduction?;
     # CIS Deduction rate for the organisation
-    float CISRate?;
+    decimal CISRate?;
     # UTC timestamp of last update to the credit note
     string UpdatedDateUTC?;
     # 3 letter alpha code for the currency – see list of currency codes
@@ -786,13 +820,13 @@ public type CreditNote record {
     # boolean to indicate if a credit note has been sent to a contact via  the Xero app (currently read only)
     boolean SentToContact?;
     # The currency rate for a multicurrency invoice. If no rate is specified, the XE.com day rate is used
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # The remaining credit balance on the Credit Note
-    float RemainingCredit?;
+    decimal RemainingCredit?;
     # See Allocations
     Allocation[] Allocations?;
     # The amount of applied to an invoice
-    float AppliedAmount?;
+    decimal AppliedAmount?;
     # See Payments
     Payment[] Payments?;
     # See BrandingThemes
@@ -846,14 +880,18 @@ public type Journal record {
 public type BatchPayment record {
     Account Account?;
     # (NZ Only) Optional references for the batch payment transaction. It will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement you import into Xero.
+    @constraint:String {maxLength: 255}
     string Reference?;
     # (NZ Only) Optional references for the batch payment transaction. It will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement you import into Xero.
+    @constraint:String {maxLength: 12}
     string Particulars?;
     # (NZ Only) Optional references for the batch payment transaction. It will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement you import into Xero.
+    @constraint:String {maxLength: 12}
     string Code?;
     # (Non-NZ Only) These details are sent to the org’s bank as a reference for the batch payment transaction. They will also show with the batch payment transaction in the bank reconciliation Find & Match screen. Depending on your individual bank, the detail may also show on the bank statement imported into Xero. Maximum field length = 18
     string Details?;
     # (UK Only) Only shows on the statement line in Xero. Max length =18
+    @constraint:String {maxLength: 18}
     string Narrative?;
     # The Xero generated unique identifier for the bank transaction (read-only)
     string BatchPaymentID?;
@@ -862,7 +900,7 @@ public type BatchPayment record {
     # Date the payment is being made (YYYY-MM-DD) e.g. 2009-09-06
     string Date?;
     # The amount of the payment. Must be less than or equal to the outstanding amount owing on the invoice e.g. 200.00
-    float Amount?;
+    decimal Amount?;
     # An array of payments
     Payment[] Payments?;
     # PAYBATCH for bill payments or RECBATCH for sales invoice payments (read-only)
@@ -920,11 +958,11 @@ public type JournalLine record {
     # The description from the source transaction line item. Only returned if populated.
     string Description?;
     # Net amount of journal line. This will be a positive value for a debit and negative for a credit
-    float NetAmount?;
+    decimal NetAmount?;
     # Gross amount of journal line (NetAmount + TaxAmount).
-    float GrossAmount?;
+    decimal GrossAmount?;
     # Total tax on a journal line
-    float TaxAmount?;
+    decimal TaxAmount?;
     # The tax type from TaxRates
     string TaxType?;
     # see TaxRates
@@ -951,11 +989,11 @@ public type Receipt record {
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
     LineAmountTypes LineAmountTypes?;
     # Total of receipt excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on receipt
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of receipt tax inclusive (i.e. SubTotal + TotalTax)
-    float Total?;
+    decimal Total?;
     # Xero generated unique identifier for receipt
     string ReceiptID?;
     # Current status of receipt – see status types
@@ -983,14 +1021,14 @@ public type PurchaseOrders record {
 # The amounts for goods or services received that have not yet been paid for.
 public type AccountsPayable record {
     # total amount that should be given to other organization but not yet given
-    float Outstanding?;
+    decimal Outstanding?;
     # KPI that indicates payments that are yet to be given by the organization.
-    float Overdue?;
+    decimal Overdue?;
 };
 
 public type ManualJournalLine record {
     # total for line. Debits are positive, credits are negative value
-    float LineAmount?;
+    decimal LineAmount?;
     # See Accounts
     string AccountCode?;
     # See Accounts
@@ -1002,7 +1040,7 @@ public type ManualJournalLine record {
     # Optional Tracking Category – see Tracking. Any JournalLine can have a maximum of 2 <TrackingCategory> elements.
     TrackingCategory[] Tracking?;
     # The calculated tax amount based on the TaxType and LineAmount
-    float TaxAmount?;
+    decimal TaxAmount?;
     # is the line blank
     boolean IsBlank?;
 };
@@ -1039,9 +1077,9 @@ public type Payment record {
     # Date the payment is being made (YYYY-MM-DD) e.g. 2009-09-06
     string Date?;
     # Exchange rate when payment is received. Only used for non base currency invoices and credit notes e.g. 0.7500
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # The amount of the payment. Must be less than or equal to the outstanding amount owing on the invoice e.g. 200.00
-    float Amount?;
+    decimal Amount?;
     # An optional description for the payment e.g. Direct Debit
     string Reference?;
     # An optional parameter for the payment. A boolean indicating whether you would like the payment to be created as reconciled when using PUT, or whether a payment has been reconciled when using GET
@@ -1076,26 +1114,26 @@ public type CISSetting record {
     # Boolean that describes if the contact is a CIS Subcontractor
     boolean CISEnabled?;
     # CIS Deduction rate for the contact if he is a subcontractor. If the contact is not CISEnabled, then the rate is not returned
-    float Rate?;
+    decimal Rate?;
 };
 
 public type BankTransfer record {
     Account FromBankAccount;
     Account ToBankAccount;
     # amount of the transaction
-    float Amount;
+    decimal Amount;
     # The date of the Transfer YYYY-MM-DD
     string Date?;
     # The identifier of the Bank Transfer
     string BankTransferID?;
     # The currency rate
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # The Bank Transaction ID for the source account
     string FromBankTransactionID?;
     # The Bank Transaction ID for the destination account
     string ToBankTransactionID?;
     # Boolean to indicate if a Bank Transfer has an attachment
-    boolean HasAttachments?;
+    boolean HasAttachments = false;
     # UTC timestamp of creation date of bank transfer
     string CreatedDateUTC?;
     # Displays array of validation error messages from the API
@@ -1105,9 +1143,9 @@ public type BankTransfer record {
 # The balance of money for goods or services delivered or used but not yet paid for by customers.
 public type AccountsReceivable record {
     # Total amount currently owed or promised to the organization but not yet received.
-    float Outstanding?;
+    decimal Outstanding?;
     # KPI that indicates payments that are yet to be received by the organization.
-    float Overdue?;
+    decimal Overdue?;
 };
 
 public type LinkedTransaction record {
@@ -1138,11 +1176,11 @@ public type LinkedTransaction record {
 # An array to specify multiple currency balances of an account
 public type BalanceDetails record {
     # The opening balances of the account. Debits are positive, credits are negative values
-    float Balance?;
+    decimal Balance?;
     # The currency of the balance (Not required for base currency)
     string CurrencyCode?;
     # (Optional) Exchange rate to base currency when money is spent or received. If not specified, XE rate for the day is applied
-    float CurrencyRate?;
+    decimal CurrencyRate?;
 };
 
 public type TrackingCategory record {
@@ -1151,8 +1189,10 @@ public type TrackingCategory record {
     # The Xero identifier for a tracking option e.g. dc54c220-0140-495a-b925-3246adc0075f
     string TrackingOptionID?;
     # The name of the tracking category e.g. Department, Region (max length = 100)
+    @constraint:String {maxLength: 100}
     string Name?;
     # The option name of the tracking option e.g. East, West (max length = 100)
+    @constraint:String {maxLength: 100}
     string Option?;
     # The status of a tracking category
     string Status?;
@@ -1210,11 +1250,11 @@ public type RepeatingInvoice record {
     # One of the following - DRAFT or AUTHORISED – See Invoice Status Codes
     string Status?;
     # Total of invoice excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on invoice
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of Invoice tax inclusive (i.e. SubTotal + TotalTax)
-    float Total?;
+    decimal Total?;
     # Xero generated unique identifier for repeating invoice template
     string RepeatingInvoiceID?;
     # Xero generated unique identifier for repeating invoice template
@@ -1287,7 +1327,7 @@ public type BankTransaction record {
     # 3 letter alpha code for the currency – see list of currency codes
     CurrencyCode CurrencyCode?;
     # Exchange rate to base currency when money is spent or received. e.g.0.7500 Only used for bank transactions in non base currency. If this isn’t specified for non base currency accounts then either the user-defined rate (preference) or the XE.com day rate will be used. Setting currency is only supported on overpayments.
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # URL link to a source document – shown as “Go to App Name”
     string Url?;
     # See Bank Transaction Status Codes
@@ -1295,11 +1335,11 @@ public type BankTransaction record {
     # Line amounts are exclusive of tax by default if you don’t specify this element. See Line Amount Types
     LineAmountTypes LineAmountTypes?;
     # Total of bank transaction excluding taxes
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on bank transaction
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of bank transaction tax inclusive
-    float Total?;
+    decimal Total?;
     # Xero generated unique identifier for bank transaction
     string BankTransactionID?;
     # Xero generated unique identifier for a Prepayment. This will be returned on BankTransactions with a Type of SPEND-PREPAYMENT or RECEIVE-PREPAYMENT
@@ -1309,7 +1349,7 @@ public type BankTransaction record {
     # Last modified date UTC format
     string UpdatedDateUTC?;
     # Boolean to indicate if a bank transaction has an attachment
-    boolean HasAttachments?;
+    boolean HasAttachments = false;
     # A string to indicate if a invoice status
     string StatusAttributeString?;
     # Displays array of validation error messages from the API
@@ -1333,7 +1373,7 @@ public type TaxComponent record {
     # Name of Tax Component
     string Name?;
     # Tax Rate (up to 4dp)
-    float Rate?;
+    decimal Rate?;
     # Boolean to describe if Tax rate is compounded.
     boolean IsCompound?;
     # Boolean to describe if tax rate is non-recoverable. Non-recoverable rates are only applicable to Canadian organisations
@@ -1346,7 +1386,7 @@ public type Allocation record {
     Prepayment Prepayment?;
     CreditNote CreditNote?;
     # the amount being applied to the invoice
-    float Amount;
+    decimal Amount;
     # the date the allocation is applied YYYY-MM-DD.
     string Date;
     # A string to indicate if a invoice status
@@ -1358,10 +1398,13 @@ public type Allocation record {
 public type Phone record {
     string PhoneType?;
     # max length = 50
+    @constraint:String {maxLength: 50}
     string PhoneNumber?;
     # max length = 10
+    @constraint:String {maxLength: 10}
     string PhoneAreaCode?;
     # max length = 20
+    @constraint:String {maxLength: 20}
     string PhoneCountryCode?;
 };
 
@@ -1395,9 +1438,9 @@ public type TaxRate record {
     # Boolean to describe if tax rate can be used for revenue accounts i.e. true,false
     boolean CanApplyToRevenue?;
     # Tax Rate (decimal to 4dp) e.g 12.5000
-    float DisplayTaxRate?;
+    decimal DisplayTaxRate?;
     # Effective Tax Rate (decimal to 4dp) e.g 12.5000
-    float EffectiveRate?;
+    decimal EffectiveRate?;
 };
 
 public type CountryCode string;
@@ -1440,7 +1483,7 @@ public type ReportFields record {
 
 public type Purchase record {
     # Unit Price of the item. By default UnitPrice is rounded to two decimal places. You can use 4 decimal places by adding the unitdp=4 querystring parameter to your request.
-    float UnitPrice?;
+    decimal UnitPrice?;
     # Default account code to be used for purchased/sale. Not applicable to the purchase details of tracked items
     string AccountCode?;
     # Cost of goods sold account. Only applicable to the purchase details of tracked items.
@@ -1532,31 +1575,31 @@ public type Report record {
 
 public type TenNinetyNineContact record {
     # Box 1 on 1099 Form
-    float Box1?;
+    decimal Box1?;
     # Box 2 on 1099 Form
-    float Box2?;
+    decimal Box2?;
     # Box 3 on 1099 Form
-    float Box3?;
+    decimal Box3?;
     # Box 4 on 1099 Form
-    float Box4?;
+    decimal Box4?;
     # Box 5 on 1099 Form
-    float Box5?;
+    decimal Box5?;
     # Box 6 on 1099 Form
-    float Box6?;
+    decimal Box6?;
     # Box 7 on 1099 Form
-    float Box7?;
+    decimal Box7?;
     # Box 8 on 1099 Form
-    float Box8?;
+    decimal Box8?;
     # Box 9 on 1099 Form
-    float Box9?;
+    decimal Box9?;
     # Box 10 on 1099 Form
-    float Box10?;
+    decimal Box10?;
     # Box 11 on 1099 Form
-    float Box11?;
+    decimal Box11?;
     # Box 13 on 1099 Form
-    float Box13?;
+    decimal Box13?;
     # Box 14 on 1099 Form
-    float Box14?;
+    decimal Box14?;
     # Contact name on 1099 Form
     string Name?;
     # Contact Fed Tax ID type
@@ -1583,9 +1626,9 @@ public type LineItem record {
     # Description needs to be at least 1 char long. A line item with just a description (i.e no unit amount or quantity) can be created by specifying just a <Description> element that contains at least 1 character
     string Description?;
     # LineItem Quantity
-    float Quantity?;
+    decimal Quantity?;
     # LineItem Unit Amount
-    float UnitAmount?;
+    decimal UnitAmount?;
     # See Items
     string ItemCode?;
     # See Accounts
@@ -1595,15 +1638,15 @@ public type LineItem record {
     # The tax type from TaxRates
     string TaxType?;
     # The tax amount is auto calculated as a percentage of the line amount (see below) based on the tax rate. This value can be overriden if the calculated <TaxAmount> is not correct.
-    float TaxAmount?;
+    decimal TaxAmount?;
     # If you wish to omit either of the <Quantity> or <UnitAmount> you can provide a LineAmount and Xero will calculate the missing amount for you. The line amount reflects the discounted price if a DiscountRate has been used . i.e LineAmount = Quantity * Unit Amount * ((100 – DiscountRate)/100)
-    float LineAmount?;
+    decimal LineAmount?;
     # Optional Tracking Category – see Tracking.  Any LineItem can have a  maximum of 2 <TrackingCategory> elements.
     LineItemTracking[] Tracking?;
     # Percentage discount being applied to a line item (only supported on  ACCREC invoices – ACC PAY invoices and credit notes in Xero do not support discounts
-    float DiscountRate?;
+    decimal DiscountRate?;
     # Discount amount being applied to a line item. Only supported on ACCREC invoices - ACCPAY invoices and credit notes in Xero do not support discounts.
-    float DiscountAmount?;
+    decimal DiscountAmount?;
     # The Xero identifier for a Repeating Invoice
     string RepeatingInvoiceID?;
 };
@@ -1635,18 +1678,24 @@ public type Contact record {
     # Xero identifier
     string ContactID?;
     # This can be updated via the API only i.e. This field is read only on the Xero contact screen, used to identify contacts in external systems (max length = 50). If the Contact Number is used, this is displayed as Contact Code in the Contacts UI in Xero.
+    @constraint:String {maxLength: 50}
     string ContactNumber?;
     # A user defined account number. This can be updated via the API and the Xero UI (max length = 50)
+    @constraint:String {maxLength: 50}
     string AccountNumber?;
     # Current status of a contact – see contact status types
     string ContactStatus?;
     # Full name of contact/organisation (max length = 255)
+    @constraint:String {maxLength: 255}
     string Name?;
     # First name of contact person (max length = 255)
+    @constraint:String {maxLength: 255}
     string FirstName?;
     # Last name of contact person (max length = 255)
+    @constraint:String {maxLength: 255}
     string LastName?;
     # Email address of contact person (umlauts not supported) (max length  = 255)
+    @constraint:String {maxLength: 255}
     string EmailAddress?;
     # Skype user name of contact
     string SkypeUserName?;
@@ -1655,6 +1704,7 @@ public type Contact record {
     # Bank account number of contact
     string BankAccountDetails?;
     # Tax number of contact – this is also known as the ABN (Australia), GST Number (New Zealand), VAT Number (UK) or Tax ID Number (US and global) in the Xero UI depending on which regionalized version of Xero you are using (max length = 50)
+    @constraint:String {maxLength: 50}
     string TaxNumber?;
     # The tax type from TaxRates
     string AccountsReceivableTaxType?;
@@ -1695,7 +1745,7 @@ public type Contact record {
     # Bank details for use on a batch payment stored with each contact
     BatchPaymentDetails BatchPayments?;
     # The default discount rate for the contact (read only)
-    float Discount?;
+    decimal Discount?;
     # The raw AccountsReceivable(sales invoices) and AccountsPayable(bills) outstanding and overdue amounts, not converted to base currency (read only)
     Balances Balances?;
     # Displays array of attachments from the API
@@ -1714,10 +1764,13 @@ public type Quote record {
     # QuoteID GUID is automatically generated and is returned after create or GET.
     string QuoteID?;
     # Unique alpha numeric code identifying a quote (Max Length = 255)
+    @constraint:String {maxLength: 255}
     string QuoteNumber?;
     # Additional reference number
+    @constraint:String {maxLength: 4000}
     string Reference?;
     # Terms of the quote
+    @constraint:String {maxLength: 4000}
     string Terms?;
     Contact Contact?;
     # See LineItems
@@ -1735,18 +1788,20 @@ public type Quote record {
     # 3 letter alpha code for the currency – see list of currency codes
     CurrencyCode CurrencyCode?;
     # The currency rate for a multicurrency quote
-    float CurrencyRate?;
+    decimal CurrencyRate?;
     # Total of quote excluding taxes.
-    float SubTotal?;
+    decimal SubTotal?;
     # Total tax on quote
-    float TotalTax?;
+    decimal TotalTax?;
     # Total of Quote tax inclusive (i.e. SubTotal + TotalTax). This will be ignored if it doesn’t equal the sum of the LineAmounts
-    float Total?;
+    decimal Total?;
     # Total of discounts applied on the quote line items
-    float TotalDiscount?;
+    decimal TotalDiscount?;
     # Title text for the quote
+    @constraint:String {maxLength: 100}
     string Title?;
     # Summary text for the quote
+    @constraint:String {maxLength: 3000}
     string Summary?;
     # See BrandingThemes
     string BrandingThemeID?;

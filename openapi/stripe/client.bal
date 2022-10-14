@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI Specification.
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + coupon - Coupon Id 
     # + return - Successful response. 
     remote isolated function getCoupon(string coupon) returns Coupon|error {
-        string resourcePath = string `/v1/coupons/${coupon}`;
+        string resourcePath = string `/v1/coupons/${getEncodedUri(coupon)}`;
         Coupon response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + expand - Specifies which fields in the response should be expanded. 
     # + return - Successful response. 
     remote isolated function getCustomer(string customer, string[]? expand = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/v1/customers/${customer}`;
+        string resourcePath = string `/v1/customers/${getEncodedUri(customer)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -127,7 +131,7 @@ public isolated client class Client {
     # + payload - Customer details 
     # + return - Successful response. 
     remote isolated function updateCustomer(string customer, CustomersCustomerBody payload) returns Customer|error {
-        string resourcePath = string `/v1/customers/${customer}`;
+        string resourcePath = string `/v1/customers/${getEncodedUri(customer)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"address": {style: DEEPOBJECT, explode: true}, "bank_account": {style: DEEPOBJECT, explode: true}, "card": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "invoice_settings": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "preferred_locales": {style: DEEPOBJECT, explode: true}, "shipping": {style: DEEPOBJECT, explode: true}, "tax": {style: DEEPOBJECT, explode: true}, "trial_end": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -140,8 +144,8 @@ public isolated client class Client {
     # + customer - Customer Id 
     # + return - Successful response. 
     remote isolated function deleteCustomer(string customer) returns DeletedCustomer|error {
-        string resourcePath = string `/v1/customers/${customer}`;
-        DeletedCustomer response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/customers/${getEncodedUri(customer)}`;
+        DeletedCustomer response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # <p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
@@ -184,7 +188,7 @@ public isolated client class Client {
     # + invoice - Invoice Id 
     # + return - Successful response. 
     remote isolated function getInvoice(string invoice, string[]? expand = ()) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -202,7 +206,7 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function updateInvoice(string invoice, InvoicesInvoiceBody payload) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"account_tax_ids": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "custom_fields": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "discounts": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "on_behalf_of": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -215,8 +219,8 @@ public isolated client class Client {
     # + invoice - Invoice Id 
     # + return - Successful response. 
     remote isolated function deleteInvoice(string invoice) returns DeletedInvoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}`;
-        DeletedInvoice response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}`;
+        DeletedInvoice response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # <p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
@@ -225,7 +229,7 @@ public isolated client class Client {
     # + payload - Invoice payment details 
     # + return - Successful response. 
     remote isolated function payInvoice(string invoice, InvoicePayBody payload) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}/pay`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}/pay`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -241,7 +245,7 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function sendInvoice(string invoice, InvoiceSendBody payload) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}/send`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}/send`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -255,7 +259,7 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function voidInvoice(string invoice, InvoiceVoidBody payload) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}/void`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}/void`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -269,7 +273,7 @@ public isolated client class Client {
     # + payload - Invoice details 
     # + return - Successful response. 
     remote isolated function markInvoiceUncollectable(string invoice, InvoiceMarkUncollectibleBody payload) returns Invoice|error {
-        string resourcePath = string `/v1/invoices/${invoice}/mark_uncollectible`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}/mark_uncollectible`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -285,7 +289,7 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + return - Successful response. 
     remote isolated function getInvoicesInvoiceLines(string invoice, string? endingBefore = (), int? 'limit = (), string? startingAfter = ()) returns InvoiceLinesList|error {
-        string resourcePath = string `/v1/invoices/${invoice}/lines`;
+        string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}/lines`;
         map<anydata> queryParam = {"ending_before": endingBefore, "limit": 'limit, "starting_after": startingAfter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InvoiceLinesList response = check self.clientEp->get(resourcePath);
@@ -396,7 +400,7 @@ public isolated client class Client {
     # + paymentMethod - Payment method Id 
     # + return - Successful response. 
     remote isolated function getPaymentMethod(string paymentMethod, string[]? expand = ()) returns PaymentMethod|error {
-        string resourcePath = string `/v1/payment_methods/${paymentMethod}`;
+        string resourcePath = string `/v1/payment_methods/${getEncodedUri(paymentMethod)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -409,7 +413,7 @@ public isolated client class Client {
     # + payload - Payment method details 
     # + return - Successful response. 
     remote isolated function updatePaymentMethod(string paymentMethod, PaymentMethodsPaymentMethodBody payload) returns PaymentMethod|error {
-        string resourcePath = string `/v1/payment_methods/${paymentMethod}`;
+        string resourcePath = string `/v1/payment_methods/${getEncodedUri(paymentMethod)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"billing_details": {style: DEEPOBJECT, explode: true}, "card": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -433,7 +437,7 @@ public isolated client class Client {
     # + payload - The ID of the customer to which to attach the PaymentMethod 
     # + return - Successful response. 
     remote isolated function attachPaymentMethodtoCustomer(string paymentMethod, PaymentMethodAttachBody payload) returns PaymentMethod|error {
-        string resourcePath = string `/v1/payment_methods/${paymentMethod}/attach`;
+        string resourcePath = string `/v1/payment_methods/${getEncodedUri(paymentMethod)}/attach`;
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
@@ -446,7 +450,7 @@ public isolated client class Client {
     # + payload - Additional details 
     # + return - Successful response. 
     remote isolated function detachPaymentMethodfromCustomer(string paymentMethod, PaymentMethodDetachBody payload) returns PaymentMethod|error {
-        string resourcePath = string `/v1/payment_methods/${paymentMethod}/detach`;
+        string resourcePath = string `/v1/payment_methods/${getEncodedUri(paymentMethod)}/detach`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -473,7 +477,7 @@ public isolated client class Client {
     # + payload - Price details 
     # + return - Successful response. 
     remote isolated function updatePrice(string price, PricesPriceBody payload) returns Price|error {
-        string resourcePath = string `/v1/prices/${price}`;
+        string resourcePath = string `/v1/prices/${getEncodedUri(price)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -500,7 +504,7 @@ public isolated client class Client {
     # + payload - Product details 
     # + return - Successful response. 
     remote isolated function updateProduct(string id, ProductsIdBody payload) returns Product|error {
-        string resourcePath = string `/v1/products/${id}`;
+        string resourcePath = string `/v1/products/${getEncodedUri(id)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}, "images": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "package_dimensions": {style: DEEPOBJECT, explode: true}, "tax_code": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -514,7 +518,7 @@ public isolated client class Client {
     # + payload - Subscription item details 
     # + return - Successful response. 
     remote isolated function updateSubscriptionItem(string item, SubscriptionItemsItemBody payload) returns SubscriptionItem|error {
-        string resourcePath = string `/v1/subscription_items/${item}`;
+        string resourcePath = string `/v1/subscription_items/${getEncodedUri(item)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"billing_thresholds": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "price_data": {style: DEEPOBJECT, explode: true}, "tax_rates": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -534,7 +538,7 @@ public isolated client class Client {
     # + payload - Usage record details 
     # + return - Successful response. 
     remote isolated function createSubscriptionItemUsageRecord(string subscriptionItem, SubscriptionItemUsageRecordsBody payload) returns UsageRecord|error {
-        string resourcePath = string `/v1/subscription_items/${subscriptionItem}/usage_records`;
+        string resourcePath = string `/v1/subscription_items/${getEncodedUri(subscriptionItem)}/usage_records`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -583,7 +587,7 @@ public isolated client class Client {
     # + subscriptionExposedId - Subscription Id 
     # + return - Successful response. 
     remote isolated function getSubscription(string subscriptionExposedId, string[]? expand = ()) returns Subscription|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionExposedId)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -596,7 +600,7 @@ public isolated client class Client {
     # + payload - Subscription details 
     # + return - Successful response. 
     remote isolated function updateSubscription(string subscriptionExposedId, SubscriptionsSubscriptionExposedIdBody payload) returns Subscription|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionExposedId)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"add_invoice_items": {style: DEEPOBJECT, explode: true}, "automatic_tax": {style: DEEPOBJECT, explode: true}, "billing_thresholds": {style: DEEPOBJECT, explode: true}, "cancel_at": {style: DEEPOBJECT, explode: true}, "default_tax_rates": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "items": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "pause_collection": {style: DEEPOBJECT, explode: true}, "payment_settings": {style: DEEPOBJECT, explode: true}, "pending_invoice_item_interval": {style: DEEPOBJECT, explode: true}, "transfer_data": {style: DEEPOBJECT, explode: true}, "trial_end": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -615,10 +619,10 @@ public isolated client class Client {
     # + prorate - Will generate a proration invoice item that credits remaining unused time until the subscription period end. 
     # + return - Successful response. 
     remote isolated function deleteSubscription(string subscriptionExposedId, boolean? invoiceNow = (), boolean? prorate = ()) returns Subscription|error {
-        string resourcePath = string `/v1/subscriptions/${subscriptionExposedId}`;
+        string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionExposedId)}`;
         map<anydata> queryParam = {"invoice_now": invoiceNow, "prorate": prorate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Subscription response = check self.clientEp->delete(resourcePath);
+        Subscription response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # <p>Retrieves the list of your subscription schedules.</p>
@@ -659,7 +663,7 @@ public isolated client class Client {
     # + schedule - Subscription schedule Id 
     # + return - Successful response. 
     remote isolated function getSubscriptionSchedule(string schedule) returns SubscriptionSchedule|error {
-        string resourcePath = string `/v1/subscription_schedules/${schedule}`;
+        string resourcePath = string `/v1/subscription_schedules/${getEncodedUri(schedule)}`;
         SubscriptionSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -669,7 +673,7 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function updateSubscriptionSchedule(string schedule, SubscriptionSchedulesScheduleBody payload) returns SubscriptionSchedule|error {
-        string resourcePath = string `/v1/subscription_schedules/${schedule}`;
+        string resourcePath = string `/v1/subscription_schedules/${getEncodedUri(schedule)}`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"default_settings": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}, "metadata": {style: DEEPOBJECT, explode: true}, "phases": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -683,7 +687,7 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function cancelSubscriptionSchedule(string schedule, ScheduleCancelBody payload) returns SubscriptionSchedule|error {
-        string resourcePath = string `/v1/subscription_schedules/${schedule}/cancel`;
+        string resourcePath = string `/v1/subscription_schedules/${getEncodedUri(schedule)}/cancel`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);
@@ -697,7 +701,7 @@ public isolated client class Client {
     # + payload - Subscription schedule details 
     # + return - Successful response. 
     remote isolated function releaseSubscriptionSchedule(string schedule, ScheduleReleaseBody payload) returns SubscriptionSchedule|error {
-        string resourcePath = string `/v1/subscription_schedules/${schedule}/release`;
+        string resourcePath = string `/v1/subscription_schedules/${getEncodedUri(schedule)}/release`;
         http:Request request = new;
         map<Encoding> requestBodyEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         string encodedRequestBody = createFormURLEncodedRequestBody(payload, requestBodyEncoding);

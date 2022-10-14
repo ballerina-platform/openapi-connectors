@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type LegalEntity record {
     *LegalEntityUpdate;
     PeppolIdentifier[] peppol_identifiers?;
@@ -22,6 +24,7 @@ public type LegalEntity record {
 # The invoice to send.  Provide either invoice, or invoiceData, but not both.
 public type Invoice record {
     # The buyer's accounting cost centre for this invoice, expressed as text.
+    @constraint:String {minLength: 1}
     string accountingCost?;
     # The customer receiving the invoice.
     AccountingCustomerParty accountingCustomerParty;
@@ -36,7 +39,7 @@ public type Invoice record {
     # A reference provided by the buyer used for internal routing of the document.
     string buyerReference?;
     # Whether or not to process the invoice in consumer tax mode. In this mode, the VAT identifier of the sender will not be the default VAT identifier, but the one that matches with the country of the receiving consumer, if that additional VAT identifier for that country is available. These additional VAT identifiers need to be added to the sending LegalEntity by Storecove, so if you need to send invoices in this mode, please contact us.
-    boolean consumerTaxMode?;
+    boolean consumerTaxMode = false;
     # A reference to a contract or framework agreement that this invoice relates to.
     string contractDocumentReference?;
     # Delivery details.
@@ -46,13 +49,15 @@ public type Invoice record {
     # Format: yyyy-mm-dd.
     string dueDate?;
     # An array of invoice lines.
+    @constraint:Array {minLength: 1}
     InvoiceLine[] invoiceLines;
     # The invoice number you assigned to the invoice. The invoiceNumber should be unique for the legalEntityId and year of the issueDate. This means invoice numbers can be reused in different years, as is customary in some countries.
+    @constraint:String {minLength: 1}
     string invoiceNumber;
     # The period (or specific date) to which the invoice applies. Format: yyyy-mm-dd - yyyy-mm-dd.
     string invoicePeriod?;
     # Do not use. This field is available for legacy reasons only. If you want to send a regular invoice (aka UBL type '380'), make sure you have a positive invoice amount. For a credit note (aka UBL type '381'), simply provide a negative invoice amount. If you, in addition to a negative invoice amount, also specify a billingReferences, your invoice will become a corrective invoice (aka UBL type '384'). If your invoice is not sent in the UBL syntax, Storecove will provide the appropriate type for the syntax the invoice is sent in.
-    string invoiceType?;
+    string invoiceType = "380";
     # Format: yyyy-mm-dd.
     string issueDate;
     # A note to add to the invoice
@@ -84,26 +89,29 @@ public type Invoice record {
     # An array of tax subtotals. This element is mandatory for taxSystem 'tax_line_percentages'.
     TaxSubtotal[] taxSubtotals?;
     # The tax system used for the invoice. The system 'tax_line_percentages' is preferred, but for historic purposes 'tax_line_amounts is supported and default. Since not all invoice formats that we are required to send support 'tax_line_amounts' we will need to convert the invoice to the 'tax_line_percentags' system if we are forced to send the invoice in that tax system.
-    string taxSystem?;
+    string taxSystem = "tax_line_amounts";
     # An array of ubl extensions.
     string[] ublExtensions?;
     # DEPRECTATED. Use taxExemptReason.
-    boolean vatReverseCharge?;
+    boolean vatReverseCharge = false;
 };
 
 # The address
 public type Address record {
     # The name of the city. Mandatory in most countries.
+    @constraint:String {minLength: 2}
     string city?;
     # An ISO 3166-1 alpha-2 country code.
     Country country;
     # An optional county name.
     string county?;
     # The street name and number. Mandatory in most countries.
+    @constraint:String {minLength: 2}
     string street1?;
     # The second street field. Use this if you used the first field for the building name.
     string street2?;
     # The zipcode/postalzone. Mandatory unless the country does not have zip codes.
+    @constraint:String {minLength: 2}
     string zip?;
 };
 
@@ -143,6 +151,7 @@ public type PurchaseInvoiceUbl record {
 
 public type AdministrationCreate record {
     # The email address to send the received document to
+    @constraint:String {maxLength: 128, minLength: 5}
     string email?;
     # The LegalEntity the Administration belongs to.
     int legal_entity_id?;
@@ -158,13 +167,14 @@ public type AllowanceCharge record {
     # The amount for the allowance or charge, excluding VAT
     decimal amountExcludingVat;
     # The reason for the allowance or charge, free text
-    string reason?;
+    string reason = "Agreed settlement";
     # Do not use. Contact Storecove first if you want to use this field.
     string reasonCode?;
     # Tax
     Tax tax;
     # An array of taxes, duties and fees for this allowance or charge. At this moment, only a single Tax item is allowed. When used, the 'tax' element must be empty.
-    Tax[1] taxes_duties_fees?;
+    @constraint:Array {maxLength: 1}
+    Tax[] taxes_duties_fees?;
 };
 
 # The different ways to send the invoice to the recipient. The publicIdentifiers are used to send via the Peppol network, if the recipient is not registered on the Peppol network, the invoice will be sent to the email addresses in the emails property. This property is only mandatory when sending the invoice data using the <<_openapi_invoice>> property, not when sending using the <<_openapi_invoicedata>> property, in which case this information will be extracted from the <<_openapi_invoicedata>> object. If you do specify an <<_openapi_invoicerecipient>> object and an <<_openapi_invoicedata>> object, the data from the two will be merged.
@@ -178,13 +188,14 @@ public type InvoiceRecipient record {
 # A document attachment to the invoice.
 public type Attachment record {
     # The base64 encoded version of the document attachment.
+    @constraint:String {minLength: 5}
     string document;
     # The name of the file attachment.
     string filename?;
     # The document attachment mime type. Currently only application/pdf is allowed.
     string mimeType;
     # Whether or not this document is a visual representation of the invoice data.
-    boolean primaryImage?;
+    boolean primaryImage = false;
 };
 
 # Tax
@@ -215,8 +226,10 @@ public type AccountingCustomerParty record {
 # An electronic routing identifier.
 public type RoutingIdentifier record {
     # The actual identifier.
+    @constraint:String {minLength: 1}
     string id?;
     # The scheme of the identifier. See <<_peppol_participant_identifier_list>> for a list.
+    @constraint:String {minLength: 3}
     string scheme?;
 };
 
@@ -246,30 +259,38 @@ public type LegalEntityUpdate record {
     # A list of document types to advertise. Use if this LegalEntity needs the ability to receive more than only invoice documents.
     string[] advertisements?;
     # The city.
+    @constraint:String {maxLength: 64, minLength: 2}
     string city?;
     # An ISO 3166-1 alpha-2 country code.
     Country country?;
     # County, if applicable
+    @constraint:String {maxLength: 64}
     string county?;
     # The Storecove assigned id for the LegalEntity.
     int id?;
     # The first address line.
+    @constraint:String {maxLength: 64, minLength: 2}
     string line1?;
     # The second address line, if applicable
+    @constraint:String {maxLength: 64}
     string line2?;
     # The name of the company.
+    @constraint:String {maxLength: 64, minLength: 2}
     string party_name?;
     # Whether or not this LegalEntity is public. Public means it will be listed in the PEPPOL directory at https://directory.peppol.eu/ which is normally what you want. If you have a good reason to not want the LegalEntity listed, provide false. This property is ignored when for country SG, where it is always true.
     boolean 'public?;
     # The id of the tenant, to be used in case of multi-tenant solutions. This property will included in webhook events.
+    @constraint:String {maxLength: 64}
     string tenant_id?;
     # The zipcode.
+    @constraint:String {maxLength: 32, minLength: 2}
     string zip?;
 };
 
 # An additional property for the item
 public type AdditionalItemProperty record {
     # The name of the property.
+    @constraint:String {minLength: 1}
     string name;
     # The value of the property.
     string value;
@@ -391,6 +412,7 @@ public type DeliveryLocation record {
     # The address
     Address address?;
     # The location identifier.
+    @constraint:String {minLength: 2}
     string id?;
     # The schemeAgencyId of the location identifier (e.g. 'ZZZ')
     string schemeAgencyId?;
@@ -401,11 +423,12 @@ public type DeliveryLocation record {
 # A document to send, in base64 encoded format.
 public type RawDocumentData record {
     # The base64 encoded version of the document.
+    @constraint:String {minLength: 5}
     string document;
     # The document type id of the document. Required when parse == false.
     string documentTypeId?;
     # *** NOTE: only parse == true is currently supported *** *** NOTE: parsing is only supported for documentType == 'invoice' *** Whether or not to parse the document. If true, the data will be extracted from the document and used to construct a new document. If false, the document will be sent as is. In this case, you must ensure the document validates without any errors against the relevant validation artifacts for that processId/documentTypeId. We automatically apply updates of the validation artificats, respecting the grace period provided by the issuer. During that period, documents that validate against either the old as well as against the new artifacts are accepted. After the grace period, your document must validate against the new artifacts. You are also responsible for making sure your receiver is able to receive the updated document.
-    boolean parse?;
+    boolean parse = true;
     # How to parse the document. Only needed when parse == true.
     string parseStrategy?;
     # The process id of the document. Required when parse == false.
@@ -415,8 +438,10 @@ public type RawDocumentData record {
 # A public identifier for this customer.
 public type PublicIdentifier record {
     # The actual identifier.
+    @constraint:String {minLength: 1}
     string id;
     # The scheme of the identifier. See <<_peppol_participant_identifier_list>> for a list.
+    @constraint:String {minLength: 3}
     string scheme;
 };
 
@@ -433,51 +458,64 @@ public type PurchaseInvoiceTaxSubtotal record {
 # Represents invoice line.
 public type InvoiceLine record {
     # The buyer's accounting cost centre for this invoice line, expressed as text.
+    @constraint:String {minLength: 1}
     string accountingCost?;
     # An array of additional item properties.
+    @constraint:Array {minLength: 1}
     AdditionalItemProperty[] additionalItemProperties?;
     # The discount or surcharge on this item. Should be negative for discounts
     decimal allowanceCharge?;
     # The amount excluding VAT. Should equal quantity x itemPrice + allowanceCharge.
     decimal amountExcludingVat;
     # The ID the buyer assigned to this item.
+    @constraint:String {minLength: 1}
     string buyersItemIdentification?;
     # Delivery details.
     Delivery delivery?;
     # The description for this invoice line.
+    @constraint:String {minLength: 1}
     string description?;
     # The period (or specific date) to which the invoice line applies. Format: yyyy-mm-dd - yyyy-mm-dd.
     string invoicePeriod?;
     # The price per item (may be fractional)
-    decimal itemPrice?;
+    decimal itemPrice = 1;
     # The id for this invoice line.
+    @constraint:String {minLength: 1}
     string lineId?;
     # A short name for this invoice line. If not provided, it will be taken from description and description will be set to an emtpy string.
+    @constraint:String {minLength: 1}
     string name?;
     # A reference to the ID of the order. The order is specified as the orderReference at the invoice level. It is not possible to specify an orderReference at the invoice line level. An invoice MUST at this time be for a single order only.
+    @constraint:String {minLength: 1}
     string orderLineReferenceLineId?;
     # The number of items (may be fractional).
-    decimal quantity?;
+    decimal quantity = 1;
     # The unit of measure that applies to the invoiced quantity. Codes for unit of packaging from UNECE Recommendation No. 21 can be used in accordance with the descriptions in the "Intro" section of UN/ECE Recommendation 20, Revision 11 (2015): The 2 character alphanumeric code values in UNECE Recommendation 21 shall be used. To avoid duplication with existing code values in UNECE Recommendation No. 20, each code value from UNECE Recommendation 21 shall be prefixed with an “X”, resulting in a 3 alphanumeric code when used as a unit of measure. Note that the following additionally allowed codes are deprecated and will be converted to C62: 04, 05, 08, 16, 17, 18, 19, 26, 29, 30, 31, 32, 36, 43, 44, 45, 46, 47, 48, 53, 54, 62, 63, 64, 66, 69, 71, 72, 73, 76, 78, 84, 90, 92, 93, 94, 95, 96, 97, 98, 1A, 1B, 1C, 1D, 1E, 1F, 1G, 1H, 1J, 1K, 1L, 1M, 1X, 2V, 2W, 3E, 3G, 3H, 3I, 4A, 4B, 4E, 5C, 5F, 5G, 5H, 5I, 5K, 5P, 5Q, A1, A25, A50, A51, A52, A57, A58, A60, A61, A62, A63, A64, A65, A66, A67, A77, A78, A79, A80, A81, A82, A83, AJ, AM, AP, AR, ARE, ATT, AV, AW, B0, B2, B36, B37, B38, B39, B40, B5, B51, B6, B65, B9, BD, BE, BG, BH, BJ, BK, BL, BO, BR, BT, BW, BX, BZ, C1, C2, C4, C5, C6, C77, C98, CA, CH, CJ, CK, CL, CO, CQ, CR, CS, CT, CU, CV, CY, CZ, D14, D28, D35, D37, D38, D39, D40, D64, D66, D67, D7, D70, D71, D72, D75, D76, D79, D8, D9, D90, D92, D96, D97, D98, D99, DC, DE, DI, DQ, DR, DRM, DS, DU, DX, DY, E2, E3, E5, EC, EP, EV, F1, F9, FB, FD, FE, FG, FM, G7, GC, GD, GH, GK, GN, GRT, GT, GW, GY, GZ, H1, H2, HAR, HD, HE, HF, HI, HJ, HK, HL, HN, HO, HP, HS, HT, HY, IC, IF, II, IL, IM, IP, IT, JB, JG, JO, JR, K5, KD, KF, KG, KS, KTM, LC, LE, LI, LJ, LX, M0, MA, MF, MK, MQ, MT, MV, N2, NB, NBB, NC, ND, NE, NG, NH, NI, NJ, NN, NPL, NPR, NQ, NR, NRL, NTT, NV, NY, OP, OZ, P0, P3, P4, P6, P7, P8, P9, PA, PB, PE, PF, PG, PK, PL, PM, PN, PT, PU, PV, PW, PY, PZ, QD, QH, QK, QT, R4, RA, RD, RG, RK, RL, RN, RO, RS, RU, S5, S6, S7, S8, SA, SD, SE, SHT, SK, SL, SN, SO, SP, SS, SST, ST, SV, T1, T4, T5, T6, T7, T8, TA, TC, TD, TE, TF, TJ, TK, TL, TN, TQ, TR, TS, TSD, TSH, TT, TU, TV, TW, TY, UA, UD, UE, UF, UH, UM, VI, VQ, VS, W4, WH, WI, WR, WW, YL, YT, Z1, Z2, Z3, Z4, Z5, Z6, Z8
-    string quantityUnitCode?;
+    string quantityUnitCode = "C62";
     # The ID the seller assigned to this item.
+    @constraint:String {minLength: 1}
     string sellersItemIdentification?;
     # Standardized ID for the item.
+    @constraint:String {minLength: 1}
     string standardItemIdentification?;
     # The scheme agency for the standardized ID for the item.
-    string standardItemIdentificationSchemeAgencyId?;
+    @constraint:String {minLength: 1}
+    string standardItemIdentificationSchemeAgencyId = "9";
     # The scheme for the standardized ID for the item.
-    string standardItemIdentificationSchemeId?;
+    @constraint:String {minLength: 1}
+    string standardItemIdentificationSchemeId = "GTIN";
     # Tax
     Tax tax?;
     # An array of taxes, duties and fees for this invoice line. At this moment, only a single Tax item is allowed. When used, the 'tax' element must be empty.
-    Tax[1] taxes_duties_fees?;
+    @constraint:Array {maxLength: 1}
+    Tax[] taxes_duties_fees?;
 };
 
 # The invoice you want Storecove to process, with some meta-data.
 public type InvoiceSubmission record {
     # An array of attachments. You may provide up to 10 attchments, but the total size must not exceed 10MB after Base64 encoding.
-    Attachment[10] attachments?;
+    @constraint:Array {maxLength: 10}
+    Attachment[] attachments?;
     # Whether or not to create a primary image (PDF) if one is not provided.
     boolean createPrimaryImage?;
     # DEPRECATED. Use attachments.
@@ -485,6 +523,7 @@ public type InvoiceSubmission record {
     # DEPRECATED. Use attachments.
     string documentUrl?;
     # A guid that you generated for this InvoiceSubmission to achieve idempotency. If you submit multiple documents with the same idempotencyGuid, only the first one will be processed.
+    @constraint:String {maxLength: 36, minLength: 36}
     string idempotencyGuid?;
     # The invoice to send.  Provide either invoice, or invoiceData, but not both.
     Invoice invoice?;
@@ -517,12 +556,16 @@ public type DiscoverableParticipant record {
     # An array of document types to discover. The default is '["invoice", "creditnote"]'
     string[] documentTypes?;
     # The actual identifier.
+    @constraint:String {minLength: 1}
     string identifier;
     # The meta scheme of the identifier. For Peppol this is always 'iso6523-actorid-upis'.
-    string metaScheme?;
+    @constraint:String {minLength: 3}
+    string metaScheme = "iso6523-actorid-upis";
     # The network to check. Currently only 'peppol' is supported.
-    string network?;
+    @constraint:String {minLength: 3}
+    string network = "peppol";
     # The scheme of the identifier. See <<_peppol_participant_identifier_list>> for a list.
+    @constraint:String {minLength: 3}
     string scheme;
 };
 
@@ -633,6 +676,7 @@ public type VatDetails record {
 
 public type AdministrationUpdate record {
     # The email address to send the received document to
+    @constraint:String {maxLength: 128, minLength: 5}
     string email?;
     # The version of the package.
     string package_version?;
@@ -650,36 +694,45 @@ public type AccountingSupplierParty record {
 
 public type LegalEntityCreate record {
     # A list of document types to advertise. Use if this LegalEntity needs the ability to receive more than only invoice documents.
-    string[] advertisements?;
+    string[] advertisements = ["invoice"];
     # The city.
+    @constraint:String {maxLength: 64, minLength: 2}
     string city;
     # An ISO 3166-1 alpha-2 country code.
     Country country;
     # County, if applicable
+    @constraint:String {maxLength: 64}
     string county?;
     # The first address line.
+    @constraint:String {maxLength: 64, minLength: 2}
     string line1;
     # The second address line, if applicable
+    @constraint:String {maxLength: 64}
     string line2?;
     # The name of the company.
+    @constraint:String {maxLength: 64, minLength: 2}
     string party_name;
     # Whether or not this LegalEntity is public. Public means it will be entered into the PEPPOL directory at https://directory.peppol.eu/
-    boolean 'public?;
+    boolean 'public = true;
     # The id of the tenant, to be used in case of multi-tenant solutions. This property will included in webhook events.
+    @constraint:String {maxLength: 64}
     string tenant_id?;
     # The zipcode.
+    @constraint:String {maxLength: 32, minLength: 2}
     string zip;
 };
 
 # The document you want Storecove to send, with some meta-data.
 public type DocumentSubmission record {
     # An array of attachments. You may provide up to 10 attchments, but the total size must not exceed 10MB after Base64 encoding.
-    Attachment[10] attachments?;
+    @constraint:Array {maxLength: 10}
+    Attachment[] attachments?;
     # Whether or not to create a primary image (PDF) if one is not provided.
     boolean createPrimaryImage?;
     # The document to send.
     SendableDocument document?;
     # A guid that you generated for this DocumentSubmission to achieve idempotency. If you submit multiple documents with the same idempotencyGuid, only the first one will be processed and any subsequent ones will trigger an HTTP 422 Unprocessable Entity response.
+    @constraint:String {maxLength: 36, minLength: 36}
     string idempotencyGuid?;
     # The id of the LegalEntity this document should be sent on behalf of. Either legalEntityId or receiveGuid is mandatory.
     int legalEntityId?;
@@ -737,6 +790,7 @@ public type Party record {
     # The address
     Address address;
     # The name of the company receiving the invoice
+    @constraint:String {minLength: 2}
     string companyName;
     # Contact details for the invoice
     Contact contact?;
@@ -759,6 +813,7 @@ public type InvoiceData record {
     # How to interpret the document.
     string conversionStrategy?;
     # The base64 encoded version of the document.
+    @constraint:String {minLength: 5}
     string document?;
 };
 
@@ -776,15 +831,19 @@ public type SendableDocument record {
 
 public type PeppolIdentifierCreate record {
     # The identifier.
+    @constraint:String {maxLength: 64, minLength: 2}
     string identifier;
     # The scheme of the identifier. See <<_peppol_participant_identifier_list>> for a list.
+    @constraint:String {maxLength: 64, minLength: 2}
     string scheme;
     # The superscheme of the identifier. Should always be "iso6523-actorid-upis".
+    @constraint:String {maxLength: 64, minLength: 2}
     string superscheme;
 };
 
 public type Administration record {
     # The email address to send the received document to
+    @constraint:String {maxLength: 128, minLength: 5}
     string email?;
     # The Storecove assigned id for the Administration.
     int id?;
@@ -806,10 +865,13 @@ public type DocumentSubmissionResult record {
 
 public type PeppolIdentifier record {
     # The identifier.
+    @constraint:String {maxLength: 64, minLength: 2}
     string identifier?;
     # The scheme of the identifier. See <<_peppol_participant_identifier_list>> for a list.
+    @constraint:String {maxLength: 64, minLength: 2}
     string scheme?;
     # The superscheme of the identifier. Should always be "iso6523-actorid-upis".
+    @constraint:String {maxLength: 64, minLength: 2}
     string superscheme?;
 };
 
@@ -828,10 +890,12 @@ public type Contact record {
     # First name
     string firstName?;
     # Only supported for AccountingCustomerParty
+    @constraint:String {maxLength: 20}
     string id?;
     # Last name
     string lastName?;
     # Phone number
+    @constraint:String {maxLength: 24}
     string phone?;
 };
 

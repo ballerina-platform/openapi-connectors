@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -125,7 +125,7 @@ public type SalesAreaDTO record {
 };
 
 public type ResponseMessage record {
-    string _error?;
+    string 'error?;
     string message?;
     string timestamp?;
     string uri?;

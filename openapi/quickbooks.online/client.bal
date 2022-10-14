@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 LLC (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # OAuth2 Refresh Token Grant Configs
@@ -58,15 +62,14 @@ public type OAuth2RefreshTokenGrantConfig record {|
 |};
 
 # This is a generated connector for [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.  
-# The QuickBooks Online Accounting API utilizes the REST architecture. 
-# It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
+# The QuickBooks Online Accounting API utilizes the REST architecture. It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
 @display {label: "QuickBooks Online", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
-    # Gets invoked to initialize the connector. During initialization you can pass either http:BearerTokenConfig if you have a bearer
-    # token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
-    # Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and 
-    # obtain credentials following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
+    # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Gets invoked to initialize the connector. During initialization you can pass either http:BearerTokenConfig if you have a bearer  token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
+    # Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and  obtain credentials following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
     # Tokens can be obtained by using [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).
     #
     # + clientConfig - The configurations to be used when initializing the `connector` 
@@ -90,7 +93,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of an Account object that has been previously created.
@@ -122,7 +125,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BillResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BillResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of a bill that has been previously created.
@@ -151,7 +154,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CustomerResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CustomerResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of a Customer object that has been previously created.
@@ -183,7 +186,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of a Payment object that has been previously created.
@@ -215,7 +218,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EstimateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EstimateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of an estimate that has been previously created.
@@ -247,7 +250,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InvoiceResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InvoiceResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of an invoice that has been previously created.
@@ -276,7 +279,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        VendorResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        VendorResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieves the details of a vendor object that has been previously created.

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Client Credentials Grant Configs
+public type OAuth2ClientCredentialsGrantConfig record {|
+    *http:OAuth2ClientCredentialsGrantConfig;
+    # Token URL
+    string tokenUrl = " ";
 |};
 
 # This is a generated connector for [SAP Fieldglass Approval API API v1.0.0](https://api.sap.com/api/approvals/resource) OpenAPI specification. 
@@ -86,7 +97,7 @@ public isolated client class Client {
     # + moduleId - The ID for the module (for example, 40 for Job Posting or 270 for Work Order). A full list can be found in the supporting documentation. 
     # + return - Successful operation. 
     remote isolated function getItemListFroApprovalByModule(string moduleId, string? authorization = (), string? xApplicationkey = ()) returns Approvals|error {
-        string resourcePath = string `/approvals/module_${moduleId}`;
+        string resourcePath = string `/approvals/module_${getEncodedUri(moduleId)}`;
         map<any> headerValues = {"Authorization": authorization, "X-ApplicationKey": xApplicationkey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Approvals response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -103,14 +114,14 @@ public isolated client class Client {
     # + reasonId - The reasonId for the rejection. This is required when the action is 'reject'. You can get a list of rejection reasons available for the module from the response when getting rejection reasons. 
     # + return - Successful operation. 
     remote isolated function approveOrRejectItem(string moduleId, string workItemId, string action, string? authorization = (), string? xApplicationkey = (), string? comments = (), string? reasonId = ()) returns Approvals|error {
-        string resourcePath = string `/approvals/module_${moduleId}/${workItemId}/action/${action}`;
+        string resourcePath = string `/approvals/module_${getEncodedUri(moduleId)}/${getEncodedUri(workItemId)}/action/${getEncodedUri(action)}`;
         map<anydata> queryParam = {"comments": comments, "reasonId": reasonId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": authorization, "X-ApplicationKey": xApplicationkey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        Approvals response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Approvals response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get details for work item
@@ -121,7 +132,7 @@ public isolated client class Client {
     # + workItemId - The ID of the work item. 
     # + return - Successful operation. 
     remote isolated function getWorkItemDetail(string moduleId, string workItemId, string? authorization = (), string? xApplicationkey = ()) returns Approvals|error {
-        string resourcePath = string `/approvals/module_${moduleId}/${workItemId}`;
+        string resourcePath = string `/approvals/module_${getEncodedUri(moduleId)}/${getEncodedUri(workItemId)}`;
         map<any> headerValues = {"Authorization": authorization, "X-ApplicationKey": xApplicationkey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Approvals response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -134,7 +145,7 @@ public isolated client class Client {
     # + moduleId - The ID for the module (for example, 40 for Job Posting or 270 for Work Order). A full list can be found in the supporting documentation. 
     # + return - Successful operation. 
     remote isolated function getRejectionReasons(string moduleId, string? authorization = (), string? xApplicationkey = ()) returns Approvals|error {
-        string resourcePath = string `/approvals/reject_reasons/module_${moduleId}`;
+        string resourcePath = string `/approvals/reject_reasons/module_${getEncodedUri(moduleId)}`;
         map<any> headerValues = {"Authorization": authorization, "X-ApplicationKey": xApplicationkey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Approvals response = check self.clientEp->get(resourcePath, httpHeaders);

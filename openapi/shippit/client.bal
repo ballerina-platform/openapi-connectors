@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Shippit API v3.0.20201008](https://developer.shippit.com) OpenAPI specification.
@@ -86,8 +90,8 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order. 
     # + return - Returns the Order with state = `cancelled` 
     remote isolated function cancelOrder(string trackingNumber) returns OrderDeleteResponse|error {
-        string resourcePath = string `/orders/${trackingNumber}`;
-        OrderDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/orders/${getEncodedUri(trackingNumber)}`;
+        OrderDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Label information for an Order
@@ -95,7 +99,7 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order. 
     # + return - Returns an Order and related label information. 
     remote isolated function getOrderLabel(string trackingNumber) returns LabelResponse|error {
-        string resourcePath = string `/orders/${trackingNumber}/label`;
+        string resourcePath = string `/orders/${getEncodedUri(trackingNumber)}/label`;
         LabelResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -104,7 +108,7 @@ public isolated client class Client {
     # + trackingNumber - The tracking number of the Order 
     # + return - Returns tracking info related to the Order 
     remote isolated function trackOrder(string trackingNumber) returns TrackingResponse|error {
-        string resourcePath = string `/orders/${trackingNumber}/tracking`;
+        string resourcePath = string `/orders/${getEncodedUri(trackingNumber)}/tracking`;
         TrackingResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -91,7 +95,7 @@ public isolated client class Client {
     # + externalId - External Id 
     # + return - OK. 
     remote isolated function getAllNodes(string externalId) returns HierarchyNodeHeaderResponse|error {
-        string resourcePath = string `/hierarchy/products/header/${externalId}`;
+        string resourcePath = string `/hierarchy/products/header/${getEncodedUri(externalId)}`;
         HierarchyNodeHeaderResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -100,7 +104,7 @@ public isolated client class Client {
     # + externalId - External Id 
     # + return - OK. 
     remote isolated function getNode(string externalId) returns HierarchyNodeResponse|error {
-        string resourcePath = string `/hierarchy/products/${externalId}`;
+        string resourcePath = string `/hierarchy/products/${getEncodedUri(externalId)}`;
         HierarchyNodeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -109,8 +113,8 @@ public isolated client class Client {
     # + headerExternalId - Header external Id 
     # + return - OK. 
     remote isolated function deleteProductHierarchyTenant(string headerExternalId) returns ResponseDeleteMessage|error {
-        string resourcePath = string `/hierarchy/products/${headerExternalId}`;
-        ResponseDeleteMessage response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/hierarchy/products/${getEncodedUri(headerExternalId)}`;
+        ResponseDeleteMessage response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

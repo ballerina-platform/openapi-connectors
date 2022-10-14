@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Shipwire Receivings API v3.0](https://www.shipwire.com/developers/receiving) OpenAPI specification.
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + expand - Expand receivings data in the response, instead of accessing directly via a URL (comma separated list). See resources `Holds`, `Instruction Recipients`, `Items`, `Shipments`, `labels` and `Trackings` for information on the data model returned by this parameter. 
     # + return - OK 
     remote isolated function getReceivingsById(string id, string[]? expand = ()) returns GetAdvanceShipNoticeResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -126,7 +130,7 @@ public isolated client class Client {
     # + payload - CreateAnAdvanceShipNotice request 
     # + return - OK 
     remote isolated function putReceivingsById(string id, CreateAnAdvanceShipNoticeRequest payload, string[]? expand = ()) returns GetAdvanceShipNoticeResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -141,7 +145,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsCancelById(string id) returns CancelAReceivingOrderResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/cancel`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelAReceivingOrderResponse response = check self.clientEp-> post(resourcePath, request);
@@ -152,7 +156,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsLabelsCancelById(string id) returns CancelAReceivingLabelResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/labels/cancel`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/labels/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelAReceivingLabelResponse response = check self.clientEp-> post(resourcePath, request);
@@ -164,7 +168,7 @@ public isolated client class Client {
     # + includeCleared - When set to 1, response includes holds that have been cleared. 
     # + return - OK 
     remote isolated function getReceivingsHoldsById(string id, int? includeCleared = ()) returns GetHoldDetailsResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/holds`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/holds`;
         map<anydata> queryParam = {"includeCleared": includeCleared};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetHoldDetailsResponse response = check self.clientEp->get(resourcePath);
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsInstructionsRecipientsById(string id) returns GetInstructionsRecipientsDetailsResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/instructionsRecipients`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/instructionsRecipients`;
         GetInstructionsRecipientsDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -184,7 +188,7 @@ public isolated client class Client {
     # + id - The receiving's ID. 
     # + return - OK 
     remote isolated function getReceivingsExtendedAttributesById(string id) returns GetReceivingExtendedAttributesResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/extendedAttributes`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/extendedAttributes`;
         GetReceivingExtendedAttributesResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -193,7 +197,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsItemsById(string id) returns GetItemsDetailResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/items`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/items`;
         GetItemsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -202,7 +206,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsShipmentsById(string id) returns GetShipmentDetailsResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/shipments`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/shipments`;
         GetShipmentDetailsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -211,7 +215,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsTrackingsById(string id) returns GetTrackingsDetailResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/trackings`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/trackings`;
         GetTrackingsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -220,7 +224,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function getReceivingsLabelsById(string id) returns GetLabelsDetailResponse|error {
-        string resourcePath = string `/api/v3/receivings/${id}/labels`;
+        string resourcePath = string `/api/v3/receivings/${getEncodedUri(id)}/labels`;
         GetLabelsDetailResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -229,7 +233,7 @@ public isolated client class Client {
     # + id - The advance ship notice's ID. 
     # + return - OK 
     remote isolated function postReceivingsMarkCompleteById(string id) returns MarkTheReceivingCompletedResponse|error {
-        string resourcePath = string `/api/v3.1/receivings/${id}/markComplete`;
+        string resourcePath = string `/api/v3.1/receivings/${getEncodedUri(id)}/markComplete`;
         http:Request request = new;
         //TODO: Update the request as needed;
         MarkTheReceivingCompletedResponse response = check self.clientEp-> post(resourcePath, request);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -37,7 +37,7 @@ public isolated client class Client {
     # + stationName - Weather station to compare, values: cnareanl|rcnp | cmsap|boyaenderrocat|areopuertopalma | EWXXX 
     # + return - No response was specified 
     remote isolated function compareStation(string stationName) returns http:Response|error {
-        string resourcePath = string `/v1.0/compareStation/${stationName}/`;
+        string resourcePath = string `/v1.0/compareStation/${getEncodedUri(stationName)}/`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + period - Period of time to get the data. Options: lastdata lastday 
     # + return - No response was specified 
     remote isolated function getAemetStation(string stationName, string period) returns http:Response|error {
-        string resourcePath = string `/v1.0/getAemetStation/${stationName}/${period}/`;
+        string resourcePath = string `/v1.0/getAemetStation/${getEncodedUri(stationName)}/${getEncodedUri(period)}/`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -57,7 +57,7 @@ public isolated client class Client {
     # + period - Period of time to get the data latestdata|latesthour|latestday 
     # + return - No response was specified 
     remote isolated function getEasywind(string easywindId, string period) returns http:Response|error {
-        string resourcePath = string `/v1.0/getEasyWind/${easywindId}/`;
+        string resourcePath = string `/v1.0/getEasyWind/${getEncodedUri(easywindId)}/`;
         map<anydata> queryParam = {"period": period};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -68,7 +68,7 @@ public isolated client class Client {
     # + eventId - currently: 'trofeoprincesasofia|palmavela' 
     # + return - No response was specified 
     remote isolated function getEventStations(string eventId) returns http:Response|error {
-        string resourcePath = string `/v1.0/getEventStations/${eventId}/`;
+        string resourcePath = string `/v1.0/getEventStations/${getEncodedUri(eventId)}/`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + language - Language 
     # + return - No response was specified 
     remote isolated function getForecastPoints(string yatchclubid, string language) returns http:Response|error {
-        string resourcePath = string `/v1.0/getForecastPoints/${yatchclubid}/language/${language}`;
+        string resourcePath = string `/v1.0/getForecastPoints/${getEncodedUri(yatchclubid)}/language/${getEncodedUri(language)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -95,7 +95,7 @@ public isolated client class Client {
     # + entryid - Direct file I want to extract 
     # + return - No response was specified 
     remote isolated function getForecastTimeSeries(decimal latitude, decimal longitude, string weather, string? inittime = (), string? endtime = (), int? days = (), int? hours = (), string? wave = (), string? entryid = ()) returns http:Response|error {
-        string resourcePath = string `/v1.0/getForecastTimeSeries/${latitude}/${longitude}/`;
+        string resourcePath = string `/v1.0/getForecastTimeSeries/${getEncodedUri(latitude)}/${getEncodedUri(longitude)}/`;
         map<anydata> queryParam = {"inittime": inittime, "endtime": endtime, "days": days, "hours": hours, "weather": weather, "wave": wave, "entryid": entryid};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -114,7 +114,7 @@ public isolated client class Client {
     # + entryid - Direct file I want to extract 
     # + return - No response was specified 
     remote isolated function getForecastTimeSeriesWrf(decimal latitude, decimal longitude, string weather, string? inittime = (), string? endtime = (), int? days = (), int? hours = (), string? wave = (), string? entryid = ()) returns http:Response|error {
-        string resourcePath = string `/v1.0/getForecastTimeSeriesWrf/${latitude}/${longitude}/`;
+        string resourcePath = string `/v1.0/getForecastTimeSeriesWrf/${getEncodedUri(latitude)}/${getEncodedUri(longitude)}/`;
         map<anydata> queryParam = {"inittime": inittime, "endtime": endtime, "days": days, "hours": hours, "weather": weather, "wave": wave, "entryid": entryid};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -126,7 +126,7 @@ public isolated client class Client {
     # + period - Period of time to get the data. Options: lastdata lasthour lastday 
     # + return - No response was specified 
     remote isolated function getSocibWeatherStation(string stationName, string period) returns http:Response|error {
-        string resourcePath = string `/v1.0/getSocibWeatherStation/${stationName}/${period}/`;
+        string resourcePath = string `/v1.0/getSocibWeatherStation/${getEncodedUri(stationName)}/${getEncodedUri(period)}/`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -136,7 +136,7 @@ public isolated client class Client {
     # + period - Period of time to get the data latestdata|latesthour|latestday|dailylog 
     # + return - No response was specified 
     remote isolated function getWeatherDisplay(string stationName, string period) returns http:Response|error {
-        string resourcePath = string `/v1.0/getWeatherDisplay/${stationName}/`;
+        string resourcePath = string `/v1.0/getWeatherDisplay/${getEncodedUri(stationName)}/`;
         map<anydata> queryParam = {"period": period};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);

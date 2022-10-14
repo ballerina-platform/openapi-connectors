@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -91,7 +95,7 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getDistributionChannelByExternalId(string externalId) returns DistributionChannelResponse|error {
-        string resourcePath = string `/distributionChannels/${externalId}`;
+        string resourcePath = string `/distributionChannels/${getEncodedUri(externalId)}`;
         DistributionChannelResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -100,8 +104,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK 
     remote isolated function deleteDistributionChannel(string externalId) returns DistributionChannelDeleteResponse|error {
-        string resourcePath = string `/distributionChannels/${externalId}`;
-        DistributionChannelDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/distributionChannels/${getEncodedUri(externalId)}`;
+        DistributionChannelDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a new Sales Area
@@ -121,7 +125,7 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesAreaByExternalId(string externalId) returns SalesAreaResponse|error {
-        string resourcePath = string `/salesAreas/${externalId}`;
+        string resourcePath = string `/salesAreas/${getEncodedUri(externalId)}`;
         SalesAreaResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -130,8 +134,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function deleteSalesArea(string externalId) returns SalesAreaDeleteResponse|error {
-        string resourcePath = string `/salesAreas/${externalId}`;
-        SalesAreaDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/salesAreas/${getEncodedUri(externalId)}`;
+        SalesAreaDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a new Sales Division
@@ -151,7 +155,7 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesDivisionByExternalId(string externalId) returns SalesDivisionResponse|error {
-        string resourcePath = string `/salesDivisions/${externalId}`;
+        string resourcePath = string `/salesDivisions/${getEncodedUri(externalId)}`;
         SalesDivisionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -160,8 +164,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function deleteSalesDivision(string externalId) returns SalesDivisionDeleteResponse|error {
-        string resourcePath = string `/salesDivisions/${externalId}`;
-        SalesDivisionDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/salesDivisions/${getEncodedUri(externalId)}`;
+        SalesDivisionDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a new Sales Organization
@@ -181,7 +185,7 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK. 
     remote isolated function getSalesOrganizationByExternalId(string externalId) returns SalesOrganizationResponse|error {
-        string resourcePath = string `/salesOrganizations/${externalId}`;
+        string resourcePath = string `/salesOrganizations/${getEncodedUri(externalId)}`;
         SalesOrganizationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -190,8 +194,8 @@ public isolated client class Client {
     # + externalId - externalId 
     # + return - OK 
     remote isolated function deleteSalesOrganization(string externalId) returns SalesOrgDeleteResponse|error {
-        string resourcePath = string `/salesOrganizations/${externalId}`;
-        SalesOrgDeleteResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/salesOrganizations/${getEncodedUri(externalId)}`;
+        SalesOrgDeleteResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

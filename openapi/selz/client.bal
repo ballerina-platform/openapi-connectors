@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [selz API v1.0](https://developer.selz.com/api/reference) OpenAPI specification.
@@ -104,7 +108,7 @@ public isolated client class Client {
     # + id - The identifier of the blog post to be retrieved. 
     # + return - Success 
     remote isolated function retrieveBlogposts(string id) returns SelzApiPublicModelsBlogpostsBlogpostresponse|error {
-        string resourcePath = string `/blog/posts/${id}`;
+        string resourcePath = string `/blog/posts/${getEncodedUri(id)}`;
         SelzApiPublicModelsBlogpostsBlogpostresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -114,7 +118,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function updateBlogposts(string id, SelzApiPublicModelsBlogpostsBlogpostputrequest payload) returns SelzApiPublicModelsBlogpostsBlogpostresponse|error {
-        string resourcePath = string `/blog/posts/${id}`;
+        string resourcePath = string `/blog/posts/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -126,8 +130,8 @@ public isolated client class Client {
     # + id - The identifier of the blog post to be deleted. 
     # + return - Success 
     remote isolated function deleteBlogposts(string id) returns http:Response|error {
-        string resourcePath = string `/blog/posts/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/blog/posts/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add blog post hero image
@@ -136,7 +140,7 @@ public isolated client class Client {
     # + payload - Add blog post hero image request 
     # + return - Success 
     remote isolated function addimageBlogposts(string id, SelzApiPublicModelsBlogpostsAddimagerequest payload) returns SelzApiPublicModelsBlogpostsAddimageresponse|error {
-        string resourcePath = string `/blog/posts/${id}/image`;
+        string resourcePath = string `/blog/posts/${getEncodedUri(id)}/image`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -148,8 +152,8 @@ public isolated client class Client {
     # + id - The identifier of the blog post. 
     # + return - Success 
     remote isolated function removeimageBlogposts(string id) returns http:Response|error {
-        string resourcePath = string `/blog/posts/${id}/image`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/blog/posts/${getEncodedUri(id)}/image`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List all categories
@@ -187,7 +191,7 @@ public isolated client class Client {
     # + id - The identifier of the category to be retrieved. 
     # + return - Success 
     remote isolated function retrieveCategories(string id) returns SelzApiPublicModelsCategoriesCategoryresponse|error {
-        string resourcePath = string `/categories/${id}`;
+        string resourcePath = string `/categories/${getEncodedUri(id)}`;
         SelzApiPublicModelsCategoriesCategoryresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -197,7 +201,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function updateCategories(string id, SelzApiPublicModelsCategoriesCategoryputrequest payload) returns SelzApiPublicModelsCategoriesCategoryresponse|error {
-        string resourcePath = string `/categories/${id}`;
+        string resourcePath = string `/categories/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -209,8 +213,8 @@ public isolated client class Client {
     # + id - The identifier of the category to be deleted. 
     # + return - Success 
     remote isolated function deleteCategories(string id) returns http:Response|error {
-        string resourcePath = string `/categories/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/categories/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List all customers
@@ -248,7 +252,7 @@ public isolated client class Client {
     # + id - The identifier of the customer to be retrieved. 
     # + return - Success 
     remote isolated function retrieveCustomers(string id) returns SelzApiPublicModelsCustomersCustomerresponse|error {
-        string resourcePath = string `/customers/${id}`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}`;
         SelzApiPublicModelsCustomersCustomerresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -258,7 +262,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function updateCustomers(string id, SelzApiPublicModelsCustomersCustomerputrequest payload) returns SelzApiPublicModelsCustomersCustomerresponse|error {
-        string resourcePath = string `/customers/${id}`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -270,8 +274,8 @@ public isolated client class Client {
     # + id - The identifier of the customer to be deleted. 
     # + return - Success 
     remote isolated function deleteCustomers(string id) returns http:Response|error {
-        string resourcePath = string `/customers/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/customers/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a customer by email
@@ -279,7 +283,7 @@ public isolated client class Client {
     # + email - email of the customer 
     # + return - Success 
     remote isolated function getCustomersByemail(string email) returns SelzApiPublicModelsCustomersCustomerresponse|error {
-        string resourcePath = string `/customers/email/${email}`;
+        string resourcePath = string `/customers/email/${getEncodedUri(email)}`;
         SelzApiPublicModelsCustomersCustomerresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -318,7 +322,7 @@ public isolated client class Client {
     # + id - The identifier of the discount to be retrieved. 
     # + return - Success 
     remote isolated function retrieveDiscounts(string id) returns SelzApiPublicModelsDiscountsDiscountresponse|error {
-        string resourcePath = string `/discounts/${id}`;
+        string resourcePath = string `/discounts/${getEncodedUri(id)}`;
         SelzApiPublicModelsDiscountsDiscountresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -328,7 +332,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function updateDiscounts(string id, SelzApiPublicModelsDiscountsDiscountputrequest payload) returns SelzApiPublicModelsDiscountsDiscountresponse|error {
-        string resourcePath = string `/discounts/${id}`;
+        string resourcePath = string `/discounts/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -340,8 +344,8 @@ public isolated client class Client {
     # + id - The identifier of the discount to be deleted. 
     # + return - Success 
     remote isolated function deleteDiscounts(string id) returns http:Response|error {
-        string resourcePath = string `/discounts/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/discounts/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Disputes
@@ -367,7 +371,7 @@ public isolated client class Client {
     # + id - The identifier of the dispute to be retrieved. 
     # + return - Success 
     remote isolated function retrieveDisputes(string id) returns SelzApiPublicModelsDisputesDisputeresponse|error {
-        string resourcePath = string `/disputes/${id}`;
+        string resourcePath = string `/disputes/${getEncodedUri(id)}`;
         SelzApiPublicModelsDisputesDisputeresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -395,7 +399,7 @@ public isolated client class Client {
     # + id - The identifier of the Order to be retrieved. 
     # + return - Success 
     remote isolated function retrieveOrders(string id) returns SelzApiPublicModelsOrdersOrderresponse|error {
-        string resourcePath = string `/orders/${id}`;
+        string resourcePath = string `/orders/${getEncodedUri(id)}`;
         SelzApiPublicModelsOrdersOrderresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -404,7 +408,7 @@ public isolated client class Client {
     # + id - The identifier of the order to be updated. 
     # + return - Success 
     remote isolated function completeOrders(string id) returns SelzApiPublicModelsOrdersOrderresponse|error {
-        string resourcePath = string `/orders/${id}/complete`;
+        string resourcePath = string `/orders/${getEncodedUri(id)}/complete`;
         http:Request request = new;
         //TODO: Update the request as needed;
         SelzApiPublicModelsOrdersOrderresponse response = check self.clientEp-> put(resourcePath, request);
@@ -423,7 +427,7 @@ public isolated client class Client {
     # + id - The identifier of the payout to be retrieved. 
     # + return - Success 
     remote isolated function retrievePayouts(string id) returns SelzApiPublicModelsPayoutsPayoutresponse|error {
-        string resourcePath = string `/payouts/${id}`;
+        string resourcePath = string `/payouts/${getEncodedUri(id)}`;
         SelzApiPublicModelsPayoutsPayoutresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -463,7 +467,7 @@ public isolated client class Client {
     # + id - The identifier of the product to be retrieved. 
     # + return - Success 
     remote isolated function retrieveProducts(string id) returns SelzApiPublicModelsProductsProductresponse|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         SelzApiPublicModelsProductsProductresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -473,7 +477,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function productsUpdate(string id, SelzApiPublicModelsProductsProductputrequest payload) returns SelzApiPublicModelsProductsProductresponse|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -485,8 +489,8 @@ public isolated client class Client {
     # + id - The identifier of the product to be deleted. 
     # + return - Success 
     remote isolated function deleteProducts(string id) returns http:Response|error {
-        string resourcePath = string `/products/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List categories
@@ -502,7 +506,7 @@ public isolated client class Client {
     # + id - ID 
     # + return - Success 
     remote isolated function getProductsCategories(string id, string? productId = (), int? 'limit = (), string? startingAfter = (), string? endingBefore = (), string? createdDateMin = (), string? createdDateMax = (), string? updatedDateMin = (), string? updatedDateMax = ()) returns SelzApiPublicModelsSlicedlistresponse1SelzApiPublicModelsCategoriesCategoryresponseSelzApiPublicModelsVersion1000CultureNeutralPublickeytokenNull|error {
-        string resourcePath = string `/products/${id}/categories`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/categories`;
         map<anydata> queryParam = {"product_id": productId, "limit": 'limit, "starting_after": startingAfter, "ending_before": endingBefore, "created_date_min": createdDateMin, "created_date_max": createdDateMax, "updated_date_min": updatedDateMin, "updated_date_max": updatedDateMax};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SelzApiPublicModelsSlicedlistresponse1SelzApiPublicModelsCategoriesCategoryresponseSelzApiPublicModelsVersion1000CultureNeutralPublickeytokenNull response = check self.clientEp->get(resourcePath);
@@ -514,7 +518,7 @@ public isolated client class Client {
     # + payload - Assign to category request 
     # + return - Success 
     remote isolated function addProductToCategory(string id, SelzApiPublicModelsProductsAddproducttocategoryrequest payload) returns SelzApiPublicModelsProductsAddproducttocategoryresponse|error {
-        string resourcePath = string `/products/${id}/categories`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/categories`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -527,8 +531,8 @@ public isolated client class Client {
     # + categoryId - the category id 
     # + return - Success 
     remote isolated function removeProductFromCategory(string productId, string categoryId) returns http:Response|error {
-        string resourcePath = string `/products/${productId}/categories/${categoryId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(productId)}/categories/${getEncodedUri(categoryId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Verify a license key
@@ -537,7 +541,7 @@ public isolated client class Client {
     # + payload - Verify a license key request 
     # + return - Success 
     remote isolated function verifyProductsLicense(string id, SelzApiPublicModelsProductsLicenseverifyrequest payload) returns SelzApiPublicModelsProductsLicenseverifyresponse|error {
-        string resourcePath = string `/products/${id}/licenses/verify`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/licenses/verify`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -550,7 +554,7 @@ public isolated client class Client {
     # + payload - Add product image request 
     # + return - Success 
     remote isolated function addProductsImage(string id, SelzApiPublicModelsProductsAddimagerequest payload) returns SelzApiPublicModelsProductsAddimageresponse|error {
-        string resourcePath = string `/products/${id}/image`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/image`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -562,8 +566,8 @@ public isolated client class Client {
     # + id - The identifier of the product. 
     # + return - Success 
     remote isolated function removeAllProductsImages(string id) returns http:Response|error {
-        string resourcePath = string `/products/${id}/images`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(id)}/images`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds new variant to a product
@@ -572,7 +576,7 @@ public isolated client class Client {
     # + payload - Adds new variant to a product request 
     # + return - Success 
     remote isolated function addProductVariant(string id, SelzApiPublicModelsProductsProductvariantrequest payload) returns SelzApiPublicModelsProductsProductvariantresponse|error {
-        string resourcePath = string `/products/${id}/variants`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/variants`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -586,7 +590,7 @@ public isolated client class Client {
     # + payload - The fields of the variant to update 
     # + return - Success 
     remote isolated function updateProductVariant(string id, string variantId, SelzApiPublicModelsProductsProductvariantputrequest payload) returns SelzApiPublicModelsProductsProductvariantresponse|error {
-        string resourcePath = string `/products/${id}/variants/${variantId}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/variants/${getEncodedUri(variantId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -599,8 +603,8 @@ public isolated client class Client {
     # + variantId - the variant id 
     # + return - Success 
     remote isolated function deleteProductVariant(string id, string variantId) returns http:Response|error {
-        string resourcePath = string `/products/${id}/variants/${variantId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(id)}/variants/${getEncodedUri(variantId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List all refunds
@@ -626,7 +630,7 @@ public isolated client class Client {
     # + id - the identifier of the refund to be retrieved 
     # + return - Success 
     remote isolated function retrieveRefunds(string id) returns SelzApiPublicModelsRefundsRefundresponse|error {
-        string resourcePath = string `/refunds/${id}`;
+        string resourcePath = string `/refunds/${getEncodedUri(id)}`;
         SelzApiPublicModelsRefundsRefundresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -673,7 +677,7 @@ public isolated client class Client {
     # + id - The identifier of the webhook to be retrieved. 
     # + return - Success 
     remote isolated function retrieveWebhooks(string id) returns SelzApiPublicModelsWebhooksWebhookresponse|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         SelzApiPublicModelsWebhooksWebhookresponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -683,7 +687,7 @@ public isolated client class Client {
     # + payload - The fields to update 
     # + return - Success 
     remote isolated function putWebhooks(string id, SelzApiPublicModelsWebhooksWebhookputrequest payload) returns http:Response|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json-patch+json");
@@ -695,8 +699,8 @@ public isolated client class Client {
     # + id - The identifier of the webhook to be deleted. 
     # + return - Success 
     remote isolated function deleteWebhooks(string id) returns http:Response|error {
-        string resourcePath = string `/webhooks/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

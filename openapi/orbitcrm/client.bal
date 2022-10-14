@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
@@ -96,7 +100,7 @@ public isolated client class Client {
     # + workspaceId - Workspace ID 
     # + return - success 
     remote isolated function getWorkspaceById(string workspaceId) returns json|error {
-        string resourcePath = string `/workspaces/${workspaceId}`;
+        string resourcePath = string `/workspaces/${getEncodedUri(workspaceId)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -121,7 +125,7 @@ public isolated client class Client {
     # + 'type - Type related to activities 
     # + return - success 
     remote isolated function getActivitiesInWorkspace(string workspaceId, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? page = (), string? direction = (), string? items = (), string? sort = (), string? 'type = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/activities`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/activities`;
         map<anydata> queryParam = {"activity_tags": activityTags, "affiliation": affiliation, "member_tags": memberTags, "orbit_level": orbitLevel, "activity_type": activityType, "weight": weight, "identity": identity, "location": location, "company": company, "start_date": startDate, "end_date": endDate, "page": page, "direction": direction, "items": items, "sort": sort, "type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -133,7 +137,7 @@ public isolated client class Client {
     # + payload - Create Activity 
     # + return - success 
     remote isolated function postActivitiesById(string workspaceId, ActivityAndIdentity payload) returns json|error {
-        string resourcePath = string `/${workspaceId}/activities`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/activities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -146,7 +150,7 @@ public isolated client class Client {
     # + id - Activity ID 
     # + return - success 
     remote isolated function getActivitiesById(string workspaceId, string id) returns json|error {
-        string resourcePath = string `/${workspaceId}/activities/${id}`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/activities/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -174,7 +178,7 @@ public isolated client class Client {
     # + 'type - Type related to activities 
     # + return - success 
     remote isolated function getMembers(string workspaceId, string? activityTags = (), string? affiliation = (), string? memberTags = (), string? orbitLevel = (), string? activityType = (), string? weight = (), string? identity = (), string? location = (), string? company = (), string? startDate = (), string? endDate = (), string? query = (), string? page = (), string? direction = (), string? items = (), string? activitiesCountMin = (), string? activitiesCountMax = (), string? sort = (), string? 'type = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/members`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members`;
         map<anydata> queryParam = {"activity_tags": activityTags, "affiliation": affiliation, "member_tags": memberTags, "orbit_level": orbitLevel, "activity_type": activityType, "weight": weight, "identity": identity, "location": location, "company": company, "start_date": startDate, "end_date": endDate, "query": query, "page": page, "direction": direction, "items": items, "activities_count_min": activitiesCountMin, "activities_count_max": activitiesCountMax, "sort": sort, "type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -186,7 +190,7 @@ public isolated client class Client {
     # + payload - Create member 
     # + return - success 
     remote isolated function postMembers(string workspaceId, MemberAndIdentity payload) returns json|error {
-        string resourcePath = string `/${workspaceId}/members`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -204,7 +208,7 @@ public isolated client class Client {
     # + github - Deprecated, please use source=github and username=<username> instead 
     # + return - success 
     remote isolated function findMembers(string workspaceId, string? 'source = (), string? sourceHost = (), string? uid = (), string? username = (), string? email = (), string? github = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/find`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/find`;
         map<anydata> queryParam = {"source": 'source, "source_host": sourceHost, "uid": uid, "username": username, "email": email, "github": github};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -216,7 +220,7 @@ public isolated client class Client {
     # + id - Member ID 
     # + return - success 
     remote isolated function getMembersById(string workspaceId, string id) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${id}`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(id)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -227,7 +231,7 @@ public isolated client class Client {
     # + payload - Update member 
     # + return - member updated 
     remote isolated function updateMembersById(string workspaceId, string id, Member payload) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${id}`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -240,8 +244,8 @@ public isolated client class Client {
     # + id - Member ID 
     # + return - member deleted 
     remote isolated function deleteMembersById(string workspaceId, string id) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List activities for a member
@@ -256,7 +260,7 @@ public isolated client class Client {
     # + 'type - Type related to activities 
     # + return - success 
     remote isolated function getActivities(string workspaceId, string memberId, string? page = (), string? direction = (), string? items = (), string? sort = (), string? activityType = (), string? 'type = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/activities`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/activities`;
         map<anydata> queryParam = {"page": page, "direction": direction, "items": items, "sort": sort, "activity_type": activityType, "type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -269,7 +273,7 @@ public isolated client class Client {
     # + payload - Create member activity 
     # + return - success 
     remote isolated function postActivities(string workspaceId, string memberId, Activity payload) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/activities`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/activities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -284,7 +288,7 @@ public isolated client class Client {
     # + payload - Update member activity 
     # + return - activity updated 
     remote isolated function updateActivityById(string workspaceId, string memberId, string id, Activity payload) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/activities/${id}`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/activities/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -298,8 +302,8 @@ public isolated client class Client {
     # + id - Activity ID 
     # + return - activity deleted 
     remote isolated function deleteActivityById(string workspaceId, string memberId, string id) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/activities/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/activities/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add identity to a member
@@ -309,7 +313,7 @@ public isolated client class Client {
     # + payload - Add member identity 
     # + return - success 
     remote isolated function postIdentities(string workspaceId, string memberId, Identity payload) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/identities`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/identities`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -322,8 +326,8 @@ public isolated client class Client {
     # + memberId - Member ID 
     # + return - success; no content 
     remote isolated function deleteIdentities(string workspaceId, string memberId) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/identities`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/identities`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the member's notes
@@ -333,7 +337,7 @@ public isolated client class Client {
     # + page - Page of the notes 
     # + return - success 
     remote isolated function getNotes(string workspaceId, string memberId, string? page = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/notes`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/notes`;
         map<anydata> queryParam = {"page": page};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
@@ -346,7 +350,7 @@ public isolated client class Client {
     # + payload - Create note 
     # + return - note created 
     remote isolated function postNotes(string workspaceId, string memberId, Note payload) returns json|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/notes`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/notes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -361,7 +365,7 @@ public isolated client class Client {
     # + payload - Update note 
     # + return - note updated 
     remote isolated function updateNoteById(string workspaceId, string memberId, string id, Note payload) returns http:Response|error {
-        string resourcePath = string `/${workspaceId}/members/${memberId}/notes/${id}`;
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/members/${getEncodedUri(memberId)}/notes/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -373,13 +377,13 @@ public isolated client class Client {
     # + workspaceId - Workspace ID 
     # + startDate - Report start date 
     # + endDate - Report end date 
-    # + 'group - Group in report generation 
+    # + group - Group in report generation 
     # + activityType - Activity type related to activities 
     # + 'type - Report type to generate 
     # + return - success 
-    remote isolated function getReports(string workspaceId, string? startDate = (), string? endDate = (), string? 'group = (), string? activityType = (), string? 'type = ()) returns json|error {
-        string resourcePath = string `/${workspaceId}/reports`;
-        map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "group": 'group, "activity_type": activityType, "type": 'type};
+    remote isolated function getReports(string workspaceId, string? startDate = (), string? endDate = (), string? group = (), string? activityType = (), string? 'type = ()) returns json|error {
+        string resourcePath = string `/${getEncodedUri(workspaceId)}/reports`;
+        map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "group": group, "activity_type": activityType, "type": 'type};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         json response = check self.clientEp->get(resourcePath);
         return response;

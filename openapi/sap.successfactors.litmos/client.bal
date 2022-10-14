@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -23,14 +23,14 @@ public type ApiKeysConfig record {|
     string aPIKey;
 |};
 
-# This is a generated connector for [SAP SuccessFactors Litmos API v1.7](https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification.
+# This is a generated connector for [SAP SuccessFactors Litmos API v1.0](https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification.
 # Litmos is a cloud-based solution that unifies virtual, classroom, mobile, and social learning. Our solutions empower training departments, sales and service leaders, safety and compliance managers, and HR teams to collaborate, author, globally distribute, and track web-based training courses, as well as schedule and track instructor-led courses. It automates formerly burdensome tasks so that teams can focus their energy on aligning training with the company's strategic agenda.
 @display {label: "SAP SuccessFactors Litmos", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. Create and configure an OAuth2 client credentials by following [this guide](https://support.litmos.com/hc/en-us/articles/227734667-Overview-Developer-API).
+    # The connector initialization requires setting the API credentials. Create and configure an API key credentials by following [this guide](https://support.litmos.com/hc/en-us/articles/227734667-Overview-Developer-API).
     #
     # + apiKeyConfig - API keys for authorization 
     # + clientConfig - The configurations to be used when initializing the `connector` 
@@ -95,7 +95,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        UserBulkImport response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserBulkImport response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the status of a user record import
@@ -104,7 +104,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function gettheStatusofaUserImportJob(string bulkImportId, string 'source, string? format = ()) returns UserBulkImport|error {
-        string resourcePath = string `/bulkimports/${bulkImportId}`;
+        string resourcePath = string `/bulkimports/${getEncodedUri(bulkImportId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -121,7 +121,7 @@ public isolated client class Client {
     # + isAPI - Set to "false" to fetch import errors for an import performed from the user interface. Do not include the parameter unless the value is set to "false". 
     # + return - Success. 
     remote isolated function gettheUserImportErrors(string bulkImportId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), boolean? isAPI = ()) returns InlineResponse200|error {
-        string resourcePath = string `/bulkimports/${bulkImportId}/usererrors`;
+        string resourcePath = string `/bulkimports/${getEncodedUri(bulkImportId)}/usererrors`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "IsAPI": isAPI};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -144,7 +144,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        CourseBulkImport response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CourseBulkImport response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of collection records
@@ -178,7 +178,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        Collections response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Collections response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a Collection Listing
@@ -196,7 +196,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        Listing response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        Listing response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Collection Listings
@@ -207,7 +207,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getCollectionListings(string collectionId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns Listings|error {
-        string resourcePath = string `/collectionlistings/${collectionId}`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(collectionId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -224,7 +224,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getUsersAddedtoaListing(string listingId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns ListingUsers|error {
-        string resourcePath = string `/collectionlistings/${listingId}/users`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -238,7 +238,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function postUserstoaListing(string listingId, string 'source, string contentType, Users payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collectionlistings/${listingId}/users`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -247,7 +247,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a User from a Listing
@@ -256,12 +256,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function deleteaUserfromaListing(string listingId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collectionlistings/${listingId}/users/${userId}`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Teams Added to a Listing
@@ -272,7 +272,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getTeamsAddedtoaListing(string listingId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns Teams|error {
-        string resourcePath = string `/collectionlistings/${listingId}/teams`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -286,14 +286,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function postaTeamtoaListing(string listingId, string teamId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collectionlistings/${listingId}/team/${teamId}`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/team/${getEncodedUri(teamId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a Team from a Listing
@@ -302,12 +302,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function removeATeamFromListing(string listingId, string teamId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collectionlistings/${listingId}/team/${teamId}`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(listingId)}/team/${getEncodedUri(teamId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Add Courses to a Collection
@@ -316,7 +316,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Created. 
     remote isolated function addCoursestoaCollection(string collectionId, string 'source, string contentType, Body payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collections/${collectionId}/courses`;
+        string resourcePath = string `/collections/${getEncodedUri(collectionId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -325,7 +325,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a Course from a Collection
@@ -334,12 +334,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function removeaCoursefromaCollection(string collectionId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collections/${collectionId}/courses`;
+        string resourcePath = string `/collections/${getEncodedUri(collectionId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Add LearningPaths to a Collection
@@ -348,7 +348,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Created. 
     remote isolated function addLearningPathstoaCollection(string collectionId, string 'source, string contentType, Body2 payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collections/${collectionId}/learningpaths`;
+        string resourcePath = string `/collections/${getEncodedUri(collectionId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -357,7 +357,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove a Learning Path from a Collection
@@ -366,12 +366,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function removeaLearningPathfromaCollection(string collectionId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collections/${collectionId}/learningpaths`;
+        string resourcePath = string `/collections/${getEncodedUri(collectionId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Delete Collection
@@ -380,12 +380,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function deleteCollection(string collectionId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collection/${collectionId}`;
+        string resourcePath = string `/collection/${getEncodedUri(collectionId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Delete a Collection Listing
@@ -394,12 +394,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function deleteCollectionListing(string collectionId, string listingId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/collectionlistings/${collectionId}/${listingId}`;
+        string resourcePath = string `/collectionlistings/${getEncodedUri(collectionId)}/${getEncodedUri(listingId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a List of Courses
@@ -425,7 +425,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getCourse(string courseId, string 'source, string? format = ()) returns Course|error {
-        string resourcePath = string `/courses/${courseId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -439,12 +439,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function deleteCourse(string courseId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Course Details
@@ -453,7 +453,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getCourseDetails(string courseId, string 'source, string? format = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/courses/${courseId}/details`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/details`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -470,7 +470,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function listAllUsersAssignedtoaCourse(string courseId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/courses/${courseId}/users`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -486,7 +486,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function listAllModulesInaCourse(string courseId, string 'source, string? format = (), int? 'limit = (), string? search = ()) returns Modules|error {
-        string resourcePath = string `/courses/${courseId}/modules`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -516,7 +516,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getCustomFieldsforaCourse(string courseId, string 'source, string? format = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/courses/${courseId}/coursecustomfields`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/coursecustomfields`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -544,7 +544,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getCourseCustomFieldValueonAllCourses(string customFieldId, string 'source, string? format = ()) returns CourseCustomField|error {
-        string resourcePath = string `/coursecustomfields/${customFieldId}`;
+        string resourcePath = string `/coursecustomfields/${getEncodedUri(customFieldId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -878,7 +878,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getTotalBadgesandPointsForUser(string userId, string 'source, string? format = ()) returns InlineResponse20023|error {
-        string resourcePath = string `/users/${userId}/gamificationsummary`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/gamificationsummary`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -894,7 +894,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getTotalBadgesForUser(string userId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns InlineResponse20024|error {
-        string resourcePath = string `/users/${userId}/badges`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/badges`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -909,7 +909,7 @@ public isolated client class Client {
     # + 'limit - Total records to return (max 1000) 
     # + return - Success. 
     remote isolated function getBadgesandPointsEarnedByUser(string userId, string 'source, string? format = (), int? 'limit = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/gamificationdetails`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/gamificationdetails`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -925,7 +925,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getBadgesandPointsEarnedbyaTeam(string teamId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/gamificationdetails`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/gamificationdetails`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -939,14 +939,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function resetBadgesandPointsForaUser(string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/gamificationreset`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/gamificationreset`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a List of Future Sessions for an ILT Module
@@ -997,7 +997,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaListofallILTModulesinaCourse(string courseId, string 'source, int? 'limit = (), int? 'start = (), string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/ILT`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/ILT`;
         map<anydata> queryParam = {"limit": 'limit, "start": 'start, "source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1013,7 +1013,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getaListofSessionsinanILTModule(string courseId, string moduleId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1027,7 +1027,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Created. 
     remote isolated function createaNewILTSessionforaModule(string courseId, string moduleId, string 'source, string contentType, Session payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1036,7 +1036,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Specific Session in an ILT Module
@@ -1045,7 +1045,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaSpecificSessioninanILTModule(string courseId, string moduleId, string sessionId, string 'source, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1059,7 +1059,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function updateaSessioninanILTModule(string courseId, string moduleId, string sessionId, string 'source, string contentType, Session payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1068,7 +1068,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a Session in an ILT Module.
@@ -1076,12 +1076,12 @@ public isolated client class Client {
     # + 'source - Custom identifier used to identify an API user, API program, etc. 
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     remote isolated function deleteaSessioninanILTModule(string courseId, string moduleId, string sessionId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a List of All Instructors
@@ -1109,7 +1109,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getaListofSessionsforaSpecificInstructor(string instructorId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/instructors/${instructorId}/sessions`;
+        string resourcePath = string `/instructors/${getEncodedUri(instructorId)}/sessions`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1125,7 +1125,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getSessionRollCallforaSession(string courseId, string moduleId, string sessionId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}/rollcall`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}/rollcall`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1139,7 +1139,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function markanILTSessionCompleteandAddScore(string courseId, string moduleId, string sessionId, string 'source, string contentType, EventUsers payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}/rollcall`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}/rollcall`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1148,7 +1148,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of Users Registered to a Session
@@ -1159,7 +1159,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getalistofUsersRegisteredtoaSession(string courseId, string moduleId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/registration`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/registration`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1173,14 +1173,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function registeraUsertoaSession(string courseId, string moduleId, string sessionId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}/users/${userId}/register`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}/users/${getEncodedUri(userId)}/register`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Register a List of Users to a Session
@@ -1189,7 +1189,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function registeraListofUserstoaSession(string courseId, string moduleId, string sessionId, string 'source, string contentType, Users payload, string? format = ()) returns UserSessionRegistrationStatus|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}/users/register`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}/users/register`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1198,7 +1198,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        UserSessionRegistrationStatus response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserSessionRegistrationStatus response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get user Attendance for a Session
@@ -1209,7 +1209,7 @@ public isolated client class Client {
     # + 'start - Record number where paging starts 
     # + return - Success. 
     remote isolated function getuserAttendanceforaSession(string courseId, string moduleId, string sessionId, string 'source, string? format = (), int? 'limit = (), int? 'start = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessions/${sessionId}/attendance`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessions/${getEncodedUri(sessionId)}/attendance`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1223,14 +1223,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function markAttendanceforUsersRegisteredtoaSession(string courseId, string moduleId, string sessiondayId, string userId, string attended, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}/sessiondays/${sessiondayId}/users/${userId}/attended/${attended}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}/sessiondays/${getEncodedUri(sessiondayId)}/users/${getEncodedUri(userId)}/attended/${getEncodedUri(attended)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get All Learning Paths
@@ -1256,7 +1256,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaSpecificLearningPath(string learningpathId, string 'source, string? format = ()) returns LearningPath|error {
-        string resourcePath = string `/learningpaths/${learningpathId}`;
+        string resourcePath = string `/learningpaths/${getEncodedUri(learningpathId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1270,12 +1270,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success 
     remote isolated function deleteLearningPath(string learningpathId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/learningpaths/${learningpathId}`;
+        string resourcePath = string `/learningpaths/${getEncodedUri(learningpathId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a List of Courses in a Learning Path
@@ -1287,7 +1287,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getaListofCoursesinaLearningPath(string learningpathId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns http:Response|error {
-        string resourcePath = string `/learningpaths/${learningpathId}/courses`;
+        string resourcePath = string `/learningpaths/${getEncodedUri(learningpathId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1304,7 +1304,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getaListofUsersAssignedtoaLearningPath(string learningpathId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns http:Response|error {
-        string resourcePath = string `/learningpaths/${learningpathId}/users`;
+        string resourcePath = string `/learningpaths/${getEncodedUri(learningpathId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1321,7 +1321,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getLearningPathsAssignedtoaTeam(string teamId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns LearningPaths|error {
-        string resourcePath = string `/teams/${teamId}/learningpaths`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1335,7 +1335,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function assignaListofLearningPathstoTeam(string teamId, string 'source, string contentType, Body4 payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/learningpaths`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1344,7 +1344,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign a List of Learning Paths from Team
@@ -1353,12 +1353,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unassignaListofLearningPathsfromTeam(string teamId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/learningpaths`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a Module
@@ -1367,7 +1367,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaModule(string moduleId, string 'source, string? format = ()) returns Module|error {
-        string resourcePath = string `/modules/${moduleId}`;
+        string resourcePath = string `/modules/${getEncodedUri(moduleId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1381,7 +1381,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function updateascormTincanmodule(string moduleId, string 'source, string contentType, Module payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/modules/${moduleId}`;
+        string resourcePath = string `/modules/${getEncodedUri(moduleId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1390,7 +1390,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Module
@@ -1399,12 +1399,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success 
     remote isolated function deleteModule(string moduleId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/modules/${moduleId}`;
+        string resourcePath = string `/modules/${getEncodedUri(moduleId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Mark a Module Complete
@@ -1413,7 +1413,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function markaModuleComplete(string moduleId, string 'source, string contentType, ModuleResult payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/results/modules/${moduleId}`;
+        string resourcePath = string `/results/modules/${getEncodedUri(moduleId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1422,7 +1422,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a SCORM/Tin Can Module
@@ -1440,7 +1440,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Copy SCORM/Tin Can Module to a Course
@@ -1449,7 +1449,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function copyscormTincanmoduletoacourse(string courseId, string 'source, string contentType, Modules payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/copy`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/copy`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1458,7 +1458,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Link SCORM/Tin Can Module to a Course
@@ -1467,7 +1467,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function linkscormTincanmoduletoacourse(string courseId, string 'source, string contentType, Modules payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/link`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/link`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1476,7 +1476,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Mirror SCORM/Tin Can Module to a Course
@@ -1485,7 +1485,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function mirrorscormTincanmoduletoacourse(string courseId, string 'source, string contentType, Modules payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/mirror`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/mirror`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1494,7 +1494,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove SCORM/Tin Can Module from a Course
@@ -1503,12 +1503,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function removescormTincanmodulefromacourse(string courseId, string moduleId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/courses/${courseId}/modules/${moduleId}`;
+        string resourcePath = string `/courses/${getEncodedUri(courseId)}/modules/${getEncodedUri(moduleId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a Token
@@ -1517,7 +1517,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaToken(string tokenId, string 'source, string? format = ()) returns Token|error {
-        string resourcePath = string `/tokens/${tokenId}`;
+        string resourcePath = string `/tokens/${getEncodedUri(tokenId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1557,7 +1557,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a Token
@@ -1575,7 +1575,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Actions Activity
@@ -1695,7 +1695,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List of Users With Summary of User Pagination Details
@@ -1724,7 +1724,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getUserbyUserId(string userId, string 'source, string? format = ()) returns User|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1738,7 +1738,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function updateUser(string userId, string 'source, string contentType, User payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1747,7 +1747,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete a User
@@ -1756,12 +1756,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function deleteaUser(string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a List of Users with Details
@@ -1790,7 +1790,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getAdvancedCustomFieldsforUser(string userId, string 'source, string? format = ()) returns InlineResponse20027|error {
-        string resourcePath = string `/users/${userId}/usercustomfields`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/usercustomfields`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1804,7 +1804,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function addAdvancedCustomFieldsforUser(string userId, string 'source, string contentType, Body5 payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/usercustomfields`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/usercustomfields`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1813,7 +1813,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List All Courses Assigned to a User
@@ -1825,7 +1825,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function listAllCoursesAssignedtoaUser(string userId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns InlineResponse20028|error {
-        string resourcePath = string `/users/${userId}/courses`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1839,7 +1839,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function assignCoursestoUser(string userId, string 'source, string contentType, Body6 payload, string? format = (), boolean? sendmessage = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/courses`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format, "sendmessage": sendmessage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1848,7 +1848,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reset Course Results
@@ -1857,14 +1857,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function resetCourseResults(string userId, string courseId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/courses/${courseId}/reset`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/courses/${getEncodedUri(courseId)}/reset`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign Course from User
@@ -1873,12 +1873,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unassignCoursefromUser(string userId, string courseId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/courses/${courseId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/courses/${getEncodedUri(courseId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Courses Assigned For a List of Users
@@ -1896,7 +1896,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a List of Learning Paths Assigned to a User
@@ -1908,7 +1908,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getaListofLearningPathsAssignedtoaUser(string userId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns InlineResponse20029|error {
-        string resourcePath = string `/users/${userId}/learningpaths`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1922,7 +1922,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function assignLearningPathsToUser(string userId, string 'source, string contentType, Body8 payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/learningpaths`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/learningpaths`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1931,7 +1931,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Un-Assign Users from a Learning Path
@@ -1940,12 +1940,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unAssignusersfromalearningpath(string userId, string learningpathId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/learningpaths/${learningpathId}`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/learningpaths/${getEncodedUri(learningpathId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a list of All Teams a User is Assigned to
@@ -1957,7 +1957,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getalistofAllTeamsaUserisAssignedto(string userId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns Teams|error {
-        string resourcePath = string `/users/${userId}/teams`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -1972,7 +1972,7 @@ public isolated client class Client {
     # + sendmessage - set to "True" to send login emails to new users 
     # + return - Success. 
     remote isolated function assignaUsertoaListofTeams(string userId, string 'source, string contentType, Teams payload, string? format = (), boolean? sendmessage = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/teams`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format, "sendmessage": sendmessage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -1981,7 +1981,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign a User from All Teams
@@ -1990,45 +1990,45 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unassignaUserfromAllTeams(string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/users/${userId}/teams`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Add a Statement
     #
     # + return - Ok 
     remote isolated function addaStatement(string contentType, string litmosDomain, string dBinstance, string payload) returns json|error {
-        string resourcePath = string `/${litmosDomain}/${dBinstance}/statements`;
+        string resourcePath = string `/${getEncodedUri(litmosDomain)}/${getEncodedUri(dBinstance)}/statements`;
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update a Statement
     #
     # + return - No Content 
     remote isolated function updateaStatement(string contentType, string litmosDomain, string dBinstance, string statementId, string payload) returns http:Response|error {
-        string resourcePath = string `/${litmosDomain}/${dBinstance}/statements/statementID=${statementId}`;
+        string resourcePath = string `/${getEncodedUri(litmosDomain)}/${getEncodedUri(dBinstance)}/statements/statementID=${getEncodedUri(statementId)}`;
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Statement
     #
     # + return - OK 
     remote isolated function getaStatement(string litmosDomain, string dBinstance, string statementId) returns json|error {
-        string resourcePath = string `/${litmosDomain}/${dBinstance}/statementID=${statementId}`;
+        string resourcePath = string `/${getEncodedUri(litmosDomain)}/${getEncodedUri(dBinstance)}/statementID=${getEncodedUri(statementId)}`;
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         json response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -2043,7 +2043,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getaListofallCoursesAssignedtoTeam(string teamId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns Courses|error {
-        string resourcePath = string `/teams/${teamId}/courses`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2057,7 +2057,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function assignaListofCoursestoTeam(string teamId, string 'source, string contentType, Body9 payload, string? format = (), boolean? includesubteams = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/courses`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format, "includesubteams": includesubteams};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -2066,7 +2066,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign a List of Courses from Team
@@ -2075,12 +2075,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unassignaListofCoursesfromTeam(string teamId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/courses`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/courses`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Team Administrators for a Team
@@ -2092,7 +2092,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getTeamAdministratorsforaTeam(string teamId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns InlineResponse20030|error {
-        string resourcePath = string `/teams/${teamId}/admins`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/admins`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2106,14 +2106,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function promoteaUsertoTeamAdminforaTeam(string teamId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/admins/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/admins/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Demote a Team Administrator on a Team
@@ -2122,12 +2122,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function demoteaTeamAdministratoronaTeam(string teamId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/admins/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/admins/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Team Leaders for a Team
@@ -2139,7 +2139,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getTeamLeadersforaTeam(string teamId, string 'source, string? format = (), int? 'limit = (), int? 'start = (), string? search = ()) returns InlineResponse20031|error {
-        string resourcePath = string `/teams/${teamId}/leaders`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/leaders`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "start": 'start, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2153,14 +2153,14 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function promoteaUsertoTeamLeaderforaTeam(string teamId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/leaders/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/leaders/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Demote a Team Leader on a Team
@@ -2169,12 +2169,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function demoteaTeamLeaderonaTeam(string teamId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/leaders/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/leaders/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Users in a Team
@@ -2185,7 +2185,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getUsersinaTeam(string teamId, string 'source, string? format = (), int? 'limit = (), string? search = ()) returns InlineResponse20030|error {
-        string resourcePath = string `/teams/${teamId}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2200,7 +2200,7 @@ public isolated client class Client {
     # + sendmessage - set to "True" to send login emails to new users 
     # + return - Created. 
     remote isolated function assignUserstoaTeam(string teamId, string 'source, string contentType, Body10 payload, string? format = (), boolean? sendmessage = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/users`;
         map<anydata> queryParam = {"source": 'source, "format": format, "sendmessage": sendmessage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -2209,7 +2209,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign Users from a Team
@@ -2218,12 +2218,12 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function unassignUsersfromaTeam(string teamId, string userId, string 'source, string contentType, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/users/${userId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a List of All Teams
@@ -2258,7 +2258,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Team
@@ -2267,7 +2267,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function getaTeam(string teamId, string 'source, string? format = ()) returns Team|error {
-        string resourcePath = string `/teams/${teamId}`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2283,7 +2283,7 @@ public isolated client class Client {
     # + search - String value used to the filter the records 
     # + return - Success. 
     remote isolated function getSubTeamId(string teamId, string 'source, string? format = (), int? 'limit = (), string? search = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/teams`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format, "limit": 'limit, "search": search};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"APIKey": self.apiKeyConfig.aPIKey};
@@ -2297,7 +2297,7 @@ public isolated client class Client {
     # + format - set to "json" if the response body is to be formatted in JavaScript Object Notation 
     # + return - Success. 
     remote isolated function createasubTeam(string teamId, string 'source, string contentType, Team payload, string? format = ()) returns http:Response|error {
-        string resourcePath = string `/teams/${teamId}/teams`;
+        string resourcePath = string `/teams/${getEncodedUri(teamId)}/teams`;
         map<anydata> queryParam = {"source": 'source, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Content-Type": contentType, "APIKey": self.apiKeyConfig.aPIKey};
@@ -2306,7 +2306,7 @@ public isolated client class Client {
         json jsonBody = check payload.cloneWithType(json);
         xml? xmlBody = check xmldata:fromJson(jsonBody);
         request.setPayload(xmlBody, "application/xml");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

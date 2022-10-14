@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:OAuth2PasswordGrantConfig auth;
+    OAuth2PasswordGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Password Grant Configs
+public type OAuth2PasswordGrantConfig record {|
+    *http:OAuth2PasswordGrantConfig;
+    # Token URL
+    string tokenUrl = "https:/<site_url>/rest/<version>/oauth2/token";
 |};
 
 # This is a generated connector for [SugarCRM REST API v12.0](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) OpenAPI Specification.
@@ -69,7 +80,7 @@ public isolated client class Client {
     }
     # Return a set of records filtered by an expression.
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + filter - The [filter expression](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_11.3/Integration/Web_Services/REST_API/End 
     # + filterId - Identifier for a preexisting filter. If filter is also set, the two filters are joined with an AND. 
     # + q - A search expression, will search on this module. Cannot be used at the same time as a filter expression or id. 
@@ -81,8 +92,8 @@ public isolated client class Client {
     # + view - Instead of defining the fields argument, the view argument can be used instead. The field list is constructed at the server side based on the view definition which is requested. This argument can be used in combination with the fields argument. 
     # + nullsLast - Boolean to return records with null values in order_by fields last in the result set. 
     # + return - ok 
-    remote isolated function listRecords(string 'module, string[]? filter = (), string? filterId = (), string? q = (), string? maxNum = (), string? offset = (), string? fields = (), string? orderBy = (), boolean? deleted = (), string? view = (), boolean? nullsLast = ()) returns FilteredRecordDetails|error {
-        string resourcePath = string `/${'module}`;
+    remote isolated function listRecords(string module, string[]? filter = (), string? filterId = (), string? q = (), string? maxNum = (), string? offset = (), string? fields = (), string? orderBy = (), boolean? deleted = (), string? view = (), boolean? nullsLast = ()) returns FilteredRecordDetails|error {
+        string resourcePath = string `/${getEncodedUri(module)}`;
         map<anydata> queryParam = {"filter": filter, "filter_id": filterId, "q": q, "max_num": maxNum, "offset": offset, "fields": fields, "order_by": orderBy, "deleted": deleted, "view": view, "nulls_last": nullsLast};
         map<Encoding> queryParamEncoding = {"filter": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -91,11 +102,11 @@ public isolated client class Client {
     }
     # Create a new record of the specified type
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + payload - Filter options 
     # + return - ok 
-    remote isolated function createRecord(string 'module, json payload) returns json|error {
-        string resourcePath = string `/${'module}`;
+    remote isolated function createRecord(string module, json payload) returns json|error {
+        string resourcePath = string `/${getEncodedUri(module)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->post(resourcePath, request);
@@ -103,11 +114,11 @@ public isolated client class Client {
     }
     # Return a set of records filtered by an expression. The filter can be applied to multiple fields and have multiple and/or conditions in it.
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + payload - Filter options 
     # + return - ok 
-    remote isolated function listFilteredRecords(string 'module, FilterOptions payload) returns FilteredRecordDetails|error {
-        string resourcePath = string `/${'module}/filter`;
+    remote isolated function listFilteredRecords(string module, FilterOptions payload) returns FilteredRecordDetails|error {
+        string resourcePath = string `/${getEncodedUri(module)}/filter`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -116,22 +127,22 @@ public isolated client class Client {
     }
     # Returns a single record
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + 'record - The record id. 
     # + return - ok 
-    remote isolated function retrieveRecord(string 'module, string 'record) returns json|error {
-        string resourcePath = string `/${'module}/${'record}`;
+    remote isolated function retrieveRecord(string module, string 'record) returns json|error {
+        string resourcePath = string `/${getEncodedUri(module)}/${getEncodedUri('record)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Update a record of the specified type
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + 'record - The record id. 
     # + payload - Record Details 
     # + return - ok 
-    remote isolated function updateRecord(string 'module, string 'record, json payload) returns json|error {
-        string resourcePath = string `/${'module}/${'record}`;
+    remote isolated function updateRecord(string module, string 'record, json payload) returns json|error {
+        string resourcePath = string `/${getEncodedUri(module)}/${getEncodedUri('record)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -139,23 +150,23 @@ public isolated client class Client {
     }
     # Delete a record of the specified type
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + 'record - The record id. 
     # + return - ok 
-    remote isolated function deleteRecord(string 'module, string 'record) returns SuccessResponseID|error {
-        string resourcePath = string `/${'module}/${'record}`;
-        SuccessResponseID response = check self.clientEp->delete(resourcePath);
+    remote isolated function deleteRecord(string module, string 'record) returns SuccessResponseID|error {
+        string resourcePath = string `/${getEncodedUri(module)}/${getEncodedUri('record)}`;
+        SuccessResponseID response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # View audit log in record view
     #
-    # + 'module - The name of the module. 
+    # + module - The name of the module. 
     # + 'record - The record id. 
     # + maxNum - A maximum number of records to return. The default is all records. 
     # + offset - The number of records to skip over before records are returned. The default is 0. The parameter will be ignored if the max_num parameter is missing. 
     # + return - ok 
-    remote isolated function viewChangeLog(string 'module, string 'record, string? maxNum = (), string? offset = ()) returns FilteredRecordDetails|error {
-        string resourcePath = string `/${'module}/${'record}/audit`;
+    remote isolated function viewChangeLog(string module, string 'record, string? maxNum = (), string? offset = ()) returns FilteredRecordDetails|error {
+        string resourcePath = string `/${getEncodedUri(module)}/${getEncodedUri('record)}/audit`;
         map<anydata> queryParam = {"max_num": maxNum, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FilteredRecordDetails response = check self.clientEp->get(resourcePath);
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + allRecurrences - Flag to update all events in a series. 
     # + return - ok 
     remote isolated function updateCallEvent(string 'record, boolean? allRecurrences = ()) returns json|error {
-        string resourcePath = string `/Calls/${'record}`;
+        string resourcePath = string `/Calls/${getEncodedUri('record)}`;
         map<anydata> queryParam = {"all_recurrences": allRecurrences};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -221,10 +232,10 @@ public isolated client class Client {
     # + allRecurrences - Flag to delete all events in a series. 
     # + return - ok 
     remote isolated function deleteCallEvent(string 'record, boolean? allRecurrences = ()) returns SuccessResponseID|error {
-        string resourcePath = string `/Calls/${'record}`;
+        string resourcePath = string `/Calls/${getEncodedUri('record)}`;
         map<anydata> queryParam = {"all_recurrences": allRecurrences};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SuccessResponseID response = check self.clientEp->delete(resourcePath);
+        SuccessResponseID response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a single parent record of the given commentlog
@@ -232,7 +243,7 @@ public isolated client class Client {
     # + 'record - CommentLog ID 
     # + return - ok 
     remote isolated function retrieveCommentlogParent(string 'record) returns json|error {
-        string resourcePath = string `/CommentLog/${'record}`;
+        string resourcePath = string `/CommentLog/${getEncodedUri('record)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -272,7 +283,7 @@ public isolated client class Client {
     # + deleted - Boolean to show deleted records in the result set. 
     # + return - ok 
     remote isolated function getContactCases(string 'record, string[]? filter = (), string? filterId = (), string? maxNum = (), string? offset = (), string? fields = (), string? orderBy = (), boolean? deleted = ()) returns FilteredRecordDetails|error {
-        string resourcePath = string `/Contact/${'record}/Cases`;
+        string resourcePath = string `/Contact/${getEncodedUri('record)}/Cases`;
         map<anydata> queryParam = {"filter": filter, "filter_id": filterId, "max_num": maxNum, "offset": offset, "fields": fields, "order_by": orderBy, "deleted": deleted};
         map<Encoding> queryParamEncoding = {"filter": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -284,7 +295,7 @@ public isolated client class Client {
     # + 'record - Contact ID 
     # + return - ok 
     remote isolated function getFreeBusySchedule(string 'record) returns FreeBusyData|error {
-        string resourcePath = string `/Contacts/${'record}/freebusy`;
+        string resourcePath = string `/Contacts/${getEncodedUri('record)}/freebusy`;
         FreeBusyData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -322,8 +333,8 @@ public isolated client class Client {
     # + 'record - User ID 
     # + return - ok 
     remote isolated function deleteUser(string 'record) returns SuccessResponseID|error {
-        string resourcePath = string `/Users/${'record}`;
-        SuccessResponseID response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/Users/${getEncodedUri('record)}`;
+        SuccessResponseID response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a list of calendar event start and end times for specified person
@@ -331,7 +342,7 @@ public isolated client class Client {
     # + 'record - User ID 
     # + return - ok 
     remote isolated function getUserFreeBusySchedule(string 'record) returns FreeBusyData|error {
-        string resourcePath = string `/Users/${'record}/freebusy`;
+        string resourcePath = string `/Users/${getEncodedUri('record)}/freebusy`;
         FreeBusyData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -351,7 +362,7 @@ public isolated client class Client {
     # + allRecurrences - Flag to update all events in a series. 
     # + return - ok 
     remote isolated function updateCalendarEvent(string 'record, boolean? allRecurrences = ()) returns json|error {
-        string resourcePath = string `/Meetings/${'record}`;
+        string resourcePath = string `/Meetings/${getEncodedUri('record)}`;
         map<anydata> queryParam = {"all_recurrences": allRecurrences};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -365,10 +376,10 @@ public isolated client class Client {
     # + allRecurrences - Flag to delete all events in a series. 
     # + return - ok 
     remote isolated function deleteCalendarEvent(string 'record, boolean? allRecurrences = ()) returns SuccessResponseID|error {
-        string resourcePath = string `/Meetings/${'record}`;
+        string resourcePath = string `/Meetings/${getEncodedUri('record)}`;
         map<anydata> queryParam = {"all_recurrences": allRecurrences};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SuccessResponseID response = check self.clientEp->delete(resourcePath);
+        SuccessResponseID response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve info about launching an external meeting
@@ -376,7 +387,7 @@ public isolated client class Client {
     # + 'record - Meeting ID 
     # + return - ok 
     remote isolated function getExternalMeetingInfo(string 'record) returns json|error {
-        string resourcePath = string `/Meetings/${'record}/external`;
+        string resourcePath = string `/Meetings/${getEncodedUri('record)}/external`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -385,7 +396,7 @@ public isolated client class Client {
     # + 'record - Opportunity ID 
     # + return - ok 
     remote isolated function updateOpportunity(string 'record) returns json|error {
-        string resourcePath = string `/Opportunities/${'record}`;
+        string resourcePath = string `/Opportunities/${getEncodedUri('record)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> put(resourcePath, request);
@@ -411,7 +422,7 @@ public isolated client class Client {
     # + payload - An object containing the Contacts module to be created as part of the conversion, along with (optionally) any modules that this new Contact record is to be related to. 
     # + return - ok 
     remote isolated function convertLead(string leadId, json payload) returns json|error {
-        string resourcePath = string `/Leads/${leadId}/convert`;
+        string resourcePath = string `/Leads/${getEncodedUri(leadId)}/convert`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -423,7 +434,7 @@ public isolated client class Client {
     # + 'record - Lead ID 
     # + return - ok 
     remote isolated function getLeadFreeBusySchedule(string 'record) returns FreeBusyData|error {
-        string resourcePath = string `/Leads/${'record}/freebusy`;
+        string resourcePath = string `/Leads/${getEncodedUri('record)}/freebusy`;
         FreeBusyData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -449,7 +460,7 @@ public isolated client class Client {
     # + view - Instead of defining the fields argument, the view argument can be used instead. The field list is constructed at the server side based on the view definition which is requested. This argument can be used in combination with the fields argument. 
     # + return - ok 
     remote isolated function listFilteredRelatedRecords(string linkName, string 'record, string[]? filter = (), string? maxNum = (), string? offset = (), string? fields = (), string? orderBy = (), string? view = ()) returns FilteredRecordDetails|error {
-        string resourcePath = string `/Accounts/${'record}/link/${linkName}/filter`;
+        string resourcePath = string `/Accounts/${getEncodedUri('record)}/link/${getEncodedUri(linkName)}/filter`;
         map<anydata> queryParam = {"filter": filter, "max_num": maxNum, "offset": offset, "fields": fields, "order_by": orderBy, "view": view};
         map<Encoding> queryParamEncoding = {"filter": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -493,7 +504,7 @@ public isolated client class Client {
     # + category - The category 
     # + return - ok 
     remote isolated function getConfig(string category) returns json|error {
-        string resourcePath = string `/Administration/config/${category}`;
+        string resourcePath = string `/Administration/config/${getEncodedUri(category)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -502,7 +513,7 @@ public isolated client class Client {
     # + category - The category 
     # + return - ok 
     remote isolated function setConfig(string category) returns json|error {
-        string resourcePath = string `/Administration/config/${category}`;
+        string resourcePath = string `/Administration/config/${getEncodedUri(category)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> post(resourcePath, request);

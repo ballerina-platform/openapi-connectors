@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Sinch SMS API v1](https://www.sinch.com/) OpenAPI specification.
@@ -77,7 +81,7 @@ public isolated client class Client {
     # + endDate - Only list messages received before this date time formatted as [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) 
     # + return - OK 
     remote isolated function listBatches(string servicePlanId, int? page = (), int pageSize = 30, string? 'from = (), string? startDate = (), string? endDate = ()) returns InlineResponse200|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize, "from": 'from, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + payload - Send batch object 
     # + return - Created 
     remote isolated function sendSMS(string servicePlanId, SendBatchObject payload) returns SendBatchCreated|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -106,7 +110,7 @@ public isolated client class Client {
     # + endDate - Only list messages received before this date time formatted as [ISO-8601](https://en.wikipedia.org/wiki/ISO_8601) 
     # + return - OK 
     remote isolated function listInboundMessages(string servicePlanId, int page = 0, int pageSize = 30, string? to = (), string startDate = "Now-24", string? endDate = ()) returns InboundResponseObject|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/inbounds`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/inbounds`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize, "to": to, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InboundResponseObject response = check self.clientEp->get(resourcePath);
@@ -118,7 +122,7 @@ public isolated client class Client {
     # + inboundId - The inbound ID found when listing inbound messages. 
     # + return - OK 
     remote isolated function retrieveInboundMessage(string servicePlanId, string inboundId) returns InboundResponseObject|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/inbounds/${inboundId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/inbounds/${getEncodedUri(inboundId)}`;
         InboundResponseObject response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -130,7 +134,7 @@ public isolated client class Client {
     # + payload - Send batch object 
     # + return - OK 
     remote isolated function dryRun(string servicePlanId, SendBatchObject payload, boolean? perRecipient = (), int numberOfRecipients = 100) returns InlineResponse2001|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/dry_run`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/dry_run`;
         map<anydata> queryParam = {"per_recipient": perRecipient, "number_of_recipients": numberOfRecipients};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -145,7 +149,7 @@ public isolated client class Client {
     # + batchId - The batch ID you received from sending a message. 
     # + return - OK 
     remote isolated function getBatchMessage(string servicePlanId, string batchId) returns SendBatchCreated|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}`;
         SendBatchCreated response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -156,7 +160,7 @@ public isolated client class Client {
     # + payload - Send batch object 
     # + return - OK 
     remote isolated function replaceBatch(string servicePlanId, string batchId, SendBatchObject payload) returns SendBatchCreated|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -170,7 +174,7 @@ public isolated client class Client {
     # + payload - Update batch request 
     # + return - OK 
     remote isolated function updateBatchMessage(string servicePlanId, string batchId, UpdateBatchReq payload) returns SendBatchCreated|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -183,8 +187,8 @@ public isolated client class Client {
     # + batchId - The batch ID you received from sending a message. 
     # + return - Batch deleted 
     remote isolated function cancelBatchMessage(string servicePlanId, string batchId) returns SendBatchObject|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}`;
-        SendBatchObject response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}`;
+        SendBatchObject response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve a delivery report
@@ -196,7 +200,7 @@ public isolated client class Client {
     # + code - 	Comma separated list of delivery_receipt_error_codes to include 
     # + return - OK 
     remote isolated function getDeliveryReportByBatchId(string servicePlanId, string batchId, string 'type = "summary", string? status = (), string? code = ()) returns RetrieveDeliveryResponseObj|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}/delivery_report`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}/delivery_report`;
         map<anydata> queryParam = {"type": 'type, "status": status, "code": code};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RetrieveDeliveryResponseObj response = check self.clientEp->get(resourcePath);
@@ -209,7 +213,7 @@ public isolated client class Client {
     # + recipientMsisdn - Phone number for which you to want to search. 
     # + return - OK 
     remote isolated function getDeliveryReportByPhoneNumber(string servicePlanId, string batchId, string recipientMsisdn) returns RetrieveRecipientDeliveryResponseObj|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/batches/${batchId}/delivery_report/${recipientMsisdn}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/batches/${getEncodedUri(batchId)}/delivery_report/${getEncodedUri(recipientMsisdn)}`;
         RetrieveRecipientDeliveryResponseObj response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -220,7 +224,7 @@ public isolated client class Client {
     # + pageSize - Determines the size of a page Constraints: Max 100 Default: 30 
     # + return - OK 
     remote isolated function listGroups(string servicePlanId, int page = 0, int pageSize = 30) returns InlineResponse2002|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups`;
         map<anydata> queryParam = {"page": page, "page_size": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp->get(resourcePath);
@@ -232,7 +236,7 @@ public isolated client class Client {
     # + payload - Group object 
     # + return - Created 
     remote isolated function createGroup(string servicePlanId, GroupObject payload) returns CreateGroupResponse|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -245,7 +249,7 @@ public isolated client class Client {
     # + groupId - ID of a group that you are interested in 
     # + return - OK 
     remote isolated function retrieveGroup(string servicePlanId, string groupId) returns CreateGroupResponse|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups/${groupId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups/${getEncodedUri(groupId)}`;
         CreateGroupResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -256,7 +260,7 @@ public isolated client class Client {
     # + payload - Group information 
     # + return - OK 
     remote isolated function replaceGroup(string servicePlanId, string groupId, GroupsGroupIdBody payload) returns CreateGroupResponse|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups/${groupId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -270,7 +274,7 @@ public isolated client class Client {
     # + payload - Group information 
     # + return - OK 
     remote isolated function updateGroup(string servicePlanId, string groupId, GroupsGroupIdBody1 payload) returns CreateGroupResponse|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups/${groupId}`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + groupId - ID of a group that you are interested in 
     # + return - OK 
     remote isolated function getMembers(string servicePlanId, string groupId) returns Msisdn[]|error {
-        string resourcePath = string `/xms/v1/${servicePlanId}/groups/${groupId}/members`;
+        string resourcePath = string `/xms/v1/${getEncodedUri(servicePlanId)}/groups/${getEncodedUri(groupId)}/members`;
         Msisdn[] response = check self.clientEp->get(resourcePath);
         return response;
     }

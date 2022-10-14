@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,50 +14,63 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type BusinessContext record {
     # Business System
-    string? businessSystem?;
+    @constraint:String {maxLength: 255}
+    string businessSystem?;
     # The type of business object whose business partners are screened. Possible values are `SO` for _Sales Order_, `OD` for _Outbound Delivery_, `PO` for _Purchase Order_, `PC` for _Purchase Contract_, `PA` for _Purchase Scheduling Agreement_, `SC` for _Sales Contract_, `SA` for _Sales Scheduling Agreement_, `APMPAYMENTREQUEST` for _Payment_, `SQ` for _Sales Quotation_, `ID` for _Inbound Delivery_ and `PR` for _Purchase Requisition_.
-    string? businessObjectType?;
+    @constraint:String {maxLength: 255}
+    string businessObjectType?;
     # Document ID
-    string? documentId?;
+    @constraint:String {maxLength: 255}
+    string documentId?;
 };
 
 public type BusinessPartner record {
-    string? name?;
-    string? street?;
-    string? city?;
-    string? countryISOCode?;
-    string? postalCode?;
-    string? inputKey?;
-    boolean? logicalDelete?;
+    @constraint:String {maxLength: 255}
+    string name?;
+    @constraint:String {maxLength: 255}
+    string street?;
+    @constraint:String {maxLength: 255}
+    string city?;
+    @constraint:String {maxLength: 2}
+    string countryISOCode?;
+    @constraint:String {maxLength: 255}
+    string postalCode?;
+    @constraint:String {maxLength: 255}
+    string inputKey?;
+    boolean logicalDelete?;
     # Date on which the record was logically deleted in UTC
-    string? logicalDeleteOn?;
+    string logicalDeleteOn?;
 };
 
 public type Error record {
     # Error code
-    string? code?;
+    string code?;
     # Error text
-    string? message?;
+    string message?;
 };
 
 public type DeletionResult record {
     # Number of (logically) deleted records
-    int? number?;
+    int number?;
     # Description of deletion result
-    string? text?;
+    string text?;
 };
 
 public type ScreeningDecision record {
     # Externally provided Key of Business Partner Input
-    string? inputKey?;
+    @constraint:String {maxLength: 255}
+    string inputKey?;
     # Screening Hit Decision [ N - No Hit, C - Confirmed Hit, P - Possible Hit]
-    string? status?;
+    @constraint:String {maxLength: 1}
+    string status?;
 };
 
 # Business Partners
-public type BusinessPartners BusinessPartner[]?;
+public type BusinessPartners BusinessPartner[];
 
 # Screening Decisions
-public type ScreeningDecisions ScreeningDecision[]?;
+public type ScreeningDecisions ScreeningDecision[];

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type SalesDivisionResponseNotFound record {
     int count?;
@@ -50,11 +52,13 @@ public type SalesAreaResponse record {
 
 public type ExternalSalesOrganizationDescriptionDTO record {
     string description?;
+    @constraint:String {maxLength: 2}
     string languageKey?;
 };
 
 public type ExternalSalesDivisionDTO record {
     ExternalSalesDivisionDescriptionDTO[] descriptions?;
+    @constraint:String {maxLength: 40, minLength: 1}
     string externalId;
 };
 
@@ -67,6 +71,7 @@ public type SalesDivisionResponse record {
 
 public type ExternalDistributionChannelDescriptionDTO record {
     string description?;
+    @constraint:String {maxLength: 2}
     string languageKey?;
 };
 
@@ -79,11 +84,13 @@ public type SalesDivisionDeleteResponse record {
 public type ExternalSalesOrganizationDTO record {
     ExternalSalesOrganizationDescriptionDTO[] descriptions?;
     string externalCompanyCodeId?;
+    @constraint:String {maxLength: 40, minLength: 1}
     string externalId;
 };
 
 public type ExternalDistributionChannelDTO record {
     ExternalDistributionChannelDescriptionDTO[] descriptions?;
+    @constraint:String {maxLength: 40, minLength: 1}
     string externalId;
 };
 
@@ -101,6 +108,7 @@ public type SalesOrgDeleteResponse record {
 
 public type ExternalSalesDivisionDescriptionDTO record {
     string description?;
+    @constraint:String {maxLength: 2, minLength: 1}
     string languageKey?;
 };
 
@@ -124,13 +132,14 @@ public type SalesAreaDeleteResponse record {
 
 public type ResponseNotFoundMessage record {
     string message?;
-    string _error?;
+    string 'error?;
     string timestamp?;
 };
 
 public type ExternalSalesAreaDTO record {
     ExternalSalesAreaDescriptionDTO[] descriptions?;
     string externalDistributionChannel?;
+    @constraint:String {maxLength: 40, minLength: 1}
     string externalId;
     string externalSalesDivision?;
     string externalSalesOrganization?;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,24 +14,36 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type AgreementType record {
     boolean canConditionRecordValidityDiffer?;
+    @constraint:String {maxLength: 4}
     string externalConditionTypeTableGroup?;
     boolean isEnhancedProcessingVakeyActive?;
+    @constraint:String {maxLength: 4}
     string externalFinalSettlementOrderType?;
+    @constraint:String {maxLength: 35}
     string language?;
+    @constraint:String {maxLength: 4}
     string externalManualAccrualOrderType?;
+    @constraint:String {maxLength: 1}
     string externalManualPaymentProcedure?;
+    @constraint:String {maxLength: 1}
     string externalMinValueForFinalSettlement?;
+    @constraint:String {maxLength: 4}
     string externalPartialSettlementOrderType?;
+    @constraint:String {maxLength: 1}
     string externalPaymentMethod?;
     boolean canManualAccrualsBePosted?;
+    @constraint:String {maxLength: 4}
     string rebateAgreementType;
     boolean shallManualAccrualsBeReversed?;
     string text?;
 };
 
 public type AgreementTextType record {
+    @constraint:String {maxLength: 4}
     string externalId?;
     AgreementTextTypeName[] names?;
 };
@@ -39,19 +51,25 @@ public type AgreementTextType record {
 public type AgreementHeaderDTOIncoming record {
     int additionalValueDays?;
     AgreementAccrualDTOIncoming[] accruals?;
+    @constraint:String {maxLength: 240}
     string description?;
+    @constraint:String {maxLength: 1}
     string externalStatus?;
     AgreementTextDTOOutgoing[] texts?;
+    @constraint:String {maxLength: 4}
     string externalType?;
     string validFrom?;
     string validTo?;
     int businessSystem;
     string externalCustomerId?;
-    boolean isMarkedForDeletion?;
+    boolean isMarkedForDeletion = false;
     string fixedValueDate?;
+    @constraint:String {maxLength: 1}
     string externalPaymentMethod?;
+    @constraint:String {maxLength: 4}
     string externalPaymentTerms?;
     string promotionExternalID?;
+    @constraint:String {maxLength: 40}
     string reference?;
     SalesArea externalSalesArea?;
     SalesDocument salesHeader;
@@ -60,22 +78,27 @@ public type AgreementHeaderDTOIncoming record {
 
 public type AgreementTextDTOOutgoing record {
     AgreementTextType 'type?;
+    @constraint:String {maxLength: 35}
     string language?;
     string text?;
 };
 
 public type AgreementTextTypeName record {
     string text?;
+    @constraint:String {maxLength: 35}
     string language?;
 };
 
 public type AgreementAccrualDTOIncoming record {
     string accrualAttributes?;
+    @constraint:String {maxLength: 3}
     string conditionCurrency?;
     string conditionRecordAttributes?;
+    @constraint:String {maxLength: 10}
     string conditionRecordNumber?;
     string conditionTypeExternalId?;
     HierarchyNodeKey customerHierarchyNode?;
+    @constraint:String {maxLength: 10}
     string customerExternalId?;
     string externalKey;
     Amount maxPayOutAmount?;
@@ -84,16 +107,20 @@ public type AgreementAccrualDTOIncoming record {
     HierarchyNodeKey productHierarchyNodeLevel1?;
     HierarchyNodeKey productHierarchyNodeLevel2?;
     HierarchyNodeKey productHierarchyNodeLevel3?;
+    @constraint:String {maxLength: 40}
     string externalProductId?;
     Amount rebateAmount?;
     int rebateBaseAmount?;
+    @constraint:String {maxLength: 3}
     string rebateBaseUnit?;
+    @constraint:Number {maxValue: 100}
     decimal rebatePercentage?;
     SalesArea externalSalesArea?;
 };
 
 public type Amount record {
     decimal amount?;
+    @constraint:String {maxLength: 3}
     string currencyCode?;
 };
 
@@ -104,8 +131,11 @@ public type ResponseAgreementDeletionMessage record {
 };
 
 public type SalesArea record {
+    @constraint:String {maxLength: 2}
     string distributionChannel?;
+    @constraint:String {maxLength: 2}
     string salesDivision?;
+    @constraint:String {maxLength: 4}
     string salesOrganization?;
 };
 
@@ -115,25 +145,32 @@ public type ResponseDeleteMessage record {
 };
 
 public type ResponseMessage record {
-    string _error?;
+    string 'error?;
     string message?;
     string timestamp?;
 };
 
 public type HierarchyNodeKey record {
+    @constraint:String {maxLength: 20}
     string hierarchyID?;
+    @constraint:String {maxLength: 18}
     string hierarchyNodeID?;
+    @constraint:String {maxLength: 2}
     string hierarchyTypeCode?;
 };
 
 public type ConditionTypeText record {
+    @constraint:String {maxLength: 4}
     string externalConditonTypeId?;
     string text?;
+    @constraint:String {maxLength: 35}
     string language?;
 };
 
 public type SalesDocument record {
+    @constraint:String {maxLength: 3}
     string currencyCode?;
+    @constraint:String {maxLength: 40}
     string displayID;
 };
 

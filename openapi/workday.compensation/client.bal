@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay Compensation REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -122,7 +126,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerInstance(string id) returns WorkerProfile|error {
-        string resourcePath = string `/workers/${id}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}`;
         WorkerProfile response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -131,7 +135,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAndSetUpScoresOnScorecardResults(string id) returns ScoresetContainer|error {
-        string resourcePath = string `/scorecardResults/${id}`;
+        string resourcePath = string `/scorecardResults/${getEncodedUri(id)}`;
         ScoresetContainer response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -140,8 +144,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteScorecardResultsByID(string id) returns http:Response|error {
-        string resourcePath = string `/scorecardResults/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/scorecardResults/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieves a collection of workers.
@@ -162,7 +166,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function requestOneTimePayment(string id, OneTimePaymentPlanEventInput payload) returns OneTimePaymentPlanEventInput|error {
-        string resourcePath = string `/workers/${id}/requestOneTimePayment`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/requestOneTimePayment`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateScore(string id, string subresourceID, ScoreInput payload) returns ScoreInput|error {
-        string resourcePath = string `/scorecardResults/${id}/scores/${subresourceID}`;
+        string resourcePath = string `/scorecardResults/${getEncodedUri(id)}/scores/${getEncodedUri(subresourceID)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -187,7 +191,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCompensationScoreCardInfo(string id) returns ScoreCard|error {
-        string resourcePath = string `/scorecards/${id}`;
+        string resourcePath = string `/scorecards/${getEncodedUri(id)}`;
         ScoreCard response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -196,7 +200,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Updating resource. 
     remote isolated function updateCompensationScorecard(string id, EditScoreCards payload) returns EditScoreCards|error {
-        string resourcePath = string `/scorecards/${id}`;
+        string resourcePath = string `/scorecards/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -208,8 +212,8 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. Deleting resource. 
     remote isolated function deleteCompensationScorecardByID(string id) returns http:Response|error {
-        string resourcePath = string `/scorecards/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/scorecards/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

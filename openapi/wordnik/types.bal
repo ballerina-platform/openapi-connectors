@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -197,8 +197,8 @@ public type Bigram record {
     int count?;
     string gram1?;
     string gram2?;
-    float mi?;
-    float wlmi?;
+    decimal mi?;
+    decimal wlmi?;
 };
 
 public type Definition record {
@@ -221,7 +221,7 @@ public type Definition record {
 };
 
 public type ScoredWord record {
-    float baseWordScore?;
+    decimal baseWordScore?;
     int docTermCount?;
     int id?;
     string lemma?;
@@ -261,7 +261,7 @@ public type AudioFile record {
     string createdAt?;
     string createdBy?;
     string description?;
-    float duration?;
+    decimal duration?;
     string fileUrl?;
     int id;
     float voteAverage?;
@@ -307,7 +307,7 @@ public type Long record {
 
 public type WordSearchResult record {
     int count?;
-    float lexicality?;
+    decimal lexicality?;
     string word?;
 };
 

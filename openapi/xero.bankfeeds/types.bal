@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -34,7 +34,7 @@ public type FeedConnection record {
     # the current status of the feed connection
     string status?;
     # On error, the API consumer will receive an HTTP response with a HTTP Status Code of 4xx or 5xx and a Content-Type of application/problem+json.
-    Error _error?;
+    Error 'error?;
 };
 
 public type Statement record {
@@ -60,7 +60,7 @@ public type Statement record {
 # The StartBalance plus all the Statement Line Amounts should be equal to the EndBalance Amount.
 public type EndBalance record {
     # Amount
-    float amount?;
+    decimal amount?;
     # If the statement balances are credit or debit, the CreditDebitIndicator should be specified from the perspective of the Customer.
     CreditDebitIndicator creditDebitIndicator?;
 };
@@ -80,7 +80,7 @@ public type Error record {
 # The starting balance of the statement
 public type StartBalance record {
     # decimal(19,4) unsigned Opening/closing balance amount.
-    float amount?;
+    decimal amount?;
     # If the statement balances are credit or debit, the CreditDebitIndicator should be specified from the perspective of the Customer.
     CreditDebitIndicator creditDebitIndicator?;
 };
@@ -109,7 +109,7 @@ public type StatementLine record {
     # Transaction description
     string description?;
     # Transaction amount
-    float amount?;
+    decimal amount?;
     # If the statement balances are credit or debit, the CreditDebitIndicator should be specified from the perspective of the Customer.
     CreditDebitIndicator creditDebitIndicator?;
     # Financial institute's internal transaction identifier. If provided this field is factored into duplicate detection.

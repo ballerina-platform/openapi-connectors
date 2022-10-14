@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -60,7 +60,7 @@ public isolated client class Client {
     # + id - ID of the Bundle in the form of an integer 
     # + return - Bundle Response 
     remote isolated function getBundleByID(decimal id) returns BundleResponse|error {
-        string resourcePath = string `/bundles/${id}`;
+        string resourcePath = string `/bundles/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -77,7 +77,7 @@ public isolated client class Client {
     # + 'limit - The number of items to be returned 
     # + return - Courses Response 
     remote isolated function listCoursesByBundleId(decimal id, decimal page = 1.0, decimal 'limit = 25.0) returns GetCoursesResponse|error {
-        string resourcePath = string `/bundles/${id}/courses`;
+        string resourcePath = string `/bundles/${getEncodedUri(id)}/courses`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -110,7 +110,7 @@ public isolated client class Client {
     # + queryUpdatedOnOrBefore - Filter for only Enrollments updated on or before the date specified. 
     # + return - Bundle Response 
     remote isolated function getBundleEnrollments(decimal id, decimal page = 1.0, decimal 'limit = 25.0, decimal? queryUserId = (), string? queryEmail = (), string? queryCompleted = (), string? queryExpired = (), string? queryCreatedAfter = (), string? queryCreatedBefore = (), string? queryCreatedOn = (), string? queryCreatedOnOrAfter = (), string? queryCreatedOnOrBefore = (), string? queryUpdatedAfter = (), string? queryUpdatedBefore = (), string? queryUpdatedOn = (), string? queryUpdatedOnOrAfter = (), string? queryUpdatedOnOrBefore = ()) returns GetEnrollmentsResponse|error {
-        string resourcePath = string `/bundles/${id}/enrollments`;
+        string resourcePath = string `/bundles/${getEncodedUri(id)}/enrollments`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit, "query[user_id]": queryUserId, "query[email]": queryEmail, "query[completed]": queryCompleted, "query[expired]": queryExpired, "query[created_after]": queryCreatedAfter, "query[created_before]": queryCreatedBefore, "query[created_on]": queryCreatedOn, "query[created_on_or_after]": queryCreatedOnOrAfter, "query[created_on_or_before]": queryCreatedOnOrBefore, "query[updated_after]": queryUpdatedAfter, "query[updated_before]": queryUpdatedBefore, "query[updated_on]": queryUpdatedOn, "query[updated_on_or_after]": queryUpdatedOnOrAfter, "query[updated_on_or_before]": queryUpdatedOnOrBefore};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -128,7 +128,7 @@ public isolated client class Client {
     # + payload - New enrollment attributes 
     # + return - Enrollments Updated 
     remote isolated function updateEnrollmentsInBundle(decimal id, IdEnrollmentsBody payload) returns http:Response|error {
-        string resourcePath = string `/bundles/${id}/enrollments`;
+        string resourcePath = string `/bundles/${getEncodedUri(id)}/enrollments`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -138,7 +138,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create an Enrollment in a Bundle of Courses
@@ -147,7 +147,7 @@ public isolated client class Client {
     # + payload - New enrollment attributes 
     # + return - Enrollments created synchronously 
     remote isolated function createEnrollmentInBundle(decimal id, IdEnrollmentsBody1 payload) returns http:Response|error {
-        string resourcePath = string `/bundles/${id}/enrollments`;
+        string resourcePath = string `/bundles/${getEncodedUri(id)}/enrollments`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -157,7 +157,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Chapters
@@ -165,7 +165,7 @@ public isolated client class Client {
     # + id - ID of the Chapter in the form of an integer. 
     # + return - Chapters response 
     remote isolated function getChapterByID(decimal id) returns ChapterResponse|error {
-        string resourcePath = string `/chapters/${id}`;
+        string resourcePath = string `/chapters/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -182,7 +182,7 @@ public isolated client class Client {
     # + 'limit - The number of items to be returned. 
     # + return - Chapters response 
     remote isolated function getContentsByID(decimal id, decimal page = 1.0, decimal 'limit = 25.0) returns GetContentsResponse|error {
-        string resourcePath = string `/chapters/${id}/contents`;
+        string resourcePath = string `/chapters/${getEncodedUri(id)}/contents`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -227,7 +227,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CollectionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CollectionResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Collections by Id
@@ -235,7 +235,7 @@ public isolated client class Client {
     # + id - ID of the Category in the form of an integer 
     # + return - Collection response 
     remote isolated function getCollectionbyID(decimal id) returns CollectionResponse|error {
-        string resourcePath = string `/collections/${id}`;
+        string resourcePath = string `/collections/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -251,7 +251,7 @@ public isolated client class Client {
     # + payload - Collections attributes 
     # + return - Collection Updated 
     remote isolated function updateCollectioByID(decimal id, CollectionRequest payload) returns http:Response|error {
-        string resourcePath = string `/collections/${id}`;
+        string resourcePath = string `/collections/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -261,7 +261,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete collection by ID
@@ -269,14 +269,14 @@ public isolated client class Client {
     # + id - ID of the Category in the form of an integer 
     # + return - Collection deleted 
     remote isolated function deleteCollectionByID(decimal id) returns http:Response|error {
-        string resourcePath = string `/collections/${id}`;
+        string resourcePath = string `/collections/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get products by Collections id
@@ -286,7 +286,7 @@ public isolated client class Client {
     # + 'limit - The number of items to be returned 
     # + return - Products response 
     remote isolated function getProductsbyID(decimal id, decimal page = 1.0, decimal 'limit = 25.0) returns GetProductsResponse|error {
-        string resourcePath = string `/collections/${id}/products`;
+        string resourcePath = string `/collections/${getEncodedUri(id)}/products`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -335,7 +335,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CouponResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CouponResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Bulk Create Coupons
@@ -356,7 +356,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CreateBulkCouponResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CreateBulkCouponResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Coupon by ID
@@ -364,7 +364,7 @@ public isolated client class Client {
     # + id - The ID of the Coupon in the form of an integer. 
     # + return - Coupon Response 
     remote isolated function getCouponByID(decimal id) returns CouponResponse|error {
-        string resourcePath = string `/coupons/${id}`;
+        string resourcePath = string `/coupons/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -380,7 +380,7 @@ public isolated client class Client {
     # + payload - Update an existing coupon 
     # + return - Coupon Updated 
     remote isolated function updateCoupon(decimal id, UpdateCoupon payload) returns http:Response|error {
-        string resourcePath = string `/coupons/${id}`;
+        string resourcePath = string `/coupons/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -390,7 +390,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Coupon by ID
@@ -398,14 +398,14 @@ public isolated client class Client {
     # + id - The ID of the Coupon in the form of an integer. 
     # + return - Coupon Deleted 
     remote isolated function deleteCouponByID(decimal id) returns http:Response|error {
-        string resourcePath = string `/coupons/${id}`;
+        string resourcePath = string `/coupons/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Contents by Id
@@ -413,7 +413,7 @@ public isolated client class Client {
     # + id - ID of the Content in the form of an integer 
     # + return - Content response 
     remote isolated function getContentByID(decimal id) returns ContentResponse|error {
-        string resourcePath = string `/contents/${id}`;
+        string resourcePath = string `/contents/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -446,7 +446,7 @@ public isolated client class Client {
     # + id - ID of the Course in the form of an integer. 
     # + return - Courses response 
     remote isolated function getCourseByID(decimal id) returns CourseResponse|error {
-        string resourcePath = string `/courses/${id}`;
+        string resourcePath = string `/courses/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -463,7 +463,7 @@ public isolated client class Client {
     # + 'limit - The number of items to be returned. 
     # + return - Chapter of a course response 
     remote isolated function getChapterOfCourseByID(decimal id, decimal page = 1.0, decimal 'limit = 25.0) returns GetChaptersResponse|error {
-        string resourcePath = string `/courses/${id}/chapters`;
+        string resourcePath = string `/courses/${getEncodedUri(id)}/chapters`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -542,7 +542,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EnrollmentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EnrollmentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get enrollments by ID
@@ -550,7 +550,7 @@ public isolated client class Client {
     # + id - ID of the Enrollment in the form of an integer. 
     # + return - Enrollment response 
     remote isolated function getEnrollmentsByID(decimal id) returns EnrollmentResponse|error {
-        string resourcePath = string `/enrollments/${id}`;
+        string resourcePath = string `/enrollments/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -566,7 +566,7 @@ public isolated client class Client {
     # + payload - New enrollment attributes 
     # + return - Enrollment Updated 
     remote isolated function updateEnrollment(decimal id, UpdateEnrollmentRequest payload) returns http:Response|error {
-        string resourcePath = string `/enrollments/${id}`;
+        string resourcePath = string `/enrollments/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -576,7 +576,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a new external order
@@ -594,7 +594,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # refund transaction
@@ -603,7 +603,7 @@ public isolated client class Client {
     # + payload - Transaction 
     # + return - Transaction created 
     remote isolated function createTransactionRefund(decimal id, ExternalOrderTransaction payload) returns http:Response|error {
-        string resourcePath = string `/external_orders/${id}/transactions/refund`;
+        string resourcePath = string `/external_orders/${getEncodedUri(id)}/transactions/refund`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -613,7 +613,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # purchase transaction
@@ -622,7 +622,7 @@ public isolated client class Client {
     # + payload - Transaction 
     # + return - Transaction created 
     remote isolated function createTransactionPurchase(string id, ExternalOrderTransaction payload) returns http:Response|error {
-        string resourcePath = string `/external_orders/${id}/transactions/purchase`;
+        string resourcePath = string `/external_orders/${getEncodedUri(id)}/transactions/purchase`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -632,7 +632,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Groups
@@ -668,7 +668,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GroupResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GroupResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Group
@@ -676,7 +676,7 @@ public isolated client class Client {
     # + id - The ID of the Group to fetch. 
     # + return - Group response 
     remote isolated function getGroup(decimal id) returns GroupResponse|error {
-        string resourcePath = string `/groups/${id}`;
+        string resourcePath = string `/groups/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -691,7 +691,7 @@ public isolated client class Client {
     # + groupId - ID of the Group in the form of an integer. 
     # + return - Groups response 
     remote isolated function getGroupAnalysts(decimal groupId) returns GetGroupAnalystsResponse|error {
-        string resourcePath = string `/groups/${groupId}/analysts`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/analysts`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -707,7 +707,7 @@ public isolated client class Client {
     # + payload - Group Analyst 
     # + return - Group Analyst response 
     remote isolated function postGroupAnalysts(decimal groupId, GroupAddAnalystRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/analysts`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/analysts`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -717,7 +717,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Analyst
@@ -726,14 +726,14 @@ public isolated client class Client {
     # + userId - ID of the User in the form of an integer. 
     # + return - Group Analyst response 
     remote isolated function removeAnalystFromGroup(decimal groupId, decimal userId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/analysts/${userId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/analysts/${getEncodedUri(userId)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Add Analyst to Groups
@@ -742,7 +742,7 @@ public isolated client class Client {
     # + payload - Group Analyst 
     # + return - Group Analyst response 
     remote isolated function addGroupToAnalyst(decimal userId, GroupAnalystsAddGroupRequest payload) returns http:Response|error {
-        string resourcePath = string `/group_analysts/${userId}/groups`;
+        string resourcePath = string `/group_analysts/${getEncodedUri(userId)}/groups`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -752,7 +752,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Analyst
@@ -761,14 +761,14 @@ public isolated client class Client {
     # + groupId - ID of the Group in the form of an integer. 
     # + return - Group Analyst response 
     remote isolated function removeGroupFromAnalyst(decimal userId, decimal groupId) returns http:Response|error {
-        string resourcePath = string `/group_analysts/${userId}/groups/${groupId}`;
+        string resourcePath = string `/group_analysts/${getEncodedUri(userId)}/groups/${getEncodedUri(groupId)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Instructors
@@ -804,7 +804,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstructorResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstructorResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Instructor by ID
@@ -812,7 +812,7 @@ public isolated client class Client {
     # + id - ID of the Instructor in the form of an integer. 
     # + return - Instructor response 
     remote isolated function getInstructorByID(decimal id) returns InstructorResponse|error {
-        string resourcePath = string `/instructors/${id}`;
+        string resourcePath = string `/instructors/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -828,7 +828,7 @@ public isolated client class Client {
     # + payload - New instructor attributes 
     # + return - Instructor Updated 
     remote isolated function updateInstructor(decimal id, InstructorRequest payload) returns http:Response|error {
-        string resourcePath = string `/instructors/${id}`;
+        string resourcePath = string `/instructors/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -838,7 +838,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete instructor
@@ -846,14 +846,14 @@ public isolated client class Client {
     # + id - ID of the Instructor in the form of an integer 
     # + return - Instructor deleted 
     remote isolated function deleteInstructorByID(decimal id) returns http:Response|error {
-        string resourcePath = string `/instructors/${id}`;
+        string resourcePath = string `/instructors/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Orders
@@ -879,7 +879,7 @@ public isolated client class Client {
     # + id - ID of the Orders in the form of an integer. 
     # + return - Orders response 
     remote isolated function getOrderByID(decimal id) returns OrderResponse|error {
-        string resourcePath = string `/orders/${id}`;
+        string resourcePath = string `/orders/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -904,7 +904,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get List of product publish requests
@@ -930,7 +930,7 @@ public isolated client class Client {
     # + id - ID of the Product Publish Request in the form of an integer. 
     # + return - Product Publish Request success response 
     remote isolated function getProductPublishRequestByID(decimal id) returns ProductPublishRequest|error {
-        string resourcePath = string `/product_publish_requests/${id}`;
+        string resourcePath = string `/product_publish_requests/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -945,7 +945,7 @@ public isolated client class Client {
     # + id - ID of the Product Publish Request in the form of an integer. 
     # + return - Product Publish Request approved 
     remote isolated function approveProductPublishRequest(decimal id) returns http:Response|error {
-        string resourcePath = string `/product_publish_requests/${id}/approve`;
+        string resourcePath = string `/product_publish_requests/${getEncodedUri(id)}/approve`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -954,7 +954,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Denies Product Publish Request
@@ -962,7 +962,7 @@ public isolated client class Client {
     # + id - ID of the Product Publish Request in the form of an integer. 
     # + return - Product Publish Request denied 
     remote isolated function denyProductPublishRequest(decimal id) returns http:Response|error {
-        string resourcePath = string `/product_publish_requests/${id}/deny`;
+        string resourcePath = string `/product_publish_requests/${getEncodedUri(id)}/deny`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -971,7 +971,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List products
@@ -997,7 +997,7 @@ public isolated client class Client {
     # + id - Id of the product in the form of an integer 
     # + return - Products response 
     remote isolated function getProductByID(decimal id) returns ProductResponse|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1014,7 +1014,7 @@ public isolated client class Client {
     # + 'limit - The number of items to be returned 
     # + return - Products response 
     remote isolated function getRelatedProductByProductID(decimal id, decimal page = 1.0, decimal 'limit = 25.0) returns GetProductsResponse|error {
-        string resourcePath = string `/products/${id}/related`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/related`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"page": page, "limit": 'limit};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -1059,7 +1059,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PromotionResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PromotionResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get promotion by provided ID
@@ -1067,7 +1067,7 @@ public isolated client class Client {
     # + id - Id of the promotion in the form of an integer 
     # + return - Promotions response 
     remote isolated function getPromotionByID(decimal id) returns PromotionResponse|error {
-        string resourcePath = string `/promotions/${id}`;
+        string resourcePath = string `/promotions/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1083,7 +1083,7 @@ public isolated client class Client {
     # + payload - Promotion attributes 
     # + return - Promotion Updated 
     remote isolated function updatePromotionByID(decimal id, PromotionRequest payload) returns http:Response|error {
-        string resourcePath = string `/promotions/${id}`;
+        string resourcePath = string `/promotions/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1093,7 +1093,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete promotion by provided ID
@@ -1101,14 +1101,14 @@ public isolated client class Client {
     # + id - Id of the promotion in the form of an integer 
     # + return - Promotions deleted 
     remote isolated function deletePromotionByID(decimal id) returns http:Response|error {
-        string resourcePath = string `/promotions/${id}`;
+        string resourcePath = string `/promotions/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get Promotion associated with the provided Coupon code.
@@ -1167,7 +1167,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CourseReviewResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CourseReviewResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Course Reviews By ID
@@ -1175,7 +1175,7 @@ public isolated client class Client {
     # + id - ID of the Course Review in the form of an integer. 
     # + return - CourseReviewByID 
     remote isolated function getCourseReviewByID(decimal id) returns CourseReviewResponse|error {
-        string resourcePath = string `/course_reviews/${id}`;
+        string resourcePath = string `/course_reviews/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1224,7 +1224,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UserResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        UserResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List Users by ID
@@ -1233,7 +1233,7 @@ public isolated client class Client {
     # + provider - Provider from which the user's External Id is associated (Required if using External Id as id parameter) 
     # + return - User Response 
     remote isolated function getUserByID(string id, string? provider = ()) returns UserResponse|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"provider": provider};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -1252,7 +1252,7 @@ public isolated client class Client {
     # + payload - User details 
     # + return - User Updated 
     remote isolated function updateUserByID(string id, UpdateUserRequest payload, string? provider = ()) returns http:Response|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"provider": provider};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -1264,7 +1264,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete user by ID
@@ -1273,7 +1273,7 @@ public isolated client class Client {
     # + provider - Provider from which the user's External Id is associated (Required if using External Id as id parameter) 
     # + return - User Deleted 
     remote isolated function deleteUserByID(string id, string? provider = ()) returns http:Response|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"provider": provider};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -1282,7 +1282,7 @@ public isolated client class Client {
         }
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # List Site Scripts
@@ -1318,7 +1318,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SiteScriptResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SiteScriptResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Site Script by ID
@@ -1326,7 +1326,7 @@ public isolated client class Client {
     # + id - ID of the Site Script in the form of a string 
     # + return - Site Script Response 
     remote isolated function getSiteScriptByID(string id) returns SiteScriptResponse|error {
-        string resourcePath = string `/site_scripts/${id}`;
+        string resourcePath = string `/site_scripts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1342,7 +1342,7 @@ public isolated client class Client {
     # + payload - Update Site Script request body 
     # + return - Site Script Updated 
     remote isolated function updateSiteScriptByID(string id, SiteScriptRequest payload) returns http:Response|error {
-        string resourcePath = string `/site_scripts/${id}`;
+        string resourcePath = string `/site_scripts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
@@ -1352,7 +1352,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Site Script by ID
@@ -1360,14 +1360,14 @@ public isolated client class Client {
     # + id - ID of the Site Script in the form of a string 
     # + return - Site Script Deleted 
     remote isolated function deleteSiteScriptByID(string id) returns http:Response|error {
-        string resourcePath = string `/site_scripts/${id}`;
+        string resourcePath = string `/site_scripts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["X-Auth-API-Key"] = self.apiKeyConfig?.xAuthApiKey;
             headerValues["X-Auth-Subdomain"] = self.apiKeyConfig?.xAuthSubdomain;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
 }

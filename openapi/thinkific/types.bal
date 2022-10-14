@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type CollectionRequest record {
     # The name of the Category
@@ -247,7 +249,7 @@ public type CollectionResponse record {
     string created_at;
     decimal[] product_ids;
     # A boolean indicating whether the Category is the default
-    boolean 'default;
+    boolean default;
 };
 
 public type GetPromotionsResponse record {
@@ -257,7 +259,7 @@ public type GetPromotionsResponse record {
 
 public type ErrorBadRequest record {
     # Malformed request error
-    string _error?;
+    string 'error?;
 };
 
 public type CustomProfileFieldDefinitionsResponse record {
@@ -386,6 +388,7 @@ public type CreateUserRequest record {
     # User's email
     string email;
     # The password of the User. If not included, the Express Sign In Link becomes activated for the User.
+    @constraint:String {minLength: 6}
     string password?;
     # User's roles
     string[] roles?;
@@ -406,9 +409,9 @@ public type CreateUserRequest record {
     # Custom profile fields for the User.
     CustomProfileFieldRequest[] custom_profile_fields?;
     # Option to skip required custom profile fields validation.
-    boolean skip_custom_fields_validation?;
+    boolean skip_custom_fields_validation = false;
     # Option to send the Site Welcome email to the User.
-    boolean send_welcome_email?;
+    boolean send_welcome_email = false;
     # Optional identifier of the user in an external system. Typically used in conjunction with Thinkific's SSO. For further information on this, please read [this](https://help.thinkific.com/support/solutions/articles/221622-sso-automatically-sign-in-from-your-own-website)
     string external_id?;
 };
@@ -433,6 +436,7 @@ public type UpdateUserRequest record {
     # User's email
     string email?;
     # The password of the User.
+    @constraint:String {minLength: 6}
     string password?;
     # User's roles
     string[] roles?;
@@ -554,7 +558,7 @@ public type CouponResponse record {
 
 public type ErrorForbiddenAppsNotAvailable record {
     # access forbidden
-    string _error?;
+    string 'error?;
 };
 
 public type CreateBulkCouponResponse record {
@@ -563,7 +567,7 @@ public type CreateBulkCouponResponse record {
 
 public type ErrorForbiddenInsufficientScope record {
     # access forbidden
-    string _error?;
+    string 'error?;
 };
 
 public type GetCouponResponse record {
@@ -608,9 +612,9 @@ public type SiteScriptRequest record {
     # | all   | all page identifiers listed above   |
     string[] page_scopes;
     # Where in the HTML the script should be injected. Accepted values are: head or footer
-    string location?;
+    string location = "footer";
     # How the Site Script will be loaded into the page. Accepted values are: async, defer, and default
-    string load_method?;
+    string load_method = "async";
     # Describes the purpose of the script. Accepted values are: functional, analytics, marketing
     string category;
 };
@@ -765,7 +769,7 @@ public type UserResponse record {
 
 public type ErrorNotFound record {
     # item not found error
-    string _error?;
+    string 'error?;
 };
 
 public type GroupRequest record {

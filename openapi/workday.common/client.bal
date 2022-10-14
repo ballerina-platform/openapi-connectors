@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay Common Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -87,7 +91,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerReports(string id, int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string resourcePath = string `/workers/${id}/directReports`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/directReports`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -99,7 +103,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getReportForWorker(string id, string subresourceID) returns WorkerSummary|error {
-        string resourcePath = string `/workers/${id}/directReports/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/directReports/${getEncodedUri(subresourceID)}`;
         WorkerSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -110,7 +114,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getOrgForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/workers/${id}/organizations`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/organizations`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);
@@ -122,7 +126,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerOrganization(string id, string subresourceID) returns WorkerOrganizationSummary|error {
-        string resourcePath = string `/workers/${id}/organizations/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/organizations/${getEncodedUri(subresourceID)}`;
         WorkerOrganizationSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -133,7 +137,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getTaskForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2002|error {
-        string resourcePath = string `/workers/${id}/inboxTasks`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/inboxTasks`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2002 response = check self.clientEp->get(resourcePath);
@@ -145,7 +149,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getInboxTaskForWorker(string id, string subresourceID) returns InboxTaskSummary|error {
-        string resourcePath = string `/workers/${id}/inboxTasks/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/inboxTasks/${getEncodedUri(subresourceID)}`;
         InboxTaskSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -156,7 +160,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getTimeOffEntriesForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/workers/${id}/timeOffEntries`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/timeOffEntries`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2003 response = check self.clientEp->get(resourcePath);
@@ -168,7 +172,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getTimeOffEntryForWorker(string id, string subresourceID) returns TimeOffEntries|error {
-        string resourcePath = string `/workers/${id}/timeOffEntries/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/timeOffEntries/${getEncodedUri(subresourceID)}`;
         TimeOffEntries response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -179,7 +183,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getTimeOffPlansForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/workers/${id}/timeOffPlans`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/timeOffPlans`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2004 response = check self.clientEp->get(resourcePath);
@@ -191,7 +195,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getTimeOffPlan(string id, string subresourceID) returns TimeOffPlans|error {
-        string resourcePath = string `/workers/${id}/timeOffPlans/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/timeOffPlans/${getEncodedUri(subresourceID)}`;
         TimeOffPlans response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -202,7 +206,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getHistoryItemsForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/workers/${id}/history`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/history`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2005 response = check self.clientEp->get(resourcePath);
@@ -214,7 +218,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getHistoryInstanceForWorker(string id, string subresourceID) returns BusinessProcessSummary|error {
-        string resourcePath = string `/workers/${id}/history/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/history/${getEncodedUri(subresourceID)}`;
         BusinessProcessSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -225,7 +229,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCollectionBusinessTitleChanges(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2006|error {
-        string resourcePath = string `/workers/${id}/businessTitleChanges`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/businessTitleChanges`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2006 response = check self.clientEp->get(resourcePath);
@@ -236,7 +240,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createBusinessTitleChange(string id, BusinessTitleChangeInput payload) returns BusinessTitleChangeInput|error {
-        string resourcePath = string `/workers/${id}/businessTitleChanges`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/businessTitleChanges`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "Application/json");
@@ -249,7 +253,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessTitleChangeForWorker(string id, string subresourceID) returns BusinessTitleChangeDetail|error {
-        string resourcePath = string `/workers/${id}/businessTitleChanges/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/businessTitleChanges/${getEncodedUri(subresourceID)}`;
         BusinessTitleChangeDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -260,7 +264,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupervisoryOrgsManagedByWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2007|error {
-        string resourcePath = string `/workers/${id}/supervisoryOrganizationsManaged`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/supervisoryOrganizationsManaged`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2007 response = check self.clientEp->get(resourcePath);
@@ -272,7 +276,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupervisoryOrgManagedByWorker(string id, string subresourceID) returns SupervisoryOrganizationSummary|error {
-        string resourcePath = string `/workers/${id}/supervisoryOrganizationsManaged/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/supervisoryOrganizationsManaged/${getEncodedUri(subresourceID)}`;
         SupervisoryOrganizationSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPaySlipsForWorker(string id, int? 'limit = (), int? offset = ()) returns InlineResponse2008|error {
-        string resourcePath = string `/workers/${id}/paySlips`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/paySlips`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2008 response = check self.clientEp->get(resourcePath);
@@ -295,7 +299,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getPaySlipInstancesForWorker(string id, string subresourceID) returns PaySlipSummary|error {
-        string resourcePath = string `/workers/${id}/paySlips/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/paySlips/${getEncodedUri(subresourceID)}`;
         PaySlipSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -304,7 +308,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerInstance(string id) returns WorkerProfile|error {
-        string resourcePath = string `/workers/${id}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}`;
         WorkerProfile response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -313,7 +317,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Resource created. 
     remote isolated function createJobChange(string id, ChangeJobInput payload) returns ChangeJobInput|error {
-        string resourcePath = string `/workers/${id}/jobChanges`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/jobChanges`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -325,7 +329,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getBusinessTitle(string id) returns BusinessTitleChangeDetail|error {
-        string resourcePath = string `/businessTitleChanges/${id}`;
+        string resourcePath = string `/businessTitleChanges/${getEncodedUri(id)}`;
         BusinessTitleChangeDetail response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -346,7 +350,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCurrencyInstance(string id) returns CurrencySummary|error {
-        string resourcePath = string `/currencies/${id}`;
+        string resourcePath = string `/currencies/${getEncodedUri(id)}`;
         CurrencySummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -373,7 +377,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getAuditLogInstance(string id) returns UserActivityTracking|error {
-        string resourcePath = string `/auditLogs/${id}`;
+        string resourcePath = string `/auditLogs/${getEncodedUri(id)}`;
         UserActivityTracking response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -394,7 +398,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getSupervisoryOrgInstance(string id) returns SupervisoryOrganizationSummary|error {
-        string resourcePath = string `/supervisoryOrganizations/${id}`;
+        string resourcePath = string `/supervisoryOrganizations/${getEncodedUri(id)}`;
         SupervisoryOrganizationSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -405,7 +409,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkersOfSupervisoryOrg(string id, int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string resourcePath = string `/supervisoryOrganizations/${id}/workers`;
+        string resourcePath = string `/supervisoryOrganizations/${getEncodedUri(id)}/workers`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -417,7 +421,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerForSupervisoryOrg(string id, string subresourceID) returns WorkerSummary|error {
-        string resourcePath = string `/supervisoryOrganizations/${id}/workers/${subresourceID}`;
+        string resourcePath = string `/supervisoryOrganizations/${getEncodedUri(id)}/workers/${getEncodedUri(subresourceID)}`;
         WorkerSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -438,7 +442,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getJobChangeInstance(string id) returns JobChangeReasonSummary|error {
-        string resourcePath = string `/jobChangeReasons/${id}`;
+        string resourcePath = string `/jobChangeReasons/${getEncodedUri(id)}`;
         JobChangeReasonSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -458,7 +462,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getCustomerInstance(string id) returns Customer|error {
-        string resourcePath = string `/customers/${id}`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}`;
         Customer response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -471,7 +475,7 @@ public isolated client class Client {
     # + toDate - The transaction date for the reporting transaction. NOTE: If used a filtering criteria for expense reports, please use Expense Report Date report field instead to improve performance. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getWorkerActivities(string id, string? fromDate = (), int? 'limit = (), int? offset = (), string? toDate = ()) returns InlineResponse20012|error {
-        string resourcePath = string `/customers/${id}/activities`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}/activities`;
         map<anydata> queryParam = {"fromDate": fromDate, "limit": 'limit, "offset": offset, "toDate": toDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse20012 response = check self.clientEp->get(resourcePath);
@@ -483,7 +487,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getActivityForCustomer(string id, string subresourceID) returns Activity|error {
-        string resourcePath = string `/customers/${id}/activities/${subresourceID}`;
+        string resourcePath = string `/customers/${getEncodedUri(id)}/activities/${getEncodedUri(subresourceID)}`;
         Activity response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -504,7 +508,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getOrgInstance(string id) returns OrganizationSummary|error {
-        string resourcePath = string `/organizations/${id}`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}`;
         OrganizationSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -525,7 +529,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function getOrgTypeInstance(string id) returns OrganizationTypeSummary|error {
-        string resourcePath = string `/organizationTypes/${id}`;
+        string resourcePath = string `/organizationTypes/${getEncodedUri(id)}`;
         OrganizationTypeSummary response = check self.clientEp->get(resourcePath);
         return response;
     }

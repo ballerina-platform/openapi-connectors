@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Zuora Collections API V1](https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
@@ -75,7 +79,7 @@ public isolated client class Client {
     #
     # + paymentRunId - The payment run ID. A payment run id in Advanced Payment Manager is different from a payment run id in Zuora. 
     remote isolated function getPaymentRun(int paymentRunId) returns GETPaymentRunResponse|error {
-        string resourcePath = string `/api/v1/subscription_payment_runs/${paymentRunId}`;
+        string resourcePath = string `/api/v1/subscription_payment_runs/${getEncodedUri(paymentRunId)}`;
         GETPaymentRunResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -110,7 +114,7 @@ public isolated client class Client {
     #
     # + scheduleId - The schedule ID 
     remote isolated function getPaymentRunSchedule(int scheduleId) returns GETPaymentRunScheduleResponse|error {
-        string resourcePath = string `/api/v1/payment_run_schedules/${scheduleId}`;
+        string resourcePath = string `/api/v1/payment_run_schedules/${getEncodedUri(scheduleId)}`;
         GETPaymentRunScheduleResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -118,7 +122,7 @@ public isolated client class Client {
     #
     # + scheduleId - The schedule ID 
     remote isolated function updatePaymentRunSchedule(int scheduleId, PUTPaymentRunSchedule payload) returns POSTPaymentRunScheduleResponse|error {
-        string resourcePath = string `/api/v1/payment_run_schedules/${scheduleId}`;
+        string resourcePath = string `/api/v1/payment_run_schedules/${getEncodedUri(scheduleId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json; charset=utf-8");
@@ -129,15 +133,15 @@ public isolated client class Client {
     #
     # + scheduleId - The schedule ID 
     remote isolated function deletePaymentRunSchedule(int scheduleId) returns DELETEPaymentRunScheduleResponse|error {
-        string resourcePath = string `/api/v1/payment_run_schedules/${scheduleId}`;
-        DELETEPaymentRunScheduleResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/api/v1/payment_run_schedules/${getEncodedUri(scheduleId)}`;
+        DELETEPaymentRunScheduleResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a statement
     #
     # + statementNumber - The statement number 
     remote isolated function getStatement(int statementNumber) returns http:Response|error {
-        string resourcePath = string `/api/v1/fetch_statement?statement_number=${statementNumber}`;
+        string resourcePath = string `/api/v1/fetch_statement?statement_number=${getEncodedUri(statementNumber)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -146,7 +150,7 @@ public isolated client class Client {
     # + accountId - The ID of the account 
     # + count - The number of statements you want to retrieve. 
     remote isolated function getStatements(int accountId, int count) returns GETStatementsResponse|error {
-        string resourcePath = string `/api/v1/fetch_statements?account_id=${accountId}&count=${count}`;
+        string resourcePath = string `/api/v1/fetch_statements?account_id=${getEncodedUri(accountId)}&count=${getEncodedUri(count)}`;
         GETStatementsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -181,7 +185,7 @@ public isolated client class Client {
     #
     # + accountId - The account ID. 
     remote isolated function getAccount(string accountId) returns CollectionAccount|error {
-        string resourcePath = string `/api/v1/accounts/${accountId}`;
+        string resourcePath = string `/api/v1/accounts/${getEncodedUri(accountId)}`;
         CollectionAccount response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -196,7 +200,7 @@ public isolated client class Client {
     #
     # + email - The email of the collections agent. 
     remote isolated function getCollectionsAgent(string email) returns CollectionAgent|error {
-        string resourcePath = string `/api/v1/users/${email}`;
+        string resourcePath = string `/api/v1/users/${getEncodedUri(email)}`;
         CollectionAgent response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -220,7 +224,7 @@ public isolated client class Client {
     # + status - The status that you want to update for the specified account. 
     # + value - The new value of the status. 0 indicates false, while 1 indicates true. 
     remote isolated function updateAccount(string accountId, string status, boolean? value = ()) returns InlineResponse200|error {
-        string resourcePath = string `/api/v1/accounts/${accountId}/update_status`;
+        string resourcePath = string `/api/v1/accounts/${getEncodedUri(accountId)}/update_status`;
         map<anydata> queryParam = {"status": status, "value": value};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -233,7 +237,7 @@ public isolated client class Client {
     # + accountId - The account ID. 
     # + agentEmail - The email of the agent. 
     remote isolated function updateAccountAgent(string accountId, string agentEmail) returns InlineResponse200|error {
-        string resourcePath = string `/api/v1/accounts/${accountId}/update_agent`;
+        string resourcePath = string `/api/v1/accounts/${getEncodedUri(accountId)}/update_agent`;
         map<anydata> queryParam = {"agent_email": agentEmail};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

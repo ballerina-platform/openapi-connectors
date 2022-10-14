@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig|http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -79,7 +83,7 @@ public isolated client class Client {
     # + moduleApiName - Module name. Leads, Accounts, Contacts, Deals, Campaigns, Tasks, Cases, Events, Calls, Solutions, Products, Vendors, Price Books, Quotes, Sales Orders, Purchase Orders, Invoices, Activities, and custom modules. 
     # + return - Records 
     remote isolated function listRecords(string moduleApiName) returns RecordsData|error {
-        string resourcePath = string `/${moduleApiName}`;
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}`;
         RecordsData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -89,7 +93,7 @@ public isolated client class Client {
     # + payload - Record 
     # + return - Success 
     remote isolated function updateRecord(string moduleApiName, json payload) returns Response|error {
-        string resourcePath = string `/${moduleApiName}`;
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         Response response = check self.clientEp->put(resourcePath, request);
@@ -101,7 +105,7 @@ public isolated client class Client {
     # + payload - Record 
     # + return - Success 
     remote isolated function addRecord(string moduleApiName, json payload) returns Response|error {
-        string resourcePath = string `/${moduleApiName}`;
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         Response response = check self.clientEp->post(resourcePath, request);
@@ -113,7 +117,7 @@ public isolated client class Client {
     # + recordId - Record ID 
     # + return - Record 
     remote isolated function getRecord(string moduleApiName, string recordId) returns RecordsData|error? {
-        string resourcePath = string `/${moduleApiName}/${recordId}`;
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}/${getEncodedUri(recordId)}`;
         RecordsData? response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -123,8 +127,8 @@ public isolated client class Client {
     # + recordId - Record ID 
     # + return - Success 
     remote isolated function deleteRecord(string moduleApiName, string recordId) returns Response|error {
-        string resourcePath = string `/${moduleApiName}/${recordId}`;
-        Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}/${getEncodedUri(recordId)}`;
+        Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve the records that match your search criteria.
@@ -140,7 +144,7 @@ public isolated client class Client {
     # + perPage - To get the list of records available per page. The default and the maximum possible value is 200. 
     # + return - Records 
     remote isolated function searchRecords(string moduleApiName, string? criteria = (), string? email = (), string? phone = (), string? word = (), string? converted = (), string? approved = (), int? page = (), int? perPage = ()) returns RecordsData|error? {
-        string resourcePath = string `/${moduleApiName}/search`;
+        string resourcePath = string `/${getEncodedUri(moduleApiName)}/search`;
         map<anydata> queryParam = {"criteria": criteria, "email": email, "phone": phone, "word": word, "converted": converted, "approved": approved, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RecordsData? response = check self.clientEp->get(resourcePath);
@@ -152,7 +156,7 @@ public isolated client class Client {
     # + payload - New contact, account and deal properties 
     # + return - Connections 
     remote isolated function convertLead(string recordId, LeadData payload) returns ConvertLeadResponse|error {
-        string resourcePath = string `/Leads/${recordId}/actions/convert`;
+        string resourcePath = string `/Leads/${getEncodedUri(recordId)}/actions/convert`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

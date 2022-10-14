@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WorkDay AbsenceManagement REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
@@ -73,7 +77,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrieveWorkerLeaveOfAbsence(string id, string subresourceID) returns LeavesOfAbsenceView|error {
-        string resourcePath = string `/workers/${id}/leavesOfAbsence/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/leavesOfAbsence/${getEncodedUri(subresourceID)}`;
         LeavesOfAbsenceView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -90,7 +94,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrieveAbsencePlaneBalance(string id) returns AbsenceBalanceView|error {
-        string resourcePath = string `/balances/${id}`;
+        string resourcePath = string `/balances/${getEncodedUri(id)}`;
         AbsenceBalanceView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -111,7 +115,7 @@ public isolated client class Client {
     # + offset - The zero-based index of the first object in a response collection. The default is 0. Use offset with the limit parameter to control paging of a response collection. Example: If limit is 5 and offset is 9, the response returns a collection of 5 objects starting with the 10th object. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesCollectionOfAbsenceTypes(string id, string? category = (), string? effective = (), int? 'limit = (), int? offset = ()) returns InlineResponse200|error {
-        string resourcePath = string `/workers/${id}/eligibleAbsenceTypes`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/eligibleAbsenceTypes`;
         map<anydata> queryParam = {"category": category, "effective": effective, "limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -128,7 +132,7 @@ public isolated client class Client {
     # + toDate - The end of a date range filter using the yyyy-mm-dd format. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesLeavesOfAbsenceByWorkerID(string id, string? fromDate = (), string[]? leaveType = (), int? 'limit = (), int? offset = (), string[]? status = (), string? toDate = ()) returns InlineResponse2001|error {
-        string resourcePath = string `/workers/${id}/leavesOfAbsence`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/leavesOfAbsence`;
         map<anydata> queryParam = {"fromDate": fromDate, "leaveType": leaveType, "limit": 'limit, "offset": offset, "status": status, "toDate": toDate};
         map<Encoding> queryParamEncoding = {"leaveType": {style: FORM, explode: true}, "status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -156,7 +160,7 @@ public isolated client class Client {
     # + payload - Request payload 
     # + return - Resource created. 
     remote isolated function createsTimeOffRequest(string id, TimeOffRequestEventView payload) returns TimeOffRequestEventView|error {
-        string resourcePath = string `/workers/${id}/requestTimeOff`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/requestTimeOff`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -169,7 +173,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesValidTimeOffDates(string id, string subresourceID) returns DailyQuantityView|error {
-        string resourcePath = string `/workers/${id}/validTimeOffDates/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/validTimeOffDates/${getEncodedUri(subresourceID)}`;
         DailyQuantityView response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -178,7 +182,7 @@ public isolated client class Client {
     # + id - The Workday ID of the resource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesWorkersInfo(string id) returns WorkerData|error {
-        string resourcePath = string `/workers/${id}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}`;
         WorkerData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -193,7 +197,7 @@ public isolated client class Client {
     # + toDate - The end of a date range filter using the yyyy-mm-dd format. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesWorkerTimeOffDetails(string id, string? fromDate = (), int? 'limit = (), int? offset = (), string[]? status = (), string[]? timeOffType = (), string? toDate = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/workers/${id}/timeOffDetails`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/timeOffDetails`;
         map<anydata> queryParam = {"fromDate": fromDate, "limit": 'limit, "offset": offset, "status": status, "timeOffType": timeOffType, "toDate": toDate};
         map<Encoding> queryParamEncoding = {"status": {style: FORM, explode: true}, "timeOffType": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -210,7 +214,7 @@ public isolated client class Client {
     # + timeOff - The Workday ID of the Time Off. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesTimeOffDateByWorkerId(string id, string? date = (), int? 'limit = (), int? offset = (), string? position = (), string? timeOff = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/workers/${id}/validTimeOffDates`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/validTimeOffDates`;
         map<anydata> queryParam = {"date": date, "limit": 'limit, "offset": offset, "position": position, "timeOff": timeOff};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2004 response = check self.clientEp->get(resourcePath);
@@ -235,7 +239,7 @@ public isolated client class Client {
     # + subresourceID - The Workday ID of the subresource. 
     # + return - Successful response. A successful response can return no matched data. 
     remote isolated function retrievesWorkerEligibleAbsenceType(string id, string subresourceID) returns EligibleAbsenceTypeView|error {
-        string resourcePath = string `/workers/${id}/eligibleAbsenceTypes/${subresourceID}`;
+        string resourcePath = string `/workers/${getEncodedUri(id)}/eligibleAbsenceTypes/${getEncodedUri(subresourceID)}`;
         EligibleAbsenceTypeView response = check self.clientEp->get(resourcePath);
         return response;
     }

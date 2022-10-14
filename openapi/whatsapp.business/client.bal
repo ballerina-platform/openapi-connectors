@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification.
@@ -178,7 +182,7 @@ public isolated client class Client {
     # + groupId - Group ID 
     # + return - Response or an error 
     remote isolated function getGroupInfo(string groupId) returns GroupResponse|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         GroupResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -188,7 +192,7 @@ public isolated client class Client {
     # + payload - Required parameters 
     # + return - HTTP response or else an error 
     remote isolated function updateGroupInfo(string groupId, UpdateGroupInfoRequestBody payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -200,8 +204,8 @@ public isolated client class Client {
     # + groupId - Group ID 
     # + return - HTTP response or else an error 
     remote isolated function demoteGroupAdmin(string groupId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/admins`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/admins`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Promote-To-Group-Admin
@@ -210,7 +214,7 @@ public isolated client class Client {
     # + payload - Required parameters 
     # + return - HTTP response or else an error 
     remote isolated function promoteToGroupAdmin(string groupId, GroupAdminRequestBody payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/admins`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/admins`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -222,7 +226,7 @@ public isolated client class Client {
     # + groupId - Group ID 
     # + return - HTTP response or else an error 
     remote isolated function getGroupIconBinary(string groupId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/icon`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/icon`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -231,7 +235,7 @@ public isolated client class Client {
     # + groupId - Group ID 
     # + return - Response or an error 
     remote isolated function getGroupInvite(string groupId) returns GroupInviteResponse|error {
-        string resourcePath = string `/groups/${groupId}/invite`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/invite`;
         GroupInviteResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -240,8 +244,8 @@ public isolated client class Client {
     # + groupId - Group ID 
     # + return - HTTP response or else an error 
     remote isolated function removeGroupParticipant(string groupId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/participants`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/participants`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Check-Health
@@ -257,7 +261,7 @@ public isolated client class Client {
     # + mediaId - Media ID 
     # + return - JSON or else an error 
     remote isolated function downloadMedia(string mediaId) returns json|error {
-        string resourcePath = string `/media/${mediaId}`;
+        string resourcePath = string `/media/${getEncodedUri(mediaId)}`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -279,7 +283,7 @@ public isolated client class Client {
     # + payload - Required parameters 
     # + return - HTTP response or else an error 
     remote isolated function markMessageAsRead(string messageID, MarkMessageAsReadRequestBody payload) returns http:Response|error {
-        string resourcePath = string `/messages/${messageID}`;
+        string resourcePath = string `/messages/${getEncodedUri(messageID)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -463,7 +467,7 @@ public isolated client class Client {
     # + userUsername - User's username 
     # + return - `Detailed-User-Response` or an error 
     remote isolated function getUser(string userUsername) returns DetailedUserResponse|error {
-        string resourcePath = string `/users/${userUsername}`;
+        string resourcePath = string `/users/${getEncodedUri(userUsername)}`;
         DetailedUserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -473,7 +477,7 @@ public isolated client class Client {
     # + payload - Required parameters 
     # + return - `User-Response` or an error 
     remote isolated function updateUser(string userUsername, UpdateUserRequestBody payload) returns UserResponse|error {
-        string resourcePath = string `/users/${userUsername}`;
+        string resourcePath = string `/users/${getEncodedUri(userUsername)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

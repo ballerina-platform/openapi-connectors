@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Magento REST Asynchronous API v2.2](https://devdocs.magento.com/redoc/2.3/async-admin-rest-api.html) OpenAPI specification.
@@ -71,7 +75,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function amazonPaymentAddressManagementV1GetBillingAddressPut(string amazonOrderReferenceId, AmazonbillingaddressAmazonorderreferenceidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/amazon-billing-address/${amazonOrderReferenceId}`;
+        string resourcePath = string `/async/V1/amazon-billing-address/${getEncodedUri(amazonOrderReferenceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -82,7 +86,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function amazonPaymentAddressManagementV1GetShippingAddressPut(string amazonOrderReferenceId, AmazonshippingaddressAmazonorderreferenceidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/amazon-shipping-address/${amazonOrderReferenceId}`;
+        string resourcePath = string `/async/V1/amazon-shipping-address/${getEncodedUri(amazonOrderReferenceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -94,14 +98,14 @@ public isolated client class Client {
     # + return - Unexpected error 
     remote isolated function amazonPaymentOrderInformationManagementV1RemoveOrderReferenceDelete() returns http:Response|error {
         string resourcePath = string `/async/V1/amazon/order-ref`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # carts/guest-carts/{cartId}/giftCards
     #
     # + return - 202 Accepted. 
     remote isolated function giftCardAccountGuestGiftCardAccountManagementV1AddGiftCardPost(string cartId, CartidGiftcardsBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/carts/guest-carts/${cartId}/giftCards`;
+        string resourcePath = string `/async/V1/carts/guest-carts/${getEncodedUri(cartId)}/giftCards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -112,8 +116,8 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function giftCardAccountGuestGiftCardAccountManagementV1DeleteByQuoteIdDelete(string cartId, string giftCardCode) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/carts/guest-carts/${cartId}/giftCards/${giftCardCode}`;
-        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/async/V1/carts/guest-carts/${getEncodedUri(cartId)}/giftCards/${getEncodedUri(giftCardCode)}`;
+        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # carts/mine
@@ -262,7 +266,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartManagementV1AssignCustomerPut(string cartId, GuestcartsCartidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -274,7 +278,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestBillingAddressManagementV1AssignPost(string cartId, CartidBillingaddressBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/billing-address`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/billing-address`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -286,7 +290,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartTotalManagementV1CollectTotalsPut(string cartId, CartidCollecttotalsBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/collect-totals`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/collect-totals`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -298,8 +302,8 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCouponManagementV1RemoveDelete(string cartId) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/coupons`;
-        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/coupons`;
+        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # guest-carts/{cartId}/coupons/{couponCode}
@@ -308,7 +312,7 @@ public isolated client class Client {
     # + couponCode - The coupon code data. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCouponManagementV1SetPut(string cartId, string couponCode) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/coupons/${couponCode}`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/coupons/${getEncodedUri(couponCode)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> put(resourcePath, request);
@@ -318,7 +322,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function quoteGuestShipmentEstimationV1EstimateByExtendedAddressPost(string cartId, CartidEstimateshippingmethodsBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/estimate-shipping-methods`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/estimate-shipping-methods`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -330,7 +334,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function giftMessageGuestCartRepositoryV1SavePost(string cartId, CartidGiftmessageBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/gift-message`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/gift-message`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -343,7 +347,7 @@ public isolated client class Client {
     # + itemId - The item ID. 
     # + return - 202 Accepted. 
     remote isolated function giftMessageGuestItemRepositoryV1SavePost(string cartId, int itemId, GiftmessageItemidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/gift-message/${itemId}`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/gift-message/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -354,7 +358,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartItemRepositoryV1SavePost(string cartId, CartidItemsBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/items`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -365,7 +369,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartItemRepositoryV1SavePut(string cartId, string itemId, ItemsItemidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/items/${itemId}`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/items/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -378,8 +382,8 @@ public isolated client class Client {
     # + itemId - The item ID of the item to be removed. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartItemRepositoryV1DeleteByIdDelete(string cartId, int itemId) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/items/${itemId}`;
-        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/items/${getEncodedUri(itemId)}`;
+        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # guest-carts/{cartId}/order
@@ -387,7 +391,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestCartManagementV1PlaceOrderPut(string cartId, CartidOrderBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/order`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/order`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -398,7 +402,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function checkoutGuestPaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPost(string cartId, CartidPaymentinformationBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/payment-information`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/payment-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -410,7 +414,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function quoteGuestPaymentMethodManagementV1SetPut(string cartId, CartidSelectedpaymentmethodBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/selected-payment-method`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/selected-payment-method`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -421,7 +425,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function checkoutGuestPaymentInformationManagementV1SavePaymentInformationPost(string cartId, CartidSetpaymentinformationBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/set-payment-information`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/set-payment-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -432,7 +436,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function checkoutGuestShippingInformationManagementV1SaveAddressInformationPost(string cartId, CartidShippinginformationBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/shipping-information`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/shipping-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -443,7 +447,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function checkoutGuestTotalsInformationManagementV1CalculatePost(string cartId, CartidTotalsinformationBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-carts/${cartId}/totals-information`;
+        string resourcePath = string `/async/V1/guest-carts/${getEncodedUri(cartId)}/totals-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -455,7 +459,7 @@ public isolated client class Client {
     # + cartId - The shopping cart ID. 
     # + return - 202 Accepted. 
     remote isolated function giftRegistryGuestCartShippingMethodManagementV1EstimateByRegistryIdPost(string cartId, CartidEstimateshippingmethodsBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/guest-giftregistry/${cartId}/estimate-shipping-methods`;
+        string resourcePath = string `/async/V1/guest-giftregistry/${getEncodedUri(cartId)}/estimate-shipping-methods`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -489,7 +493,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteBillingAddressManagementV1AssignPost(int cartId, CartidBillingaddressBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/billing-address`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/billing-address`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -501,8 +505,8 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteCouponManagementV1RemoveDelete(int cartId) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/coupons`;
-        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/coupons`;
+        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # negotiable-carts/{cartId}/coupons/{couponCode}
@@ -511,7 +515,7 @@ public isolated client class Client {
     # + couponCode - The coupon code data. 
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteCouponManagementV1SetPut(int cartId, string couponCode) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/coupons/${couponCode}`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/coupons/${getEncodedUri(couponCode)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> put(resourcePath, request);
@@ -521,7 +525,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteShipmentEstimationV1EstimateByExtendedAddressPost(string cartId, CartidEstimateshippingmethodsBody4 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/estimate-shipping-methods`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/estimate-shipping-methods`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -533,7 +537,7 @@ public isolated client class Client {
     # + cartId - The shopping cart ID. 
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteShippingMethodManagementV1EstimateByAddressIdPost(int cartId, CartidEstimateshippingmethodsbyaddressidBody payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/estimate-shipping-methods-by-address-id`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/estimate-shipping-methods-by-address-id`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -544,7 +548,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteGiftCardAccountManagementV1SaveByQuoteIdPost(int cartId, CartidGiftcardsBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/giftCards`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/giftCards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -555,15 +559,15 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteGiftCardAccountManagementV1DeleteByQuoteIdDelete(int cartId, string giftCardCode) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/giftCards/${giftCardCode}`;
-        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/giftCards/${getEncodedUri(giftCardCode)}`;
+        AsynchronousOperationsDataAsyncResponseInterface response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # negotiable-carts/{cartId}/payment-information
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuotePaymentInformationManagementV1SavePaymentInformationAndPlaceOrderPost(int cartId, CartidPaymentinformationBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/payment-information`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/payment-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -574,7 +578,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuotePaymentInformationManagementV1SavePaymentInformationPost(int cartId, CartidSetpaymentinformationBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/set-payment-information`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/set-payment-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -585,7 +589,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function negotiableQuoteShippingInformationManagementV1SaveAddressInformationPost(int cartId, CartidShippinginformationBody2 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/negotiable-carts/${cartId}/shipping-information`;
+        string resourcePath = string `/async/V1/negotiable-carts/${getEncodedUri(cartId)}/shipping-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -628,7 +632,7 @@ public isolated client class Client {
     #
     # + return - 202 Accepted. 
     remote isolated function worldpayGuestPaymentInformationManagementProxyV1SavePaymentInformationAndPlaceOrderPost(string cartId, CartidPaymentinformationBody4 payload) returns AsynchronousOperationsDataAsyncResponseInterface|error {
-        string resourcePath = string `/async/V1/worldpay-guest-carts/${cartId}/payment-information`;
+        string resourcePath = string `/async/V1/worldpay-guest-carts/${getEncodedUri(cartId)}/payment-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

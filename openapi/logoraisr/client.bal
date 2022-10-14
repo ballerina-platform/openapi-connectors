@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -47,7 +47,7 @@ public isolated client class Client {
     # + fileId - Id of the file for which the preview_img_url is generated. 
     # + return - Returns preview response or an error 
     remote isolated function readPreviews(string fileId) returns PreviewResponse|error {
-        string resourcePath = string `/previews/${fileId}/`;
+        string resourcePath = string `/previews/${getEncodedUri(fileId)}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         PreviewResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -84,7 +84,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProjectResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProjectResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets project details.
@@ -92,7 +92,7 @@ public isolated client class Client {
     # + projectNumber - Number of the project. 
     # + return - Returns project details or an error 
     remote isolated function readProjects(string projectNumber) returns Project|error {
-        string resourcePath = string `/projects/${projectNumber}/`;
+        string resourcePath = string `/projects/${getEncodedUri(projectNumber)}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Project response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -119,7 +119,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ReportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ReportResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Gets report details.
@@ -127,7 +127,7 @@ public isolated client class Client {
     # + reportNumber - Report number 
     # + return - Returns report detail or an error 
     remote isolated function readReports(string reportNumber) returns Report|error {
-        string resourcePath = string `/reports/${reportNumber}/`;
+        string resourcePath = string `/reports/${getEncodedUri(reportNumber)}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Report response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -138,7 +138,7 @@ public isolated client class Client {
     # + resultFileId - Id of the result_file for which the result_file_url is generated. 
     # + return - Returns result from image processing or an error 
     remote isolated function readResults(string resultFileId) returns ResultResponse|error {
-        string resourcePath = string `/results/${resultFileId}/`;
+        string resourcePath = string `/results/${getEncodedUri(resultFileId)}/`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ResultResponse response = check self.clientEp->get(resourcePath, httpHeaders);

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -17,68 +17,68 @@
 # Interface LinkInterface Represents link with collected data and initialized vector for decryption.
 public type AnalyticsDataLinkInterface record {
     # URL
-    string? url;
+    string url;
     # initialization vector
-    string? initialization_vector;
+    string initialization_vector;
 };
 
 # Error parameters item
 public type ErrorParametersItem record {
     # ACL resource
-    string? resources?;
+    string resources?;
     # Missing or invalid field name
-    string? fieldName?;
+    string fieldName?;
     # Incorrect field value
-    string? fieldValue?;
+    string fieldValue?;
 };
 
 # Address Consent Token (XML)
 public type AmazonshippingaddressAmazonorderreferenceidBody1 record {
     # Address Consent Token
-    string? addressConsentToken;
+    string addressConsentToken;
 };
 
 # Errors list
-public type ErrorErrors ErrorErrorsItem[]?;
+public type ErrorErrors ErrorErrorsItem[];
 
 # Address Consent Token (JSON)
 public type AmazonshippingaddressAmazonorderreferenceidBody record {
     # Address Consent Token
-    string? addressConsentToken;
+    string addressConsentToken;
 };
 
 # Error parameters list
-public type ErrorParameters ErrorParametersItem[]?;
+public type ErrorParameters ErrorParametersItem[];
 
 # Error details
 public type ErrorErrorsItem record {
     # Error message
-    string? message?;
+    string message?;
     # Error parameters list
-    ErrorParameters? parameters?;
+    ErrorParameters parameters?;
 };
 
 # Address Consent Token
 public type AmazonbillingaddressAmazonorderreferenceidBody record {
     # Address Consent Token
-    string? addressConsentToken;
+    string addressConsentToken;
 };
 
 # Address Consent Token(XML)
 public type AmazonbillingaddressAmazonorderreferenceidBody1 record {
     # Address Consent Token
-    string? addressConsentToken;
+    string addressConsentToken;
 };
 
 public type ErrorResponse record {
     # Error message
-    string? message;
+    string message;
     # Errors list
-    ErrorErrors? errors?;
+    ErrorErrors errors?;
     # Error code
-    int? code?;
+    int code?;
     # Error parameters list
-    ErrorParameters? parameters?;
+    ErrorParameters parameters?;
     # Stack trace
-    string? trace?;
+    string trace?;
 };

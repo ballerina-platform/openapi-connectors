@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.infusionsoft.com/token";
 |};
 
 # This is a generated connector for [Keap API v1.70.0.453309-hf-202203291431](https://developer.infusionsoft.com/docs/rest/) OpenAPI specification.
@@ -199,7 +210,7 @@ public isolated client class Client {
     # + 'limit - Sets a beginning range of items to return 
     # + return - OK 
     remote isolated function listAffiliateClawbacks(string affiliateId, string? since = (), string? until = (), string? 'order = (), string? orderDirection = (), int? offset = (), int? 'limit = ()) returns AffiliateClawbackList|error {
-        string resourcePath = string `/affiliates/${affiliateId}/clawbacks`;
+        string resourcePath = string `/affiliates/${getEncodedUri(affiliateId)}/clawbacks`;
         map<anydata> queryParam = {"since": since, "until": until, "order": 'order, "order_direction": orderDirection, "offset": offset, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AffiliateClawbackList response = check self.clientEp->get(resourcePath);
@@ -210,7 +221,7 @@ public isolated client class Client {
     # + id - id 
     # + return - OK 
     remote isolated function getAffiliate(int id) returns Affiliate|error {
-        string resourcePath = string `/affiliates/${id}`;
+        string resourcePath = string `/affiliates/${getEncodedUri(id)}`;
         Affiliate response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -266,7 +277,7 @@ public isolated client class Client {
     # + appointmentId - appointmentId 
     # + return - OK 
     remote isolated function getAppointment(int appointmentId) returns Appointment|error {
-        string resourcePath = string `/appointments/${appointmentId}`;
+        string resourcePath = string `/appointments/${getEncodedUri(appointmentId)}`;
         Appointment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -276,7 +287,7 @@ public isolated client class Client {
     # + payload - appointmentDTO 
     # + return - OK 
     remote isolated function updateAppointment(int appointmentId, Appointment payload) returns Appointment|error {
-        string resourcePath = string `/appointments/${appointmentId}`;
+        string resourcePath = string `/appointments/${getEncodedUri(appointmentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -288,8 +299,8 @@ public isolated client class Client {
     # + appointmentId - appointmentId 
     # + return - No Content 
     remote isolated function deleteAppointment(int appointmentId) returns http:Response|error {
-        string resourcePath = string `/appointments/${appointmentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/appointments/${getEncodedUri(appointmentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Appointment
@@ -298,7 +309,7 @@ public isolated client class Client {
     # + payload - appointmentDTO 
     # + return - OK 
     remote isolated function updatePropertiesOnAppointment(int appointmentId, Appointment payload) returns Appointment|error {
-        string resourcePath = string `/appointments/${appointmentId}`;
+        string resourcePath = string `/appointments/${getEncodedUri(appointmentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -327,7 +338,7 @@ public isolated client class Client {
     # + payload - goalEvent 
     # + return - Created 
     remote isolated function createAchieveApiGoalEvent(string integration, string callName, AchieveApiGoalEvent payload) returns GoalEventResultDTO[]|error {
-        string resourcePath = string `/campaigns/goals/${integration}/${callName}`;
+        string resourcePath = string `/campaigns/goals/${getEncodedUri(integration)}/${getEncodedUri(callName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -340,7 +351,7 @@ public isolated client class Client {
     # + optionalProperties - Comma-delimited list of Campaign properties to include in the response. (The fields `goals` and `sequences` aren't included, by default.) 
     # + return - OK 
     remote isolated function getCampaign(int campaignId, string[]? optionalProperties = ()) returns Campaign|error {
-        string resourcePath = string `/campaigns/${campaignId}`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}`;
         map<anydata> queryParam = {"optional_properties": optionalProperties};
         map<Encoding> queryParamEncoding = {"optional_properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -354,7 +365,7 @@ public isolated client class Client {
     # + payload - ids 
     # + return - OK 
     remote isolated function addContactsToCampaignSequence(int campaignId, int sequenceId, SetOfIds payload) returns json|error {
-        string resourcePath = string `/campaigns/${campaignId}/sequences/${sequenceId}/contacts`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}/sequences/${getEncodedUri(sequenceId)}/contacts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -368,7 +379,7 @@ public isolated client class Client {
     # + contactId - contactId 
     # + return - No Content 
     remote isolated function addContactToCampaignSequence(int campaignId, int sequenceId, int contactId) returns http:Response|error {
-        string resourcePath = string `/campaigns/${campaignId}/sequences/${sequenceId}/contacts/${contactId}`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}/sequences/${getEncodedUri(sequenceId)}/contacts/${getEncodedUri(contactId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -381,8 +392,8 @@ public isolated client class Client {
     # + contactId - contactId 
     # + return - No Content 
     remote isolated function removeContactFromCampaignSequence(int campaignId, int sequenceId, int contactId) returns http:Response|error {
-        string resourcePath = string `/campaigns/${campaignId}/sequences/${sequenceId}/contacts/${contactId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}/sequences/${getEncodedUri(sequenceId)}/contacts/${getEncodedUri(contactId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Companies
@@ -428,7 +439,7 @@ public isolated client class Client {
     # + optionalProperties - Comma-delimited list of Company properties to include in the response. (Fields such as `notes`, `fax_number` and `custom_fields` aren't included, by default.) 
     # + return - OK 
     remote isolated function getCompany(int companyId, string[]? optionalProperties = ()) returns Company|error {
-        string resourcePath = string `/companies/${companyId}`;
+        string resourcePath = string `/companies/${getEncodedUri(companyId)}`;
         map<anydata> queryParam = {"optional_properties": optionalProperties};
         map<Encoding> queryParamEncoding = {"optional_properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -441,7 +452,7 @@ public isolated client class Client {
     # + payload - company 
     # + return - OK 
     remote isolated function updateCompanies(int companyId, CreateOrPatchCompany payload) returns Company|error {
-        string resourcePath = string `/companies/${companyId}`;
+        string resourcePath = string `/companies/${getEncodedUri(companyId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -454,7 +465,7 @@ public isolated client class Client {
     # + payload - company 
     # + return - OK 
     remote isolated function updateCompany(int companyId, CreateOrPatchCompany payload) returns Company|error {
-        string resourcePath = string `/company/${companyId}`;
+        string resourcePath = string `/company/${getEncodedUri(companyId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -531,8 +542,8 @@ public isolated client class Client {
     # + contactId - contactId 
     # + return - No Content 
     remote isolated function deleteContact(int contactId) returns http:Response|error {
-        string resourcePath = string `/contacts/${contactId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Contact
@@ -542,7 +553,7 @@ public isolated client class Client {
     # + payload - contact 
     # + return - OK 
     remote isolated function updatePropertiesOnContact(int contactId, CreateOrPatchContact payload, string[]? updateMask = ()) returns FullContact|error {
-        string resourcePath = string `/contacts/${contactId}`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}`;
         map<anydata> queryParam = {"update_mask": updateMask};
         map<Encoding> queryParamEncoding = {"update_mask": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -557,7 +568,7 @@ public isolated client class Client {
     # + contactId - contactId 
     # + return - OK 
     remote isolated function listCreditCards(int contactId) returns ContactCreditCard[]|error {
-        string resourcePath = string `/contacts/${contactId}/creditCards`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/creditCards`;
         ContactCreditCard[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -567,7 +578,7 @@ public isolated client class Client {
     # + payload - creditCard 
     # + return - Created 
     remote isolated function createCreditCard(int contactId, CreditCard payload) returns CreditCardAdded|error {
-        string resourcePath = string `/contacts/${contactId}/creditCards`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/creditCards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -582,7 +593,7 @@ public isolated client class Client {
     # + email - Optional email address to query on 
     # + return - OK 
     remote isolated function listEmailsForContact(int contactId, int? 'limit = (), int? offset = (), string? email = ()) returns EmailSentQueryResultList|error {
-        string resourcePath = string `/contacts/${contactId}/emails`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/emails`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset, "email": email};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmailSentQueryResultList response = check self.clientEp->get(resourcePath);
@@ -594,7 +605,7 @@ public isolated client class Client {
     # + payload - Email records to persist, with content. 
     # + return - Created 
     remote isolated function createEmailForContact(int contactId, EmailSentCreate payload) returns EmailSentCreate|error {
-        string resourcePath = string `/contacts/${contactId}/emails`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/emails`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -608,7 +619,7 @@ public isolated client class Client {
     # + offset - Sets a beginning range of items to return 
     # + return - OK 
     remote isolated function listAppliedTags(int contactId, int? 'limit = (), int? offset = ()) returns ContactTagList|error {
-        string resourcePath = string `/contacts/${contactId}/tags`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/tags`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactTagList response = check self.clientEp->get(resourcePath);
@@ -620,7 +631,7 @@ public isolated client class Client {
     # + payload - tagIds 
     # + return - OK 
     remote isolated function applyTagsToContactId(int contactId, TagId payload) returns EntryLongString[]|error {
-        string resourcePath = string `/contacts/${contactId}/tags`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/tags`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -633,10 +644,10 @@ public isolated client class Client {
     # + ids - ids 
     # + return - No Content 
     remote isolated function removeAppliedTagsFromContact(int contactId, string ids) returns http:Response|error {
-        string resourcePath = string `/contacts/${contactId}/tags`;
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/tags`;
         map<anydata> queryParam = {"ids": ids};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Remove Applied Tag
@@ -645,8 +656,8 @@ public isolated client class Client {
     # + tagId - tagId 
     # + return - No Content 
     remote isolated function removeTagsFromContact(int contactId, int tagId) returns http:Response|error {
-        string resourcePath = string `/contacts/${contactId}/tags/${tagId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/contacts/${getEncodedUri(contactId)}/tags/${getEncodedUri(tagId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Replace an Email Address
@@ -655,7 +666,7 @@ public isolated client class Client {
     # + payload - update 
     # + return - OK 
     remote isolated function replaceEmailAddress(string email, UpdateEmailAddress payload) returns RestEmailAddress|error {
-        string resourcePath = string `/emailAddresses/${email}`;
+        string resourcePath = string `/emailAddresses/${getEncodedUri(email)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -732,7 +743,7 @@ public isolated client class Client {
     # + id - id 
     # + return - OK 
     remote isolated function getEmail(int id) returns EmailSentQueryResultWithContent|error {
-        string resourcePath = string `/emails/${id}`;
+        string resourcePath = string `/emails/${getEncodedUri(id)}`;
         EmailSentQueryResultWithContent response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -745,7 +756,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function updateEmail(int id, EmailSentCreate payload) returns EmailSentCreate|error {
-        string resourcePath = string `/emails/${id}`;
+        string resourcePath = string `/emails/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -757,8 +768,8 @@ public isolated client class Client {
     # + id - id 
     # + return - No Content 
     remote isolated function deleteEmail(int id) returns http:Response|error {
-        string resourcePath = string `/emails/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/emails/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Files
@@ -796,7 +807,7 @@ public isolated client class Client {
     # + optionalProperties - Comma-delimited list of File properties to include in the response. (Some fields such as `file_data` aren't included, by default.) 
     # + return - OK 
     remote isolated function getFile(int fileId, string[]? optionalProperties = ()) returns FileInformation|error {
-        string resourcePath = string `/files/${fileId}`;
+        string resourcePath = string `/files/${getEncodedUri(fileId)}`;
         map<anydata> queryParam = {"optional_properties": optionalProperties};
         map<Encoding> queryParamEncoding = {"optional_properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -809,7 +820,7 @@ public isolated client class Client {
     # + payload - fileUpload 
     # + return - OK 
     remote isolated function updateFile(int fileId, FileUpload payload) returns FileInformation|error {
-        string resourcePath = string `/files/${fileId}`;
+        string resourcePath = string `/files/${getEncodedUri(fileId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -821,8 +832,8 @@ public isolated client class Client {
     # + fileId - fileId 
     # + return - No Content 
     remote isolated function deleteFile(int fileId) returns http:Response|error {
-        string resourcePath = string `/files/${fileId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/${getEncodedUri(fileId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Stored Hook Subscriptions
@@ -858,7 +869,7 @@ public isolated client class Client {
     # + 'key - key 
     # + return - OK 
     remote isolated function retrieveAHookSubscription(string 'key) returns RestHook|error {
-        string resourcePath = string `/hooks/${'key}`;
+        string resourcePath = string `/hooks/${getEncodedUri('key)}`;
         RestHook response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -868,7 +879,7 @@ public isolated client class Client {
     # + payload - restHookRequest 
     # + return - OK 
     remote isolated function updateAHookSubscription(string 'key, RestHookRequest payload) returns RestHook|error {
-        string resourcePath = string `/hooks/${'key}`;
+        string resourcePath = string `/hooks/${getEncodedUri('key)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -880,8 +891,8 @@ public isolated client class Client {
     # + 'key - key 
     # + return - No Content 
     remote isolated function deleteAHookSubscription(string 'key) returns http:Response|error {
-        string resourcePath = string `/hooks/${'key}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/hooks/${getEncodedUri('key)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Verify a Hook Subscription, Delayed
@@ -890,12 +901,12 @@ public isolated client class Client {
     # + xHookSecret - X-Hook-Secret 
     # + return - OK 
     remote isolated function verifyAHookSubscriptionDelayed(string 'key, string xHookSecret) returns RestHook|error {
-        string resourcePath = string `/hooks/${'key}/delayedVerify`;
+        string resourcePath = string `/hooks/${getEncodedUri('key)}/delayedVerify`;
         map<any> headerValues = {"X-Hook-Secret": xHookSecret};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        RestHook response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RestHook response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Verify a Hook Subscription
@@ -903,7 +914,7 @@ public isolated client class Client {
     # + 'key - key 
     # + return - OK 
     remote isolated function verifyAHookSubscription(string 'key) returns RestHook|error {
-        string resourcePath = string `/hooks/${'key}/verify`;
+        string resourcePath = string `/hooks/${getEncodedUri('key)}/verify`;
         http:Request request = new;
         //TODO: Update the request as needed;
         RestHook response = check self.clientEp-> post(resourcePath, request);
@@ -922,7 +933,7 @@ public isolated client class Client {
     # + countryCode - countryCode 
     # + return - OK 
     remote isolated function listCountriesProvinces(string countryCode) returns ProvincesByCode|error {
-        string resourcePath = string `/locales/countries/${countryCode}/provinces`;
+        string resourcePath = string `/locales/countries/${getEncodedUri(countryCode)}/provinces`;
         ProvincesByCode response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -985,7 +996,7 @@ public isolated client class Client {
     # + noteId - noteId 
     # + return - OK 
     remote isolated function getNote(int noteId) returns Note|error {
-        string resourcePath = string `/notes/${noteId}`;
+        string resourcePath = string `/notes/${getEncodedUri(noteId)}`;
         Note response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -994,8 +1005,8 @@ public isolated client class Client {
     # + noteId - noteId 
     # + return - No Content 
     remote isolated function deleteNote(int noteId) returns http:Response|error {
-        string resourcePath = string `/notes/${noteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/notes/${getEncodedUri(noteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Note
@@ -1004,7 +1015,7 @@ public isolated client class Client {
     # + payload - note 
     # + return - OK 
     remote isolated function updatePropertiesOnNote(int noteId, UpdateNote payload) returns Note|error {
-        string resourcePath = string `/notes/${noteId}`;
+        string resourcePath = string `/notes/${getEncodedUri(noteId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1073,7 +1084,7 @@ public isolated client class Client {
     # + optionalProperties - Comma-delimited list of Opportunity properties to include in the response. (Some fields such as `custom_fields` aren't included, by default.) 
     # + return - OK 
     remote isolated function getOpportunity(int opportunityId, string[]? optionalProperties = ()) returns Opportunity|error {
-        string resourcePath = string `/opportunities/${opportunityId}`;
+        string resourcePath = string `/opportunities/${getEncodedUri(opportunityId)}`;
         map<anydata> queryParam = {"optional_properties": optionalProperties};
         map<Encoding> queryParamEncoding = {"optional_properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1086,7 +1097,7 @@ public isolated client class Client {
     # + payload - opportunity 
     # + return - OK 
     remote isolated function updatePropertiesOnOpportunity(int opportunityId, Opportunity payload) returns Opportunity|error {
-        string resourcePath = string `/opportunities/${opportunityId}`;
+        string resourcePath = string `/opportunities/${getEncodedUri(opportunityId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1145,7 +1156,7 @@ public isolated client class Client {
     # + orderId - orderId 
     # + return - OK 
     remote isolated function getOrder(int orderId) returns EcommerceReportingOrder|error {
-        string resourcePath = string `/orders/${orderId}`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}`;
         EcommerceReportingOrder response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1154,8 +1165,8 @@ public isolated client class Client {
     # + orderId - orderId 
     # + return - No Content 
     remote isolated function deleteOrder(int orderId) returns http:Response|error {
-        string resourcePath = string `/orders/${orderId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create an Order Item
@@ -1164,7 +1175,7 @@ public isolated client class Client {
     # + payload - createOrderItem 
     # + return - Created 
     remote isolated function createOrderItemsOnOrder(int orderId, CreateOrderItem payload) returns OrderItem|error {
-        string resourcePath = string `/orders/${orderId}/items`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1177,8 +1188,8 @@ public isolated client class Client {
     # + orderItemId - orderItemId 
     # + return - No Content 
     remote isolated function deleteOrderOrderItem(int orderId, int orderItemId) returns http:Response|error {
-        string resourcePath = string `/orders/${orderId}/items/${orderItemId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/items/${getEncodedUri(orderItemId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Replace an Order Pay Plan
@@ -1187,7 +1198,7 @@ public isolated client class Client {
     # + payload - paymentPlan 
     # + return - OK 
     remote isolated function replacePaymentPlan(int orderId, PaymentPlan payload) returns PaymentPlan|error {
-        string resourcePath = string `/orders/${orderId}/paymentPlan`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/paymentPlan`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1199,7 +1210,7 @@ public isolated client class Client {
     # + orderId - orderId 
     # + return - OK 
     remote isolated function listOrderPayments(int orderId) returns InvoicePayment[]|error {
-        string resourcePath = string `/orders/${orderId}/payments`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/payments`;
         InvoicePayment[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1209,7 +1220,7 @@ public isolated client class Client {
     # + payload - createPayment 
     # + return - Created 
     remote isolated function createPaymentOnOrder(int orderId, CreatePayment payload) returns PaymentResult|error {
-        string resourcePath = string `/orders/${orderId}/payments`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/payments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1226,7 +1237,7 @@ public isolated client class Client {
     # + contactId - Returns transactions for the provided contact id 
     # + return - OK 
     remote isolated function listTransactionsForOrder(int orderId, string? since = (), string? until = (), int? 'limit = (), int? offset = (), int? contactId = ()) returns TransactionList|error {
-        string resourcePath = string `/orders/${orderId}/transactions`;
+        string resourcePath = string `/orders/${getEncodedUri(orderId)}/transactions`;
         map<anydata> queryParam = {"since": since, "until": until, "limit": 'limit, "offset": offset, "contact_id": contactId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TransactionList response = check self.clientEp->get(resourcePath);
@@ -1278,7 +1289,7 @@ public isolated client class Client {
     # + productId - productId 
     # + return - OK 
     remote isolated function retrieveProduct(int productId) returns Product|error {
-        string resourcePath = string `/products/${productId}`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}`;
         Product response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1287,8 +1298,8 @@ public isolated client class Client {
     # + productId - productId 
     # + return - No Content 
     remote isolated function deleteProduct(int productId) returns http:Response|error {
-        string resourcePath = string `/products/${productId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(productId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Product
@@ -1297,7 +1308,7 @@ public isolated client class Client {
     # + payload - createProduct 
     # + return - OK 
     remote isolated function updateProduct(int productId, CreateProduct payload) returns Product|error {
-        string resourcePath = string `/products/${productId}`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1310,7 +1321,7 @@ public isolated client class Client {
     # + payload - restProductImage 
     # + return - Created 
     remote isolated function createProductImage(int productId, CreateProductImage payload) returns http:Response|error {
-        string resourcePath = string `/products/${productId}/image`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}/image`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1322,8 +1333,8 @@ public isolated client class Client {
     # + productId - productId 
     # + return - No Content 
     remote isolated function deleteProductImage(int productId) returns http:Response|error {
-        string resourcePath = string `/products/${productId}/image`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(productId)}/image`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create a Product Subscription
@@ -1332,7 +1343,7 @@ public isolated client class Client {
     # + payload - createProductSubscription 
     # + return - Created 
     remote isolated function createProductSubscription(int productId, CreateProductSubscription payload) returns ProductSubscription|error {
-        string resourcePath = string `/products/${productId}/subscriptions`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}/subscriptions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1345,7 +1356,7 @@ public isolated client class Client {
     # + subscriptionId - subscriptionId 
     # + return - OK 
     remote isolated function retrieveProductSubscription(int productId, int subscriptionId) returns ProductSubscription|error {
-        string resourcePath = string `/products/${productId}/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/products/${getEncodedUri(productId)}/subscriptions/${getEncodedUri(subscriptionId)}`;
         ProductSubscription response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1355,8 +1366,8 @@ public isolated client class Client {
     # + subscriptionId - subscriptionId 
     # + return - No Content 
     remote isolated function deleteProductSubscription(int productId, int subscriptionId) returns http:Response|error {
-        string resourcePath = string `/products/${productId}/subscriptions/${subscriptionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/products/${getEncodedUri(productId)}/subscriptions/${getEncodedUri(subscriptionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve application configuration
@@ -1459,7 +1470,7 @@ public isolated client class Client {
     # + id - id 
     # + return - OK 
     remote isolated function getTag(int id) returns Tag|error {
-        string resourcePath = string `/tags/${id}`;
+        string resourcePath = string `/tags/${getEncodedUri(id)}`;
         Tag response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1470,7 +1481,7 @@ public isolated client class Client {
     # + offset - Sets a beginning range of items to return 
     # + return - OK 
     remote isolated function listCompaniesForTagId(int tagId, int? 'limit = (), int? offset = ()) returns TaggedCompanyList|error {
-        string resourcePath = string `/tags/${tagId}/companies`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}/companies`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TaggedCompanyList response = check self.clientEp->get(resourcePath);
@@ -1483,7 +1494,7 @@ public isolated client class Client {
     # + offset - Sets a beginning range of items to return 
     # + return - OK 
     remote isolated function listContactsForTagId(int tagId, int? 'limit = (), int? offset = ()) returns TaggedContactList|error {
-        string resourcePath = string `/tags/${tagId}/contacts`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}/contacts`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TaggedContactList response = check self.clientEp->get(resourcePath);
@@ -1495,7 +1506,7 @@ public isolated client class Client {
     # + payload - ids 
     # + return - OK 
     remote isolated function applyTagToContactIds(int tagId, SetOfIds payload) returns EntryLongString[]|error {
-        string resourcePath = string `/tags/${tagId}/contacts`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}/contacts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1508,11 +1519,11 @@ public isolated client class Client {
     # + ids - ids 
     # + return - No Content 
     remote isolated function removeTagFromContactIds(int tagId, int[] ids) returns http:Response|error {
-        string resourcePath = string `/tags/${tagId}/contacts`;
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}/contacts`;
         map<anydata> queryParam = {"ids": ids};
         map<Encoding> queryParamEncoding = {"ids": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Remove Tag from Contact
@@ -1521,8 +1532,8 @@ public isolated client class Client {
     # + contactId - contactId 
     # + return - No Content 
     remote isolated function removeTagFromContactId(int tagId, int contactId) returns http:Response|error {
-        string resourcePath = string `/tags/${tagId}/contacts/${contactId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/tags/${getEncodedUri(tagId)}/contacts/${getEncodedUri(contactId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Tasks
@@ -1600,7 +1611,7 @@ public isolated client class Client {
     # + taskId - taskId 
     # + return - OK 
     remote isolated function getTask(string taskId) returns Task|error {
-        string resourcePath = string `/tasks/${taskId}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskId)}`;
         Task response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1610,7 +1621,7 @@ public isolated client class Client {
     # + payload - task 
     # + return - OK 
     remote isolated function updateTask(string taskId, Task payload) returns Task|error {
-        string resourcePath = string `/tasks/${taskId}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1622,8 +1633,8 @@ public isolated client class Client {
     # + taskId - taskId 
     # + return - No Content 
     remote isolated function deleteTask(string taskId) returns http:Response|error {
-        string resourcePath = string `/tasks/${taskId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/tasks/${getEncodedUri(taskId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Task
@@ -1632,7 +1643,7 @@ public isolated client class Client {
     # + payload - task 
     # + return - OK 
     remote isolated function updatePropertiesOnTask(string taskId, Task payload) returns Task|error {
-        string resourcePath = string `/tasks/${taskId}`;
+        string resourcePath = string `/tasks/${getEncodedUri(taskId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1659,7 +1670,7 @@ public isolated client class Client {
     # + transactionId - transactionId 
     # + return - OK 
     remote isolated function getTransaction(int transactionId) returns EcommerceReportingTransaction|error {
-        string resourcePath = string `/transactions/${transactionId}`;
+        string resourcePath = string `/transactions/${getEncodedUri(transactionId)}`;
         EcommerceReportingTransaction response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1694,7 +1705,7 @@ public isolated client class Client {
     # + userId - userId 
     # + return - OK 
     remote isolated function getUserSignature(int userId) returns string|error {
-        string resourcePath = string `/users/${userId}/signature`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/signature`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }

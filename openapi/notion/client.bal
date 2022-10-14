@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Notion API v1](https://developers.notion.com/reference/intro) OpenAPI Specification. 
@@ -74,7 +78,7 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Retrieve block children 
     remote isolated function retrieveBlockChildren(string id, string? pageSize = (), string notionVersion = "2021-05-13") returns BlockChildrenResponse|error {
-        string resourcePath = string `/v1/blocks/${id}/children`;
+        string resourcePath = string `/v1/blocks/${getEncodedUri(id)}/children`;
         map<anydata> queryParam = {"page_size": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Notion-Version": notionVersion};
@@ -88,13 +92,13 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Append block children 
     remote isolated function appendBlockChildren(string id, PageUpdateRequestBody payload, string notionVersion = "2021-05-13") returns ChildBlockContent|error {
-        string resourcePath = string `/v1/blocks/${id}/children`;
+        string resourcePath = string `/v1/blocks/${getEncodedUri(id)}/children`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ChildBlockContent response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        ChildBlockContent response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List all databases
@@ -124,7 +128,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DatabaseBodyParams response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DatabaseBodyParams response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a database
@@ -133,7 +137,7 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Retrieve a database 
     remote isolated function retrieveDatabase(string id, string notionVersion = "2021-05-13") returns Database|error {
-        string resourcePath = string `/v1/databases/${id}`;
+        string resourcePath = string `/v1/databases/${getEncodedUri(id)}`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Database response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -145,13 +149,13 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Query a Database (Single Filter) 
     remote isolated function queryDatabase(string id, DatabaseContent payload, string notionVersion = "2021-05-13") returns DatabaseResponse|error {
-        string resourcePath = string `/v1/databases/${id}/query`;
+        string resourcePath = string `/v1/databases/${getEncodedUri(id)}/query`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DatabaseResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DatabaseResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a page
@@ -166,7 +170,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PageResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PageResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a Page
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Retrieve a Page 
     remote isolated function retrievePage(string id, string notionVersion = "2021-05-13") returns PageResponse|error {
-        string resourcePath = string `/v1/pages/${id}`;
+        string resourcePath = string `/v1/pages/${getEncodedUri(id)}`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         PageResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -187,13 +191,13 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Update Page properties 
     remote isolated function updatePageProperties(string id, PageContent payload, string notionVersion = "2021-05-13") returns PageUpdatedProperties|error {
-        string resourcePath = string `/v1/pages/${id}`;
+        string resourcePath = string `/v1/pages/${getEncodedUri(id)}`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PageUpdatedProperties response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        PageUpdatedProperties response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List all users
@@ -217,7 +221,7 @@ public isolated client class Client {
     # + notionVersion - API Version 
     # + return - 200 Success - Retrieve a user 
     remote isolated function retrieveUser(string id, string notionVersion = "2021-05-13") returns User|error {
-        string resourcePath = string `/v1/users/${id}`;
+        string resourcePath = string `/v1/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"Notion-Version": notionVersion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         User response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -233,7 +237,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

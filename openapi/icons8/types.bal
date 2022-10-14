@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,23 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Item to be added
-public type PostCollectionRequest record {
-    # Authorization
-    Auth auth?;
-    # Task
-    Task task?;
-};
-
-# Item to be added
-public type PostIconsRequest record {
-    # Authorization
-    Auth auth?;
-    # Task
-    Task task?;
-};
-
-public type Meta any;
+public type Meta anydata;
 
 public type TotalsresponseResult record {
     anydata[] total?;
@@ -74,22 +58,22 @@ public type IconV3Item record {
     *CompactIconV3Item;
     string category?;
     # identifier for group of the same icons in different styles; i.e. id of all "home" icons
-    decimal common_icon_id?;
+    decimal common_icon_id;
     # date (ISO8601 format) of icon was published
-    string created?;
+    string created;
     # internal service attribute; internal information about icon features; private; depend on the rights of the current user
-    Compacticonv3itemFeatures features?;
+    Compacticonv3itemFeatures features;
     # unique icon identifier
-    decimal id?;
+    decimal id;
     # icon name
-    string name?;
+    string name;
     # icon style
-    string platform_code?;
+    string platform_code;
     # internal service attribute; some links to spread the world
     Compacticonv3itemShare share?;
     Compacticonv3itemSubcategory subcategory?;
     # plain SVG content of icon
-    string svg?;
+    string svg;
     # internal service attribute; the meaning of this attribute is "Identifier of thread at Disquss"
     string url?;
     # URLs to icon sources in different vector formats; private; depend on the current user and could be opened in user's browser only
@@ -122,7 +106,7 @@ public type CreateditemResultResults record {
     string zip?;
 };
 
-public type WebFonts any;
+public type WebFonts anydata;
 
 # Authorization
 public type Auth record {
@@ -130,7 +114,7 @@ public type Auth record {
     string hash;
 };
 
-public type Search any;
+public type Search anydata;
 
 public type LatestIcons record {
     IconParameters parameters?;
@@ -237,11 +221,11 @@ public type TaskArguments record {
     # collection identifier
     string collection;
     # prefix for CSS rules, used to generate LESS/SCSS
-    string css_prefix?;
+    string css_prefix = "icons8";
     # glyph names conversion rule
-    string css_rules_case?;
+    string css_rules_case = "lowercase";
     # template for glyph selector; placeholder {{glyph}} will be replaced with glyph names
-    string css_selector?;
+    string css_selector = ".icons8-{{glyph}}";
     # name of iconic webfont
     string font_name;
 };

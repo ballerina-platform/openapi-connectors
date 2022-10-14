@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,7 @@ public type StudentSubmission record {
     # Absolute link to the submission in the Classroom web UI. Read-only.
     string alternateLink?;
     # Optional grade. If unset, no grade was set. This value must be non-negative. Decimal (that is, non-integer) values are allowed, but are rounded to two decimal places. This may be modified only by course teachers.
-    float assignedGrade?;
+    decimal assignedGrade?;
     # Student work for an assignment.
     AssignmentSubmission assignmentSubmission?;
     # Whether this student submission is associated with the Developer Console project making the request. See CreateCourseWork for more details. Read-only.
@@ -41,7 +41,7 @@ public type StudentSubmission record {
     # Creation time of this submission. This may be unset if the student has not accessed this item. Read-only.
     string creationTime?;
     # Optional pending grade. If unset, no grade was set. This value must be non-negative. Decimal (that is, non-integer) values are allowed, but are rounded to two decimal places. This is only visible to and modifiable by course teachers.
-    float draftGrade?;
+    decimal draftGrade?;
     # Classroom-assigned Identifier for the student submission. This is unique among submissions for the relevant course work. Read-only.
     string id?;
     # Whether this submission is late. Read-only.
@@ -130,6 +130,18 @@ public type ListCoursesResponse record {
 public type CourseAlias record {
     # Alias string. The format of the string indicates the desired alias scoping. * `d:` indicates a domain-scoped alias. Example: `d:math_101` * `p:` indicates a project-scoped alias. Example: `p:abc123` This field has a maximum length of 256 characters.
     string alias?;
+};
+
+# Association between a student and a guardian of that student. The guardian may receive information about the student's course work.
+public type Guardian record {
+    # Identifier for the guardian.
+    string guardianId?;
+    # Global information for a user.
+    UserProfile guardianProfile?;
+    # The email address to which the initial guardian invitation was sent. This field is only visible to domain administrators.
+    string invitedEmailAddress?;
+    # Identifier for the student to whom the guardian relationship applies.
+    string studentId?;
 };
 
 # Student work for a multiple-choice question.
@@ -233,7 +245,7 @@ public type CourseWork record {
     # Additional materials. CourseWork must have no more than 20 material items.
     Material[] materials?;
     # Maximum grade for this course work. If zero or unspecified, this assignment is considered ungraded. This must be a non-negative integer value.
-    float maxPoints?;
+    decimal maxPoints?;
     # Additional details for multiple-choice questions.
     MultipleChoiceQuestion multipleChoiceQuestion?;
     # Optional timestamp when this course work is scheduled to be published.
@@ -261,9 +273,9 @@ public type GradeHistory record {
     # When the grade of the submission was changed.
     string gradeTimestamp?;
     # The denominator of the grade at this time in the submission grade history.
-    float maxPoints?;
+    decimal maxPoints?;
     # The numerator of the grade at this time in the submission grade history.
-    float pointsEarned?;
+    decimal pointsEarned?;
 };
 
 # An invitation to join a course.
@@ -312,6 +324,20 @@ public type CloudPubsubTopic record {
 
 # Request to return a student submission.
 public type ReturnStudentSubmissionRequest record {
+};
+
+# An invitation to become the guardian of a specified user, sent to a specified email address.
+public type GuardianInvitation record {
+    # The time that this invitation was created. Read-only.
+    string creationTime?;
+    # Unique identifier for this invitation. Read-only.
+    string invitationId?;
+    # Email address that the invitation was sent to. This field is only visible to domain administrators.
+    string invitedEmailAddress?;
+    # The state that this invitation is in.
+    string state?;
+    # ID of the student (in standard format)
+    string studentId?;
 };
 
 # Request to turn in a student submission.
@@ -394,6 +420,14 @@ public type ListCourseAliasesResponse record {
     string nextPageToken?;
 };
 
+# Response when listing guardian invitations.
+public type ListGuardianInvitationsResponse record {
+    # Guardian invitations that matched the list request.
+    GuardianInvitation[] guardianInvitations?;
+    # Token identifying the next page of results to return. If empty, no further results are available.
+    string nextPageToken?;
+};
+
 # Response when listing course work.
 public type ListCourseWorkResponse record {
     # Course work items that match the request.
@@ -468,6 +502,10 @@ public type MultipleChoiceQuestion record {
 public type ShortAnswerSubmission record {
     # Student response to a short-answer question.
     string answer?;
+};
+
+# A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON representation for `Empty` is empty JSON object `{}`.
+public type Empty record {
 };
 
 # Request to modify assignee mode and options of a coursework.
@@ -546,6 +584,14 @@ public type DriveFile record {
 public type GlobalPermission record {
     # Permission value.
     string permission?;
+};
+
+# Response when listing guardians.
+public type ListGuardiansResponse record {
+    # Guardians on this page of results that met the criteria specified in the request.
+    Guardian[] guardians?;
+    # Token identifying the next page of results to return. If empty, no further results are available.
+    string nextPageToken?;
 };
 
 # Information about a `Feed` with a `feed_type` of `COURSE_ROSTER_CHANGES`.

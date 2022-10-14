@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -221,7 +221,7 @@ public isolated client class Client {
     # + name - The chain's resource name, in the format `chains/{chain_place_id}`. 
     # + return - Successful response 
     remote isolated function getChains(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Chain|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Chain response = check self.clientEp->get(resourcePath);
@@ -243,7 +243,7 @@ public isolated client class Client {
     # + payload - Notifications request 
     # + return - Successful response 
     remote isolated function updatenotificationsAccounts(string name, Notifications payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Notifications|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -267,10 +267,10 @@ public isolated client class Client {
     # + name - The name of the question to delete. 
     # + return - Successful response 
     remote isolated function deleteAccountsLocationsQuestions(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a specific question written by the current user.
@@ -290,7 +290,7 @@ public isolated client class Client {
     # + payload - Question request 
     # + return - Successful response 
     remote isolated function patchAccountsLocationsQuestions(string name, Question payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Question|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -315,7 +315,7 @@ public isolated client class Client {
     # + payload - ReportLocalPostInsights request 
     # + return - Successful response 
     remote isolated function reportinsightsAccountsLocationsLocalposts(string name, ReportLocalPostInsightsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocalPostInsightsResponse|error {
-        string resourcePath = string `/v4/${name}/localPosts:reportInsights`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/localPosts:reportInsights`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -340,7 +340,7 @@ public isolated client class Client {
     # + payload - BatchGetLocations request 
     # + return - Successful response 
     remote isolated function batchgetAccountsLocations(string name, BatchGetLocationsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetLocationsResponse|error {
-        string resourcePath = string `/v4/${name}/locations:batchGet`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/locations:batchGet`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -365,7 +365,7 @@ public isolated client class Client {
     # + payload - BatchGetReviews request 
     # + return - Successful response 
     remote isolated function batchgetreviewsAccountsLocations(string name, BatchGetReviewsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchGetReviewsResponse|error {
-        string resourcePath = string `/v4/${name}/locations:batchGetReviews`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/locations:batchGetReviews`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -390,7 +390,7 @@ public isolated client class Client {
     # + payload - ReportLocationInsights request 
     # + return - Successful response 
     remote isolated function reportinsightsAccountsLocations(string name, ReportLocationInsightsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReportLocationInsightsResponse|error {
-        string resourcePath = string `/v4/${name}/locations:reportInsights`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/locations:reportInsights`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -415,7 +415,7 @@ public isolated client class Client {
     # + payload - ReviewReply request 
     # + return - Successful response 
     remote isolated function updatereplyAccountsLocationsReviews(string name, ReviewReply payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ReviewReply|error {
-        string resourcePath = string `/v4/${name}/reply`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/reply`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -439,10 +439,10 @@ public isolated client class Client {
     # + name - The name of the review reply to delete. 
     # + return - Successful response 
     remote isolated function deletereplyAccountsLocationsReviews(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}/reply`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}/reply`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Accepts the specified invitation.
@@ -461,7 +461,7 @@ public isolated client class Client {
     # + payload - AcceptInvitation request 
     # + return - Successful response 
     remote isolated function acceptAccountsInvitations(string name, AcceptInvitationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}:accept`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:accept`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -486,7 +486,7 @@ public isolated client class Client {
     # + payload - AssociateLocation request 
     # + return - Successful response 
     remote isolated function associateAccountsLocations(string name, AssociateLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}:associate`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:associate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -511,7 +511,7 @@ public isolated client class Client {
     # + payload - ClearLocationAssociation request 
     # + return - Successful response 
     remote isolated function clearassociationAccountsLocations(string name, ClearLocationAssociationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}:clearAssociation`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:clearAssociation`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -536,7 +536,7 @@ public isolated client class Client {
     # + payload - CompleteVerification request 
     # + return - Successful response 
     remote isolated function completeAccountsLocationsVerifications(string name, CompleteVerificationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CompleteVerificationResponse|error {
-        string resourcePath = string `/v4/${name}:complete`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:complete`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -561,7 +561,7 @@ public isolated client class Client {
     # + payload - DeclineInvitation request 
     # + return - Successful response 
     remote isolated function declineAccountsInvitations(string name, DeclineInvitationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}:decline`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:decline`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -586,7 +586,7 @@ public isolated client class Client {
     # + payload - FetchVerificationOptions request 
     # + return - Successful response 
     remote isolated function fetchverificationoptionsAccountsLocations(string name, FetchVerificationOptionsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FetchVerificationOptionsResponse|error {
-        string resourcePath = string `/v4/${name}:fetchVerificationOptions`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:fetchVerificationOptions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -611,7 +611,7 @@ public isolated client class Client {
     # + payload - FindMatchingLocations request 
     # + return - Successful response 
     remote isolated function findmatchesAccountsLocations(string name, FindMatchingLocationsRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns FindMatchingLocationsResponse|error {
-        string resourcePath = string `/v4/${name}:findMatches`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:findMatches`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -636,7 +636,7 @@ public isolated client class Client {
     # + payload - GenerateAccountNumber request 
     # + return - Successful response 
     remote isolated function generateaccountnumberAccounts(string name, GenerateAccountNumberRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Account|error {
-        string resourcePath = string `/v4/${name}:generateAccountNumber`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:generateAccountNumber`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -661,7 +661,7 @@ public isolated client class Client {
     # + readMask - Optional. The specific fields to return. If no mask is specified, then it returns the full Lodging (same as "*"). Repeated field items cannot be individually specified. 
     # + return - Successful response 
     remote isolated function getgoogleupdatedAccountsLocationsLodging(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? readMask = ()) returns GetGoogleUpdatedLodgingResponse|error {
-        string resourcePath = string `/v4/${name}:getGoogleUpdated`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:getGoogleUpdated`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "readMask": readMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetGoogleUpdatedLodgingResponse response = check self.clientEp->get(resourcePath);
@@ -682,7 +682,7 @@ public isolated client class Client {
     # + name - The name of the location to fetch. 
     # + return - Successful response 
     remote isolated function getgoogleupdatedAccountsLocations(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleUpdatedLocation|error {
-        string resourcePath = string `/v4/${name}:googleUpdated`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:googleUpdated`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleUpdatedLocation response = check self.clientEp->get(resourcePath);
@@ -705,7 +705,7 @@ public isolated client class Client {
     # + pageToken - If specified, the next page of locations is retrieved. 
     # + return - Successful response 
     remote isolated function listrecommendgooglelocationsAccounts(string name, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListRecommendedGoogleLocationsResponse|error {
-        string resourcePath = string `/v4/${name}:recommendGoogleLocations`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:recommendGoogleLocations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListRecommendedGoogleLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -727,7 +727,7 @@ public isolated client class Client {
     # + payload - ReportGoogleLocation request 
     # + return - Successful response 
     remote isolated function reportGooglelocations(string name, ReportGoogleLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}:report`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:report`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -752,7 +752,7 @@ public isolated client class Client {
     # + payload - TransferLocation request 
     # + return - Successful response 
     remote isolated function transferAccountsLocations(string name, TransferLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Location|error {
-        string resourcePath = string `/v4/${name}:transfer`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:transfer`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -777,7 +777,7 @@ public isolated client class Client {
     # + payload - VerifyLocation request 
     # + return - Successful response 
     remote isolated function verifyAccountsLocations(string name, VerifyLocationRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns VerifyLocationResponse|error {
-        string resourcePath = string `/v4/${name}:verify`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}:verify`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -801,7 +801,7 @@ public isolated client class Client {
     # + parent - The name of the location to list admins of. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsAdmins(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ListLocationAdminsResponse|error {
-        string resourcePath = string `/v4/${parent}/admins`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/admins`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationAdminsResponse response = check self.clientEp->get(resourcePath);
@@ -823,7 +823,7 @@ public isolated client class Client {
     # + payload - Admin request 
     # + return - Successful response 
     remote isolated function createAccountsLocationsAdmins(string parent, Admin payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Admin|error {
-        string resourcePath = string `/v4/${parent}/admins`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/admins`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -850,7 +850,7 @@ public isolated client class Client {
     # + pageToken - If specified, the next page of answers is retrieved. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListAnswersResponse|error {
-        string resourcePath = string `/v4/${parent}/answers`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/answers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListAnswersResponse response = check self.clientEp->get(resourcePath);
@@ -871,10 +871,10 @@ public isolated client class Client {
     # + parent - The name of the question to delete an answer for. 
     # + return - Successful response 
     remote isolated function deleteAccountsLocationsQuestionsAnswers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${parent}/answers:delete`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/answers:delete`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Creates an answer or updates the existing answer written by the user for the specified question. A user can only create one answer per question.
@@ -893,7 +893,7 @@ public isolated client class Client {
     # + payload - UpsertAnswer request 
     # + return - Successful response 
     remote isolated function upsertAccountsLocationsQuestionsAnswers(string parent, UpsertAnswerRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Answer|error {
-        string resourcePath = string `/v4/${parent}/answers:upsert`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/answers:upsert`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -920,7 +920,7 @@ public isolated client class Client {
     # + pageToken - If specified, returns the next page of insurance networks. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsInsurancenetworks(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? languageCode = (), int? pageSize = (), string? pageToken = ()) returns ListInsuranceNetworksResponse|error {
-        string resourcePath = string `/v4/${parent}/insuranceNetworks`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/insuranceNetworks`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "languageCode": languageCode, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListInsuranceNetworksResponse response = check self.clientEp->get(resourcePath);
@@ -942,7 +942,7 @@ public isolated client class Client {
     # + targetType - Specifies which target types should appear in the response. 
     # + return - Successful response 
     remote isolated function listAccountsInvitations(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? targetType = ()) returns ListInvitationsResponse|error {
-        string resourcePath = string `/v4/${parent}/invitations`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/invitations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "targetType": targetType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListInvitationsResponse response = check self.clientEp->get(resourcePath);
@@ -965,7 +965,7 @@ public isolated client class Client {
     # + pageToken - If specified, returns the next page of local posts. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsLocalposts(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListLocalPostsResponse|error {
-        string resourcePath = string `/v4/${parent}/localPosts`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/localPosts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocalPostsResponse response = check self.clientEp->get(resourcePath);
@@ -987,7 +987,7 @@ public isolated client class Client {
     # + payload - LocalPost request 
     # + return - Successful response 
     remote isolated function createAccountsLocationsLocalposts(string parent, LocalPost payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns LocalPost|error {
-        string resourcePath = string `/v4/${parent}/localPosts`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/localPosts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1016,7 +1016,7 @@ public isolated client class Client {
     # + pageToken - If specified, it fetches the next `page` of locations. The page token is returned by previous calls to `ListLocations` when there were more locations than could fit in the requested page size. 
     # + return - Successful response 
     remote isolated function listAccountsLocations(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? languageCode = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v4/${parent}/locations`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "languageCode": languageCode, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -1040,7 +1040,7 @@ public isolated client class Client {
     # + payload - Location request 
     # + return - Successful response 
     remote isolated function createAccountsLocations(string parent, Location payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? requestId = (), boolean? validateOnly = ()) returns Location|error {
-        string resourcePath = string `/v4/${parent}/locations`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "requestId": requestId, "validateOnly": validateOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1066,7 +1066,7 @@ public isolated client class Client {
     # + pageToken - If specified, returns the next page of media items. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsMedia(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListMediaItemsResponse|error {
-        string resourcePath = string `/v4/${parent}/media`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/media`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListMediaItemsResponse response = check self.clientEp->get(resourcePath);
@@ -1088,7 +1088,7 @@ public isolated client class Client {
     # + payload - MediaItem request 
     # + return - Successful response 
     remote isolated function createAccountsLocationsMedia(string parent, MediaItem payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItem|error {
-        string resourcePath = string `/v4/${parent}/media`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/media`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1114,7 +1114,7 @@ public isolated client class Client {
     # + pageToken - If specified, returns the next page of media items. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsMediaCustomers(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListCustomerMediaItemsResponse|error {
-        string resourcePath = string `/v4/${parent}/media/customers`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/media/customers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListCustomerMediaItemsResponse response = check self.clientEp->get(resourcePath);
@@ -1136,7 +1136,7 @@ public isolated client class Client {
     # + payload - StartUploadMediaItemData request 
     # + return - Successful response 
     remote isolated function startuploadAccountsLocationsMedia(string parent, StartUploadMediaItemDataRequest payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns MediaItemDataRef|error {
-        string resourcePath = string `/v4/${parent}/media:startUpload`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/media:startUpload`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1165,7 +1165,7 @@ public isolated client class Client {
     # + pageToken - If specified, the next page of questions is retrieved. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsQuestions(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? answersPerQuestion = (), string? filter = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListQuestionsResponse|error {
-        string resourcePath = string `/v4/${parent}/questions`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/questions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "answersPerQuestion": answersPerQuestion, "filter": filter, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListQuestionsResponse response = check self.clientEp->get(resourcePath);
@@ -1187,7 +1187,7 @@ public isolated client class Client {
     # + payload - Question request 
     # + return - Successful response 
     remote isolated function createAccountsLocationsQuestions(string parent, Question payload, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Question|error {
-        string resourcePath = string `/v4/${parent}/questions`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/questions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1214,7 +1214,7 @@ public isolated client class Client {
     # + pageToken - If specified, it fetches the next page of reviews. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsReviews(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListReviewsResponse|error {
-        string resourcePath = string `/v4/${parent}/reviews`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/reviews`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListReviewsResponse response = check self.clientEp->get(resourcePath);
@@ -1237,7 +1237,7 @@ public isolated client class Client {
     # + pageToken - If specified, returns the next page of verifications. 
     # + return - Successful response 
     remote isolated function listAccountsLocationsVerifications(string parent, string? xgafv = (), string? accessToken = (), string? alt = (), string? callback = (), string? fields = (), string? 'key = (), string? oauthToken = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListVerificationsResponse|error {
-        string resourcePath = string `/v4/${parent}/verifications`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/verifications`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "access_token": accessToken, "alt": alt, "callback": callback, "fields": fields, "key": 'key, "oauth_token": oauthToken, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListVerificationsResponse response = check self.clientEp->get(resourcePath);

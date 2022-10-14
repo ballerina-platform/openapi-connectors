@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.hubapi.com/oauth/v1/token";
 |};
 
 # This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification.
@@ -168,7 +179,7 @@ public isolated client class Client {
     # + idProperty - The name of a property whose values are unique for this object type 
     # + return - successful operation 
     remote isolated function getObjectById(string contactId, string[]? properties = (), string[]? associations = (), boolean archived = false, string? idProperty = ()) returns SimplePublicObjectWithAssociations|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}`;
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}`;
         map<anydata> queryParam = {"properties": properties, "associations": associations, "archived": archived, "idProperty": idProperty};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}, "associations": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -180,18 +191,18 @@ public isolated client class Client {
     # + contactId - Contact ID 
     # + return - No content 
     remote isolated function archive(string contactId) returns http:Response|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update
     #
     # + contactId - Contact ID 
     # + idProperty - The name of a property whose values are unique for this object type 
-    # + payload - Record containing data to update 
+    # + payload - Attributes to update in contact 
     # + return - successful operation 
     remote isolated function update(string contactId, SimplePublicObjectInput payload, string? idProperty = ()) returns SimplePublicObject|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}`;
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}`;
         map<anydata> queryParam = {"idProperty": idProperty};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -208,7 +219,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of results to display per page. 
     # + return - successful operation 
     remote isolated function associationsGetAll(string contactId, string toObjectType, string? after = (), int 'limit = 500) returns CollectionResponseAssociatedIdForwardPaging|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}/associations/${toObjectType}`;
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}/associations/${getEncodedUri(toObjectType)}`;
         map<anydata> queryParam = {"after": after, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CollectionResponseAssociatedIdForwardPaging response = check self.clientEp->get(resourcePath);
@@ -222,7 +233,7 @@ public isolated client class Client {
     # + associationType - Type of the association 
     # + return - successful operation 
     remote isolated function associationsCreate(string contactId, string toObjectType, string toObjectId, string associationType) returns SimplePublicObjectWithAssociations|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}/associations/${getEncodedUri(toObjectType)}/${getEncodedUri(toObjectId)}/${getEncodedUri(associationType)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         SimplePublicObjectWithAssociations response = check self.clientEp-> put(resourcePath, request);
@@ -236,8 +247,8 @@ public isolated client class Client {
     # + associationType - Type of the association 
     # + return - No content 
     remote isolated function associationsArchive(string contactId, string toObjectType, string toObjectId, string associationType) returns http:Response|error {
-        string resourcePath = string `/crm/v3/objects/contacts/${contactId}/associations/${toObjectType}/${toObjectId}/${associationType}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/crm/v3/objects/contacts/${getEncodedUri(contactId)}/associations/${getEncodedUri(toObjectType)}/${getEncodedUri(toObjectId)}/${getEncodedUri(associationType)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

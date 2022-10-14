@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -331,17 +331,17 @@ public type TableRow record {
 # AffineTransform uses a 3x3 matrix with an implied last row of [ 0 0 1 ] to transform source coordinates (x,y) into destination coordinates (x', y') according to: x' x = shear_y scale_y translate_y 1 [ 1 ] After transformation, x' = scale_x * x + shear_x * y + translate_x; y' = scale_y * y + shear_y * x + translate_y; This message is therefore composed of these six matrix elements.
 public type AffineTransform record {
     # The X coordinate scaling element.
-    float scaleX?;
+    decimal scaleX?;
     # The Y coordinate scaling element.
-    float scaleY?;
+    decimal scaleY?;
     # The X coordinate shearing element.
-    float shearX?;
+    decimal shearX?;
     # The Y coordinate shearing element.
-    float shearY?;
+    decimal shearY?;
     # The X coordinate translation element.
-    float translateX?;
+    decimal translateX?;
     # The Y coordinate translation element.
-    float translateY?;
+    decimal translateY?;
     # The units for translate elements.
     string unit?;
 };
@@ -653,7 +653,7 @@ public type Outline record {
 # A magnitude in a single direction in the specified units.
 public type Dimension record {
     # The magnitude.
-    float magnitude?;
+    decimal magnitude?;
     # The units for magnitude.
     string unit?;
 };

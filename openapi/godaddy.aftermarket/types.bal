@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type ErrorField record {
     # Short identifier for the error, suitable for indicating the specific error within client code
@@ -60,6 +62,7 @@ public type AftermarketListingExpiryCreate record {
     # Date when the domain expires
     string expiresAt;
     # Losing registrar id for the domain
+    @constraint:Int {minValue: 1}
     int losingRegistrarId;
     # Monthly traffic page view for the domain
     int pageViewsMonthly?;
@@ -68,5 +71,5 @@ public type AftermarketListingExpiryCreate record {
 };
 
 public type Expiry record {
-    float id?;
+    decimal id?;
 };

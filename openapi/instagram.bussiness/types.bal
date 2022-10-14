@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -17,200 +17,200 @@
 # Comment response.
 public type CommentResponse record {
     # ID of the comment.
-    string? id?;
+    string id?;
 };
 
 # Comment information.
 public type Comment record {
     # ID of the comment.
-    string? id?;
+    string id?;
     # Time when the comment is created.
-    string? timestamp?;
+    string timestamp?;
     # Comment content.
-    string? text?;
+    string text?;
     # The boolean that shows if the comment is hidden.
-    boolean? hidden?;
+    boolean hidden?;
     # The number of likes.
-    int? like_count?;
+    int like_count?;
     # Comment media.
-    string? media?;
+    string media?;
     # Replies for comment.
-    string? replies?;
+    string replies?;
     # Comment author.
-    string? user?;
+    string user?;
     # The username for the user.
-    string? username?;
+    string username?;
 };
 
 # An object containing the media data requested.
 public type Comments record {
     # An array containing comments.
-    Comment[]? data?;
+    Comment[] data?;
     # A cursor-paginated edge.
-    Paging? paging?;
+    Paging paging?;
 };
 
 # A cursor-paginated edge.
 public type Paging record {
     # Pagination cursor.
-    PagingCursors? cursors?;
+    PagingCursors cursors?;
     # The Graph API endpoint that will return the next page of data. If not included, this is the last page of data. 
     # 
     # Due to how pagination works with visibility and privacy, it is possible that a page may be empty but contain 
     # a next paging link. Stop paging when the next link no longer appears.
-    anydata? next?;
+    anydata next?;
     # The Graph API endpoint that will return the previous page of data. If not included, this is the first page of data.
-    anydata? previous?;
+    anydata previous?;
 };
 
 # An object containing the media data requested.
 public type Media record {
     # An array containing requested media fields.
-    MediaFieldsObject[]? data?;
+    MediaFieldsObject[] data?;
     # A cursor-paginated edge.
-    Paging? paging?;
+    Paging paging?;
 };
 
 # Media fields.
 public type MediaFieldsObject record {
     # The Media's ID.
-    string? id?;
+    string id?;
     # The Media's caption text. Not returnable for Media in albums.
-    string? caption?;
+    string caption?;
     # The Media's type. Can be `IMAGE`, `VIDEO`, or `CAROUSEL_ALBUM`.
-    string? media_type?;
+    string media_type?;
     # Media URL. 
     # Will be omitted from responses if the media contains copyrighted material, or has been flagged for a copyright violation.
-    string? media_url?;
+    string media_url?;
     # The Media's permanent URL.
-    string? permalink?;
+    string permalink?;
     # The Media's thumbnail image URL. Only available on VIDEO Media.
-    string? thumbnail_url?;
+    string thumbnail_url?;
     # ISO 8601 formatted creation date in UTC (default is UTC ±00:00)
-    string? timestamp?;
+    string timestamp?;
     # Username of user who created the media.
-    string? username?;
+    string username?;
     # ID of Instagram user who created the media. 
     # Only returned if the app user making the query also created the media, otherwise username field will be returned instead.
-    string? owner?;
+    string owner?;
     # Count of comments on the media. 
     # Excludes comments on album child media and the media's caption. Includes replies on comments.
-    int? comments_count?;
+    int comments_count?;
     # Instagram media ID.
-    string? ig_id?;
+    string ig_id?;
     # Indicates if comments are enabled or disabled. Excludes album children.
-    boolean? is_comment_enabled?;
+    boolean is_comment_enabled?;
     # Count of likes on the media. 
     # Excludes likes on album child media and likes on promoted posts created from the media. Includes replies on comments.
-    int? like_count?;
+    int like_count?;
     # Surface where the media is published. 
     # Can be AD, FEED, IGTV, or STORY. Will return FEED instead of IGTV if targeting an Instagram TV video created on or after October 5, 2021.
-    string? media_product_type?;
+    string media_product_type?;
     # Shortcode to the media.
-    int? shortcode?;
+    int shortcode?;
     # Instagram TV media title. Will not be returned if targeting an Instagram TV video created on or after October 5, 2021.
-    string? video_title?;
+    string video_title?;
 };
 
 # Values
 public type MediametricobjectValues record {
     # Value
-    anydata[]? value?;
+    anydata[] value?;
 };
 
 # Bussiness discover data object.
 public type BussinessDiscoveryData record {
     # Information about the Instagram Business account.
-    BussinessdiscoverydataBusinessDiscovery? business_discovery?;
+    BussinessdiscoverydataBusinessDiscovery business_discovery?;
 };
 
 # Media metrics
 public type MediaMetrics record {
     # Array of media metrics.
-    MediaMetricObject[]? data?;
+    MediaMetricObject[] data?;
 };
 
 # User metric object.
 public type UserMetricObject record {
     # Name
-    string? name?;
+    string name?;
     # Period
-    string? period?;
+    string period?;
     # Values
-    MediametricobjectValues? values?;
+    MediametricobjectValues values?;
     # Title
-    string? title?;
+    string title?;
     # Description
-    string? description?;
+    string description?;
     # ID
-    string? id?;
+    string id?;
 };
 
 # Information about the Instagram Business account.
 public type BussinessdiscoverydataBusinessDiscovery record {
     # The bio of the person.
-    string? biography?;
+    string biography?;
     # The unique identifier of the Instagram business account.
-    string? id?;
+    string id?;
     # Instagram ID.
-    string? ig_id?;
+    string ig_id?;
     # The followers count of the profile.
-    int? followers_count?;
+    int followers_count?;
     # The follows count of the profile.
-    int? follows_count?;
+    int follows_count?;
     # The media count of the profile.
-    int? media_count?;
+    int media_count?;
     # The name of the person.
-    string? name?;
+    string name?;
     # The profile picture of the person.
-    string? profile_picture_url?;
+    string profile_picture_url?;
     # The username of the person.
-    string? username?;
+    string username?;
     # The website of the person.
-    string? website?;
+    string website?;
     # An object containing the media data requested.
-    Media? media?;
+    Media media?;
 };
 
 # Hashtag response.
 public type HashtagResponse record {
     # The hashtag's ID (included by default). IDs are static and global.
-    string? id?;
+    string id?;
     # The hashtag's name, without the leading hash symbol.
-    string? name?;
+    string name?;
 };
 
 # Media metric object.
 public type MediaMetricObject record {
     # Name
-    string? name?;
+    string name?;
     # Period
-    string? period?;
+    string period?;
     # Values
-    MediametricobjectValues? values?;
+    MediametricobjectValues values?;
     # Title
-    string? title?;
+    string title?;
     # Description
-    string? description?;
+    string description?;
     # ID
-    string? id?;
+    string id?;
 };
 
 public type Hashtags record {
     # An array containing hashtag IDs.
-    HashtagResponse[]? data?;
+    HashtagResponse[] data?;
 };
 
 # Pagination cursor.
 public type PagingCursors record {
     # This is the cursor that points to the start of the page of data that has been returned.
-    string? before?;
+    string before?;
     # This is the cursor that points to the end of the page of data that has been returned.
-    string? after?;
+    string after?;
 };
 
 # Array of user metrics
 public type UserMetrics record {
     # Array of user metrics
-    UserMetricObject[]? data?;
+    UserMetricObject[] data?;
 };

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Blogger API v3.0](https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
@@ -100,7 +111,7 @@ public isolated client class Client {
     # + view - View type 
     # + return - Successful response 
     remote isolated function getBloggerBlogs(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = (), string? view = ()) returns Blog|error {
-        string resourcePath = string `/v3/blogs/${blogId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Blog response = check self.clientEp->get(resourcePath);
@@ -124,7 +135,7 @@ public isolated client class Client {
     # + status - Status 
     # + return - Successful response 
     remote isolated function listbyblogBloggerComments(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string[]? status = ()) returns CommentList|error {
-        string resourcePath = string `/v3/blogs/${blogId}/comments`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/comments`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status};
         map<Encoding> queryParamEncoding = {"status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -148,7 +159,7 @@ public isolated client class Client {
     # + view - View 
     # + return - Successful response 
     remote isolated function listBloggerPages(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string[]? status = (), string? view = ()) returns PageList|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "status": status, "view": view};
         map<Encoding> queryParamEncoding = {"status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -169,7 +180,7 @@ public isolated client class Client {
     # + payload - Page request 
     # + return - Successful response 
     remote isolated function insertBloggerPages(string blogId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? isDraft = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "isDraft": isDraft};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -192,7 +203,7 @@ public isolated client class Client {
     # + view - View type 
     # + return - Successful response 
     remote isolated function getBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Page response = check self.clientEp->get(resourcePath);
@@ -214,7 +225,7 @@ public isolated client class Client {
     # + payload - Page request 
     # + return - Successful response 
     remote isolated function updateBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -236,10 +247,10 @@ public isolated client class Client {
     # + pageId - Page ID 
     # + return - Successful response 
     remote isolated function deleteBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Patches a page.
@@ -258,7 +269,7 @@ public isolated client class Client {
     # + payload - Page request 
     # + return - Successful response 
     remote isolated function patchBloggerPages(string blogId, string pageId, Page payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? publish = (), boolean? revert = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publish": publish, "revert": revert};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -280,7 +291,7 @@ public isolated client class Client {
     # + pageId - Page ID 
     # + return - Successful response 
     remote isolated function publishBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}/publish`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}/publish`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -301,7 +312,7 @@ public isolated client class Client {
     # + pageId - Page ID 
     # + return - Successful response 
     remote isolated function revertBloggerPages(string blogId, string pageId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pages/${pageId}/revert`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pages/${getEncodedUri(pageId)}/revert`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -322,7 +333,7 @@ public isolated client class Client {
     # + range - Range 
     # + return - Successful response 
     remote isolated function getBloggerPageviews(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? range = ()) returns Pageviews|error {
-        string resourcePath = string `/v3/blogs/${blogId}/pageviews`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/pageviews`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "range": range};
         map<Encoding> queryParamEncoding = {"range": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -351,7 +362,7 @@ public isolated client class Client {
     # + view - View 
     # + return - Successful response 
     remote isolated function listBloggerPosts(string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), boolean? fetchImages = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostList|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "fetchImages": fetchImages, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         map<Encoding> queryParamEncoding = {"status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -374,7 +385,7 @@ public isolated client class Client {
     # + payload - Post request 
     # + return - Successful response 
     remote isolated function insertBloggerPosts(string blogId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), boolean? isDraft = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "isDraft": isDraft};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -398,7 +409,7 @@ public isolated client class Client {
     # + view - View 
     # + return - Successful response 
     remote isolated function getbypathBloggerPosts(string blogId, string path, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = (), string? view = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/bypath`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/bypath`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "path": path, "maxComments": maxComments, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Post response = check self.clientEp->get(resourcePath);
@@ -419,7 +430,7 @@ public isolated client class Client {
     # + orderBy - Order by 
     # + return - Successful response 
     remote isolated function searchBloggerPosts(string blogId, string q, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBodies = (), string? orderBy = ()) returns PostList|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/search`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/search`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "q": q, "fetchBodies": fetchBodies, "orderBy": orderBy};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PostList response = check self.clientEp->get(resourcePath);
@@ -442,7 +453,7 @@ public isolated client class Client {
     # + view - View 
     # + return - Successful response 
     remote isolated function getBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), string? view = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Post response = check self.clientEp->get(resourcePath);
@@ -467,7 +478,7 @@ public isolated client class Client {
     # + payload - Post request 
     # + return - Successful response 
     remote isolated function updateBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -489,10 +500,10 @@ public isolated client class Client {
     # + postId - Post ID 
     # + return - Successful response 
     remote isolated function deleteBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Patches a post.
@@ -514,7 +525,7 @@ public isolated client class Client {
     # + payload - Post request 
     # + return - Successful response 
     remote isolated function patchBloggerPosts(string blogId, string postId, Post payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchBody = (), boolean? fetchImages = (), int? maxComments = (), boolean? publish = (), boolean? revert = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchBody": fetchBody, "fetchImages": fetchImages, "maxComments": maxComments, "publish": publish, "revert": revert};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -543,7 +554,7 @@ public isolated client class Client {
     # + view - View type 
     # + return - Successful response 
     remote isolated function listBloggerComments(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), int? maxResults = (), string? pageToken = (), string? startDate = (), string? status = (), string? view = ()) returns CommentList|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "maxResults": maxResults, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CommentList response = check self.clientEp->get(resourcePath);
@@ -564,7 +575,7 @@ public isolated client class Client {
     # + view - View 
     # + return - Successful response 
     remote isolated function getBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Comment|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Comment response = check self.clientEp->get(resourcePath);
@@ -584,10 +595,10 @@ public isolated client class Client {
     # + commentId - Comment ID 
     # + return - Successful response 
     remote isolated function deleteBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Marks a comment as not spam by blog id, post id and comment id.
@@ -604,7 +615,7 @@ public isolated client class Client {
     # + commentId - Comment ID 
     # + return - Successful response 
     remote isolated function approveBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/approve`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments/${getEncodedUri(commentId)}/approve`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -626,7 +637,7 @@ public isolated client class Client {
     # + commentId - Comment ID 
     # + return - Successful response 
     remote isolated function removecontentBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/removecontent`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments/${getEncodedUri(commentId)}/removecontent`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -648,7 +659,7 @@ public isolated client class Client {
     # + commentId - Comment ID 
     # + return - Successful response 
     remote isolated function markasspamBloggerComments(string blogId, string postId, string commentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Comment|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/comments/${commentId}/spam`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/comments/${getEncodedUri(commentId)}/spam`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -670,7 +681,7 @@ public isolated client class Client {
     # + publishDate - Publish date 
     # + return - Successful response 
     remote isolated function publishBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? publishDate = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/publish`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/publish`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "publishDate": publishDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -691,7 +702,7 @@ public isolated client class Client {
     # + postId - Post ID 
     # + return - Successful response 
     remote isolated function revertBloggerPosts(string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Post|error {
-        string resourcePath = string `/v3/blogs/${blogId}/posts/${postId}/revert`;
+        string resourcePath = string `/v3/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}/revert`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -711,7 +722,7 @@ public isolated client class Client {
     # + userId - User ID 
     # + return - Successful response 
     remote isolated function getBloggerUsers(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns User|error {
-        string resourcePath = string `/v3/users/${userId}`;
+        string resourcePath = string `/v3/users/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         User response = check self.clientEp->get(resourcePath);
@@ -733,7 +744,7 @@ public isolated client class Client {
     # + view - View type 
     # + return - Successful response 
     remote isolated function listbyuserBloggerBlogs(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), boolean? fetchUserInfo = (), string[]? role = (), string[]? status = (), string? view = ()) returns BlogList|error {
-        string resourcePath = string `/v3/users/${userId}/blogs`;
+        string resourcePath = string `/v3/users/${getEncodedUri(userId)}/blogs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "fetchUserInfo": fetchUserInfo, "role": role, "status": status, "view": view};
         map<Encoding> queryParamEncoding = {"role": {style: FORM, explode: true}, "status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -754,7 +765,7 @@ public isolated client class Client {
     # + maxPosts - Maximum posts 
     # + return - Successful response 
     remote isolated function getBloggerBloguserinfos(string userId, string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxPosts = ()) returns BlogUserInfo|error {
-        string resourcePath = string `/v3/users/${userId}/blogs/${blogId}`;
+        string resourcePath = string `/v3/users/${getEncodedUri(userId)}/blogs/${getEncodedUri(blogId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxPosts": maxPosts};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BlogUserInfo response = check self.clientEp->get(resourcePath);
@@ -782,7 +793,7 @@ public isolated client class Client {
     # + view - View type 
     # + return - Successful response 
     remote isolated function listBloggerPostuserinfos(string userId, string blogId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? endDate = (), boolean? fetchBodies = (), string? labels = (), int? maxResults = (), string? orderBy = (), string? pageToken = (), string? startDate = (), string[]? status = (), string? view = ()) returns PostUserInfosList|error {
-        string resourcePath = string `/v3/users/${userId}/blogs/${blogId}/posts`;
+        string resourcePath = string `/v3/users/${getEncodedUri(userId)}/blogs/${getEncodedUri(blogId)}/posts`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "endDate": endDate, "fetchBodies": fetchBodies, "labels": labels, "maxResults": maxResults, "orderBy": orderBy, "pageToken": pageToken, "startDate": startDate, "status": status, "view": view};
         map<Encoding> queryParamEncoding = {"status": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -804,7 +815,7 @@ public isolated client class Client {
     # + maxComments - Maximum Comments 
     # + return - Successful response 
     remote isolated function getBloggerPostuserinfos(string userId, string blogId, string postId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? maxComments = ()) returns PostUserInfo|error {
-        string resourcePath = string `/v3/users/${userId}/blogs/${blogId}/posts/${postId}`;
+        string resourcePath = string `/v3/users/${getEncodedUri(userId)}/blogs/${getEncodedUri(blogId)}/posts/${getEncodedUri(postId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "maxComments": maxComments};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PostUserInfo response = check self.clientEp->get(resourcePath);

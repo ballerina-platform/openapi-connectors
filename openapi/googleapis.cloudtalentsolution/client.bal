@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Talent Solution API v4](https://cloud.google.com/talent-solution/job-search/docs/) OpenAPI specification.
@@ -79,7 +90,7 @@ public isolated client class Client {
     # + name - Required. The resource name of the job to retrieve. The format is "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example, "projects/foo/tenants/bar/jobs/baz". 
     # + return - Successful response 
     remote isolated function getProjectsTenantsJobs(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Job response = check self.clientEp->get(resourcePath);
@@ -97,10 +108,10 @@ public isolated client class Client {
     # + name - Required. The resource name of the job to be deleted. The format is "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}". For example, "projects/foo/tenants/bar/jobs/baz". 
     # + return - Successful response 
     remote isolated function deleteProjectsTenantsJobs(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates specified job. Typically, updated contents become visible in search results within 10 seconds, but it may take up to 5 minutes.
@@ -117,7 +128,7 @@ public isolated client class Client {
     # + payload - Job request 
     # + return - Successful response 
     remote isolated function patchProjectsTenantsJobs(string name, Job payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Job|error {
-        string resourcePath = string `/v4/${name}`;
+        string resourcePath = string `/v4/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + payload - ClientEvent request 
     # + return - Successful response 
     remote isolated function createProjectsTenantsClientevents(string parent, ClientEvent payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ClientEvent|error {
-        string resourcePath = string `/v4/${parent}/clientEvents`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/clientEvents`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -163,7 +174,7 @@ public isolated client class Client {
     # + requireOpenJobs - Set to true if the companies requested must have open jobs. Defaults to false. If true, at most page_size of companies are fetched, among which only those with open jobs are returned. 
     # + return - Successful response 
     remote isolated function listProjectsTenantsCompanies(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), boolean? requireOpenJobs = ()) returns ListCompaniesResponse|error {
-        string resourcePath = string `/v4/${parent}/companies`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/companies`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "requireOpenJobs": requireOpenJobs};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListCompaniesResponse response = check self.clientEp->get(resourcePath);
@@ -182,7 +193,7 @@ public isolated client class Client {
     # + payload - Company request 
     # + return - Successful response 
     remote isolated function createProjectsTenantsCompanies(string parent, Company payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Company|error {
-        string resourcePath = string `/v4/${parent}/companies`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/companies`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -207,7 +218,7 @@ public isolated client class Client {
     # + pageToken - The starting point of a query result. 
     # + return - Successful response 
     remote isolated function listProjectsTenantsJobs(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? jobView = (), int? pageSize = (), string? pageToken = ()) returns ListJobsResponse|error {
-        string resourcePath = string `/v4/${parent}/jobs`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "jobView": jobView, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListJobsResponse response = check self.clientEp->get(resourcePath);
@@ -226,7 +237,7 @@ public isolated client class Client {
     # + payload - Job request 
     # + return - Successful response 
     remote isolated function createProjectsTenantsJobs(string parent, Job payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Job|error {
-        string resourcePath = string `/v4/${parent}/jobs`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -248,7 +259,7 @@ public isolated client class Client {
     # + payload - BatchCreateJobs request 
     # + return - Successful response 
     remote isolated function batchcreateProjectsTenantsJobs(string parent, BatchCreateJobsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v4/${parent}/jobs:batchCreate`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs:batchCreate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -270,7 +281,7 @@ public isolated client class Client {
     # + payload - BatchDeleteJobs request 
     # + return - Successful response 
     remote isolated function batchdeleteProjectsTenantsJobs(string parent, BatchDeleteJobsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v4/${parent}/jobs:batchDelete`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs:batchDelete`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -292,7 +303,7 @@ public isolated client class Client {
     # + payload - BatchUpdateJobs request 
     # + return - Successful response 
     remote isolated function batchupdateProjectsTenantsJobs(string parent, BatchUpdateJobsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v4/${parent}/jobs:batchUpdate`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs:batchUpdate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -314,7 +325,7 @@ public isolated client class Client {
     # + payload - SearchJobs request 
     # + return - Successful response 
     remote isolated function searchProjectsTenantsJobs(string parent, SearchJobsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SearchJobsResponse|error {
-        string resourcePath = string `/v4/${parent}/jobs:search`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs:search`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -336,7 +347,7 @@ public isolated client class Client {
     # + payload - SearchJobs request 
     # + return - Successful response 
     remote isolated function searchforalertProjectsTenantsJobs(string parent, SearchJobsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns SearchJobsResponse|error {
-        string resourcePath = string `/v4/${parent}/jobs:searchForAlert`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/jobs:searchForAlert`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -359,7 +370,7 @@ public isolated client class Client {
     # + pageToken - The starting indicator from which to return results. 
     # + return - Successful response 
     remote isolated function listProjectsTenants(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTenantsResponse|error {
-        string resourcePath = string `/v4/${parent}/tenants`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/tenants`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTenantsResponse response = check self.clientEp->get(resourcePath);
@@ -378,7 +389,7 @@ public isolated client class Client {
     # + payload - Tenant request 
     # + return - Successful response 
     remote isolated function createProjectsTenants(string parent, Tenant payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Tenant|error {
-        string resourcePath = string `/v4/${parent}/tenants`;
+        string resourcePath = string `/v4/${getEncodedUri(parent)}/tenants`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -405,7 +416,7 @@ public isolated client class Client {
     # + 'type - The completion topic. The default is CompletionType.COMBINED. 
     # + return - Successful response 
     remote isolated function completequeryProjectsTenants(string tenant, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? company = (), string[]? languageCodes = (), int? pageSize = (), string? query = (), string? scope = (), string? 'type = ()) returns CompleteQueryResponse|error {
-        string resourcePath = string `/v4/${tenant}:completeQuery`;
+        string resourcePath = string `/v4/${getEncodedUri(tenant)}:completeQuery`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "company": company, "languageCodes": languageCodes, "pageSize": pageSize, "query": query, "scope": scope, "type": 'type};
         map<Encoding> queryParamEncoding = {"languageCodes": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

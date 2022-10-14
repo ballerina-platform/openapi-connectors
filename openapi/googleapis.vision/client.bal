@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Vision API v1](https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification.
@@ -162,7 +173,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function getProjectOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Operation response = check self.clientEp->get(resourcePath);
@@ -180,10 +191,10 @@ public isolated client class Client {
     # + name - Required. Resource name of the ProductSet to delete. Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID` 
     # + return - Successful response 
     remote isolated function deleteProductSet(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Empty|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Empty response = check self.clientEp->delete(resourcePath);
+        Empty response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Makes changes to a ProductSet resource. Only display_name can be updated currently. Possible errors: * Returns NOT_FOUND if the ProductSet does not exist. * Returns INVALID_ARGUMENT if display_name is present in update_mask but missing from the request or longer than 4096 characters.
@@ -199,7 +210,7 @@ public isolated client class Client {
     # + updateMask - The FieldMask that specifies which fields to update. If update_mask isn't specified, all mutable fields are to be updated. Valid mask path is `display_name`. 
     # + return - Successful response 
     remote isolated function pathProductSet(string name, ProductSet payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns ProductSet|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -222,7 +233,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token returned from a previous List request, if any. 
     # + return - Successful response 
     remote isolated function listProducts(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListProductsInProductSetResponse|error {
-        string resourcePath = string `/v1/${name}/products`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListProductsInProductSetResponse response = check self.clientEp->get(resourcePath);
@@ -240,7 +251,7 @@ public isolated client class Client {
     # + name - Required. The resource name for the ProductSet to modify. Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID` 
     # + return - Successful response 
     remote isolated function addProduct(string name, AddProductToProductSetRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Empty|error {
-        string resourcePath = string `/v1/${name}:addProduct`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:addProduct`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -261,7 +272,7 @@ public isolated client class Client {
     # + name - The name of the operation resource to be cancelled. 
     # + return - Successful response 
     remote isolated function cancelAsyncOperation(string name, CancelOperationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Empty|error {
-        string resourcePath = string `/v1/${name}:cancel`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -282,7 +293,7 @@ public isolated client class Client {
     # + name - Required. The resource name for the ProductSet to modify. Format is: `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID` 
     # + return - Successful response 
     remote isolated function removeProduct(string name, RemoveProductFromProductSetRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Empty|error {
-        string resourcePath = string `/v1/${name}:removeProduct`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:removeProduct`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -303,7 +314,7 @@ public isolated client class Client {
     # + parent - Optional. Target project and location to make a call. Format: `projects/{project-id}/locations/{location-id}`. If no parent is specified, a region will be chosen automatically. Supported location-ids: `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`: The European Union. Example: `projects/project-A/locations/eu`. 
     # + return - Successful response 
     remote isolated function annotateBatchFiles(string parent, BatchAnnotateFilesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchAnnotateFilesResponse|error {
-        string resourcePath = string `/v1/${parent}/files:annotate`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/files:annotate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -324,7 +335,7 @@ public isolated client class Client {
     # + parent - Optional. Target project and location to make a call. Format: `projects/{project-id}/locations/{location-id}`. If no parent is specified, a region will be chosen automatically. Supported location-ids: `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`: The European Union. Example: `projects/project-A/locations/eu`. 
     # + return - Successful response 
     remote isolated function asyncFileBatchAnnotate(string parent, AsyncBatchAnnotateFilesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/files:asyncBatchAnnotate`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/files:asyncBatchAnnotate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -345,7 +356,7 @@ public isolated client class Client {
     # + parent - Optional. Target project and location to make a call. Format: `projects/{project-id}/locations/{location-id}`. If no parent is specified, a region will be chosen automatically. Supported location-ids: `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`: The European Union. Example: `projects/project-A/locations/eu`. 
     # + return - Successful response 
     remote isolated function annotateBatchImages(string parent, BatchAnnotateImagesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchAnnotateImagesResponse|error {
-        string resourcePath = string `/v1/${parent}/images:annotate`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/images:annotate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -366,7 +377,7 @@ public isolated client class Client {
     # + parent - Optional. Target project and location to make a call. Format: `projects/{project-id}/locations/{location-id}`. If no parent is specified, a region will be chosen automatically. Supported location-ids: `us`: USA country only, `asia`: East asia areas, like Japan, Taiwan, `eu`: The European Union. Example: `projects/project-A/locations/eu`. 
     # + return - Successful response 
     remote isolated function asyncImageBatchAnnotate(string parent, AsyncBatchAnnotateImagesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/images:asyncBatchAnnotate`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/images:asyncBatchAnnotate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -389,7 +400,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token returned from a previous List request, if any. 
     # + return - Successful response 
     remote isolated function listProductSetsInUnspecifiedOrder(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListProductSetsResponse|error {
-        string resourcePath = string `/v1/${parent}/productSets`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/productSets`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListProductSetsResponse response = check self.clientEp->get(resourcePath);
@@ -408,7 +419,7 @@ public isolated client class Client {
     # + productSetId - A user-supplied resource id for this ProductSet. If set, the server will attempt to use this value as the resource id. If it is already in use, an error is returned with code ALREADY_EXISTS. Must be at most 128 characters long. It cannot contain the character `/`. 
     # + return - Successful response 
     remote isolated function createProductSet(string parent, ProductSet payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? productSetId = ()) returns ProductSet|error {
-        string resourcePath = string `/v1/${parent}/productSets`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/productSets`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "productSetId": productSetId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -429,7 +440,7 @@ public isolated client class Client {
     # + parent - Required. The project in which the ProductSets should be imported. Format is `projects/PROJECT_ID/locations/LOC_ID`. 
     # + return - Successful response 
     remote isolated function importReferenceImages(string parent, ImportProductSetsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/productSets:import`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/productSets:import`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -452,7 +463,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token returned from a previous List request, if any. 
     # + return - Successful response 
     remote isolated function listProductvision(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListProductsResponse|error {
-        string resourcePath = string `/v1/${parent}/products`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListProductsResponse response = check self.clientEp->get(resourcePath);
@@ -471,7 +482,7 @@ public isolated client class Client {
     # + productId - A user-supplied resource id for this Product. If set, the server will attempt to use this value as the resource id. If it is already in use, an error is returned with code ALREADY_EXISTS. Must be at most 128 characters long. It cannot contain the character `/`. 
     # + return - Successful response 
     remote isolated function createProductResource(string parent, Product payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? productId = ()) returns Product|error {
-        string resourcePath = string `/v1/${parent}/products`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/products`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "productId": productId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -492,7 +503,7 @@ public isolated client class Client {
     # + parent - Required. The project and location in which the Products should be deleted. Format is `projects/PROJECT_ID/locations/LOC_ID`. 
     # + return - Successful response 
     remote isolated function deleteAllProducts(string parent, PurgeProductsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/products:purge`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/products:purge`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -515,7 +526,7 @@ public isolated client class Client {
     # + pageToken - A token identifying a page of results to be returned. This is the value of `nextPageToken` returned in a previous reference image list request. Defaults to the first page if not specified. 
     # + return - Successful response 
     remote isolated function listReferenceImages(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListReferenceImagesResponse|error {
-        string resourcePath = string `/v1/${parent}/referenceImages`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/referenceImages`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListReferenceImagesResponse response = check self.clientEp->get(resourcePath);
@@ -534,7 +545,7 @@ public isolated client class Client {
     # + referenceImageId - A user-supplied resource id for the ReferenceImage to be added. If set, the server will attempt to use this value as the resource id. If it is already in use, an error is returned with code ALREADY_EXISTS. Must be at most 128 characters long. It cannot contain the character `/`. 
     # + return - Successful response 
     remote isolated function createReferenceImages(string parent, ReferenceImage payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? referenceImageId = ()) returns ReferenceImage|error {
-        string resourcePath = string `/v1/${parent}/referenceImages`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/referenceImages`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "referenceImageId": referenceImageId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

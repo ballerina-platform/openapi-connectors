@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -83,7 +83,7 @@ public type OrderPricing record {
     # Discount from promotional pricing
     int discount;
     OrderFee fees;
-    float id?;
+    decimal id?;
     # Sum of list prices for the entire cart
     int list;
     # Savings off of list price <pre>`savings` = `list` - `subtotal`</pre>
@@ -112,9 +112,9 @@ public type LineItem record {
     string[] domains?;
     # Human readable description of the current product
     string label;
-    float period?;
+    decimal period = 1;
     # The unit of time that periodCount is measured in
-    string periodUnit?;
+    string periodUnit = "MONTH";
     # Unique identifier of the current product
     int pfid?;
     LineItemPricing pricing;
@@ -126,7 +126,7 @@ public type LineItem record {
 public type LineItemPricingTaxDetail record {
     # Tax amount
     int amount?;
-    float rate?;
+    decimal rate?;
 };
 
 public type LineItemTaxCollector record {

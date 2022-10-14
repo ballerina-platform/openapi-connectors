@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -72,7 +72,7 @@ public isolated client class Client {
     # + xMarketId - Unique identifier of the Market in which the request is happening 
     # + return - Request was successful 
     remote isolated function getOrderByID(string orderId, string? xShopperId = (), string xMarketId = "en-US") returns Order|error {
-        string resourcePath = string `/v1/orders/${orderId}`;
+        string resourcePath = string `/v1/orders/${getEncodedUri(orderId)}`;
         map<any> headerValues = {"X-Shopper-Id": xShopperId, "X-Market-Id": xMarketId, "Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Order response = check self.clientEp->get(resourcePath, httpHeaders);

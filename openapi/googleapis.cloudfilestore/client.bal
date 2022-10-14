@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Filestore REST API v1](https://cloud.google.com/filestore/docs/reference/rest) OpenAPI specification.
@@ -79,7 +90,7 @@ public isolated client class Client {
     # + name - The name of the operation resource. 
     # + return - Successful response 
     remote isolated function getOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Operation response = check self.clientEp->get(resourcePath);
@@ -97,10 +108,10 @@ public isolated client class Client {
     # + name - The name of the operation resource to be deleted. 
     # + return - Successful response 
     remote isolated function deleteOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates the settings of a specific instance.
@@ -117,7 +128,7 @@ public isolated client class Client {
     # + payload - Instance to be updated 
     # + return - Successful response 
     remote isolated function updateInstance(string name, Instance payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -142,7 +153,7 @@ public isolated client class Client {
     # + pageToken - A page token received from the `next_page_token` field in the response. Send that page token to receive the subsequent page. 
     # + return - Successful response 
     remote isolated function listLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), boolean? includeUnrevealedLocations = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v1/${name}/locations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "includeUnrevealedLocations": includeUnrevealedLocations, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -163,7 +174,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function listOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListOperationsResponse|error {
-        string resourcePath = string `/v1/${name}/operations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/operations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListOperationsResponse response = check self.clientEp->get(resourcePath);
@@ -181,7 +192,7 @@ public isolated client class Client {
     # + name - The name of the operation resource to be cancelled. 
     # + return - Successful response 
     remote isolated function cancelOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}:cancel`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -202,7 +213,7 @@ public isolated client class Client {
     # + payload - Instance to be restored 
     # + return - Successful response 
     remote isolated function restoreInstance(string name, RestoreInstanceRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}:restore`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:restore`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -227,7 +238,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token value to use if there are additional results to retrieve for this list request. 
     # + return - Successful response 
     remote isolated function listBackups(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListBackupsResponse|error {
-        string resourcePath = string `/v1/${parent}/backups`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/backups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListBackupsResponse response = check self.clientEp->get(resourcePath);
@@ -247,7 +258,7 @@ public isolated client class Client {
     # + payload - Backup to be created 
     # + return - Successful response 
     remote isolated function createBackup(string parent, Backup payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? backupId = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/backups`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/backups`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "backupId": backupId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -272,7 +283,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token value to use if there are additional results to retrieve for this list request. 
     # + return - Successful response 
     remote isolated function listInstances(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListInstancesResponse|error {
-        string resourcePath = string `/v1/${parent}/instances`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/instances`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListInstancesResponse response = check self.clientEp->get(resourcePath);
@@ -292,7 +303,7 @@ public isolated client class Client {
     # + payload - Instance to be created 
     # + return - Successful response 
     remote isolated function createInstance(string parent, Instance payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? instanceId = ()) returns Operation|error {
-        string resourcePath = string `/v1/${parent}/instances`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/instances`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "instanceId": instanceId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

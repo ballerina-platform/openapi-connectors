@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
@@ -82,7 +93,7 @@ public isolated client class Client {
     # + pageToken - The next_page_token value returned from a previous List request, if any. 
     # + return - Successful response 
     remote isolated function listIndexes(string projectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns GoogleDatastoreAdminV1ListIndexesResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}/indexes`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/indexes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleDatastoreAdminV1ListIndexesResponse response = check self.clientEp->get(resourcePath);
@@ -101,7 +112,7 @@ public isolated client class Client {
     # + payload - Index to be created 
     # + return - Successful response 
     remote isolated function createIndex(string projectId, GoogleDatastoreAdminV1Index payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v1/projects/${projectId}/indexes`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/indexes`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -123,7 +134,7 @@ public isolated client class Client {
     # + indexId - The resource ID of the index to get. 
     # + return - Successful response 
     remote isolated function getIndex(string projectId, string indexId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleDatastoreAdminV1Index|error {
-        string resourcePath = string `/v1/projects/${projectId}/indexes/${indexId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/indexes/${getEncodedUri(indexId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleDatastoreAdminV1Index response = check self.clientEp->get(resourcePath);
@@ -142,10 +153,10 @@ public isolated client class Client {
     # + indexId - The resource ID of the index to delete. 
     # + return - Successful response 
     remote isolated function deleteIndex(string projectId, string indexId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v1/projects/${projectId}/indexes/${indexId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}/indexes/${getEncodedUri(indexId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        GoogleLongrunningOperation response = check self.clientEp->delete(resourcePath);
+        GoogleLongrunningOperation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Allocates IDs for the given keys, which is useful for referencing an entity before it is inserted.
@@ -161,7 +172,7 @@ public isolated client class Client {
     # + payload - Keys to be allocated 
     # + return - Successful response 
     remote isolated function allocateIdKeys(string projectId, AllocateIdsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns AllocateIdsResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}:allocateIds`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:allocateIds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -183,7 +194,7 @@ public isolated client class Client {
     # + payload - Transaction to be begun 
     # + return - Successful response 
     remote isolated function beginTransaction(string projectId, BeginTransactionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BeginTransactionResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}:beginTransaction`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:beginTransaction`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -205,7 +216,7 @@ public isolated client class Client {
     # + payload - Transaction to be committed 
     # + return - Successful response 
     remote isolated function commitTransaction(string projectId, CommitRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CommitResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}:commit`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:commit`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -227,7 +238,7 @@ public isolated client class Client {
     # + payload - Entities to be exported 
     # + return - Successful response 
     remote isolated function exportEntities(string projectId, GoogleDatastoreAdminV1ExportEntitiesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v1/projects/${projectId}:export`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:export`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -249,7 +260,7 @@ public isolated client class Client {
     # + payload - Entities to be imported 
     # + return - Successful response 
     remote isolated function importEntities(string projectId, GoogleDatastoreAdminV1ImportEntitiesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v1/projects/${projectId}:import`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:import`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -271,7 +282,7 @@ public isolated client class Client {
     # + payload - Entities to be looked up 
     # + return - Successful response 
     remote isolated function lookupEntity(string projectId, LookupRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns LookupResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}:lookup`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:lookup`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -293,7 +304,7 @@ public isolated client class Client {
     # + payload - IDs to be reserved 
     # + return - Successful response 
     remote isolated function reserveIds(string projectId, ReserveIdsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/projects/${projectId}:reserveIds`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:reserveIds`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -315,7 +326,7 @@ public isolated client class Client {
     # + payload - Transaction to be rolled out 
     # + return - Successful response 
     remote isolated function rollbackTransaction(string projectId, RollbackRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/projects/${projectId}:rollback`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:rollback`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -337,7 +348,7 @@ public isolated client class Client {
     # + payload - Entities to be queried 
     # + return - Successful response 
     remote isolated function runQuery(string projectId, RunQueryRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns RunQueryResponse|error {
-        string resourcePath = string `/v1/projects/${projectId}:runQuery`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(projectId)}:runQuery`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -358,7 +369,7 @@ public isolated client class Client {
     # + name - The name of the operation resource. 
     # + return - Successful response 
     remote isolated function getOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GoogleLongrunningOperation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleLongrunningOperation response = check self.clientEp->get(resourcePath);
@@ -376,10 +387,10 @@ public isolated client class Client {
     # + name - The name of the operation resource to be deleted. 
     # + return - Successful response 
     remote isolated function deleteOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists operations that match the specified filter in the request. If the server doesn't support this method, it returns `UNIMPLEMENTED`. NOTE: the `name` binding allows API services to override the binding to use different resource name schemes, such as `users/*/operations`. To override the binding, API services can add a binding such as `"/v1/{name=users/*}/operations"` to their service configuration. For backwards compatibility, the default name includes the operations collection id, however overriding users must ensure the name binding is the parent resource, without the operations collection id.
@@ -397,7 +408,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function listOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns GoogleLongrunningListOperationsResponse|error {
-        string resourcePath = string `/v1/${name}/operations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/operations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GoogleLongrunningListOperationsResponse response = check self.clientEp->get(resourcePath);
@@ -415,7 +426,7 @@ public isolated client class Client {
     # + name - The name of the operation resource to be cancelled. 
     # + return - Successful response 
     remote isolated function cancelOperation(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}:cancel`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

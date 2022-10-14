@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Magento REST API v2.2](https://devdocs.magento.com/guides/v2.4/rest/bk-rest.html) OpenAPI specification.
@@ -72,8 +76,8 @@ public isolated client class Client {
     # + addressId - Address ID 
     # + return - 200 Success. 
     remote isolated function customerAddressDeleteByIdV1(int addressId) returns boolean|error {
-        string resourcePath = string `/V1/addresses/${addressId}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/addresses/${getEncodedUri(addressId)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update Amazon-billing-address by ID
@@ -82,7 +86,7 @@ public isolated client class Client {
     # + payload - Address Consent Token 
     # + return - 200 Success. 
     remote isolated function updateAmazonPaymentAddressV1(string amazonOrderReferenceId, AmazonbillingaddressAmazonorderreferenceidBody payload) returns string|error {
-        string resourcePath = string `/V1/amazon-billing-address/${amazonOrderReferenceId}`;
+        string resourcePath = string `/V1/amazon-billing-address/${getEncodedUri(amazonOrderReferenceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -95,7 +99,7 @@ public isolated client class Client {
     # + payload - Address consent token 
     # + return - 200 Success. 
     remote isolated function updateAmazonPaymentShippingAddress(string amazonOrderReferenceId, AmazonshippingaddressAmazonorderreferenceidBody payload) returns string|error {
-        string resourcePath = string `/V1/amazon-shipping-address/${amazonOrderReferenceId}`;
+        string resourcePath = string `/V1/amazon-shipping-address/${getEncodedUri(amazonOrderReferenceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -107,7 +111,7 @@ public isolated client class Client {
     # + return - Unexpected error 
     remote isolated function deleteAmazonPaymentOrderReferenceV1() returns http:Response|error {
         string resourcePath = string `/V1/amazon/order-ref`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # analytics/link

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -52,7 +52,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Push event
@@ -65,7 +65,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create or update user
@@ -78,7 +78,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create or update account
@@ -91,7 +91,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Add user to account
@@ -99,13 +99,13 @@ public isolated client class Client {
     # + accountId - Unique identifier for the account in your database 
     # + return - Object was created 
     remote isolated function addUserToAccount(string accountId, AccountidUsersBody payload) returns InlineResponse201|error {
-        string resourcePath = string `/accounts/${accountId}/users`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/users`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse201 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse201 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove user from account
@@ -113,10 +113,10 @@ public isolated client class Client {
     # + accountId - Unique identifier for the account in your database 
     # + return - Object was created 
     remote isolated function removeUserFromAccount(string accountId) returns InlineResponse201|error {
-        string resourcePath = string `/accounts/${accountId}/users`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/users`;
         map<any> headerValues = {"X-Api-Key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse201 response = check self.clientEp->delete(resourcePath, httpHeaders);
+        InlineResponse201 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Validate API key

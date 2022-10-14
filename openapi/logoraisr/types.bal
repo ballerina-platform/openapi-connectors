@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
 
 public type ResultResponse record {
     # Url from which the result file can be downloaded.
+    @constraint:String {maxLength: 256, minLength: 1}
     string result_file_url?;
 };
 
@@ -34,13 +35,16 @@ public type Project record {
     # Id of the result file which the process created.
     string result_file_id?;
     # Process which should applied. Processes are "color-classification".
+    @constraint:String {minLength: 1}
     string process_id;
     Process process?;
     # The Date when the project was created.
     string created?;
     # Name of the project with which it was saved.
+    @constraint:String {minLength: 1}
     string project_title?;
     # Id of the paypal payment.
+    @constraint:String {minLength: 1}
     string paypal_payment_id?;
 };
 
@@ -59,8 +63,10 @@ public type ReportResponse record {
     # The Date when the project was created.
     string created?;
     # Id of the file on which the process was applied.
+    @constraint:String {minLength: 1}
     string file_id?;
     # Process which was applied. Processes are "color-classification".
+    @constraint:String {minLength: 1}
     string processing_algorithm?;
     Result result?;
 };
@@ -81,6 +87,7 @@ public type Report record {
 
 public type ReportRequest record {
     # Process which should applied. Processes are "color-classification".
+    @constraint:String {minLength: 1}
     string process;
     # Id of the file on which the process is to be applied.
     string file_id;
@@ -91,6 +98,7 @@ public type ProjectRequest record {
     # Id of the file on which the process is to be applied.
     string file_id;
     # Name of the project with which it is saved.
+    @constraint:String {minLength: 1}
     string project_title;
 };
 
@@ -106,26 +114,32 @@ public type Color record {
     # Number of pixels that holds this color.
     int number_of_pixel?;
     # Hex-label of this color.
+    @constraint:String {minLength: 1}
     string hex?;
 };
 
 public type PreviewResponse record {
     # Url from which the preview file can be downloaded.
+    @constraint:String {maxLength: 256, minLength: 1}
     string preview_img_url?;
 };
 
 public type Process record {
     # Schlüssel welcher Verarbeitungs-Algorithmus angewendet wird. Zur Auswahl stehen "logo-to-vector", "logo-super-resolution", "logo-segmentation" und "image-processing".
+    @constraint:String {minLength: 1}
     string processing_algorithm;
     # Changes the size of the image according to the specified size. Example: "resize": "200x300".
+    @constraint:String {maxLength: 255, minLength: 1}
     string resize?;
     # Flips the image around the horizontal axis, from top to bottom. Example: "flip": true
     boolean flip?;
     # Mirrors the image around the vertical axis, i.e. from right to left. Example: "mirror": true
     boolean mirror?;
     # Rotates the image around the center according to the specified degree. Example: "rotate": 90
+    @constraint:Int {maxValue: 360}
     int rotate?;
     # Crops the image according to the specified mechanism. If you specify the size "WidthexHeight", the image will be cropped centered. If coordinates "x1,y1,x2,y2" are given, the image is cropped according to the coordinates. The image will be cropped to the size of the stories if "faces" are specified as. Example Centered: "crop": "200x300". Example Region: "crop": "200,300,150,300". Example Faces: "crop": "faces".
+    @constraint:String {maxLength: 255, minLength: 1}
     string crop?;
 };
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,15 +14,17 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type CustomerRequestActionsDTO record {
     # Action of adding attachments to a request.
-    record {*CustomerRequestActionDTO;} addAttachment?;
+    CustomerRequestActionDTO addAttachment?;
     # Action of adding comments to a request.
-    record {*CustomerRequestActionDTO;} addComment?;
+    CustomerRequestActionDTO addComment?;
     # Action of adding participants to a request.
-    record {*CustomerRequestActionDTO;} addParticipant?;
+    CustomerRequestActionDTO addParticipant?;
     # Action of removing participants from a request.
-    record {*CustomerRequestActionDTO;} removeParticipant?;
+    CustomerRequestActionDTO removeParticipant?;
 };
 
 public type PagedDTOOrganizationDTO record {
@@ -38,7 +40,7 @@ public type PagedDTOOrganizationDTO record {
     OrganizationDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type SelfLinkDTO record {
@@ -76,7 +78,7 @@ public type PagedDTOUserDTO record {
     UserDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type SlaInformationDTO record {
@@ -87,9 +89,9 @@ public type SlaInformationDTO record {
     # List of completed cycles for the SLA.
     SlaInformationCompletedCycleDTO[] completedCycles?;
     # Details of the active cycle for the SLA.
-    record {*SlaInformationOngoingCycleDTO;} ongoingCycle?;
+    SlaInformationOngoingCycleDTO ongoingCycle?;
     # REST API URL for the SLA.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type Expandable record {
@@ -98,19 +100,19 @@ public type Expandable record {
 
 public type SlaInformationCompletedCycleDTO record {
     # Time and date at which the SLA cycle started.
-    record {*DateDTO;} startTime?;
+    DateDTO startTime?;
     # Time and date at which the SLA cycle completed.
-    record {*DateDTO;} stopTime?;
+    DateDTO stopTime?;
     # Time and date at which the SLA cycle breached in case of completed breached cycle or would have breached in case of non-breached completed cycle.
-    record {*DateDTO;} breachTime?;
+    DateDTO breachTime?;
     # Indicates if the SLA (duration) was exceeded (true) or not (false).
     boolean breached?;
     # Duration within which the service should have been completed.
-    record {*DurationDTO;} goalDuration?;
+    DurationDTO goalDuration?;
     # Duration in which the service was completed.
-    record {*DurationDTO;} elapsedTime?;
+    DurationDTO elapsedTime?;
     # Duration remaining after the service was completed.
-    record {*DurationDTO;} remainingTime?;
+    DurationDTO remainingTime?;
 };
 
 public type RequestTypeDTO record {
@@ -129,15 +131,15 @@ public type RequestTypeDTO record {
     # List of the request type groups the request type belongs to.
     string[] groupIds?;
     # Links to the request type's icons.
-    record {*RequestTypeIconDTO;} icon?;
+    RequestTypeIconDTO icon?;
     # Fields and additional metadata for creating a request that uses the request type
-    record {*CustomerRequestCreateMetaDTO;} fields?;
+    CustomerRequestCreateMetaDTO fields?;
     # The request type's practice
     string practice?;
     # List of items that can be expanded in the response by specifying the expand query parameter.
     string[] _expands?;
     # REST API URL for the request type.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 # Details of the operations that can be performed on the issue.
@@ -175,13 +177,13 @@ public type SoftwareInfoDTO record {
     # Jira Platform version upon which Service Desk is based.
     string platformVersion?;
     # Date of the current build.
-    record {*DateDTO;} buildDate?;
+    DateDTO buildDate?;
     # Reference of the change set included in the build.
     string buildChangeSet?;
     # Indicates whether the instance is licensed (true) or not (false).
     boolean isLicensedForUse?;
     # REST API URL of the instance.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type ApprovalDecisionRequestDTO record {
@@ -195,7 +197,7 @@ public type OrganizationDTO record {
     # Name of the organization.
     string name?;
     # REST API URL to the organization.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type PagedDTOSlaInformationDTO record {
@@ -211,7 +213,7 @@ public type PagedDTOSlaInformationDTO record {
     SlaInformationDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type RequestTypeCreateDTO record {
@@ -238,7 +240,7 @@ public type PagedDTOAttachmentDTO record {
     AttachmentDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type PagedLinkDTO record {
@@ -274,7 +276,7 @@ public type CSATFeedbackFullDTO record {
     # A numeric representation of the rating, this must be an integer value between 1 and 5.
     int rating?;
     # (Optional) The comment provided with this feedback.
-    record {*AdditionalCommentDTO;} comment?;
+    AdditionalCommentDTO comment?;
 };
 
 public type CustomerRequestStatusDTO record {
@@ -283,7 +285,7 @@ public type CustomerRequestStatusDTO record {
     # Status category the status belongs to.
     string statusCategory?;
     # Date on which the status was attained.
-    record {*DateDTO;} statusDate?;
+    DateDTO statusDate?;
 };
 
 public type PagedDTOCommentDTO record {
@@ -299,7 +301,7 @@ public type PagedDTOCommentDTO record {
     CommentDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type CustomerCreateDTO record {
@@ -317,19 +319,19 @@ public type CommentDTO record {
     # Content of the comment.
     string body?;
     # The rendered body of the comment.
-    record {*RenderedValueDTO;} renderedBody?;
+    RenderedValueDTO renderedBody?;
     # Details of the customer who authored the comment.
-    record {*UserDTO;} author?;
+    UserDTO author?;
     # Date the comment was created.
-    record {*DateDTO;} created?;
+    DateDTO created?;
     # List of the attachments included in the comment.
-    record {*PagedDTOAttachmentDTO;} attachments?;
+    PagedDTOAttachmentDTO attachments?;
     # List of items that can be expanded in the response by specifying the expand query parameter.
     string[] _expands?;
     # Indicates whether the comment is public (true) or private/internal (false).
     boolean 'public?;
     # REST API URL link to the comment.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type PagedDTOQueueDTO record {
@@ -345,7 +347,7 @@ public type PagedDTOQueueDTO record {
     QueueDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type OrganizationServiceDeskUpdateDTO record {
@@ -388,15 +390,15 @@ public type AttachmentDTO record {
     # Filename of the item attached.
     string filename?;
     # Details of the user who attached the file.
-    record {*UserDTO;} author?;
+    UserDTO author?;
     # Date the attachment was added.
-    record {*DateDTO;} created?;
+    DateDTO created?;
     # Size of the attachment in bytes.
     int size?;
     # MIME type of the attachment.
     string mimeType?;
     # Various URLs for the attachment.
-    record {*AttachmentLinkDTO;} _links?;
+    AttachmentLinkDTO _links?;
 };
 
 public type LinkableAttachmentLinkDTO record {
@@ -421,7 +423,7 @@ public type AttachmentCreateDTO record {
     # List of IDs for the temporary attachments to be added to the customer request.
     string[] temporaryAttachmentIds?;
     # Comment about the attachments.
-    record {*AdditionalCommentDTO;} additionalComment?;
+    AdditionalCommentDTO additionalComment?;
     # Indicates whether the attachments are to be public (true) or private/internal (false).
     boolean 'public?;
 };
@@ -439,7 +441,7 @@ public type PagedDTORequestTypeGroupDTO record {
     RequestTypeGroupDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type PagedDTOCustomerRequestDTO record {
@@ -455,7 +457,7 @@ public type PagedDTOCustomerRequestDTO record {
     CustomerRequestDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 # A changelog.
@@ -463,13 +465,13 @@ public type Changelog record {
     # The ID of the changelog.
     string id?;
     # The user who made the change.
-    record {*UserDetails;} author?;
+    UserDetails author?;
     # The date on which the change took place.
     string created?;
     # The list of items changed.
     ChangeDetails[] items?;
     # The history metadata associated with the changed.
-    record {*HistoryMetadata;} historyMetadata?;
+    HistoryMetadata historyMetadata?;
 };
 
 public type ApprovalDTO record {
@@ -484,11 +486,11 @@ public type ApprovalDTO record {
     # Detailed list of the users who must provide a response to the approval.
     ApproverDTO[] approvers?;
     # Date the approval was created.
-    record {*DateDTO;} createdDate?;
+    DateDTO createdDate?;
     # Date the approval was completed.
-    record {*DateDTO;} completedDate?;
+    DateDTO completedDate?;
     # The REST API URL of the approval.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type QueueDTO record {
@@ -503,7 +505,7 @@ public type QueueDTO record {
     # The count of customer requests in the queue.
     int issueCount?;
     # REST API URL to the queue.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type DurationDTO record {
@@ -541,11 +543,11 @@ public type IssueBean record {
     # The transitions that can be performed on the issue.
     IssueTransition[] transitions?;
     # The operations that can be performed on the issue.
-    record {*Operations;} operations?;
+    Operations operations?;
     # The metadata for the fields on the issue that can be amended.
-    record {*IssueUpdateMetadata;} editmeta?;
+    IssueUpdateMetadata editmeta?;
     # Details of changelogs associated with the issue.
-    record {*PageOfChangelogs;} changelog?;
+    PageOfChangelogs changelog?;
     # The versions of each field on the issue.
     record {} versionedRepresentations?;
     IncludedFields fieldsToInclude?;
@@ -556,7 +558,7 @@ public type CustomerTransitionExecutionDTO record {
     # ID of the transition to be performed.
     string id?;
     # Comment explaining the reason for the transition.
-    record {*AdditionalCommentDTO;} additionalComment?;
+    AdditionalCommentDTO additionalComment?;
 };
 
 # Details of an issue transition.
@@ -566,7 +568,7 @@ public type IssueTransition record {
     # The name of the issue transition.
     string name?;
     # Details of the issue status after the transition.
-    record {*StatusDetails;} to?;
+    StatusDetails to?;
     # Whether there is a screen associated with the issue transition.
     boolean hasScreen?;
     # Whether the issue transition is global, that is, the transition is applied to issues regardless of their status.
@@ -586,9 +588,9 @@ public type IssueTransition record {
 
 public type SlaInformationOngoingCycleDTO record {
     # Time and date at which the SLA cycle started.
-    record {*DateDTO;} startTime?;
+    DateDTO startTime?;
     # Time and date at which the SLA cycle would have breached its limit.
-    record {*DateDTO;} breachTime?;
+    DateDTO breachTime?;
     # Indicates whether the SLA has been breached (true) or not (false).
     boolean breached?;
     # Indicates whether the SLA is paused (true) or not (false).
@@ -596,11 +598,11 @@ public type SlaInformationOngoingCycleDTO record {
     # Indicates whether the SLA it timed during calendared working hours only (true) or not (false).
     boolean withinCalendarHours?;
     # Duration within which the service should be completed.
-    record {*DurationDTO;} goalDuration?;
+    DurationDTO goalDuration?;
     # Duration of the service.
-    record {*DurationDTO;} elapsedTime?;
+    DurationDTO elapsedTime?;
     # Duration remaining in which to complete the service.
-    record {*DurationDTO;} remainingTime?;
+    DurationDTO remainingTime?;
 };
 
 public type PagedDTOCustomerTransitionDTO record {
@@ -616,7 +618,7 @@ public type PagedDTOCustomerTransitionDTO record {
     CustomerTransitionDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type ErrorResponse record {
@@ -654,7 +656,7 @@ public type FieldMetadata record {
     # Whether the field is required.
     boolean required;
     # The data type of the field.
-    record {*JsonTypeBean;} schema;
+    JsonTypeBean schema;
     # The name of the field.
     string name;
     # The key of the field.
@@ -700,11 +702,11 @@ public type HistoryMetadata record {
     # The description key of the email address associated the history record.
     string emailDescriptionKey?;
     # Details of the user whose action created the history record.
-    record {*HistoryMetadataParticipant;} actor?;
+    HistoryMetadataParticipant actor?;
     # Details of the system that generated the history record.
-    record {*HistoryMetadataParticipant;} generator?;
+    HistoryMetadataParticipant generator?;
     # Details of the cause that triggered the creation the history record.
-    record {*HistoryMetadataParticipant;} cause?;
+    HistoryMetadataParticipant cause?;
     # Additional arbitrary information about the history record.
     record {} extraData?;
 };
@@ -736,7 +738,7 @@ public type UserDTO record {
     # Customer time zone. Depending on the customer’s privacy settings, this may be returned as null.
     string timeZone?;
     # URLs for the customer record and related items.
-    record {*UserLinkDTO;} _links?;
+    UserLinkDTO _links?;
 };
 
 public type ArticleDTO record {
@@ -745,7 +747,7 @@ public type ArticleDTO record {
     # Excerpt of the article which matches the given query string.
     string excerpt?;
     # Source of the article.
-    record {*SourceDTO;} 'source?;
+    SourceDTO 'source?;
     ContentDTO content?;
 };
 
@@ -767,7 +769,7 @@ public type PagedDTOInsightWorkspaceDTO record {
     InsightWorkspaceDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 # User details permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:
@@ -783,11 +785,12 @@ public type UserDetails record {
     # This property is no longer available and will be removed from the documentation soon. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/deprecation-notice-user-privacy-api-migration-guide/) for details.
     string 'key?;
     # The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*.
+    @constraint:String {maxLength: 128}
     string accountId?;
     # The email address of the user. Depending on the user’s privacy settings, this may be returned as null.
     string emailAddress?;
     # The avatars of the user.
-    record {*AvatarUrlsBean;} avatarUrls?;
+    AvatarUrlsBean avatarUrls?;
     # The display name of the user. Depending on the user’s privacy settings, this may return an alternative value.
     string displayName?;
     # Whether the user is active.
@@ -826,7 +829,7 @@ public type PagedDTOArticleDTO record {
     ArticleDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type PagedDTOIssueBean record {
@@ -842,7 +845,7 @@ public type PagedDTOIssueBean record {
     IssueBean[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type PagedDTOCustomerRequestStatusDTO record {
@@ -858,7 +861,7 @@ public type PagedDTOCustomerRequestStatusDTO record {
     CustomerRequestStatusDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type OrganizationCreateDTO record {
@@ -876,7 +879,7 @@ public type ServiceDeskDTO record {
     # Key of the peer project of the service desk.
     string projectKey?;
     # REST API URL to the service desk.
-    record {*SelfLinkDTO;} _links?;
+    SelfLinkDTO _links?;
 };
 
 public type LinkableCustomerRequestLinkDTO record {
@@ -907,7 +910,7 @@ public type RequestTypeIconDTO record {
     # ID of the request type icon.
     string id?;
     # Map of the URLs for the request type icons.
-    record {*RequestTypeIconLinkDTO;} _links?;
+    RequestTypeIconLinkDTO _links?;
 };
 
 public type AvatarUrlsBean record {
@@ -953,7 +956,7 @@ public type RequestTypeFieldDTO record {
     # List of preset values for the field.
     string[] presetValues?;
     # Jira specific implementation details for the field in the UI.
-    record {*JsonTypeBean;} jiraSchema?;
+    JsonTypeBean jiraSchema?;
     boolean visible?;
 };
 
@@ -970,7 +973,7 @@ public type StatusDetails record {
     # The ID of the status.
     string id?;
     # The category assigned to the status.
-    record {*StatusCategory;} statusCategory?;
+    StatusCategory statusCategory?;
 };
 
 public type CustomerRequestDTO record {
@@ -981,35 +984,35 @@ public type CustomerRequestDTO record {
     # ID of the request type for the request.
     string requestTypeId?;
     # Expandable details of the request type.
-    record {*RequestTypeDTO;} requestType?;
+    RequestTypeDTO requestType?;
     # ID of the service desk the request belongs to.
     string serviceDeskId?;
     # Expandable details of the service desk.
-    record {*ServiceDeskDTO;} serviceDesk?;
+    ServiceDeskDTO serviceDesk?;
     # Date on which the request was created.
-    record {*DateDTO;} createdDate?;
+    DateDTO createdDate?;
     # Details of the customer reporting the request.
-    record {*UserDTO;} reporter?;
+    UserDTO reporter?;
     # JSON map of Jira field IDs and their values representing the content of the request.
     CustomerRequestFieldValueDTO[] requestFieldValues?;
     # Status of the request.
-    record {*CustomerRequestStatusDTO;} currentStatus?;
+    CustomerRequestStatusDTO currentStatus?;
     # Expandable details of the request's status history.
-    record {*PagedDTOCustomerRequestStatusDTO;} status?;
+    PagedDTOCustomerRequestStatusDTO status?;
     # Expandable details of the customers participating in the request.
-    record {*PagedDTOUserDTO;} participants?;
+    PagedDTOUserDTO participants?;
     # Expandable details of the SLAs relating to the request.
-    record {*PagedDTOSlaInformationDTO;} sla?;
+    PagedDTOSlaInformationDTO sla?;
     # List of attachments included with the request.
-    record {*PagedDTOAttachmentDTO;} attachments?;
+    PagedDTOAttachmentDTO attachments?;
     # List of comments included with the request.
-    record {*PagedDTOCommentDTO;} comments?;
+    PagedDTOCommentDTO comments?;
     # List of actions that the user can take on the request.
-    record {*CustomerRequestActionsDTO;} actions?;
+    CustomerRequestActionsDTO actions?;
     # List of items that can be expanded in the response by specifying the expand query parameter.
     string[] _expands?;
     # List of links associated with the request.
-    record {*CustomerRequestLinkDTO;} _links?;
+    CustomerRequestLinkDTO _links?;
 };
 
 public type PagedDTOApprovalDTO record {
@@ -1025,7 +1028,7 @@ public type PagedDTOApprovalDTO record {
     ApprovalDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 # A list of editable field details.
@@ -1056,7 +1059,7 @@ public type RequestCreateDTO record {
     # The `accountId` of the customer that the request is being raised on behalf of.
     string raiseOnBehalfOf?;
     # (Experimental) Shows extra information for the request channel.
-    string 'channel?;
+    string channel?;
 };
 
 public type CustomerRequestCreateMetaDTO record {
@@ -1090,9 +1093,9 @@ public type CustomerRequestActionDTO record {
 
 public type AttachmentCreateResultDTO record {
     # Details of the comment included with the attachments.
-    record {*CommentDTO;} comment?;
+    CommentDTO comment?;
     # List of the attachments added.
-    record {*PagedDTOAttachmentDTO;} attachments?;
+    PagedDTOAttachmentDTO attachments?;
 };
 
 public type UserLinkDTO record {
@@ -1118,7 +1121,7 @@ public type LinkableUserLinkDTO record {
 
 public type ApproverDTO record {
     # Details of the User who is providing approval.
-    record {*UserDTO;} approver?;
+    UserDTO approver?;
     # Decision made by the approver.
     string approverDecision?;
 };
@@ -1152,7 +1155,7 @@ public type PagedDTOServiceDeskDTO record {
     ServiceDeskDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };
 
 public type PagedDTORequestTypeDTO record {
@@ -1168,5 +1171,5 @@ public type PagedDTORequestTypeDTO record {
     RequestTypeDTO[] values?;
     string[] _expands?;
     # List of the links relating to the page.
-    record {*PagedLinkDTO;} _links?;
+    PagedLinkDTO _links?;
 };

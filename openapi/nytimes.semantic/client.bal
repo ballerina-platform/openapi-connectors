@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -52,7 +52,7 @@ public isolated client class Client {
     # + query - Precedes the search term string. Used in a Search Query. Except for &lt;specific_concept_name&gt;, Search Query will take the required parameters listed above (&lt;concept_type&gt;, &lt;concept_uri&gt;, &lt;article_uri&gt;) as an optional_parameter in addition to the query=&lt;query_term&gt;. 
     # + return - An array of Concepts 
     remote isolated function getConcepts(string conceptType, string specificConcept, string query, string? fields = ()) returns InlineResponse200|error {
-        string resourcePath = string `/name/${conceptType}/${specificConcept}.json`;
+        string resourcePath = string `/name/${getEncodedUri(conceptType)}/${getEncodedUri(specificConcept)}.json`;
         map<anydata> queryParam = {"fields": fields, "query": query, "api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);

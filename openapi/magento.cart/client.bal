@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Magento REST API v2.2](https://devdocs.magento.com/guides/v2.4/rest/bk-rest.html) OpenAPI specification.
@@ -81,7 +85,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function checkGiftCardAddedToCart(string cartId, string giftCardCode) returns decimal|error {
-        string resourcePath = string `/V1/carts/guest-carts/${cartId}/checkGiftCard/${giftCardCode}`;
+        string resourcePath = string `/V1/carts/guest-carts/${getEncodedUri(cartId)}/checkGiftCard/${getEncodedUri(giftCardCode)}`;
         decimal response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -89,7 +93,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function addGiftCardToGuestCart(string cartId, CartidGiftcardsBody payload) returns boolean|error {
-        string resourcePath = string `/V1/carts/guest-carts/${cartId}/giftCards`;
+        string resourcePath = string `/V1/carts/guest-carts/${getEncodedUri(cartId)}/giftCards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -100,8 +104,8 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function deleteGiftCardAccountByQuoteId(string cartId, string giftCardCode) returns boolean|error {
-        string resourcePath = string `/V1/carts/guest-carts/${cartId}/giftCards/${giftCardCode}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/guest-carts/${getEncodedUri(cartId)}/giftCards/${getEncodedUri(giftCardCode)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists active checkout agreements.
@@ -184,7 +188,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function getGiftCardBalanceIfAppliedGivenCart(string giftCardCode) returns decimal|error {
-        string resourcePath = string `/V1/carts/mine/checkGiftCard/${giftCardCode}`;
+        string resourcePath = string `/V1/carts/mine/checkGiftCard/${getEncodedUri(giftCardCode)}`;
         decimal response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -226,7 +230,7 @@ public isolated client class Client {
     # + return - 200 Success. 
     remote isolated function deleteCartCollectionPointSearchRequest() returns boolean|error {
         string resourcePath = string `/V1/carts/mine/collection-point/search-request`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets collection points search request
@@ -261,7 +265,7 @@ public isolated client class Client {
     # + return - 200 Success. 
     remote isolated function deleteCouponFromCart() returns boolean|error {
         string resourcePath = string `/V1/carts/mine/coupons`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds a coupon by code to a specified cart
@@ -269,7 +273,7 @@ public isolated client class Client {
     # + couponCode - The coupon code data. 
     # + return - 200 Success. 
     remote isolated function addCouponByCodeToCart(string couponCode) returns boolean|error {
-        string resourcePath = string `/V1/carts/mine/coupons/${couponCode}`;
+        string resourcePath = string `/V1/carts/mine/coupons/${getEncodedUri(couponCode)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         boolean response = check self.clientEp-> put(resourcePath, request);
@@ -332,7 +336,7 @@ public isolated client class Client {
     # + itemId - The item ID. 
     # + return - 200 Success. 
     remote isolated function getGiftMessageForSpecifiedItem(int itemId) returns GiftMessageDataMessageInterface|error {
-        string resourcePath = string `/V1/carts/mine/gift-message/${itemId}`;
+        string resourcePath = string `/V1/carts/mine/gift-message/${getEncodedUri(itemId)}`;
         GiftMessageDataMessageInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -341,7 +345,7 @@ public isolated client class Client {
     # + itemId - The item ID. 
     # + return - 200 Success. 
     remote isolated function setGiftMessageForSpecifiedItem(int itemId, GiftmessageItemidBody payload) returns boolean|error {
-        string resourcePath = string `/V1/carts/mine/gift-message/${itemId}`;
+        string resourcePath = string `/V1/carts/mine/gift-message/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -363,8 +367,8 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function removeGiftCardAccountEntity(string giftCardCode) returns boolean|error {
-        string resourcePath = string `/V1/carts/mine/giftCards/${giftCardCode}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/mine/giftCards/${getEncodedUri(giftCardCode)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists items that are assigned to a specified cart
@@ -390,7 +394,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function addOrUpdateSpecificCartItemByID(string itemId, ItemsItemidBody payload) returns QuoteDataCartItemInterface|error {
-        string resourcePath = string `/V1/carts/mine/items/${itemId}`;
+        string resourcePath = string `/V1/carts/mine/items/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -402,8 +406,8 @@ public isolated client class Client {
     # + itemId - The item ID of the item to be removed. 
     # + return - 200 Success. 
     remote isolated function removesTheSpecifiedItemFromSpecifiedCart(int itemId) returns boolean|error {
-        string resourcePath = string `/V1/carts/mine/items/${itemId}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/mine/items/${getEncodedUri(itemId)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Places an order for a specified cart
@@ -533,7 +537,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function enablesAdministrativeUserToReturnInformation(int cartId) returns QuoteDataCartInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}`;
         QuoteDataCartInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -542,7 +546,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function assignSpecifiedCustomerToShoppingCart(int cartId, CartsCartidBody payload) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -554,7 +558,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function quoteBillingAddressForSpecifiedQuote(int cartId) returns QuoteDataAddressInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/billing-address`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/billing-address`;
         QuoteDataAddressInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -563,7 +567,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function assignBillingAddressToSpecifiedCartByID(int cartId, CartidBillingaddressBody payload) returns int|error {
-        string resourcePath = string `/V1/carts/${cartId}/billing-address`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/billing-address`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -575,7 +579,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function getInformationForCouponInSpecifiedCart(int cartId) returns string|error {
-        string resourcePath = string `/V1/carts/${cartId}/coupons`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/coupons`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -584,8 +588,8 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function deleteCouponFromASpecCartByID(int cartId) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/coupons`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/coupons`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Adds a coupon by code to a specified cart
@@ -594,7 +598,7 @@ public isolated client class Client {
     # + couponCode - The coupon code data. 
     # + return - 200 Success. 
     remote isolated function addQuoteCouponByCodeToSpecifiedCartByID(int cartId, string couponCode) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/coupons/${couponCode}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/coupons/${getEncodedUri(couponCode)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         boolean response = check self.clientEp-> put(resourcePath, request);
@@ -604,7 +608,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function estimateShippingByAddressByCartID(string cartId, CartidEstimateshippingmethodsBody payload) returns QuoteDataShippingMethodInterface[]|error {
-        string resourcePath = string `/V1/carts/${cartId}/estimate-shipping-methods`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/estimate-shipping-methods`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -616,7 +620,7 @@ public isolated client class Client {
     # + cartId - The shopping cart ID. 
     # + return - 200 Success. 
     remote isolated function estimateShippingMethodsByAddressIdAndCartID(int cartId, CartidEstimateshippingmethodsbyaddressidBody payload) returns QuoteDataShippingMethodInterface[]|error {
-        string resourcePath = string `/V1/carts/${cartId}/estimate-shipping-methods-by-address-id`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/estimate-shipping-methods-by-address-id`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -628,7 +632,7 @@ public isolated client class Client {
     # + cartId - The shopping cart ID. 
     # + return - 200 Success. 
     remote isolated function getGiftMessageForSpecificOrderByCartID(int cartId) returns GiftMessageDataMessageInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/gift-message`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/gift-message`;
         GiftMessageDataMessageInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -637,7 +641,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function setGiftMessageForEntireOrderByCartID(int cartId, CartidGiftmessageBody payload) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/gift-message`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/gift-message`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -650,7 +654,7 @@ public isolated client class Client {
     # + itemId - The item ID. 
     # + return - 200 Success. 
     remote isolated function getGiftMessageForSpecificItemOfSpecShopping(int cartId, int itemId) returns GiftMessageDataMessageInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/gift-message/${itemId}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/gift-message/${getEncodedUri(itemId)}`;
         GiftMessageDataMessageInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -660,7 +664,7 @@ public isolated client class Client {
     # + itemId - The item ID. 
     # + return - 200 Success. 
     remote isolated function setGiftMessageForSpecItemInASpecShopping(int cartId, int itemId, GiftmessageItemidBody2 payload) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/gift-message/${itemId}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/gift-message/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -671,8 +675,8 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function removeGiftCardAccountEntityByCartID(int cartId, string giftCardCode) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/giftCards/${giftCardCode}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/giftCards/${getEncodedUri(giftCardCode)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists items that are assigned to a specified cart
@@ -680,7 +684,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function listItemsAssignedToSpecificCart(int cartId) returns QuoteDataCartItemInterface[]|error {
-        string resourcePath = string `/V1/carts/${cartId}/items`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/items`;
         QuoteDataCartItemInterface[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -688,7 +692,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function addOrUpdateTheSpecificCartItem(string cartId, string itemId, ItemsItemidBody2 payload) returns QuoteDataCartItemInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/items/${itemId}`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/items/${getEncodedUri(itemId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -701,8 +705,8 @@ public isolated client class Client {
     # + itemId - The item ID of the item to be removed. 
     # + return - 200 Success. 
     remote isolated function removesSpecificItemFromSpecifiedCart(int cartId, int itemId) returns boolean|error {
-        string resourcePath = string `/V1/carts/${cartId}/items/${itemId}`;
-        boolean response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/items/${getEncodedUri(itemId)}`;
+        boolean response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Places an order for a specified cart
@@ -710,7 +714,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function placesAnOrderForSpecifiedCart(int cartId, CartidOrderBody payload) returns int|error {
-        string resourcePath = string `/V1/carts/${cartId}/order`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/order`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -722,7 +726,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function listAvailablePaymentMethodsForShoppingCart(int cartId) returns QuoteDataPaymentMethodInterface[]|error {
-        string resourcePath = string `/V1/carts/${cartId}/payment-methods`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/payment-methods`;
         QuoteDataPaymentMethodInterface[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -731,7 +735,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function getPaymentMethodForSpecifiedShoppingCartByID(int cartId) returns QuoteDataPaymentInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/selected-payment-method`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/selected-payment-method`;
         QuoteDataPaymentInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -740,7 +744,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function addSpecifiedPaymentMethodToSpecifiedShoppingCart(int cartId, CartidSelectedpaymentmethodBody payload) returns string|error {
-        string resourcePath = string `/V1/carts/${cartId}/selected-payment-method`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/selected-payment-method`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -751,7 +755,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function checkoutShippingInformationByID(int cartId, CartidShippinginformationBody payload) returns CheckoutDataPaymentDetailsInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/shipping-information`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/shipping-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -763,7 +767,7 @@ public isolated client class Client {
     # + cartId - The shopping cart ID. 
     # + return - 200 Success. 
     remote isolated function getApplicableShippingMethodsForSpecifiedQuote(int cartId) returns QuoteDataShippingMethodInterface[]|error {
-        string resourcePath = string `/V1/carts/${cartId}/shipping-methods`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/shipping-methods`;
         QuoteDataShippingMethodInterface[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -772,7 +776,7 @@ public isolated client class Client {
     # + cartId - The cart ID. 
     # + return - 200 Success. 
     remote isolated function getQuoteTotalsDataForASpecifiedCart(int cartId) returns QuoteDataTotalsInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/totals`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/totals`;
         QuoteDataTotalsInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -780,7 +784,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function checkoutTotalsBasedOnAddressAndShippingMethod(int cartId, CartidTotalsinformationBody payload) returns QuoteDataTotalsInterface|error {
-        string resourcePath = string `/V1/carts/${cartId}/totals-information`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(cartId)}/totals-information`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -791,7 +795,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function getGiftCardsByQuoteID(int quoteId) returns GiftCardAccountDataGiftCardAccountInterface|error {
-        string resourcePath = string `/V1/carts/${quoteId}/giftCards`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(quoteId)}/giftCards`;
         GiftCardAccountDataGiftCardAccountInterface response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -799,7 +803,7 @@ public isolated client class Client {
     #
     # + return - 200 Success. 
     remote isolated function addOrUpdateTheSpecifiedCartItem(string quoteId, QuoteidItemsBody payload) returns QuoteDataCartItemInterface|error {
-        string resourcePath = string `/V1/carts/${quoteId}/items`;
+        string resourcePath = string `/V1/carts/${getEncodedUri(quoteId)}/items`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

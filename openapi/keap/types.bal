@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -48,14 +48,14 @@ public type SubscriptionPlan record {
     int frequency?;
     int id?;
     int number_of_cycles?;
-    float plan_price?;
+    decimal plan_price?;
     int subscription_plan_index?;
     string subscription_plan_name?;
     string url?;
 };
 
 public type EcommerceReportingTransaction record {
-    float amount?;
+    decimal amount?;
     string collection_method?;
     int contact_id?;
     string currency?;
@@ -108,7 +108,7 @@ public type Product record {
     string product_desc?;
     string product_name?;
     ProductOption[] product_options?;
-    float product_price?;
+    decimal product_price?;
     string product_short_desc?;
     string sku?;
     int status?;
@@ -203,7 +203,7 @@ public type EcommerceReportingPaymentGateway record {
 };
 
 public type RestAffiliateClawback record {
-    float amount?;
+    decimal amount?;
     int contact_id?;
     string date_earned?;
     string description?;
@@ -221,7 +221,7 @@ public type Subscription record {
     boolean active?;
     boolean allow_tax?;
     boolean auto_charge?;
-    float billing_amount?;
+    decimal billing_amount?;
     string billing_cycle?;
     int billing_frequency?;
     int contact_id?;
@@ -273,7 +273,7 @@ public type EcommerceReportingPaymentPlan record {
     boolean auto_charge?;
     int credit_card_id?;
     int days_between_payments?;
-    float initial_payment_amount?;
+    decimal initial_payment_amount?;
     string initial_payment_date?;
     int number_of_payments?;
     EcommerceReportingPaymentGateway payment_gateway?;
@@ -299,7 +299,7 @@ public type CreateProduct record {
     boolean active?;
     string product_desc?;
     string product_name;
-    float product_price?;
+    decimal product_price?;
     string product_short_desc?;
     string sku?;
     boolean subscription_only?;
@@ -724,11 +724,11 @@ public type ProductList record {
 };
 
 public type OrderItemTax record {
-    float amount?;
+    decimal amount?;
     int id?;
     string name?;
     int orderItemId?;
-    float rate?;
+    decimal rate?;
     int taxTemplateId?;
 };
 
@@ -740,9 +740,9 @@ public type Relationship record {
 
 public type OrderItem record {
     int billingCycle?;
-    float cost?;
+    decimal cost?;
     string description?;
-    float discount?;
+    decimal discount?;
     int frequency?;
     int id?;
     int jobRecurringId?;
@@ -750,11 +750,11 @@ public type OrderItem record {
     string notes?;
     int numberOfPayments?;
     OrderItemTax[] orderItemTaxes?;
-    float price?;
+    decimal price?;
     Product product?;
     int quantity?;
     boolean recurringBilling?;
-    float specialAmount?;
+    decimal specialAmount?;
     int specialId?;
     int specialPctOrAmt?;
     string 'type?;
@@ -946,7 +946,7 @@ public type CreateSubscription record {
     # Defaults to true.
     boolean auto_charge?;
     # Must be 0 or greater. Default is the price in the product subscription.
-    float billing_amount?;
+    decimal billing_amount?;
     int contact_id;
     # Default is the contact's most recently used card, if auto charge is true. Default is 0 otherwise.
     int credit_card_id?;
@@ -1007,7 +1007,7 @@ public type ProductOptionValue record {
     int index?;
     boolean is_default?;
     string label?;
-    float price_adjustment?;
+    decimal price_adjustment?;
     string sku?;
 };
 
@@ -1106,14 +1106,14 @@ public type Order record {
     string order_date?;
     OrderItem[] order_items?;
     PaymentPlan payment_plan?;
-    float refund_total?;
+    decimal refund_total?;
     int sales_affiliate_id?;
     AddressInformation shipping_information?;
     string status?;
     string title?;
-    float total?;
-    float total_due?;
-    float total_paid?;
+    decimal total?;
+    decimal total_due?;
+    decimal total_paid?;
 };
 
 public type GoalEventResultDTO record {
@@ -1268,7 +1268,7 @@ public type PaymentPlan record {
     boolean auto_charge?;
     int credit_card_id?;
     int days_between_payments;
-    float initial_payment_amount?;
+    decimal initial_payment_amount?;
     string initial_payment_date?;
     int number_of_payments;
     PaymentGateway payment_gateway?;
@@ -1346,15 +1346,15 @@ public type NoteList record {
 
 public type AffiliateSummary record {
     int affiliate_id?;
-    float amount_earned?;
-    float balance?;
-    float clawbacks?;
+    decimal amount_earned?;
+    decimal balance?;
+    decimal clawbacks?;
 };
 
 public type PaymentResult record {
     int id?;
     int invoice_id?;
-    float payment_amount?;
+    decimal payment_amount?;
     string payment_status?;
     int transaction_id?;
 };
@@ -1391,7 +1391,7 @@ public type CreateProductSubscription record {
     string cycle_type;
     int frequency?;
     int number_of_cycles?;
-    float plan_price;
+    decimal plan_price;
     int subscription_plan_index?;
 };
 
@@ -1421,17 +1421,17 @@ public type RestApplicationConfigurationModuleAppointment record {
 };
 
 public type EcommerceReportingOrderItem record {
-    float cost?;
+    decimal cost?;
     string description?;
-    float discount?;
+    decimal discount?;
     int id?;
     int jobRecurringId?;
     string name?;
     string notes?;
-    float price?;
+    decimal price?;
     EcommerceReportingSimpleProduct product?;
     int quantity?;
-    float specialAmount?;
+    decimal specialAmount?;
     int specialId?;
     int specialPctOrAmt?;
     SubscriptionPlan subscriptionPlan?;
@@ -1462,8 +1462,8 @@ public type Opportunity record {
     string next_action_notes?;
     string opportunity_notes?;
     string opportunity_title;
-    float projected_revenue_high?;
-    float projected_revenue_low?;
+    decimal projected_revenue_high?;
+    decimal projected_revenue_low?;
     SimpleOpportunityStage stage;
     SimpleUser user?;
 };
@@ -1569,7 +1569,7 @@ public type ProductSubscription record {
     int frequency?;
     int id;
     int number_of_cycles?;
-    float plan_price;
+    decimal plan_price;
     int subscription_plan_index?;
     string subscription_plan_name?;
     string url?;
@@ -1630,7 +1630,7 @@ public type FileDescriptor record {
 };
 
 public type RestAffiliatePayment record {
-    float amount?;
+    decimal amount?;
     string date?;
     int id?;
     string notes?;
@@ -1663,16 +1663,16 @@ public type EcommerceReportingOrder record {
     EcommerceReportingOrderItem[] order_items?;
     EcommerceReportingPaymentPlan payment_plan?;
     boolean recurring?;
-    float refund_total?;
+    decimal refund_total?;
     int sales_affiliate_id?;
     EcommerceReportingShippingInformation shipping_information?;
     string source_type?;
     string status?;
     string terms?;
     string title?;
-    float total?;
-    float total_due?;
-    float total_paid?;
+    decimal total?;
+    decimal total_due?;
+    decimal total_paid?;
 };
 
 public type RestApplicationConfigurationModuleOpportunityStatesLoss record {

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # Represents the output of inferring the LIKELY gender from a list of personal names.
 public type BatchFirstLastNameGenderedOut record {
@@ -101,7 +103,7 @@ public type APIPlanSubscriptionOut record {
     # Datetime when the user ended the plan.
     int planEnded?;
     # Applicable tax rate for the plan.
-    float taxRate?;
+    decimal taxRate?;
     # Current plan name.
     string planName?;
     # Current plan key (as in Stripe product).
@@ -111,17 +113,17 @@ public type APIPlanSubscriptionOut record {
     # Current plan quota in quantity of units (NB: some API use several units per name).
     int planQuota?;
     # Current plan monthly price expressed in USD (includes a free quota).
-    float priceUSD?;
+    decimal priceUSD?;
     # Current plan price for overages expressed in USD (extra price per unit above the free quota).
-    float priceOverageUSD?;
+    decimal priceOverageUSD?;
     # Current plan price for overages expressed in Currency (extra price per unit above the free quota).
-    float price?;
+    decimal price?;
     # Current plan price for overages expressed in Currency (extra price per unit above the free quota).
-    float priceOverage?;
+    decimal priceOverage?;
     # Current plan Currency for prices.
     string currency?;
     # For USD, GBP, EUR - the factor is 1.
-    float currencyFactor?;
+    decimal currencyFactor?;
     # Stripe customer identifier.
     string stripeCustomerId?;
     # Stripe status ex active.
@@ -165,11 +167,12 @@ public type FirstLastNameGenderedOut record {
     # Most likely gender
     string likelyGender?;
     # Compatibility to NamSor_v1 Gender Scale M[-1..U..+1]F value
-    float genderScale?;
+    decimal genderScale?;
     # Compatibility to NamSor_v1 Gender score value. Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # The calibrated probability for inferred gender to have been guessed correctly.
-    float probabilityCalibrated?;
+    decimal probabilityCalibrated?;
 };
 
 # The API Key.
@@ -227,7 +230,8 @@ public type ProperNounCategorizedOut record {
     # Best alternative for : The most likely common name type
     string commonTypeAlt?;
     # Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
 };
 
 # Classified genderized names
@@ -241,11 +245,12 @@ public type PersonalNameGenderedOut record {
     # Most likely gender
     string likelyGender?;
     # Compatibility to NamSor_v1 Gender Scale M[-1..U..+1]F value
-    float genderScale?;
+    decimal genderScale?;
     # Compatibility to NamSor_v1 Gender score value. Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # The calibrated probability for inferred gender to have been guessed correctly.
-    float probabilityCalibrated?;
+    decimal probabilityCalibrated?;
 };
 
 # Represents the output of inferring the LIKELY country of Origin from a personal name.
@@ -265,7 +270,8 @@ public type FirstLastNameOriginedOut record {
     # List countries of Origin (top 10)
     string[] countriesOriginTop?;
     # Compatibility to NamSor_v1 Origin score value. Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # Most likely region of Origin (based on countryOrigin ISO2 code)
     string regionOrigin?;
     # Most likely top region of Origin (based on countryOrigin ISO2 code)
@@ -273,9 +279,9 @@ public type FirstLastNameOriginedOut record {
     # Most likely sub region of Origin (based on countryOrigin ISO2 code)
     string subRegionOrigin?;
     # The calibrated probability for countryOrigin to have been guessed correctly.
-    float probabilityCalibrated?;
+    decimal probabilityCalibrated?;
     # The calibrated probability for countryOrigin OR countryOriginAlt to have been guessed correctly.
-    float probabilityAltCalibrated?;
+    decimal probabilityAltCalibrated?;
 };
 
 public type BatchNameGeoIn record {
@@ -326,7 +332,8 @@ public type FirstLastNameDiasporaedOut record {
     # The last name (also known as family name, or surname)
     string lastName?;
     # Compatibility to NamSor_v1 Diaspora score value. Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # The second best alternative ethnicity
     string ethnicityAlt?;
     # The most likely ethnicity
@@ -379,9 +386,9 @@ public type APIPeriodUsageOut record {
     # The current billing period.
     APIBillingPeriodUsageOut billingPeriod?;
     # Overage amount including any tax.
-    float overageExclTax?;
+    decimal overageExclTax?;
     # Overage amount including tax (if applicable).
-    float overageInclTax?;
+    decimal overageInclTax?;
     # Currency of the overage amount.
     string overageCurrency?;
     # Quantity above monthly quota of the current subscritpion, in units.
@@ -488,7 +495,8 @@ public type FirstLastNamePhoneCodedOut record {
     # Indicates if the phone number could be positively verified using libphonenumber.
     boolean verified?;
     # Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # ISO2 country code
     string countryIso2?;
 };
@@ -513,7 +521,8 @@ public type PersonalNameParsedOut record {
     # First / last name structure corresponding to the most likely parsing.
     FirstLastNameOut firstLastName?;
     # Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
 };
 
 public type BatchFirstLastNameGeoZippedIn record {
@@ -571,11 +580,11 @@ public type NameMatchCandidateOut record {
     # The name matching candidate name
     string candidateName?;
     # The name matching estimated probability.
-    float probability?;
+    decimal probability?;
     # The given name prediction score.
-    float predScoreGivenName?;
+    decimal predScoreGivenName?;
     # The family name prediction score.
-    float predScoreFamilyName?;
+    decimal predScoreFamilyName?;
 };
 
 public type APIUsageHistoryOut record {
@@ -604,13 +613,14 @@ public type FirstLastNameUSRaceEthnicityOut record {
     # Most likely US 'race'/ethnicity
     string raceEthnicity?;
     # Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # List 'race'/ethnicities
     string[] raceEthnicitiesTop?;
     # The calibrated probability for raceEthnicity to have been guessed correctly.
-    float probabilityCalibrated?;
+    decimal probabilityCalibrated?;
     # The calibrated probability for raceEthnicity OR raceEthnicityAlt to have been guessed correctly.
-    float probabilityAltCalibrated?;
+    decimal probabilityAltCalibrated?;
 };
 
 public type BatchFirstLastNamePhoneNumberGeoIn record {
@@ -652,7 +662,7 @@ public type NameMatchedOut record {
     # The name matching status.
     string matchStatus?;
     # Score.
-    float score?;
+    decimal score?;
 };
 
 public type BatchMatchPersonalFirstLastNameIn record {
@@ -679,7 +689,8 @@ public type PersonalNameGeoOut record {
     # The input name.
     string name?;
     # Higher score is better, but score is not normalized. Use calibratedProbability if available. 
-    float score?;
+    @constraint:Number {maxValue: 100}
+    decimal score?;
     # Most likely country 
     string country?;
     # Second best alternative : country 
@@ -693,9 +704,9 @@ public type PersonalNameGeoOut record {
     # List countries (top 10)
     string[] countriesTop?;
     # The calibrated probability for country to have been guessed correctly.
-    float probabilityCalibrated?;
+    decimal probabilityCalibrated?;
     # The calibrated probability for country OR countryAlt to have been guessed correctly.
-    float probabilityAltCalibrated?;
+    decimal probabilityAltCalibrated?;
 };
 
 public type BatchFirstLastNameGeoIn record {

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://auth.atlassian.com/oauth/token";
 |};
 
 # This is a generated connector for [Jira Service Management Cloud REST API](https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification. 
@@ -144,7 +155,7 @@ public isolated client class Client {
     # + organizationId - The ID of the organization. 
     # + return - Returns the requested organization. 
     remote isolated function getOrganization(int organizationId) returns OrganizationDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}`;
         OrganizationDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -153,8 +164,8 @@ public isolated client class Client {
     # + organizationId - The ID of the organization. 
     # + return - Returned if the organization was deleted. 
     remote isolated function deleteOrganization(int organizationId) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get properties keys
@@ -162,7 +173,7 @@ public isolated client class Client {
     # + organizationId - The ID of the organization from which keys will be returned. 
     # + return - Returned if the organization was found. 
     remote isolated function getPropertiesKeys(string organizationId) returns PropertyKeys|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/property`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/property`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -172,7 +183,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property to return. 
     # + return - Returns the organization's property. 
     remote isolated function getProperty(string organizationId, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/property/${propertyKey}`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/property/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -182,7 +193,7 @@ public isolated client class Client {
     # + propertyKey - The key of the organization's property. The maximum length of the key is 255 bytes. 
     # + return - Returned if the organization property was updated. 
     remote isolated function setProperty(string organizationId, string propertyKey) returns json|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/property/${propertyKey}`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/property/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> put(resourcePath, request);
@@ -194,8 +205,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property to remove. 
     # + return - Returned if the organization property was removed. 
     remote isolated function deleteProperty(string organizationId, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/property/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/property/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get users in organization
@@ -205,7 +216,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of users to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns a paged list of users associated with the organization, ordered by their accountId. 
     remote isolated function getUsersInOrganization(int organizationId, int? 'start = (), int? 'limit = ()) returns PagedDTOUserDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/user`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/user`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOUserDTO response = check self.clientEp->get(resourcePath);
@@ -217,7 +228,7 @@ public isolated client class Client {
     # + payload - Organization details 
     # + return - Returned if all the users were valid and added to the organization, no response payload is provided. 
     remote isolated function addUsersToOrganization(int organizationId, UsersOrganizationUpdateDTO payload) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/organization/${organizationId}/user`;
+        string resourcePath = string `/rest/servicedeskapi/organization/${getEncodedUri(organizationId)}/user`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -263,7 +274,7 @@ public isolated client class Client {
     # + expand - A multi-value parameter indicating which properties of the customer request to expand, where:  *  `serviceDesk` returns additional service desk details.  *  `requestType` returns additional customer request type details.  *  `participant` returns the participant details.  *  `sla` returns the SLA information.  *  `status` returns the status transitions, in chronological order.  *  `attachment` returns the attachments.  *  `action` returns the actions that the user can or cannot perform.  *  `comment` returns the comments.  *  `comment.attachment` returns the attachment details for each comment.  *  `comment.renderedBody` (Experimental) return the rendered body in HTML format (in addition to the raw body) for each comment. 
     # + return - Returns the customer request. 
     remote isolated function getCustomerRequestByIdOrKey(string issueIdOrKey, string[]? expand = ()) returns CustomerRequestDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -277,7 +288,7 @@ public isolated client class Client {
     # + issueIdOrKey - The ID or key of the customer request to be queried for its approvals. 
     # + return - Returns the customer request's approvals. 
     remote isolated function getApprovals(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOApprovalDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/approval`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/approval`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOApprovalDTO response = check self.clientEp->get(resourcePath);
@@ -289,7 +300,7 @@ public isolated client class Client {
     # + approvalId - The ID of the approval to be returned. 
     # + return - Returns the requested approval. 
     remote isolated function getApprovalById(string issueIdOrKey, int approvalId) returns ApprovalDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/approval/${approvalId}`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/approval/${getEncodedUri(approvalId)}`;
         ApprovalDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -300,7 +311,7 @@ public isolated client class Client {
     # + payload - Approval decision request details 
     # + return - Returns the updated approval. 
     remote isolated function answerApproval(string issueIdOrKey, int approvalId, ApprovalDecisionRequestDTO payload) returns ApprovalDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/approval/${approvalId}`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/approval/${getEncodedUri(approvalId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -314,7 +325,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of comments to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the visible attachments from the customer request. 
     remote isolated function getAttachmentsForRequest(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOAttachmentDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/attachment`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/attachment`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOAttachmentDTO response = check self.clientEp->get(resourcePath);
@@ -326,7 +337,7 @@ public isolated client class Client {
     # + payload - Attachment details 
     # + return - Returns the attachments and comment. 
     remote isolated function createAttachment(string issueIdOrKey, AttachmentCreateDTO payload) returns AttachmentCreateResultDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/attachment`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/attachment`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -343,7 +354,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of comments to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the comments, on the specified page of the results. 
     remote isolated function getRequestComments(string issueIdOrKey, boolean? 'public = (), boolean? internal = (), string[]? expand = (), int? 'start = (), int? 'limit = ()) returns PagedDTOCommentDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/comment`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/comment`;
         map<anydata> queryParam = {"public": 'public, "internal": internal, "expand": expand, "start": 'start, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -356,7 +367,7 @@ public isolated client class Client {
     # + payload - Comment 
     # + return - Returns the comment. 
     remote isolated function createRequestComment(string issueIdOrKey, CommentCreateDTO payload) returns CommentDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/comment`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/comment`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -370,7 +381,7 @@ public isolated client class Client {
     # + expand - A multi-value parameter indicating which properties of the comment to expand:  *  `attachment` returns the attachment details, if any, for the comment. (If you want to get all attachments for a request, use [servicedeskapi/request/\{issueIdOrKey\}/attachment](#api-request-issueIdOrKey-attachment-get).)  *  `renderedBody` (Experimental) returns the rendered body in HTML format (in addition to the raw body) of the comment. 
     # + return - Returns the comment. 
     remote isolated function getRequestCommentById(string issueIdOrKey, int commentId, string[]? expand = ()) returns CommentDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/comment/${commentId}`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/comment/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -385,7 +396,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of comments to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the attachments, on the specified page of the results. 
     remote isolated function getCommentAttachments(string issueIdOrKey, int commentId, int? 'start = (), int? 'limit = ()) returns PagedDTOAttachmentDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/comment/${commentId}/attachment`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/comment/${getEncodedUri(commentId)}/attachment`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOAttachmentDTO response = check self.clientEp->get(resourcePath);
@@ -396,7 +407,7 @@ public isolated client class Client {
     # + issueIdOrKey - The ID or key of the customer request to be queried for subscription status. 
     # + return - Returns the status of the notification subscription. 
     remote isolated function getSubscriptionStatus(string issueIdOrKey) returns RequestNotificationSubscriptionDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/notification`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/notification`;
         RequestNotificationSubscriptionDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -405,7 +416,7 @@ public isolated client class Client {
     # + issueIdOrKey - The ID or key of the customer request to be subscribed to. 
     # + return - Returns if the user was subscribed. 
     remote isolated function subscribe(string issueIdOrKey) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/notification`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/notification`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> put(resourcePath, request);
@@ -416,8 +427,8 @@ public isolated client class Client {
     # + issueIdOrKey - The ID or key of the customer request to be unsubscribed from. 
     # + return - Returns if the user was unsubscribed. 
     remote isolated function unsubscribe(string issueIdOrKey) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/notification`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/notification`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get request participants
@@ -427,7 +438,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of request types to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the customer request's participants, on the specified page of the results. 
     remote isolated function getRequestParticipants(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOUserDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/participant`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/participant`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOUserDTO response = check self.clientEp->get(resourcePath);
@@ -439,7 +450,7 @@ public isolated client class Client {
     # + payload - Participant details 
     # + return - Returns the participants added to the customer request. 
     remote isolated function addRequestParticipants(string issueIdOrKey, RequestParticipantUpdateDTO payload) returns PagedDTOUserDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/participant`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/participant`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -453,7 +464,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of request types to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the SLA records on the customer request, on the specified page of the results. 
     remote isolated function getSlaInformation(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOSlaInformationDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/sla`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/sla`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOSlaInformationDTO response = check self.clientEp->get(resourcePath);
@@ -465,7 +476,7 @@ public isolated client class Client {
     # + slaMetricId - The ID or key of the SLAs metric to be retrieved. 
     # + return - Returns the SLA record, on the specified page of the results. 
     remote isolated function getSlaInformationById(string issueIdOrKey, int slaMetricId) returns SlaInformationDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/sla/${slaMetricId}`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/sla/${getEncodedUri(slaMetricId)}`;
         SlaInformationDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -476,7 +487,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the customer request's status history, on the specified page of the results. 
     remote isolated function getCustomerRequestStatus(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOCustomerRequestStatusDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/status`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/status`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOCustomerRequestStatusDTO response = check self.clientEp->get(resourcePath);
@@ -489,7 +500,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 100. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the transitions available to the user on the customer request. 
     remote isolated function getCustomerTransitions(string issueIdOrKey, int? 'start = (), int? 'limit = ()) returns PagedDTOCustomerTransitionDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/transition`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/transition`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOCustomerTransitionDTO response = check self.clientEp->get(resourcePath);
@@ -501,7 +512,7 @@ public isolated client class Client {
     # + payload - Comment 
     # + return - Returned if the request is transitioned. 
     remote isolated function performCustomerTransition(string issueIdOrKey, CustomerTransitionExecutionDTO payload) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${issueIdOrKey}/transition`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(issueIdOrKey)}/transition`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -513,7 +524,7 @@ public isolated client class Client {
     # + requestIdOrKey - The id or the key of the request to post the feedback on 
     # + return - Returns the comment. 
     remote isolated function getFeedback(string requestIdOrKey) returns CSATFeedbackFullDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${requestIdOrKey}/feedback`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(requestIdOrKey)}/feedback`;
         CSATFeedbackFullDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -523,7 +534,7 @@ public isolated client class Client {
     # + payload - The feedback to be added on the request 
     # + return - Returns the comment. 
     remote isolated function postFeedback(string requestIdOrKey, CSATFeedbackFullDTO payload) returns CSATFeedbackFullDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${requestIdOrKey}/feedback`;
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(requestIdOrKey)}/feedback`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -535,8 +546,8 @@ public isolated client class Client {
     # + requestIdOrKey - The id or the key of the request to post the feedback on 
     # + return - No content. 
     remote isolated function deleteFeedback(string requestIdOrKey) returns json|error {
-        string resourcePath = string `/rest/servicedeskapi/request/${requestIdOrKey}/feedback`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/request/${getEncodedUri(requestIdOrKey)}/feedback`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all request types
@@ -572,7 +583,7 @@ public isolated client class Client {
     # + serviceDeskId - The ID of the service desk to return. This can alternatively be a [project identifier.](#project-identifiers) 
     # + return - Returns the requested service desk. 
     remote isolated function getServiceDeskById(string serviceDeskId) returns ServiceDeskDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}`;
         ServiceDeskDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -582,7 +593,7 @@ public isolated client class Client {
     # + payload - The attachments in a RFC 1867 multipart/form-data format. 
     # + return - Returns if the file(s) were attached. 
     remote isolated function attachTemporaryFile(string serviceDeskId, byte[] payload) returns json|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/attachTemporaryFile`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/attachTemporaryFile`;
         http:Request request = new;
         request.setPayload(payload, "application/octet-stream");
         json response = check self.clientEp->post(resourcePath, request);
@@ -596,7 +607,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of users to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the service desk's customer list. 
     remote isolated function getCustomers(string serviceDeskId, string? query = (), int? 'start = (), int? 'limit = ()) returns PagedDTOUserDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/customer`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/customer`;
         map<anydata> queryParam = {"query": query, "start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOUserDTO response = check self.clientEp->get(resourcePath);
@@ -608,7 +619,7 @@ public isolated client class Client {
     # + payload - Customer details 
     # + return - Returned if all the customers were added to the service desk or were already associated with the service desk. 
     remote isolated function addCustomers(string serviceDeskId, ServiceDeskCustomerDTO payload) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/customer`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/customer`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -624,7 +635,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 100. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the articles, on the specified page of the results. 
     remote isolated function getArticlesByServiceDeskId(string serviceDeskId, string? query = (), boolean highlight = false, int? 'start = (), int? 'limit = ()) returns PagedDTOArticleDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/knowledgebase/article`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/knowledgebase/article`;
         map<anydata> queryParam = {"query": query, "highlight": highlight, "start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOArticleDTO response = check self.clientEp->get(resourcePath);
@@ -638,7 +649,7 @@ public isolated client class Client {
     # + accountId - The account ID of the user, which uniquely identifies the user across all Atlassian products. For example, *5b10ac8d82e05b22cc7d4ef5*. 
     # + return - Returns the requested organizations list. 
     remote isolated function getOrganizationsByServiceDeskId(string serviceDeskId, int? 'start = (), int? 'limit = (), string? accountId = ()) returns PagedDTOOrganizationDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/organization`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/organization`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "accountId": accountId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOOrganizationDTO response = check self.clientEp->get(resourcePath);
@@ -650,7 +661,7 @@ public isolated client class Client {
     # + payload - Organization details 
     # + return - Returned if the organization was added or the organization was already associated with the service desk. 
     remote isolated function addOrganization(string serviceDeskId, OrganizationServiceDeskUpdateDTO payload) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/organization`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/organization`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -665,7 +676,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the queues of the service desk, on the specified page of the results. 
     remote isolated function getQueues(string serviceDeskId, boolean includeCount = false, int? 'start = (), int? 'limit = ()) returns PagedDTOQueueDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/queue`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/queue`;
         map<anydata> queryParam = {"includeCount": includeCount, "start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOQueueDTO response = check self.clientEp->get(resourcePath);
@@ -678,7 +689,7 @@ public isolated client class Client {
     # + includeCount - Specifies whether to include each queue's customer request (issue) count in the response. 
     # + return - Returns the specific queue of the service desk. 
     remote isolated function getQueue(string serviceDeskId, int queueId, boolean includeCount = false) returns QueueDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/queue/${queueId}`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/queue/${getEncodedUri(queueId)}`;
         map<anydata> queryParam = {"includeCount": includeCount};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         QueueDTO response = check self.clientEp->get(resourcePath);
@@ -692,7 +703,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 50. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the customer requests belonging to the queue, on the specified page of the results. 
     remote isolated function getIssuesInQueue(string serviceDeskId, int queueId, int? 'start = (), int? 'limit = ()) returns PagedDTOIssueBean|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/queue/${queueId}/issue`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/queue/${getEncodedUri(queueId)}/issue`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTOIssueBean response = check self.clientEp->get(resourcePath);
@@ -708,7 +719,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 100. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the requested customer request types, on the specified page of the results. 
     remote isolated function getRequestTypes(string serviceDeskId, int? groupId = (), string[]? expand = (), string? searchQuery = (), int? 'start = (), int? 'limit = ()) returns PagedDTORequestTypeDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype`;
         map<anydata> queryParam = {"groupId": groupId, "expand": expand, "searchQuery": searchQuery, "start": 'start, "limit": 'limit};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -721,7 +732,7 @@ public isolated client class Client {
     # + payload - Request type details 
     # + return - Returns the customer request type created. 
     remote isolated function createRequestType(string serviceDeskId, RequestTypeCreateDTO payload) returns RequestTypeDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -735,7 +746,7 @@ public isolated client class Client {
     # + expand - Expand 
     # + return - Returns the customer request type item. 
     remote isolated function getRequestTypeById(string serviceDeskId, int requestTypeId, string[]? expand = ()) returns RequestTypeDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -748,8 +759,8 @@ public isolated client class Client {
     # + requestTypeId - The ID of the request type. 
     # + return - Returned if the request type is deleted. 
     remote isolated function deleteRequestType(string serviceDeskId, int requestTypeId) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get request type fields
@@ -759,7 +770,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information in the response. This parameter accepts `hiddenFields` that returns hidden fields associated with the request type. 
     # + return - Returns the request type's fields and user permission details, on the specified page of the results. 
     remote isolated function getRequestTypeFields(string serviceDeskId, int requestTypeId, string[]? expand = ()) returns CustomerRequestCreateMetaDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}/field`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}/field`;
         map<anydata> queryParam = {"expand": expand};
         map<Encoding> queryParamEncoding = {"expand": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -772,7 +783,7 @@ public isolated client class Client {
     # + serviceDeskId - The ID of the service desk which contains the request type. This can alternatively be a [project identifier.](#project-identifiers) 
     # + return - Returned if the request type was found. 
     remote isolated function getPropertiesKeysByServiceDeskId(int requestTypeId, string serviceDeskId) returns PropertyKeys|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}/property`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}/property`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -783,7 +794,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property to return. 
     # + return - Returned if the request type property was returned. 
     remote isolated function getPropertyByServiceDeskId(string serviceDeskId, int requestTypeId, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}/property/${propertyKey}`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}/property/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -794,7 +805,7 @@ public isolated client class Client {
     # + propertyKey - The key of the request type property. The maximum length of the key is 255 bytes. 
     # + return - Returned if the request type property is updated. 
     remote isolated function setPropertyByServiceDeskId(string serviceDeskId, int requestTypeId, string propertyKey) returns json|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}/property/${propertyKey}`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}/property/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> put(resourcePath, request);
@@ -807,8 +818,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property to remove. 
     # + return - Returned if the request type property was removed. 
     remote isolated function deletePropertyByServiceDeskId(string serviceDeskId, int requestTypeId, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttype/${requestTypeId}/property/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttype/${getEncodedUri(requestTypeId)}/property/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get request type groups
@@ -818,7 +829,7 @@ public isolated client class Client {
     # + 'limit - The maximum number of items to return per page. Default: 100. See the [Pagination](#pagination) section for more details. 
     # + return - Returns the service desk's customer request type groups, on the specified page of the results. 
     remote isolated function getRequestTypeGroups(string serviceDeskId, int? 'start = (), int? 'limit = ()) returns PagedDTORequestTypeGroupDTO|error {
-        string resourcePath = string `/rest/servicedeskapi/servicedesk/${serviceDeskId}/requesttypegroup`;
+        string resourcePath = string `/rest/servicedeskapi/servicedesk/${getEncodedUri(serviceDeskId)}/requesttypegroup`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PagedDTORequestTypeGroupDTO response = check self.clientEp->get(resourcePath);

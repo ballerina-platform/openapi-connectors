@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022, WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://auth.atlassian.com/oauth/token";
 |};
 
 # This is a generated connector for [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
@@ -121,7 +132,7 @@ public isolated client class Client {
     # + updateHistory - Whether the project in which the issue is created is added to the user's **Recently viewed** project list, as shown under **Projects** in Jira. This also populates the [JQL issues search](#api-rest-api-2-search-get) `lastViewed` field. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssue(string issueIdOrKey, string[]? fields = (), boolean fieldsByKeys = false, string? expand = (), string[]? properties = (), boolean updateHistory = false) returns IssueBean|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}`;
         map<anydata> queryParam = {"fields": fields, "fieldsByKeys": fieldsByKeys, "expand": expand, "properties": properties, "updateHistory": updateHistory};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: true}, "properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -137,7 +148,7 @@ public isolated client class Client {
     # + payload - The request payload to edit issue. 
     # + return - Returned if the request is successful. 
     remote isolated function editIssue(string issueIdOrKey, IssueUpdateDetails payload, boolean notifyUsers = true, boolean overrideScreenSecurity = false, boolean overrideEditableFlag = false) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}`;
         map<anydata> queryParam = {"notifyUsers": notifyUsers, "overrideScreenSecurity": overrideScreenSecurity, "overrideEditableFlag": overrideEditableFlag};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -152,10 +163,10 @@ public isolated client class Client {
     # + deleteSubtasks - Whether the issue's subtasks are deleted when the issue is deleted. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteIssue(string issueIdOrKey, string deleteSubtasks = "false") returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}`;
         map<anydata> queryParam = {"deleteSubtasks": deleteSubtasks};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Assign issue
@@ -164,7 +175,7 @@ public isolated client class Client {
     # + payload - The request object with the user that the issue is assigned to. 
     # + return - Returned if the request is successful. 
     remote isolated function assignIssue(string issueIdOrKey, User payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/assignee`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/assignee`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -178,7 +189,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getChangeLogs(string issueIdOrKey, int startAt = 0, int maxResults = 100) returns PageBeanChangelog|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/changelog`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/changelog`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageBeanChangelog response = check self.clientEp->get(resourcePath);
@@ -190,7 +201,7 @@ public isolated client class Client {
     # + payload - The request payload to get changelogs by IDs. 
     # + return - Returned if the request is successful. 
     remote isolated function getChangeLogsByIds(string issueIdOrKey, IssueChangelogIds payload) returns PageOfChangelogs|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/changelog/list`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/changelog/list`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -204,7 +215,7 @@ public isolated client class Client {
     # + overrideEditableFlag - Whether non-editable fields should be returned. Available to connect app users with admin permissions. 
     # + return - Returned if the request is successful. 
     remote isolated function getEditIssueMeta(string issueIdOrKey, boolean overrideScreenSecurity = false, boolean overrideEditableFlag = false) returns IssueUpdateMetadata|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/editmeta`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/editmeta`;
         map<anydata> queryParam = {"overrideScreenSecurity": overrideScreenSecurity, "overrideEditableFlag": overrideEditableFlag};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         IssueUpdateMetadata response = check self.clientEp->get(resourcePath);
@@ -216,7 +227,7 @@ public isolated client class Client {
     # + payload - The request object for the notification and recipients. 
     # + return - Returned if the email is queued for sending. 
     remote isolated function notify(string issueIdOrKey, Notification payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/notify`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/notify`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -233,7 +244,7 @@ public isolated client class Client {
     # + sortByOpsBarAndStatus - Whether the transitions are sorted by ops-bar sequence value first then category order (Todo, In Progress, Done) or only by ops-bar sequence value. 
     # + return - Returned if the request is successful. 
     remote isolated function getTransitions(string issueIdOrKey, string? expand = (), string? transitionId = (), boolean skipRemoteOnlyCondition = false, boolean includeUnavailableTransitions = false, boolean sortByOpsBarAndStatus = false) returns Transitions|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/transitions`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/transitions`;
         map<anydata> queryParam = {"expand": expand, "transitionId": transitionId, "skipRemoteOnlyCondition": skipRemoteOnlyCondition, "includeUnavailableTransitions": includeUnavailableTransitions, "sortByOpsBarAndStatus": sortByOpsBarAndStatus};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Transitions response = check self.clientEp->get(resourcePath);
@@ -245,7 +256,7 @@ public isolated client class Client {
     # + payload - The request payload to update the fields from the transition screen. 
     # + return - Returned if the request is successful. 
     remote isolated function doTransition(string issueIdOrKey, IssueUpdateDetails payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/transitions`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/transitions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -270,7 +281,7 @@ public isolated client class Client {
     # + payload - The request payload to bulk set issue property. 
     # + return - Returned if the request is successful. 
     remote isolated function bulkSetIssueProperty(string propertyKey, BulkIssuePropertyUpdateRequest payload) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issue/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -282,8 +293,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function bulkDeleteIssueProperty(string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issue/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get issue property keys
@@ -291,7 +302,7 @@ public isolated client class Client {
     # + issueIdOrKey - The key or ID of the issue. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssuePropertyKeys(string issueIdOrKey) returns PropertyKeys|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/properties`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/properties`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -301,7 +312,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueProperty(string issueIdOrKey, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -312,7 +323,7 @@ public isolated client class Client {
     # + payload - The request payload to set issue property. 
     # + return - Returned if the issue property is updated. 
     remote isolated function setIssueProperty(string issueIdOrKey, string propertyKey, json payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -324,8 +335,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteIssueProperty(string issueIdOrKey, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get Jira attachment settings
@@ -341,7 +352,7 @@ public isolated client class Client {
     # + id - The ID of the attachment. 
     # + return - Returned if the request is successful. 
     remote isolated function getAttachment(string id) returns AttachmentMetadata|error {
-        string resourcePath = string `/rest/api/2/attachment/${id}`;
+        string resourcePath = string `/rest/api/2/attachment/${getEncodedUri(id)}`;
         AttachmentMetadata response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -350,8 +361,8 @@ public isolated client class Client {
     # + id - The ID of the attachment. 
     # + return - Returned if the request is successful. 
     remote isolated function removeAttachment(string id) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/attachment/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/attachment/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all metadata for an expanded attachment
@@ -359,7 +370,7 @@ public isolated client class Client {
     # + id - The ID of the attachment. 
     # + return - Returned if the request is successful. If an empty list is returned in the response, the attachment is empty, corrupt, or not an archive. 
     remote isolated function expandAttachmentForHumans(string id) returns AttachmentArchiveMetadataReadable|error {
-        string resourcePath = string `/rest/api/2/attachment/${id}/expand/human`;
+        string resourcePath = string `/rest/api/2/attachment/${getEncodedUri(id)}/expand/human`;
         AttachmentArchiveMetadataReadable response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -368,7 +379,7 @@ public isolated client class Client {
     # + id - The ID of the attachment. 
     # + return - Returned if the request is successful. If an empty list is returned in the response, the attachment is empty, corrupt, or not an archive. 
     remote isolated function expandAttachmentForMachines(string id) returns AttachmentArchiveImpl|error {
-        string resourcePath = string `/rest/api/2/attachment/${id}/expand/raw`;
+        string resourcePath = string `/rest/api/2/attachment/${getEncodedUri(id)}/expand/raw`;
         AttachmentArchiveImpl response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -395,7 +406,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getFieldConfigurationItems(int id, int startAt = 0, int maxResults = 50) returns PageBeanFieldConfigurationItem|error {
-        string resourcePath = string `/rest/api/2/fieldconfiguration/${id}/fields`;
+        string resourcePath = string `/rest/api/2/fieldconfiguration/${getEncodedUri(id)}/fields`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageBeanFieldConfigurationItem response = check self.clientEp->get(resourcePath);
@@ -465,7 +476,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getContextsForField(string fieldId, boolean? isAnyIssueType = (), boolean? isGlobalContext = (), int[]? contextId = (), int startAt = 0, int maxResults = 50) returns PageBeanCustomFieldContext|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context`;
         map<anydata> queryParam = {"isAnyIssueType": isAnyIssueType, "isGlobalContext": isGlobalContext, "contextId": contextId, "startAt": startAt, "maxResults": maxResults};
         map<Encoding> queryParamEncoding = {"contextId": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -478,7 +489,7 @@ public isolated client class Client {
     # + payload - The request payload to create a custom field context. 
     # + return - Returned if the custom field context is created. 
     remote isolated function createCustomFieldContext(string fieldId, CreateCustomFieldContext payload) returns CreateCustomFieldContext|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -493,7 +504,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getDefaultValues(string fieldId, int[]? contextId = (), int startAt = 0, int maxResults = 50) returns PageBeanCustomFieldContextDefaultValue|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/defaultValue`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/defaultValue`;
         map<anydata> queryParam = {"contextId": contextId, "startAt": startAt, "maxResults": maxResults};
         map<Encoding> queryParamEncoding = {"contextId": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -506,7 +517,7 @@ public isolated client class Client {
     # + payload - The request payload to set default for contexts of a custom field. 
     # + return - Returned if operation is successful. 
     remote isolated function setDefaultValues(string fieldId, CustomFieldContextDefaultValueUpdate payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/defaultValue`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/defaultValue`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -521,7 +532,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if operation is successful. 
     remote isolated function getIssueTypeMappingsForContexts(string fieldId, int[]? contextId = (), int startAt = 0, int maxResults = 50) returns PageBeanIssueTypeToContextMapping|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/issuetypemapping`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/issuetypemapping`;
         map<anydata> queryParam = {"contextId": contextId, "startAt": startAt, "maxResults": maxResults};
         map<Encoding> queryParamEncoding = {"contextId": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -536,7 +547,7 @@ public isolated client class Client {
     # + payload - The list of project and issue type mappings. 
     # + return - Returned if the request is successful. 
     remote isolated function getCustomFieldContextsForProjectsAndIssueTypes(string fieldId, ProjectIssueTypeMappings payload, int startAt = 0, int maxResults = 50) returns PageBeanContextForProjectAndIssueType|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/mapping`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/mapping`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -553,7 +564,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectContextMapping(string fieldId, int[]? contextId = (), int startAt = 0, int maxResults = 50) returns PageBeanCustomFieldContextProjectMapping|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/projectmapping`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/projectmapping`;
         map<anydata> queryParam = {"contextId": contextId, "startAt": startAt, "maxResults": maxResults};
         map<Encoding> queryParamEncoding = {"contextId": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -567,7 +578,7 @@ public isolated client class Client {
     # + payload - The request payload to update a custom field context. 
     # + return - Returned if the context is updated. 
     remote isolated function updateCustomFieldContext(string fieldId, int contextId, CustomFieldContextUpdateDetails payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -580,8 +591,8 @@ public isolated client class Client {
     # + contextId - The ID of the context. 
     # + return - Returned if the context is deleted. 
     remote isolated function deleteCustomFieldContext(string fieldId, int contextId) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}`;
-        json response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}`;
+        json response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add issue types to context
@@ -591,7 +602,7 @@ public isolated client class Client {
     # + payload - The request payload to add issue types to a custom field context. 
     # + return - Returned if operation is successful. 
     remote isolated function addIssueTypesToContext(string fieldId, int contextId, IssueTypeIds payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/issuetype`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/issuetype`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -605,7 +616,7 @@ public isolated client class Client {
     # + payload - The request payload to remove issue types from a custom field context. 
     # + return - Returned if operation is successful. 
     remote isolated function removeIssueTypesFromContext(string fieldId, int contextId, IssueTypeIds payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/issuetype/remove`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/issuetype/remove`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -619,7 +630,7 @@ public isolated client class Client {
     # + payload - The request payload to assign custom field context to projects. 
     # + return - Returned if operation is successful. 
     remote isolated function assignProjectsToCustomFieldContext(string fieldId, int contextId, ProjectIds payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/project`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/project`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -633,7 +644,7 @@ public isolated client class Client {
     # + payload - The request payload to remove custom field context from projects. 
     # + return - Returned if the custom field context is removed from the projects. 
     remote isolated function removeCustomFieldContextFromProjects(string fieldId, int contextId, ProjectIds payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/project/remove`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/project/remove`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -645,7 +656,7 @@ public isolated client class Client {
     # + id - The ID of the custom field option. 
     # + return - Returned if the request is successful. 
     remote isolated function getCustomFieldOption(string id) returns CustomFieldOption|error {
-        string resourcePath = string `/rest/api/2/customFieldOption/${id}`;
+        string resourcePath = string `/rest/api/2/customFieldOption/${getEncodedUri(id)}`;
         CustomFieldOption response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -659,7 +670,7 @@ public isolated client class Client {
     # + maxResults - The maximum number of items to return per page. 
     # + return - Returned if the request is successful. 
     remote isolated function getOptionsForContext(string fieldId, int contextId, int? optionId = (), boolean onlyOptions = false, int startAt = 0, int maxResults = 100) returns PageBeanCustomFieldContextOption|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/option`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/option`;
         map<anydata> queryParam = {"optionId": optionId, "onlyOptions": onlyOptions, "startAt": startAt, "maxResults": maxResults};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageBeanCustomFieldContextOption response = check self.clientEp->get(resourcePath);
@@ -672,7 +683,7 @@ public isolated client class Client {
     # + payload - The request payload to update issue types to a custom field context. 
     # + return - Returned if the request is successful. 
     remote isolated function updateCustomFieldOption(string fieldId, int contextId, BulkCustomFieldOptionUpdateRequest payload) returns CustomFieldUpdatedContextOptionsList|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/option`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/option`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -686,7 +697,7 @@ public isolated client class Client {
     # + payload - The request payolad to create custom field options (context). 
     # + return - Returned if the request is successful. 
     remote isolated function createCustomFieldOption(string fieldId, int contextId, BulkCustomFieldOptionCreateRequest payload) returns CustomFieldCreatedContextOptionsList|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/option`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/option`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -700,7 +711,7 @@ public isolated client class Client {
     # + payload - The request payload to reorder custom field options (context). 
     # + return - Returned if options are reordered. 
     remote isolated function reorderCustomFieldOptions(string fieldId, int contextId, OrderOfCustomFieldOptions payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/option/move`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/option/move`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -714,8 +725,8 @@ public isolated client class Client {
     # + optionId - The ID of the option to delete. 
     # + return - Returned if the option is deleted. 
     remote isolated function deleteCustomFieldOption(string fieldId, int contextId, int optionId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}/context/${contextId}/option/${optionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}/context/${getEncodedUri(contextId)}/option/${getEncodedUri(optionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get issue link types
@@ -743,7 +754,7 @@ public isolated client class Client {
     # + issueLinkTypeId - The ID of the issue link type. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueLinkType(string issueLinkTypeId) returns IssueLinkType|error {
-        string resourcePath = string `/rest/api/2/issueLinkType/${issueLinkTypeId}`;
+        string resourcePath = string `/rest/api/2/issueLinkType/${getEncodedUri(issueLinkTypeId)}`;
         IssueLinkType response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -753,7 +764,7 @@ public isolated client class Client {
     # + payload - The request payload to update issue link type. 
     # + return - Returned if the request is successful. 
     remote isolated function updateIssueLinkType(string issueLinkTypeId, IssueLinkType payload) returns IssueLinkType|error {
-        string resourcePath = string `/rest/api/2/issueLinkType/${issueLinkTypeId}`;
+        string resourcePath = string `/rest/api/2/issueLinkType/${getEncodedUri(issueLinkTypeId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -765,8 +776,8 @@ public isolated client class Client {
     # + issueLinkTypeId - The ID of the issue link type. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteIssueLinkType(string issueLinkTypeId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issueLinkType/${issueLinkTypeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issueLinkType/${getEncodedUri(issueLinkTypeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get issue navigator default columns
@@ -794,7 +805,7 @@ public isolated client class Client {
     # + globalId - The global ID of the remote issue link. 
     # + return - Returned if the request is successful. 
     remote isolated function getRemoteIssueLinks(string issueIdOrKey, string? globalId = ()) returns RemoteIssueLink|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink`;
         map<anydata> queryParam = {"globalId": globalId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RemoteIssueLink response = check self.clientEp->get(resourcePath);
@@ -806,7 +817,7 @@ public isolated client class Client {
     # + payload - The request payload to create or update remote issue link. 
     # + return - Returned if the remote issue link is updated. 
     remote isolated function createOrUpdateRemoteIssueLink(string issueIdOrKey, RemoteIssueLinkRequest payload) returns RemoteIssueLinkIdentifies|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -819,10 +830,10 @@ public isolated client class Client {
     # + globalId - The global ID of a remote issue link. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteRemoteIssueLinkByGlobalId(string issueIdOrKey, string globalId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink`;
         map<anydata> queryParam = {"globalId": globalId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get remote issue link by ID
@@ -831,7 +842,7 @@ public isolated client class Client {
     # + linkId - The ID of the remote issue link. 
     # + return - Returned if the request is successful. 
     remote isolated function getRemoteIssueLinkById(string issueIdOrKey, string linkId) returns RemoteIssueLink|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink/${linkId}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink/${getEncodedUri(linkId)}`;
         RemoteIssueLink response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -842,7 +853,7 @@ public isolated client class Client {
     # + payload - The request payload to update remote issue link by ID. 
     # + return - Returned if the request is successful. 
     remote isolated function updateRemoteIssueLink(string issueIdOrKey, string linkId, RemoteIssueLinkRequest payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink/${linkId}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink/${getEncodedUri(linkId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -855,8 +866,8 @@ public isolated client class Client {
     # + linkId - The ID of a remote issue link. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteRemoteIssueLinkById(string issueIdOrKey, string linkId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/remotelink/${linkId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/remotelink/${getEncodedUri(linkId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get resolutions
@@ -872,7 +883,7 @@ public isolated client class Client {
     # + id - The ID of the issue resolution value. 
     # + return - Returned if the request is successful. 
     remote isolated function getResolution(string id) returns Resolution|error {
-        string resourcePath = string `/rest/api/2/resolution/${id}`;
+        string resourcePath = string `/rest/api/2/resolution/${getEncodedUri(id)}`;
         Resolution response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -913,7 +924,7 @@ public isolated client class Client {
     # + id - The ID of the issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueType(string id) returns IssueTypeDetails|error {
-        string resourcePath = string `/rest/api/2/issuetype/${id}`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(id)}`;
         IssueTypeDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -923,7 +934,7 @@ public isolated client class Client {
     # + payload - The request payload to update issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function updateIssueType(string id, IssueTypeUpdateBean payload) returns IssueTypeDetails|error {
-        string resourcePath = string `/rest/api/2/issuetype/${id}`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -936,10 +947,10 @@ public isolated client class Client {
     # + alternativeIssueTypeId - The ID of the replacement issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteIssueType(string id, string? alternativeIssueTypeId = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issuetype/${id}`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"alternativeIssueTypeId": alternativeIssueTypeId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get alternative issue types
@@ -947,7 +958,7 @@ public isolated client class Client {
     # + id - The ID of the issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function getAlternativeIssueTypes(string id) returns IssueTypeDetails[]|error {
-        string resourcePath = string `/rest/api/2/issuetype/${id}/alternatives`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(id)}/alternatives`;
         IssueTypeDetails[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -960,7 +971,7 @@ public isolated client class Client {
     # + payload - The request payload to load issue type avatar. 
     # + return - Returned if the request is successful. 
     remote isolated function createIssueTypeAvatar(string id, int size, byte[] payload, int x = 0, int y = 0) returns Avatar|error {
-        string resourcePath = string `/rest/api/2/issuetype/${id}/avatar2`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(id)}/avatar2`;
         map<anydata> queryParam = {"x": x, "y": y, "size": size};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -973,7 +984,7 @@ public isolated client class Client {
     # + issueTypeId - The ID of the issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueTypePropertyKeys(string issueTypeId) returns PropertyKeys|error {
-        string resourcePath = string `/rest/api/2/issuetype/${issueTypeId}/properties`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(issueTypeId)}/properties`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -983,7 +994,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property. Use [Get issue type property keys](#api-rest-api-2-issuetype-issueTypeId-properties-get) to get a list of all issue type property keys. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueTypeProperty(string issueTypeId, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/issuetype/${issueTypeId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(issueTypeId)}/properties/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -994,7 +1005,7 @@ public isolated client class Client {
     # + payload - The request payload to set issue type property. 
     # + return - Returned if the issue type property is updated. 
     remote isolated function setIssueTypeProperty(string issueTypeId, string propertyKey, json payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issuetype/${issueTypeId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(issueTypeId)}/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -1006,8 +1017,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property. Use [Get issue type property keys](#api-rest-api-2-issuetype-issueTypeId-properties-get) to get a list of all issue type property keys. 
     # + return - Returned if the issue type property is deleted. 
     remote isolated function deleteIssueTypeProperty(string issueTypeId, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issuetype/${issueTypeId}/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issuetype/${getEncodedUri(issueTypeId)}/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get field reference data (GET)
@@ -1130,7 +1141,7 @@ public isolated client class Client {
     # + properties - A list of project properties to return for the project. This parameter accepts a comma-separated list. 
     # + return - Returned if successful. 
     remote isolated function getProject(string projectIdOrKey, string? expand = (), string[]? properties = ()) returns Project|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}`;
         map<anydata> queryParam = {"expand": expand, "properties": properties};
         map<Encoding> queryParamEncoding = {"properties": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -1144,7 +1155,7 @@ public isolated client class Client {
     # + payload - The project details to be updated. 
     # + return - Returned if the project is updated. 
     remote isolated function updateProject(string projectIdOrKey, UpdateProjectDetails payload, string? expand = ()) returns Project|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1159,10 +1170,10 @@ public isolated client class Client {
     # + enableUndo - Whether this project is placed in the Jira recycle bin where it will be available for restoration. 
     # + return - Returned if the project is deleted. 
     remote isolated function deleteProject(string projectIdOrKey, boolean enableUndo = false) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}`;
         map<anydata> queryParam = {"enableUndo": enableUndo};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Archive project
@@ -1170,7 +1181,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function archiveProject(string projectIdOrKey) returns json|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/archive`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/archive`;
         http:Request request = new;
         //TODO: Update the request as needed;
         json response = check self.clientEp-> post(resourcePath, request);
@@ -1181,7 +1192,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function deleteProjectAsynchronously(string projectIdOrKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/delete`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/delete`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -1192,7 +1203,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function restore(string projectIdOrKey) returns Project|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/restore`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/restore`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Project response = check self.clientEp-> post(resourcePath, request);
@@ -1203,7 +1214,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getAllStatuses(string projectIdOrKey) returns IssueTypeWithStatus[]|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/statuses`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/statuses`;
         IssueTypeWithStatus[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1216,7 +1227,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function updateProjectType(string projectIdOrKey, string newProjectTypeKey) returns Project|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/type/${newProjectTypeKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/type/${getEncodedUri(newProjectTypeKey)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Project response = check self.clientEp-> put(resourcePath, request);
@@ -1230,7 +1241,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function getHierarchy(int projectId) returns ProjectIssueTypeHierarchy|error {
-        string resourcePath = string `/rest/api/2/project/${projectId}/hierarchy`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectId)}/hierarchy`;
         ProjectIssueTypeHierarchy response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1240,7 +1251,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information in the response. This parameter accepts a comma-separated list. Expand options include:  *  `all` Returns all expandable information.  *  `field` Returns information about any custom fields assigned to receive an event.  *  `group` Returns information about any groups assigned to receive an event.  *  `notificationSchemeEvents` Returns a list of event associations. This list is returned for all expandable information.  *  `projectRole` Returns information about any project roles assigned to receive an event.  *  `user` Returns information about any users assigned to receive an event. 
     # + return - Returned if the request is successful. 
     remote isolated function getNotificationSchemeForProject(string projectKeyOrId, string? expand = ()) returns NotificationScheme|error {
-        string resourcePath = string `/rest/api/2/project/${projectKeyOrId}/notificationscheme`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectKeyOrId)}/notificationscheme`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         NotificationScheme response = check self.clientEp->get(resourcePath);
@@ -1267,7 +1278,7 @@ public isolated client class Client {
     # + projectTypeKey - The key of the project type. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectTypeByKey(string projectTypeKey) returns ProjectType|error {
-        string resourcePath = string `/rest/api/2/project/type/${projectTypeKey}`;
+        string resourcePath = string `/rest/api/2/project/type/${getEncodedUri(projectTypeKey)}`;
         ProjectType response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1276,7 +1287,7 @@ public isolated client class Client {
     # + projectTypeKey - The key of the project type. 
     # + return - Returned if the request is successful. 
     remote isolated function getAccessibleProjectTypeByKey(string projectTypeKey) returns ProjectType|error {
-        string resourcePath = string `/rest/api/2/project/type/${projectTypeKey}/accessible`;
+        string resourcePath = string `/rest/api/2/project/type/${getEncodedUri(projectTypeKey)}/accessible`;
         ProjectType response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1291,7 +1302,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information in the response. This parameter accepts a comma-separated list. Expand options include:  *  `issuesstatus` Returns the number of issues in each status category for each version.  *  `operations` Returns actions that can be performed on the specified version. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectVersionsPaginated(string projectIdOrKey, int startAt = 0, int maxResults = 50, string? orderBy = (), string? query = (), string? status = (), string? expand = ()) returns PageBeanVersion|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/version`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/version`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults, "orderBy": orderBy, "query": query, "status": status, "expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageBeanVersion response = check self.clientEp->get(resourcePath);
@@ -1303,7 +1314,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information in the response. This parameter accepts `operations`, which returns actions that can be performed on the version. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectVersions(string projectIdOrKey, string? expand = ()) returns Version[]|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/versions`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/versions`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Version[] response = check self.clientEp->get(resourcePath);
@@ -1314,7 +1325,7 @@ public isolated client class Client {
     # + projectId - The project ID. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectEmail(int projectId) returns ProjectEmailAddress|error {
-        string resourcePath = string `/rest/api/2/project/${projectId}/email`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectId)}/email`;
         ProjectEmailAddress response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1324,7 +1335,7 @@ public isolated client class Client {
     # + payload - The project's sender email address to be set. 
     # + return - Returned if the project's sender email address is successfully set. 
     remote isolated function updateProjectEmail(int projectId, ProjectEmailAddress payload) returns json|error {
-        string resourcePath = string `/rest/api/2/project/${projectId}/email`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectId)}/email`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1336,7 +1347,7 @@ public isolated client class Client {
     # + projectKeyOrId - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectIssueSecurityScheme(string projectKeyOrId) returns SecurityScheme|error {
-        string resourcePath = string `/rest/api/2/project/${projectKeyOrId}/issuesecuritylevelscheme`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectKeyOrId)}/issuesecuritylevelscheme`;
         SecurityScheme response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1346,7 +1357,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information in the response. This parameter accepts a comma-separated list. Note that permissions are included when you specify any value. Expand options include:  *  `all` Returns all expandable information.  *  `field` Returns information about the custom field granted the permission.  *  `group` Returns information about the group that is granted the permission.  *  `permissions` Returns all permission grants for each permission scheme.  *  `projectRole` Returns information about the project role granted the permission.  *  `user` Returns information about the user who is granted the permission. 
     # + return - Returned if the request is successful. 
     remote isolated function getAssignedPermissionScheme(string projectKeyOrId, string? expand = ()) returns PermissionScheme|error {
-        string resourcePath = string `/rest/api/2/project/${projectKeyOrId}/permissionscheme`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectKeyOrId)}/permissionscheme`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PermissionScheme response = check self.clientEp->get(resourcePath);
@@ -1359,7 +1370,7 @@ public isolated client class Client {
     # + payload - The request payload to assign permission scheme. 
     # + return - Returned if the request is successful. 
     remote isolated function assignPermissionScheme(string projectKeyOrId, IdBean payload, string? expand = ()) returns PermissionScheme|error {
-        string resourcePath = string `/rest/api/2/project/${projectKeyOrId}/permissionscheme`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectKeyOrId)}/permissionscheme`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1373,7 +1384,7 @@ public isolated client class Client {
     # + projectKeyOrId - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getSecurityLevelsForProject(string projectKeyOrId) returns ProjectIssueSecurityLevels|error {
-        string resourcePath = string `/rest/api/2/project/${projectKeyOrId}/securitylevel`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectKeyOrId)}/securitylevel`;
         ProjectIssueSecurityLevels response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1423,8 +1434,8 @@ public isolated client class Client {
     # + entityId - The entity ID of the workflow. 
     # + return - Returned if the workflow is deleted. 
     remote isolated function deleteInactiveWorkflow(string entityId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflow/${entityId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/workflow/${getEncodedUri(entityId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get comments by IDs
@@ -1451,7 +1462,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information about comments in the response. This parameter accepts `renderedBody`, which returns the comment body rendered in HTML. 
     # + return - Returned if the request is successful. 
     remote isolated function getComments(string issueIdOrKey, int startAt = 0, int maxResults = 50, string? orderBy = (), string? expand = ()) returns PageOfComments|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/comment`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/comment`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults, "orderBy": orderBy, "expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageOfComments response = check self.clientEp->get(resourcePath);
@@ -1464,7 +1475,7 @@ public isolated client class Client {
     # + payload - The request payload to add comment. 
     # + return - Returned if the request is successful. 
     remote isolated function addComment(string issueIdOrKey, Comment payload, string? expand = ()) returns Comment|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/comment`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/comment`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1480,7 +1491,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information about comments in the response. This parameter accepts `renderedBody`, which returns the comment body rendered in HTML. 
     # + return - Returned if the request is successful. 
     remote isolated function getComment(string issueIdOrKey, string id, string? expand = ()) returns Comment|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/comment/${id}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/comment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Comment response = check self.clientEp->get(resourcePath);
@@ -1494,7 +1505,7 @@ public isolated client class Client {
     # + payload - The request payload to update comment. 
     # + return - Returned if the request is successful. 
     remote isolated function updateComment(string issueIdOrKey, string id, Comment payload, string? expand = ()) returns Comment|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/comment/${id}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/comment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1509,8 +1520,8 @@ public isolated client class Client {
     # + id - The ID of the comment. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteComment(string issueIdOrKey, string id) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/comment/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/comment/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get comment property keys
@@ -1518,7 +1529,7 @@ public isolated client class Client {
     # + commentId - The ID of the comment. 
     # + return - Returned if the request is successful. 
     remote isolated function getCommentPropertyKeys(string commentId) returns PropertyKeys|error {
-        string resourcePath = string `/rest/api/2/comment/${commentId}/properties`;
+        string resourcePath = string `/rest/api/2/comment/${getEncodedUri(commentId)}/properties`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1528,7 +1539,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function getCommentProperty(string commentId, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/comment/${commentId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/comment/${getEncodedUri(commentId)}/properties/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1539,7 +1550,7 @@ public isolated client class Client {
     # + payload - The request payload value of a property for a comment to update. 
     # + return - Returned if the comment property is updated. 
     remote isolated function setCommentProperty(string commentId, string propertyKey, json payload) returns json|error {
-        string resourcePath = string `/rest/api/2/comment/${commentId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/comment/${getEncodedUri(commentId)}/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -1551,8 +1562,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteCommentProperty(string commentId, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/comment/${commentId}/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/comment/${getEncodedUri(commentId)}/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get priorities
@@ -1568,7 +1579,7 @@ public isolated client class Client {
     # + id - The ID of the issue priority. 
     # + return - Returned if the request is successful. 
     remote isolated function getPriority(string id) returns Priority|error {
-        string resourcePath = string `/rest/api/2/priority/${id}`;
+        string resourcePath = string `/rest/api/2/priority/${getEncodedUri(id)}`;
         Priority response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1589,7 +1600,7 @@ public isolated client class Client {
     # + linkId - The ID of the issue link. 
     # + return - Returned if the request is successful. 
     remote isolated function getIssueLink(string linkId) returns IssueLink|error {
-        string resourcePath = string `/rest/api/2/issueLink/${linkId}`;
+        string resourcePath = string `/rest/api/2/issueLink/${getEncodedUri(linkId)}`;
         IssueLink response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1598,8 +1609,8 @@ public isolated client class Client {
     # + linkId - The ID of the issue link. 
     # + return - 200 response 
     remote isolated function deleteIssueLink(string linkId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issueLink/${linkId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issueLink/${getEncodedUri(linkId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get fields
@@ -1646,7 +1657,7 @@ public isolated client class Client {
     # + payload - The custom field update details. 
     # + return - Returned if the request is successful. 
     remote isolated function updateCustomField(string fieldId, UpdateCustomFieldDetails payload) returns json|error {
-        string resourcePath = string `/rest/api/2/field/${fieldId}`;
+        string resourcePath = string `/rest/api/2/field/${getEncodedUri(fieldId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1793,7 +1804,7 @@ public isolated client class Client {
     # + expand - Use expand to include additional information in the response. This parameter accepts a comma-separated list. Note that permissions are included when you specify any value. Expand options include:  *  `all` Returns all expandable information.  *  `field` Returns information about the custom field granted the permission.  *  `group` Returns information about the group that is granted the permission.  *  `permissions` Returns all permission grants for each permission scheme.  *  `projectRole` Returns information about the project role granted the permission.  *  `user` Returns information about the user who is granted the permission. 
     # + return - Returned if the request is successful. 
     remote isolated function getPermissionScheme(int schemeId, string? expand = ()) returns PermissionScheme|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}`;
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PermissionScheme response = check self.clientEp->get(resourcePath);
@@ -1806,7 +1817,7 @@ public isolated client class Client {
     # + payload - The request payload to update permission scheme. 
     # + return - Returned if the scheme is updated. 
     remote isolated function updatePermissionScheme(int schemeId, PermissionScheme payload, string? expand = ()) returns PermissionScheme|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}`;
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1820,8 +1831,8 @@ public isolated client class Client {
     # + schemeId - The ID of the permission scheme being deleted. 
     # + return - Returned if the permission scheme is deleted. 
     remote isolated function deletePermissionScheme(int schemeId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get permission scheme grants
@@ -1830,7 +1841,7 @@ public isolated client class Client {
     # + expand - Use expand to include additional information in the response. This parameter accepts a comma-separated list. Note that permissions are always included when you specify any value. Expand options include:  *  `permissions` Returns all permission grants for each permission scheme.  *  `user` Returns information about the user who is granted the permission.  *  `group` Returns information about the group that is granted the permission.  *  `projectRole` Returns information about the project role granted the permission.  *  `field` Returns information about the custom field granted the permission.  *  `all` Returns all expandable information. 
     # + return - Returned if the request is successful. 
     remote isolated function getPermissionSchemeGrants(int schemeId, string? expand = ()) returns PermissionGrants|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}/permission`;
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}/permission`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PermissionGrants response = check self.clientEp->get(resourcePath);
@@ -1843,7 +1854,7 @@ public isolated client class Client {
     # + payload - The permission grant to create. 
     # + return - Returned if the scheme permission is created. 
     remote isolated function createPermissionGrant(int schemeId, PermissionGrant payload, string? expand = ()) returns PermissionGrant|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}/permission`;
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}/permission`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1859,7 +1870,7 @@ public isolated client class Client {
     # + expand - Use expand to include additional information in the response. This parameter accepts a comma-separated list. Note that permissions are always included when you specify any value. Expand options include:  *  `all` Returns all expandable information.  *  `field` Returns information about the custom field granted the permission.  *  `group` Returns information about the group that is granted the permission.  *  `permissions` Returns all permission grants for each permission scheme.  *  `projectRole` Returns information about the project role granted the permission.  *  `user` Returns information about the user who is granted the permission. 
     # + return - Returned if the request is successful. 
     remote isolated function getPermissionSchemeGrant(int schemeId, int permissionId, string? expand = ()) returns PermissionGrant|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}/permission/${permissionId}`;
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}/permission/${getEncodedUri(permissionId)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PermissionGrant response = check self.clientEp->get(resourcePath);
@@ -1871,8 +1882,8 @@ public isolated client class Client {
     # + permissionId - The ID of the permission grant to delete. 
     # + return - Returned if the permission grant is deleted. 
     remote isolated function deletePermissionSchemeEntity(int schemeId, int permissionId) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/permissionscheme/${schemeId}/permission/${permissionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/permissionscheme/${getEncodedUri(schemeId)}/permission/${getEncodedUri(permissionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get selected time tracking provider
@@ -1932,7 +1943,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information about worklogs in the response. This parameter accepts`properties`, which returns worklog properties. 
     # + return - Returned if the request is successful 
     remote isolated function getIssueWorklog(string issueIdOrKey, int startAt = 0, int maxResults = 1048576, int? startedAfter = (), string expand = "") returns PageOfWorklogs|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults, "startedAfter": startedAfter, "expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageOfWorklogs response = check self.clientEp->get(resourcePath);
@@ -1950,7 +1961,7 @@ public isolated client class Client {
     # + payload - The request payload to add worklog. 
     # + return - Returned if the request is successful. 
     remote isolated function addWorklog(string issueIdOrKey, Worklog payload, boolean notifyUsers = true, string adjustEstimate = "auto", string? newEstimate = (), string? reduceBy = (), string expand = "", boolean overrideEditableFlag = false) returns Worklog|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog`;
         map<anydata> queryParam = {"notifyUsers": notifyUsers, "adjustEstimate": adjustEstimate, "newEstimate": newEstimate, "reduceBy": reduceBy, "expand": expand, "overrideEditableFlag": overrideEditableFlag};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1966,7 +1977,7 @@ public isolated client class Client {
     # + expand - Use [expand](#expansion) to include additional information about work logs in the response. This parameter accepts `properties`, which returns worklog properties. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorklog(string issueIdOrKey, string id, string expand = "") returns Worklog|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${id}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Worklog response = check self.clientEp->get(resourcePath);
@@ -1984,7 +1995,7 @@ public isolated client class Client {
     # + payload - The request payload to update worklog. 
     # + return - Returned if the request is successful 
     remote isolated function updateWorklog(string issueIdOrKey, string id, Worklog payload, boolean notifyUsers = true, string adjustEstimate = "auto", string? newEstimate = (), string expand = "", boolean overrideEditableFlag = false) returns Worklog|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${id}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"notifyUsers": notifyUsers, "adjustEstimate": adjustEstimate, "newEstimate": newEstimate, "expand": expand, "overrideEditableFlag": overrideEditableFlag};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2004,10 +2015,10 @@ public isolated client class Client {
     # + overrideEditableFlag - Whether the work log entry should be added to the issue even if the issue is not editable, because jira.issue.editable set to false or missing. For example, the issue is closed. Only connect app users with admin permissions can use this flag. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorklog(string issueIdOrKey, string id, boolean notifyUsers = true, string adjustEstimate = "auto", string? newEstimate = (), string? increaseBy = (), boolean overrideEditableFlag = false) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${id}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"notifyUsers": notifyUsers, "adjustEstimate": adjustEstimate, "newEstimate": newEstimate, "increaseBy": increaseBy, "overrideEditableFlag": overrideEditableFlag};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get IDs of deleted worklogs
@@ -2054,7 +2065,7 @@ public isolated client class Client {
     # + worklogId - The ID of the worklog. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorklogPropertyKeys(string issueIdOrKey, string worklogId) returns PropertyKeys|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${worklogId}/properties`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(worklogId)}/properties`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2065,7 +2076,7 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorklogProperty(string issueIdOrKey, string worklogId, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${worklogId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(worklogId)}/properties/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2077,7 +2088,7 @@ public isolated client class Client {
     # + payload - The request payload to set worklog property. 
     # + return - Returned if the worklog property is updated. 
     remote isolated function setWorklogProperty(string issueIdOrKey, string worklogId, string propertyKey, json payload) returns json|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${worklogId}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(worklogId)}/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -2090,8 +2101,8 @@ public isolated client class Client {
     # + propertyKey - The key of the property. 
     # + return - Returned if the worklog property is removed. 
     remote isolated function deleteWorklogProperty(string issueIdOrKey, string worklogId, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/issue/${issueIdOrKey}/worklog/${worklogId}/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/issue/${getEncodedUri(issueIdOrKey)}/worklog/${getEncodedUri(worklogId)}/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get workflow transition rule configurations
@@ -2143,7 +2154,7 @@ public isolated client class Client {
     # + workflowMode - The workflow status. Set to *live* for active and inactive workflows, or *draft* for draft workflows. 
     # + return - 200 response 
     remote isolated function getWorkflowTransitionProperties(int transitionId, string workflowName, boolean includeReservedKeys = false, string? 'key = (), string workflowMode = "live") returns WorkflowTransitionProperty|error {
-        string resourcePath = string `/rest/api/2/workflow/transitions/${transitionId}/properties`;
+        string resourcePath = string `/rest/api/2/workflow/transitions/${getEncodedUri(transitionId)}/properties`;
         map<anydata> queryParam = {"includeReservedKeys": includeReservedKeys, "key": 'key, "workflowName": workflowName, "workflowMode": workflowMode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         WorkflowTransitionProperty response = check self.clientEp->get(resourcePath);
@@ -2158,7 +2169,7 @@ public isolated client class Client {
     # + payload - The request payload to update configuration of workflow transition property. 
     # + return - 200 response 
     remote isolated function updateWorkflowTransitionProperty(int transitionId, string 'key, string workflowName, WorkflowTransitionProperty payload, string? workflowMode = ()) returns WorkflowTransitionProperty|error {
-        string resourcePath = string `/rest/api/2/workflow/transitions/${transitionId}/properties`;
+        string resourcePath = string `/rest/api/2/workflow/transitions/${getEncodedUri(transitionId)}/properties`;
         map<anydata> queryParam = {"key": 'key, "workflowName": workflowName, "workflowMode": workflowMode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2176,7 +2187,7 @@ public isolated client class Client {
     # + payload - The request payload to create configuration of workflow transition property. 
     # + return - 200 response 
     remote isolated function createWorkflowTransitionProperty(int transitionId, string 'key, string workflowName, WorkflowTransitionProperty payload, string workflowMode = "live") returns WorkflowTransitionProperty|error {
-        string resourcePath = string `/rest/api/2/workflow/transitions/${transitionId}/properties`;
+        string resourcePath = string `/rest/api/2/workflow/transitions/${getEncodedUri(transitionId)}/properties`;
         map<anydata> queryParam = {"key": 'key, "workflowName": workflowName, "workflowMode": workflowMode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2193,10 +2204,10 @@ public isolated client class Client {
     # + workflowMode - The workflow status. Set to `live` for inactive workflows or `draft` for draft workflows. Active workflows cannot be edited. 
     # + return - 200 response 
     remote isolated function deleteWorkflowTransitionProperty(int transitionId, string 'key, string workflowName, string? workflowMode = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflow/transitions/${transitionId}/properties`;
+        string resourcePath = string `/rest/api/2/workflow/transitions/${getEncodedUri(transitionId)}/properties`;
         map<anydata> queryParam = {"key": 'key, "workflowName": workflowName, "workflowMode": workflowMode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all workflow schemes
@@ -2253,7 +2264,7 @@ public isolated client class Client {
     # + returnDraftIfExists - Returns the workflow scheme's draft rather than scheme itself, if set to true. If the workflow scheme does not have a draft, then the workflow scheme is returned. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorkflowScheme(int id, boolean returnDraftIfExists = false) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"returnDraftIfExists": returnDraftIfExists};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         WorkflowScheme response = check self.clientEp->get(resourcePath);
@@ -2265,7 +2276,7 @@ public isolated client class Client {
     # + payload - The request payload to update workflow scheme. 
     # + return - Returned if the request is successful. 
     remote isolated function updateWorkflowScheme(int id, WorkflowScheme payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2277,8 +2288,8 @@ public isolated client class Client {
     # + id - The ID of the workflow scheme. Find this ID by editing the desired workflow scheme in Jira. The ID is shown in the URL as `schemeId`. For example, *schemeId=10301*. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorkflowScheme(int id) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create draft workflow scheme
@@ -2286,7 +2297,7 @@ public isolated client class Client {
     # + id - The ID of the active workflow scheme that the draft is created from. 
     # + return - Returned if the request is successful. 
     remote isolated function createWorkflowSchemeDraftFromParent(int id) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/createdraft`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/createdraft`;
         http:Request request = new;
         //TODO: Update the request as needed;
         WorkflowScheme response = check self.clientEp-> post(resourcePath, request);
@@ -2298,7 +2309,7 @@ public isolated client class Client {
     # + returnDraftIfExists - Set to `true` to return the default workflow for the workflow scheme's draft rather than scheme itself. If the workflow scheme does not have a draft, then the default workflow for the workflow scheme is returned. 
     # + return - Returned if the request is successful. 
     remote isolated function getDefaultWorkflow(int id, boolean returnDraftIfExists = false) returns DefaultWorkflow|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/default`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/default`;
         map<anydata> queryParam = {"returnDraftIfExists": returnDraftIfExists};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         DefaultWorkflow response = check self.clientEp->get(resourcePath);
@@ -2310,7 +2321,7 @@ public isolated client class Client {
     # + payload - The new default workflow. 
     # + return - Returned if the request is successful. 
     remote isolated function updateDefaultWorkflow(int id, DefaultWorkflow payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/default`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/default`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2323,10 +2334,10 @@ public isolated client class Client {
     # + updateDraftIfNeeded - Set to true to create or update the draft of a workflow scheme and delete the mapping from the draft, when the workflow scheme cannot be edited. Defaults to `false`. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteDefaultWorkflow(int id, boolean? updateDraftIfNeeded = ()) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/default`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/default`;
         map<anydata> queryParam = {"updateDraftIfNeeded": updateDraftIfNeeded};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        WorkflowScheme response = check self.clientEp->delete(resourcePath);
+        WorkflowScheme response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get draft workflow scheme
@@ -2334,7 +2345,7 @@ public isolated client class Client {
     # + id - The ID of the active workflow scheme that the draft was created from. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorkflowSchemeDraft(int id) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft`;
         WorkflowScheme response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2344,7 +2355,7 @@ public isolated client class Client {
     # + payload - The request payload to update workflow scheme draft. 
     # + return - Returned if the request is successful. 
     remote isolated function updateWorkflowSchemeDraft(int id, WorkflowScheme payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2356,8 +2367,8 @@ public isolated client class Client {
     # + id - The ID of the active workflow scheme that the draft was created from. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorkflowSchemeDraft(int id) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get draft default workflow
@@ -2365,7 +2376,7 @@ public isolated client class Client {
     # + id - The ID of the workflow scheme that the draft belongs to. 
     # + return - Returned if the request is successful. 
     remote isolated function getDraftDefaultWorkflow(int id) returns DefaultWorkflow|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/default`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/default`;
         DefaultWorkflow response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2375,7 +2386,7 @@ public isolated client class Client {
     # + payload - The object for the new default workflow. 
     # + return - Returned if the request is successful. 
     remote isolated function updateDraftDefaultWorkflow(int id, DefaultWorkflow payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/default`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/default`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2387,8 +2398,8 @@ public isolated client class Client {
     # + id - The ID of the workflow scheme that the draft belongs to. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteDraftDefaultWorkflow(int id) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/default`;
-        WorkflowScheme response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/default`;
+        WorkflowScheme response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get workflow for issue type in draft workflow scheme
@@ -2397,7 +2408,7 @@ public isolated client class Client {
     # + issueType - The ID of the issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorkflowSchemeDraftIssueType(int id, string issueType) returns IssueTypeWorkflowMapping|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/issuetype/${issueType}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/issuetype/${getEncodedUri(issueType)}`;
         IssueTypeWorkflowMapping response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2408,7 +2419,7 @@ public isolated client class Client {
     # + payload - The issue type-project mapping. 
     # + return - Returned if the request is successful. 
     remote isolated function setWorkflowSchemeDraftIssueType(int id, string issueType, IssueTypeWorkflowMapping payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/issuetype/${issueType}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/issuetype/${getEncodedUri(issueType)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2421,8 +2432,8 @@ public isolated client class Client {
     # + issueType - The ID of the issue type. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorkflowSchemeDraftIssueType(int id, string issueType) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/issuetype/${issueType}`;
-        WorkflowScheme response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/issuetype/${getEncodedUri(issueType)}`;
+        WorkflowScheme response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Publish draft workflow scheme
@@ -2432,7 +2443,7 @@ public isolated client class Client {
     # + payload - Details of the status mappings. 
     # + return - Returned if the request is only for validation and is successful. 
     remote isolated function publishDraftWorkflowScheme(int id, PublishDraftWorkflowScheme payload, boolean validateOnly = false) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/publish`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/publish`;
         map<anydata> queryParam = {"validateOnly": validateOnly};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2447,7 +2458,7 @@ public isolated client class Client {
     # + workflowName - The name of a workflow in the scheme. Limits the results to the workflow-issue type mapping for the specified workflow. 
     # + return - Returned if the request is successful. 
     remote isolated function getDraftWorkflow(int id, string? workflowName = ()) returns IssueTypesWorkflowMapping|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         IssueTypesWorkflowMapping response = check self.clientEp->get(resourcePath);
@@ -2460,7 +2471,7 @@ public isolated client class Client {
     # + payload - The request payload to set issue types in workflow scheme draft. 
     # + return - Returned if the request is successful. 
     remote isolated function updateDraftWorkflowMapping(int id, string workflowName, IssueTypesWorkflowMapping payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2475,10 +2486,10 @@ public isolated client class Client {
     # + workflowName - The name of the workflow. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteDraftWorkflowMapping(int id, string workflowName) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/draft/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/draft/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get workflow for issue type in workflow scheme
@@ -2488,7 +2499,7 @@ public isolated client class Client {
     # + returnDraftIfExists - Returns the mapping from the workflow scheme's draft rather than the workflow scheme, if set to true. If no draft exists, the mapping from the workflow scheme is returned. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorkflowSchemeIssueType(int id, string issueType, boolean returnDraftIfExists = false) returns IssueTypeWorkflowMapping|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/issuetype/${issueType}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/issuetype/${getEncodedUri(issueType)}`;
         map<anydata> queryParam = {"returnDraftIfExists": returnDraftIfExists};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         IssueTypeWorkflowMapping response = check self.clientEp->get(resourcePath);
@@ -2501,7 +2512,7 @@ public isolated client class Client {
     # + payload - The issue type-project mapping. 
     # + return - Returned if the request is successful. 
     remote isolated function setWorkflowSchemeIssueType(int id, string issueType, IssueTypeWorkflowMapping payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/issuetype/${issueType}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/issuetype/${getEncodedUri(issueType)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2515,10 +2526,10 @@ public isolated client class Client {
     # + updateDraftIfNeeded - Set to true to create or update the draft of a workflow scheme and update the mapping in the draft, when the workflow scheme cannot be edited. Defaults to `false`. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorkflowSchemeIssueType(int id, string issueType, boolean? updateDraftIfNeeded = ()) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/issuetype/${issueType}`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/issuetype/${getEncodedUri(issueType)}`;
         map<anydata> queryParam = {"updateDraftIfNeeded": updateDraftIfNeeded};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        WorkflowScheme response = check self.clientEp->delete(resourcePath);
+        WorkflowScheme response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get issue types for workflows in workflow scheme
@@ -2528,7 +2539,7 @@ public isolated client class Client {
     # + returnDraftIfExists - Returns the mapping from the workflow scheme's draft rather than the workflow scheme, if set to true. If no draft exists, the mapping from the workflow scheme is returned. 
     # + return - Returned if the request is successful. 
     remote isolated function getWorkflow(int id, string? workflowName = (), boolean returnDraftIfExists = false) returns IssueTypesWorkflowMapping|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName, "returnDraftIfExists": returnDraftIfExists};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         IssueTypesWorkflowMapping response = check self.clientEp->get(resourcePath);
@@ -2541,7 +2552,7 @@ public isolated client class Client {
     # + payload - The request payload to set issue types in workflow scheme. 
     # + return - Returned if the request is successful. 
     remote isolated function updateWorkflowMapping(int id, string workflowName, IssueTypesWorkflowMapping payload) returns WorkflowScheme|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2557,10 +2568,10 @@ public isolated client class Client {
     # + updateDraftIfNeeded - Set to true to create or update the draft of a workflow scheme and delete the mapping from the draft, when the workflow scheme cannot be edited. Defaults to `false`. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteWorkflowMapping(int id, string workflowName, boolean? updateDraftIfNeeded = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/workflowscheme/${id}/workflow`;
+        string resourcePath = string `/rest/api/2/workflowscheme/${getEncodedUri(id)}/workflow`;
         map<anydata> queryParam = {"workflowName": workflowName, "updateDraftIfNeeded": updateDraftIfNeeded};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all statuses
@@ -2576,7 +2587,7 @@ public isolated client class Client {
     # + idOrName - The ID or name of the status. 
     # + return - Returned if the request is successful. 
     remote isolated function getStatus(string idOrName) returns StatusDetails|error {
-        string resourcePath = string `/rest/api/2/status/${idOrName}`;
+        string resourcePath = string `/rest/api/2/status/${getEncodedUri(idOrName)}`;
         StatusDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2593,7 +2604,7 @@ public isolated client class Client {
     # + idOrKey - The ID or key of the status category. 
     # + return - Returned if the request is successful. 
     remote isolated function getStatusCategory(string idOrKey) returns StatusCategory|error {
-        string resourcePath = string `/rest/api/2/statuscategory/${idOrKey}`;
+        string resourcePath = string `/rest/api/2/statuscategory/${getEncodedUri(idOrKey)}`;
         StatusCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2622,7 +2633,7 @@ public isolated client class Client {
     # + id - The ID of the project category. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectCategoryById(int id) returns ProjectCategory|error {
-        string resourcePath = string `/rest/api/2/projectCategory/${id}`;
+        string resourcePath = string `/rest/api/2/projectCategory/${getEncodedUri(id)}`;
         ProjectCategory response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2632,7 +2643,7 @@ public isolated client class Client {
     # + payload - The request payload to update a project category. 
     # + return - Returned if the request is successful. 
     remote isolated function updateProjectCategory(int id, ProjectCategory payload) returns UpdatedProjectCategory|error {
-        string resourcePath = string `/rest/api/2/projectCategory/${id}`;
+        string resourcePath = string `/rest/api/2/projectCategory/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2644,8 +2655,8 @@ public isolated client class Client {
     # + id - ID of the project category to delete. 
     # + return - Returned if the request is successful. 
     remote isolated function removeProjectCategory(int id) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/projectCategory/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/projectCategory/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Create component
@@ -2665,7 +2676,7 @@ public isolated client class Client {
     # + id - The ID of the component. 
     # + return - Returned if the request is successful. 
     remote isolated function getComponent(string id) returns ProjectComponent|error {
-        string resourcePath = string `/rest/api/2/component/${id}`;
+        string resourcePath = string `/rest/api/2/component/${getEncodedUri(id)}`;
         ProjectComponent response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2675,7 +2686,7 @@ public isolated client class Client {
     # + payload - The request payload to update a component. 
     # + return - Returned if the request is successful. 
     remote isolated function updateComponent(string id, ProjectComponent payload) returns ProjectComponent|error {
-        string resourcePath = string `/rest/api/2/component/${id}`;
+        string resourcePath = string `/rest/api/2/component/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2688,10 +2699,10 @@ public isolated client class Client {
     # + moveIssuesTo - The ID of the component to replace the deleted component. If this value is null no replacement is made. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteComponent(string id, string? moveIssuesTo = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/component/${id}`;
+        string resourcePath = string `/rest/api/2/component/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"moveIssuesTo": moveIssuesTo};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get component issues count
@@ -2699,7 +2710,7 @@ public isolated client class Client {
     # + id - The ID of the component. 
     # + return - Returned if the request is successful. 
     remote isolated function getComponentRelatedIssues(string id) returns ComponentIssuesCount|error {
-        string resourcePath = string `/rest/api/2/component/${id}/relatedIssueCounts`;
+        string resourcePath = string `/rest/api/2/component/${getEncodedUri(id)}/relatedIssueCounts`;
         ComponentIssuesCount response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2712,7 +2723,7 @@ public isolated client class Client {
     # + query - Filter the results using a literal string. Components with a matching `name` or `description` are returned (case insensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectComponentsPaginated(string projectIdOrKey, int startAt = 0, int maxResults = 50, string? orderBy = (), string? query = ()) returns PageBeanComponentWithIssueCount|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/component`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/component`;
         map<anydata> queryParam = {"startAt": startAt, "maxResults": maxResults, "orderBy": orderBy, "query": query};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PageBeanComponentWithIssueCount response = check self.clientEp->get(resourcePath);
@@ -2723,7 +2734,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectComponents(string projectIdOrKey) returns ProjectComponent[]|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/components`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/components`;
         ProjectComponent[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2732,7 +2743,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectPropertyKeys(string projectIdOrKey) returns PropertyKeys|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/properties`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/properties`;
         PropertyKeys response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2742,7 +2753,7 @@ public isolated client class Client {
     # + propertyKey - The project property key. Use [Get project property keys](#api-rest-api-2-project-projectIdOrKey-properties-get) to get a list of all project property keys. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectProperty(string projectIdOrKey, string propertyKey) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
         EntityProperty response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2753,7 +2764,7 @@ public isolated client class Client {
     # + payload - The request payload to set project property. 
     # + return - Returned if the project property is updated. 
     remote isolated function setProjectProperty(string projectIdOrKey, string propertyKey, json payload) returns json|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
         http:Request request = new;
         request.setPayload(payload, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
@@ -2765,8 +2776,8 @@ public isolated client class Client {
     # + propertyKey - The project property key. Use [Get project property keys](#api-rest-api-2-project-projectIdOrKey-properties-get) to get a list of all project property keys. 
     # + return - Returned if the project property is deleted. 
     remote isolated function deleteProjectProperty(string projectIdOrKey, string propertyKey) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/properties/${propertyKey}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/properties/${getEncodedUri(propertyKey)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get project roles for project
@@ -2774,7 +2785,7 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectRoles(string projectIdOrKey) returns json|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/role`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/role`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2784,7 +2795,7 @@ public isolated client class Client {
     # + id - The ID of the project role. Use [Get all project roles](#api-rest-api-2-role-get) to get a list of project role IDs. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectRole(string projectIdOrKey, int id) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/role/${id}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/role/${getEncodedUri(id)}`;
         ProjectRole response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2795,7 +2806,7 @@ public isolated client class Client {
     # + payload - The groups or users to associate with the project role for this project. Provide the user account ID or group name. 
     # + return - Returned if the request is successful. The complete list of actors for the project is returned. 
     remote isolated function setActors(string projectIdOrKey, int id, ProjectRoleActorsUpdateBean payload) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/role/${id}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/role/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2809,7 +2820,7 @@ public isolated client class Client {
     # + payload - The groups or users to associate with the project role for this project. Provide the user account ID or group name. 
     # + return - Returned if the request is successful. The complete list of actors for the project is returned. For example, the cURL request above adds a group, *jira-developers*. For the response below to be returned as a result of that request, the user *Mia Krystof* would have previously been added as a `user` actor for this project. 
     remote isolated function addActorUsers(string projectIdOrKey, int id, ActorsMap payload) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/role/${id}`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/role/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2821,13 +2832,13 @@ public isolated client class Client {
     # + projectIdOrKey - The project ID or project key (case sensitive). 
     # + id - The ID of the project role. Use [Get all project roles](#api-rest-api-2-role-get) to get a list of project role IDs. 
     # + user - The user account ID of the user to remove from the project role. 
-    # + 'group - The name of the group to remove from the project role. 
+    # + group - The name of the group to remove from the project role. 
     # + return - Returned if the request is successful. 
-    remote isolated function deleteActor(string projectIdOrKey, int id, string? user = (), string? 'group = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/role/${id}`;
-        map<anydata> queryParam = {"user": user, "group": 'group};
+    remote isolated function deleteActor(string projectIdOrKey, int id, string? user = (), string? group = ()) returns http:Response|error {
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/role/${getEncodedUri(id)}`;
+        map<anydata> queryParam = {"user": user, "group": group};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get project role details
@@ -2837,7 +2848,7 @@ public isolated client class Client {
     # + excludeConnectAddons - Whether to exclude connect addons. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectRoleDetails(string projectIdOrKey, boolean currentMember = false, boolean excludeConnectAddons = false) returns ProjectRoleDetails[]|error {
-        string resourcePath = string `/rest/api/2/project/${projectIdOrKey}/roledetails`;
+        string resourcePath = string `/rest/api/2/project/${getEncodedUri(projectIdOrKey)}/roledetails`;
         map<anydata> queryParam = {"currentMember": currentMember, "excludeConnectAddons": excludeConnectAddons};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ProjectRoleDetails[] response = check self.clientEp->get(resourcePath);
@@ -2868,7 +2879,7 @@ public isolated client class Client {
     # + id - The ID of the project role. Use [Get all project roles](#api-rest-api-2-role-get) to get a list of project role IDs. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectRoleById(int id) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}`;
         ProjectRole response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2878,7 +2889,7 @@ public isolated client class Client {
     # + payload - The request payload to fully update a project role. 
     # + return - Returned if the request is successful. 
     remote isolated function fullyUpdateProjectRole(int id, CreateUpdateRoleRequestBean payload) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2891,7 +2902,7 @@ public isolated client class Client {
     # + payload - The request payload to partial update a project role. 
     # + return - Returned if the request is successful. 
     remote isolated function partialUpdateProjectRole(int id, CreateUpdateRoleRequestBean payload) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2904,10 +2915,10 @@ public isolated client class Client {
     # + swap - The ID of the project role that will replace the one being deleted. 
     # + return - Returned if the request is successful. 
     remote isolated function deleteProjectRole(int id, int? swap = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/role/${id}`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"swap": swap};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get default actors for project role
@@ -2915,7 +2926,7 @@ public isolated client class Client {
     # + id - The ID of the project role. Use [Get all project roles](#api-rest-api-2-role-get) to get a list of project role IDs. 
     # + return - Returned if the request is successful. 
     remote isolated function getProjectRoleActorsForRole(int id) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}/actors`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}/actors`;
         ProjectRole response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2925,7 +2936,7 @@ public isolated client class Client {
     # + payload - The request payload to add default users to project role. 
     # + return - Returned if the request is successful. 
     remote isolated function addProjectRoleActorsToRole(int id, ActorInputBean payload) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}/actors`;
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}/actors`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2936,13 +2947,13 @@ public isolated client class Client {
     #
     # + id - The ID of the project role. Use [Get all project roles](#api-rest-api-2-role-get) to get a list of project role IDs. 
     # + user - The user account ID of the user to remove as a default actor. 
-    # + 'group - The group name of the group to be removed as a default actor. 
+    # + group - The group name of the group to be removed as a default actor. 
     # + return - Returned if the request is successful. 
-    remote isolated function deleteProjectRoleActorsFromRole(int id, string? user = (), string? 'group = ()) returns ProjectRole|error {
-        string resourcePath = string `/rest/api/2/role/${id}/actors`;
-        map<anydata> queryParam = {"user": user, "group": 'group};
+    remote isolated function deleteProjectRoleActorsFromRole(int id, string? user = (), string? group = ()) returns ProjectRole|error {
+        string resourcePath = string `/rest/api/2/role/${getEncodedUri(id)}/actors`;
+        map<anydata> queryParam = {"user": user, "group": group};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        ProjectRole response = check self.clientEp->delete(resourcePath);
+        ProjectRole response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get user
@@ -2981,7 +2992,7 @@ public isolated client class Client {
         string resourcePath = string `/rest/api/2/user`;
         map<anydata> queryParam = {"accountId": accountId, "username": username, "key": 'key};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Bulk get users
@@ -3050,7 +3061,7 @@ public isolated client class Client {
         string resourcePath = string `/rest/api/2/user/columns`;
         map<anydata> queryParam = {"accountId": accountId, "username": username};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get user email
@@ -3134,7 +3145,7 @@ public isolated client class Client {
     # + propertyKey - The key of the user's property. 
     # + return - Returned if the request is successful. 
     remote isolated function getUserProperty(string propertyKey, string? accountId = (), string? userKey = (), string? username = ()) returns EntityProperty|error {
-        string resourcePath = string `/rest/api/2/user/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/user/properties/${getEncodedUri(propertyKey)}`;
         map<anydata> queryParam = {"accountId": accountId, "userKey": userKey, "username": username};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EntityProperty response = check self.clientEp->get(resourcePath);
@@ -3149,7 +3160,7 @@ public isolated client class Client {
     # + payload - The request payload to set the value of a user's property. 
     # + return - Returned if the user property is updated. 
     remote isolated function setUserProperty(string propertyKey, json payload, string? accountId = (), string? userKey = (), string? username = ()) returns json|error {
-        string resourcePath = string `/rest/api/2/user/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/user/properties/${getEncodedUri(propertyKey)}`;
         map<anydata> queryParam = {"accountId": accountId, "userKey": userKey, "username": username};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3165,10 +3176,10 @@ public isolated client class Client {
     # + propertyKey - The key of the user's property. 
     # + return - Returned if the user property is deleted. 
     remote isolated function deleteUserProperty(string propertyKey, string? accountId = (), string? userKey = (), string? username = ()) returns http:Response|error {
-        string resourcePath = string `/rest/api/2/user/properties/${propertyKey}`;
+        string resourcePath = string `/rest/api/2/user/properties/${getEncodedUri(propertyKey)}`;
         map<anydata> queryParam = {"accountId": accountId, "userKey": userKey, "username": username};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Find users assignable to projects

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ public isolated client class Client {
     # + callback - The name of the function the API call results will be passed to. Required when using JSONP. This parameter has only one valid value per section. The format is {section_name}TopStoriesCallback. 
     # + return - An array of articles 
     remote isolated function topStories(string section, string format, string? callback = ()) returns InlineResponse200|error {
-        string resourcePath = string `/${section}.${format}`;
+        string resourcePath = string `/${getEncodedUri(section)}.${getEncodedUri(format)}`;
         map<anydata> queryParam = {"callback": callback, "api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);

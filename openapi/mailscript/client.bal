@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Mailscript](https://docs.mailscript.com/#api) OpenAPI specification.
@@ -93,7 +97,7 @@ public isolated client class Client {
     # + payload - Action body 
     # + return - Successful update operation 
     remote isolated function updateAction(string action, ActionsActionBody payload) returns Key|error {
-        string resourcePath = string `/actions/${action}`;
+        string resourcePath = string `/actions/${getEncodedUri(action)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -105,8 +109,8 @@ public isolated client class Client {
     # + action - ID of the action 
     # + return - Successful delete operation 
     remote isolated function deleteAction(string action) returns http:Response|error {
-        string resourcePath = string `/actions/${action}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/actions/${getEncodedUri(action)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all addresses you have access to
@@ -134,8 +138,8 @@ public isolated client class Client {
     # + address - ID of address 
     # + return - successful delete operation 
     remote isolated function deleteAddress(string address) returns http:Response|error {
-        string resourcePath = string `/addresses/${address}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/addresses/${getEncodedUri(address)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List address keys
@@ -143,7 +147,7 @@ public isolated client class Client {
     # + address - ID of address 
     # + return - successful operation 
     remote isolated function getAllKeys(string address) returns GetAllKeysResponse|error {
-        string resourcePath = string `/addresses/${address}/keys`;
+        string resourcePath = string `/addresses/${getEncodedUri(address)}/keys`;
         GetAllKeysResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -153,7 +157,7 @@ public isolated client class Client {
     # + payload - Key body 
     # + return - successful operation 
     remote isolated function addKey(string address, AddKeyRequest payload) returns AddKeyResponse|error {
-        string resourcePath = string `/addresses/${address}/keys`;
+        string resourcePath = string `/addresses/${getEncodedUri(address)}/keys`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -166,7 +170,7 @@ public isolated client class Client {
     # + 'key - ID of key 
     # + return - successful operation 
     remote isolated function getKey(string address, string 'key) returns Key|error {
-        string resourcePath = string `/addresses/${address}/keys/${'key}`;
+        string resourcePath = string `/addresses/${getEncodedUri(address)}/keys/${getEncodedUri('key)}`;
         Key response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -177,7 +181,7 @@ public isolated client class Client {
     # + payload - Key body 
     # + return - Successful operation 
     remote isolated function updateKey(string address, string 'key, UpdateKeyRequest payload) returns Key|error {
-        string resourcePath = string `/addresses/${address}/keys/${'key}`;
+        string resourcePath = string `/addresses/${getEncodedUri(address)}/keys/${getEncodedUri('key)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -190,8 +194,8 @@ public isolated client class Client {
     # + 'key - ID of key 
     # + return - Successful delete operation 
     remote isolated function deleteKey(string address, string 'key) returns http:Response|error {
-        string resourcePath = string `/addresses/${address}/keys/${'key}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/addresses/${getEncodedUri(address)}/keys/${getEncodedUri('key)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get a token for opening a daemon connection
@@ -199,7 +203,7 @@ public isolated client class Client {
     # + daemon - name of Daemon 
     # + return - Successful get operation 
     remote isolated function getDaemonToken(string daemon) returns InlineResponse200|error {
-        string resourcePath = string `/daemons/${daemon}/token`;
+        string resourcePath = string `/daemons/${getEncodedUri(daemon)}/token`;
         InlineResponse200 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -228,7 +232,7 @@ public isolated client class Client {
     # + domain - Full Top-level domain name 
     # + return - successful operation 
     remote isolated function getDomainVerify(string domain) returns DomainResponse|error {
-        string resourcePath = string `/domains/verify/${domain}`;
+        string resourcePath = string `/domains/verify/${getEncodedUri(domain)}`;
         DomainResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -237,7 +241,7 @@ public isolated client class Client {
     # + domain - Full Top-level domain name 
     # + return - successful operation 
     remote isolated function checkDomainVerify(string domain) returns CheckDomainVerify|error {
-        string resourcePath = string `/domains/verify/${domain}`;
+        string resourcePath = string `/domains/verify/${getEncodedUri(domain)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CheckDomainVerify response = check self.clientEp-> post(resourcePath, request);
@@ -248,8 +252,8 @@ public isolated client class Client {
     # + domain - Full Top-level domain name 
     # + return - successful operation 
     remote isolated function removeDomainVerify(string domain) returns http:Response|error {
-        string resourcePath = string `/domains/${domain}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/domains/${getEncodedUri(domain)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all inputs you have access to
@@ -276,8 +280,8 @@ public isolated client class Client {
     # + integration - ID of the integration 
     # + return - Successful delete operation 
     remote isolated function deleteIntegration(string integration) returns http:Response|error {
-        string resourcePath = string `/integrations/${integration}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/integrations/${getEncodedUri(integration)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Send an email
@@ -318,7 +322,7 @@ public isolated client class Client {
     # + payload - Trigger body 
     # + return - Successful update operation 
     remote isolated function updateTrigger(string trigger, AddTriggerRequest payload) returns http:Response|error {
-        string resourcePath = string `/triggers/${trigger}`;
+        string resourcePath = string `/triggers/${getEncodedUri(trigger)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -330,8 +334,8 @@ public isolated client class Client {
     # + trigger - ID of the trigger 
     # + return - Successful delete operation 
     remote isolated function deleteTrigger(string trigger) returns http:Response|error {
-        string resourcePath = string `/triggers/${trigger}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/triggers/${getEncodedUri(trigger)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get the authenticated user
@@ -380,7 +384,7 @@ public isolated client class Client {
     # + payload - Verify action body 
     # + return - Successful operation 
     remote isolated function verify(string verification, VerificationVerifyBody payload) returns http:Response|error {
-        string resourcePath = string `/verifications/${verification}/verify`;
+        string resourcePath = string `/verifications/${getEncodedUri(verification)}/verify`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -425,7 +429,7 @@ public isolated client class Client {
     # + payload - Workflow body 
     # + return - Successful update operation 
     remote isolated function updateWorkflow(string workflow, AddWorkflowRequest payload) returns http:Response|error {
-        string resourcePath = string `/workflows/${workflow}`;
+        string resourcePath = string `/workflows/${getEncodedUri(workflow)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -437,8 +441,8 @@ public isolated client class Client {
     # + workflow - ID of the workflow 
     # + return - Successful delete operation 
     remote isolated function deleteWorkflow(string workflow) returns http:Response|error {
-        string resourcePath = string `/workflows/${workflow}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/workflows/${getEncodedUri(workflow)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all workspaces you have access to

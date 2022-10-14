@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -49,7 +49,7 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostemailed(string section, string timePeriod) returns InlineResponse200|error {
-        string resourcePath = string `/mostemailed/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostemailed/${getEncodedUri(section)}/${getEncodedUri(timePeriod)}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -61,7 +61,7 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostshared(string section, string timePeriod) returns InlineResponse2001|error {
-        string resourcePath = string `/mostshared/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostshared/${getEncodedUri(section)}/${getEncodedUri(timePeriod)}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);
@@ -73,7 +73,7 @@ public isolated client class Client {
     # + timePeriod - Number of days `1 | 7 | 30 ` corresponds to a day, a week, or a month of content. 
     # + return - An array of Articles 
     remote isolated function getMostviewed(string section, string timePeriod) returns InlineResponse2001|error {
-        string resourcePath = string `/mostviewed/${section}/${timePeriod}.json`;
+        string resourcePath = string `/mostviewed/${getEncodedUri(section)}/${getEncodedUri(timePeriod)}.json`;
         map<anydata> queryParam = {"api-key": self.apiKeyConfig.apiKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse2001 response = check self.clientEp->get(resourcePath);

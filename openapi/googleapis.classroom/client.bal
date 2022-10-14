@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Classroom API v1](https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
@@ -125,7 +136,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesAliases(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListCourseAliasesResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/aliases`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/aliases`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListCourseAliasesResponse response = check self.clientEp->get(resourcePath);
@@ -144,7 +155,7 @@ public isolated client class Client {
     # + payload - Course alias request 
     # + return - Successful response 
     remote isolated function createCoursesAliases(string courseId, CourseAlias payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseAlias|error {
-        string resourcePath = string `/v1/courses/${courseId}/aliases`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/aliases`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -166,10 +177,10 @@ public isolated client class Client {
     # + alias - Alias to delete. This may not be the Classroom-assigned identifier. 
     # + return - Successful response 
     remote isolated function deleteCoursesAliases(string courseId, string alias, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/aliases/${alias}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/aliases/${getEncodedUri(alias)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of announcements that the requester is permitted to view. Course students may only view `PUBLISHED` announcements. Course teachers and domain administrators may view all announcements. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course does not exist.
@@ -188,7 +199,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesAnnouncements(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? announcementStates = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListAnnouncementsResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "announcementStates": announcementStates, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         map<Encoding> queryParamEncoding = {"announcementStates": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -208,7 +219,7 @@ public isolated client class Client {
     # + payload - Announcement request 
     # + return - Successful response 
     remote isolated function createCoursesAnnouncements(string courseId, Announcement payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Announcement|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -230,7 +241,7 @@ public isolated client class Client {
     # + id - Identifier of the announcement. 
     # + return - Successful response 
     remote isolated function getCoursesAnnouncements(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Announcement|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Announcement response = check self.clientEp->get(resourcePath);
@@ -249,10 +260,10 @@ public isolated client class Client {
     # + id - Identifier of the announcement to delete. This identifier is a Classroom-assigned identifier. 
     # + return - Successful response 
     remote isolated function deleteCoursesAnnouncements(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates one or more fields of an announcement. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting developer project did not create the corresponding announcement or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `FAILED_PRECONDITION` if the requested announcement has already been deleted. * `NOT_FOUND` if the requested course or announcement does not exist
@@ -270,7 +281,7 @@ public isolated client class Client {
     # + payload - Announcement request 
     # + return - Successful response 
     remote isolated function patchCoursesAnnouncements(string courseId, string id, Announcement payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Announcement|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -293,7 +304,7 @@ public isolated client class Client {
     # + payload - Modify announcement assignees request 
     # + return - Successful response 
     remote isolated function modifyassigneesCoursesAnnouncements(string courseId, string id, ModifyAnnouncementAssigneesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Announcement|error {
-        string resourcePath = string `/v1/courses/${courseId}/announcements/${id}:modifyAssignees`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/announcements/${getEncodedUri(id)}:modifyAssignees`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -318,7 +329,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesCoursework(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? courseWorkStates = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListCourseWorkResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "courseWorkStates": courseWorkStates, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         map<Encoding> queryParamEncoding = {"courseWorkStates": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -338,7 +349,7 @@ public isolated client class Client {
     # + payload - CourseWork request 
     # + return - Successful response 
     remote isolated function createCoursesCoursework(string courseId, CourseWork payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseWork|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -365,7 +376,7 @@ public isolated client class Client {
     # + userId - Optional argument to restrict returned student work to those owned by the student with the specified identifier. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
     # + return - Successful response 
     remote isolated function listCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? late = (), int? pageSize = (), string? pageToken = (), string[]? states = (), string? userId = ()) returns ListStudentSubmissionsResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "late": late, "pageSize": pageSize, "pageToken": pageToken, "states": states, "userId": userId};
         map<Encoding> queryParamEncoding = {"states": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -386,7 +397,7 @@ public isolated client class Client {
     # + id - Identifier of the student submission. 
     # + return - Successful response 
     remote isolated function getCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns StudentSubmission|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         StudentSubmission response = check self.clientEp->get(resourcePath);
@@ -408,7 +419,7 @@ public isolated client class Client {
     # + payload - StudentSubmission request 
     # + return - Successful response 
     remote isolated function patchCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, StudentSubmission payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns StudentSubmission|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -432,7 +443,7 @@ public isolated client class Client {
     # + payload - Modify attachments request 
     # + return - Successful response 
     remote isolated function modifyattachmentsCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, ModifyAttachmentsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns StudentSubmission|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}:modifyAttachments`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}:modifyAttachments`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -456,7 +467,7 @@ public isolated client class Client {
     # + payload - ReclaimStudentSubmission request 
     # + return - Successful response 
     remote isolated function reclaimCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, ReclaimStudentSubmissionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}:reclaim`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}:reclaim`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -480,7 +491,7 @@ public isolated client class Client {
     # + payload - ReturnStudentSubmission request 
     # + return - Successful response 
     remote isolated function returnCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, ReturnStudentSubmissionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}:return`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}:return`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -504,7 +515,7 @@ public isolated client class Client {
     # + payload - TurnInStudentSubmission request 
     # + return - Successful response 
     remote isolated function turninCoursesCourseworkStudentsubmissions(string courseId, string courseWorkId, string id, TurnInStudentSubmissionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${courseWorkId}/studentSubmissions/${id}:turnIn`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(courseWorkId)}/studentSubmissions/${getEncodedUri(id)}:turnIn`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -526,7 +537,7 @@ public isolated client class Client {
     # + id - Identifier of the course work. 
     # + return - Successful response 
     remote isolated function getCoursesCoursework(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseWork|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CourseWork response = check self.clientEp->get(resourcePath);
@@ -545,10 +556,10 @@ public isolated client class Client {
     # + id - Identifier of the course work to delete. This identifier is a Classroom-assigned identifier. 
     # + return - Successful response 
     remote isolated function deleteCoursesCoursework(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates one or more fields of a course work. See google.classroom.v1.CourseWork for details of which fields may be updated and who may change them. This request must be made by the Developer Console project of the [OAuth client ID](https://support.google.com/cloud/answer/6158849) used to create the corresponding course work item. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting developer project did not create the corresponding course work, if the user is not permitted to make the requested modification to the student submission, or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `FAILED_PRECONDITION` if the requested course work has already been deleted. * `NOT_FOUND` if the requested course, course work, or student submission does not exist.
@@ -566,7 +577,7 @@ public isolated client class Client {
     # + payload - CourseWork request 
     # + return - Successful response 
     remote isolated function patchCoursesCoursework(string courseId, string id, CourseWork payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns CourseWork|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -589,7 +600,7 @@ public isolated client class Client {
     # + payload - ModifyCourseWorkAssignees request 
     # + return - Successful response 
     remote isolated function modifyassigneesCoursesCoursework(string courseId, string id, ModifyCourseWorkAssigneesRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseWork|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWork/${id}:modifyAssignees`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWork/${getEncodedUri(id)}:modifyAssignees`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -616,7 +627,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesCourseworkmaterials(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string[]? courseWorkMaterialStates = (), string? materialDriveId = (), string? materialLink = (), string? orderBy = (), int? pageSize = (), string? pageToken = ()) returns ListCourseWorkMaterialResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWorkMaterials`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWorkMaterials`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "courseWorkMaterialStates": courseWorkMaterialStates, "materialDriveId": materialDriveId, "materialLink": materialLink, "orderBy": orderBy, "pageSize": pageSize, "pageToken": pageToken};
         map<Encoding> queryParamEncoding = {"courseWorkMaterialStates": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -636,7 +647,7 @@ public isolated client class Client {
     # + payload - CourseWorkMaterial 
     # + return - Successful response 
     remote isolated function createCoursesCourseworkmaterials(string courseId, CourseWorkMaterial payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseWorkMaterial|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWorkMaterials`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWorkMaterials`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -658,7 +669,7 @@ public isolated client class Client {
     # + id - Identifier of the course work material. 
     # + return - Successful response 
     remote isolated function getCoursesCourseworkmaterials(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CourseWorkMaterial|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWorkMaterials/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWorkMaterials/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CourseWorkMaterial response = check self.clientEp->get(resourcePath);
@@ -677,10 +688,10 @@ public isolated client class Client {
     # + id - Identifier of the course work material to delete. This identifier is a Classroom-assigned identifier. 
     # + return - Successful response 
     remote isolated function deleteCoursesCourseworkmaterials(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWorkMaterials/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWorkMaterials/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates one or more fields of a course work material. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting developer project for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `FAILED_PRECONDITION` if the requested course work material has already been deleted. * `NOT_FOUND` if the requested course or course work material does not exist
@@ -698,7 +709,7 @@ public isolated client class Client {
     # + payload - CourseWorkMaterial request 
     # + return - Successful response 
     remote isolated function patchCoursesCourseworkmaterials(string courseId, string id, CourseWorkMaterial payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns CourseWorkMaterial|error {
-        string resourcePath = string `/v1/courses/${courseId}/courseWorkMaterials/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/courseWorkMaterials/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -721,7 +732,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesStudents(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListStudentsResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/students`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/students`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListStudentsResponse response = check self.clientEp->get(resourcePath);
@@ -741,7 +752,7 @@ public isolated client class Client {
     # + payload - Student request 
     # + return - Successful response 
     remote isolated function createCoursesStudents(string courseId, Student payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? enrollmentCode = ()) returns Student|error {
-        string resourcePath = string `/v1/courses/${courseId}/students`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/students`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "enrollmentCode": enrollmentCode};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -763,7 +774,7 @@ public isolated client class Client {
     # + userId - Identifier of the student to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
     # + return - Successful response 
     remote isolated function getCoursesStudents(string courseId, string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Student|error {
-        string resourcePath = string `/v1/courses/${courseId}/students/${userId}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/students/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Student response = check self.clientEp->get(resourcePath);
@@ -782,10 +793,10 @@ public isolated client class Client {
     # + userId - Identifier of the student to delete. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
     # + return - Successful response 
     remote isolated function deleteCoursesStudents(string courseId, string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/students/${userId}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/students/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of teachers of this course that the requester is permitted to view. This method returns the following error codes: * `NOT_FOUND` if the course does not exist. * `PERMISSION_DENIED` for access errors.
@@ -802,7 +813,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesTeachers(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTeachersResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/teachers`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/teachers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTeachersResponse response = check self.clientEp->get(resourcePath);
@@ -821,7 +832,7 @@ public isolated client class Client {
     # + payload - Teacher request 
     # + return - Successful response 
     remote isolated function createCoursesTeachers(string courseId, Teacher payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Teacher|error {
-        string resourcePath = string `/v1/courses/${courseId}/teachers`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/teachers`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -843,7 +854,7 @@ public isolated client class Client {
     # + userId - Identifier of the teacher to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
     # + return - Successful response 
     remote isolated function getCoursesTeachers(string courseId, string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Teacher|error {
-        string resourcePath = string `/v1/courses/${courseId}/teachers/${userId}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/teachers/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Teacher response = check self.clientEp->get(resourcePath);
@@ -862,10 +873,10 @@ public isolated client class Client {
     # + userId - Identifier of the teacher to delete. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
     # + return - Successful response 
     remote isolated function deleteCoursesTeachers(string courseId, string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/teachers/${userId}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/teachers/${getEncodedUri(userId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the list of topics that the requester is permitted to view. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access the requested course or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course does not exist.
@@ -882,7 +893,7 @@ public isolated client class Client {
     # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
     # + return - Successful response 
     remote isolated function listCoursesTopics(string courseId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTopicResponse|error {
-        string resourcePath = string `/v1/courses/${courseId}/topics`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/topics`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTopicResponse response = check self.clientEp->get(resourcePath);
@@ -901,7 +912,7 @@ public isolated client class Client {
     # + payload - Topic request 
     # + return - Successful response 
     remote isolated function createCoursesTopics(string courseId, Topic payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Topic|error {
-        string resourcePath = string `/v1/courses/${courseId}/topics`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/topics`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -923,7 +934,7 @@ public isolated client class Client {
     # + id - Identifier of the topic. 
     # + return - Successful response 
     remote isolated function getCoursesTopics(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Topic|error {
-        string resourcePath = string `/v1/courses/${courseId}/topics/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/topics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Topic response = check self.clientEp->get(resourcePath);
@@ -942,10 +953,10 @@ public isolated client class Client {
     # + id - Identifier of the topic to delete. 
     # + return - Successful response 
     remote isolated function deleteCoursesTopics(string courseId, string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${courseId}/topics/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/topics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates one or more fields of a topic. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting developer project did not create the corresponding topic or for access errors. * `INVALID_ARGUMENT` if the request is malformed. * `NOT_FOUND` if the requested course or topic does not exist
@@ -963,7 +974,7 @@ public isolated client class Client {
     # + payload - Topic request 
     # + return - Successful response 
     remote isolated function patchCoursesTopics(string courseId, string id, Topic payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Topic|error {
-        string resourcePath = string `/v1/courses/${courseId}/topics/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(courseId)}/topics/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -984,7 +995,7 @@ public isolated client class Client {
     # + id - Identifier of the course to return. This identifier can be either the Classroom-assigned identifier or an alias. 
     # + return - Successful response 
     remote isolated function getCourses(string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Course|error {
-        string resourcePath = string `/v1/courses/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Course response = check self.clientEp->get(resourcePath);
@@ -1003,7 +1014,7 @@ public isolated client class Client {
     # + payload - Course request 
     # + return - Successful response 
     remote isolated function updateCourses(string id, Course payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Course|error {
-        string resourcePath = string `/v1/courses/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1024,10 +1035,10 @@ public isolated client class Client {
     # + id - Identifier of the course to delete. This identifier can be either the Classroom-assigned identifier or an alias. 
     # + return - Successful response 
     remote isolated function deleteCourses(string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/courses/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates one or more fields in a course. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to modify the requested course or for access errors. * `NOT_FOUND` if no course exists with the requested ID. * `INVALID_ARGUMENT` if invalid fields are specified in the update mask or if no update mask is supplied. * `FAILED_PRECONDITION` for the following request errors: * CourseNotModifiable
@@ -1044,7 +1055,7 @@ public isolated client class Client {
     # + payload - Course request 
     # + return - Successful response 
     remote isolated function patchCourses(string id, Course payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Course|error {
-        string resourcePath = string `/v1/courses/${id}`;
+        string resourcePath = string `/v1/courses/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1107,7 +1118,7 @@ public isolated client class Client {
     # + id - Identifier of the invitation to return. 
     # + return - Successful response 
     remote isolated function getInvitations(string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Invitation|error {
-        string resourcePath = string `/v1/invitations/${id}`;
+        string resourcePath = string `/v1/invitations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Invitation response = check self.clientEp->get(resourcePath);
@@ -1125,10 +1136,10 @@ public isolated client class Client {
     # + id - Identifier of the invitation to delete. 
     # + return - Successful response 
     remote isolated function deleteInvitations(string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/invitations/${id}`;
+        string resourcePath = string `/v1/invitations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Accepts an invitation, removing it and adding the invited user to the teachers or students (as appropriate) of the specified course. Only the invited user may accept an invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to accept the requested invitation or for access errors. * `FAILED_PRECONDITION` for the following request errors: * CourseMemberLimitReached * CourseNotModifiable * CourseTeacherLimitReached * UserGroupsMembershipLimitReached * `NOT_FOUND` if no invitation exists with the requested ID.
@@ -1143,7 +1154,7 @@ public isolated client class Client {
     # + id - Identifier of the invitation to accept. 
     # + return - Successful response 
     remote isolated function acceptInvitations(string id, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/invitations/${id}:accept`;
+        string resourcePath = string `/v1/invitations/${getEncodedUri(id)}:accept`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1184,10 +1195,175 @@ public isolated client class Client {
     # + registrationId - The `registration_id` of the `Registration` to be deleted. 
     # + return - Successful response 
     remote isolated function deleteRegistrations(string registrationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/registrations/${registrationId}`;
+        string resourcePath = string `/v1/registrations/${getEncodedUri(registrationId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
+        return response;
+    }
+    # Returns a list of guardian invitations that the requesting user is permitted to view, filtered by the parameters provided. This method returns the following error codes: * `PERMISSION_DENIED` if a `student_id` is specified, and the requesting user is not permitted to view guardian invitations for that student, if `"-"` is specified as the `student_id` and the user is not a domain administrator, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). May also be returned if an invalid `page_token` or `state` is provided. * `NOT_FOUND` if a `student_id` is specified, and its format can be recognized, but Classroom has no record of that student.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - The ID of the student whose guardian invitations are to be returned. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user * the string literal `"-"`, indicating that results should be returned for all students that the requesting user is permitted to view guardian invitations. 
+    # + invitedEmailAddress - If specified, only results with the specified `invited_email_address` are returned. 
+    # + pageSize - Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results. 
+    # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
+    # + states - If specified, only results with the specified `state` values are returned. Otherwise, results with a `state` of `PENDING` are returned. 
+    # + return - Successful response 
+    remote isolated function listUserprofilesGuardianinvitations(string studentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? invitedEmailAddress = (), int? pageSize = (), string? pageToken = (), string[]? states = ()) returns ListGuardianInvitationsResponse|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardianInvitations`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "invitedEmailAddress": invitedEmailAddress, "pageSize": pageSize, "pageToken": pageToken, "states": states};
+        map<Encoding> queryParamEncoding = {"states": {style: FORM, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        ListGuardianInvitationsResponse response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # Creates a guardian invitation, and sends an email to the guardian asking them to confirm that they are the student's guardian. Once the guardian accepts the invitation, their `state` will change to `COMPLETED` and they will start receiving guardian notifications. A `Guardian` resource will also be created to represent the active guardian. The request object must have the `student_id` and `invited_email_address` fields set. Failing to set these fields, or setting any other fields in the request, will result in an error. This method returns the following error codes: * `PERMISSION_DENIED` if the current user does not have permission to manage guardians, if the guardian in question has already rejected too many requests for that student, if guardians are not enabled for the domain in question, or for other access errors. * `RESOURCE_EXHAUSTED` if the student or guardian has exceeded the guardian link limit. * `INVALID_ARGUMENT` if the guardian email address is not valid (for example, if it is too long), or if the format of the student ID provided cannot be recognized (it is not an email address, nor a `user_id` from this API). This error will also be returned if read-only fields are set, or if the `state` field is set to to a value other than `PENDING`. * `NOT_FOUND` if the student ID provided is a valid student ID, but Classroom has no record of that student. * `ALREADY_EXISTS` if there is already a pending guardian invitation for the student and `invited_email_address` provided, or if the provided `invited_email_address` matches the Google account of an existing `Guardian` for this user.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - ID of the student (in standard format) 
+    # + payload - GuardianInvitation request 
+    # + return - Successful response 
+    remote isolated function createUserprofilesGuardianinvitations(string studentId, GuardianInvitation payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GuardianInvitation|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardianInvitations`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        GuardianInvitation response = check self.clientEp->post(resourcePath, request);
+        return response;
+    }
+    # Returns a specific guardian invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to view guardian invitations for the student identified by the `student_id`, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). * `NOT_FOUND` if Classroom cannot find any record of the given student or `invitation_id`. May also be returned if the student exists, but the requesting user does not have access to see that student.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - The ID of the student whose guardian invitation is being requested. 
+    # + invitationId - The `id` field of the `GuardianInvitation` being requested. 
+    # + return - Successful response 
+    remote isolated function getUserprofilesGuardianinvitations(string studentId, string invitationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GuardianInvitation|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardianInvitations/${getEncodedUri(invitationId)}`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        GuardianInvitation response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # Modifies a guardian invitation. Currently, the only valid modification is to change the `state` from `PENDING` to `COMPLETE`. This has the effect of withdrawing the invitation. This method returns the following error codes: * `PERMISSION_DENIED` if the current user does not have permission to manage guardians, if guardians are not enabled for the domain in question or for other access errors. * `FAILED_PRECONDITION` if the guardian link is not in the `PENDING` state. * `INVALID_ARGUMENT` if the format of the student ID provided cannot be recognized (it is not an email address, nor a `user_id` from this API), or if the passed `GuardianInvitation` has a `state` other than `COMPLETE`, or if it modifies fields other than `state`. * `NOT_FOUND` if the student ID provided is a valid student ID, but Classroom has no record of that student, or if the `id` field does not refer to a guardian invitation known to Classroom.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - The ID of the student whose guardian invitation is to be modified. 
+    # + invitationId - The `id` field of the `GuardianInvitation` to be modified. 
+    # + updateMask - Mask that identifies which fields on the course to update. This field is required to do an update. The update fails if invalid fields are specified. The following fields are valid: * `state` When set in a query parameter, this field should be specified as `updateMask=,,...` 
+    # + payload - GuardianInvitation request 
+    # + return - Successful response 
+    remote isolated function patchUserprofilesGuardianinvitations(string studentId, string invitationId, GuardianInvitation payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns GuardianInvitation|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardianInvitations/${getEncodedUri(invitationId)}`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Request request = new;
+        json jsonBody = check payload.cloneWithType(json);
+        request.setPayload(jsonBody, "application/json");
+        GuardianInvitation response = check self.clientEp->patch(resourcePath, request);
+        return response;
+    }
+    # Returns a list of guardians that the requesting user is permitted to view, restricted to those that match the request. To list guardians for any student that the requesting user may view guardians for, use the literal character `-` for the student ID. This method returns the following error codes: * `PERMISSION_DENIED` if a `student_id` is specified, and the requesting user is not permitted to view guardian information for that student, if `"-"` is specified as the `student_id` and the user is not a domain administrator, if guardians are not enabled for the domain in question, if the `invited_email_address` filter is set by a user who is not a domain administrator, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). May also be returned if an invalid `page_token` is provided. * `NOT_FOUND` if a `student_id` is specified, and its format can be recognized, but Classroom has no record of that student.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - Filter results by the student who the guardian is linked to. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user * the string literal `"-"`, indicating that results should be returned for all students that the requesting user has access to view. 
+    # + invitedEmailAddress - Filter results by the email address that the original invitation was sent to, resulting in this guardian link. This filter can only be used by domain administrators. 
+    # + pageSize - Maximum number of items to return. Zero or unspecified indicates that the server may assign a maximum. The server may return fewer than the specified number of results. 
+    # + pageToken - nextPageToken value returned from a previous list call, indicating that the subsequent page of results should be returned. The list request must be otherwise identical to the one that resulted in this token. 
+    # + return - Successful response 
+    remote isolated function listUserprofilesGuardians(string studentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? invitedEmailAddress = (), int? pageSize = (), string? pageToken = ()) returns ListGuardiansResponse|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardians`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "invitedEmailAddress": invitedEmailAddress, "pageSize": pageSize, "pageToken": pageToken};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        ListGuardiansResponse response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # Returns a specific guardian. This method returns the following error codes: * `PERMISSION_DENIED` if no user that matches the provided `student_id` is visible to the requesting user, if the requesting user is not permitted to view guardian information for the student identified by the `student_id`, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API, nor the literal string `me`). * `NOT_FOUND` if the requesting user is permitted to view guardians for the requested `student_id`, but no `Guardian` record exists for that student that matches the provided `guardian_id`.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - The student whose guardian is being requested. One of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
+    # + guardianId - The `id` field from a `Guardian`. 
+    # + return - Successful response 
+    remote isolated function getUserprofilesGuardians(string studentId, string guardianId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Guardian|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardians/${getEncodedUri(guardianId)}`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Guardian response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+    # Deletes a guardian. The guardian will no longer receive guardian notifications and the guardian will no longer be accessible via the API. This method returns the following error codes: * `PERMISSION_DENIED` if no user that matches the provided `student_id` is visible to the requesting user, if the requesting user is not permitted to manage guardians for the student identified by the `student_id`, if guardians are not enabled for the domain in question, or for other access errors. * `INVALID_ARGUMENT` if a `student_id` is specified, but its format cannot be recognized (it is not an email address, nor a `student_id` from the API). * `NOT_FOUND` if the requesting user is permitted to modify guardians for the requested `student_id`, but no `Guardian` record exists for that student with the provided `guardian_id`.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + studentId - The student whose guardian is to be deleted. One of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
+    # + guardianId - The `id` field from a `Guardian`. 
+    # + return - Successful response 
+    remote isolated function deleteUserprofilesGuardians(string studentId, string guardianId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(studentId)}/guardians/${getEncodedUri(guardianId)}`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        http:Response response = check self.clientEp-> delete(resourcePath);
+        return response;
+    }
+    # Returns a user profile. This method returns the following error codes: * `PERMISSION_DENIED` if the requesting user is not permitted to access this user profile, if no profile exists with the requested ID, or for access errors.
+    #
+    # + xgafv - V1 error format. 
+    # + alt - Data format for response. 
+    # + callback - JSONP 
+    # + fields - Selector specifying which fields to include in a partial response. 
+    # + quotaUser - Available to use for quota purposes for server-side applications. Can be any arbitrary string assigned to a user, but should not exceed 40 characters. 
+    # + uploadProtocol - Upload protocol for media (e.g. "raw", "multipart"). 
+    # + uploadType - Legacy upload protocol for media (e.g. "media", "multipart"). 
+    # + userId - Identifier of the profile to return. The identifier can be one of the following: * the numeric identifier for the user * the email address of the user * the string literal `"me"`, indicating the requesting user 
+    # + return - Successful response 
+    remote isolated function getUserprofiles(string userId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns UserProfile|error {
+        string resourcePath = string `/v1/userProfiles/${getEncodedUri(userId)}`;
+        map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        UserProfile response = check self.clientEp->get(resourcePath);
         return response;
     }
 }

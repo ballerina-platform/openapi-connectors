@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Pub/Sub API v1](https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
@@ -80,7 +91,7 @@ public isolated client class Client {
     # + view - The set of fields to return in the response. If not set, returns a Schema with `name` and `type`, but not `definition`. Set to `FULL` to retrieve all fields. 
     # + return - Successful response 
     remote isolated function getSchema(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? view = ()) returns Schema|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Schema response = check self.clientEp->get(resourcePath);
@@ -99,7 +110,7 @@ public isolated client class Client {
     # + payload - Topic 
     # + return - Successful response 
     remote isolated function createTopic(string name, Topic payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Topic|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -120,10 +131,10 @@ public isolated client class Client {
     # + name - Required. Name of the schema to delete. Format is `projects/{project}/schemas/{schema}`. 
     # + return - Successful response 
     remote isolated function deleteSchema(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates an existing topic. Note that certain properties of a topic are not modifiable.
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + payload - Topic to be updated 
     # + return - Successful response 
     remote isolated function updateTopic(string name, UpdateTopicRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Topic|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -163,7 +174,7 @@ public isolated client class Client {
     # + view - The set of Schema fields to return in the response. If not set, returns Schemas with `name` and `type`, but not `definition`. Set to `FULL` to retrieve all fields. 
     # + return - Successful response 
     remote isolated function listSchemas(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = (), string? view = ()) returns ListSchemasResponse|error {
-        string resourcePath = string `/v1/${parent}/schemas`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/schemas`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken, "view": view};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSchemasResponse response = check self.clientEp->get(resourcePath);
@@ -183,7 +194,7 @@ public isolated client class Client {
     # + payload - Schema 
     # + return - Successful response 
     remote isolated function createSchema(string parent, Schema payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? schemaId = ()) returns Schema|error {
-        string resourcePath = string `/v1/${parent}/schemas`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/schemas`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "schemaId": schemaId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -205,7 +216,7 @@ public isolated client class Client {
     # + payload - Schema to be validated 
     # + return - Successful response 
     remote isolated function validateSchema(string parent, ValidateSchemaRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${parent}/schemas:validate`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/schemas:validate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -227,7 +238,7 @@ public isolated client class Client {
     # + payload - Message to be validated 
     # + return - Successful response 
     remote isolated function validateSchemaMessage(string parent, ValidateMessageRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${parent}/schemas:validateMessage`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/schemas:validateMessage`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -250,7 +261,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListSnapshotsResponse`; indicates that this is a continuation of a prior `ListSnapshots` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listSnapshot(string project, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListSnapshotsResponse|error {
-        string resourcePath = string `/v1/${project}/snapshots`;
+        string resourcePath = string `/v1/${getEncodedUri(project)}/snapshots`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSnapshotsResponse response = check self.clientEp->get(resourcePath);
@@ -270,7 +281,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListSubscriptionsResponse`; indicates that this is a continuation of a prior `ListSubscriptions` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listSubscriptions(string project, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListSubscriptionsResponse|error {
-        string resourcePath = string `/v1/${project}/subscriptions`;
+        string resourcePath = string `/v1/${getEncodedUri(project)}/subscriptions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSubscriptionsResponse response = check self.clientEp->get(resourcePath);
@@ -290,7 +301,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListTopicsResponse`; indicates that this is a continuation of a prior `ListTopics` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listTopics(string project, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTopicsResponse|error {
-        string resourcePath = string `/v1/${project}/topics`;
+        string resourcePath = string `/v1/${getEncodedUri(project)}/topics`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTopicsResponse response = check self.clientEp->get(resourcePath);
@@ -309,7 +320,7 @@ public isolated client class Client {
     # + optionsRequestedpolicyversion - Optional. The policy format version to be returned. Valid values are 0, 1, and 3. Requests specifying an invalid value will be rejected. Requests for policies with any conditional bindings must specify version 3. Policies without any conditional bindings may specify any valid value or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). 
     # + return - Successful response 
     remote isolated function getTopicIAMPolicy(string 'resource, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? optionsRequestedpolicyversion = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:getIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:getIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "options.requestedPolicyVersion": optionsRequestedpolicyversion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Policy response = check self.clientEp->get(resourcePath);
@@ -328,7 +339,7 @@ public isolated client class Client {
     # + payload - IAM policy 
     # + return - Successful response 
     remote isolated function setTopicIAMPolicy(string 'resource, SetIamPolicyRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:setIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:setIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -350,7 +361,7 @@ public isolated client class Client {
     # + payload - IAM permission 
     # + return - Successful response 
     remote isolated function testTopicIAMPermissions(string 'resource, TestIamPermissionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TestIamPermissionsResponse|error {
-        string resourcePath = string `/v1/${'resource}:testIamPermissions`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:testIamPermissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -371,7 +382,7 @@ public isolated client class Client {
     # + snapshot - Required. The name of the snapshot to get. Format is `projects/{project}/snapshots/{snap}`. 
     # + return - Successful response 
     remote isolated function getSnapshot(string snapshot, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Snapshot|error {
-        string resourcePath = string `/v1/${snapshot}`;
+        string resourcePath = string `/v1/${getEncodedUri(snapshot)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Snapshot response = check self.clientEp->get(resourcePath);
@@ -389,10 +400,10 @@ public isolated client class Client {
     # + snapshot - Required. The name of the snapshot to delete. Format is `projects/{project}/snapshots/{snap}`. 
     # + return - Successful response 
     remote isolated function deleteSnapshot(string snapshot, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${snapshot}`;
+        string resourcePath = string `/v1/${getEncodedUri(snapshot)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Gets the configuration details of a subscription.
@@ -407,7 +418,7 @@ public isolated client class Client {
     # + subscription - Required. The name of the subscription to get. Format is `projects/{project}/subscriptions/{sub}`. 
     # + return - Successful response 
     remote isolated function getSubscription(string subscription, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Subscription|error {
-        string resourcePath = string `/v1/${subscription}`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Subscription response = check self.clientEp->get(resourcePath);
@@ -425,10 +436,10 @@ public isolated client class Client {
     # + subscription - Required. The subscription to delete. Format is `projects/{project}/subscriptions/{sub}`. 
     # + return - Successful response 
     remote isolated function deleteSubscription(string subscription, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Acknowledges the messages associated with the `ack_ids` in the `AcknowledgeRequest`. The Pub/Sub system can remove the relevant messages from the subscription. Acknowledging a message whose ack deadline has expired may succeed, but such a message may be redelivered later. Acknowledging a message more than once will not result in an error.
@@ -444,7 +455,7 @@ public isolated client class Client {
     # + payload - IDs to be acknowledged 
     # + return - Successful response 
     remote isolated function acknowledgeSubscription(string subscription, AcknowledgeRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}:acknowledge`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:acknowledge`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -465,7 +476,7 @@ public isolated client class Client {
     # + subscription - Required. The subscription to detach. Format is `projects/{project}/subscriptions/{subscription}`. 
     # + return - Successful response 
     remote isolated function detachSubscription(string subscription, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}:detach`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:detach`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -486,7 +497,7 @@ public isolated client class Client {
     # + payload - Acknowledge deadline to be modified 
     # + return - Successful response 
     remote isolated function modifySubscriptionAckDeadline(string subscription, ModifyAckDeadlineRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}:modifyAckDeadline`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:modifyAckDeadline`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -508,7 +519,7 @@ public isolated client class Client {
     # + payload - Push config to be modified 
     # + return - Successful response 
     remote isolated function modifySubscriptionPushConfig(string subscription, ModifyPushConfigRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}:modifyPushConfig`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:modifyPushConfig`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -530,7 +541,7 @@ public isolated client class Client {
     # + payload - Pull request 
     # + return - Successful response 
     remote isolated function pullSubscription(string subscription, PullRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns PullResponse|error {
-        string resourcePath = string `/v1/${subscription}:pull`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:pull`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -552,7 +563,7 @@ public isolated client class Client {
     # + payload - Seek 
     # + return - Successful response 
     remote isolated function seekSubscription(string subscription, SeekRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${subscription}:seek`;
+        string resourcePath = string `/v1/${getEncodedUri(subscription)}:seek`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -573,7 +584,7 @@ public isolated client class Client {
     # + topic - Required. The name of the topic to get. Format is `projects/{project}/topics/{topic}`. 
     # + return - Successful response 
     remote isolated function getTopic(string topic, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Topic|error {
-        string resourcePath = string `/v1/${topic}`;
+        string resourcePath = string `/v1/${getEncodedUri(topic)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Topic response = check self.clientEp->get(resourcePath);
@@ -591,10 +602,10 @@ public isolated client class Client {
     # + topic - Required. Name of the topic to delete. Format is `projects/{project}/topics/{topic}`. 
     # + return - Successful response 
     remote isolated function deleteTopic(string topic, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/${topic}`;
+        string resourcePath = string `/v1/${getEncodedUri(topic)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists the names of the snapshots on this topic. Snapshots are used in [Seek](https://cloud.google.com/pubsub/docs/replay-overview) operations, which allow you to manage message acknowledgments in bulk. That is, you can set the acknowledgment state of messages in an existing subscription to the state captured by a snapshot.
@@ -611,7 +622,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListTopicSnapshotsResponse`; indicates that this is a continuation of a prior `ListTopicSnapshots` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listTopicSnapshots(string topic, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTopicSnapshotsResponse|error {
-        string resourcePath = string `/v1/${topic}/snapshots`;
+        string resourcePath = string `/v1/${getEncodedUri(topic)}/snapshots`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTopicSnapshotsResponse response = check self.clientEp->get(resourcePath);
@@ -631,7 +642,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListTopicSubscriptionsResponse`; indicates that this is a continuation of a prior `ListTopicSubscriptions` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listTopicSubscriptions(string topic, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListTopicSubscriptionsResponse|error {
-        string resourcePath = string `/v1/${topic}/subscriptions`;
+        string resourcePath = string `/v1/${getEncodedUri(topic)}/subscriptions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTopicSubscriptionsResponse response = check self.clientEp->get(resourcePath);
@@ -650,7 +661,7 @@ public isolated client class Client {
     # + payload - Publish 
     # + return - Successful response 
     remote isolated function publishPubsubProjectsTopic(string topic, PublishRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns PublishResponse|error {
-        string resourcePath = string `/v1/${topic}:publish`;
+        string resourcePath = string `/v1/${getEncodedUri(topic)}:publish`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
@@ -100,7 +111,7 @@ public isolated client class Client {
     # + presentationId - The ID of the presentation to retrieve 
     # + return - Successful response 
     remote isolated function getPresentation(string presentationId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Presentation|error {
-        string resourcePath = string `/v1/presentations/${presentationId}`;
+        string resourcePath = string `/v1/presentations/${getEncodedUri(presentationId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Presentation response = check self.clientEp->get(resourcePath);
@@ -119,7 +130,7 @@ public isolated client class Client {
     # + pageObjectId - The object ID of the page to retrieve 
     # + return - Successful response 
     remote isolated function getPresentationPage(string presentationId, string pageObjectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Page|error {
-        string resourcePath = string `/v1/presentations/${presentationId}/pages/${pageObjectId}`;
+        string resourcePath = string `/v1/presentations/${getEncodedUri(presentationId)}/pages/${getEncodedUri(pageObjectId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Page response = check self.clientEp->get(resourcePath);
@@ -140,7 +151,7 @@ public isolated client class Client {
     # + thumbnailpropertiesThumbnailsize - The optional thumbnail image size. If you don't specify the size, the server chooses a default size of the image 
     # + return - Successful response 
     remote isolated function getPresentationPageThumbnail(string presentationId, string pageObjectId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? thumbnailpropertiesMimetype = (), string? thumbnailpropertiesThumbnailsize = ()) returns Thumbnail|error {
-        string resourcePath = string `/v1/presentations/${presentationId}/pages/${pageObjectId}/thumbnail`;
+        string resourcePath = string `/v1/presentations/${getEncodedUri(presentationId)}/pages/${getEncodedUri(pageObjectId)}/thumbnail`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "thumbnailProperties.mimeType": thumbnailpropertiesMimetype, "thumbnailProperties.thumbnailSize": thumbnailpropertiesThumbnailsize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Thumbnail response = check self.clientEp->get(resourcePath);
@@ -159,7 +170,7 @@ public isolated client class Client {
     # + payload - A record of type `BatchUpdatePresentationRequest` which contains the necessary data to make one or more updates to the presentation 
     # + return - Successful response 
     remote isolated function batchUpdatePresentations(string presentationId, BatchUpdatePresentationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BatchUpdatePresentationResponse|error {
-        string resourcePath = string `/v1/presentations/${presentationId}:batchUpdate`;
+        string resourcePath = string `/v1/presentations/${getEncodedUri(presentationId)}:batchUpdate`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -212,7 +212,7 @@ public type CountRequest record {
     # If the transmitter is changed, consider the automatic addition of 12 characters
     # of the "STOP SMS".
     # To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to have this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999"
-    string smslong?;
+    string smslong = "999";
     # Le tracker doit être une chaine alphanumérique de moins de 50 caractères. Ce tracker sera ensuite renvoyé en paramètre des urls pour les retours des accusés de réception. 
     string tracker?;
     # It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) on
@@ -341,7 +341,7 @@ public type HlrresponseEtat record {
 
 public type CreditresponseEtat record {
     # Amount of credit remaining
-    float credit?;
+    decimal credit?;
     # Credit equivalence in number of SMS to Metropolitan France.
     string quantite?;
 };

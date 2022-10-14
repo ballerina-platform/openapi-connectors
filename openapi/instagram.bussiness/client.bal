@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.instagram.com/oauth/access_token";
 |};
 
 # This is a generated connector for [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
@@ -73,7 +84,7 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getMediaInfo(string igMediaId, string[]? fields = ()) returns MediaFieldsObject|error {
-        string resourcePath = string `/${igMediaId}`;
+        string resourcePath = string `/${getEncodedUri(igMediaId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -85,7 +96,7 @@ public isolated client class Client {
     # + igMediaId - ID of the image, video, or album. 
     # + return - Success 
     remote isolated function getMediaComments(string igMediaId) returns Comments|error {
-        string resourcePath = string `/${igMediaId}/comments`;
+        string resourcePath = string `/${getEncodedUri(igMediaId)}/comments`;
         Comments response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -95,7 +106,7 @@ public isolated client class Client {
     # + message - The text to be included in the comment. 
     # + return - Success 
     remote isolated function createComment(string igMediaId, string message) returns Comment|error {
-        string resourcePath = string `/${igMediaId}/comments`;
+        string resourcePath = string `/${getEncodedUri(igMediaId)}/comments`;
         map<anydata> queryParam = {"message": message};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -109,7 +120,7 @@ public isolated client class Client {
     # + metric - A comma-separated list of Metrics you want returned. 
     # + return - Success 
     remote isolated function getMediaInsights(string igMediaId, string[]? metric = ()) returns MediaMetrics|error {
-        string resourcePath = string `/${igMediaId}/insights`;
+        string resourcePath = string `/${getEncodedUri(igMediaId)}/insights`;
         map<anydata> queryParam = {"metric": metric};
         map<Encoding> queryParamEncoding = {"metric": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -126,7 +137,7 @@ public isolated client class Client {
     # + fieldset - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getUserData(string igUserId, string username, string fieldset) returns BussinessDiscoveryData|error {
-        string resourcePath = string `/${igUserId}?fields=business_discovery.username(${username})${fieldset}`;
+        string resourcePath = string `/${getEncodedUri(igUserId)}?fields=business_discovery.username(${getEncodedUri(username)})${getEncodedUri(fieldset)}`;
         BussinessDiscoveryData response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + until - Used in conjunction with {since} to define a Range. If you omit since and until, the API defaults to a 2 day range - yesterday through today. 
     # + return - Success 
     remote isolated function getUserInsights(string igUserId, string period, int since, int until, string[]? metric = ()) returns UserMetrics|error {
-        string resourcePath = string `/${igUserId}/insights`;
+        string resourcePath = string `/${getEncodedUri(igUserId)}/insights`;
         map<anydata> queryParam = {"metric": metric, "period": period, "since": since, "until": until};
         map<Encoding> queryParamEncoding = {"metric": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -151,7 +162,7 @@ public isolated client class Client {
     # + igUserId - ID of an IG User who calls the function. 
     # + return - Success 
     remote isolated function getUserMedia(string igUserId) returns Media|error {
-        string resourcePath = string `/${igUserId}/media`;
+        string resourcePath = string `/${getEncodedUri(igUserId)}/media`;
         Media response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -161,7 +172,7 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields and Edges you want returned. If omitted, default fields will be returned. 
     # + return - Success 
     remote isolated function getHashtagFields(string igHashtagId, string[]? fields = ()) returns HashtagResponse|error {
-        string resourcePath = string `/${igHashtagId}`;
+        string resourcePath = string `/${getEncodedUri(igHashtagId)}`;
         map<anydata> queryParam = {"fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -175,7 +186,7 @@ public isolated client class Client {
     # + fields - A comma-separated list of Fields you want returned. 
     # + return - Success 
     remote isolated function getRecentHashtagMedia(string igHashtagId, string userId, string[]? fields = ()) returns Media|error {
-        string resourcePath = string `/${igHashtagId}/recent_media`;
+        string resourcePath = string `/${getEncodedUri(igHashtagId)}/recent_media`;
         map<anydata> queryParam = {"user_id": userId, "fields": fields};
         map<Encoding> queryParamEncoding = {"fields": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);

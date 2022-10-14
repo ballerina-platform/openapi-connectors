@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification.
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + name - Required. The resource name of the billing account to retrieve. For example, `billingAccounts/012345-567890-ABCDEF`. 
     # + return - Successful response 
     remote isolated function getBillingAccounts(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns BillingAccount|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BillingAccount response = check self.clientEp->get(resourcePath);
@@ -159,7 +170,7 @@ public isolated client class Client {
     # + payload - A record of type `BillingAccount` which contains the necessary data to update a billing account 
     # + return - Successful response 
     remote isolated function patchBillingAccounts(string name, BillingAccount payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns BillingAccount|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -180,7 +191,7 @@ public isolated client class Client {
     # + name - Required. The resource name of the project for which billing information is retrieved. For example, `projects/tokyo-rain-123`. 
     # + return - Successful response 
     remote isolated function getProjectsBillingInfo(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ProjectBillingInfo|error {
-        string resourcePath = string `/v1/${name}/billingInfo`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/billingInfo`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ProjectBillingInfo response = check self.clientEp->get(resourcePath);
@@ -199,7 +210,7 @@ public isolated client class Client {
     # + payload - A record of type `ProjectBillingInfo` which contains the necessary data to update a project billing information 
     # + return - Successful response 
     remote isolated function updateProjectsBillingInfo(string name, ProjectBillingInfo payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns ProjectBillingInfo|error {
-        string resourcePath = string `/v1/${name}/billingInfo`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/billingInfo`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -222,7 +233,7 @@ public isolated client class Client {
     # + pageToken - A token identifying a page of results to be returned. This should be a `next_page_token` value returned from a previous `ListProjectBillingInfo` call. If unspecified, the first page of results is returned. 
     # + return - Successful response 
     remote isolated function listProjectsBillingAccounts(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListProjectBillingInfoResponse|error {
-        string resourcePath = string `/v1/${name}/projects`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/projects`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListProjectBillingInfoResponse response = check self.clientEp->get(resourcePath);
@@ -245,7 +256,7 @@ public isolated client class Client {
     # + startTime - Optional inclusive start time of the time range for which the pricing versions will be returned. Timestamps in the future are not allowed. The time range has to be within a single calendar month in America/Los_Angeles timezone. Time range as a whole is optional. If not specified, the latest pricing will be returned (up to 12 hours old at most). 
     # + return - Successful response 
     remote isolated function listServicesSkus(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? currencyCode = (), string? endTime = (), int? pageSize = (), string? pageToken = (), string? startTime = ()) returns ListSkusResponse|error {
-        string resourcePath = string `/v1/${parent}/skus`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/skus`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "currencyCode": currencyCode, "endTime": endTime, "pageSize": pageSize, "pageToken": pageToken, "startTime": startTime};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSkusResponse response = check self.clientEp->get(resourcePath);
@@ -264,7 +275,7 @@ public isolated client class Client {
     # + optionsRequestedpolicyversion - Optional. The policy format version to be returned. Valid values are 0, 1, and 3. Requests specifying an invalid value will be rejected. Requests for policies with any conditional bindings must specify version 3. Policies without any conditional bindings may specify any valid value or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). 
     # + return - Successful response 
     remote isolated function getBillingAccountsIamPolicy(string 'resource, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? optionsRequestedpolicyversion = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:getIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:getIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "options.requestedPolicyVersion": optionsRequestedpolicyversion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Policy response = check self.clientEp->get(resourcePath);
@@ -283,7 +294,7 @@ public isolated client class Client {
     # + payload - A record of type `SetIamPolicyRequest` which contains the necessary data to set access control policy 
     # + return - Successful response 
     remote isolated function setBillingAccountsIamPolicy(string 'resource, SetIamPolicyRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:setIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:setIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -305,7 +316,7 @@ public isolated client class Client {
     # + payload - A record of type `TestIamPermissionsRequest` which contains the necessary data to test access control policy 
     # + return - Successful response 
     remote isolated function testBillingAccountsIamPermissions(string 'resource, TestIamPermissionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TestIamPermissionsResponse|error {
-        string resourcePath = string `/v1/${'resource}:testIamPermissions`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:testIamPermissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

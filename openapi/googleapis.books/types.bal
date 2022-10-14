@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,7 @@ public type OffersItems1 record {
 # Offer retail (=discounted) price in Micros
 public type VolumeSaleinfoRetailprice record {
     # Amount in micros
-    float amountInMicros?;
+    decimal amountInMicros?;
     # An ISO 4217, three-letter currency code.
     string currencyCode?;
 };
@@ -271,7 +271,7 @@ public type DictlayerdataDictSource1 record {
 # Offer list (=undiscounted) price in Micros.
 public type VolumeSaleinfoListprice1 record {
     # Amount in micros
-    float amountInMicros?;
+    decimal amountInMicros?;
     # An ISO 4217, three-letter currency code.
     string currencyCode?;
 };
@@ -373,7 +373,7 @@ public type UsersettingsNotificationMatchmyinterests record {
 # Suggested retail price. (In LITE projection.)
 public type VolumeSaleinfoListprice record {
     # Amount in the currency listed below. (In LITE projection.)
-    float amount?;
+    decimal amount?;
     # An ISO 4217, three-letter currency code. (In LITE projection.)
     string currencyCode?;
 };
@@ -386,9 +386,9 @@ public type GeolayerdataGeo record {
     # The country code of the location.
     string countryCode?;
     # The latitude of the location.
-    float latitude?;
+    decimal latitude?;
     # The longitude of the location.
-    float longitude?;
+    decimal longitude?;
     # The type of map that should be used for this location. EX: HYBRID, ROADMAP, SATELLITE, TERRAIN
     string mapType?;
     # The viewport for showing this location. This is a latitude, longitude rectangle.
@@ -573,7 +573,7 @@ public type VolumeVolumeinfo record {
     # The names of the authors and/or editors for this volume. (In LITE projection)
     string[] authors?;
     # The mean review rating for this volume. (min = 1.0, max = 5.0)
-    float averageRating?;
+    decimal averageRating?;
     # Canonical URL for a volume. (In LITE projection.)
     string canonicalVolumeLink?;
     # A list of subject categories, such as "Fiction", "Suspense", etc.
@@ -629,9 +629,9 @@ public type VolumeVolumeinfo record {
 # Highest viewport for showing this location.
 public type GeolayerdataGeoViewportHi record {
     # The latitude of the location.
-    float latitude?;
+    decimal latitude?;
     # The longitude of the location.
-    float longitude?;
+    decimal longitude?;
 };
 
 # User uploaded volume info.
@@ -764,7 +764,7 @@ public type ConcurrentAccessRestriction record {
 # The rental duration (for rental offers only).
 public type VolumeSaleinfoRentalduration record {
     # Count of rental duration.
-    float count?;
+    decimal count?;
     # Unit of rental duration.
     string unit?;
 };
@@ -850,7 +850,7 @@ public type VolumeAccessinfoPdf record {
 
 public type SeriesSeriessubscriptionreleaseinfoCurrentreleaseinfo record {
     # Amount in micros
-    float amountInMicros?;
+    decimal amountInMicros?;
     string currencyCode?;
     string releaseNumber?;
     string releaseTime?;
@@ -1083,7 +1083,7 @@ public type Seriesmembership record {
 # The actual selling price of the book. This is the same as the suggested retail or list price unless there are offers or discounts on this volume. (In LITE projection.)
 public type VolumeSaleinfoRetailprice1 record {
     # Amount in the currency listed below. (In LITE projection.)
-    float amount?;
+    decimal amount?;
     # An ISO 4217, three-letter currency code. (In LITE projection.)
     string currencyCode?;
 };
@@ -1186,9 +1186,9 @@ public type Bookshelf record {
 # Lowest viewport for showing this location.
 public type GeolayerdataGeoViewportLo record {
     # The latitude of the location.
-    float latitude?;
+    decimal latitude?;
     # The longitude of the location.
-    float longitude?;
+    decimal longitude?;
 };
 
 public type RequestAccessData record {

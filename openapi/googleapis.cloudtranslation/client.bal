@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Translation API v3](https://cloud.google.com/translate/docs/quickstarts) OpenAPI specification.
@@ -79,7 +90,7 @@ public isolated client class Client {
     # + name - The name of the operation resource. 
     # + return - Successful response 
     remote isolated function getProjectsLocationsOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v3/${name}`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Operation response = check self.clientEp->get(resourcePath);
@@ -97,10 +108,10 @@ public isolated client class Client {
     # + name - The name of the operation resource to be deleted. 
     # + return - Successful response 
     remote isolated function deleteProjectsLocationsOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v3/${name}`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Lists information about the supported locations for this service.
@@ -118,7 +129,7 @@ public isolated client class Client {
     # + pageToken - A page token received from the `next_page_token` field in the response. Send that page token to receive the subsequent page. 
     # + return - Successful response 
     remote isolated function listProjectsLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v3/${name}/locations`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + pageToken - The standard list page token. 
     # + return - Successful response 
     remote isolated function listProjectsLocationsOperations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListOperationsResponse|error {
-        string resourcePath = string `/v3/${name}/operations`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}/operations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListOperationsResponse response = check self.clientEp->get(resourcePath);
@@ -158,7 +169,7 @@ public isolated client class Client {
     # + payload - CancelOperation request 
     # + return - Successful response 
     remote isolated function cancelProjectsLocationsOperations(string name, CancelOperationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v3/${name}:cancel`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}:cancel`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -180,7 +191,7 @@ public isolated client class Client {
     # + payload - WaitOperation request 
     # + return - Successful response 
     remote isolated function waitProjectsLocationsOperations(string name, WaitOperationRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v3/${name}:wait`;
+        string resourcePath = string `/v3/${getEncodedUri(name)}:wait`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -204,7 +215,7 @@ public isolated client class Client {
     # + pageToken - Optional. A token identifying a page of results the server should return. Typically, this is the value of [ListGlossariesResponse.next_page_token] returned from the previous call to `ListGlossaries` method. The first page is returned if `page_token`is empty or missing. 
     # + return - Successful response 
     remote isolated function listProjectsLocationsGlossaries(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListGlossariesResponse|error {
-        string resourcePath = string `/v3/${parent}/glossaries`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}/glossaries`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListGlossariesResponse response = check self.clientEp->get(resourcePath);
@@ -223,7 +234,7 @@ public isolated client class Client {
     # + payload - Glossary request 
     # + return - Successful response 
     remote isolated function createProjectsLocationsGlossaries(string parent, Glossary payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v3/${parent}/glossaries`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}/glossaries`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -246,7 +257,7 @@ public isolated client class Client {
     # + model - Optional. Get supported languages of this model. The format depends on model type: - AutoML Translation models: `projects/{project-number-or-id}/locations/{location-id}/models/{model-id}` - General (built-in) models: `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`, Returns languages supported by the specified model. If missing, we get supported languages of Google general NMT model. 
     # + return - Successful response 
     remote isolated function getsupportedlanguagesProjectsLocations(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? displayLanguageCode = (), string? model = ()) returns SupportedLanguages|error {
-        string resourcePath = string `/v3/${parent}/supportedLanguages`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}/supportedLanguages`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "displayLanguageCode": displayLanguageCode, "model": model};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SupportedLanguages response = check self.clientEp->get(resourcePath);
@@ -265,7 +276,7 @@ public isolated client class Client {
     # + payload - BatchTranslateText request 
     # + return - Successful response 
     remote isolated function batchtranslatetextProjectsLocations(string parent, BatchTranslateTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v3/${parent}:batchTranslateText`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}:batchTranslateText`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -287,7 +298,7 @@ public isolated client class Client {
     # + payload - DetectLanguage request 
     # + return - Successful response 
     remote isolated function detectlanguageProjectsLocations(string parent, DetectLanguageRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns DetectLanguageResponse|error {
-        string resourcePath = string `/v3/${parent}:detectLanguage`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}:detectLanguage`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -309,7 +320,7 @@ public isolated client class Client {
     # + payload - TranslateText request 
     # + return - Successful response 
     remote isolated function translatetextProjectsLocations(string parent, TranslateTextRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TranslateTextResponse|error {
-        string resourcePath = string `/v3/${parent}:translateText`;
+        string resourcePath = string `/v3/${getEncodedUri(parent)}:translateText`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

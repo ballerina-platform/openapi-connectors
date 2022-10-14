@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -50,7 +50,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + sortBy - Sorting of leads by the field value 
     # + sortDir - Direction of sorting 
-    # + 'group - Filter leads by a group id 
+    # + group - Filter leads by a group id 
     # + mid - Filter leads by a merchant id 
     # + campaign - Filter leads by a campaign id 
     # + 'source - Filter leads by a source id 
@@ -62,9 +62,9 @@ public isolated client class Client {
     # + endDate - Filter leads by a date in ISO 8601 format (Y-m-d\TH:i:sP) (**Please note that `+` sign should be encoded to `%2B`**) 
     # + email - Filter leads by a email 
     # + return - A JSON array of leads 
-    remote isolated function getLeads(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", int? 'group = (), int? mid = (), int? campaign = (), int? 'source = (), int? status = (), int? category = (), int? user = (), string? dateFilter = (), string? startDate = (), string? endDate = (), string? email = ()) returns InlineResponse20016|error {
+    remote isolated function getLeads(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", int? group = (), int? mid = (), int? campaign = (), int? 'source = (), int? status = (), int? category = (), int? user = (), string? dateFilter = (), string? startDate = (), string? endDate = (), string? email = ()) returns InlineResponse20016|error {
         string resourcePath = string `/api/v1/leads`;
-        map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "group": 'group, "mid": mid, "campaign": campaign, "source": 'source, "status": status, "category": category, "user": user, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "email": email};
+        map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "group": group, "mid": mid, "campaign": campaign, "source": 'source, "status": status, "category": category, "user": user, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "email": email};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
@@ -82,7 +82,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20017 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20017 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get detailed lead information
@@ -90,7 +90,7 @@ public isolated client class Client {
     # + leadId - Lead Id 
     # + return - Detailed lead information 
     remote isolated function getDetailedLeadInformation(int leadId) returns InlineResponse20018|error {
-        string resourcePath = string `/api/v1/leads/${leadId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse20018 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -102,13 +102,13 @@ public isolated client class Client {
     # + payload - Lead changes (send only fields you want to change) 
     # + return - Lead has been updated successfully 
     remote isolated function updateLead(int leadId, LeadsLeadidBody payload) returns InlineResponse20019|error {
-        string resourcePath = string `/api/v1/leads/${leadId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20019 response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        InlineResponse20019 response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete record from a lead record set
@@ -118,10 +118,10 @@ public isolated client class Client {
     # + recordId - Record ID 
     # + return - The record has been deleted successfully 
     remote isolated function deleteRecordFromALeadRecordSet(int leadId, int catId, int recordId) returns InlineResponse20020|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/records/${catId}/${recordId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/records/${getEncodedUri(catId)}/${getEncodedUri(recordId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20020 response = check self.clientEp->delete(resourcePath, httpHeaders);
+        InlineResponse20020 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a list of available lead fields
@@ -149,7 +149,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LeadField response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LeadField response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a lead field
@@ -157,7 +157,7 @@ public isolated client class Client {
     # + fieldId - Field Id 
     # + return - Get a lead field 
     remote isolated function getLeadField(int fieldId) returns LeadField|error {
-        string resourcePath = string `/api/v1/leads/fields/${fieldId}`;
+        string resourcePath = string `/api/v1/leads/fields/${getEncodedUri(fieldId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         LeadField response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -169,13 +169,13 @@ public isolated client class Client {
     # + payload - LeadField data 
     # + return - Updated field attributes 
     remote isolated function updateLeadField(int fieldId, FieldsFieldidBody payload) returns LeadField|error {
-        string resourcePath = string `/api/v1/leads/fields/${fieldId}`;
+        string resourcePath = string `/api/v1/leads/fields/${getEncodedUri(fieldId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LeadField response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        LeadField response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Update a lead field order position
@@ -184,13 +184,13 @@ public isolated client class Client {
     # + payload - LeadFieldOrder data 
     # + return - Updated Lead field order position 
     remote isolated function updateLeadFieldOrderPosition(int fieldId, LeadFieldOrder payload) returns InlineResponse20022|error {
-        string resourcePath = string `/api/v1/leads/fields/${fieldId}/order`;
+        string resourcePath = string `/api/v1/leads/fields/${getEncodedUri(fieldId)}/order`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20022 response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        InlineResponse20022 response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of all lead field tabs
@@ -218,7 +218,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LeadFieldTab response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LeadFieldTab response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a lead field tab
@@ -226,7 +226,7 @@ public isolated client class Client {
     # + tabId - Lead field tab Id 
     # + return - Lead field tab 
     remote isolated function getLeadFieldTab(int tabId) returns LeadFieldTab|error {
-        string resourcePath = string `/api/v1/leads/fields/tabs/${tabId}`;
+        string resourcePath = string `/api/v1/leads/fields/tabs/${getEncodedUri(tabId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         LeadFieldTab response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -238,13 +238,13 @@ public isolated client class Client {
     # + payload - LeadFieldTab data 
     # + return - Updated lead field tab 
     remote isolated function updateLeadFieldTab(int tabId, LeadFieldTab payload) returns LeadFieldTab|error {
-        string resourcePath = string `/api/v1/leads/fields/tabs/${tabId}`;
+        string resourcePath = string `/api/v1/leads/fields/tabs/${getEncodedUri(tabId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LeadFieldTab response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        LeadFieldTab response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get pricing templates
@@ -268,7 +268,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of lead notes 
     remote isolated function getLeadNotes(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20025|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/notes`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/notes`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -282,13 +282,13 @@ public isolated client class Client {
     # + payload - Create a lead note 
     # + return - Note has been added successfully 
     remote isolated function createLeadNote(int leadId, LeadidNotesBody payload) returns InlineResponse20026|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/notes`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/notes`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20026 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20026 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get lead appointments
@@ -311,7 +311,7 @@ public isolated client class Client {
     # + endDate - Filter leads by a date in format Y-m-d 
     # + return - A list of lead appointments 
     remote isolated function getLeadAppointments(int leadId, int? page = (), int? setFor = (), int? setBy = (), int? modifiedBy = (), int? confirmedBy = (), int? rescheduledBy = (), int? seenBy = (), int? rescheduledCount = (), boolean? done = (), int? perPage = (), string? sortBy = (), string? sortDir = (), string? dateFilter = (), string? startDate = (), string? endDate = ()) returns InlineResponse20027|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/appointments`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/appointments`;
         map<anydata> queryParam = {"page": page, "set_for": setFor, "set_by": setBy, "modified_by": modifiedBy, "confirmed_by": confirmedBy, "rescheduled_by": rescheduledBy, "seen_by": seenBy, "rescheduled_count": rescheduledCount, "done": done, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -325,13 +325,13 @@ public isolated client class Client {
     # + payload - Create a lead appointment 
     # + return - Appointment has been created successfully 
     remote isolated function createLeadAppointment(int leadId, LeadidAppointmentsBody payload) returns InlineResponse20028|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/appointments`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/appointments`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20028 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20028 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Populate PDF Document
@@ -340,12 +340,12 @@ public isolated client class Client {
     # + applicationId - Application Id 
     # + return - Document populated successfully. 
     remote isolated function populatePdfDocument(int leadId, int applicationId) returns InlineResponse20029|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/applications/${applicationId}/populate`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/applications/${getEncodedUri(applicationId)}/populate`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse20029 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20029 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get lead tasks
@@ -355,7 +355,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of lead tasks 
     remote isolated function getLeadTasks(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20030|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/tasks`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/tasks`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -369,13 +369,13 @@ public isolated client class Client {
     # + payload - Create a lead task 
     # + return - Task has been created successfully 
     remote isolated function createLeadTask(int leadId, LeadidTasksBody payload) returns InlineResponse20031|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/tasks`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/tasks`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20031 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20031 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of assigned users
@@ -385,7 +385,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of assigned users 
     remote isolated function getAssignedUsers(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20032|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/users`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -399,13 +399,13 @@ public isolated client class Client {
     # + payload - Create a lead task 
     # + return - User has been assigned successfully 
     remote isolated function assignUser(int leadId, LeadidUsersBody payload) returns InlineResponse20033|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/users`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/users`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20033 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20033 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Unassign a user from a lead
@@ -414,10 +414,10 @@ public isolated client class Client {
     # + userId - User Id 
     # + return - User has been unassigned successfully 
     remote isolated function unassignUserFromLead(int leadId, int userId) returns InlineResponse20034|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/users/${userId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/users/${getEncodedUri(userId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20034 response = check self.clientEp->delete(resourcePath, httpHeaders);
+        InlineResponse20034 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get a list of available documents
@@ -427,7 +427,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of available documents 
     remote isolated function getAvailableDocuments(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20035|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/documents`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/documents`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -455,7 +455,7 @@ public isolated client class Client {
     # + documentId - Document Id 
     # + return - Document 
     remote isolated function downoladDocument(int leadId, int documentId) returns string|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/documents/${documentId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/documents/${getEncodedUri(documentId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -468,13 +468,13 @@ public isolated client class Client {
     # + payload - Payload data 
     # + return - Result of proccess 
     remote isolated function sendEmailToLeadWithTemplate(int leadId, int templateId, EmailsTemplateidBody payload) returns InlineResponse20040|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/emails/${templateId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/emails/${getEncodedUri(templateId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20040 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20040 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of email templates
@@ -494,7 +494,7 @@ public isolated client class Client {
     # + attachmentId - Attachment Id 
     # + return - Document 
     remote isolated function downloadMailboxEmailAttachment(int leadId, int emailId, int attachmentId) returns string|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/mailbox/${emailId}/attachment/${attachmentId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/mailbox/${getEncodedUri(emailId)}/attachment/${getEncodedUri(attachmentId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -507,13 +507,13 @@ public isolated client class Client {
     # + payload - Payload data 
     # + return - Result of proccess 
     remote isolated function sendSmsToLeadWithSelectedSmsTemplate(int leadId, int templateId, SmsTemplateidBody payload) returns InlineResponse20042|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/sms/${templateId}`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/sms/${getEncodedUri(templateId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20042 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse20042 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get list of SMS templates
@@ -533,7 +533,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadCampaignActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20044|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/campaign`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/campaign`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -548,7 +548,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadDeletionActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20045|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/deletion`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/deletion`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -563,7 +563,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadDuplicateActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20046|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/duplicates`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/duplicates`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -578,7 +578,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadLinksActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20047|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/links`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/links`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -593,7 +593,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadSourceActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20048|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/source`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/source`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -608,7 +608,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of activity 
     remote isolated function getAllLeadStatusActivity(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20049|error {
-        string resourcePath = string `/api/v1/leads/${leadId}/activity/status`;
+        string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/activity/status`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -651,11 +651,11 @@ public isolated client class Client {
     }
     # Get a list of available statuses
     #
-    # + 'group - Group Id 
+    # + group - Group Id 
     # + return - A list of available statuses 
-    remote isolated function getAvailableStatuses(int? 'group = ()) returns InlineResponse20055|error {
+    remote isolated function getAvailableStatuses(int? group = ()) returns InlineResponse20055|error {
         string resourcePath = string `/api/v1/leads/statuses`;
-        map<anydata> queryParam = {"group": 'group};
+        map<anydata> queryParam = {"group": group};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -533,7 +533,7 @@ public type GoogleLongrunningOperation record {
     # If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
     boolean done?;
     # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
-    GoogleRpcStatus _error?;
+    GoogleRpcStatus 'error?;
     # Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.
     record {} metadata?;
     # The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.
@@ -547,7 +547,7 @@ public type GoogleCloudRetailV2CustomAttribute record {
     # If true, custom attribute values are indexed, so that it can be filtered, faceted or boosted in SearchService.Search. This field is ignored in a UserEvent. See SearchRequest.filter, SearchRequest.facet_specs and SearchRequest.boost_spec for more details.
     boolean indexable?;
     # The numerical values of this custom attribute. For example, `[2.3, 15.4]` when the key is "lengths_cm". At most 400 values are allowed.Otherwise, an INVALID_ARGUMENT error is returned. Exactly one of text or numbers should be set. Otherwise, an INVALID_ARGUMENT error is returned.
-    float[] numbers?;
+    decimal[] numbers?;
     # If true, custom attribute values are searchable by text queries in SearchService.Search. This field is ignored in a UserEvent. Only set if type text is set. Otherwise, a INVALID_ARGUMENT error is returned.
     boolean searchable?;
     # The textual values of this custom attribute. For example, `["yellow", "green"]` when the key is "color". At most 400 values are allowed. Empty values are not allowed. Each value must be a UTF-8 encoded string with a length limit of 256 characters. Otherwise, an INVALID_ARGUMENT error is returned. Exactly one of text or numbers should be set. Otherwise, an INVALID_ARGUMENT error is returned.
@@ -647,13 +647,13 @@ public type GoogleCloudRetailLoggingSourceLocation record {
 # A floating point interval.
 public type GoogleCloudRetailV2Interval record {
     # Exclusive upper bound.
-    float exclusiveMaximum?;
+    decimal exclusiveMaximum?;
     # Exclusive lower bound.
-    float exclusiveMinimum?;
+    decimal exclusiveMinimum?;
     # Inclusive upper bound.
-    float maximum?;
+    decimal maximum?;
     # Inclusive lower bound.
-    float minimum?;
+    decimal minimum?;
 };
 
 # Recent search of this user.

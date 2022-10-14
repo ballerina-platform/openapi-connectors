@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type BrokerWebinarArr BrokerWebinar[];
 
@@ -253,9 +255,9 @@ public type AssetsSearchReq record {
     # The name of the recordingasset
     string name?;
     # Sorts on the specified field. The default value is 'CREATETIME'. The possible values are 'CREATETIME' and 'NAME'.
-    string sortField?;
+    string sortField = "CREATETIME";
     # Specifies the sort order type. The default value is 'DESC'. The possible values are 'DESC', 'ASC'.
-    string sortOrder?;
+    string sortOrder = "DESC";
 };
 
 # State of the user subscription
@@ -432,15 +434,15 @@ public type WebinarReqCreate record {
     # The time zone where the webinar is taking place (must be a valid time zone ID, see [Date and time conventions](/guides/References/01_Date-Time/)). If this parameter is not passed, the timezone of the organizer's profile will be used
     string timeZone?;
     # Specifies the webinar type. The default type value is 'single_session', which is used to create a single webinar session. The possible values are 'single_session', 'series', 'sequence'. If type is set to 'single_session', a single webinar session is created. If type is set to 'series', a webinar series is created. In this case 2 or more timeframes must be specified for each webinar. Example: 'times': [{'startTime': '...', 'endTime': '...'},{'startTime': '...', 'endTime': '...'},{'startTime': '...', 'endTime': '...'}. If type is set to 'sequence' a sequence of webinars is created. The times object in the body must be replaced by the 'recurrenceStart' object. Example: 'recurrenceStart': {'startTime':'2012-06-12T16:00:00Z', 'endTime': '2012-06-12T17:00:00Z' }.  The 'recurrenceEnd' and 'recurrencePattern' body parameter must be specified. Example: , 'recurrenceEnd': '2012-07-10', 'recurrencePattern': 'daily'.
-    string 'type?;
+    string 'type = "single_session";
     # A boolean flag indicating if the webinar is password protected or not.
-    boolean isPasswordProtected?;
+    boolean isPasswordProtected = false;
     # The recording asset with which the simulive webinar should be created from. In case the recordingasset was created as an online recording the simulive webinar settings, poll and surveys would be copied from the webinar whose session was recorded.
     string recordingAssetKey?;
     # A boolean flag indicating if the webinar should be ondemand
-    boolean isOndemand?;
+    boolean isOndemand = false;
     # Specifies the experience type. The possible values are 'CLASSIC', 'BROADCAST' and 'SIMULIVE'.
-    string experienceType?;
+    string experienceType = "CLASSIC";
     # Describes email settings of a webinar.
     WebinarEmailSettings emailSettings?;
 };
@@ -645,6 +647,7 @@ public type PollResponse record {
     # The text of the response/option to a poll or survey
     string text;
     # The percentage of responses that favored this particular option
+    @constraint:Float {maxValue: 100}
     float percentage;
 };
 

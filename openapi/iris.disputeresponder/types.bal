@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2021 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,11 @@
 
 public type ChargebackReplyCreditIssuedRequest record {
     # Credit transaction date
-    string? credit_date;
+    string credit_date;
     # Credit transaction amount
-    string? credit_amount;
+    string credit_amount;
     # User note
-    string? user_note;
+    string user_note;
     # Files to attach
     string[]? file;
 };
@@ -32,64 +32,64 @@ public type InlineResponse2006 record {
 
 public type RetrievalReplyCreditIssuedRequest record {
     # Credit transaction date
-    string? credit_date;
+    string credit_date;
     # Credit transaction amount
-    string? credit_amount;
+    string credit_amount;
     # User note
-    string? user_note;
+    string user_note;
     # Files to attach
     string[]? file;
 };
 
 public type ChargebackReplyDisputeRequest record {
     # Selected documents
-    string? selected_doc_types;
+    string selected_doc_types;
     # Other document description
-    string? other_description?;
+    string other_description?;
     # Compelling document
-    string? compelling_doc?;
+    string compelling_doc?;
     # Selected compelling
-    string? selected_compelling?;
+    string selected_compelling?;
     # Digital goods compelling documents
-    string? selected_digital_goods_04?;
+    string selected_digital_goods_04?;
     # Download date
-    string? download_date?;
+    string download_date?;
     # Download time
-    string? download_time?;
+    string download_time?;
     # Purchaser IP address
-    string? purchaser_ip_addr?;
+    string purchaser_ip_addr?;
     # Physical location
-    string? geographical_location?;
+    string geographical_location?;
     # PhDevice ID
-    string? device_id?;
+    string device_id?;
     # Device ID
-    string? device_name?;
+    string device_name?;
     # Purchaser name
-    string? purchaser_name?;
+    string purchaser_name?;
     # Purchaser email
-    string? purchaser_email?;
+    string purchaser_email?;
     # ARN
-    string? arn_04?;
+    string arn_04?;
     # Transaction date
-    string? tran_date_04?;
+    string tran_date_04?;
     # ARN
-    string? arn_09?;
+    string arn_09?;
     # Transaction date
-    string? tran_date_09?;
+    string tran_date_09?;
     # ARN
-    string? arn_13?;
+    string arn_13?;
     # Transaction date
-    string? tran_date_13?;
+    string tran_date_13?;
     # IP address
-    string? ip_address?;
+    string ip_address?;
     # Email address
-    string? email_address?;
+    string email_address?;
     # Phone number
-    string? phone_number?;
+    string phone_number?;
     # Physical address
-    string? physical_address?;
+    string physical_address?;
     # User note
-    string? user_note;
+    string user_note;
     # Files to attach
     string[]? file;
 };

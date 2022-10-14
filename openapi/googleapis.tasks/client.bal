@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
@@ -79,7 +90,7 @@ public isolated client class Client {
     # + tasklist - Task list identifier. 
     # + return - Successful response 
     remote isolated function clearTasks(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/clear`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/clear`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -109,7 +120,7 @@ public isolated client class Client {
     # + updatedMin - Lower bound for a task's last modification time (as a RFC 3339 timestamp) to filter by. Optional. The default is not to filter by last modification time. 
     # + return - Successful response 
     remote isolated function listTasks(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? completedMax = (), string? completedMin = (), string? dueMax = (), string? dueMin = (), int? maxResults = (), string? pageToken = (), boolean? showCompleted = (), boolean? showDeleted = (), boolean? showHidden = (), string? updatedMin = ()) returns Tasks|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "completedMax": completedMax, "completedMin": completedMin, "dueMax": dueMax, "dueMin": dueMin, "maxResults": maxResults, "pageToken": pageToken, "showCompleted": showCompleted, "showDeleted": showDeleted, "showHidden": showHidden, "updatedMin": updatedMin};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Tasks response = check self.clientEp->get(resourcePath);
@@ -130,7 +141,7 @@ public isolated client class Client {
     # + payload - Task request 
     # + return - Successful response 
     remote isolated function insertTasks(string tasklist, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = (), string? previous = ()) returns Task|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent, "previous": previous};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -152,7 +163,7 @@ public isolated client class Client {
     # + task - Task identifier. 
     # + return - Successful response 
     remote isolated function getTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks/${getEncodedUri(task)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Task response = check self.clientEp->get(resourcePath);
@@ -172,7 +183,7 @@ public isolated client class Client {
     # + payload - Task request 
     # + return - Successful response 
     remote isolated function updateTasks(string tasklist, string task, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks/${getEncodedUri(task)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -194,10 +205,10 @@ public isolated client class Client {
     # + task - Task identifier. 
     # + return - Successful response 
     remote isolated function deleteTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks/${getEncodedUri(task)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates the specified task. This method supports patch semantics.
@@ -214,7 +225,7 @@ public isolated client class Client {
     # + payload - Task request 
     # + return - Successful response 
     remote isolated function patchTasks(string tasklist, string task, Task payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Task|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks/${getEncodedUri(task)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -238,7 +249,7 @@ public isolated client class Client {
     # + previous - New previous sibling task identifier. If the task is moved to the first position among its siblings, this parameter is omitted. Optional. 
     # + return - Successful response 
     remote isolated function moveTasks(string tasklist, string task, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? parent = (), string? previous = ()) returns Task|error {
-        string resourcePath = string `/tasks/v1/lists/${tasklist}/tasks/${task}/move`;
+        string resourcePath = string `/tasks/v1/lists/${getEncodedUri(tasklist)}/tasks/${getEncodedUri(task)}/move`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "parent": parent, "previous": previous};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -298,7 +309,7 @@ public isolated client class Client {
     # + tasklist - Task list identifier. 
     # + return - Successful response 
     remote isolated function getTasklists(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${getEncodedUri(tasklist)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TaskList response = check self.clientEp->get(resourcePath);
@@ -317,7 +328,7 @@ public isolated client class Client {
     # + payload - TaskList request 
     # + return - Successful response 
     remote isolated function updateTasklists(string tasklist, TaskList payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${getEncodedUri(tasklist)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -338,10 +349,10 @@ public isolated client class Client {
     # + tasklist - Task list identifier. 
     # + return - Successful response 
     remote isolated function deleteTasklists(string tasklist, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${getEncodedUri(tasklist)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates the authenticated user's specified task list. This method supports patch semantics.
@@ -357,7 +368,7 @@ public isolated client class Client {
     # + payload - TaskList request 
     # + return - Successful response 
     remote isolated function patchTasklists(string tasklist, TaskList payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TaskList|error {
-        string resourcePath = string `/tasks/v1/users/@me/lists/${tasklist}`;
+        string resourcePath = string `/tasks/v1/users/@me/lists/${getEncodedUri(tasklist)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

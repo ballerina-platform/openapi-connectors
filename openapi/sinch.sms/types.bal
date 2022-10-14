@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type MsisdnArr Msisdn[];
 
@@ -46,16 +48,19 @@ public type GroupobjectAutoUpdateRemove record {
     # Opt-out keyword like "LEAVE" If auto_update.to is dedicated long/short number or unique brand keyword like "Sinch" if it is a shared short code.
     # Constraints:
     # Max length: 15 characters Must be one word.
+    @constraint:String {maxLength: 15}
     string first_word?;
     # Opt-out keyword like "LEAVE" if auto_update.to is shared short code.
     # Constraints: Max length: 15 characters Must be one word.
+    @constraint:String {maxLength: 15}
     string second_word?;
 };
 
 public type UpdateBatchReq record {
     # List of phone numbers and group IDs to add to the batch.
     # Constraints: 1 to 100 elements.
-    string[100] toAdd?;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    string[] toAdd?;
     # List of phone numbers and group IDs to remove from the batch.	
     # 
     # constraints:
@@ -66,6 +71,7 @@ public type UpdateBatchReq record {
     string 'from?;
     # The message content. Normal text string for mt_text and Base64 encoded for mt_binary.
     # Constraints: Max 1600 chars for mt_text and max 140 bytes together with udh for mt_binary
+    @constraint:String {maxLength: 1600}
     string body?;
     # Request delivery report callback. Note that delivery reports can be fetched from the API regardless of this setting.
     # Constraints: Valid types are none, summary, full and per_recipient
@@ -79,6 +85,7 @@ public type UpdateBatchReq record {
     string expire_at?;
     # Override the default callback URL for this batch.
     # Constraints: Must be valid URL. Max 2048 characters long.
+    @constraint:String {maxLength: 2048}
     string callback_url?;
 };
 
@@ -95,12 +102,15 @@ public type RetrievedeliveryresponseobjStatuses record {
 
 public type GroupObject record {
     # Name of the group
+    @constraint:String {maxLength: 20}
     string name?;
     # Initial list of phone numbers in [E.164 format](https://community.sinch.com/t5/Glossary/E-164/ta-p/7537) [MSISDNs](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628) for the group.
-    Msisdn[10000] members?;
+    @constraint:Array {maxLength: 10000}
+    Msisdn[] members?;
     # MSISDNs of child group will be included in this group. If present then this group will be auto populated.
     # Constraints: Elements must be group IDs.
-    string[10] child_groups?;
+    @constraint:Array {maxLength: 10}
+    string[] child_groups?;
     GroupobjectAutoUpdate auto_update?;
 };
 
@@ -119,14 +129,17 @@ public type GroupsGroupIdBody1 record {
     # phone numbers to add as members.
     # Constraints: Elements must be phone numbers.
     #  Max 10 000 elements.
-    Msisdn[10000] add?;
+    @constraint:Array {maxLength: 10000}
+    Msisdn[] add?;
     # phone numbers to remove from group.
     # Constraints: Elements must be phone numbers. Max 10 000 elements.
-    Msisdn[10000] remove?;
+    @constraint:Array {maxLength: 10000}
+    Msisdn[] remove?;
     # Name of group.
     # 	
     # Constraints:
     # Max 20 characters
+    @constraint:String {maxLength: 20}
     string name?;
     # Copy the members from the given group into this group.
     # Constraints: Must be valid group ID
@@ -183,13 +196,14 @@ public type Msisdn string;
 
 public type SendBatchObject record {
     # List of Phone numbers and group IDs that will receive the batch. Constraints: 1 to 1000 elements [More info](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628)
-    Msisdn[1000] to;
+    @constraint:Array {maxLength: 1000, minLength: 1}
+    Msisdn[] to;
     # Sender number.
     # 
     # Required if Automatic Default Originator not configured.
     string 'from?;
     # Identifies the type of batch message. Default: mt_text
-    string 'type?;
+    string 'type = "mt_text";
     # The message content. Normal text string for mt_text and Base64 encoded for mt_binary.
     # Max 1600 chars for mt_text and max 140 bytes together with udh for mt_binary.
     string body;
@@ -215,15 +229,18 @@ public type SendBatchObject record {
     # Override the default callback URL for this batch.
     # Must be valid URL.
     # Max 2048 characters long.
+    @constraint:String {maxLength: 2048}
     string callback_url?;
     # Shows message on screen without user interaction while not saving the message to the inbox.
     # true or false.
-    boolean flash_message?;
+    boolean flash_message = false;
     # The client identifier of batch message. If set, it will be added in the delivery report/callback of this batch
     # Max 128 characters long
+    @constraint:String {maxLength: 128}
     string client_reference?;
     # Message will be dispatched only if it is not split to more parts than Max Number of Message Parts
     # Must be higher or equal 1
+    @constraint:Int {minValue: 1}
     int max_number_of_message_parts?;
 };
 
@@ -238,10 +255,12 @@ public type GroupobjectAutoUpdateAdd record {
     # Keyword to be sent in MO to add MSISDN to a group Opt-in keyword like "JOIN" If auto_update.to is dedicated long/short number or unique brand keyword like "Sinch" if it is a shared short code.
     # Constraints:
     # Max length: 15 characters Must be one word.
+    @constraint:String {maxLength: 15}
     string first_word?;
     # Opt-in keyword like "JOIN" if auto_update.to is shared short code.
     # Constraints:
     # Max length: 15 characters Must be one word.
+    @constraint:String {maxLength: 15}
     string second_word?;
 };
 
@@ -298,7 +317,8 @@ public type InlineResponse2002 record {
 
 public type SendBatchCreated record {
     # List of Phone numbers and group IDs that will receive the batch. [More info](https://community.sinch.com/t5/Glossary/MSISDN/ta-p/7628) Constraints: 1 to 1000 elements
-    Msisdn[1000] to?;
+    @constraint:Array {maxLength: 1000, minLength: 1}
+    Msisdn[] to?;
     # Sender number.
     # 
     # Required if Automatic Default Originator not configured.
@@ -330,15 +350,18 @@ public type SendBatchCreated record {
     # Override the default callback URL for this batch.
     # Must be valid URL.
     # Max 2048 characters long.
+    @constraint:String {maxLength: 2048}
     string callback_url?;
     # Shows message on screen without user interaction while not saving the message to the inbox.
     # true or false.
     boolean flash_message?;
     # The client identifier of batch message. If set, it will be added in the delivery report/callback of this batch
     # Max 128 characters long
+    @constraint:String {maxLength: 128}
     string client_reference?;
     # Message will be dispatched only if it is not split to more parts than Max Number of Message Parts
     # Must be higher or equal 1
+    @constraint:Int {minValue: 1}
     int max_number_of_message_parts?;
     # Unique identifier for batch
     string id?;
@@ -358,5 +381,6 @@ public type GroupsGroupIdBody record {
     string name?;
     # The initial members of the group.
     # Constraints: Elements must be phone numbers in [e164](https://en.wikipedia.org/wiki/E.164) format MSISDNs. Max 10 000 elements.
-    Msisdn[10000] members;
+    @constraint:Array {maxLength: 10000}
+    Msisdn[] members;
 };

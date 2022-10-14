@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type AccountArr Account[];
 
@@ -159,16 +161,22 @@ public type Account record {
     # ReportReader | RemoteAssistance | GroupRestricted
     string Roles;
     # The first name for the account
+    @constraint:String {maxLength: 255, minLength: 1}
     string FirstName;
     # The last name for the account
+    @constraint:String {maxLength: 255, minLength: 1}
     string LastName;
     # The user name for the account
+    @constraint:String {maxLength: 20, minLength: 4}
     string UserName;
     # The password for the account
+    @constraint:String {maxLength: 255, minLength: 1}
     string Password?;
     # The email for the account
+    @constraint:String {maxLength: 255, minLength: 1}
     string Email;
     # The mobile number for the account, used to send SMS text messages
+    @constraint:String {maxLength: 255, minLength: 1}
     string SMSNumber?;
     # The authentication mode for the account, which determines how the user will login
     string AuthenticationMode;
@@ -315,6 +323,7 @@ public type Account record {
     # Value: 'Tonga Standard Time'                Offset: '13:00:00'
     # Value: 'Samoa Standard Time'                Offset: '13:00:00'
     # Value: 'Line Islands Standard Time'         Offset: '14:00:00'
+    @constraint:String {maxLength: 255, minLength: 1}
     string TimeZoneCode;
     # Whether or not the page size will be remembered when the user views various pages in OptiTune
     boolean SavePageSize;
@@ -323,15 +332,18 @@ public type Account record {
 };
 
 public type UninstallKeyCondition record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string SubKey;
     int ListOrder?;
 };
 
 public type DoubleParameter record {
-    float MinValue?;
-    float MaxValue?;
-    float Value?;
+    decimal MinValue?;
+    decimal MaxValue?;
+    decimal Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -345,6 +357,7 @@ public type GroupMembership record {
 };
 
 public type WeeklySchedule record {
+    @constraint:String {maxLength: 255}
     string TimezoneID?;
     AnyTimeWeeklyScheduleItem[] AnyTimeWeeklyScheduleItems?;
     SelectDaysWeeklyScheduleItem[] SelectDaysWeeklyScheduleItems?;
@@ -381,23 +394,31 @@ public type TrayIconSettings record {
     # Whether or not the tray icon application is enabled/disabled on each computer in the group
     string TrayIconState?;
     # The title in the Support Center Overview screen. You can customize this to include your own company's branding.
+    @constraint:String {maxLength: 255, minLength: 1}
     string Title;
     # The description in the Support Center Overview screen. You can customize this to provide an overview for the Support Center.
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # The organization or person who provides technical support.
+    @constraint:String {maxLength: 255, minLength: 1}
     string SupportedBy;
     # The main support website (optional).
+    @constraint:String {maxLength: 255}
     string Website?;
     # The main support email address.
+    @constraint:String {maxLength: 255, minLength: 1}
     string Email;
     # The main support phone number (optional).
+    @constraint:String {maxLength: 255}
     string Phone?;
     # Any notes or information you wish to provide to the end user.  For example, you could include hours of operation.
+    @constraint:String {maxLength: 4000}
     string Notes?;
     SupportActionsList SupportActions?;
     # A File ID for a icon (.ico) file to use in the support center application's main window, the tray section of the windows task bar, and the desktop shortcut as well
     string CustomIconFileID?;
     # If specified, this will create a desktop shortcut using the given name to provide easier access to the support center application for end users
+    @constraint:String {maxLength: 255}
     string DesktopShortcutName?;
 };
 
@@ -447,6 +468,7 @@ public type WindowsEventLogSettings record {
     # The levels of windows event log entries to include, a bitmask
     string EventLogLevels?;
     # The maximum number of event log entries to collect for each event log on each computer
+    @constraint:Int {minValue: 100, maxValue: 5000}
     int MaxEntries?;
 };
 
@@ -525,12 +547,12 @@ public type ComputerDetailsData record {
     int Bios_SMBIOSMinorVersion?;
     string Bios_Status?;
     string Bios_Version?;
-    float WinSAT_CPUScore?;
-    float WinSAT_D3DScore?;
-    float WinSAT_DiskScore?;
-    float WinSAT_GraphicsScore?;
-    float WinSAT_MemoryScore?;
-    float WinSAT_WinSPRLevel?;
+    decimal WinSAT_CPUScore?;
+    decimal WinSAT_D3DScore?;
+    decimal WinSAT_DiskScore?;
+    decimal WinSAT_GraphicsScore?;
+    decimal WinSAT_MemoryScore?;
+    decimal WinSAT_WinSPRLevel?;
     int Details_TotalRam?;
     int Details_TotalDiskSize?;
     int Details_TotalDiskFreeSpace?;
@@ -594,36 +616,51 @@ public type BusinessEntity record {
     # will be shown in the UI when displaying the business entity
     string Type?;
     # The name of the business entity
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # The description of the business entity
+    @constraint:String {maxLength: 1024}
     string Description?;
     # Any notes you wish to keep about the business entity
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date and time the business entity was last modified
     string DateModified?;
     # The first name of the person to contact for the business entity
+    @constraint:String {maxLength: 255}
     string ContactFirstName?;
     # The last name of the person to contact for the business entity
+    @constraint:String {maxLength: 255}
     string ContactLastName?;
     # The email address of the person to contact for the business entity
+    @constraint:String {maxLength: 255}
     string ContactEmail?;
     # The phone number of the person to contact for the business entity
+    @constraint:String {maxLength: 50}
     string ContactPhone?;
     # The website of the business entity
+    @constraint:String {maxLength: 255}
     string Website?;
     # The mailing address of the business entity
+    @constraint:String {maxLength: 1024}
     string MailingAddress?;
     # The physical address of the business entity
+    @constraint:String {maxLength: 1024}
     string PhysicalAddress?;
     # The account number of the business entity
+    @constraint:String {maxLength: 50}
     string AccountNumber?;
     # The first name of the sales person who handles the business entity
+    @constraint:String {maxLength: 255}
     string RelationshipManagerFirstName?;
     # The last name of the sales person who handles the business entity
+    @constraint:String {maxLength: 255}
     string RelationshipManagerLastName?;
     # The email of the sales person who handles the business entity
+    @constraint:String {maxLength: 255}
     string RelationshipManagerEmail?;
     # The phone number of the sales person who handles the business entity
+    @constraint:String {maxLength: 50}
     string RelationshipManagerPhone?;
 };
 
@@ -641,32 +678,44 @@ public type ComputerDetailsPortableBattery record {
 
 public type OrganizationRegistration record {
     # The user name of the administrator of the organization
+    @constraint:String {maxLength: 20, minLength: 4}
     string UserName;
     # The password for the administrator of the organization.  This is only used when setting up a new organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string Password;
     # An optional registration code to use when registering a new organization
+    @constraint:String {maxLength: 255}
     string RegistrationCode?;
     # An optional timezone code for the new account
+    @constraint:String {maxLength: 255}
     string TimeZoneCode?;
     # The unique ID of the organization on this management server
     string ID?;
     # The date and time the organization was added to this management server, in UTC
     string DateAdded?;
     # The name of the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # An optional website for the organization
+    @constraint:String {maxLength: 255}
     string Website?;
     # The first name of a contact person at the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactFirstName;
     # The last name of a contact person at the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactLastName;
     # The contact person's email address
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactEmail;
     # The contact person's phone number
+    @constraint:String {maxLength: 255}
     string ContactPhone?;
     # If GenerateApiCredentials is true when adding an organization, this will hold the API User Name
+    @constraint:String {maxLength: 255}
     string GeneratedApiUserName?;
     # If GenerateApiCredentials is true when adding an organization, this will hold the API Password
+    @constraint:String {maxLength: 255}
     string GeneratedApiPassword?;
 };
 
@@ -719,14 +768,18 @@ public type OptiTuneTask record {
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;
@@ -739,14 +792,18 @@ public type RepairTask record {
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;
@@ -818,11 +875,17 @@ public type AgentQueueItem record {
 public type RemoteAssistanceRequest record {
     string ID?;
     string ComputerID?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string UserName;
+    @constraint:String {maxLength: 255, minLength: 1}
     string FullName;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Email;
+    @constraint:String {maxLength: 255}
     string Phone?;
+    @constraint:String {maxLength: 1024}
     string UserMessage?;
+    @constraint:String {maxLength: 255}
     string LocalIPAddresses?;
     string DateCreated?;
 };
@@ -883,7 +946,9 @@ public type WindowsUpdateHistoryEntry record {
 # An event category
 public type EventCategory record {
     string ID?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024, minLength: 1}
     string Description;
 };
 
@@ -894,20 +959,28 @@ public type Organization record {
     # The date and time the organization was added to this management server, in UTC
     string DateAdded?;
     # The name of the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # An optional website for the organization
+    @constraint:String {maxLength: 255}
     string Website?;
     # The first name of a contact person at the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactFirstName;
     # The last name of a contact person at the organization
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactLastName;
     # The contact person's email address
+    @constraint:String {maxLength: 255, minLength: 1}
     string ContactEmail;
     # The contact person's phone number
+    @constraint:String {maxLength: 255}
     string ContactPhone?;
     # If GenerateApiCredentials is true when adding an organization, this will hold the API User Name
+    @constraint:String {maxLength: 255}
     string GeneratedApiUserName?;
     # If GenerateApiCredentials is true when adding an organization, this will hold the API Password
+    @constraint:String {maxLength: 255}
     string GeneratedApiPassword?;
 };
 
@@ -925,6 +998,7 @@ public type Announcement record {
 };
 
 public type NameUpdateFilter record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     int ListOrder?;
 };
@@ -961,6 +1035,7 @@ public type WindowsUpdateGroupPolicy record {
     # 
     # 5 - Allow local admin to choose setting
     # With this option, local administrators will be allowed to use the Windows Update control panel to select a configuration option of their choice. Local administrators will not be allowed to disable the configuration for Automatic Updates.
+    @constraint:Int {minValue: 2, maxValue: 5}
     int AutomaticUpdates?;
     # This setting lets you configure the download method used by Delivery Optimization, in Windows 10 computers or above.
     # Specifies the download method that Delivery Optimization can use in downloads of Windows Updates, Apps and App updates.
@@ -982,14 +1057,18 @@ public type WindowsUpdateGroupPolicy record {
     # 
     # 100 - Bypass
     # Bypass mode. Do not use Delivery Optimization and use BITS instead.
+    @constraint:Int {maxValue: 100}
     int DownloadMode?;
     # CorpWuURL - Specify intranet Microsoft update service location
     string UseWUServer?;
     # CorpWUURL_Name - Set the intranet update service for detecting updates:
+    @constraint:String {maxLength: 255}
     string WUServer?;
     # CorpWUStatusURL_Name - Set the intranet statistics server:
+    @constraint:String {maxLength: 255}
     string WUStatusServer?;
     # CorpWUContentHost_Name - Set the alternate download server:
+    @constraint:String {maxLength: 255}
     string UpdateServiceUrlAlternate?;
     # CorpWUFillEmptyContentUrls - Download files with no Url in the metadata if alternate download server is set.
     # 
@@ -998,6 +1077,7 @@ public type WindowsUpdateGroupPolicy record {
     # TargetGroup_Title - Enable client-side targeting
     string EnableWUTargetGroup?;
     # TargetGroup_Name - Target group name for this computer
+    @constraint:String {maxLength: 255}
     string TargetGroup?;
 };
 
@@ -1028,6 +1108,7 @@ public type ComputerDetailsSoundDevices record {
 };
 
 public type RegistryKeyCondition record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Key;
     int ListOrder?;
 };
@@ -1048,14 +1129,18 @@ public type SystemTask record {
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;
@@ -1075,16 +1160,21 @@ public type MailTemplate record {
     # The ID of the mail template
     string ID?;
     # The name of the mail template
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # The FROM email address to use when sending the email
+    @constraint:String {maxLength: 255, minLength: 1}
     string FromAddress;
     # The template for the subject of the email.  This can contain variables, see the OptiTune help documentation for more details.
+    @constraint:String {maxLength: 255, minLength: 1}
     string Subject;
     # The template for the body of the email.  This can contain variables, see the OptiTune help documentation for more details.
+    @constraint:String {maxLength: 1048576, minLength: 1}
     string Body;
     # The format of the body, either plain text or html
     string BodyType?;
     # The template for the body of the SMS message.  This can contain variables, see the OptiTune help documentation for more details.
+    @constraint:String {maxLength: 160}
     string SMSBody?;
 };
 
@@ -1092,8 +1182,10 @@ public type MailTemplate record {
 public type OrganizationSettings record {
     string OrganizationID?;
     # The storage quota (in bytes) assigned to the organization, from 100MB to 25TB
+    @constraint:Int {minValue: 104857600, maxValue: 0}
     int StorageQuota?;
     # An optional billing token to associate with the organization, if monthly billing is to be used in addition or instead of product keys
+    @constraint:String {maxLength: 255}
     string BillingToken?;
     # Specifies whether or not the billing token is locked.  If true, the user cannot edit the billing token, otherwise they can edit the billing
     # token for the organization.
@@ -1101,7 +1193,9 @@ public type OrganizationSettings record {
 };
 
 public type IDUpdateFilter record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string UpdateNumber;
+    @constraint:String {maxLength: 255}
     string UpdateRevision?;
     int ListOrder?;
 };
@@ -1111,6 +1205,7 @@ public type ProductKey record {
     string ExpirationDate?;
     int NumLicenses?;
     boolean IsTrialLicense?;
+    @constraint:String {maxLength: 255, minLength: 32}
     string RegistrationCode;
 };
 
@@ -1124,10 +1219,13 @@ public type AuditLogCustom record {
 };
 
 public type RegistryValueCondition record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Key;
     # We don't support ValueName of length 0, use a RegistryKeyCondition instead
+    @constraint:String {maxLength: 255, minLength: 1}
     string ValueName;
     string ValueType?;
+    @constraint:String {maxLength: 255}
     string StringValue?;
     int DwordValue?;
     int ListOrder?;
@@ -1145,7 +1243,7 @@ public type BenchmarkDataPoint record {
     int BenchmarkID?;
     int DataSetID?;
     string Date?;
-    float Value?;
+    decimal Value?;
     int Flags?;
 };
 
@@ -1206,8 +1304,10 @@ public type NotificationGroupMember record {
     # The ID of the notification group
     string NotificationGroupID?;
     # The first name of the user
+    @constraint:String {maxLength: 255, minLength: 1}
     string FirstName;
     # The last name of the user
+    @constraint:String {maxLength: 255, minLength: 1}
     string LastName;
     # The email address of the user
     string Email?;
@@ -1218,8 +1318,11 @@ public type NotificationGroupMember record {
 public type CustomUpdateFilter record {
     int PublishedDaysGreaterThan?;
     int PublishedDaysLessThan?;
+    @constraint:String {maxLength: 255}
     string Product?;
+    @constraint:String {maxLength: 255}
     string Classification?;
+    @constraint:String {maxLength: 255}
     string Importance?;
     int Flags?;
     int ListOrder?;
@@ -1229,15 +1332,19 @@ public type CustomUpdateFilter record {
 public type Webhook record {
     string ID?;
     string GroupID?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string State?;
     string WebhookEventType?;
     string WebhookEventSubType?;
+    @constraint:String {maxLength: 1024, minLength: 1}
     string Url;
 };
 
 public type NameContainsUpdateFilter record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string NameContains;
     int ListOrder?;
 };
@@ -1249,8 +1356,10 @@ public type OptiTuneGroup record {
     # The ID of the parent group, if the group has a parent group
     string ParentID?;
     # The name of the group
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # Any notes you wish to keep about the group
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The segment is a user readable string that identifies this group in a path of groups, for example,
     # "groupa" in groupa.groupb.root  
@@ -1258,6 +1367,7 @@ public type OptiTuneGroup record {
     # It should only contain lower case letters, digits, and '-' for spaces.  No punctuation or whitespace is allowed.
     # 
     # If left out or blank, it will be calculated based on the group name.
+    @constraint:String {maxLength: 255}
     string Segment?;
     # True if the group's members are managed by the system, otherwise false.
     # For example, All Computers is a system group
@@ -1270,6 +1380,7 @@ public type OptiTuneGroup record {
     # The priority indicates the relative importance of the group.  Lower numbers indicate a higher priority,
     # and groups with lower numbers will win when conflicting settings are created for a computer that belongs to
     # multiple groups.
+    @constraint:Int {maxValue: 1000}
     int Priority?;
     GroupMembershipRules MembershipRules?;
 };
@@ -1281,6 +1392,7 @@ public type FavoriteTask record {
 };
 
 public type KBArticleUpdateFilter record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string KBArticle;
     int ListOrder?;
 };
@@ -1290,6 +1402,7 @@ public type AnyTimeWeeklyScheduleItem record {
 };
 
 public type DirectoryCondition record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     int ListOrder?;
 };
@@ -1334,13 +1447,16 @@ public type GroupMembershipValueMatchesRule record {
     string ValueType;
     # Note that this can be the empty string in certain cases, depending on the value of ValueType.  BadRequest will be returned
     # if this value is invalid
+    @constraint:String {maxLength: 1024}
     string Value;
     int ListOrder?;
 };
 
 # Summary description for PageDTO
 public type Page record {
+    @constraint:Int {maxValue: 2147483647}
     int Number?;
+    @constraint:Int {minValue: 1, maxValue: 1000}
     int Size?;
 };
 
@@ -1355,10 +1471,13 @@ public type NotificationGroup record {
     # The ID of the notification group
     string ID?;
     # The name of the notification group
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description for the notification group
+    @constraint:String {maxLength: 1024, minLength: 1}
     string Description;
     # Any notes you wish to keep about the notification group
+    @constraint:String {maxLength: 4000}
     string Notes?;
 };
 
@@ -1381,22 +1500,28 @@ public type InstallTask record {
     # If the installer file specified in PackageFileID or Locations is an .exe or .msi, this must be identical to that filename
     # 
     # If the installer file specified is a .bvx package file, this refers to the filename inside the .bvx package to run when installing the application
+    @constraint:String {maxLength: 255, minLength: 1}
     string SetupRelativePath;
     # Any command line arguments to pass to the installer file
+    @constraint:String {maxLength: 255}
     string CommandLineArgs?;
     # Whether or not to keep the installer files (.exe, .msi, or extracted files from the .bvx package) after the install completes
     boolean KeepInstallerFiles?;
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;
@@ -1434,6 +1559,7 @@ public type BillingLicenseUsage record {
 };
 
 public type MonthlyScheduleItem record {
+    @constraint:Int {minValue: 1, maxValue: 31}
     int Day?;
     string Time?;
     int ListOrder?;
@@ -1500,10 +1626,12 @@ public type WindowsEventLogEntry record {
 # to setup monthly billing for the organization.
 public type BillingSettings record {
     # An optional billing token to associate with the organization, if monthly billing is to be used in addition or instead of product keys
+    @constraint:String {maxLength: 255}
     string BillingToken?;
 };
 
 public type FileCondition record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     int ListOrder?;
 };
@@ -1581,12 +1709,16 @@ public type Brand record {
     string BrandDomainID?;
     # A host name for accessing the branded site.  The fully qualified domain name will be "hostname.rootdomain", for example, "mycompany.rmmportal.com",
     # where "mycompany" is the host name, and "rmmportal.com" is the root domain
+    @constraint:String {maxLength: 255, minLength: 1}
     string HostName;
     # The title is used (optionally) when rendering the logo, and showing the HTML page title in the browser.
+    @constraint:String {maxLength: 255, minLength: 1}
     string Title;
     # The subtitle is used (optionally) when rendering the logo
+    @constraint:String {maxLength: 255}
     string Subtitle?;
     # A description for the brand.  This is for internal, informational purposes, and is not shown anywhere.
+    @constraint:String {maxLength: 1024}
     string Description?;
     # A file ID for the icon the browser uses to represent the site.  It will be displayed in the browser tab, next to the title, and often as a bookmark icon for the site.  Must be .png
     string FaviconFileID?;
@@ -1603,32 +1735,45 @@ public type Brand record {
     # These flags determine how the logo is displayed on the front page and main page.  Note that if you add a .css file, it can further alter this behavior.
     string Flags?;
     # Specify a color for the tabs in the sidebar
+    @constraint:String {maxLength: 7, minLength: 7}
     string TabColor;
     # Specify a color for the website buttons
+    @constraint:String {maxLength: 7, minLength: 7}
     string ButtonColor;
     # Specify a color for the website page links
+    @constraint:String {maxLength: 7, minLength: 7}
     string LinkColor;
     # Specify a color for text headings
+    @constraint:String {maxLength: 7, minLength: 7}
     string HeadingColor;
     # Specify a color for highlights, used as a lighter background color for small item lists
+    @constraint:String {maxLength: 7, minLength: 7}
     string HighlightColor;
     # Specify a color for drawing the background of the page
+    @constraint:String {maxLength: 7, minLength: 7}
     string PageBackgroundColor;
     # Specify a color for drawing the background of each content box's header
+    @constraint:String {maxLength: 7, minLength: 7}
     string ContentHeaderColor;
     # Specify a color for drawing the background of the sidebar
+    @constraint:String {maxLength: 7, minLength: 7}
     string SidebarBackgroundColor;
     # The font size in points (pt) used to display the logo title.  It can be a decimal number.
-    float TitleFontSize?;
+    @constraint:Number {minValue: 2, maxValue: 100.0}
+    decimal TitleFontSize?;
     # The font size in points (pt) used to display the logo subtitle.  It can be a decimal number.
-    float SubtitleFontSize?;
+    @constraint:Number {minValue: 2, maxValue: 100.0}
+    decimal SubtitleFontSize?;
 };
 
 # An event source
 public type EventSource record {
     string ID?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024, minLength: 1}
     string Description;
+    @constraint:String {maxLength: 4000}
     string Notes?;
     string Severity?;
     string State?;
@@ -1644,18 +1789,23 @@ public type ScriptTask record {
     string ScriptFileID?;
     string PackageFileID?;
     string ScriptType?;
+    @constraint:String {maxLength: 255}
     string CommandLineArgs?;
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;
@@ -1696,6 +1846,7 @@ public type ComputerDetails record {
 };
 
 public type RemoteAssistSupportAction record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     string Icon?;
     int ListOrder?;
@@ -1711,8 +1862,10 @@ public type File record {
     # The file's ID, used to reference the file in other resources
     string ID?;
     # The file's filename
+    @constraint:String {maxLength: 255}
     string FileName?;
     # The file's mime type
+    @constraint:String {maxLength: 255}
     string MimeType?;
     # The url from which the file can be downloaded
     string DownloadUrl?;
@@ -1748,14 +1901,18 @@ public type IntParameter record {
     int MinValue?;
     int MaxValue?;
     int Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
 };
 
 public type UrlSupportAction record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string UrlLink;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     string Icon?;
     int ListOrder?;
@@ -1765,7 +1922,9 @@ public type LongParameter record {
     int MinValue?;
     int MaxValue?;
     int Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -1788,10 +1947,13 @@ public type PerformanceSettings record {
     # Is performance monitoring enabled?
     boolean MonitoringEnabled?;
     # The reporting interval, in seconds at which the agent should send performance data.  The default is 1 hour.
+    @constraint:Int {minValue: 900, maxValue: 604800}
     int ReportingInterval?;
     # The sample interval, at which the agent should sample performance data.  The default is 30 seconds.
+    @constraint:Int {minValue: 2, maxValue: 1200060}
     int SampleInterval?;
     # The number of data points to store per computer.  The default is 5000.
+    @constraint:Int {minValue: 1000, maxValue: 5000}
     int MaxDataPoints?;
 };
 
@@ -1816,18 +1978,22 @@ public type RemoteAccessSettings record {
     # If enabled, show a message to the end user when the remote connect tool is activated
     string RemoteConnectNotifyState?;
     # If RemoteConnectNotifyState is Enabled, provide the message to display to the user when remote connect is activated on their machine
+    @constraint:String {maxLength: 1024}
     string RemoteConnectNotifyMessage?;
     # Enables/Disables the other remote tools, such as the command prompt, task manager, powershell, etc...
     string RemoteToolsState?;
     # If enabled, show a message to the end user when the other remote tools are activated
     string RemoteToolsNotifyState?;
     # If RemoteToolsNotifyState is Enabled, provide the message to display to the user when any of the other remote tools are activated
+    @constraint:String {maxLength: 1024}
     string RemoteToolsNotifyMessage?;
 };
 
 public type DateParameter record {
     string Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -1846,6 +2012,7 @@ public type ComputerMetadata record {
 };
 
 public type NameValuePair record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     int Value?;
 };
@@ -1853,8 +2020,11 @@ public type NameValuePair record {
 public type StringParameter record {
     int MinLength?;
     int MaxLength?;
+    @constraint:String {maxLength: 1024}
     string Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -1893,16 +2063,21 @@ public type EndpointProtection record {
 };
 
 public type EmailSupportAction record {
+    @constraint:String {maxLength: 255, minLength: 1}
     string To;
+    @constraint:String {maxLength: 255}
     string Subject?;
+    @constraint:String {maxLength: 1024}
     string Body?;
     boolean AttachScreenshot?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     string Icon?;
     int ListOrder?;
 };
 
 public type MonthlyByWeekdayScheduleItem record {
+    @constraint:Int {minValue: 1, maxValue: 5}
     int WeekOrder?;
     string DayOfWeek?;
     string Time?;
@@ -1912,7 +2087,9 @@ public type MonthlyByWeekdayScheduleItem record {
 public type EnumParameter record {
     int Value?;
     NameValuePair[] AllowedValues;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -1993,9 +2170,11 @@ public type WindowsEventLogName record {
 # Advanced settings for an organization
 public type AdvancedSettings record {
     # The reporting url, where OptiTune agents send their reports.
+    @constraint:String {maxLength: 255, minLength: 5}
     string ReportingUrl;
     # Specifies the minimum number of days that a Windows Update is available, before it is taken into account for Windows Update reporting.
     # For example, if you specify 5, then updates that have been released for less than 5 days won't affect the counts for number of computers needing important updates, recommended updates, or optional updates.
+    @constraint:Int {maxValue: 1000}
     int MinUpdateAge;
     SimpleParameterList ComputerMetadataPrototype;
 };
@@ -2016,14 +2195,19 @@ public type AgentInstaller record {
     # The date and time this agent installer was last modified
     string DateModified?;
     # An internal only name for the agent installer
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # An internal only description for the agent installer
+    @constraint:String {maxLength: 1024, minLength: 1}
     string Description;
     # Optional Publisher Name
+    @constraint:String {maxLength: 255}
     string PublisherName?;
     # Optional Application Name
+    @constraint:String {maxLength: 255}
     string ApplicationName?;
     # Optional Client Identifier to use when installing the OptiTune agent
+    @constraint:String {maxLength: 255}
     string ClientIdentifier?;
     # Specifies whether or not the agent can be downloaded by anyone who has the agent installer URL (true), or if the
     # user needs to be logged in to OptiTune to download the agent installer (false)
@@ -2032,8 +2216,11 @@ public type AgentInstaller record {
     string InstallerBackgroundImageFileID?;
     string EulaFileID?;
     string PostInstallExeFileID?;
+    @constraint:String {maxLength: 255}
     string PostInstallCmdParameters?;
+    @constraint:String {maxLength: 255}
     string PostInstallUrlDisplayName?;
+    @constraint:String {maxLength: 255}
     string PostInstallUrl?;
     string InstallerFileID?;
     # If there was a problem building the installer, the description is saved
@@ -2043,7 +2230,9 @@ public type AgentInstaller record {
 
 public type GuidParameter record {
     string Value?;
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
+    @constraint:String {maxLength: 1024}
     string Description?;
     string Type?;
     int ListOrder?;
@@ -2084,6 +2273,7 @@ public type UninstallTask record {
     # For example:
     # %programfiles%\myapp32\bin\uinstall.exe /s /r
     # %programfiles64%\myapp64\bin\uinstall.exe /s /r
+    @constraint:String {maxLength: 255}
     string CommandLine?;
     # Enter the product ID (in Guid format) for the msi application you wish to uninstall
     #             
@@ -2097,6 +2287,7 @@ public type UninstallTask record {
     # For example:
     # myapp 
     # {2012098D-EEE9-4769-8DD3-B038050854D4}
+    @constraint:String {maxLength: 255}
     string UninstallSubkeyName?;
     # Enter any extra command line arguments you wish to pass to the uninstaller, when using the UninstallSubkeyName parameter
     # This allows you to specify the uninstall command using the uninstall registry key name, but add additional parameters such 
@@ -2104,19 +2295,24 @@ public type UninstallTask record {
     # 
     # For example:
     # /s /q
+    @constraint:String {maxLength: 255}
     string UninstallSubkeyExtraCommandLineArgs?;
     string UninstallMethod?;
     # The ID for the task in the database
     string ID?;
     # The name of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Name;
     # A description of the task
+    @constraint:String {maxLength: 255, minLength: 1}
     string Description;
     # Notes about the task
+    @constraint:String {maxLength: 4000}
     string Notes?;
     # The date/time in UTC that the task was modified
     string DateModified?;
     # The time to wait for the task to complete, in minutes
+    @constraint:Int {minValue: 5, maxValue: 20000}
     int Timeout?;
     # The type of task
     string TaskType?;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification.
@@ -95,7 +99,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdataset(string datasetId) returns Dataset|error {
-        string resourcePath = string `/datasets/${datasetId}`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}`;
         Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -104,8 +108,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDeletedataset(string datasetId) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of tables tables within the specified dataset from **"My Workspace"**.
@@ -113,7 +117,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGettables(string datasetId) returns Tables|error {
-        string resourcePath = string `/datasets/${datasetId}/tables`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/tables`;
         Tables response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -124,7 +128,7 @@ public isolated client class Client {
     # + payload - Table name and columns to update existing table 
     # + return - OK 
     remote isolated function datasetsPuttable(string datasetId, string tableName, Table payload) returns Table|error {
-        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -138,7 +142,7 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPostrows(string datasetId, string tableName, PostRowsRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}/rows`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}/rows`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -151,8 +155,8 @@ public isolated client class Client {
     # + tableName - The table name 
     # + return - OK 
     remote isolated function datasetsDeleterows(string datasetId, string tableName) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/tables/${tableName}/rows`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}/rows`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the refresh history of the specified dataset from **"My Workspace"**.
@@ -161,7 +165,7 @@ public isolated client class Client {
     # + top - The requested number of entries in the refresh history. If not provided, the default is all available entries. 
     # + return - OK 
     remote isolated function datasetsGetrefreshhistory(string datasetId, int? top = ()) returns Refreshes|error {
-        string resourcePath = string `/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/refreshes`;
         map<anydata> queryParam = {"$top": top};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshes response = check self.clientEp->get(resourcePath);
@@ -173,7 +177,7 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - Accepted 
     remote isolated function datasetsRefreshdataset(string datasetId, RefreshRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/refreshes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -185,7 +189,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetrefreshschedule(string datasetId) returns RefreshSchedule|error {
-        string resourcePath = string `/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/refreshSchedule`;
         RefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -195,7 +199,7 @@ public isolated client class Client {
     # + payload - Update Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdaterefreshschedule(string datasetId, RefreshScheduleRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -207,7 +211,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdirectqueryrefreshschedule(string datasetId) returns DirectQueryRefreshSchedule|error {
-        string resourcePath = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/directQueryRefreshSchedule`;
         DirectQueryRefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -217,7 +221,7 @@ public isolated client class Client {
     # + payload - Patch DirectQuery or LiveConnection Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdatedirectqueryrefreshschedule(string datasetId, DirectQueryRefreshScheduleRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/directQueryRefreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -229,7 +233,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetparameters(string datasetId) returns MashupParameters|error {
-        string resourcePath = string `/datasets/${datasetId}/parameters`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/parameters`;
         MashupParameters response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -239,7 +243,7 @@ public isolated client class Client {
     # + payload - Update mashup parameter request 
     # + return - OK 
     remote isolated function datasetsUpdateparameters(string datasetId, UpdateMashupParametersRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.UpdateParameters`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.UpdateParameters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -251,7 +255,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasources(string datasetId) returns Datasources|error {
-        string resourcePath = string `/datasets/${datasetId}/datasources`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -261,7 +265,7 @@ public isolated client class Client {
     # + payload - Update datasource request 
     # + return - OK 
     remote isolated function datasetsUpdatedatasources(string datasetId, UpdateDatasourcesRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.UpdateDatasources`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -277,7 +281,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function datasetsSetalldatasetconnections(string datasetId, ConnectionDetails payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.SetAllConnections`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.SetAllConnections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -290,7 +294,7 @@ public isolated client class Client {
     # + payload - The bind to gateway request 
     # + return - OK 
     remote isolated function datasetsBindtogateway(string datasetId, BindToGatewayRequest payload) returns http:Response|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.BindToGateway`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.BindToGateway`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -302,7 +306,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetgatewaydatasources(string datasetId) returns GatewayDatasources|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.GetBoundGatewayDatasources`;
         GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -311,7 +315,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDiscovergateways(string datasetId) returns Gateways|error {
-        string resourcePath = string `/datasets/${datasetId}/Default.DiscoverGateways`;
+        string resourcePath = string `/datasets/${getEncodedUri(datasetId)}/Default.DiscoverGateways`;
         Gateways response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -355,7 +359,7 @@ public isolated client class Client {
     # + importId - The import id 
     # + return - OK 
     remote isolated function importsGetimport(string importId) returns Import|error {
-        string resourcePath = string `/imports/${importId}`;
+        string resourcePath = string `/imports/${getEncodedUri(importId)}`;
         Import response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -382,7 +386,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetreport(string reportId) returns Report|error {
-        string resourcePath = string `/reports/${reportId}`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}`;
         Report response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -391,8 +395,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsDeletereport(string reportId) returns http:Response|error {
-        string resourcePath = string `/reports/${reportId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Clones the specified report from **"My Workspace"**.
@@ -401,7 +405,7 @@ public isolated client class Client {
     # + payload - Clone report parameters 
     # + return - OK 
     remote isolated function reportsClonereport(string reportId, CloneReportRequest payload) returns Report|error {
-        string resourcePath = string `/reports/${reportId}/Clone`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -413,7 +417,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - Exported File 
     remote isolated function reportsExportreport(string reportId) returns string|error {
-        string resourcePath = string `/reports/${reportId}/Export`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/Export`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -423,7 +427,7 @@ public isolated client class Client {
     # + payload - UpdateReportContent parameters 
     # + return - OK 
     remote isolated function reportsUpdatereportcontent(string reportId, UpdateReportContentRequest payload) returns Report|error {
-        string resourcePath = string `/reports/${reportId}/UpdateReportContent`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/UpdateReportContent`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -436,7 +440,7 @@ public isolated client class Client {
     # + payload - Rebind report parameters 
     # + return - OK 
     remote isolated function reportsRebindreport(string reportId, RebindReportRequest payload) returns http:Response|error {
-        string resourcePath = string `/reports/${reportId}/Rebind`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/Rebind`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -448,7 +452,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetpages(string reportId) returns Pages|error {
-        string resourcePath = string `/reports/${reportId}/pages`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/pages`;
         Pages response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -458,7 +462,7 @@ public isolated client class Client {
     # + pageName - The page name 
     # + return - OK 
     remote isolated function reportsGetpage(string reportId, string pageName) returns Page|error {
-        string resourcePath = string `/reports/${reportId}/pages/${pageName}`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/pages/${getEncodedUri(pageName)}`;
         Page response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -467,7 +471,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetdatasources(string reportId) returns Datasources|error {
-        string resourcePath = string `/reports/${reportId}/datasources`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -477,7 +481,7 @@ public isolated client class Client {
     # + payload - Update RDL datasources request 
     # + return - OK 
     remote isolated function reportsUpdatedatasources(string reportId, UpdateRdlDatasourcesRequest payload) returns http:Response|error {
-        string resourcePath = string `/reports/${reportId}/Default.UpdateDatasources`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -490,7 +494,7 @@ public isolated client class Client {
     # + payload - Export to file request parameters 
     # + return - Accepted 
     remote isolated function reportsExporttofile(string reportId, ExportReportRequest payload) returns Export|error {
-        string resourcePath = string `/reports/${reportId}/ExportTo`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/ExportTo`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -503,7 +507,7 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - OK 
     remote isolated function reportsGetexporttofilestatus(string reportId, string exportId) returns Export|error {
-        string resourcePath = string `/reports/${reportId}/exports/${exportId}`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/exports/${getEncodedUri(exportId)}`;
         Export response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -513,7 +517,7 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - The exported file 
     remote isolated function reportsGetfileofexporttofile(string reportId, string exportId) returns string|error {
-        string resourcePath = string `/reports/${reportId}/exports/${exportId}/file`;
+        string resourcePath = string `/reports/${getEncodedUri(reportId)}/exports/${getEncodedUri(exportId)}/file`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -542,7 +546,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGetdashboard(string dashboardId) returns Dashboard|error {
-        string resourcePath = string `/dashboards/${dashboardId}`;
+        string resourcePath = string `/dashboards/${getEncodedUri(dashboardId)}`;
         Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -551,7 +555,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettiles(string dashboardId) returns Tiles|error {
-        string resourcePath = string `/dashboards/${dashboardId}/tiles`;
+        string resourcePath = string `/dashboards/${getEncodedUri(dashboardId)}/tiles`;
         Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -561,7 +565,7 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function dashboardsGettile(string dashboardId, string tileId) returns Tile|error {
-        string resourcePath = string `/dashboards/${dashboardId}/tiles/${tileId}`;
+        string resourcePath = string `/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}`;
         Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -572,7 +576,7 @@ public isolated client class Client {
     # + payload - Clone tile parameters 
     # + return - OK 
     remote isolated function dashboardsClonetile(string dashboardId, string tileId, CloneTileRequest payload) returns Tile|error {
-        string resourcePath = string `/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
+        string resourcePath = string `/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -584,7 +588,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasetsingroup(string groupId) returns Datasets|error {
-        string resourcePath = string `/groups/${groupId}/datasets`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets`;
         Datasets response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -595,7 +599,7 @@ public isolated client class Client {
     # + payload - Create dataset parameters 
     # + return - Created 
     remote isolated function datasetsPostdatasetingroup(string groupId, CreateDatasetRequest payload, string? defaultRetentionPolicy = ()) returns Dataset|error {
-        string resourcePath = string `/groups/${groupId}/datasets`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets`;
         map<anydata> queryParam = {"defaultRetentionPolicy": defaultRetentionPolicy};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -609,7 +613,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasettodataflowslinksingroup(string groupId) returns DatasetToDataflowLinksResponse|error {
-        string resourcePath = string `/groups/${groupId}/datasets/upstreamDataflows`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/upstreamDataflows`;
         DatasetToDataflowLinksResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -619,7 +623,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasetingroup(string groupId, string datasetId) returns Dataset|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}`;
         Dataset response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -629,8 +633,8 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDeletedatasetingroup(string groupId, string datasetId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of tables within the specified dataset from the specified workspace.
@@ -639,7 +643,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGettablesingroup(string groupId, string datasetId) returns Tables|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/tables`;
         Tables response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -651,7 +655,7 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPuttableingroup(string groupId, string datasetId, string tableName, Table payload) returns Table|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -666,7 +670,7 @@ public isolated client class Client {
     # + payload - The request message 
     # + return - OK 
     remote isolated function datasetsPostrowsingroup(string groupId, string datasetId, string tableName, PostRowsRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}/rows`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -680,8 +684,8 @@ public isolated client class Client {
     # + tableName - The table name 
     # + return - OK 
     remote isolated function datasetsDeleterowsingroup(string groupId, string datasetId, string tableName) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/tables/${tableName}/rows`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/tables/${getEncodedUri(tableName)}/rows`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns the refresh history of the specified dataset from the specified workspace.
@@ -691,7 +695,7 @@ public isolated client class Client {
     # + top - The requested number of entries in the refresh history. If not provided, the default is all available entries. 
     # + return - OK 
     remote isolated function datasetsGetrefreshhistoryingroup(string groupId, string datasetId, int? top = ()) returns Refreshes|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/refreshes`;
         map<anydata> queryParam = {"$top": top};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshes response = check self.clientEp->get(resourcePath);
@@ -704,7 +708,7 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - Accepted 
     remote isolated function datasetsRefreshdatasetingroup(string groupId, string datasetId, RefreshRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshes`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/refreshes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -717,7 +721,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetrefreshscheduleingroup(string groupId, string datasetId) returns RefreshSchedule|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/refreshSchedule`;
         RefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -728,7 +732,7 @@ public isolated client class Client {
     # + payload - Update Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdaterefreshscheduleingroup(string groupId, string datasetId, RefreshScheduleRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/refreshSchedule`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -741,7 +745,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdirectqueryrefreshscheduleingroup(string groupId, string datasetId) returns DirectQueryRefreshSchedule|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/directQueryRefreshSchedule`;
         DirectQueryRefreshSchedule response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -752,7 +756,7 @@ public isolated client class Client {
     # + payload - Patch DirectQuery or LiveConnection Refresh Schedule parameters, by specifying all or some of the parameters 
     # + return - OK 
     remote isolated function datasetsUpdatedirectqueryrefreshscheduleingroup(string groupId, string datasetId, DirectQueryRefreshScheduleRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/directQueryRefreshSchedule`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/directQueryRefreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -765,7 +769,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetparametersingroup(string groupId, string datasetId) returns MashupParameters|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/parameters`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/parameters`;
         MashupParameters response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -776,7 +780,7 @@ public isolated client class Client {
     # + payload - Update mashup parameter request 
     # + return - OK 
     remote isolated function datasetsUpdateparametersingroup(string groupId, string datasetId, UpdateMashupParametersRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateParameters`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.UpdateParameters`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -789,7 +793,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasourcesingroup(string groupId, string datasetId) returns Datasources|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/datasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -800,7 +804,7 @@ public isolated client class Client {
     # + payload - Update datasource request 
     # + return - OK 
     remote isolated function datasetsUpdatedatasourcesingroup(string groupId, string datasetId, UpdateDatasourcesRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.UpdateDatasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -817,7 +821,7 @@ public isolated client class Client {
     # # Deprecated
     @deprecated
     remote isolated function datasetsSetalldatasetconnectionsingroup(string groupId, string datasetId, ConnectionDetails payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.SetAllConnections`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.SetAllConnections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -831,7 +835,7 @@ public isolated client class Client {
     # + payload - The bind to gateway request 
     # + return - OK 
     remote isolated function datasetsBindtogatewayingroup(string groupId, string datasetId, BindToGatewayRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.BindToGateway`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.BindToGateway`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -844,7 +848,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetgatewaydatasourcesingroup(string groupId, string datasetId) returns GatewayDatasources|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.GetBoundGatewayDatasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.GetBoundGatewayDatasources`;
         GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -854,7 +858,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsDiscovergatewaysingroup(string groupId, string datasetId) returns Gateways|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.DiscoverGateways`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.DiscoverGateways`;
         Gateways response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -864,7 +868,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsTakeoveringroup(string groupId, string datasetId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/Default.TakeOver`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/Default.TakeOver`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -875,7 +879,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function importsGetimportsingroup(string groupId) returns Imports|error {
-        string resourcePath = string `/groups/${groupId}/imports`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/imports`;
         Imports response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -888,7 +892,7 @@ public isolated client class Client {
     # + payload - The import to post 
     # + return - OK 
     remote isolated function importsPostimportingroup(string groupId, string datasetDisplayName, ImportInfo payload, string? nameConflict = (), boolean? skipReport = ()) returns Import|error {
-        string resourcePath = string `/groups/${groupId}/imports`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/imports`;
         map<anydata> queryParam = {"datasetDisplayName": datasetDisplayName, "nameConflict": nameConflict, "skipReport": skipReport};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -903,7 +907,7 @@ public isolated client class Client {
     # + importId - The import id 
     # + return - OK 
     remote isolated function importsGetimportingroup(string groupId, string importId) returns Import|error {
-        string resourcePath = string `/groups/${groupId}/imports/${importId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/imports/${getEncodedUri(importId)}`;
         Import response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -912,7 +916,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function importsCreatetemporaryuploadlocationingroup(string groupId) returns TemporaryUploadLocation|error {
-        string resourcePath = string `/groups/${groupId}/imports/createTemporaryUploadLocation`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/imports/createTemporaryUploadLocation`;
         http:Request request = new;
         //TODO: Update the request as needed;
         TemporaryUploadLocation response = check self.clientEp-> post(resourcePath, request);
@@ -923,7 +927,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function reportsGetreportsingroup(string groupId) returns Reports|error {
-        string resourcePath = string `/groups/${groupId}/reports`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports`;
         Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -933,7 +937,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetreportingroup(string groupId, string reportId) returns Report|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}`;
         Report response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -943,8 +947,8 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsDeletereportingroup(string groupId, string reportId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Clones the specified report from the specified workspace.
@@ -954,7 +958,7 @@ public isolated client class Client {
     # + payload - Clone report parameters 
     # + return - OK 
     remote isolated function reportsClonereportingroup(string groupId, string reportId, CloneReportRequest payload) returns Report|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Clone`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -967,7 +971,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - Exported File 
     remote isolated function reportsExportreportingroup(string groupId, string reportId) returns string|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Export`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/Export`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -978,7 +982,7 @@ public isolated client class Client {
     # + payload - UpdateReportContent parameters 
     # + return - OK 
     remote isolated function reportsUpdatereportcontentingroup(string groupId, string reportId, UpdateReportContentRequest payload) returns Report|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/UpdateReportContent`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/UpdateReportContent`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -992,7 +996,7 @@ public isolated client class Client {
     # + payload - Rebind report parameters 
     # + return - OK 
     remote isolated function reportsRebindreportingroup(string groupId, string reportId, RebindReportRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Rebind`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/Rebind`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1005,7 +1009,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetpagesingroup(string groupId, string reportId) returns Pages|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/pages`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/pages`;
         Pages response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1016,7 +1020,7 @@ public isolated client class Client {
     # + pageName - The page name 
     # + return - OK 
     remote isolated function reportsGetpageingroup(string groupId, string reportId, string pageName) returns Page|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/pages/${pageName}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/pages/${getEncodedUri(pageName)}`;
         Page response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1026,7 +1030,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsGetdatasourcesingroup(string groupId, string reportId) returns Datasources|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/datasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1037,7 +1041,7 @@ public isolated client class Client {
     # + payload - Update RDL datasources request 
     # + return - OK 
     remote isolated function reportsUpdatedatasourcesingroup(string groupId, string reportId, UpdateRdlDatasourcesRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Default.UpdateDatasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/Default.UpdateDatasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1051,7 +1055,7 @@ public isolated client class Client {
     # + payload - Export to file request parameters 
     # + return - Accepted 
     remote isolated function reportsExporttofileingroup(string groupId, string reportId, ExportReportRequest payload) returns Export|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/ExportTo`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/ExportTo`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1065,7 +1069,7 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - OK 
     remote isolated function reportsGetexporttofilestatusingroup(string groupId, string reportId, string exportId) returns Export|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/exports/${getEncodedUri(exportId)}`;
         Export response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1076,7 +1080,7 @@ public isolated client class Client {
     # + exportId - The export id 
     # + return - The exported file 
     remote isolated function reportsGetfileofexporttofileingroup(string groupId, string reportId, string exportId) returns string|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/exports/${exportId}/file`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/exports/${getEncodedUri(exportId)}/file`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1085,7 +1089,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function dashboardsGetdashboardsingroup(string groupId) returns Dashboards|error {
-        string resourcePath = string `/groups/${groupId}/dashboards`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards`;
         Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1095,7 +1099,7 @@ public isolated client class Client {
     # + payload - Add dashboard parameters 
     # + return - OK 
     remote isolated function dashboardsAdddashboardingroup(string groupId, AddDashboardRequest payload) returns Dashboard|error {
-        string resourcePath = string `/groups/${groupId}/dashboards`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1108,7 +1112,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGetdashboardingroup(string groupId, string dashboardId) returns Dashboard|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}`;
         Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1118,7 +1122,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettilesingroup(string groupId, string dashboardId) returns Tiles|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}/tiles`;
         Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1129,7 +1133,7 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function dashboardsGettileingroup(string groupId, string dashboardId, string tileId) returns Tile|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}`;
         Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1141,7 +1145,7 @@ public isolated client class Client {
     # + payload - Clone tile parameters 
     # + return - OK 
     remote isolated function dashboardsClonetileingroup(string groupId, string dashboardId, string tileId, CloneTileRequest payload) returns Tile|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/Clone`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}/Clone`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1154,7 +1158,7 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function reportsGeneratetokenforcreateingroup(string groupId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string resourcePath = string `/groups/${groupId}/reports/GenerateToken`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1168,7 +1172,7 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function reportsGeneratetokeningroup(string groupId, string reportId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/GenerateToken`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1182,7 +1186,7 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function datasetsGeneratetokeningroup(string groupId, string datasetId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string resourcePath = string `/groups/${groupId}/datasets/${datasetId}/GenerateToken`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/datasets/${getEncodedUri(datasetId)}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1196,7 +1200,7 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function dashboardsGeneratetokeningroup(string groupId, string dashboardId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/GenerateToken`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1211,7 +1215,7 @@ public isolated client class Client {
     # + payload - Generate token parameters 
     # + return - OK 
     remote isolated function tilesGeneratetokeningroup(string groupId, string dashboardId, string tileId, GenerateTokenRequest payload) returns EmbedToken|error {
-        string resourcePath = string `/groups/${groupId}/dashboards/${dashboardId}/tiles/${tileId}/GenerateToken`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}/GenerateToken`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1231,7 +1235,7 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetapp(string appId) returns App|error {
-        string resourcePath = string `/apps/${appId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}`;
         App response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1240,7 +1244,7 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetreports(string appId) returns Reports|error {
-        string resourcePath = string `/apps/${appId}/reports`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/reports`;
         Reports response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1250,7 +1254,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function appsGetreport(string appId, string reportId) returns Report|error {
-        string resourcePath = string `/apps/${appId}/reports/${reportId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/reports/${getEncodedUri(reportId)}`;
         Report response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1259,7 +1263,7 @@ public isolated client class Client {
     # + appId - The app id 
     # + return - OK 
     remote isolated function appsGetdashboards(string appId) returns Dashboards|error {
-        string resourcePath = string `/apps/${appId}/dashboards`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/dashboards`;
         Dashboards response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1269,7 +1273,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function appsGetdashboard(string appId, string dashboardId) returns Dashboard|error {
-        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/dashboards/${getEncodedUri(dashboardId)}`;
         Dashboard response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1279,7 +1283,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function appsGettiles(string appId, string dashboardId) returns Tiles|error {
-        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}/tiles`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/dashboards/${getEncodedUri(dashboardId)}/tiles`;
         Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1290,7 +1294,7 @@ public isolated client class Client {
     # + tileId - The tile id 
     # + return - OK 
     remote isolated function appsGettile(string appId, string dashboardId, string tileId) returns Tile|error {
-        string resourcePath = string `/apps/${appId}/dashboards/${dashboardId}/tiles/${tileId}`;
+        string resourcePath = string `/apps/${getEncodedUri(appId)}/dashboards/${getEncodedUri(dashboardId)}/tiles/${getEncodedUri(tileId)}`;
         Tile response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1300,7 +1304,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - Exported Json file 
     remote isolated function dataflowsGetdataflow(string groupId, string dataflowId) returns string|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1310,8 +1314,8 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsDeletedataflow(string groupId, string dataflowId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update dataflow properties, capabilities and settings.
@@ -1321,7 +1325,7 @@ public isolated client class Client {
     # + payload - Patch dataflow properties, capabilities and settings 
     # + return - OK 
     remote isolated function dataflowsUpdatedataflow(string groupId, string dataflowId, DataflowUpdateRequestMessage payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1336,7 +1340,7 @@ public isolated client class Client {
     # + payload - Refresh request 
     # + return - OK 
     remote isolated function dataflowsRefreshdataflow(string groupId, string dataflowId, RefreshRequest payload, string? processType = ()) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/refreshes`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/refreshes`;
         map<anydata> queryParam = {"processType": processType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1351,7 +1355,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowdatasources(string groupId, string dataflowId) returns Datasources|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/datasources`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1360,7 +1364,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function dataflowsGetdataflows(string groupId) returns Dataflows|error {
-        string resourcePath = string `/groups/${groupId}/dataflows`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows`;
         Dataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1370,7 +1374,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetupstreamdataflowsingroup(string groupId, string dataflowId) returns DependentDataflows|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/upstreamDataflows`;
         DependentDataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1381,7 +1385,7 @@ public isolated client class Client {
     # + payload - The dataflow refresh schedule to create or update 
     # + return - OK 
     remote isolated function dataflowsUpdaterefreshschedule(string groupId, string dataflowId, RefreshScheduleRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/refreshSchedule`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/refreshSchedule`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1394,7 +1398,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowtransactions(string groupId, string dataflowId) returns DataflowTransactions|error {
-        string resourcePath = string `/groups/${groupId}/dataflows/${dataflowId}/transactions`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/transactions`;
         DataflowTransactions response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1404,7 +1408,7 @@ public isolated client class Client {
     # + transactionId - The transaction id 
     # + return - OK 
     remote isolated function dataflowsCanceldataflowtransaction(string groupId, string transactionId) returns DataflowTransactionStatus|error {
-        string resourcePath = string `/groups/${groupId}/dataflows//transactions/${transactionId}/cancel`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/dataflows//transactions/${getEncodedUri(transactionId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         DataflowTransactionStatus response = check self.clientEp-> post(resourcePath, request);
@@ -1423,7 +1427,7 @@ public isolated client class Client {
     # + gatewayId - The gateway id 
     # + return - OK 
     remote isolated function gatewaysGetgateway(string gatewayId) returns Gateway|error {
-        string resourcePath = string `/gateways/${gatewayId}`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}`;
         Gateway response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1432,7 +1436,7 @@ public isolated client class Client {
     # + gatewayId - The gateway id 
     # + return - OK 
     remote isolated function gatewaysGetdatasources(string gatewayId) returns GatewayDatasources|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources`;
         GatewayDatasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1442,7 +1446,7 @@ public isolated client class Client {
     # + payload - The datasource requested to create 
     # + return - Created 
     remote isolated function gatewaysCreatedatasource(string gatewayId, PublishDatasourceToGatewayRequest payload) returns GatewayDatasource|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1455,7 +1459,7 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasource(string gatewayId, string datasourceId) returns GatewayDatasource|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}`;
         GatewayDatasource response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1465,8 +1469,8 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysDeletedatasource(string gatewayId, string datasourceId) returns http:Response|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates the credentials of the specified datasource from the specified gateway.
@@ -1476,7 +1480,7 @@ public isolated client class Client {
     # + payload - The update datasource request 
     # + return - OK 
     remote isolated function gatewaysUpdatedatasource(string gatewayId, string datasourceId, UpdateDatasourceRequest payload) returns http:Response|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1489,7 +1493,7 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasourcestatus(string gatewayId, string datasourceId) returns http:Response|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/status`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}/status`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1499,7 +1503,7 @@ public isolated client class Client {
     # + datasourceId - The datasource id 
     # + return - OK 
     remote isolated function gatewaysGetdatasourceusers(string gatewayId, string datasourceId) returns DatasourceUsers|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}/users`;
         DatasourceUsers response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1510,7 +1514,7 @@ public isolated client class Client {
     # + payload - The add user to datasource request 
     # + return - OK 
     remote isolated function gatewaysAdddatasourceuser(string gatewayId, string datasourceId, DatasourceUser payload) returns http:Response|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users`;
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1524,8 +1528,8 @@ public isolated client class Client {
     # + emailAdress - The user's email address or the service principal object id 
     # + return - OK 
     remote isolated function gatewaysDeletedatasourceuser(string gatewayId, string datasourceId, string emailAdress) returns http:Response|error {
-        string resourcePath = string `/gateways/${gatewayId}/datasources/${datasourceId}/users/${emailAdress}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/gateways/${getEncodedUri(gatewayId)}/datasources/${getEncodedUri(datasourceId)}/users/${getEncodedUri(emailAdress)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of workspaces the user has access to.
@@ -1561,8 +1565,8 @@ public isolated client class Client {
     # + groupId - The workspace id to delete 
     # + return - OK 
     remote isolated function groupsDeletegroup(string groupId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of users that have access to the specified workspace.
@@ -1570,7 +1574,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function groupsGetgroupusers(string groupId) returns GroupUsers|error {
-        string resourcePath = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/users`;
         GroupUsers response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1580,7 +1584,7 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsUpdategroupuser(string groupId, GroupUser payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1593,7 +1597,7 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsAddgroupuser(string groupId, GroupUser payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/users`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1606,8 +1610,8 @@ public isolated client class Client {
     # + user - The email address of the user or the service principal object id to delete 
     # + return - OK 
     remote isolated function groupsDeleteuseringroup(string groupId, string user) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/users/${user}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/users/${getEncodedUri(user)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns a list of capacities the user has access to.
@@ -1623,7 +1627,7 @@ public isolated client class Client {
     # + capacityId - The capacity Id 
     # + return - OK 
     remote isolated function capacitiesGetworkloads(string capacityId) returns Workloads|error {
-        string resourcePath = string `/capacities/${capacityId}/Workloads`;
+        string resourcePath = string `/capacities/${getEncodedUri(capacityId)}/Workloads`;
         Workloads response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1633,7 +1637,7 @@ public isolated client class Client {
     # + workloadName - The name of the workload 
     # + return - OK 
     remote isolated function capacitiesGetworkload(string capacityId, string workloadName) returns Workload|error {
-        string resourcePath = string `/capacities/${capacityId}/Workloads/${workloadName}`;
+        string resourcePath = string `/capacities/${getEncodedUri(capacityId)}/Workloads/${getEncodedUri(workloadName)}`;
         Workload response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1644,7 +1648,7 @@ public isolated client class Client {
     # + payload - Patch workload parameters 
     # + return - OK 
     remote isolated function capacitiesPatchworkload(string capacityId, string workloadName, PatchWorkloadRequest payload) returns http:Response|error {
-        string resourcePath = string `/capacities/${capacityId}/Workloads/${workloadName}`;
+        string resourcePath = string `/capacities/${getEncodedUri(capacityId)}/Workloads/${getEncodedUri(workloadName)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1674,7 +1678,7 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function capacitiesGetrefreshablesforcapacity(string capacityId, int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string resourcePath = string `/capacities/${capacityId}/refreshables`;
+        string resourcePath = string `/capacities/${getEncodedUri(capacityId)}/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshables response = check self.clientEp->get(resourcePath);
@@ -1687,7 +1691,7 @@ public isolated client class Client {
     # + expand - Expands related entities inline, receives a comma-separated list of data types. Supported: capacities and groups 
     # + return - OK 
     remote isolated function capacitiesGetrefreshableforcapacity(string capacityId, string refreshableId, string? expand = ()) returns Refreshables|error {
-        string resourcePath = string `/capacities/${capacityId}/refreshables/${refreshableId}`;
+        string resourcePath = string `/capacities/${getEncodedUri(capacityId)}/refreshables/${getEncodedUri(refreshableId)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshables response = check self.clientEp->get(resourcePath);
@@ -1711,7 +1715,7 @@ public isolated client class Client {
     # + payload - Assign to capacity parameters 
     # + return - OK 
     remote isolated function groupsAssigntocapacity(string groupId, AssignToCapacityRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/AssignToCapacity`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/AssignToCapacity`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1731,7 +1735,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function groupsCapacityassignmentstatus(string groupId) returns WorkspaceCapacityAssignmentStatus|error {
-        string resourcePath = string `/groups/${groupId}/CapacityAssignmentStatus`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/CapacityAssignmentStatus`;
         WorkspaceCapacityAssignmentStatus response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1748,7 +1752,7 @@ public isolated client class Client {
     # + featureName - The feature name 
     # + return - OK 
     remote isolated function availablefeaturesGetavailablefeaturebyname(string featureName) returns AvailableFeature|error {
-        string resourcePath = string `/availableFeatures(featureName='${featureName}')`;
+        string resourcePath = string `/availableFeatures(featureName='${getEncodedUri(featureName)}')`;
         AvailableFeature response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1766,7 +1770,7 @@ public isolated client class Client {
     # + payload - Assign to Power BI dataflow storage account parameters 
     # + return - OK 
     remote isolated function groupsAssigntodataflowstorage(string groupId, AssignToDataflowStorageRequest payload) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/AssignToDataflowStorage`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/AssignToDataflowStorage`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1794,7 +1798,7 @@ public isolated client class Client {
     # + scanId - The scan id 
     # + return - OK 
     remote isolated function workspaceinfoGetscanstatus(string scanId) returns ScanRequest|error {
-        string resourcePath = string `/admin/workspaces/scanStatus/${scanId}`;
+        string resourcePath = string `/admin/workspaces/scanStatus/${getEncodedUri(scanId)}`;
         ScanRequest response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1803,7 +1807,7 @@ public isolated client class Client {
     # + scanId - The scan id 
     # + return - OK 
     remote isolated function workspaceinfoGetscanresult(string scanId) returns WorkspaceInfoResponse|error {
-        string resourcePath = string `/admin/workspaces/scanResult/${scanId}`;
+        string resourcePath = string `/admin/workspaces/scanResult/${getEncodedUri(scanId)}`;
         WorkspaceInfoResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1860,7 +1864,7 @@ public isolated client class Client {
     # + datasetId - The dataset id 
     # + return - OK 
     remote isolated function datasetsGetdatasourcesasadmin(string datasetId) returns Datasources|error {
-        string resourcePath = string `/admin/datasets/${datasetId}/datasources`;
+        string resourcePath = string `/admin/datasets/${getEncodedUri(datasetId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1884,7 +1888,7 @@ public isolated client class Client {
     # + payload - The properties to update 
     # + return - OK 
     remote isolated function groupsUpdategroupasadmin(string groupId, Group payload) returns http:Response|error {
-        string resourcePath = string `/admin/groups/${groupId}`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1897,7 +1901,7 @@ public isolated client class Client {
     # + payload - Details of user access right 
     # + return - OK 
     remote isolated function groupsAdduserasadmin(string groupId, GroupUser payload) returns http:Response|error {
-        string resourcePath = string `/admin/groups/${groupId}/users`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/users`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1910,8 +1914,8 @@ public isolated client class Client {
     # + user - The user principal name (UPN) of the user to remove (usually the user's email). 
     # + return - OK 
     remote isolated function groupsDeleteuserasadmin(string groupId, string user) returns http:Response|error {
-        string resourcePath = string `/admin/groups/${groupId}/users/${user}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/users/${getEncodedUri(user)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Restores a deleted workspace.
@@ -1920,7 +1924,7 @@ public isolated client class Client {
     # + payload - Details of the group restore request 
     # + return - OK 
     remote isolated function groupsRestoredeletedgroupasadmin(string groupId, GroupRestoreRequest payload) returns http:Response|error {
-        string resourcePath = string `/admin/groups/${groupId}/restore`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/restore`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1933,7 +1937,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetupstreamdataflowsingroupasadmin(string groupId, string dataflowId) returns DependentDataflows|error {
-        string resourcePath = string `/admin/groups/${groupId}/dataflows/${dataflowId}/upstreamDataflows`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/dataflows/${getEncodedUri(dataflowId)}/upstreamDataflows`;
         DependentDataflows response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1945,7 +1949,7 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dashboardsGetdashboardsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Dashboards|error {
-        string resourcePath = string `/admin/groups/${groupId}/dashboards`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/dashboards`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Dashboards response = check self.clientEp->get(resourcePath);
@@ -1959,7 +1963,7 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function reportsGetreportsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Reports|error {
-        string resourcePath = string `/admin/groups/${groupId}/reports`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/reports`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Reports response = check self.clientEp->get(resourcePath);
@@ -1974,7 +1978,7 @@ public isolated client class Client {
     # + expand - Expands related entities inline 
     # + return - OK 
     remote isolated function datasetsGetdatasetsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = (), string? expand = ()) returns Datasets|error {
-        string resourcePath = string `/admin/groups/${groupId}/datasets`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/datasets`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip, "$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Datasets response = check self.clientEp->get(resourcePath);
@@ -1985,7 +1989,7 @@ public isolated client class Client {
     # + groupId - The workspace id 
     # + return - OK 
     remote isolated function datasetsGetdatasettodataflowslinksingroupasadmin(string groupId) returns DatasetToDataflowLinksResponse|error {
-        string resourcePath = string `/admin/groups/${groupId}/datasets/upstreamDataflows`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/datasets/upstreamDataflows`;
         DatasetToDataflowLinksResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1997,7 +2001,7 @@ public isolated client class Client {
     # + skip - Skips the first n results 
     # + return - OK 
     remote isolated function dataflowsGetdataflowsingroupasadmin(string groupId, string? filter = (), int? top = (), int? skip = ()) returns Dataflows|error {
-        string resourcePath = string `/admin/groups/${groupId}/dataflows`;
+        string resourcePath = string `/admin/groups/${getEncodedUri(groupId)}/dataflows`;
         map<anydata> queryParam = {"$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Dataflows response = check self.clientEp->get(resourcePath);
@@ -2035,7 +2039,7 @@ public isolated client class Client {
     # + dashboardId - The dashboard id 
     # + return - OK 
     remote isolated function dashboardsGettilesasadmin(string dashboardId) returns Tiles|error {
-        string resourcePath = string `/admin/dashboards/${dashboardId}/tiles`;
+        string resourcePath = string `/admin/dashboards/${getEncodedUri(dashboardId)}/tiles`;
         Tiles response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2079,7 +2083,7 @@ public isolated client class Client {
     # + payload - Tenant key information 
     # + return - OK 
     remote isolated function adminRotatepowerbiencryptionkey(string tenantKeyId, TenantKeyRotationRequest payload) returns TenantKey|error {
-        string resourcePath = string `/admin/tenantKeys/${tenantKeyId}/Default.Rotate`;
+        string resourcePath = string `/admin/tenantKeys/${getEncodedUri(tenantKeyId)}/Default.Rotate`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2103,7 +2107,7 @@ public isolated client class Client {
     # + payload - Patch capacity information 
     # + return - OK 
     remote isolated function adminPatchcapacityasadmin(string capacityId, CapacityPatchRequest payload) returns http:Response|error {
-        string resourcePath = string `/admin/capacities/${capacityId}`;
+        string resourcePath = string `/admin/capacities/${getEncodedUri(capacityId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2133,7 +2137,7 @@ public isolated client class Client {
     # + skip - Skips the first n results. Use with top to fetch results beyond the first 1000. 
     # + return - OK 
     remote isolated function adminGetrefreshablesforcapacity(string capacityId, int top, string? expand = (), string? filter = (), int? skip = ()) returns Refreshables|error {
-        string resourcePath = string `/admin/capacities/${capacityId}/refreshables`;
+        string resourcePath = string `/admin/capacities/${getEncodedUri(capacityId)}/refreshables`;
         map<anydata> queryParam = {"$expand": expand, "$filter": filter, "$top": top, "$skip": skip};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshables response = check self.clientEp->get(resourcePath);
@@ -2146,7 +2150,7 @@ public isolated client class Client {
     # + expand - Expands related entities inline, receives a comma-separated list of data types. Supported: capacities and groups 
     # + return - OK 
     remote isolated function adminGetrefreshableforcapacity(string capacityId, string refreshableId, string? expand = ()) returns Refreshables|error {
-        string resourcePath = string `/admin/capacities/${capacityId}/refreshables/${refreshableId}`;
+        string resourcePath = string `/admin/capacities/${getEncodedUri(capacityId)}/refreshables/${getEncodedUri(refreshableId)}`;
         map<anydata> queryParam = {"$expand": expand};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Refreshables response = check self.clientEp->get(resourcePath);
@@ -2170,7 +2174,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - Exported Json file 
     remote isolated function dataflowsExportdataflowasadmin(string dataflowId) returns string|error {
-        string resourcePath = string `/admin/dataflows/${dataflowId}/export`;
+        string resourcePath = string `/admin/dataflows/${getEncodedUri(dataflowId)}/export`;
         string response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2179,7 +2183,7 @@ public isolated client class Client {
     # + dataflowId - The dataflow id 
     # + return - OK 
     remote isolated function dataflowsGetdataflowdatasourcesasadmin(string dataflowId) returns Datasources|error {
-        string resourcePath = string `/admin/dataflows/${dataflowId}/datasources`;
+        string resourcePath = string `/admin/dataflows/${getEncodedUri(dataflowId)}/datasources`;
         Datasources response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2251,7 +2255,7 @@ public isolated client class Client {
     # + reportId - The report id 
     # + return - OK 
     remote isolated function reportsTakeoveringroup(string groupId, string reportId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}/reports/${reportId}/Default.TakeOver`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}/reports/${getEncodedUri(reportId)}/Default.TakeOver`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);

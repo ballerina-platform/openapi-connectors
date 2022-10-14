@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,9 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ExternalCustomerHierarchyNodeKeyVDTO record {
+    @constraint:String {maxLength: 18}
     string customerHierarchyNodeId;
+    @constraint:String {maxLength: 2}
     string customerHierarchyTypeCode;
+    @constraint:String {maxLength: 20}
     string hierarchyId;
 };
 
@@ -28,7 +33,9 @@ public type ResponseNotFoundPromotionDeletionMessage record {
 };
 
 public type ExternalPromotionReferenceDTO record {
+    @constraint:String {maxLength: 20}
     string documentId?;
+    @constraint:String {maxLength: 2}
     string documentType?;
 };
 
@@ -59,8 +66,11 @@ public type ResponseInvalidCustomer record {
 };
 
 public type ExternalProductHierarchyNodeKeyVDTO record {
+    @constraint:String {maxLength: 20}
     string hierarchyId;
+    @constraint:String {maxLength: 18}
     string productHierarchyNodeId;
+    @constraint:String {maxLength: 2}
     string productHierarchyTypeCode;
 };
 
@@ -84,7 +94,7 @@ public type ResponseInvalidDate record {
 
 public type ResponseNotFoundMessage record {
     string message?;
-    string _error?;
+    string 'error?;
     string timestamp?;
 };
 
@@ -107,14 +117,17 @@ public type ResponsePromotionCreationMessage record {
 };
 
 public type ExternalPromotionCustomerVDTO record {
+    @constraint:String {maxLength: 60}
     string customerExternalId?;
     ExternalCustomerHierarchyNodeKeyVDTO customerHierarchyNodeKey?;
 };
 
 public type ExternalPromotionDTO record {
     int businessSystem;
+    @constraint:String {maxLength: 240}
     string description?;
     ExternalPromotionReferenceDTO[] documentReferences?;
+    @constraint:String {maxLength: 36, minLength: 1}
     string externalId;
     ExternalSalesAreaVDTO externalSalesArea?;
     int id?;
@@ -140,6 +153,7 @@ public type ResponseInvalidProduct record {
 };
 
 public type ExternalPromotionProductDTO record {
+    @constraint:String {maxLength: 40}
     string productExternalId;
     ExternalProductHierarchyNodeKeyVDTO productHierarchyNodeKey;
 };
@@ -158,7 +172,10 @@ public type ResponseNotFoundPromotionMessage record {
 };
 
 public type ExternalSalesAreaVDTO record {
+    @constraint:String {maxLength: 2}
     string distributionChannel?;
+    @constraint:String {maxLength: 2}
     string salesDivision?;
+    @constraint:String {maxLength: 4}
     string salesOrganization?;
 };

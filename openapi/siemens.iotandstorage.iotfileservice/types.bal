@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type FileArr File[];
 
@@ -62,10 +64,12 @@ public type Error record {
     string message?;
 };
 
-public type BulkDeleteAssetsArray BulkDeleteAsset[1];
+@constraint:Array {maxLength: 1, minLength: 1}
+public type BulkDeleteAssetsArray BulkDeleteAsset[];
 
 public type BulkDeleteAsset record {
     # Unique identifier for asset instance
+    @constraint:String {maxLength: 32, minLength: 32}
     string id;
     # files created after this time are considered for deletion, If not provided, all the files created before submittion of job get deleted.
     # UTC aligned date-time with ISO date format is supported.
@@ -99,7 +103,8 @@ public type BulkDeleteJobResponse record {
     string timestamp;
     # overall status of the job
     string status;
-    AssetStatus[1] assets;
+    @constraint:Array {maxLength: 1, minLength: 1}
+    AssetStatus[] assets;
 };
 
 public type AssetStatus record {
@@ -120,7 +125,7 @@ public type AssetStatus record {
     # total files remaining for deletion due to either the job is still in progress or job failed due to some error
     int filesRemaining;
     # error due to which file deletion failed for this asset id. if files deletion is successful then this field will be null.
-    string _error?;
+    string 'error?;
 };
 
 public type Conflict record {

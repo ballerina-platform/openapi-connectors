@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type HierarchyCreationResponse record {
     HierarchyHeader hierarchyHeader?;
@@ -99,7 +101,9 @@ public type BusinessObject record {
 };
 
 public type HierarchyNodeDTO record {
+    @constraint:String {maxLength: 40}
     string externalId?;
+    @constraint:String {maxLength: 40}
     string externalParentId?;
     HierarchyNodeAssignmentDTO[] hierarchyNodeAssignments?;
     HierarchyNodeDescriptionDTO[] hierarchyNodeDescriptions?;
@@ -157,12 +161,16 @@ public type EnumType record {
 };
 
 public type HierarchyNodeDescriptionDTO record {
+    @constraint:String {maxLength: 40}
     string description?;
+    @constraint:String {maxLength: 2, minLength: 2}
     string languageKey?;
 };
 
 public type HierarchyNodeAssignmentDTO record {
+    @constraint:String {maxLength: 4}
     string assignmentType?;
+    @constraint:String {maxLength: 40}
     string objectId?;
 };
 
@@ -313,7 +321,7 @@ public type HierarchyNodeDescription record {
 };
 
 public type ErrorInfo record {
-    string _error?;
+    string 'error?;
     string message?;
     string timestamp?;
     string uri?;
@@ -395,7 +403,7 @@ public type BusinessObjectType record {
 
 public type ResponseNotFoundMessage record {
     string message?;
-    string _error?;
+    string 'error?;
     string timestamp?;
 };
 

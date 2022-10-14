@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -57,7 +57,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemApplicationListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemApplicationListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update the scopes of access for a particular application
@@ -71,7 +71,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemApplicationScopesUpdateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemApplicationScopesUpdateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve information about a Plaid application
@@ -85,7 +85,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ApplicationGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ApplicationGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an Item
@@ -99,7 +99,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve auth data
@@ -113,7 +113,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AuthGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AuthGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get transaction data
@@ -127,7 +127,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransactionsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Refresh transaction data
@@ -141,7 +141,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransactionsRefreshResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransactionsRefreshResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get details of all supported institutions
@@ -155,7 +155,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstitutionsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstitutionsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Search institutions
@@ -169,7 +169,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstitutionsSearchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstitutionsSearchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get details of an institution
@@ -183,7 +183,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InstitutionsGetByIdResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InstitutionsGetByIdResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove an Item
@@ -197,7 +197,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemRemoveResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemRemoveResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve accounts
@@ -211,7 +211,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Categories
@@ -237,7 +237,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a test Item
@@ -251,7 +251,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxPublicTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxPublicTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Fire a test webhook
@@ -265,7 +265,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxItemFireWebhookResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxItemFireWebhookResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve real-time balance data
@@ -279,7 +279,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AccountsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AccountsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve identity data
@@ -293,7 +293,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IdentityGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IdentityGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve Auth data
@@ -307,7 +307,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorAuthGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorAuthGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a bank transfer as a processor
@@ -321,7 +321,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorBankTransferCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorBankTransferCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve Identity data
@@ -335,7 +335,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorIdentityGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorIdentityGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve Balance data
@@ -349,7 +349,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorBalanceGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorBalanceGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Update Webhook URL
@@ -363,7 +363,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemWebhookUpdateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemWebhookUpdateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Invalidate access_token
@@ -377,7 +377,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemAccessTokenInvalidateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemAccessTokenInvalidateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get webhook verification key
@@ -391,7 +391,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        WebhookVerificationKeyGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        WebhookVerificationKeyGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve Liabilities data
@@ -405,7 +405,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LiabilitiesGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LiabilitiesGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create payment recipient
@@ -419,7 +419,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationRecipientCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationRecipientCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get payment recipient
@@ -433,7 +433,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationRecipientGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationRecipientGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List payment recipients
@@ -447,7 +447,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationRecipientListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationRecipientListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a payment
@@ -461,7 +461,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationPaymentCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationPaymentCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create payment token
@@ -478,7 +478,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationPaymentTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationPaymentTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Force a Sandbox Item into an error state
@@ -492,7 +492,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxItemResetLoginResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxItemResetLoginResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Set verification status for Sandbox account
@@ -506,7 +506,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxItemSetVerificationStatusResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxItemSetVerificationStatusResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Exchange public token for an access token
@@ -520,7 +520,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemPublicTokenExchangeResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemPublicTokenExchangeResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create public token
@@ -534,7 +534,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemPublicTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemPublicTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get payment details
@@ -548,7 +548,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationPaymentGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationPaymentGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List payments
@@ -562,7 +562,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PaymentInitiationPaymentListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PaymentInitiationPaymentListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create an Asset Report
@@ -576,7 +576,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Refresh an Asset Report
@@ -590,7 +590,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportRefreshResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportRefreshResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an Asset Report
@@ -604,7 +604,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportRemoveResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportRemoveResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Filter Asset Report
@@ -618,7 +618,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportFilterResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportFilterResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an Asset Report
@@ -632,7 +632,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a PDF Asset Report
@@ -646,7 +646,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportPDFGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportPDFGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Asset Report Audit Copy
@@ -660,7 +660,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportAuditCopyCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportAuditCopyCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Remove Asset Report Audit Copy
@@ -674,7 +674,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportAuditCopyRemoveResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportAuditCopyRemoveResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Investment holdings
@@ -688,7 +688,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InvestmentsHoldingsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InvestmentsHoldingsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get investment transactions
@@ -702,7 +702,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InvestmentsTransactionsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InvestmentsTransactionsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create processor token
@@ -716,7 +716,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Stripe bank account token
@@ -730,7 +730,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorStripeBankAccountTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorStripeBankAccountTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Apex bank account token
@@ -744,7 +744,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ProcessorTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a deposit switch
@@ -758,7 +758,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DepositSwitchCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DepositSwitchCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Import Item
@@ -772,7 +772,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ItemImportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ItemImportResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a deposit switch token
@@ -786,7 +786,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DepositSwitchTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DepositSwitchTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create Link Token
@@ -800,7 +800,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LinkTokenCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LinkTokenCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get Link Token
@@ -814,7 +814,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LinkTokenGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LinkTokenGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve an Asset Report Audit Copy
@@ -828,7 +828,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        AssetReportGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        AssetReportGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a deposit switch
@@ -842,7 +842,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DepositSwitchGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DepositSwitchGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a transfer
@@ -856,7 +856,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a bank transfer
@@ -870,7 +870,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a transfer authorization
@@ -884,7 +884,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferAuthorizationCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferAuthorizationCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a transfer
@@ -898,7 +898,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a bank transfer
@@ -912,7 +912,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List transfers
@@ -926,7 +926,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List bank transfers
@@ -940,7 +940,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancel a transfer
@@ -954,7 +954,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferCancelResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferCancelResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Cancel a bank transfer
@@ -968,7 +968,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferCancelResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferCancelResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List transfer events
@@ -982,7 +982,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferEventListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferEventListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List bank transfer events
@@ -996,7 +996,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferEventListResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferEventListResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sync transfer events
@@ -1010,7 +1010,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TransferEventSyncResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TransferEventSyncResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Sync bank transfer events
@@ -1024,7 +1024,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferEventSyncResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferEventSyncResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a sweep
@@ -1038,7 +1038,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferSweepGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferSweepGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get balance of your Bank Transfer account
@@ -1052,7 +1052,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferBalanceGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferBalanceGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Migrate account into Bank Transfers
@@ -1066,7 +1066,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BankTransferMigrateAccountResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BankTransferMigrateAccountResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Simulate a bank transfer event in Sandbox
@@ -1080,7 +1080,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxBankTransferSimulateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxBankTransferSimulateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Simulate a transfer event in Sandbox
@@ -1094,7 +1094,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxTransferSimulateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxTransferSimulateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Search employer database
@@ -1108,7 +1108,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        EmployersSearchResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        EmployersSearchResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create an income verification instance
@@ -1125,7 +1125,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IncomeVerificationCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IncomeVerificationCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve a summary of information derived from income verification
@@ -1139,7 +1139,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IncomeVerificationSummaryGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IncomeVerificationSummaryGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # (Deprecated) Retrieve information from a single paystub used for income verification
@@ -1156,7 +1156,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        json response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        json response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve information from the paystubs used for income verification
@@ -1170,7 +1170,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IncomeVerificationPaystubsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IncomeVerificationPaystubsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Download the original documents used for income verification
@@ -1184,7 +1184,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        string response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        string response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Refresh an income verification
@@ -1198,7 +1198,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IncomeVerificationRefreshResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IncomeVerificationRefreshResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Retrieve information from the tax documents used for income verification
@@ -1212,7 +1212,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        IncomeVerificationTaxformsGetResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        IncomeVerificationTaxformsGetResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Create a deposit switch without using Plaid Exchange
@@ -1226,7 +1226,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DepositSwitchAltCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DepositSwitchAltCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Manually fire a Bank Transfer webhook
@@ -1240,7 +1240,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxBankTransferFireWebhookResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxBankTransferFireWebhookResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Manually fire an Income webhook
@@ -1254,7 +1254,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxIncomeFireWebhookResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxIncomeFireWebhookResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Save the selected accounts when connecting to the Platypus Oauth institution
@@ -1268,7 +1268,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SandboxOauthSelectAccountsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SandboxOauthSelectAccountsResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Evaluate a planned ACH transaction
@@ -1282,7 +1282,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SignalEvaluateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SignalEvaluateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Report whether you initiated an ACH transaction
@@ -1296,7 +1296,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SignalDecisionReportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SignalDecisionReportResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Report a return for an ACH transaction
@@ -1310,7 +1310,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        SignalReturnReportResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        SignalReturnReportResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

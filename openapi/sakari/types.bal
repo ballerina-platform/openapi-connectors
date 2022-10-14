@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -65,7 +65,7 @@ public type PaginatedResponse record {
     boolean success?;
     PaginatedresponsePagination pagination?;
     # Represent an API pagination error
-    PaginatedresponseError _error?;
+    PaginatedresponseError 'error?;
 };
 
 public type SendMessagesRequest record {
@@ -84,7 +84,7 @@ public type SendmessagesresponseData record {
     Message[] messages?;
     string jobId?;
     int queued?;
-    float estimatedPrice?;
+    decimal estimatedPrice?;
 };
 
 public type MessageConversation record {
@@ -144,7 +144,7 @@ public type MessageEventPayload record {
     ContactIdentifiers contact?;
     string message?;
     string status?;
-    string _error?;
+    string 'error?;
 };
 
 public type MessageResponse record {
@@ -229,7 +229,7 @@ public type Message record {
     # List of media objects attached to message
     MessageMedia[] media?;
     # Represent API error
-    Error _error?;
+    Error 'error?;
     # Represent resource update details
     Updated created?;
     # Represent resource update details
@@ -313,7 +313,7 @@ public type CampaignrequestTrigger record {
 };
 
 public type AccountEventPayload record {
-    float balance?;
+    decimal balance?;
 };
 
 public type CampaignrequestFilters record {
@@ -375,7 +375,7 @@ public type Contact record {
     # Validity
     boolean valid?;
     # Represent API error
-    Error _error?;
+    Error 'error?;
     # Represent resource update details
     Updated created?;
     # Represent resource update details
@@ -387,7 +387,7 @@ public type ErrorResponse record {
     # Whether the request is success
     boolean success?;
     # Represent error
-    ErrorresponseError _error?;
+    ErrorresponseError 'error?;
 };
 
 # Phone number resource

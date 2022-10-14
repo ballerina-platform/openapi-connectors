@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -59,6 +59,7 @@ public type ShipTo2 record {
 };
 
 public type ListOrdersbyTagresponse record {
+    # 
     Order2[] orders;
     int total;
     int page;
@@ -80,7 +81,9 @@ public type Customer record {
     string phone;
     string email;
     string addressVerified;
+    # 
     MarketplaceUsername[] marketplaceUsernames;
+    # 
     Tag[] tags;
 };
 
@@ -145,6 +148,7 @@ public type Product record {
     string? customsTariffNo?;
     string? customsCountryCode?;
     string? noCustoms?;
+    # 
     Tag[] tags;
 };
 
@@ -165,6 +169,7 @@ public type Item record {
     string? taxAmount?;
     string? shippingAmount?;
     string warehouseLocation;
+    # 
     Option[] options;
     int productId;
     string? fulfillmentSku?;
@@ -175,6 +180,7 @@ public type Item record {
 };
 
 public type UnassignUserfromOrderrequest record {
+    # 
     int[] orderIds;
 };
 
@@ -222,6 +228,7 @@ public type InternationalOptions1 record {
 
 public type InternationalOptions4 record {
     string contents;
+    # 
     CustomsItem[] customsItems;
     string nonDelivery;
 };
@@ -345,6 +352,7 @@ public type UpdateStoreresponse record {
     string createDate;
     string modifyDate;
     boolean autoRefresh;
+    # 
     StatusMapping[] statusMappings;
 };
 
@@ -482,6 +490,7 @@ public type Item6 record {
     decimal taxAmount;
     int shippingAmount;
     string warehouseLocation;
+    # 
     Option[] options;
     int productId;
     string? fulfillmentSku?;
@@ -512,6 +521,7 @@ public type Item4 record {
     string? taxAmount?;
     string? shippingAmount?;
     string warehouseLocation;
+    # 
     Option[] options;
     int productId;
     string fulfillmentSku;
@@ -561,6 +571,7 @@ public type Item1 record {
     decimal taxAmount;
     decimal shippingAmount;
     string warehouseLocation;
+    # 
     Option[] options;
     int productId;
     string? fulfillmentSku?;
@@ -589,6 +600,7 @@ public type Item2 record {
     decimal taxAmount;
     int shippingAmount;
     string warehouseLocation;
+    # 
     Option[] options;
     string? productId?;
     string? fulfillmentSku?;
@@ -622,6 +634,7 @@ public type CreateOrUpdateMultipleOrdersrequest record {
     string customerEmail;
     BillTo1 billTo;
     ShipTo3 shipTo;
+    # 
     Item1[] items;
     decimal amountPaid;
     int taxAmount;
@@ -642,6 +655,7 @@ public type CreateOrUpdateMultipleOrdersrequest record {
     InsuranceOptions insuranceOptions;
     InternationalOptions1 internationalOptions;
     AdvancedOptions advancedOptions;
+    # 
     int[] tagIds;
 };
 
@@ -680,6 +694,7 @@ public type GetOrderresponse record {
     string customerEmail;
     BillTo billTo;
     ShipTo2 shipTo;
+    # 
     Item[] items;
     decimal orderTotal;
     decimal amountPaid;
@@ -746,6 +761,7 @@ public type Webhook record {
     string? BulkCopyBatchID?;
     string? BulkCopyRecordID?;
     boolean Active;
+    # 
     string[] WebhookLogs;
     string? Seller?;
     string? Store?;
@@ -808,6 +824,7 @@ public type Order2 record {
     string customerEmail;
     BillTo billTo;
     ShipTo2 shipTo;
+    # 
     Item6[] items;
     decimal orderTotal;
     decimal amountPaid;
@@ -830,6 +847,7 @@ public type Order2 record {
     InsuranceOptions insuranceOptions;
     InternationalOptions internationalOptions;
     AdvancedOptions advancedOptions;
+    # 
     int[] tagIds;
     string userId;
     boolean externallyFulfilled;
@@ -866,6 +884,7 @@ public type CreateOrUpdateOrderresponse record {
     string customerEmail;
     BillTo billTo;
     ShipTo2 shipTo;
+    # 
     Item2[] items;
     decimal orderTotal;
     decimal amountPaid;
@@ -900,6 +919,7 @@ public type AdvancedOptions4 record {
     boolean saturdayDelivery;
     boolean containsAlcohol;
     boolean mergedOrSplit;
+    # 
     string[] mergedIds;
     string? parentId?;
     int storeId;
@@ -936,6 +956,7 @@ public type AdvancedOptions record {
     boolean saturdayDelivery;
     boolean containsAlcohol;
     boolean mergedOrSplit;
+    # 
     string[] mergedIds;
     string? parentId?;
     int storeId;
@@ -951,6 +972,7 @@ public type AdvancedOptions record {
 
 public type CreateOrUpdateMultipleOrdersresponse record {
     boolean hasErrors;
+    # 
     Result[] results;
 };
 
@@ -976,6 +998,7 @@ public type BillTo record {
 };
 
 public type AssignUsertoOrderrequest record {
+    # 
     int[] orderIds;
     string userId;
 };
@@ -1002,6 +1025,7 @@ public type GetStoreresponse record {
     string createDate;
     string modifyDate;
     boolean autoRefresh;
+    # 
     StatusMapping[] statusMappings;
 };
 
@@ -1020,6 +1044,7 @@ public type Order record {
     string customerEmail;
     BillTo billTo;
     ShipTo6 shipTo;
+    # 
     Item4[] items;
     decimal orderTotal;
     decimal amountPaid;
@@ -1133,6 +1158,7 @@ public type Shipment record {
     string? dimensions?;
     InsuranceOptions4 insuranceOptions;
     string? advancedOptions?;
+    # 
     ShipmentItem[] shipmentItems;
     string? labelData?;
     string? formData?;
@@ -1155,6 +1181,7 @@ public type CreateShipmentLabelrequest record {
 };
 
 public type ListFulfillmentsResponse record {
+    # 
     Fulfillment[] fulfillments;
     int total;
     int page;
@@ -1201,7 +1228,9 @@ public type GetCustomerresponse record {
     string phone;
     string email;
     string addressVerified;
+    # 
     MarketplaceUsername[] marketplaceUsernames;
+    # 
     Tag[] tags;
 };
 
@@ -1292,6 +1321,7 @@ public type ListStoresresponse record {
 };
 
 public type ListCustomersResponse record {
+    # 
     Customer[] customers;
     int total;
     int page;
@@ -1316,6 +1346,7 @@ public type UpdateStorerequest record {
     string createDate;
     string modifyDate;
     boolean autoRefresh;
+    # 
     StatusMapping[] statusMappings;
 };
 
@@ -1351,6 +1382,7 @@ public type GetProductresponse record {
     string? customsTariffNo?;
     string? customsCountryCode?;
     string? noCustoms?;
+    # 
     Tag[] tags;
 };
 
@@ -1360,6 +1392,7 @@ public type HoldOrderUntilresponse record {
 };
 
 public type ListShipmentsResponse record {
+    # 
     Shipment[] shipments;
     int total;
     int page;
@@ -1385,6 +1418,7 @@ public type CreateOrUpdateOrderrequest record {
     string customerEmail;
     BillTo1 billTo;
     ShipTo3 shipTo;
+    # 
     Item1[] items;
     decimal amountPaid;
     int taxAmount;
@@ -1405,10 +1439,12 @@ public type CreateOrUpdateOrderrequest record {
     InsuranceOptions insuranceOptions;
     InternationalOptions1 internationalOptions;
     AdvancedOptions advancedOptions;
+    # 
     int[] tagIds;
 };
 
 public type ListProductsResponse record {
+    # 
     Product[] products;
     int total;
     int page;
@@ -1425,6 +1461,7 @@ public type CreateWarehouseresponse record {
 };
 
 public type ListWebhooksresponse record {
+    # 
     Webhook[] webhooks;
 };
 
@@ -1453,6 +1490,7 @@ public type AssignUsertoOrderresponse record {
 };
 
 public type ListOrdersResponse record {
+    # 
     Order[] orders;
     int total;
     int page;

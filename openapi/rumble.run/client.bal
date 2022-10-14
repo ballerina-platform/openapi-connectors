@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Rumble API v1](https://www.rumble.run/docs/) OpenAPI specification.
@@ -106,7 +110,7 @@ public isolated client class Client {
     # + credentialId - UUID of the credential to retrieve 
     # + return - credential details 
     remote isolated function getAccountCredential(string credentialId) returns Credential|error {
-        string resourcePath = string `/account/credentials/${credentialId}`;
+        string resourcePath = string `/account/credentials/${getEncodedUri(credentialId)}`;
         Credential response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -115,8 +119,8 @@ public isolated client class Client {
     # + credentialId - UUID of the credential to delete 
     # + return - empty response 
     remote isolated function removeAccountCredential(string credentialId) returns http:Response|error {
-        string resourcePath = string `/account/credentials/${credentialId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/account/credentials/${getEncodedUri(credentialId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # System event log as JSON
@@ -168,7 +172,7 @@ public isolated client class Client {
     # + keyId - UUID of the key to retrieve 
     # + return - Automatically created 
     remote isolated function getAccountKey(string keyId) returns APIKey|error {
-        string resourcePath = string `/account/keys/${keyId}`;
+        string resourcePath = string `/account/keys/${getEncodedUri(keyId)}`;
         APIKey response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -177,8 +181,8 @@ public isolated client class Client {
     # + keyId - UUID of the key to retrieve 
     # + return - empty response 
     remote isolated function removeAccountKey(string keyId) returns http:Response|error {
-        string resourcePath = string `/account/keys/${keyId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/account/keys/${getEncodedUri(keyId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Rotates the key secret
@@ -186,7 +190,7 @@ public isolated client class Client {
     # + keyId - UUID of the key to retrieve 
     # + return - key details 
     remote isolated function rotateAccountKey(string keyId) returns APIKey|error {
-        string resourcePath = string `/account/keys/${keyId}/rotate`;
+        string resourcePath = string `/account/keys/${getEncodedUri(keyId)}/rotate`;
         http:Request request = new;
         //TODO: Update the request as needed;
         APIKey response = check self.clientEp-> patch(resourcePath, request);
@@ -228,7 +232,7 @@ public isolated client class Client {
     # + orgId - UUID of the organization to retrieve 
     # + return - Automatically created 
     remote isolated function getAccountOrganization(string orgId) returns Organization|error {
-        string resourcePath = string `/account/orgs/${orgId}`;
+        string resourcePath = string `/account/orgs/${getEncodedUri(orgId)}`;
         Organization response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -237,8 +241,8 @@ public isolated client class Client {
     # + orgId - UUID of the organization to retrieve 
     # + return - empty response 
     remote isolated function removeAccountOrganization(string orgId) returns http:Response|error {
-        string resourcePath = string `/account/orgs/${orgId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/account/orgs/${getEncodedUri(orgId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update organization details
@@ -247,7 +251,7 @@ public isolated client class Client {
     # + payload - organization options 
     # + return - organization details 
     remote isolated function updateAccountOrganization(string orgId, OrgOptions payload) returns Organization|error {
-        string resourcePath = string `/account/orgs/${orgId}`;
+        string resourcePath = string `/account/orgs/${getEncodedUri(orgId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -259,8 +263,8 @@ public isolated client class Client {
     # + orgId - UUID of the organization to retrieve 
     # + return - empty response 
     remote isolated function deleteAccountOrganizationExportToken(string orgId) returns http:Response|error {
-        string resourcePath = string `/account/orgs/${orgId}/exportToken`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/account/orgs/${getEncodedUri(orgId)}/exportToken`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Rotates the organization export token and returns the updated organization
@@ -268,7 +272,7 @@ public isolated client class Client {
     # + orgId - UUID of the organization to retrieve 
     # + return - organization details 
     remote isolated function rotateAccountOrganizationExportToken(string orgId) returns Organization|error {
-        string resourcePath = string `/account/orgs/${orgId}/exportToken/rotate`;
+        string resourcePath = string `/account/orgs/${getEncodedUri(orgId)}/exportToken/rotate`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Organization response = check self.clientEp-> patch(resourcePath, request);
@@ -333,7 +337,7 @@ public isolated client class Client {
     # + userId - UUID of the user to retrieve 
     # + return - Automatically created 
     remote isolated function getAccountUser(string userId) returns User|error {
-        string resourcePath = string `/account/users/${userId}`;
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}`;
         User response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -342,8 +346,8 @@ public isolated client class Client {
     # + userId - UUID of the user to delete 
     # + return - empty response 
     remote isolated function removeAccountUser(string userId) returns http:Response|error {
-        string resourcePath = string `/account/users/${userId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a user's details
@@ -352,7 +356,7 @@ public isolated client class Client {
     # + payload - user parameters 
     # + return - Automatically created 
     remote isolated function updateAccountUser(string userId, UserOptions payload) returns User|error {
-        string resourcePath = string `/account/users/${userId}`;
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -364,7 +368,7 @@ public isolated client class Client {
     # + userId - UUID of the user to retrieve 
     # + return - Automatically created 
     remote isolated function resetAccountUserLockout(string userId) returns User|error {
-        string resourcePath = string `/account/users/${userId}/resetLockout`;
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}/resetLockout`;
         http:Request request = new;
         //TODO: Update the request as needed;
         User response = check self.clientEp-> patch(resourcePath, request);
@@ -375,7 +379,7 @@ public isolated client class Client {
     # + userId - UUID of the user to retrieve 
     # + return - Automatically created 
     remote isolated function resetAccountUserMFA(string userId) returns User|error {
-        string resourcePath = string `/account/users/${userId}/resetMFA`;
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}/resetMFA`;
         http:Request request = new;
         //TODO: Update the request as needed;
         User response = check self.clientEp-> patch(resourcePath, request);
@@ -386,7 +390,7 @@ public isolated client class Client {
     # + userId - UUID of the user to retrieve 
     # + return - Automatically created 
     remote isolated function resetAccountUserPassword(string userId) returns User|error {
-        string resourcePath = string `/account/users/${userId}/resetPassword`;
+        string resourcePath = string `/account/users/${getEncodedUri(userId)}/resetPassword`;
         http:Request request = new;
         //TODO: Update the request as needed;
         User response = check self.clientEp-> patch(resourcePath, request);
@@ -634,7 +638,7 @@ public isolated client class Client {
     # + agentId - UUID of the agent 
     # + return - agent details 
     remote isolated function getAgent(string agentId) returns Agent|error {
-        string resourcePath = string `/org/agents/${agentId}`;
+        string resourcePath = string `/org/agents/${getEncodedUri(agentId)}`;
         Agent response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -643,8 +647,8 @@ public isolated client class Client {
     # + agentId - UUID of the agent to remove 
     # + return - empty response 
     remote isolated function removeAgent(string agentId) returns http:Response|error {
-        string resourcePath = string `/org/agents/${agentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/org/agents/${getEncodedUri(agentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update the site associated with agent
@@ -653,7 +657,7 @@ public isolated client class Client {
     # + payload - site_id to associate with the agent 
     # + return - agent details 
     remote isolated function updateAgentSite(string agentId, AgentSiteID payload) returns Agent|error {
-        string resourcePath = string `/org/agents/${agentId}`;
+        string resourcePath = string `/org/agents/${getEncodedUri(agentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -665,7 +669,7 @@ public isolated client class Client {
     # + agentId - UUID of the agent to update 
     # + return - empty response 
     remote isolated function upgradeAgent(string agentId) returns http:Response|error {
-        string resourcePath = string `/org/agents/${agentId}/update`;
+        string resourcePath = string `/org/agents/${getEncodedUri(agentId)}/update`;
         http:Request request = new;
         //TODO: Update the request as needed;
         http:Response response = check self.clientEp-> post(resourcePath, request);
@@ -687,7 +691,7 @@ public isolated client class Client {
     # + assetId - UUID of the asset to retrieve 
     # + return - asset details 
     remote isolated function getAsset(string assetId) returns Asset|error {
-        string resourcePath = string `/org/assets/${assetId}`;
+        string resourcePath = string `/org/assets/${getEncodedUri(assetId)}`;
         Asset response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -696,8 +700,8 @@ public isolated client class Client {
     # + assetId - UUID of the asset to remove 
     # + return - empty response 
     remote isolated function removeAsset(string assetId) returns http:Response|error {
-        string resourcePath = string `/org/assets/${assetId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/org/assets/${getEncodedUri(assetId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update asset comments
@@ -706,7 +710,7 @@ public isolated client class Client {
     # + payload - comments to apply to the asset 
     # + return - asset details 
     remote isolated function updateAssetComments(string assetId, AssetComments payload) returns Asset|error {
-        string resourcePath = string `/org/assets/${assetId}/comments`;
+        string resourcePath = string `/org/assets/${getEncodedUri(assetId)}/comments`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -719,7 +723,7 @@ public isolated client class Client {
     # + payload - tags to apply to the asset 
     # + return - asset details 
     remote isolated function updateAssetTags(string assetId, AssetTags payload) returns Asset|error {
-        string resourcePath = string `/org/assets/${assetId}/tags`;
+        string resourcePath = string `/org/assets/${getEncodedUri(assetId)}/tags`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -739,7 +743,7 @@ public isolated client class Client {
     # + return - empty response 
     remote isolated function removeKey() returns http:Response|error {
         string resourcePath = string `/org/key`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Rotate the API key secret and return the updated key
@@ -768,7 +772,7 @@ public isolated client class Client {
     # + serviceId - UUID of the service to retrieve 
     # + return - service details 
     remote isolated function getService(string serviceId) returns Service|error {
-        string resourcePath = string `/org/services/${serviceId}`;
+        string resourcePath = string `/org/services/${getEncodedUri(serviceId)}`;
         Service response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -777,8 +781,8 @@ public isolated client class Client {
     # + serviceId - UUID of the service to remove 
     # + return - empty response 
     remote isolated function removeService(string serviceId) returns http:Response|error {
-        string resourcePath = string `/org/services/${serviceId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/org/services/${getEncodedUri(serviceId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all sites
@@ -806,7 +810,7 @@ public isolated client class Client {
     # + siteId - UUID or name of the site 
     # + return - site details 
     remote isolated function getSite(string siteId) returns Site|error {
-        string resourcePath = string `/org/sites/${siteId}`;
+        string resourcePath = string `/org/sites/${getEncodedUri(siteId)}`;
         Site response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -815,8 +819,8 @@ public isolated client class Client {
     # + siteId - UUID or name of the site to remove 
     # + return - empty response 
     remote isolated function removeSite(string siteId) returns http:Response|error {
-        string resourcePath = string `/org/sites/${siteId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/org/sites/${getEncodedUri(siteId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a site definition
@@ -825,7 +829,7 @@ public isolated client class Client {
     # + payload - site object 
     # + return - site details 
     remote isolated function updateSite(string siteId, SiteOptions payload) returns Site|error {
-        string resourcePath = string `/org/sites/${siteId}`;
+        string resourcePath = string `/org/sites/${getEncodedUri(siteId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -838,7 +842,7 @@ public isolated client class Client {
     # + payload - Data 
     # + return - import task 
     remote isolated function importScanData(string siteId, byte[] payload) returns Task|error {
-        string resourcePath = string `/org/sites/${siteId}/import`;
+        string resourcePath = string `/org/sites/${getEncodedUri(siteId)}/import`;
         http:Request request = new;
         request.setPayload(payload, "application/octet-stream");
         Task response = check self.clientEp->put(resourcePath, request);
@@ -850,7 +854,7 @@ public isolated client class Client {
     # + payload - Scan options 
     # + return - a created scan task 
     remote isolated function createScan(string siteId, ScanOptions payload) returns Task|error {
-        string resourcePath = string `/org/sites/${siteId}/scan`;
+        string resourcePath = string `/org/sites/${getEncodedUri(siteId)}/scan`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "text/json");
@@ -874,7 +878,7 @@ public isolated client class Client {
     # + taskId - UUID of the task to retrieve 
     # + return - task details 
     remote isolated function getTask(string taskId) returns Task|error {
-        string resourcePath = string `/org/tasks/${taskId}`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}`;
         Task response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -884,7 +888,7 @@ public isolated client class Client {
     # + payload - task object 
     # + return - task details 
     remote isolated function updateTask(string taskId, Task payload) returns Task|error {
-        string resourcePath = string `/org/tasks/${taskId}`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -896,7 +900,7 @@ public isolated client class Client {
     # + taskId - UUID of the task 
     # + return - Automatically created 
     remote isolated function getTaskChangeReport(string taskId) returns URL|error {
-        string resourcePath = string `/org/tasks/${taskId}/changes`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}/changes`;
         URL response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -905,7 +909,7 @@ public isolated client class Client {
     # + taskId - UUID of the task 
     # + return - Automatically created 
     remote isolated function getTaskScanData(string taskId) returns URL|error {
-        string resourcePath = string `/org/tasks/${taskId}/data`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}/data`;
         URL response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -914,7 +918,7 @@ public isolated client class Client {
     # + taskId - UUID of the task to hide 
     # + return - Automatically created 
     remote isolated function hideTask(string taskId) returns Task|error {
-        string resourcePath = string `/org/tasks/${taskId}/hide`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}/hide`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Task response = check self.clientEp-> post(resourcePath, request);
@@ -925,7 +929,7 @@ public isolated client class Client {
     # + taskId - UUID of the task to stop 
     # + return - Automatically created 
     remote isolated function stopTask(string taskId) returns Task|error {
-        string resourcePath = string `/org/tasks/${taskId}/stop`;
+        string resourcePath = string `/org/tasks/${getEncodedUri(taskId)}/stop`;
         http:Request request = new;
         //TODO: Update the request as needed;
         Task response = check self.clientEp-> post(resourcePath, request);
@@ -947,7 +951,7 @@ public isolated client class Client {
     # + wirelessId - UUID of the wireless LAN to retrieve 
     # + return - wireless details 
     remote isolated function getWirelessLAN(string wirelessId) returns Wireless|error {
-        string resourcePath = string `/org/wirelesss/${wirelessId}`;
+        string resourcePath = string `/org/wirelesss/${getEncodedUri(wirelessId)}`;
         Wireless response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -956,8 +960,8 @@ public isolated client class Client {
     # + wirelessId - UUID of the wireless LAN to remove 
     # + return - empty response 
     remote isolated function removeWirelessLAN(string wirelessId) returns http:Response|error {
-        string resourcePath = string `/org/wirelesss/${wirelessId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/org/wirelesss/${getEncodedUri(wirelessId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Returns latest agent version

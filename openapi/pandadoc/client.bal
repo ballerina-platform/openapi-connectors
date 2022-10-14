@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,14 @@ public type ApiKeysConfig record {|
 # Provides Auth configurations needed when communicating with a remote HTTP endpoint.
 public type AuthConfig record {|
     # Auth Configuration
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://api.pandadoc.com/oauth2/access_token";
 |};
 
 # This is a generated connector from [PandaDoc API version 4.3.0](https://developers.pandadoc.com/reference/about) OpenAPI Specification. 
@@ -49,7 +56,7 @@ public isolated client class Client {
         if authConfig.auth is ApiKeysConfig {
             self.apiKeyConfig = (<ApiKeysConfig>authConfig.auth).cloneReadOnly();
         } else {
-            clientConfig.auth = <http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig>authConfig.auth;
+            clientConfig.auth = <http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig>authConfig.auth;
             self.apiKeyConfig = ();
         }
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -70,7 +77,7 @@ public isolated client class Client {
         http:Request request = new;
         string encodedRequestBody = createFormURLEncodedRequestBody(payload);
         request.setPayload(encodedRequestBody, "application/x-www-form-urlencoded");
-        OAuth2AccessTokenResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        OAuth2AccessTokenResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # List documents
@@ -126,7 +133,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DocumentCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DocumentCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Document status
@@ -134,7 +141,7 @@ public isolated client class Client {
     # + id - Specify document ID. 
     # + return - OK 
     remote isolated function statusDocument(string id) returns DocumentStatusResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -148,13 +155,13 @@ public isolated client class Client {
     # + id - Document ID 
     # + return - No content 
     remote isolated function deleteDocument(string id) returns http:Response|error {
-        string resourcePath = string `/public/v1/documents/${id}`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Document status change
@@ -163,7 +170,7 @@ public isolated client class Client {
     # + payload - Document status change request 
     # + return - No content 
     remote isolated function changeDocumentStatus(string id, DocumentStatusChangeRequest payload) returns http:Response|error {
-        string resourcePath = string `/public/v1/documents/${id}/status`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/status`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -172,7 +179,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Document details
@@ -180,7 +187,7 @@ public isolated client class Client {
     # + id - Document ID 
     # + return - OK 
     remote isolated function detailsDocument(string id) returns DocumentDetailsResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/details`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/details`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -195,7 +202,7 @@ public isolated client class Client {
     # + payload - Request to create document link 
     # + return - OK 
     remote isolated function createDocumentLink(string id, DocumentCreateLinkRequest payload) returns DocumentCreateLinkResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/session`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/session`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -204,7 +211,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DocumentCreateLinkResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DocumentCreateLinkResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Send Document
@@ -213,7 +220,7 @@ public isolated client class Client {
     # + payload - Document send request 
     # + return - OK 
     remote isolated function sendDocument(string id, DocumentSendRequest payload) returns DocumentSendResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/send`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/send`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -222,7 +229,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DocumentSendResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DocumentSendResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Document download
@@ -234,7 +241,7 @@ public isolated client class Client {
     # + watermarkText - Specify watermark text. 
     # + return - OK 
     remote isolated function downloadDocument(string id, string? watermarkColor = (), int? watermarkFontSize = (), float? watermarkOpacity = (), string? watermarkText = ()) returns string|error {
-        string resourcePath = string `/public/v1/documents/${id}/download`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/download`;
         map<any> headerValues = {};
         map<anydata> queryParam = {"watermark_color": watermarkColor, "watermark_font_size": watermarkFontSize, "watermark_opacity": watermarkOpacity, "watermark_text": watermarkText};
         if self.apiKeyConfig is ApiKeysConfig {
@@ -250,7 +257,7 @@ public isolated client class Client {
     # + id - Specify document ID. 
     # + return - OK 
     remote isolated function downloadProtectedDocument(string id) returns string|error {
-        string resourcePath = string `/public/v1/documents/${id}/download-protected`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/download-protected`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -264,7 +271,7 @@ public isolated client class Client {
     # + id - Specify document ID. 
     # + return - Success response 
     remote isolated function listLinkedObjects(string id) returns LinkedObjectListResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/linked-objects`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/linked-objects`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -279,7 +286,7 @@ public isolated client class Client {
     # + payload - Request to create linked object 
     # + return - OK 
     remote isolated function createLinkedObject(string id, LinkedObjectCreateRequest payload) returns LinkedObjectCreateResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/linked-objects`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/linked-objects`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -288,7 +295,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        LinkedObjectCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        LinkedObjectCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete Linked Object
@@ -297,13 +304,13 @@ public isolated client class Client {
     # + linkedObjectId - Specify linked object ID. 
     # + return - No content 
     remote isolated function deleteLinkedObject(string id, string linkedObjectId) returns http:Response|error {
-        string resourcePath = string `/public/v1/documents/${id}/linked-objects/${linkedObjectId}`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/linked-objects/${getEncodedUri(linkedObjectId)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Document Attachment List
@@ -311,7 +318,7 @@ public isolated client class Client {
     # + id - Document UUID 
     # + return - OK 
     remote isolated function listDocumentAttachments(string id) returns DocumentAttachmentResponse[]|error {
-        string resourcePath = string `/public/v1/documents/${id}/attachments`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/attachments`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -326,7 +333,7 @@ public isolated client class Client {
     # + payload - Uploads attachment to document by using Multipart Form Data 
     # + return - OK 
     remote isolated function createDocumentAttachment(string id, DocumentAttachmentRequest payload) returns DocumentAttachmentResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/attachments`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/attachments`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -335,7 +342,7 @@ public isolated client class Client {
         http:Request request = new;
         mime:Entity[] bodyParts = check createBodyParts(payload);
         request.setBodyParts(bodyParts);
-        DocumentAttachmentResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DocumentAttachmentResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Document Attachment Details
@@ -344,7 +351,7 @@ public isolated client class Client {
     # + attachmentId - Attachment UUID 
     # + return - OK 
     remote isolated function detailsDocumentAttachment(string id, string attachmentId) returns DocumentAttachmentResponse|error {
-        string resourcePath = string `/public/v1/documents/${id}/attachments/${attachmentId}`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/attachments/${getEncodedUri(attachmentId)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -359,13 +366,13 @@ public isolated client class Client {
     # + attachmentId - Attachment UUID 
     # + return - No Content 
     remote isolated function deleteDocumentAttachment(string id, string attachmentId) returns http:Response|error {
-        string resourcePath = string `/public/v1/documents/${id}/attachments/${attachmentId}`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/attachments/${getEncodedUri(attachmentId)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Document Attachment Download
@@ -374,7 +381,7 @@ public isolated client class Client {
     # + attachmentId - Attachment UUID 
     # + return - OK 
     remote isolated function downloadDocumentAttachment(string id, string attachmentId) returns string|error {
-        string resourcePath = string `/public/v1/documents/${id}/attachments/${attachmentId}/download`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/attachments/${getEncodedUri(attachmentId)}/download`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -389,7 +396,7 @@ public isolated client class Client {
     # + payload - Request to transfer document ownership 
     # + return - No content 
     remote isolated function transferDocumentOwnership(string id, DocumentTransferOwnershipRequest payload) returns http:Response|error {
-        string resourcePath = string `/public/v1/documents/${id}/ownership`;
+        string resourcePath = string `/public/v1/documents/${getEncodedUri(id)}/ownership`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -398,7 +405,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Transfer all documents ownership
@@ -415,7 +422,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List Content Library Item
@@ -445,7 +452,7 @@ public isolated client class Client {
     # + id - Content Library Item ID 
     # + return - OK 
     remote isolated function detailsContentLibraryItem(string id) returns ContentLibraryItemResponse|error {
-        string resourcePath = string `/public/v1/content-library-items/${id}/details`;
+        string resourcePath = string `/public/v1/content-library-items/${getEncodedUri(id)}/details`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -483,7 +490,7 @@ public isolated client class Client {
     # + id - Template ID 
     # + return - OK 
     remote isolated function detailsTemplate(string id) returns TemplateDetailsResponse|error {
-        string resourcePath = string `/public/v1/templates/${id}/details`;
+        string resourcePath = string `/public/v1/templates/${getEncodedUri(id)}/details`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -497,13 +504,13 @@ public isolated client class Client {
     # + id - Template ID 
     # + return - No content 
     remote isolated function deleteTemplate(string id) returns http:Response|error {
-        string resourcePath = string `/public/v1/templates/${id}`;
+        string resourcePath = string `/public/v1/templates/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Forms
@@ -560,7 +567,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DocumentsFolderCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        DocumentsFolderCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Rename Documents Folder
@@ -569,7 +576,7 @@ public isolated client class Client {
     # + payload - Details to rename document folder 
     # + return - OK 
     remote isolated function renameDocumentFolder(string id, DocumentsFolderRenameRequest payload) returns DocumentsFolderRenameResponse|error {
-        string resourcePath = string `/public/v1/documents/folders/${id}`;
+        string resourcePath = string `/public/v1/documents/folders/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -578,7 +585,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        DocumentsFolderRenameResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        DocumentsFolderRenameResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List Templates Folders
@@ -613,7 +620,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TemplatesFolderCreateResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        TemplatesFolderCreateResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Rename Templates Folder
@@ -622,7 +629,7 @@ public isolated client class Client {
     # + payload - Request to rename template folder 
     # + return - OK 
     remote isolated function renameTemplateFolder(string id, TemplatesFolderRenameRequest payload) returns TemplatesFolderRenameResponse|error {
-        string resourcePath = string `/public/v1/templates/folders/${id}`;
+        string resourcePath = string `/public/v1/templates/folders/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -631,7 +638,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        TemplatesFolderRenameResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        TemplatesFolderRenameResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # List API Log
@@ -663,7 +670,7 @@ public isolated client class Client {
     # + id - Log event id. 
     # + return - OK 
     remote isolated function detailsLog(string id) returns APILogDetailsResponse|error {
-        string resourcePath = string `/public/v1/logs/${id}`;
+        string resourcePath = string `/public/v1/logs/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -699,7 +706,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactDetailsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ContactDetailsResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get contact details by id
@@ -707,7 +714,7 @@ public isolated client class Client {
     # + id - Contact id. 
     # + return - OK 
     remote isolated function detailsContact(string id) returns ContactDetailsResponse|error {
-        string resourcePath = string `/public/v1/contacts/${id}`;
+        string resourcePath = string `/public/v1/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -721,13 +728,13 @@ public isolated client class Client {
     # + id - Contact id. 
     # + return - OK 
     remote isolated function deleteContact(string id) returns http:Response|error {
-        string resourcePath = string `/public/v1/contacts/${id}`;
+        string resourcePath = string `/public/v1/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
         }
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update contact by id
@@ -736,7 +743,7 @@ public isolated client class Client {
     # + payload - Contact details 
     # + return - OK 
     remote isolated function updateContact(string id, ContactUpdateRequest payload) returns ContactDetailsResponse|error {
-        string resourcePath = string `/public/v1/contacts/${id}`;
+        string resourcePath = string `/public/v1/contacts/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -745,7 +752,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ContactDetailsResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        ContactDetailsResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List members
@@ -779,7 +786,7 @@ public isolated client class Client {
     # + id - Membership id 
     # + return - OK 
     remote isolated function detailsMember(string id) returns MemberDetailsResponse|error {
-        string resourcePath = string `/public/v1/members/${id}`;
+        string resourcePath = string `/public/v1/members/${getEncodedUri(id)}`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;

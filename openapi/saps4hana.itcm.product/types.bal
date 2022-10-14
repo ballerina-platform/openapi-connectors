@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,14 +14,18 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ProductCodes record {
+    @constraint:String {maxLength: 40}
     string productCode?;
+    @constraint:String {maxLength: 2}
     string productCodeTypeCode?;
 };
 
 public type ResponseNotFoundMessage record {
     string message?;
-    string _error?;
+    string 'error?;
     string timestamp?;
 };
 
@@ -46,18 +50,24 @@ public type ResponseForbiddenMessage record {
 
 public type Product record {
     string baseUnitOfMeasure;
+    @constraint:String {maxLength: 4}
     string brand?;
+    @constraint:Int {maxValue: 20}
     int businessSystem?;
     boolean isMarkedForDeletion?;
+    @constraint:String {maxLength: 40}
     string externalId;
     ProductDescription[] description;
+    @constraint:String {maxLength: 9}
     string groupCode?;
+    @constraint:String {maxLength: 18}
     string externalHierarchyId?;
     ProductUnitOfMeasureConversion[] unitOfMeasureConversions?;
 };
 
 public type ProductDescription record {
     string description?;
+    @constraint:String {maxLength: 2, minLength: 2}
     string languageKey?;
 };
 
@@ -67,7 +77,7 @@ public type ResponseDeleteMessage record {
 };
 
 public type ResponseMessage record {
-    string _error?;
+    string 'error?;
     string message?;
     string timestamp?;
     string uri?;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -85,7 +85,7 @@ public type ConversationMessage record {
 public type RuntimeError record {
     int code?;
     ProtobufAny[] details?;
-    string _error?;
+    string 'error?;
     string message?;
     string status?;
 };
@@ -157,7 +157,7 @@ public type SendMessageResponse record {
 
 public type ChannelRecipientIdentity record {
     # Channel Identifier
-    ConversationChannel 'channel;
+    ConversationChannel channel;
     # The channel recipient identity.
     string identity;
 };
@@ -223,7 +223,7 @@ public type ChannelIdentity record {
     # Optional. The Conversation API's app ID if this is app-scoped channel identity. Currently, FB Messenger and Viber are using app-scoped channel identities which means contacts will have different channel identities for different apps. FB Messenger uses PSIDs (Page-Scoped IDs) as channel identities. The app_id is pointing to the app linked to the FB page for which this PSID is issued.
     string app_id?;
     # Channel Identifier
-    ConversationChannel 'channel;
+    ConversationChannel channel;
     # Required. The channel identity e.g., a phone number for SMS, WhatsApp and Viber Business.
     string identity;
 };
@@ -482,7 +482,7 @@ public type ConversationChannelCredential record {
     # The secret used to verify the channel callbacks for channels which support callback verification. The callback verification is not needed for Sinch-managed channels because the callbacks are not leaving Sinch internal networks. Max length is 256 characters. Note: leaving channel_callback_secret empty for channels with callback verification will disable the verification.
     string callback_secret?;
     # Channel Identifier
-    ConversationChannel 'channel;
+    ConversationChannel channel;
     # MMS channel credential
     MMSCredentials mms_credentials?;
     # It consists of claimed identity and a static token.

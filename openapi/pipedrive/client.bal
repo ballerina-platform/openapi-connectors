@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -83,7 +83,7 @@ public isolated client class Client {
         string resourcePath = string `/activities`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteActivitiesResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteActivitiesResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get details of an Activity
@@ -91,7 +91,7 @@ public isolated client class Client {
     # + id - The ID of the Activity 
     # + return - The request was successful 
     remote isolated function getActivity(int id) returns GetActivityResponse200|error {
-        string resourcePath = string `/activities/${id}`;
+        string resourcePath = string `/activities/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetActivityResponse200 response = check self.clientEp->get(resourcePath);
@@ -103,7 +103,7 @@ public isolated client class Client {
     # + payload - UpdateActivity request 
     # + return - The request was successful 
     remote isolated function updateActivity(int id, UpdateActivityRequest payload) returns UpdateActivityResponse200|error {
-        string resourcePath = string `/activities/${id}`;
+        string resourcePath = string `/activities/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -117,10 +117,10 @@ public isolated client class Client {
     # + id - The ID of the Activity 
     # + return - The Activity was successfully deleted 
     remote isolated function deleteActivity(int id) returns DeleteActivityResponse200|error {
-        string resourcePath = string `/activities/${id}`;
+        string resourcePath = string `/activities/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteActivityResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteActivityResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all activity fields
@@ -165,7 +165,7 @@ public isolated client class Client {
         string resourcePath = string `/activityTypes`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteActivityTypesResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteActivityTypesResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Edit an ActivityType
@@ -174,7 +174,7 @@ public isolated client class Client {
     # + payload - UpdateActivityType request 
     # + return - The ActivityType was successfully updated 
     remote isolated function updateActivityType(int id, UpdateActivityTypeRequest payload) returns CreateUpdateDeleteActivityTypeResponse200|error {
-        string resourcePath = string `/activityTypes/${id}`;
+        string resourcePath = string `/activityTypes/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -188,10 +188,10 @@ public isolated client class Client {
     # + id - The ID of the ActivityType 
     # + return - The ActivityType was successfully deleted 
     remote isolated function deleteActivityType(int id) returns CreateUpdateDeleteActivityTypeResponse200|error {
-        string resourcePath = string `/activityTypes/${id}`;
+        string resourcePath = string `/activityTypes/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        CreateUpdateDeleteActivityTypeResponse200 response = check self.clientEp->delete(resourcePath);
+        CreateUpdateDeleteActivityTypeResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all call logs assigned to a particular user
@@ -225,7 +225,7 @@ public isolated client class Client {
     # + id - The ID received when you create the call log 
     # + return - The requested call log object. 
     remote isolated function getCallLog(string id) returns InlineResponse200|error {
-        string resourcePath = string `/callLogs/${id}`;
+        string resourcePath = string `/callLogs/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         InlineResponse200 response = check self.clientEp->get(resourcePath);
@@ -236,10 +236,10 @@ public isolated client class Client {
     # + id - The ID received when you create the call log 
     # + return - The call log was successfully deleted. 
     remote isolated function deleteCallLog(string id) returns DeleteCallLogResponse200|error {
-        string resourcePath = string `/callLogs/${id}`;
+        string resourcePath = string `/callLogs/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteCallLogResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteCallLogResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all supported currencies
@@ -293,7 +293,7 @@ public isolated client class Client {
         string resourcePath = string `/deals`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDealsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteDealsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Search deals
@@ -369,7 +369,7 @@ public isolated client class Client {
     # + id - ID of the deal 
     # + return - Get a Deal by its ID 
     remote isolated function getDeal(int id) returns GetDealResponse200|error {
-        string resourcePath = string `/deals/${id}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetDealResponse200 response = check self.clientEp->get(resourcePath);
@@ -381,7 +381,7 @@ public isolated client class Client {
     # + payload - BasicDeal request 
     # + return - Add a Deal 
     remote isolated function updateDeal(int id, BasicDeal payload) returns DealResponse200|error {
-        string resourcePath = string `/deals/${id}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -395,10 +395,10 @@ public isolated client class Client {
     # + id - ID of the deal 
     # + return - Delete a Deal 
     remote isolated function deleteDeal(int id) returns DeleteDealResponse200|error {
-        string resourcePath = string `/deals/${id}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDealResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteDealResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List activities associated with a deal
@@ -410,7 +410,7 @@ public isolated client class Client {
     # + exclude - A comma-separated string of activity IDs to exclude from result 
     # + return - success 
     remote isolated function getDealActivities(int id, int 'start = 0, int? 'limit = (), decimal? done = (), string? exclude = ()) returns GetDealActivitiesResponse200|error {
-        string resourcePath = string `/deals/${id}/activities`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/activities`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "done": done, "exclude": exclude, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetDealActivitiesResponse200 response = check self.clientEp->get(resourcePath);
@@ -421,7 +421,7 @@ public isolated client class Client {
     # + id - ID of the deal 
     # + return - Duplicate a Deal 
     remote isolated function duplicateDeal(int id) returns DuplicateDealResponse200|error {
-        string resourcePath = string `/deals/${id}/duplicate`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/duplicate`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -438,7 +438,7 @@ public isolated client class Client {
     # + sort - Field names and sorting mode separated by a comma (`field_name_1 ASC`, `field_name_2 DESC`). Only first-level field keys are supported (no nested keys). Supported fields: id, user_id, deal_id, person_id, org_id, product_id, add_time, update_time, file_name, file_type, file_size, comment. 
     # + return - success 
     remote isolated function getDealFiles(int id, int 'start = 0, int? 'limit = (), decimal? includeDeletedFiles = (), string? sort = ()) returns GetAssociatedFilesResponse200|error {
-        string resourcePath = string `/deals/${id}/files`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/files`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "include_deleted_files": includeDeletedFiles, "sort": sort, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFilesResponse200 response = check self.clientEp->get(resourcePath);
@@ -453,7 +453,7 @@ public isolated client class Client {
     # + items - A comma-separated string for filtering out item specific updates. (Possible values - activity, plannedActivity, note, file, change, deal, follower, participant, mailMessage, mailMessageWithAttachment, invoice, activityFile, document) 
     # + return - Get the Deal Updates 
     remote isolated function getDealUpdates(int id, int 'start = 0, int? 'limit = (), string? allChanges = (), string? items = ()) returns GetDealUpdatesResponse200|error {
-        string resourcePath = string `/deals/${id}/flow`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/flow`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "all_changes": allChanges, "items": items, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetDealUpdatesResponse200 response = check self.clientEp->get(resourcePath);
@@ -464,7 +464,7 @@ public isolated client class Client {
     # + id - ID of the deal 
     # + return - success 
     remote isolated function getDealFollowers(int id) returns GetAssociatedFollowersResponse200|error {
-        string resourcePath = string `/deals/${id}/followers`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFollowersResponse200 response = check self.clientEp->get(resourcePath);
@@ -476,7 +476,7 @@ public isolated client class Client {
     # + payload - addDealFollower request 
     # + return - Add a Follower to a Deal 
     remote isolated function addDealFollower(int id, AddDealFollowerRequest payload) returns AddDealFollowerResponse200|error {
-        string resourcePath = string `/deals/${id}/followers`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -491,10 +491,10 @@ public isolated client class Client {
     # + followerId - ID of the follower 
     # + return - Delete a Follower from a Deal 
     remote isolated function deleteDealFollower(int id, int followerId) returns DeleteDealFollowerResponse200|error {
-        string resourcePath = string `/deals/${id}/followers/${followerId}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/followers/${getEncodedUri(followerId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDealFollowerResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteDealFollowerResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List mail messages associated with a deal
@@ -504,7 +504,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getDealMailMessages(int id, int 'start = 0, int? 'limit = ()) returns GetAssociatedMailMessagesResponse200|error {
-        string resourcePath = string `/deals/${id}/mailMessages`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/mailMessages`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedMailMessagesResponse200 response = check self.clientEp->get(resourcePath);
@@ -516,7 +516,7 @@ public isolated client class Client {
     # + payload - MergeDeals request 
     # + return - Merges a Deal with another Deal. 
     remote isolated function mergeDeals(int id, MergeDealsRequest payload) returns MergeDealsResponse200|error {
-        string resourcePath = string `/deals/${id}/merge`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/merge`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -532,7 +532,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - Get all Deal participants by the DealID 
     remote isolated function getDealParticipants(int id, int 'start = 0, int? 'limit = ()) returns GetDealParticipantsResponse200|error {
-        string resourcePath = string `/deals/${id}/participants`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/participants`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetDealParticipantsResponse200 response = check self.clientEp->get(resourcePath);
@@ -544,7 +544,7 @@ public isolated client class Client {
     # + payload - AddDealParticipant request 
     # + return - Add new participant to the Deal 
     remote isolated function addDealParticipant(int id, AddDealParticipantRequest payload) returns AddDealParticipantResponse200|error {
-        string resourcePath = string `/deals/${id}/participants`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/participants`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -559,10 +559,10 @@ public isolated client class Client {
     # + dealParticipantId - ID of the deal participant 
     # + return - Delete a Participant from a Deal 
     remote isolated function deleteDealParticipant(int id, int dealParticipantId) returns DeleteDealParticipantResponse200|error {
-        string resourcePath = string `/deals/${id}/participants/${dealParticipantId}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/participants/${getEncodedUri(dealParticipantId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDealParticipantResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteDealParticipantResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List permitted users
@@ -570,7 +570,7 @@ public isolated client class Client {
     # + id - ID of the deal 
     # + return - success 
     remote isolated function getDealUsers(int id) returns ListPermittedUsersResponse200|error {
-        string resourcePath = string `/deals/${id}/permittedUsers`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/permittedUsers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListPermittedUsersResponse200 response = check self.clientEp->get(resourcePath);
@@ -583,7 +583,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getDealPersons(int id, int 'start = 0, int? 'limit = ()) returns ListPersonsResponse200|error {
-        string resourcePath = string `/deals/${id}/persons`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/persons`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListPersonsResponse200 response = check self.clientEp->get(resourcePath);
@@ -597,7 +597,7 @@ public isolated client class Client {
     # + includeProductData - Whether to fetch product data along with each attached product (1) or not (0, default). 
     # + return - success 
     remote isolated function getDealProducts(int id, int 'start = 0, int? 'limit = (), decimal? includeProductData = ()) returns ListProductsResponse200|error {
-        string resourcePath = string `/deals/${id}/products`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/products`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "include_product_data": includeProductData, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListProductsResponse200 response = check self.clientEp->get(resourcePath);
@@ -609,7 +609,7 @@ public isolated client class Client {
     # + payload - AddDealProduct request 
     # + return - Add a Product to the Deal 
     remote isolated function addDealProduct(int id, AddDealProductRequest payload) returns GetAddProductAttachementResponse200|error {
-        string resourcePath = string `/deals/${id}/products`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/products`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -625,7 +625,7 @@ public isolated client class Client {
     # + payload - BasicDealProduct request 
     # + return - Update Product attachment details 
     remote isolated function updateDealProduct(int id, int productAttachmentId, BasicDealProductRequest payload) returns GetProductAttachementResponse200|error {
-        string resourcePath = string `/deals/${id}/products/${productAttachmentId}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/products/${getEncodedUri(productAttachmentId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -640,10 +640,10 @@ public isolated client class Client {
     # + productAttachmentId - Product attachment ID. This is returned as `product_attachment_id` after attaching a product to a deal or as id when listing the products attached to a deal. 
     # + return - Delete an attached Product from a Deal 
     remote isolated function deleteDealProduct(int id, int productAttachmentId) returns DeleteDealProductResponse200|error {
-        string resourcePath = string `/deals/${id}/products/${productAttachmentId}`;
+        string resourcePath = string `/deals/${getEncodedUri(id)}/products/${getEncodedUri(productAttachmentId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteDealProductResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteDealProductResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all deal fields
@@ -678,7 +678,7 @@ public isolated client class Client {
         string resourcePath = string `/dealFields`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get one deal field
@@ -686,7 +686,7 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function getDealField(int id) returns FieldResponse200|error {
-        string resourcePath = string `/dealFields/${id}`;
+        string resourcePath = string `/dealFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FieldResponse200 response = check self.clientEp->get(resourcePath);
@@ -698,7 +698,7 @@ public isolated client class Client {
     # + payload - UpdateField request 
     # + return - success 
     remote isolated function updateDealField(int id, UpdateFieldRequest payload) returns FieldResponse200|error {
-        string resourcePath = string `/dealFields/${id}`;
+        string resourcePath = string `/dealFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -712,10 +712,10 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function deleteDealField(int id) returns DeleteFieldResponse200|error {
-        string resourcePath = string `/dealFields/${id}`;
+        string resourcePath = string `/dealFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all files
@@ -765,7 +765,7 @@ public isolated client class Client {
     # + id - ID of the file 
     # + return - Get data about one specific uploaded to Pipedrive file 
     remote isolated function getFile(int id) returns GetFileResponse200|error {
-        string resourcePath = string `/files/${id}`;
+        string resourcePath = string `/files/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetFileResponse200 response = check self.clientEp->get(resourcePath);
@@ -777,7 +777,7 @@ public isolated client class Client {
     # + payload - UpdateFile request 
     # + return - Update file name and description. 
     remote isolated function updateFile(int id, UpdateFileRequest payload) returns UpdateFileResponse200|error {
-        string resourcePath = string `/files/${id}`;
+        string resourcePath = string `/files/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -791,10 +791,10 @@ public isolated client class Client {
     # + id - ID of the file 
     # + return - Delete a file from Pipedrive 
     remote isolated function deleteFile(int id) returns DeleteFileResponse200|error {
-        string resourcePath = string `/files/${id}`;
+        string resourcePath = string `/files/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFileResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFileResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Download one file
@@ -802,7 +802,7 @@ public isolated client class Client {
     # + id - ID of the file 
     # + return - success 
     remote isolated function downloadFile(int id) returns string|error {
-        string resourcePath = string `/files/${id}/download`;
+        string resourcePath = string `/files/${getEncodedUri(id)}/download`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         string response = check self.clientEp->get(resourcePath);
@@ -841,7 +841,7 @@ public isolated client class Client {
         string resourcePath = string `/filters`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFiltersResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFiltersResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all filter helpers
@@ -859,7 +859,7 @@ public isolated client class Client {
     # + id - The ID of the filter 
     # + return - success 
     remote isolated function getFilter(int id) returns GetFilterResponse200|error {
-        string resourcePath = string `/filters/${id}`;
+        string resourcePath = string `/filters/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetFilterResponse200 response = check self.clientEp->get(resourcePath);
@@ -871,7 +871,7 @@ public isolated client class Client {
     # + payload - UpdateFilter request 
     # + return - success 
     remote isolated function updateFilter(int id, UpdateFilterRequest payload) returns PostFilterResponse200|error {
-        string resourcePath = string `/filters/${id}`;
+        string resourcePath = string `/filters/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -885,10 +885,10 @@ public isolated client class Client {
     # + id - The ID of the filter 
     # + return - success 
     remote isolated function deleteFilter(int id) returns DeleteFilterResponse200|error {
-        string resourcePath = string `/filters/${id}`;
+        string resourcePath = string `/filters/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFilterResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFilterResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get global messages
@@ -907,10 +907,10 @@ public isolated client class Client {
     # + id - ID of global message to be dismissed. 
     # + return - Removes a Global Message by ID 
     remote isolated function deleteGlobalMessage(int id) returns DeleteGlobalMessageResponse200|error {
-        string resourcePath = string `/globalMessages/${id}`;
+        string resourcePath = string `/globalMessages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteGlobalMessageResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteGlobalMessageResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add a new goal
@@ -956,7 +956,7 @@ public isolated client class Client {
     # + payload - BasicGoal request 
     # + return - Successful response containing payload in the `data.goal` object. 
     remote isolated function updateGoal(string id, BasicGoalRequest payload) returns AddOrUpdateGoalResponse200|error {
-        string resourcePath = string `/goals/${id}`;
+        string resourcePath = string `/goals/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -970,10 +970,10 @@ public isolated client class Client {
     # + id - ID of the goal to be deleted. 
     # + return - Successful response with id 'success' field only 
     remote isolated function deleteGoal(string id) returns DeleteGoalResponse200|error {
-        string resourcePath = string `/goals/${id}`;
+        string resourcePath = string `/goals/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteGoalResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteGoalResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get result of a goal
@@ -983,7 +983,7 @@ public isolated client class Client {
     # + periodEnd - End date of the period for which to find progress of a goal. Date in format of YYYY-MM-DD. 
     # + return - Successful response containing payload in the `data.goal` object. 
     remote isolated function getGoalResult(string id, string periodStart, string periodEnd) returns GetGoalResultResponse200|error {
-        string resourcePath = string `/goals/${id}/results`;
+        string resourcePath = string `/goals/${getEncodedUri(id)}/results`;
         map<anydata> queryParam = {"period.start": periodStart, "period.end": periodEnd, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetGoalResultResponse200 response = check self.clientEp->get(resourcePath);
@@ -1056,7 +1056,7 @@ public isolated client class Client {
     # + id - The ID of the Lead 
     # + return - Successful response containing payload in the `data` field. 
     remote isolated function getLead(string id) returns OneLeadResponse200|error {
-        string resourcePath = string `/leads/${id}`;
+        string resourcePath = string `/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OneLeadResponse200 response = check self.clientEp->get(resourcePath);
@@ -1067,10 +1067,10 @@ public isolated client class Client {
     # + id - The ID of the Lead 
     # + return - Successful response with id value only. Used in DELETE calls. 
     remote isolated function deleteLead(string id) returns LeadIdResponse200|error {
-        string resourcePath = string `/leads/${id}`;
+        string resourcePath = string `/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        LeadIdResponse200 response = check self.clientEp->delete(resourcePath);
+        LeadIdResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a lead
@@ -1079,7 +1079,7 @@ public isolated client class Client {
     # + payload - UpdateLead request 
     # + return - Successful response containing payload in the `data` field. 
     remote isolated function updateLead(string id, UpdateLeadRequest payload) returns OneLeadResponse200|error {
-        string resourcePath = string `/leads/${id}`;
+        string resourcePath = string `/leads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1117,10 +1117,10 @@ public isolated client class Client {
     # + id - The ID of the Lead Label 
     # + return - Successful response with id value only. Used in DELETE calls. 
     remote isolated function deleteLeadLabel(string id) returns LeadIdResponse200|error {
-        string resourcePath = string `/leadLabels/${id}`;
+        string resourcePath = string `/leadLabels/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        LeadIdResponse200 response = check self.clientEp->delete(resourcePath);
+        LeadIdResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a lead label
@@ -1129,7 +1129,7 @@ public isolated client class Client {
     # + payload - UpdateLeadLabel request 
     # + return - Successful response containing payload in the `data` field. 
     remote isolated function updateLeadLabel(string id, UpdateLeadLabelRequest payload) returns AddOrUpdateLeadLabelResponse200|error {
-        string resourcePath = string `/leadLabels/${id}`;
+        string resourcePath = string `/leadLabels/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1154,7 +1154,7 @@ public isolated client class Client {
     # + includeBody - Whether to include full message body or not. `0` = Don't include, `1` = Include 
     # + return - The mail messages that are being synced with Pipedrive 
     remote isolated function getMailMessage(int id, decimal includeBody = 1) returns MailMessageResponse200|error {
-        string resourcePath = string `/mailbox/mailMessages/${id}`;
+        string resourcePath = string `/mailbox/mailMessages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"include_body": includeBody, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MailMessageResponse200 response = check self.clientEp->get(resourcePath);
@@ -1178,7 +1178,7 @@ public isolated client class Client {
     # + id - ID of the mail thread 
     # + return - Get mail threads 
     remote isolated function getMailThread(int id) returns GetOneMailThreadResponse200|error {
-        string resourcePath = string `/mailbox/mailThreads/${id}`;
+        string resourcePath = string `/mailbox/mailThreads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetOneMailThreadResponse200 response = check self.clientEp->get(resourcePath);
@@ -1190,7 +1190,7 @@ public isolated client class Client {
     # + payload - UpdateMailThreadDetails request 
     # + return - Updates the properties of a mail thread. 
     remote isolated function updateMailThreadDetails(int id, UpdateMailThreadDetailsRequest payload) returns UpdateMailThreadDetailsResponse200|error {
-        string resourcePath = string `/mailbox/mailThreads/${id}`;
+        string resourcePath = string `/mailbox/mailThreads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1204,10 +1204,10 @@ public isolated client class Client {
     # + id - ID of the mail thread 
     # + return - Marks mail thread as deleted. 
     remote isolated function deleteMailThread(int id) returns DeleteMailThreadResponse200|error {
-        string resourcePath = string `/mailbox/mailThreads/${id}`;
+        string resourcePath = string `/mailbox/mailThreads/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteMailThreadResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteMailThreadResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all mail messages of mail thread
@@ -1215,7 +1215,7 @@ public isolated client class Client {
     # + id - ID of the mail thread 
     # + return - Get mail messages from thread 
     remote isolated function getMailThreadMessages(int id) returns GetAllMailMessagesOfMailThreadResponse200|error {
-        string resourcePath = string `/mailbox/mailThreads/${id}/mailMessages`;
+        string resourcePath = string `/mailbox/mailThreads/${getEncodedUri(id)}/mailMessages`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAllMailMessagesOfMailThreadResponse200 response = check self.clientEp->get(resourcePath);
@@ -1264,7 +1264,7 @@ public isolated client class Client {
     # + id - ID of the note 
     # + return - Add, update or get a Note 
     remote isolated function getNote(int id) returns OneNoteResponse200|error {
-        string resourcePath = string `/notes/${id}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OneNoteResponse200 response = check self.clientEp->get(resourcePath);
@@ -1276,7 +1276,7 @@ public isolated client class Client {
     # + payload - Note request 
     # + return - Add, update or get a Note 
     remote isolated function updateNote(int id, Noterequest1 payload) returns OneNoteResponse200|error {
-        string resourcePath = string `/notes/${id}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1290,10 +1290,10 @@ public isolated client class Client {
     # + id - ID of the note 
     # + return - Delete a Note 
     remote isolated function deleteNote(int id) returns DeleteNoteResponse200|error {
-        string resourcePath = string `/notes/${id}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteNoteResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteNoteResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all comments for a note
@@ -1303,7 +1303,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - Get all Comments 
     remote isolated function getNoteComments(int id, int 'start = 0, int? 'limit = ()) returns GetCommentsResponse200|error {
-        string resourcePath = string `/notes/${id}/comments`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}/comments`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetCommentsResponse200 response = check self.clientEp->get(resourcePath);
@@ -1315,7 +1315,7 @@ public isolated client class Client {
     # + payload - CommentPostPutObject request 
     # + return - Add, update or get a comment 
     remote isolated function addNoteComment(int id, CommentPostPutObject payload) returns OneCommentResponse200|error {
-        string resourcePath = string `/notes/${id}/comments`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}/comments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1330,7 +1330,7 @@ public isolated client class Client {
     # + commentId - ID of the comment 
     # + return - Add, update or get a comment 
     remote isolated function getComment(int id, string commentId) returns OneCommentResponse200|error {
-        string resourcePath = string `/notes/${id}/comments/${commentId}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         OneCommentResponse200 response = check self.clientEp->get(resourcePath);
@@ -1343,7 +1343,7 @@ public isolated client class Client {
     # + payload - CommentPostPutObject request 
     # + return - Add, update or get a comment 
     remote isolated function updateCommentForNote(int id, string commentId, Commentpostputobject1 payload) returns OneCommentResponse200|error {
-        string resourcePath = string `/notes/${id}/comments/${commentId}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1358,10 +1358,10 @@ public isolated client class Client {
     # + commentId - ID of the comment 
     # + return - Delete a Comment 
     remote isolated function deleteComment(int id, string commentId) returns DeleteCommentResponse200|error {
-        string resourcePath = string `/notes/${id}/comments/${commentId}`;
+        string resourcePath = string `/notes/${getEncodedUri(id)}/comments/${getEncodedUri(commentId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteCommentResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteCommentResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all note fields
@@ -1412,7 +1412,7 @@ public isolated client class Client {
         string resourcePath = string `/organizations`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteOrganizationsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteOrganizationsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Search organizations
@@ -1451,7 +1451,7 @@ public isolated client class Client {
     # + id - The ID of the Organization 
     # + return - success 
     remote isolated function getOrganization(int id) returns GetOrganizationResponse200|error {
-        string resourcePath = string `/organizations/${id}`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetOrganizationResponse200 response = check self.clientEp->get(resourcePath);
@@ -1463,7 +1463,7 @@ public isolated client class Client {
     # + payload - BasicOrganization request 
     # + return - success 
     remote isolated function updateOrganization(int id, BasicOrganization payload) returns UpdateOrganizationResponse200|error {
-        string resourcePath = string `/organizations/${id}`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1477,10 +1477,10 @@ public isolated client class Client {
     # + id - The ID of the Organization 
     # + return - success 
     remote isolated function deleteOrganization(int id) returns DeleteOrganizationResponse200|error {
-        string resourcePath = string `/organizations/${id}`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteOrganizationResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteOrganizationResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List activities associated with an organization
@@ -1492,7 +1492,7 @@ public isolated client class Client {
     # + exclude - A comma-separated string of activity IDs to exclude from result 
     # + return - success 
     remote isolated function getOrganizationActivities(int id, int 'start = 0, int? 'limit = (), decimal? done = (), string? exclude = ()) returns GetAssociatedActivitiesResponse200|error {
-        string resourcePath = string `/organizations/${id}/activities`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/activities`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "done": done, "exclude": exclude, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedActivitiesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1508,7 +1508,7 @@ public isolated client class Client {
     # + onlyPrimaryAssociation - If set, only deals that are directly associated to the organization are fetched. If not set (default), all deals are fetched that are either directly or indirectly related to the organization. Indirect relations include relations through custom, organization-type fields and through persons of the given organization. 
     # + return - success 
     remote isolated function getOrganizationDeals(int id, int 'start = 0, int? 'limit = (), string status = "all_not_deleted", string? sort = (), decimal? onlyPrimaryAssociation = ()) returns GetAssociatedDealsResponse200|error {
-        string resourcePath = string `/organizations/${id}/deals`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/deals`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "status": status, "sort": sort, "only_primary_association": onlyPrimaryAssociation, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedDealsResponse200 response = check self.clientEp->get(resourcePath);
@@ -1523,7 +1523,7 @@ public isolated client class Client {
     # + sort - Field names and sorting mode separated by a comma (field_name_1 ASC, field_name_2 DESC). Only first-level field keys are supported (no nested keys). Supported fields: id, user_id, deal_id, person_id, org_id, product_id, add_time, update_time, file_name, file_type, file_size, comment. 
     # + return - success 
     remote isolated function getOrganizationFiles(int id, int 'start = 0, int? 'limit = (), decimal? includeDeletedFiles = (), string? sort = ()) returns GetAssociatedFilesResponse200|error {
-        string resourcePath = string `/organizations/${id}/files`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/files`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "include_deleted_files": includeDeletedFiles, "sort": sort, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFilesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1538,7 +1538,7 @@ public isolated client class Client {
     # + items - A comma-separated string for filtering out item specific updates. (Possible values - activity, plannedActivity, note, file, change, deal, follower, participant, mailMessage, mailMessageWithAttachment, invoice, activityFile, document) 
     # + return - Get the Organization Updates 
     remote isolated function getOrganizationUpdates(int id, int 'start = 0, int? 'limit = (), string? allChanges = (), string? items = ()) returns GetAssociatedUpdatesResponse200|error {
-        string resourcePath = string `/organizations/${id}/flow`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/flow`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "all_changes": allChanges, "items": items, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedUpdatesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1549,7 +1549,7 @@ public isolated client class Client {
     # + id - The ID of the Organization 
     # + return - success 
     remote isolated function getOrganizationFollowers(int id) returns Getassociatedfollowersresponse2001|error {
-        string resourcePath = string `/organizations/${id}/followers`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Getassociatedfollowersresponse2001 response = check self.clientEp->get(resourcePath);
@@ -1561,7 +1561,7 @@ public isolated client class Client {
     # + payload - AddOrganizationFollower request 
     # + return - success 
     remote isolated function addOrganizationFollower(int id, AddOrganizationFollowerRequest payload) returns AddOrganizationFollowerResponse200|error {
-        string resourcePath = string `/organizations/${id}/followers`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1576,10 +1576,10 @@ public isolated client class Client {
     # + followerId - The ID of the follower 
     # + return - success 
     remote isolated function deleteOrganizationFollower(int id, int followerId) returns DeleteOrganizationFollowerResponse200|error {
-        string resourcePath = string `/organizations/${id}/followers/${followerId}`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/followers/${getEncodedUri(followerId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteOrganizationFollowerResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteOrganizationFollowerResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List mail messages associated with an organization
@@ -1589,7 +1589,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getOrganizationMailMessages(int id, int 'start = 0, int? 'limit = ()) returns GetAssociatedMailMessagesResponse200|error {
-        string resourcePath = string `/organizations/${id}/mailMessages`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/mailMessages`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedMailMessagesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1601,7 +1601,7 @@ public isolated client class Client {
     # + payload - MergeOrganizations request 
     # + return - success 
     remote isolated function mergeOrganizations(int id, MergeOrganizationsRequest payload) returns MergeOrganizationsResponse200|error {
-        string resourcePath = string `/organizations/${id}/merge`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/merge`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1615,7 +1615,7 @@ public isolated client class Client {
     # + id - The ID of the Organization 
     # + return - success 
     remote isolated function getOrganizationUsers(int id) returns Listpermittedusersresponse2001|error {
-        string resourcePath = string `/organizations/${id}/permittedUsers`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/permittedUsers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Listpermittedusersresponse2001 response = check self.clientEp->get(resourcePath);
@@ -1628,7 +1628,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getOrganizationPersons(int id, int 'start = 0, int? 'limit = ()) returns ListPersonsResponse200|error {
-        string resourcePath = string `/organizations/${id}/persons`;
+        string resourcePath = string `/organizations/${getEncodedUri(id)}/persons`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListPersonsResponse200 response = check self.clientEp->get(resourcePath);
@@ -1666,7 +1666,7 @@ public isolated client class Client {
         string resourcePath = string `/organizationFields`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get one organization field
@@ -1674,7 +1674,7 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function getOrganizationField(int id) returns FieldResponse200|error {
-        string resourcePath = string `/organizationFields/${id}`;
+        string resourcePath = string `/organizationFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FieldResponse200 response = check self.clientEp->get(resourcePath);
@@ -1686,7 +1686,7 @@ public isolated client class Client {
     # + payload - UpdateField request 
     # + return - success 
     remote isolated function updateOrganizationField(int id, Updatefieldrequest1 payload) returns FieldResponse200|error {
-        string resourcePath = string `/organizationFields/${id}`;
+        string resourcePath = string `/organizationFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1700,10 +1700,10 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function deleteOrganizationField(int id) returns DeleteFieldResponse200|error {
-        string resourcePath = string `/organizationFields/${id}`;
+        string resourcePath = string `/organizationFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all relationships for organization
@@ -1737,7 +1737,7 @@ public isolated client class Client {
     # + orgId - ID of the base organization for the returned calculated values 
     # + return - success 
     remote isolated function getOrganizationRelationship(int id, int? orgId = ()) returns GetOrganizationRelationshipResponse200|error {
-        string resourcePath = string `/organizationRelationships/${id}`;
+        string resourcePath = string `/organizationRelationships/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"org_id": orgId, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetOrganizationRelationshipResponse200 response = check self.clientEp->get(resourcePath);
@@ -1749,7 +1749,7 @@ public isolated client class Client {
     # + payload - OrganizationRelationship request 
     # + return - success 
     remote isolated function updateOrganizationRelationship(int id, OrganizationRelationshipRequest payload) returns UpdateOrganizationRelationshipResponse200|error {
-        string resourcePath = string `/organizationRelationships/${id}`;
+        string resourcePath = string `/organizationRelationships/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1763,10 +1763,10 @@ public isolated client class Client {
     # + id - ID of the organization relationship 
     # + return - success 
     remote isolated function deleteOrganizationRelationship(int id) returns DeleteOrganizationRelationshipResponse200|error {
-        string resourcePath = string `/organizationRelationships/${id}`;
+        string resourcePath = string `/organizationRelationships/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteOrganizationRelationshipResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteOrganizationRelationshipResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all Permission Sets
@@ -1784,7 +1784,7 @@ public isolated client class Client {
     # + id - ID of the permission set 
     # + return - The Permission Set of a specific User ID 
     remote isolated function getPermissionSet(int id) returns SinglePermissionSetResponse200|error {
-        string resourcePath = string `/permissionSets/${id}`;
+        string resourcePath = string `/permissionSets/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SinglePermissionSetResponse200 response = check self.clientEp->get(resourcePath);
@@ -1797,7 +1797,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - The Assignments of a specific User ID 
     remote isolated function getPermissionSetAssignments(int id, int 'start = 0, int? 'limit = ()) returns UserAssignmentsToPermissionSetResponse200|error {
-        string resourcePath = string `/permissionSets/${id}/assignments`;
+        string resourcePath = string `/permissionSets/${getEncodedUri(id)}/assignments`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserAssignmentsToPermissionSetResponse200 response = check self.clientEp->get(resourcePath);
@@ -1841,7 +1841,7 @@ public isolated client class Client {
         string resourcePath = string `/persons`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeletePersonsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeletePersonsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Search persons
@@ -1884,7 +1884,7 @@ public isolated client class Client {
     # + id - ID of a person 
     # + return - success 
     remote isolated function getPerson(int id) returns GetPersonResponse200|error {
-        string resourcePath = string `/persons/${id}`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetPersonResponse200 response = check self.clientEp->get(resourcePath);
@@ -1896,7 +1896,7 @@ public isolated client class Client {
     # + payload - BasicPerson request 
     # + return - success 
     remote isolated function updatePerson(int id, BasicPersonRequest payload) returns UpdatePersonResponse200|error {
-        string resourcePath = string `/persons/${id}`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -1910,10 +1910,10 @@ public isolated client class Client {
     # + id - ID of a person 
     # + return - success 
     remote isolated function deletePerson(int id) returns DeletePersonResponse200|error {
-        string resourcePath = string `/persons/${id}`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeletePersonResponse200 response = check self.clientEp->delete(resourcePath);
+        DeletePersonResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List activities associated with a person
@@ -1925,7 +1925,7 @@ public isolated client class Client {
     # + exclude - A comma-separated string of activity IDs to exclude from result 
     # + return - success 
     remote isolated function getPersonActivities(int id, int 'start = 0, int? 'limit = (), decimal? done = (), string? exclude = ()) returns GetAssociatedActivitiesResponse200|error {
-        string resourcePath = string `/persons/${id}/activities`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/activities`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "done": done, "exclude": exclude, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedActivitiesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1940,7 +1940,7 @@ public isolated client class Client {
     # + sort - Field names and sorting mode separated by a comma (`field_name_1 ASC`, `field_name_2 DESC`). Only first-level field keys are supported (no nested keys). 
     # + return - success 
     remote isolated function getPersonDeals(int id, int 'start = 0, int? 'limit = (), string status = "all_not_deleted", string? sort = ()) returns GetAssociatedDealsResponse200|error {
-        string resourcePath = string `/persons/${id}/deals`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/deals`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "status": status, "sort": sort, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedDealsResponse200 response = check self.clientEp->get(resourcePath);
@@ -1955,7 +1955,7 @@ public isolated client class Client {
     # + sort - Field names and sorting mode separated by a comma (`field_name_1 ASC`, `field_name_2 DESC`). Only first-level field keys are supported (no nested keys). Supported fields: id, user_id, deal_id, person_id, org_id, product_id, add_time, update_time, file_name, file_type, file_size, comment. 
     # + return - success 
     remote isolated function getPersonFiles(int id, int 'start = 0, int? 'limit = (), decimal? includeDeletedFiles = (), string? sort = ()) returns GetAssociatedFilesResponse200|error {
-        string resourcePath = string `/persons/${id}/files`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/files`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "include_deleted_files": includeDeletedFiles, "sort": sort, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFilesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1970,7 +1970,7 @@ public isolated client class Client {
     # + items - A comma-separated string for filtering out item specific updates. (Possible values - activity, plannedActivity, note, file, change, deal, follower, participant, mailMessage, mailMessageWithAttachment, invoice, activityFile, document) 
     # + return - Get the Person Updates 
     remote isolated function getPersonUpdates(int id, int 'start = 0, int? 'limit = (), string? allChanges = (), string? items = ()) returns GetAssociatedPersonUpdatesResponse200|error {
-        string resourcePath = string `/persons/${id}/flow`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/flow`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "all_changes": allChanges, "items": items, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedPersonUpdatesResponse200 response = check self.clientEp->get(resourcePath);
@@ -1981,7 +1981,7 @@ public isolated client class Client {
     # + id - ID of a person 
     # + return - success 
     remote isolated function getPersonFollowers(int id) returns GetAssociatedFollowersResponse200|error {
-        string resourcePath = string `/persons/${id}/followers`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFollowersResponse200 response = check self.clientEp->get(resourcePath);
@@ -1993,7 +1993,7 @@ public isolated client class Client {
     # + payload - AddPersonFollower request 
     # + return - success 
     remote isolated function addPersonFollower(int id, AddPersonFollowerRequest payload) returns AddPersonFollowerResponse200|error {
-        string resourcePath = string `/persons/${id}/followers`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2008,10 +2008,10 @@ public isolated client class Client {
     # + followerId - ID of the follower 
     # + return - success 
     remote isolated function deletePersonFollower(int id, int followerId) returns DeletePersonResponse200|error {
-        string resourcePath = string `/persons/${id}/followers/${followerId}`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/followers/${getEncodedUri(followerId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeletePersonResponse200 response = check self.clientEp->delete(resourcePath);
+        DeletePersonResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List mail messages associated with a person
@@ -2021,7 +2021,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getPersonMailMessages(int id, int 'start = 0, int? 'limit = ()) returns GetAssociatedMailMessagesResponse200|error {
-        string resourcePath = string `/persons/${id}/mailMessages`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/mailMessages`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedMailMessagesResponse200 response = check self.clientEp->get(resourcePath);
@@ -2033,7 +2033,7 @@ public isolated client class Client {
     # + payload - MergePersons request 
     # + return - success 
     remote isolated function mergePersons(int id, MergePersonsRequest payload) returns MergePersonsResponse200|error {
-        string resourcePath = string `/persons/${id}/merge`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/merge`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2047,7 +2047,7 @@ public isolated client class Client {
     # + id - ID of a person 
     # + return - success 
     remote isolated function getPersonUsers(int id) returns Listpermittedusersresponse2001|error {
-        string resourcePath = string `/persons/${id}/permittedUsers`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/permittedUsers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Listpermittedusersresponse2001 response = check self.clientEp->get(resourcePath);
@@ -2058,10 +2058,10 @@ public isolated client class Client {
     # + id - ID of a person 
     # + return - success 
     remote isolated function deletePersonPicture(int id) returns DeletePersonResponse200|error {
-        string resourcePath = string `/persons/${id}/picture`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/picture`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeletePersonResponse200 response = check self.clientEp->delete(resourcePath);
+        DeletePersonResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List products associated with a person
@@ -2071,7 +2071,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - success 
     remote isolated function getPersonProducts(int id, int 'start = 0, int? 'limit = ()) returns GetPersonProductsResponse200|error {
-        string resourcePath = string `/persons/${id}/products`;
+        string resourcePath = string `/persons/${getEncodedUri(id)}/products`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetPersonProductsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2109,7 +2109,7 @@ public isolated client class Client {
         string resourcePath = string `/personFields`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get one person field
@@ -2117,7 +2117,7 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function getPersonField(int id) returns FieldResponse200|error {
-        string resourcePath = string `/personFields/${id}`;
+        string resourcePath = string `/personFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         FieldResponse200 response = check self.clientEp->get(resourcePath);
@@ -2129,7 +2129,7 @@ public isolated client class Client {
     # + payload - UpdateField request 
     # + return - success 
     remote isolated function updatePersonField(int id, Updatefieldrequest2 payload) returns FieldResponse200|error {
-        string resourcePath = string `/personFields/${id}`;
+        string resourcePath = string `/personFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2143,10 +2143,10 @@ public isolated client class Client {
     # + id - ID of the field 
     # + return - success 
     remote isolated function deletePersonField(int id) returns DeleteFieldResponse200|error {
-        string resourcePath = string `/personFields/${id}`;
+        string resourcePath = string `/personFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteFieldResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteFieldResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all pipelines
@@ -2179,7 +2179,7 @@ public isolated client class Client {
     # + totalsConvertCurrency - 3-letter currency code of any of the supported currencies. When supplied, `per_stages_converted` is returned in `deals_summary` which contains the currency-converted total amounts in the given currency per each stage. You may also set this parameter to `default_currency` in which case users default currency is used. 
     # + return - Get Pipeline 
     remote isolated function getPipeline(int id, string? totalsConvertCurrency = ()) returns GetPipelineResponse200|error {
-        string resourcePath = string `/pipelines/${id}`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"totals_convert_currency": totalsConvertCurrency, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetPipelineResponse200 response = check self.clientEp->get(resourcePath);
@@ -2191,7 +2191,7 @@ public isolated client class Client {
     # + payload - Pipeline request 
     # + return - Edit Pipeline 
     remote isolated function updatePipeline(int id, Pipelinerequest1 payload) returns UpdatePipelineResponse200|error {
-        string resourcePath = string `/pipelines/${id}`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2205,10 +2205,10 @@ public isolated client class Client {
     # + id - ID of the pipeline 
     # + return - Delete Pipeline 
     remote isolated function deletePipeline(int id) returns DeletePipelineResponse200|error {
-        string resourcePath = string `/pipelines/${id}`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeletePipelineResponse200 response = check self.clientEp->delete(resourcePath);
+        DeletePipelineResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get deals conversion rates in pipeline
@@ -2219,7 +2219,7 @@ public isolated client class Client {
     # + userId - ID of the user who's pipeline metrics statistics to fetch. If omitted, the authorized user will be used. 
     # + return - Get Pipeline Deals conversion rates 
     remote isolated function getPipelineConversionStatistics(int id, string startDate, string endDate, int? userId = ()) returns GetPipelineConversionStatisticsResponse200|error {
-        string resourcePath = string `/pipelines/${id}/conversion_statistics`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}/conversion_statistics`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "user_id": userId, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetPipelineConversionStatisticsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2238,7 +2238,7 @@ public isolated client class Client {
     # + totalsConvertCurrency - 3-letter currency code of any of the supported currencies. When supplied, `per_stages_converted` is returned inside `deals_summary` inside `additional_data` which contains the currency-converted total amounts in the given currency per each stage. You may also set this parameter to `default_currency` in which case users default currency is used. Only works when `get_summary` parameter flag is enabled. 
     # + return - Get Deals in a Stage 
     remote isolated function getPipelineDeals(int id, int? filterId = (), int? userId = (), decimal? everyone = (), int? stageId = (), int 'start = 0, int? 'limit = (), decimal? getSummary = (), string? totalsConvertCurrency = ()) returns GetStageDealsResponse200|error {
-        string resourcePath = string `/pipelines/${id}/deals`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}/deals`;
         map<anydata> queryParam = {"filter_id": filterId, "user_id": userId, "everyone": everyone, "stage_id": stageId, "start": 'start, "limit": 'limit, "get_summary": getSummary, "totals_convert_currency": totalsConvertCurrency, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetStageDealsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2252,7 +2252,7 @@ public isolated client class Client {
     # + userId - ID of the user who's pipeline statistics to fetch. If omitted, the authorized user will be used. 
     # + return - Get Pipeline Deals conversion rates 
     remote isolated function getPipelineMovementStatistics(int id, string startDate, string endDate, int? userId = ()) returns GetPipelineMovementStatisticsResponse200|error {
-        string resourcePath = string `/pipelines/${id}/movement_statistics`;
+        string resourcePath = string `/pipelines/${getEncodedUri(id)}/movement_statistics`;
         map<anydata> queryParam = {"start_date": startDate, "end_date": endDate, "user_id": userId, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetPipelineMovementStatisticsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2327,7 +2327,7 @@ public isolated client class Client {
     # + id - ID of the product 
     # + return - Get product information by id 
     remote isolated function getProduct(int id) returns GetproductResponse200|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetproductResponse200 response = check self.clientEp->get(resourcePath);
@@ -2339,7 +2339,7 @@ public isolated client class Client {
     # + payload - Product request 
     # + return - Updates Product data 
     remote isolated function updateProduct(int id, ProductRequest payload) returns UpdateProductResponse200|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2353,10 +2353,10 @@ public isolated client class Client {
     # + id - ID of the product 
     # + return - Deletes a product 
     remote isolated function deleteProduct(int id) returns DeleteProductResponse200|error {
-        string resourcePath = string `/products/${id}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteProductResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteProductResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get deals where a product is attached to
@@ -2367,7 +2367,7 @@ public isolated client class Client {
     # + status - Only fetch deals with specific status. If omitted, all not deleted deals are fetched. 
     # + return - The data of deals that have a Product attached 
     remote isolated function getProductDeals(int id, int 'start = 0, int? 'limit = (), string status = "all_not_deleted") returns BasicDeal|error {
-        string resourcePath = string `/products/${id}/deals`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/deals`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "status": status, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         BasicDeal response = check self.clientEp->get(resourcePath);
@@ -2382,7 +2382,7 @@ public isolated client class Client {
     # + sort - Field names and sorting mode separated by a comma (`field_name_1 ASC`, `field_name_2 DESC`). Only first-level field keys are supported (no nested keys). Supported fields: id, user_id, deal_id, person_id, org_id, product_id, add_time, update_time, file_name, file_type, file_size, comment. 
     # + return - success 
     remote isolated function getProductFiles(int id, int 'start = 0, int? 'limit = (), decimal? includeDeletedFiles = (), string? sort = ()) returns GetAssociatedFilesResponse200|error {
-        string resourcePath = string `/products/${id}/files`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/files`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "include_deleted_files": includeDeletedFiles, "sort": sort, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetAssociatedFilesResponse200 response = check self.clientEp->get(resourcePath);
@@ -2395,7 +2395,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - Lists the followers of a Product 
     remote isolated function getProductFollowers(int id, int 'start = 0, int? 'limit = ()) returns GetProductFollowersResponseSuccess|error {
-        string resourcePath = string `/products/${id}/followers`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetProductFollowersResponseSuccess response = check self.clientEp->get(resourcePath);
@@ -2407,7 +2407,7 @@ public isolated client class Client {
     # + payload - AddProductFollower request 
     # + return - Adds a follower to a Product 
     remote isolated function addProductFollower(int id, AddProductFollowerRequest payload) returns NewFollowerResponse200|error {
-        string resourcePath = string `/products/${id}/followers`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2422,10 +2422,10 @@ public isolated client class Client {
     # + followerId - ID of the follower 
     # + return - Deletes a follower from a Product 
     remote isolated function deleteProductFollower(int id, int followerId) returns DeleteProductFollowerResponse200|error {
-        string resourcePath = string `/products/${id}/followers/${followerId}`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/followers/${getEncodedUri(followerId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteProductFollowerResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteProductFollowerResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List permitted users
@@ -2433,7 +2433,7 @@ public isolated client class Client {
     # + id - ID of the product 
     # + return - Lists users permitted to access a Product 
     remote isolated function getProductUsers(int id) returns UserIds|error {
-        string resourcePath = string `/products/${id}/permittedUsers`;
+        string resourcePath = string `/products/${getEncodedUri(id)}/permittedUsers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserIds response = check self.clientEp->get(resourcePath);
@@ -2471,7 +2471,7 @@ public isolated client class Client {
         string resourcePath = string `/productFields`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteProductFieldsResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteProductFieldsResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get one product field
@@ -2479,7 +2479,7 @@ public isolated client class Client {
     # + id - ID of the Product Field 
     # + return - Get the data for a single Product Field 
     remote isolated function getProductField(int id) returns GetProductFieldResponse200|error {
-        string resourcePath = string `/productFields/${id}`;
+        string resourcePath = string `/productFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetProductFieldResponse200 response = check self.clientEp->get(resourcePath);
@@ -2491,7 +2491,7 @@ public isolated client class Client {
     # + payload - AddOrUpdateProductField request 
     # + return - Get the data for a single Product Field 
     remote isolated function updateProductField(int id, AddOrUpdateProductFieldResponse200 payload) returns GetProductFieldResponse200|error {
-        string resourcePath = string `/productFields/${id}`;
+        string resourcePath = string `/productFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2505,10 +2505,10 @@ public isolated client class Client {
     # + id - ID of the Product Field 
     # + return - Delete a Product Field 
     remote isolated function deleteProductField(int id) returns DeleteProductFieldResponse200|error {
-        string resourcePath = string `/productFields/${id}`;
+        string resourcePath = string `/productFields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteProductFieldResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteProductFieldResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get recents
@@ -2556,7 +2556,7 @@ public isolated client class Client {
     # + id - ID of the role 
     # + return - Get one role 
     remote isolated function getRole(int id) returns GetRoleResponse200|error {
-        string resourcePath = string `/roles/${id}`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetRoleResponse200 response = check self.clientEp->get(resourcePath);
@@ -2568,7 +2568,7 @@ public isolated client class Client {
     # + payload - BaseRole request 
     # + return - Update role details 
     remote isolated function updateRole(int id, BaseRoleRequest payload) returns UpdateRoleResponse200|error {
-        string resourcePath = string `/roles/${id}`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2582,10 +2582,10 @@ public isolated client class Client {
     # + id - ID of the role 
     # + return - Delete a role 
     remote isolated function deleteRole(int id) returns DeleteRoleResponse200|error {
-        string resourcePath = string `/roles/${id}`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteRoleResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteRoleResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List role assignments
@@ -2595,7 +2595,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - List assignments for a role 
     remote isolated function getRoleAssignments(int id, int 'start = 0, int? 'limit = ()) returns GetUserRoleAssignmentsResponse200|error {
-        string resourcePath = string `/roles/${id}/assignments`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/assignments`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetUserRoleAssignmentsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2607,7 +2607,7 @@ public isolated client class Client {
     # + payload - AddRoleAssignment request 
     # + return - Add assignment for a role 
     remote isolated function addRoleAssignment(int id, AddRoleAssignmentRequest payload) returns AddRoleAssignmentResponse200|error {
-        string resourcePath = string `/roles/${id}/assignments`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/assignments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2621,10 +2621,10 @@ public isolated client class Client {
     # + id - ID of the role 
     # + return - Delete assignment from a role 
     remote isolated function deleteRoleAssignment(int id) returns DeleteRoleAssignmentResponse200|error {
-        string resourcePath = string `/roles/${id}/assignments`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/assignments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteRoleAssignmentResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteRoleAssignmentResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List role sub-roles
@@ -2634,7 +2634,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - List role sub-roles 
     remote isolated function getRoleSubRoles(int id, int 'start = 0, int? 'limit = ()) returns GetRoleSubrolesResponse200|error {
-        string resourcePath = string `/roles/${id}/roles`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/roles`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetRoleSubrolesResponse200 response = check self.clientEp->get(resourcePath);
@@ -2645,7 +2645,7 @@ public isolated client class Client {
     # + id - ID of the role 
     # + return - List role settings 
     remote isolated function getRoleSettings(int id) returns GetRoleSettingsResponse200|error {
-        string resourcePath = string `/roles/${id}/settings`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/settings`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetRoleSettingsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2657,7 +2657,7 @@ public isolated client class Client {
     # + payload - AddOrUpdateRoleSetting request 
     # + return - List role settings 
     remote isolated function addOrUpdateRoleSetting(int id, AddOrUpdateRoleSettingRequest payload) returns AddOrUpdateRoleSettingResponse200|error {
-        string resourcePath = string `/roles/${id}/settings`;
+        string resourcePath = string `/roles/${getEncodedUri(id)}/settings`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2738,7 +2738,7 @@ public isolated client class Client {
         string resourcePath = string `/stages`;
         map<anydata> queryParam = {"ids": ids, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteStagesResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteStagesResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get one stage
@@ -2746,7 +2746,7 @@ public isolated client class Client {
     # + id - ID of the stage 
     # + return - Get Stage 
     remote isolated function getStage(int id) returns GetStageResponse200|error {
-        string resourcePath = string `/stages/${id}`;
+        string resourcePath = string `/stages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetStageResponse200 response = check self.clientEp->get(resourcePath);
@@ -2758,7 +2758,7 @@ public isolated client class Client {
     # + payload - UpdateStage request 
     # + return - Get all Stages 
     remote isolated function updateStage(int id, UpdateStageRequest payload) returns StageResponse200|error {
-        string resourcePath = string `/stages/${id}`;
+        string resourcePath = string `/stages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2772,10 +2772,10 @@ public isolated client class Client {
     # + id - ID of the stage 
     # + return - Delete Stage 
     remote isolated function deleteStage(int id) returns DeleteStageResponse200|error {
-        string resourcePath = string `/stages/${id}`;
+        string resourcePath = string `/stages/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteStageResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteStageResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get deals in a stage
@@ -2788,7 +2788,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - Get Deals in a Stage 
     remote isolated function getStageDeals(int id, int? filterId = (), int? userId = (), decimal? everyone = (), int 'start = 0, int? 'limit = ()) returns GetStageDealsResponse200|error {
-        string resourcePath = string `/stages/${id}/deals`;
+        string resourcePath = string `/stages/${getEncodedUri(id)}/deals`;
         map<anydata> queryParam = {"filter_id": filterId, "user_id": userId, "everyone": everyone, "start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetStageDealsResponse200 response = check self.clientEp->get(resourcePath);
@@ -2799,7 +2799,7 @@ public isolated client class Client {
     # + id - ID of the Subscription 
     # + return - success 
     remote isolated function getSubscription(int id) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/${id}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SubscriptionsIdResponse200 response = check self.clientEp->get(resourcePath);
@@ -2810,10 +2810,10 @@ public isolated client class Client {
     # + id - ID of the Subscription 
     # + return - success 
     remote isolated function deleteSubscription(int id) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/${id}`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        SubscriptionsIdResponse200 response = check self.clientEp->delete(resourcePath);
+        SubscriptionsIdResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Find subscription by deal
@@ -2821,7 +2821,7 @@ public isolated client class Client {
     # + dealId - ID of the Deal 
     # + return - success 
     remote isolated function findSubscriptionByDeal(int dealId) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/find/${dealId}`;
+        string resourcePath = string `/subscriptions/find/${getEncodedUri(dealId)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         SubscriptionsIdResponse200 response = check self.clientEp->get(resourcePath);
@@ -2832,7 +2832,7 @@ public isolated client class Client {
     # + id - ID of the Subscription 
     # + return - success 
     remote isolated function getSubscriptionPayments(int id) returns PaymentResponse200|error {
-        string resourcePath = string `/subscriptions/${id}/payments`;
+        string resourcePath = string `/subscriptions/${getEncodedUri(id)}/payments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PaymentResponse200 response = check self.clientEp->get(resourcePath);
@@ -2872,7 +2872,7 @@ public isolated client class Client {
     # + payload - UpdateRecurringSubscription request 
     # + return - success 
     remote isolated function updateRecurringSubscription(int id, UpdateRecurringSubscriptionRequest payload) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/recurring/${id}`;
+        string resourcePath = string `/subscriptions/recurring/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2887,7 +2887,7 @@ public isolated client class Client {
     # + payload - UpdateSubscriptionInstallment request 
     # + return - success 
     remote isolated function updateSubscriptionInstallment(int id, UpdateSubscriptionInstallmentRequest payload) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/installment/${id}`;
+        string resourcePath = string `/subscriptions/installment/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2902,7 +2902,7 @@ public isolated client class Client {
     # + payload - CancelRecurringSubscription request 
     # + return - success 
     remote isolated function cancelRecurringSubscription(int id, CancelRecurringSubscriptionRequest payload) returns SubscriptionsIdResponse200|error {
-        string resourcePath = string `/subscriptions/recurring/${id}/cancel`;
+        string resourcePath = string `/subscriptions/recurring/${getEncodedUri(id)}/cancel`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2943,7 +2943,7 @@ public isolated client class Client {
     # + skipUsers - When enabled, the teams will not include IDs of member users 
     # + return - The team data 
     remote isolated function getTeam(int id, decimal skipUsers = 1) returns TeamResponse200|error {
-        string resourcePath = string `/teams/${id}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"skip_users": skipUsers, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TeamResponse200 response = check self.clientEp->get(resourcePath);
@@ -2955,7 +2955,7 @@ public isolated client class Client {
     # + payload - UpdateTeam request 
     # + return - The team data 
     remote isolated function updateTeam(int id, UpdateTeamRequest payload) returns TeamResponse200|error {
-        string resourcePath = string `/teams/${id}`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2969,7 +2969,7 @@ public isolated client class Client {
     # + id - ID of the team 
     # + return - A list of user IDs within a team 
     remote isolated function getTeamUsers(int id) returns UserIds|error {
-        string resourcePath = string `/teams/${id}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/users`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserIds response = check self.clientEp->get(resourcePath);
@@ -2981,7 +2981,7 @@ public isolated client class Client {
     # + payload - AddTeamUser request 
     # + return - A list of user IDs within a team 
     remote isolated function addTeamUser(int id, AddTeamUserRequest payload) returns UserIds|error {
-        string resourcePath = string `/teams/${id}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/users`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -2995,10 +2995,10 @@ public isolated client class Client {
     # + id - ID of the team 
     # + return - A list of user IDs within a team 
     remote isolated function deleteTeamUser(int id) returns UserIds|error {
-        string resourcePath = string `/teams/${id}/users`;
+        string resourcePath = string `/teams/${getEncodedUri(id)}/users`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        UserIds response = check self.clientEp->delete(resourcePath);
+        UserIds response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get all teams of a user
@@ -3008,7 +3008,7 @@ public isolated client class Client {
     # + skipUsers - When enabled, the teams will not include IDs of member users 
     # + return - The list of team objects 
     remote isolated function getUserTeams(int id, string orderBy = "id", decimal skipUsers = 1) returns TeamsResponse200|error {
-        string resourcePath = string `/teams/user/${id}`;
+        string resourcePath = string `/teams/user/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"order_by": orderBy, "skip_users": skipUsers, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TeamsResponse200 response = check self.clientEp->get(resourcePath);
@@ -3065,7 +3065,7 @@ public isolated client class Client {
     # + id - ID of the user 
     # + return - The data of the User 
     remote isolated function getUser(int id) returns UserResponse200|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserResponse200 response = check self.clientEp->get(resourcePath);
@@ -3077,7 +3077,7 @@ public isolated client class Client {
     # + payload - UpdateUser request 
     # + return - The data of the User 
     remote isolated function updateUser(int id, UpdateUserRequest payload) returns UserResponse200|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3091,7 +3091,7 @@ public isolated client class Client {
     # + id - ID of the user 
     # + return - The list of user IDs 
     remote isolated function getUserFollowers(int id) returns UserIds|error {
-        string resourcePath = string `/users/${id}/followers`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/followers`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserIds response = check self.clientEp->get(resourcePath);
@@ -3102,7 +3102,7 @@ public isolated client class Client {
     # + id - ID of the user 
     # + return - The list of User permissions 
     remote isolated function getUserPermissions(int id) returns GetUserPermissionsResponse200|error {
-        string resourcePath = string `/users/${id}/permissions`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/permissions`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetUserPermissionsResponse200 response = check self.clientEp->get(resourcePath);
@@ -3115,7 +3115,7 @@ public isolated client class Client {
     # + 'limit - Items shown per page 
     # + return - List assignments for a role 
     remote isolated function getUserRoleAssignments(int id, int 'start = 0, int? 'limit = ()) returns GetUserRoleAssignmentsResponse200|error {
-        string resourcePath = string `/users/${id}/roleAssignments`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/roleAssignments`;
         map<anydata> queryParam = {"start": 'start, "limit": 'limit, "api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetUserRoleAssignmentsResponse200 response = check self.clientEp->get(resourcePath);
@@ -3127,7 +3127,7 @@ public isolated client class Client {
     # + payload - AddUserRoleAssignment request 
     # + return - Add assignment for a role 
     remote isolated function addUserRoleAssignment(int id, AddUserRoleAssignmentRequest payload) returns AddRoleAssignmentResponse200|error {
-        string resourcePath = string `/users/${id}/roleAssignments`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/roleAssignments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -3141,10 +3141,10 @@ public isolated client class Client {
     # + id - ID of the user 
     # + return - Delete assignment from a role 
     remote isolated function deleteUserRoleAssignment(int id) returns DeleteRoleAssignmentResponse200|error {
-        string resourcePath = string `/users/${id}/roleAssignments`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/roleAssignments`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteRoleAssignmentResponse200 response = check self.clientEp->delete(resourcePath);
+        DeleteRoleAssignmentResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List user role settings
@@ -3152,7 +3152,7 @@ public isolated client class Client {
     # + id - ID of the user 
     # + return - List role settings 
     remote isolated function getUserRoleSettings(int id) returns GetRoleSettingsResponse200|error {
-        string resourcePath = string `/users/${id}/roleSettings`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/roleSettings`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         GetRoleSettingsResponse200 response = check self.clientEp->get(resourcePath);
@@ -3207,10 +3207,10 @@ public isolated client class Client {
     # + id - The ID of the webhook to delete 
     # + return - The webhook deletion success response 
     remote isolated function deleteWebhook(int id) returns BaseResponse200|error {
-        string resourcePath = string `/webhooks/${id}`;
+        string resourcePath = string `/webhooks/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"api_token": self.apiKeyConfig.apiToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        BaseResponse200 response = check self.clientEp->delete(resourcePath);
+        BaseResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

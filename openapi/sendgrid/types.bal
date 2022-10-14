@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type AlertResponseArr AlertResponse[];
 
 public type SubuserArr Subuser[];
@@ -22,6 +24,9 @@ public type SuppressionBlocksArr SuppressionBlocks[];
 
 public type SpamReportDetailsArr SpamReportDetails[];
 
+@constraint:String {maxLength: 255}
+public type SendemailrequestCategoriesItemsString string;
+
 # This allows you to test the content of your email for spam.
 public type SendemailrequestMailSettingsSpamCheck record {
     # Indicates if this setting is enabled.
@@ -29,6 +34,7 @@ public type SendemailrequestMailSettingsSpamCheck record {
     # An Inbound Parse URL that you would like a copy of your email along with the spam report to be sent to.
     string post_to_url?;
     # The threshold used to determine if your content qualifies as spam on a scale from 1 to 10, with 10 being most strict, or most likely to be considered as spam.
+    @constraint:Int {minValue: 1, maxValue: 10}
     int threshold?;
 };
 
@@ -118,7 +124,8 @@ public type SendemailrequestAsm record {
     # The unsubscribe group to associate with this email.
     int group_id;
     # An array containing the unsubscribe groups that you would like to be displayed on the unsubscribe preferences page.
-    int[25] groups_to_display?;
+    @constraint:Array {maxLength: 25}
+    int[] groups_to_display?;
 };
 
 public type PostSubusersRequest record {
@@ -166,7 +173,8 @@ public type SendEmailRequest record {
     # This ID represents a batch of emails to be sent at the same time. Including a batch_id in your request allows you include this email in that batch, and also enables you to cancel or pause the delivery of that batch. For more information, see https://sendgrid.com/docs/API_Reference/Web_API_v3/cancel_schedule_send.html 
     string batch_id?;
     # An array of category names for this message. Each category name may not exceed 255 characters. 
-    string[10] categories?;
+    @constraint:Array {maxLength: 10}
+    SendemailrequestCategoriesItemsString[] categories?;
     # An array in which you may specify the content of your email. You can include multiple mime types of content, but you must specify at least one mime type. To include more than one mime type, simply add another object to the array containing the `type` and `value` parameters.
     SendemailrequestContent[] content;
     # Values that are specific to the entire send that will be carried along with the email and its activity data. Substitutions will not be made on custom arguments, so any string that is entered into this parameter will be assumed to be the custom argument that you would like to be used. This parameter is overridden by personalizations[x].custom_args if that parameter has been defined. Total custom args size may not exceed 10,000 bytes.
@@ -176,11 +184,13 @@ public type SendEmailRequest record {
     # An object containing key/value pairs of header names and the value to substitute for them. You must ensure these are properly encoded if they contain unicode characters. Must not be one of the reserved headers.
     record {} headers?;
     # The IP Pool that you would like to send this email from.
+    @constraint:String {maxLength: 64, minLength: 2}
     string ip_pool_name?;
     # A collection of different mail settings that you can use to specify how you would like this email to be handled.
     SendemailrequestMailSettings mail_settings?;
     # An array of messages and their metadata. Each object within personalizations can be thought of as an envelope - it defines who should receive an individual message and how that message should be handled.
-    SendemailrequestPersonalizations[1000] personalizations;
+    @constraint:Array {maxLength: 1000}
+    SendemailrequestPersonalizations[] personalizations;
     # Email details
     EmailObject reply_to?;
     # An object of key/value pairs that define block sections of code to be used as substitutions.
@@ -188,6 +198,7 @@ public type SendEmailRequest record {
     # A unix timestamp allowing you to specify when you want your email to be delivered. This may be overridden by the personalizations[x].send_at parameter. Scheduling more ta 72 hours in advance is forbidden.
     int send_at?;
     # The global, or “message level”, subject of your email. This may be overridden by personalizations[x].subject.
+    @constraint:String {minLength: 1}
     string subject;
     # The id of a template that you would like to use. If you use a template that contains a subject and content (either text or html), you do not need to specify those at the personalizations nor message level. 
     string template_id?;
@@ -263,9 +274,11 @@ public type AlertResponse record {
 
 public type SendemailrequestPersonalizations record {
     # An array of recipients who will receive a blind carbon copy of your email. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[1000] bcc?;
+    @constraint:Array {maxLength: 1000}
+    EmailObject[] bcc?;
     # An array of recipients who will receive a copy of your email. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[1000] cc?;
+    @constraint:Array {maxLength: 1000}
+    EmailObject[] cc?;
     # Values that are specific to this personalization that will be carried along with the email and its activity data. Substitutions will not be made on custom arguments, so any string that is entered into this parameter will be assumed to be the custom argument that you would like to be used. May not exceed 10,000 bytes.
     record {} custom_args?;
     # A collection of JSON key/value pairs allowing you to specify specific handling instructions for your email. You may not overwrite the following headers: x-sg-id, x-sg-eid, received, dkim-signature, Content-Type, Content-Transfer-Encoding, To, From, Subject, Reply-To, CC, BCC
@@ -273,11 +286,13 @@ public type SendemailrequestPersonalizations record {
     # A unix timestamp allowing you to specify when you want your email to be delivered. Scheduling more than 72 hours in advance is forbidden.
     int send_at?;
     # The subject of your email. Char length requirements, according to the RFC - http://stackoverflow.com/questions/1592291/what-is-the-email-subject-length-limit#answer-1592310
+    @constraint:String {minLength: 1}
     string subject?;
     # A collection of key/value pairs following the pattern "substitution_tag":"value to substitute". All are assumed to be strings. These substitutions will apply to the text and html content of the body of your email, in addition to the `subject` and `reply-to` parameters.
     record {} substitutions?;
     # An array of recipients. Each object within this array may contain the name, but must always contain the email, of a recipient.
-    EmailObject[1000] to;
+    @constraint:Array {maxLength: 1000, minLength: 1}
+    EmailObject[] to;
 };
 
 # Allows you to track whether a recipient clicked a link in your email.
@@ -290,8 +305,10 @@ public type SendemailrequestTrackingSettingsClickTracking record {
 
 public type SendemailrequestContent record {
     # The mime type of the content you are including in your email. For example, “text/plain” or “text/html”.
+    @constraint:String {minLength: 1}
     string 'type;
     # The actual content of the specified mime type that you are including in your email.
+    @constraint:String {minLength: 1}
     string value;
 };
 
@@ -325,14 +342,16 @@ public type SubuserPost record {
 
 public type SendemailrequestAttachments record {
     # The Base64 encoded content of the attachment.
+    @constraint:String {minLength: 1}
     string content;
     # The content id for the attachment. This is used when the disposition is set to “inline” and the attachment is an image, allowing the file to be displayed within the body of your email.
     string content_id?;
     # The content-disposition of the attachment specifying how you would like the attachment to be displayed. For example, “inline” results in the attached file being displayed automatically within the message while “attachment” results in the attached file requiring some action to be taken before it is displayed (e.g. opening or downloading the file).
-    string disposition?;
+    string disposition = "attachment";
     # The filename of the attachment.
     string filename;
     # The mime type of the content you are attaching. For example, “text/plain” or “text/html”.
+    @constraint:String {minLength: 1}
     string 'type?;
 };
 

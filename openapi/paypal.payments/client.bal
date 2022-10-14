@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
@@ -83,7 +87,7 @@ public isolated client class Client {
     # + startTime - The start date and time for the range to show in the response, in Internet date and time format. For example, start_time=2016-03-06T11:00:00Z. 
     # + return - Authorization details. 
     remote isolated function getAuthorization(string authorizationId, int? count = (), int? endTime = (), int? page = (), int? pageSize = (), boolean? totalCountRequired = (), string? sortBy = (), string? sortOrder = (), string? startId = (), int? startIndex = (), string? startTime = ()) returns AuthorizationDetails|error {
-        string resourcePath = string `/v2/payments/authorizations/${authorizationId}`;
+        string resourcePath = string `/v2/payments/authorizations/${getEncodedUri(authorizationId)}`;
         map<anydata> queryParam = {"count": count, "end_time": endTime, "page": page, "page_size": pageSize, "total_count_required": totalCountRequired, "sort_by": sortBy, "sort_order": sortOrder, "start_id": startId, "start_index": startIndex, "start_time": startTime};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         AuthorizationDetails response = check self.clientEp->get(resourcePath);
@@ -97,13 +101,13 @@ public isolated client class Client {
     # + payload - The capture authorization request 
     # + return - Captured payment details 
     remote isolated function captureAuthorization(string authorizationId, CaptureAuthorizationRequest payload, string? paypalRequestId = (), string? prefer = ()) returns CapturedPaymentDetails|error {
-        string resourcePath = string `/v2/payments/authorizations/${authorizationId}/capture`;
+        string resourcePath = string `/v2/payments/authorizations/${getEncodedUri(authorizationId)}/capture`;
         map<any> headerValues = {"PayPal-Request-Id": paypalRequestId, "Prefer": prefer};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        CapturedPaymentDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        CapturedPaymentDetails response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reauthorizes an authorized PayPal account payment, by ID. To ensure that funds are still available, reauthorize a payment after its initial three-day honor period expires. Within the 29-day authorization period, you can issue multiple re-authorizations after the honor period expires. If 30 days have transpired since the date of the original authorization, you must create an authorized payment instead of reauthorizing the original authorized payment. A reauthorized payment itself has a new honor period of three days. You can reauthorize an authorized payment once for up to 115% of the original authorized amount, not to exceed an increase of $75 USD.
@@ -114,13 +118,13 @@ public isolated client class Client {
     # + payload - The reauthorize authorization request 
     # + return - Reauthorized payment details 
     remote isolated function reauthorizeAuthorization(string authorizationId, ReauthorizeAuthorizationRequest payload, string? paypalRequestId = (), string? prefer = ()) returns ReauthorizedPaymentDetails|error {
-        string resourcePath = string `/v2/payments/authorizations/${authorizationId}/reauthorize`;
+        string resourcePath = string `/v2/payments/authorizations/${getEncodedUri(authorizationId)}/reauthorize`;
         map<any> headerValues = {"PayPal-Request-Id": paypalRequestId, "Prefer": prefer};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ReauthorizedPaymentDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ReauthorizedPaymentDetails response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Voids, or cancels, an authorized payment, by ID. You cannot void an authorized payment that has been fully captured.
@@ -129,12 +133,12 @@ public isolated client class Client {
     # + paypalAuthAssertion - An API-caller-provided JSON Web Token (JWT) assertion that identifies the merchant. For details, see PayPal-Auth-Assertion. For three party transactions in which a partner is managing the API calls on behalf of a merchant, the partner must identify the merchant using either a PayPal-Auth-Assertion header or an access token with target_subject. 
     # + return - No JSON response body 
     remote isolated function voidAuthorization(string authorizationId, string? paypalAuthAssertion = ()) returns http:Response|error {
-        string resourcePath = string `/v2/payments/authorizations/${authorizationId}/void`;
+        string resourcePath = string `/v2/payments/authorizations/${getEncodedUri(authorizationId)}/void`;
         map<any> headerValues = {"PayPal-Auth-Assertion": paypalAuthAssertion};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Shows details for a captured payment, by ID.
@@ -142,7 +146,7 @@ public isolated client class Client {
     # + captureId - The PayPal-generated ID for the captured payment for which to show details. 
     # + return - Captured payment details. 
     remote isolated function getCaptures(string captureId) returns CapturedPaymentDetails|error {
-        string resourcePath = string `/v2/payments/captures/${captureId}`;
+        string resourcePath = string `/v2/payments/captures/${getEncodedUri(captureId)}`;
         CapturedPaymentDetails response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -155,13 +159,13 @@ public isolated client class Client {
     # + payload - The refund capture request 
     # + return - Refund details 
     remote isolated function refundCaptures(string captureId, RefundCaptureRequest payload, string? paypalAuthAssertion = (), string? paypalRequestId = (), string? prefer = ()) returns RefundDetails|error {
-        string resourcePath = string `/v2/payments/captures/${captureId}/refund`;
+        string resourcePath = string `/v2/payments/captures/${getEncodedUri(captureId)}/refund`;
         map<any> headerValues = {"PayPal-Auth-Assertion": paypalAuthAssertion, "PayPal-Request-Id": paypalRequestId, "Prefer": prefer};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RefundDetails response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RefundDetails response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Shows details for a refund, by ID.
@@ -169,7 +173,7 @@ public isolated client class Client {
     # + refundId - The PayPal-generated ID for the refund for which to show details. 
     # + return - Refund details. 
     remote isolated function getRefunds(string refundId) returns RefundDetails|error {
-        string resourcePath = string `/v2/payments/refunds/${refundId}`;
+        string resourcePath = string `/v2/payments/refunds/${getEncodedUri(refundId)}`;
         RefundDetails response = check self.clientEp->get(resourcePath);
         return response;
     }

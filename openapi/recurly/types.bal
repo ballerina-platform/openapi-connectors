@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,12 +14,21 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
+@constraint:String {maxLength: 13}
+public type InvoiceSubscriptionidsItemsString string;
+
+@constraint:String {maxLength: 13}
+public type TransactionSubscriptionidsItemsString string;
+
 public type Account record {
     *AccountReadOnly;
     *AccountResponse;
 };
 
 public type InvoiceMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     string number?;
@@ -28,26 +37,36 @@ public type InvoiceMini record {
 };
 
 public type AccountMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The unique identifier of the account.
+    @constraint:String {maxLength: 50}
     string code?;
     # The email address used for communicating with this customer.
     string email?;
+    @constraint:String {maxLength: 255}
     string first_name?;
+    @constraint:String {maxLength: 255}
     string last_name?;
+    @constraint:String {maxLength: 255}
     string company?;
+    @constraint:String {maxLength: 13}
     string parent_account_id?;
+    @constraint:String {maxLength: 6}
     string bill_to?;
 };
 
 public type SubscriptionShippingCreate record {
     ShippingAddressCreate address?;
     # Assign a shipping address from the account's existing shipping addresses. If `address_id` and `address` are both present, `address` will be used.
+    @constraint:String {maxLength: 13}
     string address_id?;
     # The id of the shipping method used to deliver the subscription. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 13}
     string method_id?;
     # The code of the shipping method used to deliver the subscription. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 50}
     string method_code?;
     float amount?;
 };
@@ -64,20 +83,23 @@ public type Invoice record {
     # The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
     string billing_info_id?;
     # If the invoice is charging or refunding for one or more subscriptions, these are their IDs.
-    string[] subscription_ids?;
+    InvoiceSubscriptionidsItemsString[] subscription_ids?;
     # On refund invoices, this value will exist and show the invoice ID of the purchase invoice the refund was created from.
+    @constraint:String {maxLength: 13}
     string previous_invoice_id?;
     # If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     string number?;
     # An automatic invoice means a corresponding transaction is run using the account's billing information at the same time the invoice is created. Manual invoices are created without a corresponding transaction. The merchant must enter a manual payment transaction or have the customer pay the invoice with an automatic method, like credit card, PayPal, Amazon, or ACH bank payment.
     string collection_method?;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     int net_terms?;
     InvoiceAddress address?;
     ShippingAddress shipping_address?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Total discounts applied to this invoice.
     float discount?;
@@ -95,6 +117,7 @@ public type Invoice record {
     float balance?;
     TaxInfo tax_info?;
     # VAT registration number for the customer on this invoice. This will come from the VAT Number field in the Billing Info or the Account Info depending on your tax settings and the invoice collection method.
+    @constraint:String {maxLength: 20}
     string vat_number?;
     # VAT Reverse Charge Notes only appear if you have EU VAT enabled or are using your own Avalara AvaTax account and the customer is in the EU, has a VAT number, and is in a different country than your own. This will default to the VAT Reverse Charge Notes text specified on the Tax Settings page in your Recurly admin, unless custom notes were created with the original subscription.
     string vat_reverse_charge_notes?;
@@ -129,14 +152,18 @@ public type Address record {
 };
 
 public type PlanUpdate record {
+    @constraint:String {maxLength: 13}
     string id?;
     # Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
+    @constraint:String {maxLength: 50}
     string code?;
     # This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    @constraint:String {maxLength: 255}
     string name?;
     # Optional description, not displayed.
     string description?;
     # Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Units for the plan's trial period.
     string trial_unit?;
@@ -151,15 +178,18 @@ public type PlanUpdate record {
     string revenue_schedule_type?;
     string setup_fee_revenue_schedule_type?;
     # Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
+    @constraint:String {maxLength: 20}
     string setup_fee_accounting_code?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_transaction_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Optional field used by Avalara, Vertex, and Recurly's EU VAT tax feature to determine taxation rules. If you have your own AvaTax or Vertex account configured, use their tax codes to assign specific tax rules. If you are using Recurly's EU VAT feature, you can use values of `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the plan, `false` applies tax on the plan.
     boolean tax_exempt?;
+    @constraint:Array {minLength: 1}
     PlanPricing[] currencies?;
     PlanHostedPages hosted_pages?;
     # Used to determine whether items can be assigned as add-ons to individual subscriptions.
@@ -170,8 +200,10 @@ public type PlanUpdate record {
 
 public type MeasuredUnitCreate record {
     # Unique internal name of the measured unit on your site.
+    @constraint:String {maxLength: 255}
     string name;
     # Display name for the measured unit.
+    @constraint:String {maxLength: 50}
     string display_name;
     # Optional internal description.
     string description?;
@@ -209,6 +241,7 @@ public type ShippingAddressList record {
 
 public type AccountCreate record {
     # The unique identifier of the account. This cannot be changed once the account is created.
+    @constraint:String {maxLength: 50}
     string code;
     AccountAcquisitionUpdate acquisition?;
     ShippingAddressCreate[] shipping_addresses?;
@@ -217,24 +250,30 @@ public type AccountCreate record {
 
 public type CouponBulkCreate record {
     # The quantity of unique coupon codes to generate
+    @constraint:Int {minValue: 1, maxValue: 200}
     int number_of_unique_codes?;
 };
 
 # Full item details.
 public type Item record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Unique code to identify the item.
+    @constraint:String {maxLength: 50}
     string code?;
     # The current state of the item.
     string state?;
     # This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    @constraint:String {maxLength: 255}
     string name?;
     # Optional, description.
     string description?;
     # Optional, stock keeping unit to link the item to other inventory systems.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     # Accounting code for invoice line items.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     string revenue_schedule_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
@@ -242,6 +281,7 @@ public type Item record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the item, `false` applies tax on the item.
     boolean tax_exempt?;
@@ -255,15 +295,18 @@ public type Item record {
 
 public type AccountBalanceAmount record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Total amount the account is past due.
     float amount?;
 };
 
 public type CreditPayment record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    @constraint:String {maxLength: 32}
     string uuid?;
     # The action for which the credit was created.
     string action?;
@@ -271,10 +314,12 @@ public type CreditPayment record {
     InvoiceMini applied_to_invoice?;
     InvoiceMini original_invoice?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Total credit payment amount applied to the charge invoice.
     float amount?;
     # For credit payments with action `refund`, this is the credit payment that was refunded.
+    @constraint:String {maxLength: 13}
     string original_credit_payment_id?;
     Transaction refund_transaction?;
     string created_at?;
@@ -301,8 +346,10 @@ public type TaxInfo record {
 
 public type AddOnPricing record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
     # Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
     # If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
@@ -315,9 +362,11 @@ public type ExportDates record {
 };
 
 public type Subscription record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    @constraint:String {maxLength: 32}
     string uuid?;
     AccountMini account?;
     # Just the important parts.
@@ -348,6 +397,7 @@ public type Subscription record {
     # Null unless subscription is paused or will pause at the end of the current billing period.
     int remaining_pause_cycles?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     string revenue_schedule_type?;
     float unit_amount?;
@@ -357,6 +407,7 @@ public type Subscription record {
     float subtotal?;
     string collection_method?;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     int net_terms?;
@@ -398,29 +449,44 @@ public type CouponList record {
 };
 
 public type ShippingAddressCreate record {
+    @constraint:String {maxLength: 255}
     string nickname?;
+    @constraint:String {maxLength: 255}
     string first_name;
+    @constraint:String {maxLength: 255}
     string last_name;
+    @constraint:String {maxLength: 255}
     string company?;
+    @constraint:String {maxLength: 255}
     string email?;
+    @constraint:String {maxLength: 20}
     string vat_number?;
+    @constraint:String {maxLength: 30}
     string phone?;
+    @constraint:String {maxLength: 255}
     string street1;
+    @constraint:String {maxLength: 255}
     string street2?;
+    @constraint:String {maxLength: 255}
     string city;
     # State or province.
+    @constraint:String {maxLength: 255}
     string region?;
     # Zip or postal code.
+    @constraint:String {maxLength: 20}
     string postal_code;
     # Country, 2-letter ISO 3166-1 alpha-2 code.
+    @constraint:String {maxLength: 50}
     string country;
 };
 
 public type Tier record {
     # Ending quantity for the tier.  This represents a unit amount for unit-priced add ons, but for percentage type usage add ons, represents the site default currency in its minimum divisible unit.
+    @constraint:Int {minValue: 1, maxValue: 999999999}
     int ending_quantity?;
     # Decimal usage percentage.
     string usage_percentage?;
+    @constraint:Array {minLength: 1}
     TierPricing[] currencies?;
 };
 
@@ -436,17 +502,20 @@ public type InvoicerefundExternalRefund record {
     # Payment method used for external refund transaction.
     string payment_method;
     # Used as the refund transactions' description.
+    @constraint:String {maxLength: 50}
     string description?;
     # Date the external refund payment was made. Defaults to the current date-time.
     string refunded_at?;
 };
 
 public type MeasuredUnit record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Unique internal name of the measured unit on your site.
     string name?;
     # Display name for the measured unit. Can only contain spaces, underscores and must be alphanumeric.
+    @constraint:String {maxLength: 50}
     string display_name?;
     # The current state of the measured unit.
     string state?;
@@ -459,8 +528,10 @@ public type MeasuredUnit record {
 
 public type AccountPurchase record {
     # Optional, but if present allows an existing account to be used and updated as part of the purchase.
+    @constraint:String {maxLength: 13}
     string id?;
     # The unique identifier of the account. This cannot be changed once the account is created.
+    @constraint:String {maxLength: 50}
     string code;
     AccountAcquisitionUpdate acquisition?;
     *AccountUpdate;
@@ -474,12 +545,14 @@ public type ExportFiles record {
 # This is only included on errors with `type=transaction`.
 public type TransactionErrorDetails record {
     string 'object?;
+    @constraint:String {maxLength: 13}
     string transaction_id?;
     string category?;
     string code?;
     string message?;
     string merchant_advice?;
     # Returned when 3-D Secure authentication is required for a transaction. Pass this value to Recurly.js so it can continue the challenge flow.
+    @constraint:String {maxLength: 22}
     string three_d_secure_action_token_id?;
 };
 
@@ -495,13 +568,16 @@ public type CouponRedemptionList record {
 
 # Just the important parts.
 public type ItemMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Unique code to identify the item.
+    @constraint:String {maxLength: 50}
     string code?;
     # The current state of the item.
     string state?;
     # This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    @constraint:String {maxLength: 255}
     string name?;
     # Optional, description.
     string description?;
@@ -545,22 +621,25 @@ public type SubscriptionShippingUpdate record {
     string 'object?;
     ShippingAddressCreate address?;
     # Assign a shipping address from the account's existing shipping addresses.
+    @constraint:String {maxLength: 13}
     string address_id?;
 };
 
 # A purchase is only a request data type and is not persistent in Recurly, an InvoiceCollection will be the returned type.
 public type PurchaseCreate record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
     AccountPurchase account;
     # The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
     string billing_info_id?;
     # Must be set to manual in order to preview a purchase for an Account that does not have payment information associated with the Billing Info.
-    string collection_method?;
+    string collection_method = "automatic";
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
-    int net_terms?;
+    int net_terms = 0;
     # Terms and conditions to be put on the purchase invoice.
     string terms_and_conditions?;
     string customer_notes?;
@@ -569,6 +648,7 @@ public type PurchaseCreate record {
     # Notes to be put on the credit invoice resulting from credits in the purchase, if any.
     string credit_customer_notes?;
     # The default payment gateway identifier to be used for the purchase transaction.  This will also be applied as the default for any subscriptions included in the purchase request.
+    @constraint:String {maxLength: 13}
     string gateway_code?;
     PurchasecreateShipping shipping?;
     # A list of one time charges or credits to be created with the purchase.
@@ -585,27 +665,37 @@ public type PurchaseCreate record {
 
 public type AccountUpdate record {
     # A secondary value for the account.
+    @constraint:String {maxLength: 255}
     string username?;
     # The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     string email?;
     # Used to determine the language and locale of emails sent on behalf of the merchant to the customer. The list of locales is restricted to those the merchant has enabled on the site.
     string preferred_locale?;
     # Additional email address that should receive account correspondence. These should be separated only by commas. These CC emails will receive all emails that the `email` field also receives.
+    @constraint:String {maxLength: 255}
     string cc_emails?;
+    @constraint:String {maxLength: 255}
     string first_name?;
+    @constraint:String {maxLength: 255}
     string last_name?;
+    @constraint:String {maxLength: 100}
     string company?;
     # The VAT number of the account (to avoid having the VAT applied). This is only used for manually collected invoices.
+    @constraint:String {maxLength: 20}
     string vat_number?;
     # The tax status of the account. `true` exempts tax on the account, `false` applies tax on the account.
     boolean tax_exempt?;
     # The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
+    @constraint:String {maxLength: 30}
     string exemption_certificate?;
     # The account code of the parent account to be associated with this account. Passing an empty value removes any existing parent association from this account. If both `parent_account_code` and `parent_account_id` are passed, the non-blank value in `parent_account_id` will be used. Only one level of parent child relationship is allowed. You cannot assign a parent account that itself has a parent account.
+    @constraint:String {maxLength: 50}
     string parent_account_code?;
     # The UUID of the parent account to be associated with this account. Passing an empty value removes any existing parent association from this account. If both `parent_account_code` and `parent_account_id` are passed, the non-blank value in `parent_account_id` will be used. Only one level of parent child relationship is allowed. You cannot assign a parent account that itself has a parent account.
+    @constraint:String {maxLength: 13}
     string parent_account_id?;
     # An enumerable describing the billing behavior of the account, specifically whether the account is self-paying or will rely on the parent account to pay.
+    @constraint:String {maxLength: 6}
     string bill_to?;
     # An optional type designation for the payment gateway transaction created by this request. Supports 'moto' value, which is the acronym for mail order and telephone transactions.
     string transaction_type?;
@@ -630,11 +720,10 @@ public type AccountAcquisitionList record {
     AccountAcquisition[] data?;
 };
 
-public type AddressWithName record {
-    *Address;
-};
+public type AddressWithName Address;
 
 public type LineItemRefund record {
+    @constraint:String {maxLength: 13}
     string id?;
     # Line item quantity to be refunded.
     int quantity?;
@@ -655,11 +744,15 @@ public type TaxDetail record {
 };
 
 public type Site record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
+    @constraint:String {maxLength: 100}
     string subdomain?;
     # This value is used to configure RecurlyJS to submit tokenized billing information.
+    @constraint:String {maxLength: 50}
     string public_api_key?;
+    @constraint:String {maxLength: 15}
     string mode?;
     Address address?;
     Settings settings?;
@@ -671,6 +764,7 @@ public type Site record {
 };
 
 public type AccountAcquisitionReadOnly record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     AccountMini account?;
@@ -680,14 +774,14 @@ public type AccountAcquisitionReadOnly record {
     string updated_at?;
 };
 
-public type SubscriptionChangeBillingInfoCreate record {
-    *SubscriptionChangeBillingInfo;
-};
+public type SubscriptionChangeBillingInfoCreate SubscriptionChangeBillingInfo;
 
 public type MeasuredUnitUpdate record {
     # Unique internal name of the measured unit on your site.
+    @constraint:String {maxLength: 255}
     string name?;
     # Display name for the measured unit.
+    @constraint:String {maxLength: 50}
     string display_name?;
     # Optional internal description.
     string description?;
@@ -704,11 +798,16 @@ public type AccountList record {
 };
 
 public type BillingInfo record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
+    @constraint:String {maxLength: 13}
     string account_id?;
+    @constraint:String {maxLength: 50}
     string first_name?;
+    @constraint:String {maxLength: 50}
     string last_name?;
+    @constraint:String {maxLength: 100}
     string company?;
     Address address?;
     # Customer's VAT number (to avoid having the VAT applied). This is only used for automatically collected invoices.
@@ -741,6 +840,7 @@ public type InvoiceList record {
 # Accept nested attributes for three_d_secure_action_result_token_id
 public type SubscriptionChangeBillingInfo record {
     # A token generated by Recurly.js after completing a 3-D Secure device fingerprinting or authentication challenge.
+    @constraint:String {maxLength: 22}
     string three_d_secure_action_result_token_id?;
 };
 
@@ -755,19 +855,20 @@ public type CouponCreate record {
     # Description of the unit of time the coupon is for. Used with `free_trial_amount` to determine the duration of time the coupon is for.  Required if `discount_type` is `free_trial`.
     string free_trial_unit?;
     # Sets the duration of time the `free_trial_unit` is for. Required if `discount_type` is `free_trial`.
+    @constraint:Int {minValue: 1, maxValue: 9999}
     int free_trial_amount?;
     # Fixed discount currencies by currency. Required if the coupon type is `fixed`. This parameter should contain the coupon discount values
     CouponPricing[] currencies?;
     # The coupon is valid for one-time, non-plan charges if true.
-    boolean applies_to_non_plan_charges?;
+    boolean applies_to_non_plan_charges = false;
     # The coupon is valid for all plans if true. If false then `plans` will list the applicable plans.
-    boolean applies_to_all_plans?;
+    boolean applies_to_all_plans = true;
     # To apply coupon to Items in your Catalog, include a list
     # of `item_codes` in the request that the coupon will apply to. Or set value
     # to true to apply to all Items in your Catalog. The following values
     # are not permitted when `applies_to_all_items` is included: `free_trial_amount`
     # and `free_trial_unit`.
-    boolean applies_to_all_items?;
+    boolean applies_to_all_items = false;
     # List of plan codes to which this coupon applies. Required
     # if `applies_to_all_plans` is false. Overrides `applies_to_all_plans`
     # when `applies_to_all_plans` is true.
@@ -781,7 +882,7 @@ public type CouponCreate record {
     # - "single_use" coupons applies to the first invoice only.
     # - "temporal" coupons will apply to invoices for the duration determined by the `temporal_unit` and `temporal_amount` attributes.
     # - "forever" coupons will apply to invoices forever.
-    string duration?;
+    string duration = "forever";
     # If `duration` is "temporal" than `temporal_amount` is an integer which is multiplied by `temporal_unit` to define the duration that the coupon will be applied to invoices for.
     int temporal_amount?;
     # If `duration` is "temporal" than `temporal_unit` is multiplied by `temporal_amount` to define the duration that the coupon will be applied to invoices for.
@@ -797,18 +898,19 @@ public type CouponCreate record {
     # For example: "'abc-'****'-def'"
     string unique_code_template?;
     # Whether the discount is for all eligible charges on the account, or only a specific subscription.
-    string redemption_resource?;
+    string redemption_resource = "account";
 };
 
 public type AccountAcquisitionUpdate record {
     record {
         # 3-letter ISO 4217 currency code.
+        @constraint:String {maxLength: 3}
         string currency?;
         # The amount of the corresponding currency used to acquire the account.
         float amount?;
     } cost?;
     # The channel through which the account was acquired.
-    string 'channel?;
+    string channel?;
     # An arbitrary subchannel string representing a distinction/subcategory within a broader channel.
     string subchannel?;
     # An arbitrary identifier for the marketing campaign that led to the acquisition of this account.
@@ -817,6 +919,7 @@ public type AccountAcquisitionUpdate record {
 
 public type InvoiceUpdate record {
     # This identifies the PO number associated with the invoice. Not editable for credit invoices.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # VAT Reverse Charge Notes are editable only if there was a VAT reverse charge applied to the invoice.
     string vat_reverse_charge_notes?;
@@ -825,6 +928,7 @@ public type InvoiceUpdate record {
     # Customer notes are an optional note field.
     string customer_notes?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. Changing Net terms changes due_on, and the invoice could move between past due and pending.
+    @constraint:Int {maxValue: 999}
     int net_terms?;
     InvoiceAddress address?;
 };
@@ -866,18 +970,23 @@ public type Usage record {
 
 # Full add-on details.
 public type AddOnUpdate record {
+    @constraint:String {maxLength: 13}
     string id?;
     # The unique identifier for the add-on within its plan. If an `Item` is associated to the `AddOn` then `code` must be absent.
+    @constraint:String {maxLength: 50}
     string code?;
     # Describes your add-on and will appear in subscribers' invoices. If an `Item` is associated to the `AddOn` then `name` must be absent.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if `add_on_type` is usage, `tier_type` is `flat` and `usage_type` is percentage. Must be omitted otherwise.
     float usage_percentage?;
     # System-generated unique identifier for a measured unit to be associated with the add-on. Either `measured_unit_id` or `measured_unit_name` are required when `add_on_type` is `usage`. If `measured_unit_id` and `measured_unit_name` are both present, `measured_unit_id` will be used.
+    @constraint:String {maxLength: 13}
     string measured_unit_id?;
     # Name of a measured unit to be associated with the add-on. Either `measured_unit_id` or `measured_unit_name` are required when `add_on_type` is `usage`. If `measured_unit_id` and `measured_unit_name` are both present, `measured_unit_id` will be used.
     string measured_unit_name?;
     # Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code. If an `Item` is associated to the `AddOn` then `accounting code` must be absent.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # When this add-on is invoiced, the line item will use this revenue schedule. If `item_code`/`item_id` is part of the request then `revenue_schedule_type` must be absent in the request as the value will be set from the item.
     string revenue_schedule_type?;
@@ -886,6 +995,7 @@ public type AddOnUpdate record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types. If an `Item` is associated to the `AddOn`, then the `avalara_service_type` must be absent.
     int avalara_service_type?;
     # Optional field used by Avalara, Vertex, and Recurly's EU VAT tax feature to determine taxation rules. If you have your own AvaTax or Vertex account configured, use their tax codes to assign specific tax rules. If you are using Recurly's EU VAT feature, you can use values of `unknown`, `physical`, or `digital`. If an `Item` is associated to the `AddOn` then `tax code` must be absent.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # Determines if the quantity field is displayed on the hosted pages for the add-on.
     boolean display_quantity?;
@@ -896,6 +1006,7 @@ public type AddOnUpdate record {
     # If the add-on's `tier_type` is `tiered`, `volume`, or `stairstep`,
     # then currencies must be absent. Must also be absent if `add_on_type` is
     # `usage` and `usage_type` is `percentage`.
+    @constraint:Array {minLength: 1}
     AddOnPricing[] currencies?;
     # If the tier_type is `flat`, then `tiers` must be absent. The `tiers` object
     # must include one to many tiers with `ending_quantity` and `unit_amount` for
@@ -906,11 +1017,13 @@ public type AddOnUpdate record {
 
 public type SubscriptionPurchase record {
     string plan_code;
+    @constraint:String {maxLength: 13}
     string plan_id?;
     # Override the unit amount of the subscription plan by setting this value. If not provided, the subscription will inherit the price from the subscription plan for the provided currency.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Optionally override the default quantity of 1.
-    int quantity?;
+    int quantity = 1;
     SubscriptionAddOnCreate[] add_ons?;
     # The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     CustomFields custom_fields?;
@@ -922,11 +1035,12 @@ public type SubscriptionPurchase record {
     # If present, this sets the date the subscription's next billing period will start (`current_period_ends_at`). This can be used to align the subscription’s billing to a specific day of the month. The initial invoice will be prorated for the period between the subscription's activation date and the billing period end date. Subsequent periods will be based off the plan interval. For a subscription with a trial period, this will change when the trial expires.
     string next_bill_date?;
     # The number of cycles/billing periods in a term. When `remaining_billing_cycles=0`, if `auto_renew=true` the subscription will renew and a new term will begin, otherwise the subscription will expire.
+    @constraint:Int {minValue: 1}
     int total_billing_cycles?;
     # If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
     int renewal_billing_cycles?;
     # Whether the subscription renews at the end of its term.
-    boolean auto_renew?;
+    boolean auto_renew = true;
     string revenue_schedule_type?;
 };
 
@@ -945,44 +1059,52 @@ public type CouponRedemptionMini record {
 
 # Full plan details.
 public type Plan record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
+    @constraint:String {maxLength: 50}
     string code;
     # The current state of the plan.
     string state?;
     # This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    @constraint:String {maxLength: 255}
     string name;
     # Optional description, not displayed.
     string description?;
     # Unit for the plan's billing interval.
-    string interval_unit?;
+    string interval_unit = "months";
     # Length of the plan's billing interval in `interval_unit`.
-    int interval_length?;
+    @constraint:Int {minValue: 1}
+    int interval_length = 1;
     # Units for the plan's trial period.
-    string trial_unit?;
+    string trial_unit = "months";
     # Length of plan's trial period in `trial_units`. `0` means `no trial`.
-    int trial_length?;
+    int trial_length = 0;
     # Allow free trial subscriptions to be created without billing info. Should not be used if billing info is needed for initial invoice due to existing uninvoiced charges or setup fee.
-    boolean trial_requires_billing_info?;
+    boolean trial_requires_billing_info = true;
     # Automatically terminate subscriptions after a defined number of billing cycles. Number of billing cycles before the plan automatically stops renewing, defaults to `null` for continuous, automatic renewal.
     int total_billing_cycles?;
     # Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
-    boolean auto_renew?;
+    boolean auto_renew = true;
     string revenue_schedule_type?;
     string setup_fee_revenue_schedule_type?;
     # Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
+    @constraint:String {maxLength: 20}
     string setup_fee_accounting_code?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_transaction_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the plan, `false` applies tax on the plan.
     boolean tax_exempt?;
+    @constraint:Array {minLength: 1}
     PlanPricing[] currencies?;
     PlanHostedPages hosted_pages?;
     # Used to determine whether items can be assigned as add-ons to individual subscriptions.
@@ -997,12 +1119,14 @@ public type Plan record {
 public type SubscriptionAddOnUpdate record {
     # When an id is provided, the existing subscription add-on attributes will
     # persist unless overridden in the request.
+    @constraint:String {maxLength: 13}
     string id?;
     # If a code is provided without an id, the subscription add-on attributes
     # will be set to the current value for those attributes on the plan add-on
     # unless provided in the request. If `add_on_source` is set to `plan_add_on`
     # or left blank, then plan's add-on `code` should be used. If `add_on_source`
     # is set to `item`, then the `code` from the associated item should be used.
+    @constraint:String {maxLength: 50}
     string code?;
     # Used to determine where the associated add-on data is pulled from. If this value is set to
     # `plan_add_on` or left blank, then add-on data will be pulled from the plan's add-ons. If the associated
@@ -1012,6 +1136,7 @@ public type SubscriptionAddOnUpdate record {
     int quantity?;
     # Allows up to 2 decimal places. Optionally, override the add-on's default unit amount.
     # If the plan add-on's `tier_type` is `tiered`, `volume`, or `stairstep`, then `unit_amount` cannot be provided.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Allows up to 9 decimal places. Optionally, override the add-on's default unit amount.
     # If the plan add-on's `tier_type` is `tiered`, `volume`, or `stairstep`, then `unit_amount_decimal` cannot be provided.
@@ -1022,6 +1147,7 @@ public type SubscriptionAddOnUpdate record {
     # must include one to many tiers with `ending_quantity` and `unit_amount`.
     # There must be one tier with an `ending_quantity` of 999999999 which is the
     # default if not provided.
+    @constraint:Array {minLength: 1}
     SubscriptionAddOnTier[] tiers?;
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
     float usage_percentage?;
@@ -1031,8 +1157,10 @@ public type SubscriptionAddOnUpdate record {
 # The shipping address can currently only be changed immediately, using SubscriptionUpdate.
 public type SubscriptionChangeShippingCreate record {
     # The id of the shipping method used to deliver the subscription. To remove shipping set this to `null` and the `amount=0`. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 13}
     string method_id?;
     # The code of the shipping method used to deliver the subscription. To remove shipping set this to `null` and the `amount=0`. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 50}
     string method_code?;
     float amount?;
 };
@@ -1056,17 +1184,21 @@ public type CouponPricing record {
 
 # Just the important parts.
 public type PlanMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
+    @constraint:String {maxLength: 50}
     string code?;
     # This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    @constraint:String {maxLength: 255}
     string name?;
 };
 
 public type CouponRedemptionCreate record {
     string coupon_id;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     string subscription_id?;
 };
@@ -1094,7 +1226,7 @@ public type InvoiceRefund record {
     # - `credit_first` – Issues credit back to the account first, then refunds any remaining amount back to the transaction. Default value when Credit Invoices feature is not enabled.
     # - `all_credit` – Issues credit to the account for the entire amount of the refund. Only available when the Credit Invoices feature is enabled.
     # - `all_transaction` – Refunds the entire amount back to transactions, using transactions from previous invoices if necessary. Only available when the Credit Invoices feature is enabled.
-    string refund_method?;
+    string refund_method = "credit_first";
     # Used as the Customer Notes on the credit invoice.
     # 
     # This field can only be include when the Credit Invoices feature is enabled.
@@ -1112,46 +1244,53 @@ public type InvoiceRefund record {
 
 public type PlanCreate record {
     # Unique code to identify the plan. This is used in Hosted Payment Page URLs and in the invoice exports.
+    @constraint:String {maxLength: 50}
     string code;
     # This name describes your plan and will appear on the Hosted Payment Page and the subscriber's invoice.
+    @constraint:String {maxLength: 255}
     string name;
     # Optional description, not displayed.
     string description?;
     # Accounting code for invoice line items for the plan. If no value is provided, it defaults to plan's code.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Unit for the plan's billing interval.
-    string interval_unit?;
+    string interval_unit = "months";
     # Length of the plan's billing interval in `interval_unit`.
-    int interval_length?;
+    @constraint:Int {minValue: 1}
+    int interval_length = 1;
     # Units for the plan's trial period.
-    string trial_unit?;
+    string trial_unit = "months";
     # Length of plan's trial period in `trial_units`. `0` means `no trial`.
-    int trial_length?;
+    int trial_length = 0;
     # Allow free trial subscriptions to be created without billing info. Should not be used if billing info is needed for initial invoice due to existing uninvoiced charges or setup fee.
-    boolean trial_requires_billing_info?;
+    boolean trial_requires_billing_info = true;
     # Automatically terminate plans after a defined number of billing cycles.
     int total_billing_cycles?;
     # Subscriptions will automatically inherit this value once they are active. If `auto_renew` is `true`, then a subscription will automatically renew its term at renewal. If `auto_renew` is `false`, then a subscription will expire at the end of its term. `auto_renew` can be overridden on the subscription record itself.
-    boolean auto_renew?;
+    boolean auto_renew = true;
     string revenue_schedule_type?;
     string setup_fee_revenue_schedule_type?;
     # Accounting code for invoice line items for the plan's setup fee. If no value is provided, it defaults to plan's accounting code.
+    @constraint:String {maxLength: 20}
     string setup_fee_accounting_code?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_transaction_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the plan is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Optional field used by Avalara, Vertex, and Recurly's EU VAT tax feature to determine taxation rules. If you have your own AvaTax or Vertex account configured, use their tax codes to assign specific tax rules. If you are using Recurly's EU VAT feature, you can use values of `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the plan, `false` applies tax on the plan.
     boolean tax_exempt?;
+    @constraint:Array {minLength: 1}
     PlanPricing[] currencies;
     PlanHostedPages hosted_pages?;
     AddOnCreate[] add_ons?;
     # Used to determine whether items can be assigned as add-ons to individual subscriptions.
     # If `true`, items can be assigned as add-ons to individual subscription add-ons.
     # If `false`, only plan add-ons can be used.
-    boolean allow_any_item_on_subscriptions?;
+    boolean allow_any_item_on_subscriptions = false;
 };
 
 public type ShippingMethodList record {
@@ -1166,21 +1305,27 @@ public type ShippingMethodList record {
 
 public type ShippingFeeCreate record {
     # The id of the shipping method used to deliver the purchase. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 13}
     string method_id?;
     # The code of the shipping method used to deliver the purchase. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 50}
     string method_code?;
     # This is priced in the purchase's currency.
     float amount?;
 };
 
 public type ShippingMethod record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The internal name used identify the shipping method.
+    @constraint:String {maxLength: 50}
     string code?;
     # The name of the shipping method displayed to customers.
+    @constraint:String {maxLength: 100}
     string name?;
     # Accounting code for shipping method.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
     # code values are specific to each tax system. If you are using Recurly’s
@@ -1193,6 +1338,7 @@ public type ShippingMethod record {
     # - `FR010100` – Delivery by Company Vehicle Before Passage of Title
     # - `FR010200` – Delivery by Company Vehicle After Passage of Title
     # - `NT` – Non-Taxable
+    @constraint:String {maxLength: 50}
     string tax_code?;
     string created_at?;
     string updated_at?;
@@ -1201,14 +1347,18 @@ public type ShippingMethod record {
 
 # Full add-on details.
 public type AddOn record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
+    @constraint:String {maxLength: 13}
     string plan_id?;
     # The unique identifier for the add-on within its plan.
+    @constraint:String {maxLength: 50}
     string code;
     # Add-ons can be either active or inactive.
     string state?;
     # Describes your add-on and will appear in subscribers' invoices.
+    @constraint:String {maxLength: 255}
     string name;
     # Whether the add-on type is fixed, or usage-based.
     string add_on_type?;
@@ -1217,8 +1367,10 @@ public type AddOn record {
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     float usage_percentage?;
     # System-generated unique identifier for an measured unit associated with the add-on.
+    @constraint:String {maxLength: 13}
     string measured_unit_id?;
     # Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # When this add-on is invoiced, the line item will use this revenue schedule. If `item_code`/`item_id` is part of the request then `revenue_schedule_type` must be absent in the request as the value will be set from the item.
     string revenue_schedule_type?;
@@ -1227,13 +1379,15 @@ public type AddOn record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # Determines if the quantity field is displayed on the hosted pages for the add-on.
-    boolean display_quantity?;
+    boolean display_quantity = false;
     # Default quantity for the hosted pages.
-    int default_quantity?;
+    int default_quantity = 1;
     # Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     boolean optional?;
+    @constraint:Array {minLength: 1}
     AddOnPricing[] currencies?;
     # Just the important parts.
     ItemMini item?;
@@ -1241,9 +1395,10 @@ public type AddOn record {
     # [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
     # [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
     # to configure quantity-based pricing models.
-    string tier_type?;
+    string tier_type = "flat";
     Tier[] tiers?;
     # Optional, stock keeping unit to link the item to other inventory systems.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     string created_at?;
     string updated_at?;
@@ -1252,21 +1407,31 @@ public type AddOn record {
 
 public type BillingInfoCreate record {
     # A token [generated by Recurly.js](https://developers.recurly.com/reference/recurly-js/#getting-a-token).
+    @constraint:String {maxLength: 22}
     string token_id?;
+    @constraint:String {maxLength: 50}
     string first_name?;
+    @constraint:String {maxLength: 50}
     string last_name?;
+    @constraint:String {maxLength: 100}
     string company?;
     Address address?;
     # Credit card number, spaces and dashes are accepted.
     string number?;
+    @constraint:String {maxLength: 2}
     string month?;
+    @constraint:String {maxLength: 4}
     string year?;
     # *STRONGLY RECOMMENDED*
+    @constraint:String {maxLength: 4}
     string cvv?;
     string vat_number?;
     # *STRONGLY RECOMMENDED* Customer's IP address when updating their billing information.
+    @constraint:String {maxLength: 20}
     string ip_address?;
+    @constraint:String {maxLength: 50}
     string gateway_token?;
+    @constraint:String {maxLength: 12}
     string gateway_code?;
     string amazon_billing_agreement_id?;
     string paypal_billing_agreement_id?;
@@ -1274,8 +1439,10 @@ public type BillingInfoCreate record {
     # An optional type designation for the payment gateway transaction created by this request. Supports 'moto' value, which is the acronym for mail order and telephone transactions.
     string transaction_type?;
     # A token generated by Recurly.js after completing a 3-D Secure device fingerprinting or authentication challenge.
+    @constraint:String {maxLength: 22}
     string three_d_secure_action_result_token_id?;
     # The International Bank Account Number, up to 34 alphanumeric characters comprising a country code; two check digits; and a number that includes the domestic bank account number, branch identifier, and potential routing information
+    @constraint:String {maxLength: 34}
     string iban?;
     # Tax identifier is required if adding a billing info that is a consumer card in Brazil or in Argentina. This would be the customer's CPF (Brazil) and CUIT (Argentina). CPF and CUIT are tax identifiers for all residents who pay taxes in Brazil and Argentina respectively.
     string tax_identifier?;
@@ -1308,6 +1475,7 @@ public type ExternalTransaction record {
     # Payment method used for external transaction.
     string payment_method?;
     # Used as the transaction's description.
+    @constraint:String {maxLength: 50}
     string description?;
     # The total amount of the transcaction. Cannot excceed the invoice total.
     float amount?;
@@ -1331,8 +1499,10 @@ public type AccountNoteList record {
 
 public type TierPricing record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
     # Allows up to 2 decimal places. Required unless `unit_amount_decimal` is provided.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Allows up to 9 decimal places. Only supported when `add_on_type` = `usage`.
     # If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
@@ -1341,6 +1511,7 @@ public type TierPricing record {
 
 public type InvoiceCollect record {
     # A token generated by Recurly.js after completing a 3-D Secure device fingerprinting or authentication challenge.
+    @constraint:String {maxLength: 22}
     string three_d_secure_action_result_token_id?;
     # An optional type designation for the payment gateway transaction created by this request. Supports 'moto' value, which is the acronym for mail order and telephone transactions.
     string transaction_type?;
@@ -1350,20 +1521,24 @@ public type InvoiceCollect record {
 
 public type SubscriptionCreate record {
     # You must provide either a `plan_code` or `plan_id`. If both are provided the `plan_id` will be used.
+    @constraint:String {maxLength: 50}
     string plan_code;
     # You must provide either a `plan_code` or `plan_id`. If both are provided the `plan_id` will be used.
+    @constraint:String {maxLength: 13}
     string plan_id?;
     AccountCreate account;
     # The `billing_info_id` is the value that represents a specific billing info for an end customer. When `billing_info_id` is used to assign billing info to the subscription, all future billing events for the subscription will bill to the specified billing info.
     string billing_info_id?;
     SubscriptionShippingCreate shipping?;
-    string collection_method?;
+    string collection_method = "automatic";
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
     # Override the unit amount of the subscription plan by setting this value. If not provided, the subscription will inherit the price from the subscription plan for the provided currency.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Optionally override the default quantity of 1.
-    int quantity?;
+    int quantity = 1;
     SubscriptionAddOnCreate[] add_ons?;
     # A list of coupon_codes to be redeemed on the subscription or account during the purchase.
     string[] coupon_codes?;
@@ -1376,11 +1551,12 @@ public type SubscriptionCreate record {
     # If present, this sets the date the subscription's next billing period will start (`current_period_ends_at`). This can be used to align the subscription’s billing to a specific day of the month. The initial invoice will be prorated for the period between the subscription's activation date and the billing period end date. Subsequent periods will be based off the plan interval. For a subscription with a trial period, this will change when the trial expires.
     string next_bill_date?;
     # The number of cycles/billing periods in a term. When `remaining_billing_cycles=0`, if `auto_renew=true` the subscription will renew and a new term will begin, otherwise the subscription will expire.
+    @constraint:Int {minValue: 1}
     int total_billing_cycles?;
     # If `auto_renew=true`, when a term completes, `total_billing_cycles` takes this value as the length of subsequent terms. Defaults to the plan's `total_billing_cycles`.
     int renewal_billing_cycles?;
     # Whether the subscription renews at the end of its term.
-    boolean auto_renew?;
+    boolean auto_renew = true;
     string revenue_schedule_type?;
     # This will default to the Terms and Conditions text specified on the Invoice Settings page in your Recurly admin. Specify custom notes to add or override Terms and Conditions. Custom notes will stay with a subscription on all renewals.
     string terms_and_conditions?;
@@ -1389,23 +1565,28 @@ public type SubscriptionCreate record {
     # If there are pending credits on the account that will be invoiced during the subscription creation, these will be used as the Customer Notes on the credit invoice.
     string credit_customer_notes?;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
-    int net_terms?;
+    int net_terms = 0;
     # An optional type designation for the payment gateway transaction created by this request. Supports 'moto' value, which is the acronym for mail order and telephone transactions.
     string transaction_type?;
 };
 
 public type ItemCreate record {
     # Unique code to identify the item.
+    @constraint:String {maxLength: 50}
     string code;
     # This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    @constraint:String {maxLength: 255}
     string name;
     # Optional, description.
     string description?;
     # Optional, stock keeping unit to link the item to other inventory systems.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     # Accounting code for invoice line items.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     string revenue_schedule_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
@@ -1413,6 +1594,7 @@ public type ItemCreate record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the item, `false` applies tax on the item.
     boolean tax_exempt?;
@@ -1429,13 +1611,16 @@ public type InvoiceCollection record {
 
 public type SubscriptionShippingPurchase record {
     # The id of the shipping method used to deliver the subscription. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 13}
     string method_id?;
     # The code of the shipping method used to deliver the subscription. If `method_id` and `method_code` are both present, `method_id` will be used.
+    @constraint:String {maxLength: 50}
     string method_code?;
     float amount?;
 };
 
 public type AccountNote record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     string account_id?;
@@ -1474,15 +1659,19 @@ public type LineItemList record {
 
 public type BillinginfoUpdatedBy record {
     # Customer's IP address when updating their billing information.
+    @constraint:String {maxLength: 20}
     string ip?;
     # Country, 2-letter ISO 3166-1 alpha-2 code matching the origin IP address, if known by Recurly.
+    @constraint:String {maxLength: 2}
     string country?;
 };
 
 # This links an Add-on to a specific Subscription.
 public type SubscriptionAddOn record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
+    @constraint:String {maxLength: 13}
     string subscription_id?;
     # Just the important parts.
     AddOnMini add_on?;
@@ -1504,6 +1693,7 @@ public type SubscriptionAddOn record {
     string tier_type?;
     # If tiers are provided in the request, all existing tiers on the Subscription Add-on will be
     # removed and replaced by the tiers in the request.
+    @constraint:Array {minLength: 1}
     SubscriptionAddOnTier[] tiers?;
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if add_on_type is usage and usage_type is percentage.
     float usage_percentage?;
@@ -1513,8 +1703,10 @@ public type SubscriptionAddOn record {
 };
 
 public type SubscriptionAddOnTier record {
+    @constraint:Int {minValue: 1, maxValue: 999999999}
     int ending_quantity?;
     # Allows up to 2 decimal places. Optionally, override the tiers' default unit amount. If add-on's `add_on_type` is `usage` and `usage_type` is `percentage`, cannot be provided.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Allows up to 9 decimal places.  Optionally, override tiers' default unit amount.
     # If `unit_amount_decimal` is provided, `unit_amount` cannot be provided.
@@ -1526,10 +1718,13 @@ public type SubscriptionAddOnTier record {
 
 public type ShippingMethodUpdate record {
     # The internal name used identify the shipping method.
+    @constraint:String {maxLength: 50}
     string code?;
     # The name of the shipping method displayed to customers.
+    @constraint:String {maxLength: 100}
     string name?;
     # Accounting code for shipping method.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
     # code values are specific to each tax system. If you are using Recurly’s
@@ -1542,6 +1737,7 @@ public type ShippingMethodUpdate record {
     # - `FR010100` – Delivery by Company Vehicle Before Passage of Title
     # - `FR010200` – Delivery by Company Vehicle After Passage of Title
     # - `NT` – Non-Taxable
+    @constraint:String {maxLength: 50}
     string tax_code?;
 };
 
@@ -1558,9 +1754,12 @@ public type PlanHostedPages record {
 
 public type PlanPricing record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Amount of one-time setup fee automatically charged at the beginning of a subscription billing cycle. For subscription plans with a trial, the setup fee will be charged at the time of signup. Setup fees do not increase with the quantity of a subscription plan.
+    @constraint:Float {maxValue: 1000000}
     float setup_fee?;
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
 };
 
@@ -1579,6 +1778,7 @@ public type CustomFieldDefinition record {
     string 'object?;
     string related_type?;
     # Used by the API to identify the field or reading and writing. The name can only be used once per Recurly object type.
+    @constraint:String {maxLength: 50}
     string name?;
     # The access control applied inside Recurly's admin UI:
     # - `api_only` - No one will be able to view or edit this field's data via the admin UI.
@@ -1587,8 +1787,10 @@ public type CustomFieldDefinition record {
     # - `write` - Users with the Customers role will be able to view and edit this field's data via the admin UI.
     string user_access?;
     # Used to label the field when viewing and editing the field in Recurly's admin UI.
+    @constraint:String {maxLength: 50}
     string display_name?;
     # Displayed as a tooltip when editing the field in the Recurly admin UI.
+    @constraint:String {maxLength: 255}
     string tooltip?;
     string created_at?;
     string updated_at?;
@@ -1617,11 +1819,14 @@ public type SiteList record {
 };
 
 public type ShippingMethodMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The internal name used identify the shipping method.
+    @constraint:String {maxLength: 50}
     string code?;
     # The name of the shipping method displayed to customers.
+    @constraint:String {maxLength: 100}
     string name?;
 };
 
@@ -1651,6 +1856,7 @@ public type CouponUpdate record {
     # This description will show up when a customer redeems a coupon on your Hosted Payment Pages, or if you choose to show the description on your own checkout page.
     string hosted_description?;
     # Description of the coupon on the invoice.
+    @constraint:String {maxLength: 255}
     string invoice_description?;
     # The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
     string redeem_by_date?;
@@ -1663,10 +1869,13 @@ public type SubscriptionChangeCreate record {
     # The timeframe parameter controls when the upgrade or downgrade takes place. The subscription change can occur now, when the subscription is next billed, or when the subscription term ends. Generally, if you're performing an upgrade, you will want the change to occur immediately (now). If you're performing a downgrade, you should set the timeframe to `term_end` or `bill_date` so the change takes effect at a scheduled billing date. The `renewal` timeframe option is accepted as an alias for `term_end`.
     string timeframe?;
     # If you want to change to a new plan, you can provide the plan's code or id. If both are provided the `plan_id` will be used.
+    @constraint:String {maxLength: 13}
     string plan_id?;
     # If you want to change to a new plan, you can provide the plan's code or id. If both are provided the `plan_id` will be used.
+    @constraint:String {maxLength: 50}
     string plan_code?;
     # Optionally, sets custom pricing for the subscription, overriding the plan's default unit amount. The subscription's current currency will be used.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Optionally override the default quantity of 1.
     int quantity?;
@@ -1697,6 +1906,7 @@ public type SubscriptionChangeCreate record {
     # The custom fields will only be altered when they are included in a request. Sending an empty array will not remove any existing values. To remove a field send the name with a null or empty value.
     CustomFields custom_fields?;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     int net_terms?;
@@ -1707,6 +1917,7 @@ public type SubscriptionChangeCreate record {
 
 public type PurchasecreateShipping record {
     # Assign a shipping address from the account's existing shipping addresses. If this and `address` are both present, `address` will take precedence.
+    @constraint:String {maxLength: 13}
     string address_id?;
     ShippingAddressCreate address?;
     # A list of shipping fees to be created as charges with the purchase.
@@ -1714,17 +1925,20 @@ public type PurchasecreateShipping record {
 };
 
 public type Transaction record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    @constraint:String {maxLength: 32}
     string uuid?;
     # If this transaction is a refund (`type=refund`), this will be the ID of the original transaction on the invoice being refunded.
+    @constraint:String {maxLength: 13}
     string original_transaction_id?;
     AccountMini account?;
     InvoiceMini invoice?;
     InvoiceMini voided_by_invoice?;
     # If the transaction is charging or refunding for one or more subscriptions, these are their IDs.
-    string[] subscription_ids?;
+    TransactionSubscriptionidsItemsString[] subscription_ids?;
     # - `authorization` – verifies billing information and places a hold on money in the customer's account.
     # - `capture` – captures funds held by an authorization and completes a purchase.
     # - `purchase` – combines the authorization and capture in one transaction.
@@ -1734,6 +1948,7 @@ public type Transaction record {
     # Describes how the transaction was triggered.
     string origin?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Total transaction amount sent to the payment gateway.
     float amount?;
@@ -1788,20 +2003,25 @@ public type PaymentMethod record {
     # Visa, MasterCard, American Express, Discover, JCB, etc.
     string card_type?;
     # Credit card number's first six digits.
+    @constraint:String {maxLength: 6}
     string first_six?;
     # Credit card number's last four digits. Will refer to bank account if payment method is ACH.
+    @constraint:String {maxLength: 4}
     string last_four?;
     # The IBAN bank account's last two digits.
+    @constraint:String {maxLength: 2}
     string last_two?;
     # Expiration month.
     int exp_month?;
     # Expiration year.
     int exp_year?;
     # A token used in place of a credit card in order to perform transactions.
+    @constraint:String {maxLength: 50}
     string gateway_token?;
     # The 2-letter ISO 3166-1 alpha-2 country code associated with the credit card BIN, if known by Recurly. Available on the BillingInfo object only. Available when the BIN country lookup feature is enabled.
     string cc_bin_country?;
     # An identifier for a specific payment gateway.
+    @constraint:String {maxLength: 13}
     string gateway_code?;
     # Billing Agreement identifier. Only present for Amazon or Paypal payment methods.
     string billing_agreement_id?;
@@ -1827,27 +2047,37 @@ public type AddOnList record {
 
 public type AccountResponse record {
     # The unique identifier of the account. This cannot be changed once the account is created.
+    @constraint:String {maxLength: 50}
     string code?;
     # A secondary value for the account.
+    @constraint:String {maxLength: 255}
     string username?;
     # The email address used for communicating with this customer. The customer will also use this email address to log into your hosted account management pages. This value does not need to be unique.
     string email?;
     # Used to determine the language and locale of emails sent on behalf of the merchant to the customer.
     string preferred_locale?;
     # Additional email address that should receive account correspondence. These should be separated only by commas. These CC emails will receive all emails that the `email` field also receives.
+    @constraint:String {maxLength: 255}
     string cc_emails?;
+    @constraint:String {maxLength: 255}
     string first_name?;
+    @constraint:String {maxLength: 255}
     string last_name?;
+    @constraint:String {maxLength: 50}
     string company?;
     # The VAT number of the account (to avoid having the VAT applied). This is only used for manually collected invoices.
+    @constraint:String {maxLength: 20}
     string vat_number?;
     # The tax status of the account. `true` exempts tax on the account, `false` applies tax on the account.
     boolean tax_exempt?;
     # The tax exemption certificate number for the account. If the merchant has an integration for the Vertex tax provider, this optional value will be sent in any tax calculation requests for the account.
+    @constraint:String {maxLength: 30}
     string exemption_certificate?;
     # The UUID of the parent account associated with this account.
+    @constraint:String {maxLength: 13}
     string parent_account_id?;
     # An enumerable describing the billing behavior of the account, specifically whether the account is self-paying or will rely on the parent account to pay.
+    @constraint:String {maxLength: 6}
     string bill_to?;
     Address address?;
     BillingInfo billing_info?;
@@ -1857,6 +2087,7 @@ public type AccountResponse record {
 
 public type CouponDiscountPricing record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # Value of the fixed discount that this coupon applies.
     float amount?;
@@ -1864,6 +2095,7 @@ public type CouponDiscountPricing record {
 
 public type BillingInfoVerify record {
     # An identifier for a specific payment gateway.
+    @constraint:String {maxLength: 13}
     string gateway_code?;
 };
 
@@ -1883,6 +2115,7 @@ public type SubscriptionChange record {
     string id?;
     string 'object?;
     # The ID of the subscription that is going to be changed.
+    @constraint:String {maxLength: 13}
     string subscription_id?;
     # Just the important parts.
     PlanMini plan?;
@@ -1934,6 +2167,7 @@ public type SubscriptionUpdate record {
     # Specify custom notes to add or override Customer Notes. Custom notes will stay with a subscription on all renewals.
     string customer_notes?;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
     int net_terms?;
@@ -1943,22 +2177,36 @@ public type SubscriptionUpdate record {
 };
 
 public type ShippingAddressUpdate record {
+    @constraint:String {maxLength: 13}
     string id?;
+    @constraint:String {maxLength: 255}
     string nickname?;
+    @constraint:String {maxLength: 255}
     string first_name?;
+    @constraint:String {maxLength: 255}
     string last_name?;
+    @constraint:String {maxLength: 255}
     string company?;
+    @constraint:String {maxLength: 255}
     string email?;
+    @constraint:String {maxLength: 20}
     string vat_number?;
+    @constraint:String {maxLength: 30}
     string phone?;
+    @constraint:String {maxLength: 255}
     string street1?;
+    @constraint:String {maxLength: 255}
     string street2?;
+    @constraint:String {maxLength: 255}
     string city?;
     # State or province.
+    @constraint:String {maxLength: 255}
     string region?;
     # Zip or postal code.
+    @constraint:String {maxLength: 20}
     string postal_code?;
     # Country, 2-letter ISO 3166-1 alpha-2 code.
+    @constraint:String {maxLength: 50}
     string country?;
 };
 
@@ -1977,16 +2225,18 @@ public type CustomFieldDefinitionList record {
 
 public type InvoiceCreate record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
     # An automatic invoice means a corresponding transaction is run using the account's billing information at the same time the invoice is created. Manual invoices are created without a corresponding transaction. The merchant must enter a manual payment transaction or have the customer pay the invoice with an automatic method, like credit card, PayPal, Amazon, or ACH bank payment.
-    string collection_method?;
+    string collection_method = "automatic";
     # This will default to the Customer Notes text specified on the Invoice Settings for charge invoices. Specify custom notes to add or override Customer Notes on charge invoices.
     string charge_customer_notes?;
     # This will default to the Customer Notes text specified on the Invoice Settings for credit invoices. Specify customer notes to add or override Customer Notes on credit invoices.
     string credit_customer_notes?;
     # Integer representing the number of days after an invoice's creation that the invoice will become past due. If an invoice's net terms are set to '0', it is due 'On Receipt' and will become past due 24 hours after it’s created. If an invoice is due net 30, it will become past due at 31 days exactly.
-    int net_terms?;
+    int net_terms = 0;
     # For manual invoicing, this identifies the PO number associated with the subscription.
+    @constraint:String {maxLength: 50}
     string po_number?;
     # This will default to the Terms and Conditions text specified on the Invoice Settings page in your Recurly admin. Specify custom notes to add or override Terms and Conditions.
     string terms_and_conditions?;
@@ -2003,7 +2253,9 @@ public type AccountBalance record {
 
 public type Pricing record {
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency;
+    @constraint:Float {maxValue: 1000000}
     float unit_amount;
 };
 
@@ -2030,7 +2282,9 @@ public type CouponDiscount record {
 
 # Most recent fraud result.
 public type FraudInformation record {
+    @constraint:Int {minValue: 1, maxValue: 99}
     int score?;
+    @constraint:String {maxLength: 10}
     string decision?;
     record {} risk_rules_triggered?;
 };
@@ -2053,7 +2307,7 @@ public type Coupon record {
     # On a bulk coupon, the template from which unique coupon codes are generated.
     string unique_code_template?;
     # Will be populated when the Coupon being returned is a `UniqueCouponCode`.
-    record {*UniqueCouponCode;} unique_coupon_code?;
+    UniqueCouponCode unique_coupon_code?;
     # - "single_use" coupons applies to the first invoice only.
     # - "temporal" coupons will apply to invoices for the duration determined by the `temporal_unit` and `temporal_amount` attributes.
     string duration?;
@@ -2064,6 +2318,7 @@ public type Coupon record {
     # Description of the unit of time the coupon is for. Used with `free_trial_amount` to determine the duration of time the coupon is for.
     string free_trial_unit?;
     # Sets the duration of time the `free_trial_unit` is for.
+    @constraint:Int {minValue: 1, maxValue: 9999}
     int free_trial_amount?;
     # The coupon is valid for all plans if true. If false then `plans` will list the applicable plans.
     boolean applies_to_all_plans?;
@@ -2087,6 +2342,7 @@ public type Coupon record {
     # This description will show up when a customer redeems a coupon on your Hosted Payment Pages, or if you choose to show the description on your own checkout page.
     string hosted_page_description?;
     # Description of the coupon on the invoice.
+    @constraint:String {maxLength: 255}
     string invoice_description?;
     # The date and time the coupon will expire and can no longer be redeemed. Time is always 11:59:59, the end-of-day Pacific time.
     string redeem_by?;
@@ -2098,6 +2354,7 @@ public type Coupon record {
 
 public type LineItemCreate record {
     # 3-letter ISO 4217 currency code. If `item_code`/`item_id` is part of the request then `currency` is optional, if the site has a single default currency. `currency` is required if `item_code`/`item_id` is present, and there are multiple currencies defined on the site. If `item_code`/`item_id` is not present `currency` is required.
+    @constraint:String {maxLength: 3}
     string currency;
     # A positive or negative amount with `type=charge` will result in a positive `unit_amount`.
     # A positive or negative amount with `type=credit` will result in a negative `unit_amount`.
@@ -2105,19 +2362,23 @@ public type LineItemCreate record {
     # `Item`'s `unit_amount`. If `item_code`/`item_id` is not present then `unit_amount` is required.
     float unit_amount;
     # This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
-    int quantity?;
+    int quantity = 1;
     # Description that appears on the invoice. If `item_code`/`item_id` is part of the request then `description` must be absent.
+    @constraint:String {maxLength: 255}
     string description?;
     # Unique code to identify an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+    @constraint:String {maxLength: 50}
     string item_code?;
     # System-generated unique identifier for an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+    @constraint:String {maxLength: 13}
     string item_id?;
     string revenue_schedule_type?;
     # Line item type. If `item_code`/`item_id` is present then `type` should not be present. If `item_code`/`item_id` is not present then `type` is required.
     string 'type;
     # The reason the credit was given when line item is `type=credit`. When the Credit Invoices feature is enabled, the value can be set and will default to `general`. When the Credit Invoices feature is not enabled, the value will always be `null`.
-    string credit_reason_code?;
+    string credit_reason_code = "general";
     # Accounting Code for the `LineItem`. If `item_code`/`item_id` is part of the request then `accounting_code` must be absent.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # `true` exempts tax on charges, `false` applies tax on charges. If not defined, then defaults to the Plan and Site settings. This attribute does not work for credits (negative line items). Credits are always applied post-tax. Pre-tax discounts should use the Coupons feature.
     boolean tax_exempt?;
@@ -2126,8 +2387,10 @@ public type LineItemCreate record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types. If an `Item` is associated to the `LineItem`, then the `avalara_service_type` must be absent.
     int avalara_service_type?;
     # Optional field used by Avalara, Vertex, and Recurly's EU VAT tax feature to determine taxation rules. If you have your own AvaTax or Vertex account configured, use their tax codes to assign specific tax rules. If you are using Recurly's EU VAT feature, you can use values of `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # Optional field to track a product code or SKU for the line item. This can be used to later reporting on product purchases. For Vertex tax calculations, this field will be used as the Vertex `product` field. If `item_code`/`item_id` is part of the request then `product_code` must be absent.
+    @constraint:String {maxLength: 50}
     string product_code?;
     # Origin `external_gift_card` is allowed if the Gift Cards feature is enabled on your site and `type` is `credit`. Set this value in order to track gift card credits from external gift cards (like InComm). It also skips billing information requirements.  Origin `prepayment` is only allowed if `type` is `charge` and `tax_exempt` is left blank or set to true.  This origin creates a charge and opposite credit on the account to be used for future invoices.
     string origin?;
@@ -2138,11 +2401,13 @@ public type LineItemCreate record {
 };
 
 public type AccountReadOnly record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # Accounts can be either active or inactive.
     string state?;
     # The unique token for automatically logging the account in to the hosted management pages. You may automatically log the user into their hosted management pages by directing the user to: `https://{subdomain}.recurly.com/account/{hosted_login_token}`.
+    @constraint:String {maxLength: 32}
     string hosted_login_token?;
     # The shipping addresses on the account.
     ShippingAddress[] shipping_addresses?;
@@ -2167,17 +2432,22 @@ public type AccountReadOnly record {
 };
 
 public type LineItem record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The UUID is useful for matching data with the CSV exports and building URLs into Recurly's UI.
+    @constraint:String {maxLength: 32}
     string uuid?;
     # Charges are positive line items that debit the account. Credits are negative line items that credit the account.
     string 'type?;
     # Unique code to identify an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+    @constraint:String {maxLength: 50}
     string item_code?;
     # System-generated unique identifier for an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+    @constraint:String {maxLength: 13}
     string item_id?;
     # Optional Stock Keeping Unit assigned to an item. Available when the Credit Invoices and Subscription Billing Terms features are enabled.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     string revenue_schedule_type?;
     # Pending line items are charges or credits on an account that have not been applied to an invoice yet. Invoiced line items will always have an `invoice_id` value.
@@ -2190,36 +2460,48 @@ public type LineItem record {
     string legacy_category?;
     AccountMini account?;
     # If the line item is a charge or credit for a subscription, this is its ID.
+    @constraint:String {maxLength: 13}
     string subscription_id?;
     # If the line item is a charge or credit for a plan or add-on, this is the plan's ID.
+    @constraint:String {maxLength: 13}
     string plan_id?;
     # If the line item is a charge or credit for a plan or add-on, this is the plan's code.
+    @constraint:String {maxLength: 50}
     string plan_code?;
     # If the line item is a charge or credit for an add-on this is its ID.
+    @constraint:String {maxLength: 13}
     string add_on_id?;
     # If the line item is a charge or credit for an add-on, this is its code.
+    @constraint:String {maxLength: 50}
     string add_on_code?;
     # Once the line item has been invoiced this will be the invoice's ID.
+    @constraint:String {maxLength: 13}
     string invoice_id?;
     # Once the line item has been invoiced this will be the invoice's number. If VAT taxation and the Country Invoice Sequencing feature are enabled, invoices will have country-specific invoice numbers for invoices billed to EU countries (ex: FR1001). Non-EU invoices will continue to use the site-level invoice number sequence.
     string invoice_number?;
     # Will only have a value if the line item is a credit created from a previous credit, or if the credit was created from a charge refund.
+    @constraint:String {maxLength: 13}
     string previous_line_item_id?;
     # The invoice where the credit originated. Will only have a value if the line item is a credit created from a previous credit, or if the credit was created from a charge refund.
+    @constraint:String {maxLength: 13}
     string original_line_item_invoice_id?;
     # A credit created from an original charge will have the value of the charge's origin.
     string origin?;
     # Internal accounting code to help you reconcile your revenue to the correct ledger. Line items created as part of a subscription invoice will use the plan or add-on's accounting code, otherwise the value will only be present if you define an accounting code when creating the line item.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # For plan-related line items this will be the plan's code, for add-on related line items it will be the add-on's code. For item-related line items it will be the item's `external_sku`.
+    @constraint:String {maxLength: 50}
     string product_code?;
     # The reason the credit was given when line item is `type=credit`.
     string credit_reason_code?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # `(quantity * unit_amount) - (discount + tax)`
     float amount?;
     # Description that appears on the invoice. For subscription related items this will be filled in automatically.
+    @constraint:String {maxLength: 255}
     string description?;
     # This number will be multiplied by the unit amount to compute the subtotal before any discounts or taxes.
     int quantity?;
@@ -2242,9 +2524,11 @@ public type LineItem record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the line item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     TaxInfo tax_info?;
     # When a line item has been prorated, this is the rate of the proration. Proration rates were made available for line items created after March 30, 2017. For line items created prior to that date, the proration rate will be `null`, even if the line item was prorated.
+    @constraint:Float {maxValue: 1}
     float proration_rate?;
     boolean refund?;
     # For refund charges, the quantity being refunded. For non-refund charges, the total quantity refunded (possibly over multiple refunds).
@@ -2270,14 +2554,18 @@ public type Error record {
 
 public type ItemUpdate record {
     # Unique code to identify the item.
+    @constraint:String {maxLength: 50}
     string code?;
     # This name describes your item and will appear on the invoice when it's purchased on a one time basis.
+    @constraint:String {maxLength: 255}
     string name?;
     # Optional, description.
     string description?;
     # Optional, stock keeping unit to link the item to other inventory systems.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     # Accounting code for invoice line items.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     string revenue_schedule_type?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
@@ -2285,6 +2573,7 @@ public type ItemUpdate record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the item is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types.
     int avalara_service_type?;
     # Used by Avalara, Vertex, and Recurly’s EU VAT tax feature. The tax code values are specific to each tax system. If you are using Recurly’s EU VAT feature you can use `unknown`, `physical`, or `digital`.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # `true` exempts tax on the item, `false` applies tax on the item.
     boolean tax_exempt?;
@@ -2302,6 +2591,7 @@ public type CouponRedemption record {
     Coupon coupon?;
     string state?;
     # 3-letter ISO 4217 currency code.
+    @constraint:String {maxLength: 3}
     string currency?;
     # The amount that was discounted upon the application of the coupon, formatted with the currency.
     float discounted?;
@@ -2314,15 +2604,19 @@ public type CouponRedemption record {
 # Full add-on details.
 public type AddOnCreate record {
     # Unique code to identify an item. Available when the `Credit Invoices` and `Subscription Billing Terms` features are enabled. If `item_id` and `item_code` are both present, `item_id` will be used.
+    @constraint:String {maxLength: 50}
     string item_code?;
     # System-generated unique identifier for an item. Available when the `Credit Invoices` and `Subscription Billing Terms` features are enabled. If `item_id` and `item_code` are both present, `item_id` will be used.
+    @constraint:String {maxLength: 13}
     string item_id?;
     # The unique identifier for the add-on within its plan. If `item_code`/`item_id` is part of the request then `code` must be absent. If `item_code`/`item_id` is not present `code` is required.
+    @constraint:String {maxLength: 50}
     string code;
     # Describes your add-on and will appear in subscribers' invoices. If `item_code`/`item_id` is part of the request then `name` must be absent. If `item_code`/`item_id` is not present `name` is required.
+    @constraint:String {maxLength: 255}
     string name;
     # Whether the add-on type is fixed, or usage-based.
-    string add_on_type?;
+    string add_on_type = "fixed";
     # Type of usage, required if `add_on_type` is `usage`. See our
     # [Guide](https://developers.recurly.com/guides/usage-based-billing-guide.html) for an
     # overview of how to configure usage add-ons.
@@ -2330,18 +2624,21 @@ public type AddOnCreate record {
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if `add_on_type` is usage, `tier_type` is `flat` and `usage_type` is percentage. Must be omitted otherwise.
     float usage_percentage?;
     # System-generated unique identifier for a measured unit to be associated with the add-on. Either `measured_unit_id` or `measured_unit_name` are required when `add_on_type` is `usage`. If `measured_unit_id` and `measured_unit_name` are both present, `measured_unit_id` will be used.
+    @constraint:String {maxLength: 13}
     string measured_unit_id?;
     # Name of a measured unit to be associated with the add-on. Either `measured_unit_id` or `measured_unit_name` are required when `add_on_type` is `usage`. If `measured_unit_id` and `measured_unit_name` are both present, `measured_unit_id` will be used.
     string measured_unit_name?;
+    @constraint:String {maxLength: 13}
     string plan_id?;
     # Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code. If `item_code`/`item_id` is part of the request then `accounting_code` must be absent.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # When this add-on is invoiced, the line item will use this revenue schedule. If `item_code`/`item_id` is part of the request then `revenue_schedule_type` must be absent in the request as the value will be set from the item.
     string revenue_schedule_type?;
     # Determines if the quantity field is displayed on the hosted pages for the add-on.
-    boolean display_quantity?;
+    boolean display_quantity = false;
     # Default quantity for the hosted pages.
-    int default_quantity?;
+    int default_quantity = 1;
     # Whether the add-on is optional for the customer to include in their purchase on the hosted payment page. If false, the add-on will be included when a subscription is created through the Recurly UI. However, the add-on will not be included when a subscription is created through the API.
     boolean optional?;
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types. If an `Item` is associated to the `AddOn`, then the `avalara_transaction_type` must be absent.
@@ -2349,6 +2646,7 @@ public type AddOnCreate record {
     # Used by Avalara for Communications taxes. The transaction type in combination with the service type describe how the add-on is taxed. Refer to [the documentation](https://help.avalara.com/AvaTax_for_Communications/Tax_Calculation/AvaTax_for_Communications_Tax_Engine/Mapping_Resources/TM_00115_AFC_Modules_Corresponding_Transaction_Types) for more available t/s types. If an `Item` is associated to the `AddOn`, then the `avalara_service_type` must be absent.
     int avalara_service_type?;
     # Optional field used by Avalara, Vertex, and Recurly's EU VAT tax feature to determine taxation rules. If you have your own AvaTax or Vertex account configured, use their tax codes to assign specific tax rules. If you are using Recurly's EU VAT feature, you can use values of `unknown`, `physical`, or `digital`. If `item_code`/`item_id` is part of the request then `tax_code` must be absent.
+    @constraint:String {maxLength: 50}
     string tax_code?;
     # * If `item_code`/`item_id` is part of the request and the item
     # has a default currency then `currencies` is optional. If the item does
@@ -2357,12 +2655,13 @@ public type AddOnCreate record {
     # * If the add-on's `tier_type` is `tiered`, `volume`, or `stairstep`,
     # then `currencies` must be absent.
     # * Must be absent if `add_on_type` is `usage` and `usage_type` is `percentage`.
+    @constraint:Array {minLength: 1}
     AddOnPricing[] currencies?;
     # The pricing model for the add-on.  For more information,
     # [click here](https://docs.recurly.com/docs/billing-models#section-quantity-based). See our
     # [Guide](https://developers.recurly.com/guides/item-addon-guide.html) for an overview of how
     # to configure quantity-based pricing models.
-    string tier_type?;
+    string tier_type = "flat";
     # If the tier_type is `flat`, then `tiers` must be absent. The `tiers` object
     # must include one to many tiers with `ending_quantity` and `unit_amount` for
     # the desired `currencies`, or alternatively, `usage_percentage` for usage percentage type usage add ons. There must be one tier with an `ending_quantity`
@@ -2372,10 +2671,13 @@ public type AddOnCreate record {
 
 public type ShippingMethodCreate record {
     # The internal name used identify the shipping method.
+    @constraint:String {maxLength: 50}
     string code;
     # The name of the shipping method displayed to customers.
+    @constraint:String {maxLength: 100}
     string name;
     # Accounting code for shipping method.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
     # Used by Avalara, Vertex, and Recurly’s built-in tax feature. The tax
     # code values are specific to each tax system. If you are using Recurly’s
@@ -2388,6 +2690,7 @@ public type ShippingMethodCreate record {
     # - `FR010100` – Delivery by Company Vehicle Before Passage of Title
     # - `FR010200` – Delivery by Company Vehicle After Passage of Title
     # - `NT` – Non-Taxable
+    @constraint:String {maxLength: 50}
     string tax_code?;
 };
 
@@ -2398,11 +2701,14 @@ public type AccountAcquisition record {
 
 # Just the important parts.
 public type AddOnMini record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
     # The unique identifier for the add-on within its plan.
+    @constraint:String {maxLength: 50}
     string code?;
     # Describes your add-on and will appear in subscribers' invoices.
+    @constraint:String {maxLength: 255}
     string name?;
     # Whether the add-on type is fixed, or usage-based.
     string add_on_type?;
@@ -2411,37 +2717,54 @@ public type AddOnMini record {
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0.
     float usage_percentage?;
     # System-generated unique identifier for an measured unit associated with the add-on.
+    @constraint:String {maxLength: 13}
     string measured_unit_id?;
+    @constraint:String {maxLength: 13}
     string item_id?;
     # Optional, stock keeping unit to link the item to other inventory systems.
+    @constraint:String {maxLength: 50}
     string external_sku?;
     # Accounting code for invoice line items for this add-on. If no value is provided, it defaults to add-on's code.
+    @constraint:String {maxLength: 20}
     string accounting_code?;
 };
 
-public type InvoiceAddress record {
-    *AddressWithName;
-};
+public type InvoiceAddress AddressWithName;
 
 public type ShippingAddress record {
+    @constraint:String {maxLength: 13}
     string id?;
     string 'object?;
+    @constraint:String {maxLength: 13}
     string account_id?;
+    @constraint:String {maxLength: 255}
     string nickname?;
+    @constraint:String {maxLength: 255}
     string first_name?;
+    @constraint:String {maxLength: 255}
     string last_name?;
+    @constraint:String {maxLength: 255}
     string company?;
+    @constraint:String {maxLength: 255}
     string email?;
+    @constraint:String {maxLength: 20}
     string vat_number?;
+    @constraint:String {maxLength: 30}
     string phone?;
+    @constraint:String {maxLength: 255}
     string street1?;
+    @constraint:String {maxLength: 255}
     string street2?;
+    @constraint:String {maxLength: 255}
     string city?;
     # State or province.
+    @constraint:String {maxLength: 255}
     string region?;
     # Zip or postal code.
+    @constraint:String {maxLength: 20}
     string postal_code?;
     # Country, 2-letter ISO 3166-1 alpha-2 code.
+    @constraint:String {maxLength: 50}
     string country?;
     string created_at?;
     string updated_at?;
@@ -2449,23 +2772,27 @@ public type ShippingAddress record {
 
 public type CustomField record {
     # Fields must be created in the UI before values can be assigned to them.
+    @constraint:String {maxLength: 50}
     string name;
     # Any values that resemble a credit card number or security code (CVV/CVC) will be rejected.
+    @constraint:String {maxLength: 100}
     string value;
 };
 
 public type SubscriptionAddOnCreate record {
     # If `add_on_source` is set to `plan_add_on` or left blank, then plan's add-on `code` should be used.
     # If `add_on_source` is set to `item`, then the `code` from the associated item should be used.
+    @constraint:String {maxLength: 50}
     string code;
     # Used to determine where the associated add-on data is pulled from. If this value is set to
     # `plan_add_on` or left blank, then add-on data will be pulled from the plan's add-ons. If the associated
     # `plan` has `allow_any_item_on_subscriptions` set to `true` and this field is set to `item`, then
     # the associated add-on data will be pulled from the site's item catalog.
-    string add_on_source?;
-    int quantity?;
+    string add_on_source = "plan_add_on";
+    int quantity = 1;
     # Allows up to 2 decimal places. Optionally, override the add-on's default unit amount.
     # If the plan add-on's `tier_type` is `tiered`, `volume`, or `stairstep`, then `unit_amount` cannot be provided.
+    @constraint:Float {maxValue: 1000000}
     float unit_amount?;
     # Allows up to 9 decimal places.  Optionally, override the add-on's default unit amount.
     # If the plan add-on's `tier_type` is `tiered`, `volume`, or `stairstep`, then `unit_amount_decimal` cannot be provided.
@@ -2477,6 +2804,7 @@ public type SubscriptionAddOnCreate record {
     # There must be one tier with an `ending_quantity` of 999999999 which is the
     # default if not provided. See our [Guide](https://developers.recurly.com/guides/item-addon-guide.html)
     # for an overview of how to configure quantity-based pricing models.
+    @constraint:Array {minLength: 1}
     SubscriptionAddOnTier[] tiers?;
     # The percentage taken of the monetary amount of usage tracked. This can be up to 4 decimal places. A value between 0.0 and 100.0. Required if `add_on_type` is usage and `usage_type` is percentage. Must be omitted otherwise. `usage_percentage` does not support tiers. See our [Guide](https://developers.recurly.com/guides/usage-based-billing-guide.html) for an overview of how to configure usage add-ons.
     float usage_percentage?;

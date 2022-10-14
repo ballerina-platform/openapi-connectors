@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type IdeaArr Idea[];
 
@@ -303,8 +305,10 @@ public type Idea record {
     # The effort value in the scale.
     string? effort_scaled?;
     # The raw popularity value.
+    @constraint:Int {maxValue: 11}
     int popularity?;
     # The raw engagement value.
+    @constraint:Int {maxValue: 11}
     int engagement?;
     # When the idea was added to the account.
     string created_at?;
@@ -421,10 +425,12 @@ public type RoadmapCardColumn record {
     # Position in the roadmap colum. 0 is top.
     string position?;
     # Raw effort score.
+    @constraint:Int {maxValue: 11}
     int effort?;
     # Effort value on the scale.
     string? effort_scaled?;
     # Raw impact score.
+    @constraint:Int {maxValue: 11}
     int impact?;
     # Impact value on the scale.
     string? impact_scaled?;

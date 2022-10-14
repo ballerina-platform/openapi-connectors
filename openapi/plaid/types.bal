@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,11 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
+
+@constraint:String {minLength: 1}
+public type PaymentinitiationaddressStreetItemsString string;
 
 # EmployersSearchRequest defines the request schema for `/employers/search`.
 public type EmployersSearchRequest record {
@@ -123,6 +128,7 @@ public type IncomeSummaryFieldNumber record {
 # The amount and currency of a payment
 public type PaymentAmount record {
     # The ISO-4217 currency code of the payment. For standing orders, `"GBP"` must be used.
+    @constraint:String {maxLength: 3, minLength: 3}
     string currency;
     # The amount of the payment. Must contain at most two digits of precision e.g. `1.23`. Minimum accepted value is `1`.
     decimal value;
@@ -271,6 +277,7 @@ public type PaymentInitiationRecipientCreateRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The name of the recipient
+    @constraint:String {minLength: 1}
     string name;
     # The International Bank Account Number (IBAN) for the recipient. If BACS data is not provided, an IBAN is required.
     string? iban?;
@@ -371,6 +378,7 @@ public type AssetReportRefreshRequest record {
     # The `asset_report_token` returned by the original call to `/asset_report/create`
     AssetReportRefreshAssetReportToken asset_report_token;
     # The maximum number of days of history to include in the Asset Report. Must be an integer. If not specified, the value from the original call to `/asset_report/create` will be used.
+    @constraint:Int {maxValue: 730}
     int days_requested?;
     # An optional object to filter `/asset_report/refresh` results. If provided, cannot be `null`. If not specified, the `options` from the original call to `/asset_report/create` will be used.
     AssetReportRefreshRequestOptions options?;
@@ -472,6 +480,7 @@ public type RecaptchaRequiredError record {
 # A random key provided by the client, per unique bank transfer. Maximum of 50 characters.
 # 
 # The API supports idempotency for safely retrying requests without accidentally performing the same operation twice. For example, if a request to create a bank transfer fails due to a network connection error, you can retry the request with the same idempotency key to guarantee that only a single bank transfer is created.
+@constraint:String {maxLength: 50}
 public type BankTransferIdempotencyKey string;
 
 # An optional set of options to be used when configuring the Item. If specified, must not be `null`.
@@ -510,7 +519,7 @@ public type HistoricalUpdateWebhook record {
     # `HISTORICAL_UPDATE`
     string webhook_code;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # The number of new, unfetched transactions available
     decimal new_transactions;
     # The `item_id` of the Item associated with this webhook, warning, or error
@@ -543,6 +552,7 @@ public type TransactionsGetRequestOptions record {
     # Note: An error will be returned if a provided `account_id` is not associated with the Item.
     string[] account_ids?;
     # The number of transactions to fetch.
+    @constraint:Int {maxValue: 500}
     int count?;
     # The number of transactions to skip. The default value is 0.
     int offset?;
@@ -809,6 +819,7 @@ public type PaystubYTDDetails record {
 #   3: Predicted customer-initiated return incidence rate between 0.05% - 0.1%
 #   4: Predicted customer-initiated return incidence rate between 0.1% - 0.5%
 #   5: Predicted customer-initiated return incidence rate greater than 0.5%
+@constraint:Int {minValue: 1, maxValue: 5}
 public type CustomerInitiatedRiskTier int;
 
 # Data to populate as test transaction data. If not specified, random transactions will be generated instead.
@@ -962,6 +973,7 @@ public type SandboxPublicTokenCreateRequest record {
     # The ID of the institution the Item will be associated with
     string institution_id;
     # The products to initially pull for the Item. May be any products that the specified `institution_id`  supports. This array may not be empty.
+    @constraint:Array {minLength: 1}
     Products[] initial_products;
     # An optional set of options to be used when configuring the Item. If specified, must not be `null`.
     SandboxPublicTokenCreateRequestOptions options?;
@@ -1034,7 +1046,7 @@ public type WebhookUpdateAcknowledgedWebhook record {
     # The new webhook URL
     string new_webhook_url;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
 };
 
 # ItemImportResponse defines the response schema for `/item/import`
@@ -1091,6 +1103,7 @@ public type AssetReportFilterRequest record {
 #   6: Predicted bank-initiated return incidence rate between 10% - 15%
 #   7: Predicted bank-initiated return incidence rate between 15% and 50%
 #   8: Predicted bank-initiated return incidence rate greater than 50%
+@constraint:Int {minValue: 1, maxValue: 8}
 public type BankInitiatedRiskTier int;
 
 # The `inflow_model` allows you to model a test account that receives regular income or make regular payments on a loan. Any transactions generated by the `inflow_model` will appear in addition to randomly generated test data or transactions specified by `override_accounts`.
@@ -1473,7 +1486,7 @@ public type PaymentStatusUpdateWebhook record {
     # The timestamp of the update, in [ISO 8601](https://wikipedia.org/wiki/ISO_8601) format, e.g. `"2017-09-14T14:42:19.350Z"`
     string timestamp;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
 };
 
 # ItemApplicationScopesUpdateRequest defines the request schema for `/item/application/scopes/update`
@@ -1515,7 +1528,7 @@ public type IncomeVerificationTaxformsGetResponse record {
     # An array of objects representing metadata from the end user's uploaded document.
     DocumentMetadata[] document_metadata;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
 };
 
 # Defines the request schema for `/bank_transfer/list`
@@ -1529,6 +1542,7 @@ public type BankTransferListRequest record {
     # The end datetime of bank transfers to list. This should be in RFC 3339 format (i.e. `2019-12-06T22:35:49Z`)
     string? end_date?;
     # The maximum number of bank transfers to return.
+    @constraint:Int {minValue: 1, maxValue: 25}
     int count?;
     # The number of bank transfers to skip before returning results.
     int offset?;
@@ -1582,8 +1596,10 @@ public type PaymentInitiationPaymentCreateRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The ID of the recipient the payment is for.
+    @constraint:String {minLength: 1}
     string recipient_id;
     # A reference for the payment. This must be an alphanumeric string with at most 18 characters and must not contain any special characters (since not all institutions support them).
+    @constraint:String {maxLength: 18, minLength: 1}
     string reference;
     # The amount and currency of a payment
     PaymentAmount amount;
@@ -1604,6 +1620,7 @@ public type TransferListRequest record {
     # The end datetime of transfers to list. This should be in RFC 3339 format (i.e. `2019-12-06T22:35:49Z`)
     string? end_date?;
     # The maximum number of transfers to return.
+    @constraint:Int {minValue: 1, maxValue: 25}
     int count?;
     # The number of transfers to skip before returning results.
     int offset?;
@@ -1635,10 +1652,12 @@ public type InstitutionsGetRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The total number of Institutions to return.
+    @constraint:Int {maxValue: 500}
     int count;
     # The number of Institutions to skip.
     int offset;
     # Specify an array of Plaid-supported country codes this institution supports, using the ISO-3166-1 alpha-2 country code standard.
+    @constraint:Array {minLength: 1}
     CountryCode[] country_codes;
     # An optional object to filter `/institutions/get` results.
     InstitutionsGetRequestOptions options?;
@@ -1734,7 +1753,7 @@ public type DefaultUpdateWebhook record {
     # `DEFAULT_UPDATE`
     string webhook_code;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # The number of new transactions detected since the last time this webhook was fired.
     decimal new_transactions;
     # The `item_id` of the Item the webhook relates to.
@@ -1812,7 +1831,7 @@ public type HoldingsDefaultUpdateWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # The number of new holdings reported since the last time this webhook was fired.
     decimal new_holdings;
     # The number of updated holdings reported since the last time this webhook was fired.
@@ -2142,6 +2161,7 @@ public type AccountSubtype string?;
 public type AssetReportId string;
 
 # The frequency interval of the payment.
+@constraint:String {minLength: 1}
 public type PaymentScheduleInterval string;
 
 # Indicates the direction of the transfer: `outbound` for API-initiated transfers, or `inbound` for payments received by the FBO account.
@@ -2451,8 +2471,10 @@ public type SignalReturnReportResponse record {
 # An object containing a BACS account number and sort code. If an IBAN is not provided or if this recipient needs to accept domestic GBP-denominated payments, BACS data is required.
 public type RecipientBACS record {
     # The account number of the account. Maximum of 10 characters.
+    @constraint:String {maxLength: 10, minLength: 1}
     string account?;
     # The 6-character sort code of the account.
+    @constraint:String {maxLength: 6, minLength: 6}
     string sort_code?;
 };
 
@@ -2761,7 +2783,7 @@ public type InvestmentsDefaultUpdateWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # The number of new transactions reported since the last time this webhook was fired.
     decimal new_investments_transactions;
     # The number of canceled transactions reported since the last time this webhook was fired.
@@ -3008,7 +3030,7 @@ public type AccountAccess record {
     # The unique account identifier for this account. This value must match that returned by the data access API for this account.
     string unique_id;
     # Allow the application to see this account (and associated details, including balance) in the list of accounts. If unset, defaults to `true`.
-    boolean? authorized?;
+    boolean? authorized = true;
 };
 
 # Allows specifying the metadata of the test account
@@ -3057,10 +3079,12 @@ public type SignalEvaluateRequest record {
     # The `account_id` of the account whose verification status is to be modified
     string account_id;
     # The unique ID that you would like to use to refer to this transaction. For your convenience mapping your internal data, you could use your internal ID/identifier for this transaction. The max length for this field is 36 characters.
+    @constraint:String {maxLength: 36}
     string client_transaction_id;
     # The transaction amount, in USD (e.g. `102.05`)
     decimal amount;
     # A unique ID that identifies the end user in your system. This ID is used to correlate requests by a user with multiple Items. The max length for this field is 36 characters.
+    @constraint:String {maxLength: 36}
     string client_user_id?;
     # Details about the end user initiating the transaction (i.e., the account holder).
     SignalUser user?;
@@ -3075,8 +3099,10 @@ public type AssetReportCreateRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # An array of access tokens corresponding to the Items that will be included in the report. The `assets` product must have been initialized for the Items during link; the Assets product cannot be added after initialization.
-    AccessToken[99] access_tokens;
+    @constraint:Array {maxLength: 99, minLength: 1}
+    AccessToken[] access_tokens;
     # The maximum integer number of days of history to include in the Asset Report. If using Fannie Mae Day 1 Certainty, `days_requested` must be at least 61 for new originations or at least 31 for refinancings.
+    @constraint:Int {maxValue: 730}
     int days_requested;
     # An optional object to filter `/asset_report/create` results. If provided, must be non-`null`. The optional `user` object is required for the report to be eligible for Fannie Mae's Day 1 Certainty program.
     AssetReportCreateRequestOptions options?;
@@ -3097,7 +3123,7 @@ public type TransactionsRemovedWebhook record {
     # `TRANSACTIONS_REMOVED`
     string webhook_code;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # An array of `transaction_ids` corresponding to the removed transactions
     string[] removed_transactions;
     # The `item_id` of the Item associated with this webhook, warning, or error
@@ -3248,6 +3274,7 @@ public type PaymentInitiationRecipientGetRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The ID of the recipient
+    @constraint:String {minLength: 1}
     string recipient_id;
 };
 
@@ -3589,7 +3616,7 @@ public type IncomeVerificationPaystubsGetResponse record {
     # An array of objects with information found on a paystubs.
     Paystub[] paystubs;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # An array of objects representing metadata from the end user's uploaded document.
     DocumentMetadata[] document_metadata?;
     # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
@@ -3689,6 +3716,7 @@ public type SandboxIncomeFireWebhookResponse record {
 };
 
 # A score from 0-99 that indicates the transaction return risk: a higher risk score suggests a higher return likelihood.
+@constraint:Int {maxValue: 100}
 public type SignalScore int;
 
 # A JSON Web Key (JWK) that can be used in conjunction with [JWT libraries](https://jwt.io/#libraries-io) to verify Plaid webhooks
@@ -3805,6 +3833,7 @@ public type InvestmentsTransactionsGetRequestOptions record {
     # An array of `account_ids` to retrieve for the Item.
     string[] account_ids?;
     # The number of transactions to fetch.
+    @constraint:Int {minValue: 1, maxValue: 500}
     int count?;
     # The number of transactions to skip when fetching transaction history
     int offset?;
@@ -3874,6 +3903,7 @@ public type BankTransferCreateRequest record {
     # The currency of the transfer amount – should be set to "USD".
     string iso_currency_code;
     # The transfer description. Maximum of 10 characters.
+    @constraint:String {maxLength: 10}
     string description;
     # Specifies the use case of the transfer.  Required for transfers on an ACH network.
     # 
@@ -4014,7 +4044,7 @@ public type UserPermissionRevokedWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
 };
 
 # The object contains a risk score and a risk tier that evaluate the transaction return risk of an unauthorized debit. Common return codes in this category include: “R05”, "R07", "R10", "R11", "R29". These returns typically have a return time frame of up to 60 calendar days. During this period, the customer of financial institutions can dispute a transaction as unauthorized.
@@ -4141,12 +4171,16 @@ public type W2 record {
 # The optional address of the payment recipient. This object is not currently required to make payments from UK institutions and should not be populated, though may be necessary for future European expansion.
 public type PaymentInitiationAddress record {
     # An array of length 1-2 representing the street address where the recipient is located. Maximum of 70 characters.
-    string[] street;
+    @constraint:Array {minLength: 1}
+    PaymentinitiationaddressStreetItemsString[] street;
     # The city where the recipient is located. Maximum of 35 characters.
+    @constraint:String {maxLength: 35, minLength: 1}
     string city;
     # The postal code where the recipient is located. Maximum of 16 characters.
+    @constraint:String {maxLength: 16, minLength: 1}
     string postal_code;
     # The ISO 3166-1 alpha-2 country code where the recipient is located.
+    @constraint:String {maxLength: 2, minLength: 2}
     string country;
 };
 
@@ -4208,7 +4242,7 @@ public type LiabilitiesDefaultUpdateWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error;
+    Error? 'error;
     # An array of `account_id`'s for accounts that contain new liabilities.
     string[] account_ids_with_new_liabilities;
     # An object with keys of `account_id`'s that are mapped to their respective liabilities fields that changed.
@@ -4224,7 +4258,7 @@ public type AssetsErrorWebhook record {
     # `ERROR`
     string webhook_code;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error;
+    Error? 'error;
     # The ID associated with the Asset Report.
     string asset_report_id;
 };
@@ -4244,6 +4278,7 @@ public type ItemImportRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # Array of product strings
+    @constraint:Array {minLength: 1}
     Products[] products;
     # Object of user ID and auth token pair, permitting Plaid to aggregate a user’s accounts
     ItemImportRequestUserAuth user_auth;
@@ -4327,7 +4362,8 @@ public type DepositSwitchCreateRequestOptions record {
     # The URL registered to receive webhooks when the status of a deposit switch request has changed.
     string? webhook?;
     # An array of access tokens corresponding to transaction items to use when attempting to match the user to their Payroll Provider. These tokens must be created by the same client id as the one creating the switch, and have access to the transactions product.
-    AccessToken[99] transaction_item_access_tokens?;
+    @constraint:Array {maxLength: 99, minLength: 1}
+    AccessToken[] transaction_item_access_tokens?;
 };
 
 # ProcessorApexProcessorTokenCreateRequest defines the request schema for `/processor/apex/processor_token/create`
@@ -4608,6 +4644,7 @@ public type TransferUserAddressInResponse record {
     string? country;
 };
 
+# 
 public type SandboxProcessorTokenCreateResponse record {
     # A processor token that can be used to call the `/processor/` endpoints.
     string processor_token;
@@ -4806,7 +4843,7 @@ public type Item record {
     # The URL registered to receive webhooks for the Item.
     string? webhook;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error;
+    Error? 'error;
     # A list of products available for the Item that have not yet been accessed.
     Products[] available_products;
     # A list of products that have been billed for the Item. Note - `billed_products` is populated in all environments but only requests in Production are billed.
@@ -4955,6 +4992,7 @@ public type InstitutionsSearchRequest record {
     # The search query. Institutions with names matching the query are returned
     string query;
     # Filter the Institutions based on whether they support all products listed in `products`. Provide `null` to get institutions regardless of supported products. Note that when `auth` is specified as a product, if you are enabled for Instant Match or Automated Micro-deposits, institutions that support those products will be returned even if `auth` is not present in their product array.
+    @constraint:Array {minLength: 1}
     Products[] products;
     # Specify an array of Plaid-supported country codes this institution supports, using the ISO-3166-1 alpha-2 country code standard.
     CountryCode[] country_codes;
@@ -4971,7 +5009,7 @@ public type ItemProductReadyWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
 };
 
 # InvestmentsHoldingsGetResponse defines the response schema for `/investments/holdings/get`
@@ -4995,6 +5033,7 @@ public type PaymentInitiationPaymentGetRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The `payment_id` returned from `/payment_initiation/payment/create`.
+    @constraint:String {minLength: 1}
     string payment_id;
 };
 
@@ -5049,6 +5088,7 @@ public type LinkTokenCreateRequest record {
     # If using a Link customization, make sure the country codes in the customization match those specified in `country_codes`. If both `country_codes` and a Link customization are used, the value in `country_codes` may override the value in the customization.
     # 
     # If using the Auth features Instant Match, Same-day Micro-deposits, or Automated Micro-deposits, `country_codes` must be set to `['US']`.
+    @constraint:Array {minLength: 1}
     CountryCode[] country_codes;
     # An object specifying information about the end user who will be linking their account.
     LinkTokenCreateRequestUser user;
@@ -5188,7 +5228,7 @@ public type IncomeVerificationSummaryGetResponse record {
     # A list of income summaries.
     IncomeSummary[] income_summaries;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error?;
+    Error? 'error?;
     # A unique identifier for the request, which can be used for troubleshooting. This identifier, like all Plaid identifiers, is case sensitive.
     RequestID request_id;
 };
@@ -5376,6 +5416,7 @@ public type TransferAuthorizationCreateRequest record {
     # The currency of the transfer amount – should be set to "USD".
     string iso_currency_code;
     # The authorization description. Maximum of 10 characters.
+    @constraint:String {maxLength: 10}
     string description;
     # Specifies the use case of the transfer.  Required for transfers on an ACH network.
     # 
@@ -5510,6 +5551,7 @@ public type ProcessorBankTransferCreateRequest record {
     # The currency of the transfer amount – should be set to "USD".
     string iso_currency_code;
     # The transfer description. Maximum of 10 characters.
+    @constraint:String {maxLength: 10}
     string description;
     # Specifies the use case of the transfer.  Required for transfers on an ACH network.
     # 
@@ -5630,7 +5672,7 @@ public type BankTransferEventSyncRequest record {
     # The latest (largest) `event_id` fetched via the sync endpoint, or 0 initially.
     int after_id;
     # The maximum number of bank transfer events to return.
-    int? count?;
+    int? count = 25;
 };
 
 public type HealthIncident record {
@@ -5652,7 +5694,7 @@ public type Cause record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error;
+    Error? 'error;
 };
 
 # ItemWebhookUpdateRequest defines the request schema for `/item/webhook/update`
@@ -5832,7 +5874,7 @@ public type InitialUpdateWebhook record {
     # `INITIAL_UPDATE`
     string webhook_code;
     # The error code associated with the webhook.
-    string? _error?;
+    string? 'error?;
     # The number of new, unfetched transactions available.
     decimal new_transactions;
     # The `item_id` of the Item associated with this webhook, warning, or error
@@ -5860,6 +5902,7 @@ public type InstitutionsSearchResponse record {
 # Specifies options for initializing Link for use with the Payment Initiation (Europe) product. This field is required if `payment_initiation` is included in the `products` array.
 public type LinkTokenCreateRequestPaymentInitiation record {
     # The `payment_id` provided by the `/payment_initiation/payment/create` endpoint.
+    @constraint:String {minLength: 1}
     string payment_id;
 };
 
@@ -5895,6 +5938,7 @@ public type PaymentInitiationPaymentTokenCreateRequest record {
     # Your Plaid API `secret`. The `secret` is required and may be provided either in the `PLAID-SECRET` header or as part of a request body.
     APISecret secret?;
     # The `payment_id` returned from `/payment_initiation/payment/create`.
+    @constraint:String {minLength: 1}
     string payment_id;
 };
 
@@ -5931,6 +5975,7 @@ public type TransferCreateRequest record {
     # The currency of the transfer amount – should be set to "USD".
     string iso_currency_code;
     # The transfer description. Maximum of 10 characters.
+    @constraint:String {maxLength: 10}
     string description;
     # Specifies the use case of the transfer.  Required for transfers on an ACH network.
     # 
@@ -6114,7 +6159,7 @@ public type TransferEventSyncRequest record {
     # The latest (largest) `event_id` fetched via the sync endpoint, or 0 initially.
     int after_id;
     # The maximum number of transfer events to return.
-    int? count?;
+    int? count = 25;
 };
 
 # Information describing a transaction category
@@ -6122,7 +6167,7 @@ public type Category record {
     # An identifying number for the category. `category_id` is a Plaid-specific identifier and does not necessarily correspond to merchant category codes.
     string category_id;
     # `place` for physical transactions or `special` for other transactions such as bank charges.
-    string 'group;
+    string group;
     # A hierarchical array of the categories to which this `category_id` belongs.
     string[] hierarchy;
 };
@@ -6162,6 +6207,7 @@ public type ProcessorAuthGetResponse record {
 # A random key provided by the client, per unique transfer. Maximum of 50 characters.
 # 
 # The API supports idempotency for safely retrying requests without accidentally performing the same operation twice. For example, if a request to create a transfer fails due to a network connection error, you can retry the request with the same idempotency key to guarantee that only a single transfer is created.
+@constraint:String {maxLength: 50}
 public type TransferCreateIdempotencyKey string;
 
 # Defines the response schema for `/sandbox/transfer/simulate`
@@ -6333,7 +6379,7 @@ public type ItemErrorWebhook record {
     # The `item_id` of the Item associated with this webhook, warning, or error
     ItemId item_id;
     # We use standard HTTP response codes for success and failure notifications, and our errors are further classified by `error_type`. In general, 200 HTTP codes correspond to success, 40X codes are for developer- or user-related failures, and 50X codes are for Plaid-related issues.  Error fields will be `null` if no error has occurred.
-    Error? _error;
+    Error? 'error;
 };
 
 # An object with the deduction information found on a paystub.

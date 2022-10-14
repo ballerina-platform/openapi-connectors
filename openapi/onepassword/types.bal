@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type APIRequestArr APIRequest[];
 
@@ -108,7 +110,7 @@ public type Item record {
     # Array of URL objects containing URLs for the item.
     ItemUrls[] urls?;
     # Whether the item is marked as a favorite.
-    boolean favorite?;
+    boolean favorite = false;
     # An array of strings of the tags assigned to the item.
     string[] tags?;
     # The version of the item.
@@ -138,7 +140,7 @@ public type Field record {
     # The value of the field.
     string value?;
     # If value is not present then a new value should be generated for this field
-    boolean generate?;
+    boolean generate = false;
     # The recipe is used in conjunction with the "generate" property to set the character set used to generate a new secure value
     GeneratorRecipe recipe?;
     # For fields with a purpose of `PASSWORD` this is the entropy of the value
@@ -225,6 +227,7 @@ public type FieldSection record {
 # The recipe is used in conjunction with the "generate" property to set the character set used to generate a new secure value
 public type GeneratorRecipe record {
     # Length of the generated value
+    @constraint:Int {minValue: 1, maxValue: 64}
     int length?;
     # An array containing of the kinds of characters to include. Optional. Possible values: "LETTERS" "DIGITS" "SYMBOLS"
     string[] characterSets?;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "http://UAA_DOMAIN/oauth/token";
 |};
 
 # This is a generated connector from [Siemens identity management API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification.
@@ -98,7 +109,7 @@ public isolated client class Client {
     # + id - Id of group 
     # + return - OK 
     remote isolated function getGroup(string id) returns ScimGroup|error {
-        string resourcePath = string `/Groups/${id}`;
+        string resourcePath = string `/Groups/${getEncodedUri(id)}`;
         ScimGroup response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -108,7 +119,7 @@ public isolated client class Client {
     # + payload - New details 
     # + return - OK 
     remote isolated function updateGroup(string id, ScimGroupPost payload) returns ScimGroup|error {
-        string resourcePath = string `/Groups/${id}`;
+        string resourcePath = string `/Groups/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -120,8 +131,8 @@ public isolated client class Client {
     # + id - Id of the group 
     # + return - OK 
     remote isolated function deleteGroup(string id) returns ScimGroup|error {
-        string resourcePath = string `/Groups/${id}`;
-        ScimGroup response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/Groups/${getEncodedUri(id)}`;
+        ScimGroup response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List members of a group
@@ -129,7 +140,7 @@ public isolated client class Client {
     # + id - Id of group 
     # + return - OK 
     remote isolated function listGroupMembers(string id) returns ScimGroupMemberList|error {
-        string resourcePath = string `/Groups/${id}/members`;
+        string resourcePath = string `/Groups/${getEncodedUri(id)}/members`;
         ScimGroupMemberList response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -139,7 +150,7 @@ public isolated client class Client {
     # + payload - Details of the new member 
     # + return - Created 
     remote isolated function addMemberToGroup(string id, ScimGroupMember payload) returns ScimGroupMember|error {
-        string resourcePath = string `/Groups/${id}/members`;
+        string resourcePath = string `/Groups/${getEncodedUri(id)}/members`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -152,8 +163,8 @@ public isolated client class Client {
     # + memberId - Id of member 
     # + return - OK 
     remote isolated function removeMemberFromGroup(string id, string memberId) returns ScimGroupMember|error {
-        string resourcePath = string `/Groups/${id}/members/${memberId}`;
-        ScimGroupMember response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/Groups/${getEncodedUri(id)}/members/${getEncodedUri(memberId)}`;
+        ScimGroupMember response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List of users of a tenant.
@@ -190,7 +201,7 @@ public isolated client class Client {
     # + id - Id of user 
     # + return - OK 
     remote isolated function get(string id) returns ScimUserResponse|error {
-        string resourcePath = string `/Users/${id}`;
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
         ScimUserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -200,7 +211,7 @@ public isolated client class Client {
     # + payload - New details 
     # + return - OK 
     remote isolated function update(string id, ScimUserPut payload) returns ScimUserResponse|error {
-        string resourcePath = string `/Users/${id}`;
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -212,8 +223,8 @@ public isolated client class Client {
     # + id - Id of user 
     # + return - OK 
     remote isolated function delete(string id) returns ScimUserResponse|error {
-        string resourcePath = string `/Users/${id}`;
-        ScimUserResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/Users/${getEncodedUri(id)}`;
+        ScimUserResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get list of groups starting with the prefix "mdsp:" in which the user is a member.
@@ -229,7 +240,7 @@ public isolated client class Client {
     # + id - Id of your client. It must be the same as the `client_id` claim in the bearer token. 
     # + return - OK 
     remote isolated function getProviderOAuthClient(string id) returns OAuthClient|error {
-        string resourcePath = string `/provider/oauth/clients/${id}`;
+        string resourcePath = string `/provider/oauth/clients/${getEncodedUri(id)}`;
         OAuthClient response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -240,13 +251,13 @@ public isolated client class Client {
     # + payload - Parameters of the new secret. 
     # + return - Secret has been changed successfully. 
     remote isolated function updateSecret(string id, ChangeSecretRequest payload, string? currentSecret = ()) returns ChangedSecretResponse|error {
-        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${getEncodedUri(id)}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ChangedSecretResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ChangedSecretResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Add new OAuth client's secret
@@ -256,13 +267,13 @@ public isolated client class Client {
     # + payload - Parameters of the new secret. 
     # + return - Secret has been added successfully. 
     remote isolated function createSecret(string id, ChangeSecretRequest payload, string? currentSecret = ()) returns ChangedSecretResponse|error {
-        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${getEncodedUri(id)}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ChangedSecretResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ChangedSecretResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete old OAuth client's secret
@@ -271,10 +282,10 @@ public isolated client class Client {
     # + currentSecret - Required, unless your have `prv.oc.sec.admin` scope. It is used to make sure the requestor has permission to modify the given client's secret. 
     # + return - Older secret has been removed successfully. 
     remote isolated function deleteSecret(string id, string? currentSecret = ()) returns http:Response|error {
-        string resourcePath = string `/provider/oauth/clients/${id}/secrets`;
+        string resourcePath = string `/provider/oauth/clients/${getEncodedUri(id)}/secrets`;
         map<any> headerValues = {"Current-Secret": currentSecret};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
 }

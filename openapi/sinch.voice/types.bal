@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 # The type of device and number or endpoint to call.
 public type Destination record {
@@ -35,15 +37,15 @@ public type TtsCalloutRequest record {
     # Can be used to input custom data.
     string custom?;
     # Language of the prompts as defined in [ISO 639](locales.md) for supported languages
-    string locale?;
+    string locale = "en-US";
     # The text that will be spoken in the text-to-speech message. Every application's default maximum characters allowed in text-to-speech is 600 characters. Contact support if you wish this limit to be changed.
     string text?;
     # An advanced alternative to using text. You can then supply a , -separated list of prompts. Either prompt can be the name of a pre-recorded file or a text-to-speech string specified as â€œ#tts[my text]. To upload and use pre-recorded files, you need to contact Sinch for support. Every application's default maximum characters allowed per 'prompts'-command text-to-speech is 600 characters. Contact support if you wish this limit to be changed.
     string prompts?;
     # If enableAce is set to true and the application has a callback URL specified, you will receive an ACE callback when the call is answered. When the callback is received, your platform must respond with a svamlet, containing the connectcon action in order to add the call to a conference or create the conference if itâ€™s the first call. If it's set to false, no ACE event will be sent to your backend.
-    boolean enableAce?;
+    boolean enableAce = false;
     # If enableDice is set to true and the application has a callback URL specified, you will receive a DiCE callback when the call is disconnected. If it's set to false, no DiCE event will be sent to your backend.
-    boolean enableDice?;
+    boolean enableDice = false;
 };
 
 # The custom callout, the server initiates a call from the servers that can be controlled by specifying how the call should progress at each call event.
@@ -93,13 +95,13 @@ public type ConferenceCalloutRequest record {
     # Maximum duration.
     string maxDuration?;
     # If `enableAce` is set to true and the application has a callback URL specified, you will receive an ACE callback when the call is answered. When the callback is received, your platform must respond with a svamlet, containing the connectcon action in order to add the call to a conference or create the conference if itâ€™s the first call. If it's set to false, no ACE event will be sent to your backend.
-    boolean enableAce?;
+    boolean enableAce = false;
     # If enableDice is set to true and the application has a callback URL specified, you will receive a DiCE callback when the call is disconnected. If it's set to false, no DiCE event will be sent to your backend.
-    boolean enableDice?;
+    boolean enableDice = false;
     # If enablePie is set to true and the application has a callback URL specified, you will receive a PIE callback after a runMenu action, with the information of the action that the user took. If it's set to false, no PIE event will be sent to your backend.
-    boolean enablePie?;
+    boolean enablePie = false;
     # Language of the prompts as defined in [ISO 639](locales.md) for supported languages.
-    string locale?;
+    string locale = "en-US";
     # The text that will be spoken as a greeting.
     string greeting?;
     # Means "music-on-hold." It's an optional parameter that specifies what the first participant should listen to while they're alone in the conference, waiting for other participants to join. It can take one of these pre-defined values:<ul><li>`ring` (progress tone)</li><li>`music1` (music file)</li><li>`music2` (music file)</li><li>`music3` (music file)</li></ul></br>If no music-on-hold is specified, the user will only hear silence.
@@ -237,7 +239,8 @@ public type GetquerynumberRate record {
 
 public type UpdateNumbers record {
     # The phone number or list of numbers in E.164 format.
-    string[100] numbers?;
+    @constraint:Array {maxLength: 100, minLength: 1}
+    string[] numbers?;
     # indicates the application where the number(s) will be assigned. If empty, the application key that is used to sign the request will be used.
     string applicationkey?;
     # indicates the DID capability that needs to be assigned to the chosen application. Valid values are 'voice' and 'sms'. Please note that the DID needs to support the selected capability.

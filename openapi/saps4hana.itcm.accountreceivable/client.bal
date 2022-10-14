@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -91,7 +95,7 @@ public isolated client class Client {
     # + id - id 
     # + return - OK. 
     remote isolated function getAROpenItemById(int id) returns ResidualAccountingDocumentItem4ApiDTO|error {
-        string resourcePath = string `/arOpenItems/${id}`;
+        string resourcePath = string `/arOpenItems/${getEncodedUri(id)}`;
         ResidualAccountingDocumentItem4ApiDTO response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + code - code 
     # + return - OK. 
     remote isolated function getReasonCodeList(string code) returns ReasonCodeDTO|error {
-        string resourcePath = string `/reasonCodes/${code}`;
+        string resourcePath = string `/reasonCodes/${getEncodedUri(code)}`;
         ReasonCodeDTO response = check self.clientEp->get(resourcePath);
         return response;
     }

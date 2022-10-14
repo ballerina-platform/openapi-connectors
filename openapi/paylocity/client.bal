@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -92,7 +96,7 @@ public isolated client class Client {
     # + codeResource - Type of Company Code. Common values costcenter1, costcenter2, costcenter3, deductions, earnings, taxes, paygrade, positions. 
     # + return - Successfully retrieved 
     remote isolated function getAllCompanyCodesAndDescriptionsByResource(string companyId, string codeResource) returns CompanyCodes[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/codes/${codeResource}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/codes/${getEncodedUri(codeResource)}`;
         CompanyCodes[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -102,7 +106,7 @@ public isolated client class Client {
     # + category - Custom Fields Category 
     # + return - Successfully retrieved 
     remote isolated function getAllCustomFieldsByCategory(string companyId, string category) returns CustomFieldDefinition[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/customfields/${category}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/customfields/${getEncodedUri(category)}`;
         CustomFieldDefinition[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + payload - Employee Model 
     # + return - Successfully added 
     remote isolated function addEmployee(string companyId, Employee payload) returns EmployeeIdResponse[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -127,7 +131,7 @@ public isolated client class Client {
     # + includetotalcount - Whether to include the total record count in the header's X-Pcty-Total-Count property. Default value is true. 
     # + return - Successfully Retrieved 
     remote isolated function getAllEmployees(string companyId, int? pagesize = (), int? pagenumber = (), boolean? includetotalcount = ()) returns EmployeeInfo[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/`;
         map<anydata> queryParam = {"pagesize": pagesize, "pagenumber": pagenumber, "includetotalcount": includetotalcount};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         EmployeeInfo[] response = check self.clientEp->get(resourcePath);
@@ -139,7 +143,7 @@ public isolated client class Client {
     # + employeeId - Employee Id 
     # + return - Successfully Retrieved 
     remote isolated function getEmployee(string companyId, string employeeId) returns Employee[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}`;
         Employee[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -150,7 +154,7 @@ public isolated client class Client {
     # + payload - Employee Model 
     # + return - Successfully Updated 
     remote isolated function updateEmployee(string companyId, string employeeId, Employee payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -164,7 +168,7 @@ public isolated client class Client {
     # + payload - Additional Rate Model 
     # + return - Successfully added or updated 
     remote isolated function addOrUpdateAdditionalRates(string companyId, string employeeId, AdditionalRate payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/additionalRates`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/additionalRates`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -178,7 +182,7 @@ public isolated client class Client {
     # + payload - BenefitSetup Model 
     # + return - Successfully added or updated 
     remote isolated function updateOrAddEmployeeBenefitSetup(string companyId, string employeeId, BenefitSetup payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/benefitSetup`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/benefitSetup`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -191,7 +195,7 @@ public isolated client class Client {
     # + employeeId - Employee Id 
     # + return - Successfully Retrieved 
     remote isolated function getAllDirectDeposit(string companyId, string employeeId) returns DirectDeposit[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/directDeposit`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/directDeposit`;
         DirectDeposit[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -201,7 +205,7 @@ public isolated client class Client {
     # + employeeId - Employee Id 
     # + return - Successfully retrieved 
     remote isolated function getAllEarnings(string companyId, string employeeId) returns Earning[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/earnings`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/earnings`;
         Earning[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -212,7 +216,7 @@ public isolated client class Client {
     # + payload - Earning Model 
     # + return - Successfully added or updated 
     remote isolated function addOrUpdateAnEmployeeEarning(string companyId, string employeeId, Earning payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/earnings`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/earnings`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -226,7 +230,7 @@ public isolated client class Client {
     # + earningCode - Earning Code 
     # + return - Successfully retrieved 
     remote isolated function getEarningsByEarningCode(string companyId, string employeeId, string earningCode) returns Earning[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/earnings/${earningCode}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/earnings/${getEncodedUri(earningCode)}`;
         Earning[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -238,7 +242,7 @@ public isolated client class Client {
     # + startDate - Start Date 
     # + return - Successfully retrieved 
     remote isolated function getEarningByEarningCodeAndStartDate(string companyId, string employeeId, string earningCode, string startDate) returns Earning|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/earnings/${earningCode}/${startDate}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/earnings/${getEncodedUri(earningCode)}/${getEncodedUri(startDate)}`;
         Earning response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -250,8 +254,8 @@ public isolated client class Client {
     # + startDate - Start Date 
     # + return - Successfully deleted 
     remote isolated function deleteEarningByEarningCodeAndStartDate(string companyId, string employeeId, string earningCode, string startDate) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/earnings/${earningCode}/${startDate}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/earnings/${getEncodedUri(earningCode)}/${getEncodedUri(startDate)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add/update emergency contacts
@@ -261,7 +265,7 @@ public isolated client class Client {
     # + payload - Emergency Contact Model 
     # + return - Successfully added or updated 
     remote isolated function addOrUpdateEmergencyContacts(string companyId, string employeeId, EmergencyContact payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/emergencyContacts`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/emergencyContacts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -274,7 +278,7 @@ public isolated client class Client {
     # + employeeId - Employee Id 
     # + return - Successfully retrieved 
     remote isolated function getAllLocalTaxes(string companyId, string employeeId) returns LocalTax[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/localTaxes`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/localTaxes`;
         LocalTax[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -285,7 +289,7 @@ public isolated client class Client {
     # + payload - LocalTax Model 
     # + return - Successfully added 
     remote isolated function addLocalTax(string companyId, string employeeId, LocalTax payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/localTaxes`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/localTaxes`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -299,7 +303,7 @@ public isolated client class Client {
     # + taxCode - Tax Code 
     # + return - Successfully retrieved 
     remote isolated function getLocalTaxByTaxCode(string companyId, string employeeId, string taxCode) returns LocalTax[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/localTaxes/${taxCode}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/localTaxes/${getEncodedUri(taxCode)}`;
         LocalTax[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -310,8 +314,8 @@ public isolated client class Client {
     # + taxCode - Tax Code 
     # + return - Successfully deleted 
     remote isolated function deleteLocalTaxByTaxCode(string companyId, string employeeId, string taxCode) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/localTaxes/${taxCode}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/localTaxes/${getEncodedUri(taxCode)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Add/update non-primary state tax
@@ -321,7 +325,7 @@ public isolated client class Client {
     # + payload - Non-Primary State Tax Model 
     # + return - Successfully added or updated 
     remote isolated function addOrUpdateNonPrimaryStateTax(string companyId, string employeeId, NonPrimaryStateTax payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/nonprimaryStateTax`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/nonprimaryStateTax`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -339,7 +343,7 @@ public isolated client class Client {
     # + dettypes - Retrieve pay statement details related to specific deduction, earning or tax types. Common values include 401k, Memo, Reg, OT, Cash Tips, FED and SITW. 
     # + return - Successfully Retrieved 
     remote isolated function getsEmployeePayStatementDetailDataBasedOnTheSpecifiedYear(string companyId, string employeeId, string year, int? pagesize = (), int? pagenumber = (), boolean? includetotalcount = (), string? dettypes = ()) returns PayStatementDetails[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/paystatement/details/${year}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/paystatement/details/${getEncodedUri(year)}`;
         map<anydata> queryParam = {"pagesize": pagesize, "pagenumber": pagenumber, "includetotalcount": includetotalcount, "dettypes": dettypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PayStatementDetails[] response = check self.clientEp->get(resourcePath);
@@ -357,7 +361,7 @@ public isolated client class Client {
     # + dettypes - Retrieve pay statement details related to specific deduction, earning or tax types. Common values include 401k, Memo, Reg, OT, Cash Tips, FED and SITW. 
     # + return - Successfully Retrieved 
     remote isolated function getsEmployeePayStatementDetailDataBasedOnTheSpecifiedYearAndCheckDate(string companyId, string employeeId, string year, string checkDate, int? pagesize = (), int? pagenumber = (), boolean? includetotalcount = (), string? dettypes = ()) returns PayStatementDetails[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/paystatement/details/${year}/${checkDate}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/paystatement/details/${getEncodedUri(year)}/${getEncodedUri(checkDate)}`;
         map<anydata> queryParam = {"pagesize": pagesize, "pagenumber": pagenumber, "includetotalcount": includetotalcount, "dettypes": dettypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PayStatementDetails[] response = check self.clientEp->get(resourcePath);
@@ -374,7 +378,7 @@ public isolated client class Client {
     # + dettypes - Retrieve pay statement details related to specific deduction, earning or tax types. Common values include 401k, Memo, Reg, OT, Cash Tips, FED and SITW. 
     # + return - Successfully Retrieved 
     remote isolated function getsEmployeePayStatementSummaryDataBasedOnTheSpecifiedYear(string companyId, string employeeId, string year, int? pagesize = (), int? pagenumber = (), boolean? includetotalcount = (), string? dettypes = ()) returns PayStatementSummary[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/paystatement/summary/${year}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/paystatement/summary/${getEncodedUri(year)}`;
         map<anydata> queryParam = {"pagesize": pagesize, "pagenumber": pagenumber, "includetotalcount": includetotalcount, "dettypes": dettypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PayStatementSummary[] response = check self.clientEp->get(resourcePath);
@@ -392,7 +396,7 @@ public isolated client class Client {
     # + dettypes - Retrieve pay statement details related to specific deduction, earning or tax types. Common values include 401k, Memo, Reg, OT, Cash Tips, FED and SITW. 
     # + return - Successfully Retrieved 
     remote isolated function getsEmployeePayStatementSummaryDataBasedOnTheSpecifiedYearAndCheckDate(string companyId, string employeeId, string year, string checkDate, int? pagesize = (), int? pagenumber = (), boolean? includetotalcount = (), string? dettypes = ()) returns PayStatementSummary[]|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/paystatement/summary/${year}/${checkDate}`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/paystatement/summary/${getEncodedUri(year)}/${getEncodedUri(checkDate)}`;
         map<anydata> queryParam = {"pagesize": pagesize, "pagenumber": pagenumber, "includetotalcount": includetotalcount, "dettypes": dettypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PayStatementSummary[] response = check self.clientEp->get(resourcePath);
@@ -405,7 +409,7 @@ public isolated client class Client {
     # + payload - Primary State Tax Model 
     # + return - Successfully added or updated 
     remote isolated function addOrUpdatePrimaryStateTax(string companyId, string employeeId, StateTax payload) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/employees/${employeeId}/primaryStateTax`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/employees/${getEncodedUri(employeeId)}/primaryStateTax`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -418,7 +422,7 @@ public isolated client class Client {
     # + companyId - Company Id 
     # + return - Successfully retrieved 
     remote isolated function getCompanySpecificOpenApiDocumentation(string authorization, string companyId) returns http:Response|error {
-        string resourcePath = string `/v2/companies/${companyId}/openapi`;
+        string resourcePath = string `/v2/companies/${getEncodedUri(companyId)}/openapi`;
         map<any> headerValues = {"Authorization": authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Response response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -442,7 +446,7 @@ public isolated client class Client {
     # + payload - StagedEmployee Model 
     # + return - Successfully Added 
     remote isolated function addNewEmployeeToWebLink(string companyId, StagedEmployee payload) returns TrackingNumberResponse[]|error {
-        string resourcePath = string `/v2/weblinkstaging/companies/${companyId}/employees/newemployees`;
+        string resourcePath = string `/v2/weblinkstaging/companies/${getEncodedUri(companyId)}/employees/newemployees`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

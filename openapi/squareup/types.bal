@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,6 +14,8 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type V1EmployeeArr V1Employee[];
 
 public type V1EmployeeRoleArr V1EmployeeRole[];
@@ -25,6 +27,27 @@ public type V1PaymentArr V1Payment[];
 public type V1RefundArr V1Refund[];
 
 public type V1SettlementArr V1Settlement[];
+
+@constraint:String {minLength: 1}
+public type LoyaltyeventlocationfilterLocationidsItemsString string;
+
+@constraint:String {maxLength: 40, minLength: 1}
+public type DisputeEvidenceidsItemsString string;
+
+@constraint:String {maxLength: 191}
+public type GiftcardCustomeridsItemsString string;
+
+@constraint:String {minLength: 1}
+public type BatchretrieveordersrequestOrderidsItemsString string;
+
+@constraint:String {minLength: 1}
+public type LoyaltyprogramLocationidsItemsString string;
+
+@constraint:String {minLength: 1}
+public type ShiftfilterLocationidsItemsString string;
+
+@constraint:String {minLength: 1}
+public type ShiftfilterTeammemberidsItemsString string;
 
 # Represents a collection of catalog objects for the purpose of applying a
 # `PricingRule`. Including a catalog object will include all of its subtypes.
@@ -127,11 +150,14 @@ public type CancelInvoiceResponse record {
 # A file to be uploaded as dispute evidence.
 public type DisputeEvidenceFile record {
     # The file name including the file extension. For example: "receipt.tiff".
+    @constraint:String {maxLength: 40, minLength: 1}
     string filename?;
     # Dispute evidence files must be application/pdf, image/heic, image/heif, image/jpeg, image/png, or image/tiff formats.
+    @constraint:String {maxLength: 40, minLength: 1}
     string filetype?;
 };
 
+# 
 public type GetTerminalRefundRequest record {
 };
 
@@ -140,7 +166,7 @@ public type LoyaltyEventLocationFilter record {
     # The [location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) IDs for loyalty events to query.
     # If multiple values are specified, the endpoint uses 
     # a logical OR to combine them.
-    string[] location_ids;
+    LoyaltyeventlocationfilterLocationidsItemsString[] location_ids;
 };
 
 public type InvoiceDeliveryMethodinvoicedeliverymethod anydata;
@@ -149,6 +175,7 @@ public type InvoiceDeliveryMethodinvoicedeliverymethod anydata;
 public type CreateLoyaltyRewardRequest record {
     # A unique string that identifies this `CreateLoyaltyReward` request. 
     # Keys can be any valid string, but must be unique for every request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # Represents a contract to redeem loyalty points for a [reward tier](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgramRewardTier) discount. Loyalty rewards can be in an ISSUED, REDEEMED, or DELETED state. For more information, see [Redeem loyalty rewards](https://developer.squareup.com/docs/loyalty-api/overview#redeem-loyalty-rewards).
     LoyaltyReward reward;
@@ -156,14 +183,17 @@ public type CreateLoyaltyRewardRequest record {
 
 # Request object for the [UpdateLocation](https://developer.squareup.com/reference/square_2021-08-18/locations-api/update-location) endpoint.
 public type UpdateLocationRequest record {
+    # 
     Location location?;
 };
 
+# 
 public type CreateBookingRequest record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
     Booking booking;
     # A unique key to make this request an idempotent operation.
+    @constraint:String {maxLength: 255}
     string idempotency_key?;
 };
 
@@ -213,9 +243,11 @@ public type CatalogObjectReference record {
 # details collected **at the time of the payment**. Details such as the name or
 # price of items might have changed since the payment was processed.
 public type V1PaymentItemization record {
+    # 
     V1Money discount_money?;
     # All discounts applied to this itemization.
     V1PaymentDiscount[] discounts?;
+    # 
     V1Money gross_sales_money?;
     # V1PaymentItemDetail
     V1PaymentItemDetail item_detail?;
@@ -227,14 +259,17 @@ public type V1PaymentItemization record {
     V1PaymentModifier[] modifiers?;
     # The item's name.
     string name?;
+    # 
     V1Money net_sales_money?;
     # Notes entered by the merchant about the item at the time of payment, if any.
     string notes?;
     # The quantity of the item purchased. This can be a decimal value.
     decimal quantity?;
+    # 
     V1Money single_quantity_money?;
     # All taxes applied to this itemization.
     V1PaymentTax[] taxes?;
+    # 
     V1Money total_money?;
 };
 
@@ -243,12 +278,14 @@ public type CreateGiftCardActivityRequest record {
     # Represents an action performed on a gift card that affects its state or balance.
     GiftCardActivity gift_card_activity;
     # A unique string that identifies the `CreateGiftCardActivity` request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
 };
 
 # Determines item visibility in Ecom (Online Store) and Online Checkout.
 public type EcomVisibility string;
 
+# 
 public type BatchRetrieveInventoryChangesResponse record {
     # The current calculated inventory changes for the requested objects
     # and locations.
@@ -318,6 +355,7 @@ public type TeamMemberWage record {
     string title?;
 };
 
+# 
 public type V1ListEmployeesRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -340,6 +378,7 @@ public type V1ListEmployeesRequest record {
     string status?;
 };
 
+# 
 public type CatalogDiscountModifyTaxBasis string;
 
 # Whether to the tax amount should be additional to or included in the CatalogItem price.
@@ -349,6 +388,7 @@ public type TaxInclusionType string;
 public type LoyaltyProgramExpirationPolicy record {
     # The number of months before points expire, in `P[n]M` RFC 3339 duration format. For example, a value of `P12M` represents a duration of 12 months. 
     # Points are valid through the last day of the month in which they are scheduled to expire. For example, with a  `P12M` duration, points earned on July 6, 2020 expire on August 1, 2021.
+    @constraint:String {minLength: 1}
     string expiration_duration;
 };
 
@@ -366,22 +406,28 @@ public type CancelPaymentRequest record {
 # The payment the cardholder disputed.
 public type DisputedPayment record {
     # Square-generated unique ID of the payment being disputed.
+    @constraint:String {maxLength: 192, minLength: 1}
     string payment_id?;
 };
 
 # Reflects the current status of a card payment. Contains only non-confidential information.
 public type CardPaymentDetails record {
     # For EMV payments, the cryptogram generated for the payment.
+    @constraint:String {maxLength: 16}
     string application_cryptogram?;
     # For EMV payments, the application ID identifies the EMV application used for the payment.
+    @constraint:String {maxLength: 32}
     string application_identifier?;
     # For EMV payments, the human-readable name of the EMV application used for the payment.
+    @constraint:String {maxLength: 16}
     string application_name?;
     # The status code returned by the card issuer that describes the payment's
     # authorization status.
+    @constraint:String {maxLength: 10}
     string auth_result_code?;
     # The status code returned from the Address Verification System (AVS) check. The code can be
     # `AVS_ACCEPTED`, `AVS_REJECTED`, or `AVS_NOT_CHECKED`.
+    @constraint:String {maxLength: 50}
     string avs_status?;
     # Represents the payment details of a card to be used for payments. These
     # details are determined by the payment token generated by Web Payments SDK.
@@ -390,11 +436,13 @@ public type CardPaymentDetails record {
     CardPaymentTimeline card_payment_timeline?;
     # The status code returned from the Card Verification Value (CVV) check. The code can be
     # `CVV_ACCEPTED`, `CVV_REJECTED`, or `CVV_NOT_CHECKED`.
+    @constraint:String {maxLength: 50}
     string cvv_status?;
     # Details about the device that took the payment.
     DeviceDetails device_details?;
     # The method used to enter the card's details for the payment. The method can be
     # `KEYED`, `SWIPED`, `EMV`, `ON_FILE`, or `CONTACTLESS`.
+    @constraint:String {maxLength: 50}
     string entry_method?;
     # Information about errors encountered during the request.
     Error[] errors?;
@@ -405,15 +453,19 @@ public type CardPaymentDetails record {
     # 
     # Note: The actual statement description varies and is likely to be truncated and appended with
     # additional information on a per issuer basis.
+    @constraint:String {maxLength: 50}
     string statement_description?;
     # The card payment's current state. The state can be AUTHORIZED, CAPTURED, VOIDED, or
     # FAILED.
+    @constraint:String {maxLength: 50}
     string status?;
     # For EMV payments, the method used to verify the cardholder's identity. The method can be
     # `PIN`, `SIGNATURE`, `PIN_AND_SIGNATURE`, `ON_DEVICE`, or `NONE`.
+    @constraint:String {maxLength: 50}
     string verification_method?;
     # For EMV payments, the results of the cardholder verification. The result can be
     # `SUCCESS`, `FAILURE`, or `UNKNOWN`.
+    @constraint:String {maxLength: 50}
     string verification_results?;
 };
 
@@ -486,11 +538,13 @@ public type AcceptDisputeRequest record {
 # [Bank Accounts API](https://developer.squareup.com/docs/bank-accounts-api).
 public type BankAccount record {
     # The last few digits of the account number.
+    @constraint:String {minLength: 1}
     string account_number_suffix;
     # The financial purpose of the associated bank account.
     string account_type;
     # Read only. Name of actual financial institution. 
     # For example "Bank of America".
+    @constraint:String {maxLength: 100}
     string bank_name?;
     # The ISO 3166 Alpha-2 country code where the bank account is based.
     string country;
@@ -512,19 +566,23 @@ public type BankAccount record {
     string fingerprint?;
     # Name of the account holder. This name must match the name 
     # on the targeted bank account record.
+    @constraint:String {minLength: 1}
     string holder_name;
     # The unique, Square-issued identifier for the bank account.
+    @constraint:String {maxLength: 30, minLength: 1}
     string id;
     # The location to which the bank account belongs.
     string location_id?;
     # Primary identifier for the bank. For more information, see 
     # [Bank Accounts API](https://developer.squareup.com/docs/bank-accounts-api).
+    @constraint:String {maxLength: 40}
     string primary_bank_identification_number;
     # Client-provided identifier for linking the banking account to an entity
     # in a third-party system (for example, a bank account number or a user identifier).
     string reference_id?;
     # Secondary identifier for the bank. For more information, see 
     # [Bank Accounts API](https://developer.squareup.com/docs/bank-accounts-api).
+    @constraint:String {maxLength: 40}
     string secondary_bank_identification_number?;
     # Read-only. The current verification status of this BankAccount object.
     string status;
@@ -532,6 +590,7 @@ public type BankAccount record {
     int 'version?;
 };
 
+# 
 public type SearchCatalogObjectsRequest record {
     # Return objects modified after this [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates), in RFC 3339
     # format, e.g., `2016-09-04T23:59:33.123Z`. The timestamp is exclusive - objects with a
@@ -592,8 +651,10 @@ public type SearchCatalogObjectsRequest record {
 # Represents the naming used for loyalty points.
 public type LoyaltyProgramTerminology record {
     # A singular unit for a point (for example, 1 point is called 1 star).
+    @constraint:String {minLength: 1}
     string one;
     # A plural unit for point (for example, 10 points is called 10 stars).
+    @constraint:String {minLength: 1}
     string other;
 };
 
@@ -606,12 +667,14 @@ public type GiftCardActivityDeactivate record {
 # a request to the [RegisterDomain](https://developer.squareup.com/reference/square_2021-08-18/apple-pay-api/register-domain) endpoint.
 public type RegisterDomainRequest record {
     # A domain name as described in RFC-1034 that will be registered with ApplePay.
+    @constraint:String {maxLength: 255, minLength: 1}
     string domain_name;
 };
 
 # Specifies customer attributes as the sort key to customer profiles returned from a search.
 public type CustomerSortField string;
 
+# 
 public type TerminalCheckoutQueryFilter record {
     # Represents a generic time range. The start and end values are
     # represented in RFC 3339 format. Time ranges are customized to be
@@ -652,9 +715,11 @@ public type UpdateWorkweekConfigRequest record {
     WorkweekConfig workweek_config;
 };
 
+# 
 public type V1RetrieveOrderRequest record {
 };
 
+# 
 public type V1TenderEntryMethod string;
 
 # Defines the fields that are included in the response body of
@@ -669,6 +734,7 @@ public type CreateCustomerCardResponse record {
     Error[] errors?;
 };
 
+# 
 public type V1UpdateOrderRequestAction string;
 
 # A [CatalogModifier](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogModifier).
@@ -681,10 +747,12 @@ public type OrderLineItemModifier record {
     # for more information.
     Money base_price_money?;
     # The catalog object ID referencing [CatalogModifier](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogModifier).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this modifier references.
     int catalog_version?;
     # The name of the item modifier.
+    @constraint:String {maxLength: 255}
     string name?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -694,6 +762,7 @@ public type OrderLineItemModifier record {
     # for more information.
     Money total_price_money?;
     # A unique ID that identifies the modifier only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -769,6 +838,7 @@ public type LoyaltyProgramAccrualRule record {
     string[] excluded_item_variation_ids?;
     # The number of points that 
     # buyers earn based on the `accrual_type`.
+    @constraint:Int {minValue: 1}
     int points?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -800,9 +870,11 @@ public type UpdateOrderResponse record {
     Order 'order?;
 };
 
+# 
 public type CatalogInfoRequest record {
 };
 
+# 
 public type GetDeviceCodeRequest record {
 };
 
@@ -820,12 +892,14 @@ public type Shift record {
     # respected; seconds are truncated.
     string end_at?;
     # The UUID for this object.
+    @constraint:String {maxLength: 255}
     string id?;
     # The ID of the location this shift occurred at. The location should be based on
     # where the employee clocked in.
     string location_id?;
     # RFC 3339; shifted to the location timezone + offset. Precision up to the
     # minute is respected; seconds are truncated.
+    @constraint:String {minLength: 1}
     string start_at;
     # Describes the working state of the current `Shift`.
     string status?;
@@ -857,7 +931,7 @@ public type RetrieveCustomerGroupResponse record {
     # 
     # Customer groups can be created, be modified, and have their membership defined using 
     # the Customers API or within the Customer Directory in the Square Seller Dashboard or Point of Sale.
-    CustomerGroup 'group?;
+    CustomerGroup group?;
 };
 
 # Filter based on [order fulfillment](https://developer.squareup.com/reference/square_2021-08-18/objects/OrderFulfillment) information.
@@ -872,6 +946,7 @@ public type SearchOrdersFulfillmentFilter record {
     string[] fulfillment_types?;
 };
 
+# 
 public type SearchAvailabilityRequest record {
     # Query conditions to search for availabilities of bookings.
     SearchAvailabilityQuery query;
@@ -890,6 +965,7 @@ public type SearchCatalogItemsRequest record {
     # The enabled-location query expression to return items and item variations having specified enabled locations.
     string[] enabled_location_ids?;
     # The maximum number of results to return per page. The default value is 100.
+    @constraint:Int {maxValue: 100}
     int 'limit?;
     # The product types query expression to return items or item variations having the specified product types.
     string[] product_types?;
@@ -906,10 +982,12 @@ public type SearchCatalogItemsRequest record {
 # Represents the snippet that is added to a Square Online site. The snippet code is injected into the `head` element of all pages on the site, except for checkout pages.
 public type Snippet record {
     # The snippet code, which can contain valid HTML, JavaScript, or both.
+    @constraint:String {maxLength: 65535, minLength: 1}
     string content;
     # The timestamp of when the snippet was initially added to the site, in RFC 3339 format.
     string created_at?;
     # The Square-assigned ID for the snippet.
+    @constraint:String {maxLength: 48}
     string id?;
     # The ID of the site that contains the snippet.
     string site_id?;
@@ -922,33 +1000,42 @@ public type Snippet record {
 public type InventoryTransfer record {
     # The Square-generated ID of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked.
+    @constraint:String {maxLength: 100}
     string catalog_object_id?;
     # The [type](https://developer.squareup.com/reference/square_2021-08-18/enums/CatalogObjectType) of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked.Tracking is only
     # supported for the `ITEM_VARIATION` type.
+    @constraint:String {maxLength: 14}
     string catalog_object_type?;
     # An RFC 3339-formatted timestamp that indicates when Square
     # received the transfer request.
+    @constraint:String {maxLength: 34}
     string created_at?;
     # The Square-generated ID of the [Employee](https://developer.squareup.com/reference/square_2021-08-18/objects/Employee) responsible for the
     # inventory transfer.
+    @constraint:String {maxLength: 100}
     string employee_id?;
     # The Square-generated ID of the [Location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the related
     # quantity of items was tracked before the transfer.
+    @constraint:String {maxLength: 100}
     string from_location_id?;
     # A unique ID generated by Square for the
     # `InventoryTransfer`.
+    @constraint:String {maxLength: 100}
     string id?;
     # A client-generated RFC 3339-formatted timestamp that indicates when
     # the transfer took place. For write actions, the `occurred_at` timestamp
     # cannot be older than 24 hours or in the future relative to the time of the
     # request.
+    @constraint:String {maxLength: 34}
     string occurred_at?;
     # The number of items affected by the transfer as a decimal string.
     # Can support up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 26}
     string quantity?;
     # An optional ID provided by the application to tie the
     # `InventoryTransfer` to an external system.
+    @constraint:String {maxLength: 255}
     string reference_id?;
     # Provides information about the application used to generate a change.
     SourceApplication 'source?;
@@ -957,9 +1044,11 @@ public type InventoryTransfer record {
     string state?;
     # The Square-generated ID of the [Location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the related
     # quantity of items was tracked after the transfer.
+    @constraint:String {maxLength: 100}
     string to_location_id?;
 };
 
+# 
 public type ListTeamMemberBookingProfilesResponse record {
     # The cursor for paginating through the results.
     string cursor?;
@@ -969,18 +1058,22 @@ public type ListTeamMemberBookingProfilesResponse record {
     TeamMemberBookingProfile[] team_member_booking_profiles?;
 };
 
+# 
 public type CreateDeviceCodeRequest record {
+    # 
     DeviceCode device_code;
     # A unique string that identifies this CreateDeviceCode request. Keys can
     # be any valid string but must be unique for every CreateDeviceCode request.
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
 };
 
 # Provides metadata when the event `type` is `ADJUST_POINTS`.
 public type LoyaltyEventAdjustPoints record {
     # The Square-assigned ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36}
     string loyalty_program_id?;
     # The number of points added or removed.
     int points;
@@ -988,11 +1081,14 @@ public type LoyaltyEventAdjustPoints record {
     string reason?;
 };
 
+# 
 public type RetrieveCashDrawerShiftRequest record {
     # The ID of the location to retrieve cash drawer shifts from.
+    @constraint:String {minLength: 1}
     string location_id;
 };
 
+# 
 public type V1EmployeeRolePermissions string;
 
 # Group of standard measurement units.
@@ -1007,6 +1103,7 @@ public type StandardUnitDescriptionGroup record {
 # the `attribute_values`.
 public type CatalogQuerySet record {
     # The name of the attribute to be searched. Matching of the attribute name is exact.
+    @constraint:String {minLength: 1}
     string attribute_name;
     # The desired values of the search attribute. Matching of the attribute values is exact and case insensitive.
     # A maximum of 250 values may be searched in a request.
@@ -1016,7 +1113,9 @@ public type CatalogQuerySet record {
 # The transaction type used in the disputed payment.
 public type TransactionType string;
 
+# 
 public type OrderUpdatedObject record {
+    # 
     OrderUpdated order_updated?;
 };
 
@@ -1027,6 +1126,7 @@ public type AddGroupToCustomerResponse record {
     Error[] errors?;
 };
 
+# 
 public type V1PaymentSurchargeType string;
 
 # An image file to use in Square catalogs. It can be associated with catalog
@@ -1046,7 +1146,9 @@ public type CatalogImage record {
     string url?;
 };
 
+# 
 public type OrderFulfillmentUpdatedObject record {
+    # 
     OrderFulfillmentUpdated order_fulfillment_updated?;
 };
 
@@ -1135,9 +1237,11 @@ public type ListGiftCardActivitiesRequest record {
     # If you provide a gift card ID, the endpoint returns activities that belong 
     # to the specified gift card. Otherwise, the endpoint returns all gift card activities for 
     # the seller.
+    @constraint:String {maxLength: 50}
     string gift_card_id?;
     # If you provide a limit value, the endpoint returns the specified number 
     # of results (or less) per page. A maximum value is 100. The default value is 50.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
     # If you provide a location ID, the endpoint returns gift card activities for that location. 
     # Otherwise, the endpoint returns gift card activities for all locations.
@@ -1155,6 +1259,7 @@ public type ListGiftCardActivitiesRequest record {
 public type DeprecatedCreateDisputeEvidenceFileResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
+    # 
     DisputeEvidence evidence?;
 };
 
@@ -1176,6 +1281,7 @@ public type UpdateOrderRequest record {
     # The latest order version is returned.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency).
+    @constraint:String {maxLength: 192}
     string idempotency_key?;
     # Contains all information related to a single order to process with Square,
     # including line items that specify the products to purchase. `Order` objects also
@@ -1186,6 +1292,7 @@ public type UpdateOrderRequest record {
     Order 'order?;
 };
 
+# 
 public type SnippetResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -1209,6 +1316,7 @@ public type OrderRoundingAdjustment record {
     # The name of the rounding adjustment from the original sale order.
     string name?;
     # A unique ID that identifies the rounding adjustment only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -1218,6 +1326,7 @@ public type OrderRoundingAdjustment record {
 # `Invoice.delivery_method` and `InvoicePaymentRequest.automatic_payment_source` fields.
 public type InvoiceRequestMethod string;
 
+# 
 public type UpdateItemTaxesRequest record {
     # IDs for the CatalogItems associated with the CatalogTax objects being updated.
     string[] item_ids;
@@ -1239,6 +1348,7 @@ public type CreateTeamMemberRequest record {
     TeamMember team_member?;
 };
 
+# 
 public type ListDeviceCodesResponse record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint. This value is present only if the request
@@ -1319,6 +1429,7 @@ public type V1Order record {
     Address shipping_address?;
     # Whether the tax is an ADDITIVE tax or an INCLUSIVE tax.
     string state?;
+    # 
     V1Money subtotal_money?;
     # A tender represents a discrete monetary exchange. Square represents this
     # exchange as a money object with a specific currency and amount, where the
@@ -1343,14 +1454,19 @@ public type V1Order record {
     # `SQUARE_GIFT_CARD` indicates a gift card was used for some or all of the
     # associated payment.
     V1Tender tender?;
+    # 
     V1Money total_discount_money?;
+    # 
     V1Money total_price_money?;
+    # 
     V1Money total_shipping_money?;
+    # 
     V1Money total_tax_money?;
     # The time when the order was last modified, in ISO 8601 format.
     string updated_at?;
 };
 
+# 
 public type GiftCardActivityDeactivateReason string;
 
 # The line item being returned in an order.
@@ -1373,6 +1489,7 @@ public type OrderReturnLineItem record {
     # for more information.
     Money base_price_money?;
     # The [CatalogItemVariation](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItemVariation) ID applied to this return line item.
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this line item references.
     int catalog_version?;
@@ -1387,14 +1504,17 @@ public type OrderReturnLineItem record {
     # or the return of an unactivated gift card sale.
     string item_type?;
     # The name of the line item.
+    @constraint:String {maxLength: 512}
     string name?;
     # The note of the return line item.
+    @constraint:String {maxLength: 2000}
     string note?;
     # The quantity returned, formatted as a decimal number.
     # For example, `"3"`.
     # 
     # Line items with a `quantity_unit` can have non-integer quantities.
     # For example, `"1.70000"`.
+    @constraint:String {maxLength: 12, minLength: 1}
     string quantity;
     # Contains the measurement unit for a quantity and a precision that
     # specifies the number of digits after the decimal point for decimal quantities.
@@ -1402,6 +1522,7 @@ public type OrderReturnLineItem record {
     # The [CatalogModifier](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogModifier)s applied to this line item.
     OrderReturnLineItemModifier[] return_modifiers?;
     # The `uid` of the line item in the original sale order.
+    @constraint:String {maxLength: 60}
     string source_line_item_uid?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -1425,8 +1546,10 @@ public type OrderReturnLineItem record {
     # for more information.
     Money total_tax_money?;
     # A unique ID for this return line-item entry.
+    @constraint:String {maxLength: 60}
     string uid?;
     # The name of the variation applied to this return line item.
+    @constraint:String {maxLength: 255}
     string variation_name?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -1439,6 +1562,7 @@ public type OrderReturnLineItem record {
 
 # V1PaymentModifier
 public type V1PaymentModifier record {
+    # 
     V1Money applied_money?;
     # The ID of the applied modifier option, if available. Modifier options applied in older versions of Square Register might not have an ID.
     string modifier_option_id?;
@@ -1455,6 +1579,7 @@ public type CatalogItemModifierListInfo record {
     # If 0 or larger, the smallest number of `CatalogModifier`s that must be selected from this `CatalogModifierList`.
     int min_selected_modifiers?;
     # The ID of the `CatalogModifierList` controlled by this `CatalogModifierListInfo`.
+    @constraint:String {minLength: 1}
     string modifier_list_id;
     # A set of `CatalogModifierOverride` objects that override whether a given `CatalogModifier` is enabled by default.
     CatalogModifierOverride[] modifier_overrides?;
@@ -1472,6 +1597,7 @@ public type DeleteLoyaltyRewardRequest record {
 # Indicates the method used to enter the card's details.
 public type TenderCardDetailsEntryMethod string;
 
+# 
 public type CancelBookingResponse record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
@@ -1492,6 +1618,7 @@ public type CreateSubscriptionRequest record {
     # create a customer and add a card on file, see [Subscriptions Walkthrough](https://developer.squareup.com/docs/subscriptions-api/walkthrough).
     string card_id?;
     # The ID of the [customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) profile.
+    @constraint:String {minLength: 1}
     string customer_id;
     # A unique string that identifies this `CreateSubscription` request.
     # If you do not provide a unique string (or provide an empty string as the value),
@@ -1500,11 +1627,13 @@ public type CreateSubscriptionRequest record {
     # For more information, see [Idempotency keys](https://developer.squareup.com/docs/working-with-apis/idempotency).
     string idempotency_key?;
     # The ID of the location the subscription is associated with.
+    @constraint:String {minLength: 1}
     string location_id;
     # The ID of the subscription plan created using the Catalog API.
     # For more information, see
     # [Set Up and Manage a Subscription Plan](https://developer.squareup.com/docs/subscriptions-api/setup-plan) and 
     # [Subscriptions Walkthrough](https://developer.squareup.com/docs/subscriptions-api/walkthrough).
+    @constraint:String {minLength: 1}
     string plan_id;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -1521,6 +1650,7 @@ public type CreateSubscriptionRequest record {
     # The percentage is expressed in decimal form, using a `'.'` as the decimal
     # separator and without a `'%'` sign. For example, a value of 7.5
     # corresponds to 7.5%.
+    @constraint:String {maxLength: 10}
     string tax_percentage?;
     # The timezone that is used in date calculations for the subscription. If unset, defaults to
     # the location timezone. If a timezone is not configured for the location, defaults to "America/New_York".
@@ -1529,6 +1659,7 @@ public type CreateSubscriptionRequest record {
     string timezone?;
 };
 
+# 
 public type CashDrawerShiftEvent record {
     # The event time in ISO 8601 format.
     string created_at?;
@@ -1600,6 +1731,7 @@ public type CashDrawerShift record {
     string closing_employee_id?;
     # The free-form text description of a cash drawer by an employee.
     string description?;
+    # 
     CashDrawerDevice device?;
     # The IDs of all employees that were logged into Square Point of Sale at any
     # point while the cash drawer shift was open.
@@ -1636,6 +1768,7 @@ public type CashDrawerShift record {
 # will be excluded if the pricing rule uses an exclude set.
 public type ExcludeStrategy string;
 
+# 
 public type ListCatalogRequest record {
     # The specific version of the catalog objects to be included in the response. 
     # This allows you to retrieve historical
@@ -1656,7 +1789,9 @@ public type ListCatalogRequest record {
     string types?;
 };
 
+# 
 public type OrderCreatedObject record {
+    # 
     OrderCreated order_created?;
 };
 
@@ -1693,12 +1828,14 @@ public type OrderLineItemPricingBlocklists record {
     OrderLineItemPricingBlocklistsBlockedTax[] blocked_taxes?;
 };
 
+# 
 public type V1TenderType string;
 
 # A request to get a `Shift` by ID.
 public type GetShiftRequest record {
 };
 
+# 
 public type InventoryAdjustmentGroup record {
     # Representative `from_state` for adjustments within the group. For example, for a group adjustment from `IN_STOCK` to `SOLD`,
     # there can be two component adjustments in the group: one from `IN_STOCK`to `COMPOSED` and the other one from `COMPOSED` to `SOLD`.
@@ -1706,8 +1843,10 @@ public type InventoryAdjustmentGroup record {
     string from_state?;
     # A unique ID generated by Square for the
     # `InventoryAdjustmentGroup`.
+    @constraint:String {maxLength: 100}
     string id?;
     # The inventory adjustment of the composed variation.
+    @constraint:String {maxLength: 100}
     string root_adjustment_id?;
     # Representative `to_state` for adjustments within group. For example, for a group adjustment from `IN_STOCK` to `SOLD`,
     # the two component adjustments in the group can be from `IN_STOCK` to `COMPOSED` and from `COMPOSED` to `SOLD`. 
@@ -1740,6 +1879,7 @@ public type UpdateInvoiceRequest record {
     # treats each request as independent.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 128}
     string idempotency_key?;
     # Stores information about an invoice. You use the Invoices API to create and manage
     # invoices. For more information, see [Manage Invoices Using the Invoices API](https://developer.squareup.com/docs/invoices-api/overview).
@@ -1753,6 +1893,7 @@ public type OrderLineItemItemType string;
 # creating application.
 public type CatalogCustomAttributeDefinitionAppVisibility string;
 
+# 
 public type RetrieveInventoryChangesRequest record {
     # A pagination cursor returned by a previous call to this endpoint.
     # Provide this to retrieve the next set of results for the original query.
@@ -1766,6 +1907,8 @@ public type RetrieveInventoryChangesRequest record {
 
 # A request to unlink a customer to a gift card
 public type UnlinkCustomerFromGiftCardRequest record {
+    # 
+    @constraint:String {maxLength: 191, minLength: 1}
     string customer_id;
 };
 
@@ -1780,9 +1923,11 @@ public type ListEmployeeWagesRequest record {
     string employee_id?;
     # The maximum number of `EmployeeWage` results to return per page. The number can range between
     # 1 and 200. The default is 200.
+    @constraint:Int {minValue: 1, maxValue: 200}
     int 'limit?;
 };
 
+# 
 public type BatchChangeInventoryRequest record {
     # The set of physical counts and inventory adjustments to be made.
     # Changes are applied based on the client-supplied timestamp and may be sent
@@ -1794,15 +1939,18 @@ public type BatchChangeInventoryRequest record {
     # See [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency) in the
     # [API Development 101](https://developer.squareup.com/docs/basics/api101/overview) section for more
     # information.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # Indicates whether the current physical count should be ignored if
     # the quantity is unchanged since the last physical count. Default: `true`.
     boolean ignore_unchanged_counts?;
 };
 
+# 
 public type CatalogInfoResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
+    # 
     CatalogInfoResponseLimits limits?;
     # Group of standard measurement units.
     StandardUnitDescriptionGroup standard_unit_description_group?;
@@ -1838,6 +1986,7 @@ public type SearchLoyaltyAccountsRequest record {
     # see [Pagination](https://developer.squareup.com/docs/basics/api101/pagination).
     string cursor?;
     # The maximum number of results to include in the response.
+    @constraint:Int {minValue: 1, maxValue: 30}
     int 'limit?;
     # The search criteria for the loyalty accounts.
     SearchLoyaltyAccountsRequestLoyaltyAccountQuery query?;
@@ -1872,16 +2021,20 @@ public type CatalogCustomAttributeDefinition record {
     int custom_attribute_usage_count?;
     # Seller-oriented description of the meaning of this Custom Attribute,
     # any constraints that the seller should observe, etc. May be displayed as a tooltip in Square UIs.
+    @constraint:String {maxLength: 255}
     string description?;
     # The name of the desired custom attribute key that can be used to access
     # the custom attribute value on catalog objects. Cannot be modified after the
     # custom attribute definition has been created.
     # Must be between 1 and 60 characters, and may only contain the characters `[a-zA-Z0-9_-]`.
+    @constraint:String {maxLength: 60, minLength: 1}
     string 'key?;
     #  The name of this definition for API and seller-facing UI purposes.
     # The name must be unique within the (merchant, application) pair. Required.
     # May not be empty and may not exceed 255 characters. Can be modified after creation.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name;
+    # 
     CatalogCustomAttributeDefinitionNumberConfig number_config?;
     # Configuration associated with `SELECTION`-type custom attribute definitions.
     CatalogCustomAttributeDefinitionSelectionConfig selection_config?;
@@ -1909,6 +2062,7 @@ public type V1PaymentItemDetail record {
     string sku?;
 };
 
+# 
 public type BatchRetrieveCatalogObjectsRequest record {
     # The specific version of the catalog objects to be included in the response. 
     # This allows you to retrieve historical versions of objects. The specified version value is matched against
@@ -2030,12 +2184,15 @@ public type CatalogTimePeriod record {
     string event?;
 };
 
+# 
 public type RetrieveBusinessBookingProfileResponse record {
+    # 
     BusinessBookingProfile business_booking_profile?;
     # Any errors that occurred during the request.
     Error[] errors?;
 };
 
+# 
 public type OrderUpdated record {
     # The timestamp for when the order was created, in RFC 3339 format.
     string created_at?;
@@ -2074,11 +2231,14 @@ public type OrderLineItemAppliedDiscount record {
     # 
     # This field is immutable. To change which discounts apply to a line item,
     # you must delete the discount and re-add it as a new `OrderLineItemAppliedDiscount`.
+    @constraint:String {maxLength: 60, minLength: 1}
     string discount_uid;
     # A unique ID that identifies the applied discount only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
+# 
 public type RetrieveTransactionRequest record {
 };
 
@@ -2130,6 +2290,7 @@ public type OrderLineItem record {
     # for more information.
     Money base_price_money?;
     # The [CatalogItemVariation](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItemVariation) ID applied to this line item.
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this line item references.
     int catalog_version?;
@@ -2165,8 +2326,10 @@ public type OrderLineItem record {
     # The [CatalogModifier](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogModifier)s applied to this line item.
     OrderLineItemModifier[] modifiers?;
     # The name of the line item.
+    @constraint:String {maxLength: 512}
     string name?;
     # The note of the line item.
+    @constraint:String {maxLength: 2000}
     string note?;
     # Describes pricing adjustments that are blocked from manual and 
     # automatic application to a line item. For more information, see 
@@ -2180,6 +2343,7 @@ public type OrderLineItem record {
     # 
     # Line items with a `quantity_unit` can have non-integer quantities.
     # For example, `"1.70000"`.
+    @constraint:String {maxLength: 12, minLength: 1}
     string quantity;
     # Contains the measurement unit for a quantity and a precision that
     # specifies the number of digits after the decimal point for decimal quantities.
@@ -2206,8 +2370,10 @@ public type OrderLineItem record {
     # for more information.
     Money total_tax_money?;
     # A unique ID that identifies the line item only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
     # The name of the variation applied to this line item.
+    @constraint:String {maxLength: 255}
     string variation_name?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -2218,6 +2384,7 @@ public type OrderLineItem record {
     Money variation_total_price_money?;
 };
 
+# 
 public type MeasurementUnitGeneric string;
 
 # A request to retrieve a loyalty reward.
@@ -2231,10 +2398,12 @@ public type RetrieveLoyaltyRewardRequest record {
 # [Invoices Plus subscription](https://developer.squareup.com/docs/invoices-api/overview#invoices-plus-subscription).
 public type InvoiceCustomField record {
     # The label or title of the custom field. This field is required for a custom field.
+    @constraint:String {maxLength: 30}
     string label?;
     # The location of the custom field on the invoice. This field is required for a custom field.
     string placement?;
     # The text of the custom field. If omitted, only the label is rendered.
+    @constraint:String {maxLength: 2000}
     string value?;
 };
 
@@ -2245,33 +2414,42 @@ public type InvoiceCustomField record {
 public type InventoryPhysicalCount record {
     # The Square-generated ID of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked.
+    @constraint:String {maxLength: 100}
     string catalog_object_id?;
     # The [type](https://developer.squareup.com/reference/square_2021-08-18/enums/CatalogObjectType) of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked. Tracking is only
     # supported for the `ITEM_VARIATION` type.
+    @constraint:String {maxLength: 14}
     string catalog_object_type?;
     # An RFC 3339-formatted timestamp that indicates when the physical count is received.
+    @constraint:String {maxLength: 34}
     string created_at?;
     # The Square-generated ID of the [Employee](https://developer.squareup.com/reference/square_2021-08-18/objects/Employee) responsible for the
     # physical count.
+    @constraint:String {maxLength: 100}
     string employee_id?;
     # A unique Square-generated ID for the
     # [InventoryPhysicalCount](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryPhysicalCount).
+    @constraint:String {maxLength: 100}
     string id?;
     # The Square-generated ID of the [Location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the related
     # quantity of items is being tracked.
+    @constraint:String {maxLength: 100}
     string location_id?;
     # A client-generated RFC 3339-formatted timestamp that indicates when
     # the physical count was examined. For physical count updates, the `occurred_at`
     # timestamp cannot be older than 24 hours or in the future relative to the
     # time of the request.
+    @constraint:String {maxLength: 34}
     string occurred_at?;
     # The number of items affected by the physical count as a decimal string.
     # The number can support up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 26}
     string quantity?;
     # An optional ID provided by the application to tie the
     # [InventoryPhysicalCount](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryPhysicalCount) to an external
     # system.
+    @constraint:String {maxLength: 255}
     string reference_id?;
     # Provides information about the application used to generate a change.
     SourceApplication 'source?;
@@ -2289,17 +2467,20 @@ public type CatalogStockConversion record {
     # define the conversion ratio between stockable item variation and the non-stockable item variation.
     # It accepts a decimal number in a string format that can take up to 10 digits before the decimal point
     # and up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 16, minLength: 1}
     string nonstockable_quantity;
     # References to the stockable [CatalogItemVariation](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItemVariation)
     # for this stock conversion. Selling, receiving or recounting the non-stockable `CatalogItemVariation` 
     # defined with a stock conversion results in adjustments of this stockable `CatalogItemVariation`.
     # This immutable field must reference a stockable `CatalogItemVariation`
     # that shares the parent [CatalogItem](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItem) of the converted `CatalogItemVariation.`
+    @constraint:String {minLength: 1}
     string stockable_item_variation_id;
     # The quantity of the stockable item variation (as identified by `stockable_item_variation_id`) 
     # equivalent to the non-stockable item variation quantity (as specified in `nonstockable_quantity`) 
     # as defined by this stock conversion.  It accepts a decimal number in a string format that can take
     # up to 10 digits before the decimal point and up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 16, minLength: 1}
     string stockable_quantity;
 };
 
@@ -2319,9 +2500,11 @@ public type SearchSubscriptionsQuery record {
 # A request to retrieve gift cards by using nonces.
 public type RetrieveGiftCardFromNonceRequest record {
     # The nonce of the gift card to retrieve.
+    @constraint:String {minLength: 1}
     string nonce;
 };
 
+# 
 public type V1RefundType string;
 
 # A response that includes loyalty accounts that satisfy the search criteria.
@@ -2338,13 +2521,16 @@ public type SearchLoyaltyAccountsResponse record {
     LoyaltyAccount[] loyalty_accounts?;
 };
 
+# 
 public type SearchTerminalCheckoutsRequest record {
     # A pagination cursor returned by a previous call to this endpoint.
     # Provide this cursor to retrieve the next set of results for the original query.
     # See [Pagination](https://developer.squareup.com/docs/basics/api101/pagination) for more information.
     string cursor?;
     # Limits the number of results returned for a single request.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
+    # 
     TerminalCheckoutQuery query?;
 };
 
@@ -2356,6 +2542,7 @@ public type ShiftSort record {
     string 'order?;
 };
 
+# 
 public type DisputeEvidenceCreatedWebhookObject record {
     # Represents a dispute a cardholder initiated with their bank.
     Dispute 'object?;
@@ -2404,6 +2591,7 @@ public type Availability record {
     string start_at?;
 };
 
+# 
 public type RetrieveInventoryAdjustmentRequest record {
 };
 
@@ -2480,20 +2668,26 @@ public type Transaction record {
     # 
     # It is not currently possible with the Connect API to perform a transaction
     # lookup by this value.
+    @constraint:String {maxLength: 192}
     string client_id?;
     # The timestamp for when the transaction was created, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string created_at?;
     # The transaction's unique ID, issued by Square payments servers.
+    @constraint:String {maxLength: 192}
     string id?;
     # The ID of the transaction's associated location.
+    @constraint:String {maxLength: 50}
     string location_id?;
     # The order_id is an identifier for the order associated with this transaction, if any.
+    @constraint:String {maxLength: 192}
     string order_id?;
     # The Square product that processed the transaction.
     string product?;
     # If the transaction was created with the [Charge](https://developer.squareup.com/reference/square_2021-08-18/transactions-api/charge)
     # endpoint, this value is the same as the value provided for the `reference_id`
     # parameter in the request to that endpoint. Otherwise, it is not set.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # Refunds that have been applied to any tender in the transaction.
     Refund[] refunds?;
@@ -2537,21 +2731,27 @@ public type LoyaltyProgramAccrualRuleType string;
 public type BankAccountPaymentDetails record {
     # The ownership type of the bank account performing the transfer.
     # The type can be `INDIVIDUAL`, `COMPANY`, or `UNKNOWN`.
+    @constraint:String {maxLength: 50}
     string account_ownership_type?;
     # ACH-specific details about `BANK_ACCOUNT` type payments with the `transfer_type` of `ACH`.
     ACHDetails ach_details?;
     # The name of the bank associated with the bank account.
+    @constraint:String {maxLength: 100}
     string bank_name?;
     # The two-letter ISO code representing the country the bank account is located in.
+    @constraint:String {maxLength: 2, minLength: 2}
     string country?;
     # Information about errors encountered during the request.
     Error[] errors?;
     # Uniquely identifies the bank account for this seller and can be used
     # to determine if payments are from the same bank account.
+    @constraint:String {maxLength: 255}
     string fingerprint?;
     # The statement description as sent to the bank.
+    @constraint:String {maxLength: 1000}
     string statement_description?;
     # The type of the bank transfer. The type can be `ACH` or `UNKNOWN`.
+    @constraint:String {maxLength: 50}
     string transfer_type?;
 };
 
@@ -2576,6 +2776,7 @@ public type LoyaltyProgramStatus string;
 # A category to which a `CatalogItem` instance belongs.
 public type CatalogCategory record {
     # The category name. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
 };
 
@@ -2595,6 +2796,7 @@ public type CustomerSort record {
     string 'order?;
 };
 
+# 
 public type TipSettings record {
     # Indicates whether tipping is enabled for this checkout. Defaults to false.
     boolean allow_tipping?;
@@ -2631,6 +2833,7 @@ public type CatalogItemOptionValueForItemVariation record {
     string item_option_value_id?;
 };
 
+# 
 public type V1RetrievePaymentRequest record {
 };
 
@@ -2659,6 +2862,7 @@ public type CardType string;
 public type CreateLoyaltyAccountRequest record {
     # A unique string that identifies this `CreateLoyaltyAccount` request. 
     # Keys can be any valid string, but must be unique for every request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # Describes a loyalty account. For more information, see
     # [Manage Loyalty Accounts Using the Loyalty API](https://developer.squareup.com/docs/loyalty-api/overview).
@@ -2683,7 +2887,9 @@ public type ListGiftCardActivitiesResponse record {
     GiftCardActivity[] gift_card_activities?;
 };
 
+# 
 public type V1ListEmployeeRolesResponse record {
+    # 
     V1EmployeeRole[] items?;
 };
 
@@ -2717,6 +2923,7 @@ public type CreateCheckoutRequest record {
     # you are working in to generate strings for your idempotency keys.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 192, minLength: 1}
     string idempotency_key;
     # The email address to display on the Square Checkout confirmation page
     # and confirmation email that the buyer can use to contact the seller.
@@ -2725,16 +2932,20 @@ public type CreateCheckoutRequest record {
     # primary email address associated with the seller's Square account.
     # 
     # Default: none; only exists if explicitly set.
+    @constraint:String {maxLength: 254}
     string merchant_support_email?;
     # An optional note to associate with the `checkout` object.
     # 
     # This value cannot exceed 60 characters.
+    @constraint:String {maxLength: 60}
     string note?;
+    # 
     CreateOrderRequest 'order;
     # If provided, the buyer's email is prepopulated on the checkout page
     # as an editable text field.
     # 
     # Default: none; only exists if explicitly set.
+    @constraint:String {maxLength: 254}
     string pre_populate_buyer_email?;
     # Represents a postal address in a country. The address format is based 
     # on an [open-source library from Google](https://github.com/google/libaddressinput). For more information, 
@@ -2778,6 +2989,7 @@ public type CreateCheckoutRequest record {
     # finalize the order through your existing/normal confirmation workflow.
     # 
     # Default: none; only exists if explicitly set.
+    @constraint:String {maxLength: 800}
     string redirect_url?;
 };
 
@@ -2794,6 +3006,7 @@ public type InvoiceSortField string;
 # The order (e.g., chronological or alphabetical) in which results from a request are returned.
 public type SortOrder string;
 
+# 
 public type V1ListOrdersRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -2851,6 +3064,7 @@ public type TeamMember record {
     string updated_at?;
 };
 
+# 
 public type CaptureTransactionRequest record {
 };
 
@@ -2866,6 +3080,7 @@ public type CatalogTax record {
     # Whether the tax is `ADDITIVE` or `INCLUSIVE`.
     string inclusion_type?;
     # The tax's name. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the tax in decimal form, using a `'.'` as the decimal separator and without a `'%'` sign.
     # A value of `7.5` corresponds to 7.5%.
@@ -2899,6 +3114,7 @@ public type ListBankAccountsRequest record {
 public type ExternalPaymentDetails record {
     # A description of the external payment source. For example, 
     # "Food Delivery Service".
+    @constraint:String {maxLength: 255}
     string 'source;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -2908,6 +3124,7 @@ public type ExternalPaymentDetails record {
     # for more information.
     Money source_fee_money?;
     # An ID to associate the payment to its originating source.
+    @constraint:String {maxLength: 255}
     string source_id?;
     # The type of external payment the seller received. It can be one of the following:
     # - CHECK - Paid using a physical check.
@@ -2922,6 +3139,7 @@ public type ExternalPaymentDetails record {
     # - STORED_BALANCE - Use for house accounts, store credit, and so forth.
     # - FOOD_VOUCHER - Restaurant voucher provided by employers to employees to pay for meals
     # - OTHER - A type not listed here.
+    @constraint:String {maxLength: 50}
     string 'type;
 };
 
@@ -2935,6 +3153,7 @@ public type WorkweekConfig record {
     # The local time at which a business week ends. Represented as a
     # string in `HH:MM` format (`HH:MM:SS` is also accepted, but seconds are
     # truncated).
+    @constraint:String {minLength: 1}
     string start_of_day_local_time;
     # The day of the week on which a business week ends for
     # compensation purposes.
@@ -2948,6 +3167,7 @@ public type WorkweekConfig record {
     int 'version?;
 };
 
+# 
 public type CancelTerminalRefundRequest record {
 };
 
@@ -2977,12 +3197,15 @@ public type BatchRetrieveOrdersResponse record {
 # Defines an appointment segment of a booking.
 public type AppointmentSegment record {
     # The time span in minutes of an appointment segment.
+    @constraint:Int {maxValue: 1500}
     int duration_minutes;
     # The ID of the [CatalogItemVariation](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItemVariation) object representing the service booked in this segment.
+    @constraint:String {minLength: 1}
     string service_variation_id;
     # The current version of the item variation representing the service booked in this segment.
     int service_variation_version;
     # The ID of the [TeamMember](https://developer.squareup.com/reference/square_2021-08-18/objects/TeamMember) object representing the team member booked in this segment.
+    @constraint:String {minLength: 1}
     string team_member_id;
 };
 
@@ -3051,6 +3274,7 @@ public type CatalogObject record {
     # 
     # When the server receives the new object, it will supply a unique identifier that
     # replaces the temporary identifier for all future references.
+    @constraint:String {minLength: 1}
     string id;
     # An image file to use in Square catalogs. It can be associated with catalog
     # items, item variations, and categories.
@@ -3123,6 +3347,7 @@ public type CatalogObject record {
 # to [ISO 4217](https://wikipedia.org/wiki/ISO_4217).
 public type Currency string;
 
+# 
 public type SearchCatalogObjectsResponse record {
     # The pagination cursor to be used in a subsequent request. If unset, this is the final response.
     # See [Pagination](https://developer.squareup.com/docs/basics/api101/pagination) for more information.
@@ -3138,6 +3363,7 @@ public type SearchCatalogObjectsResponse record {
     CatalogObject[] related_objects?;
 };
 
+# 
 public type CatalogInfoResponseLimits record {
     # The maximum number of object IDs that may be included in a single
     # `/v2/catalog/batch-delete` request.
@@ -3174,6 +3400,7 @@ public type CatalogInfoResponseLimits record {
     int update_item_taxes_max_taxes_to_enable?;
 };
 
+# 
 public type RetrieveCatalogObjectResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -3213,7 +3440,9 @@ public type SearchLoyaltyRewardsRequestLoyaltyRewardQuery record {
     string status?;
 };
 
+# 
 public type CreateDeviceCodeResponse record {
+    # 
     DeviceCode device_code?;
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -3225,6 +3454,7 @@ public type CreateDeviceCodeResponse record {
 # [Read more about how order totals are calculated.](https://developer.squareup.com/docs/orders-api/how-it-works#how-totals-are-calculated)
 public type OrderServiceChargeCalculationPhase string;
 
+# 
 public type ProductType string;
 
 # Represents a period of time during which a business location is open.
@@ -3251,13 +3481,16 @@ public type GiftCardActivityUnblock record {
 # Indicates whether a CatalogModifierList supports multiple selections.
 public type CatalogModifierListSelectionType string;
 
+# 
 public type ListCashDrawerShiftEventsRequest record {
     # Opaque cursor for fetching the next page of results.
     string cursor?;
     # Number of resources to be returned in a page of results (200 by
     # default, 1000 max).
+    @constraint:Int {maxValue: 1000}
     int 'limit?;
     # The ID of the location to list cash drawer shifts for.
+    @constraint:String {minLength: 1}
     string location_id;
 };
 
@@ -3270,6 +3503,7 @@ public type RetrieveCustomerGroupRequest record {
 public type UpdateLocationResponse record {
     # Information on errors encountered during the request.
     Error[] errors?;
+    # 
     Location location?;
 };
 
@@ -3286,10 +3520,13 @@ public type Refund record {
     # for more information.
     Money amount_money;
     # The timestamp for when the refund was created, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string created_at?;
     # The refund's unique ID.
+    @constraint:String {maxLength: 255}
     string id;
     # The ID of the refund's associated location.
+    @constraint:String {maxLength: 50}
     string location_id;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -3299,19 +3536,24 @@ public type Refund record {
     # for more information.
     Money processing_fee_money?;
     # The reason for the refund being issued.
+    @constraint:String {maxLength: 192}
     string reason;
     # The current status of the refund (`PENDING`, `APPROVED`, `REJECTED`,
     # or `FAILED`).
     string status;
     # The ID of the refunded tender.
+    @constraint:String {maxLength: 192}
     string tender_id;
     # The ID of the transaction that the refunded tender is part of.
+    @constraint:String {maxLength: 192}
     string transaction_id;
 };
 
+# 
 public type CreateTerminalRefundResponse record {
     # Information about errors encountered during the request.
     Error[] errors?;
+    # 
     TerminalRefund refund?;
 };
 
@@ -3324,6 +3566,7 @@ public type UpdateWageSettingResponse record {
     WageSetting wage_setting?;
 };
 
+# 
 public type RetrieveInventoryTransferResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -3341,9 +3584,11 @@ public type ListGiftCardsRequest record {
     # For more information, see [Pagination](https://developer.squareup.com/docs/docs/working-with-apis/pagination).
     string cursor?;
     # If a value is provided, returns only the gift cards linked to the specified customer
+    @constraint:String {maxLength: 191}
     string customer_id?;
     # If a value is provided, it returns only that number of results per page.
     # The maximum number of results allowed per page is 50. The default value is 30.
+    @constraint:Int {minValue: 1, maxValue: 50}
     int 'limit?;
     # If the state is provided, it returns the gift cards in the specified state 
     # (see [GiftCardStatus](https://developer.squareup.com/reference/square_2021-08-18/enums/GiftCardStatus)).
@@ -3361,6 +3606,7 @@ public type UpdateTeamMemberRequest record {
     TeamMember team_member?;
 };
 
+# 
 public type RetrieveBookingRequest record {
 };
 
@@ -3384,6 +3630,7 @@ public type SearchOrdersSourceFilter record {
     string[] source_names?;
 };
 
+# 
 public type SearchAvailabilityResponse record {
     # List of slots available for booking.
     Availability[] availabilities?;
@@ -3395,10 +3642,12 @@ public type SearchAvailabilityResponse record {
 public type DeprecatedCreateDisputeEvidenceFileRequest record {
     # The MIME type of the uploaded file.
     # The type can be image/heic, image/heif, image/jpeg, application/pdf, image/png, or image/tiff.
+    @constraint:String {maxLength: 40, minLength: 1}
     string content_type?;
     # The type of evidence you are uploading.
     string evidence_type?;
     # The Unique ID. For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
 };
 
@@ -3422,6 +3671,7 @@ public type RemoveGroupFromCustomerResponse record {
     Error[] errors?;
 };
 
+# 
 public type TerminalRefundQueryFilter record {
     # Represents a generic time range. The start and end values are
     # represented in RFC 3339 format. Time ranges are customized to be
@@ -3442,6 +3692,7 @@ public type SearchShiftsRequest record {
     # An opaque cursor for fetching the next page.
     string cursor?;
     # The number of resources in a page (200 by default).
+    @constraint:Int {minValue: 1, maxValue: 200}
     int 'limit?;
     # The parameters of a `Shift` search query, which includes filter and sort options.
     ShiftQuery query?;
@@ -3465,6 +3716,7 @@ public type CreateOrderResponse record {
 
 # V1PaymentDiscount
 public type V1PaymentDiscount record {
+    # 
     V1Money applied_money?;
     # The ID of the applied discount, if available. Discounts applied in older versions of Square Register might not have an ID.
     string discount_id?;
@@ -3508,13 +3760,16 @@ public type UpdatePaymentRequest record {
     # The maximum is 45 characters.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency).
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
     # Represents a payment processed by the Square API.
     Payment payment?;
 };
 
+# 
 public type RenewTokenRequest record {
     # The token you want to renew.
+    @constraint:String {maxLength: 1024, minLength: 2}
     string access_token?;
 };
 
@@ -3540,15 +3795,18 @@ public type OrderReturnDiscount record {
     # for more information.
     Money applied_money?;
     # The catalog object ID referencing [CatalogDiscount](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogDiscount).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this discount references.
     int catalog_version?;
     # The discount's name.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the tax, as a string representation of a decimal number.
     # A value of `"7.25"` corresponds to a percentage of 7.25%.
     # 
     # `percentage` is not set for amount-based discounts.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # Indicates the level at which the `OrderReturnDiscount` applies. For `ORDER` scoped
     # discounts, the server generates references in `applied_discounts` on all
@@ -3556,6 +3814,7 @@ public type OrderReturnDiscount record {
     # `OrderReturnLineItem`s with references in their `applied_discounts` field.
     string scope?;
     # The discount `uid` from the order that contains the original application of this discount.
+    @constraint:String {maxLength: 60}
     string source_discount_uid?;
     # The type of the discount. If it is created by the API, it is `FIXED_PERCENTAGE` or `FIXED_AMOUNT`.
     # 
@@ -3563,6 +3822,7 @@ public type OrderReturnDiscount record {
     # `FIXED_PERCENTAGE` or `FIXED_AMOUNT`.
     string 'type?;
     # A unique ID that identifies the returned discount only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -3576,32 +3836,41 @@ public type Dispute record {
     # for more information.
     Money amount_money?;
     # The ID of the dispute in the card brand system, generated by the card brand.
+    @constraint:String {maxLength: 40, minLength: 1}
     string brand_dispute_id?;
     # The card brand used in the disputed payment.
     string card_brand?;
     # The timestamp when the dispute was created, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string created_at?;
     # The unique ID for this `Dispute`, generated by Square.
+    @constraint:String {maxLength: 40, minLength: 1}
     string dispute_id?;
     # The payment the cardholder disputed.
     DisputedPayment disputed_payment?;
     # The time when the next action is due, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string due_at?;
     # The IDs of the evidence associated with the dispute.
-    string[] evidence_ids?;
+    DisputeEvidenceidsItemsString[] evidence_ids?;
     # The unique ID for this `Dispute`, generated by Square.
+    @constraint:String {maxLength: 40, minLength: 1}
     string id?;
     # The ID of the location where the dispute originated.
+    @constraint:String {maxLength: 40, minLength: 1}
     string location_id?;
     # The dispute reason why the cardholder initiated the dispute with their bank.
     string reason?;
     # The timestamp when the dispute was reported, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string reported_at?;
     # The timestamp when the dispute was reported, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string reported_date?;
     # The current state of this dispute.
     string state?;
     # The timestamp when the dispute was last updated, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string updated_at?;
     # The current version of the `Dispute`.
     int 'version?;
@@ -3611,6 +3880,7 @@ public type Dispute record {
 # __CreateMobileAuthorizationCode__ endpoint.
 public type CreateMobileAuthorizationCodeRequest record {
     # The Square location ID the authorization code should be tied to.
+    @constraint:String {maxLength: 191, minLength: 1}
     string location_id?;
 };
 
@@ -3619,6 +3889,7 @@ public type RetrieveGiftCardFromGANRequest record {
     # The gift card account number (GAN) of the gift card to retrieve.
     # The maximum length of a GAN is 255 digits to account for third-party GANs that have been imported.
     # Square-issued gift cards have 16-digit GANs.
+    @constraint:String {maxLength: 255, minLength: 1}
     string gan;
 };
 
@@ -3652,6 +3923,7 @@ public type V1Settlement record {
     string initiated_at?;
     # The settlement's current status.
     string status?;
+    # 
     V1Money total_money?;
 };
 
@@ -3667,6 +3939,7 @@ public type GetPaymentRefundResponse record {
     PaymentRefund refund?;
 };
 
+# 
 public type BatchRetrieveCatalogObjectsResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -3689,6 +3962,7 @@ public type SearchSubscriptionsRequest record {
     # in the response.
     # 
     # Default: `200`
+    @constraint:Int {minValue: 1}
     int 'limit?;
     # Represents a query (including filtering criteria) used to search for subscriptions.
     SearchSubscriptionsQuery query?;
@@ -3700,6 +3974,7 @@ public type V1Refund record {
     string created_at?;
     # Indicates whether or not the refund is associated with an exchange. If is_exchange is true, the refund reflects the value of goods returned in the exchange not the total money refunded.
     boolean is_exchange?;
+    # 
     string merchant_id?;
     # A Square-issued ID associated with the refund. For single-tender refunds, payment_id is the ID of the original payment ID. For split-tender refunds, payment_id is the ID of the original tender. For exchange-based refunds (is_exchange == true), payment_id is the ID of the original payment ID even if the payment includes other tenders.
     string payment_id?;
@@ -3709,17 +3984,25 @@ public type V1Refund record {
     string reason?;
     # All of the additive taxes associated with the refund.
     V1PaymentTax[] refunded_additive_tax?;
+    # 
     V1Money refunded_additive_tax_money?;
+    # 
     V1Money refunded_discount_money?;
     # All of the inclusive taxes associated with the refund.
     V1PaymentTax[] refunded_inclusive_tax?;
+    # 
     V1Money refunded_inclusive_tax_money?;
+    # 
     V1Money refunded_money?;
+    # 
     V1Money refunded_processing_fee_money?;
+    # 
     V1Money refunded_surcharge_money?;
     # A list of all surcharges associated with the refund.
     V1PaymentSurcharge[] refunded_surcharges?;
+    # 
     V1Money refunded_tax_money?;
+    # 
     V1Money refunded_tip_money?;
     # The type of refund
     string 'type?;
@@ -3746,13 +4029,16 @@ public type OrderReturnTax record {
     # for more information.
     Money applied_money?;
     # The catalog object ID referencing [CatalogTax](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogTax).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this tax references.
     int catalog_version?;
     # The tax's name.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the tax, as a string representation of a decimal number.
     # For example, a value of `"7.25"` corresponds to a percentage of 7.25%.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # Indicates the level at which the `OrderReturnTax` applies. For `ORDER` scoped
     # taxes, Square generates references in `applied_taxes` on all
@@ -3760,10 +4046,12 @@ public type OrderReturnTax record {
     # `OrderReturnLineItem`s with references in their `applied_discounts` field.
     string scope?;
     # The tax `uid` from the order that contains the original tax charge.
+    @constraint:String {maxLength: 60}
     string source_tax_uid?;
     # Indicates the calculation method used to apply the tax.
     string 'type?;
     # A unique ID that identifies the returned tax only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -3785,26 +4073,34 @@ public type PaymentRefund record {
     # for more information.
     Money app_fee_money?;
     # The timestamp of when the refund was created, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string created_at?;
     # The unique ID for this refund, generated by Square.
+    @constraint:String {maxLength: 255, minLength: 1}
     string id;
     # The location ID associated with the payment this refund is attached to.
+    @constraint:String {maxLength: 50}
     string location_id?;
     # The ID of the order associated with the refund.
+    @constraint:String {maxLength: 192}
     string order_id?;
     # The ID of the payment associated with this refund.
+    @constraint:String {maxLength: 192}
     string payment_id?;
     # Processing fees and fee adjustments assessed by Square for this refund.
     ProcessingFee[] processing_fee?;
     # The reason for the refund.
+    @constraint:String {maxLength: 192}
     string reason?;
     # The refund's status:
     # - `PENDING` - Awaiting approval.
     # - `COMPLETED` - Successfully completed.
     # - `REJECTED` - The refund was rejected.
     # - `FAILED` - An error occurred.
+    @constraint:String {maxLength: 50}
     string status?;
     # The timestamp of when the refund was last updated, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string updated_at?;
 };
 
@@ -3822,6 +4118,7 @@ public type CatalogQueryItemsForTax record {
 # Indicates whether this is a line-item or order-level tax.
 public type OrderLineItemTaxScope string;
 
+# 
 public type V1ListSettlementsRequestStatus string;
 
 # Defines the parameters that can be included in the body of
@@ -3889,16 +4186,19 @@ public type ChargeRequest record {
     # 
     # Do not provide a value for this field if you provide a value for
     # `customer_card_id`.
+    @constraint:String {maxLength: 192}
     string card_nonce?;
     # The ID of the customer card on file to charge. Do
     # not provide a value for this field if you provide a value for `card_nonce`.
     # 
     # If you provide this value, you _must_ also provide a value for
     # `customer_id`.
+    @constraint:String {maxLength: 192}
     string customer_card_id?;
     # The ID of the customer to associate this transaction with. This field
     # is required if you provide a value for `customer_card_id`, and optional
     # otherwise.
+    @constraint:String {maxLength: 50}
     string customer_id?;
     # If `true`, the request will only perform an Auth on the provided
     # card. You can then later perform either a Capture (with the
@@ -3915,21 +4215,25 @@ public type ChargeRequest record {
     # worrying about double-charging the buyer.
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/working-with-apis/idempotency) for more information.
+    @constraint:String {maxLength: 192, minLength: 1}
     string idempotency_key;
     # An optional note to associate with the transaction.
     # 
     # This value cannot exceed 60 characters.
+    @constraint:String {maxLength: 60}
     string note?;
     # The ID of the order to associate with this transaction.
     # 
     # If you provide this value, the `amount_money` value of your request must
     # __exactly match__ the value of the order's `total_money` field.
+    @constraint:String {maxLength: 192}
     string order_id?;
     # An optional ID you can associate with the transaction for your own
     # purposes (such as to associate the transaction with an entity ID in your
     # own database).
     # 
     # This value cannot exceed 40 characters.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # Represents a postal address in a country. The address format is based 
     # on an [open-source library from Google](https://github.com/google/libaddressinput). For more information, 
@@ -3978,6 +4282,7 @@ public type RetrieveCardResponse record {
     Error[] errors?;
 };
 
+# 
 public type CatalogCustomAttributeDefinitionNumberConfig record {
     # An integer between 0 and 5 that represents the maximum number of
     # positions allowed after the decimal in number custom attribute values
@@ -3988,12 +4293,15 @@ public type CatalogCustomAttributeDefinitionNumberConfig record {
     # - if the precision is 2, the quantity can be 0.01, 0.12, etc.
     # 
     # Default: 5
+    @constraint:Int {maxValue: 5}
     int precision?;
 };
 
 # V1PaymentSurcharge
 public type V1PaymentSurcharge record {
+    # 
     V1Money amount_money?;
+    # 
     V1Money applied_money?;
     # The name of the surcharge.
     string name?;
@@ -4009,6 +4317,7 @@ public type V1PaymentSurcharge record {
     string 'type?;
 };
 
+# 
 public type TerminalRefund record {
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -4035,15 +4344,18 @@ public type TerminalRefund record {
     # The Id can be retrieved from /v2/devices api.
     string device_id?;
     # A unique ID for this `TerminalRefund`.
+    @constraint:String {maxLength: 255, minLength: 10}
     string id?;
     # The location of the device where the `TerminalRefund` was directed.
     string location_id?;
     # The reference to the Square order ID for the payment identified by the `payment_id`.
     string order_id?;
     # The unique ID of the payment being refunded.
+    @constraint:String {minLength: 1}
     string payment_id;
     # A description of the reason for the refund.
     # Note: maximum 192 characters
+    @constraint:String {maxLength: 192}
     string reason?;
     # The reference to the payment refund created by completing this `TerminalRefund`.
     string refund_id?;
@@ -4062,6 +4374,7 @@ public type UpdateShiftRequest record {
     Shift shift;
 };
 
+# 
 public type V1ListEmployeesRequestStatus string;
 
 # A request to search for loyalty events.
@@ -4073,6 +4386,7 @@ public type SearchLoyaltyEventsRequest record {
     # The maximum number of results to include in the response. 
     # The last page might contain fewer events. 
     # The default is 30 events.
+    @constraint:Int {minValue: 1, maxValue: 30}
     int 'limit?;
     # Represents a query used to search for loyalty events.
     LoyaltyEventQuery query?;
@@ -4081,6 +4395,7 @@ public type SearchLoyaltyEventsRequest record {
 # Enumerates the possible status of a `Shift`.
 public type ShiftStatus string;
 
+# 
 public type V1SettlementStatus string;
 
 # A collection of various money amounts.
@@ -4162,6 +4477,7 @@ public type CashDrawerShiftSummary record {
     string state?;
 };
 
+# 
 public type RetrieveInventoryCountResponse record {
     # The current calculated inventory counts for the requested object and
     # locations.
@@ -4272,13 +4588,15 @@ public type ListSitesResponse record {
 public type CreateMobileAuthorizationCodeResponse record {
     # Generated authorization code that connects a mobile application instance
     # to a Square account.
+    @constraint:String {maxLength: 191}
     string authorization_code?;
     # Represents an error encountered during a request to the Connect API.
     # 
     # See [Handling errors](https://developer.squareup.com/docs/build-basics/handling-errors) for more information.
-    Error _error?;
+    Error 'error?;
     # The timestamp when `authorization_code` expires in
     # [RFC 3339](https://tools.ietf.org/html/rfc3339) format, e.g., "2016-09-04T23:59:33.123Z".
+    @constraint:String {maxLength: 48, minLength: 20}
     string expires_at?;
 };
 
@@ -4290,7 +4608,9 @@ public type DayOfWeek string;
 public type GetBankAccountRequest record {
 };
 
+# 
 public type V1ListRefundsResponse record {
+    # 
     V1Refund[] items?;
 };
 
@@ -4299,18 +4619,22 @@ public type V1ListRefundsResponse record {
 public type BreakType record {
     # A human-readable name for this type of break. The name is displayed to
     # employees in Square products.
+    @constraint:String {minLength: 1}
     string break_name;
     # A read-only timestamp in RFC 3339 format.
     string created_at?;
     # Format: RFC-3339 P[n]Y[n]M[n]DT[n]H[n]M[n]S. The expected length of
     # this break. Precision less than minutes is truncated.
+    @constraint:String {minLength: 1}
     string expected_duration;
     # The UUID for this object.
+    @constraint:String {maxLength: 255}
     string id?;
     # Whether this break counts towards time worked for compensation
     # purposes.
     boolean is_paid;
     # The ID of the business location this type of break applies to.
+    @constraint:String {minLength: 1}
     string location_id;
     # A read-only timestamp in RFC 3339 format.
     string updated_at?;
@@ -4386,6 +4710,7 @@ public type CreatePaymentRequest record {
     # Japanese for an address in Japan, and so on.
     Address billing_address?;
     # The buyer's email address.
+    @constraint:String {maxLength: 255}
     string buyer_email_address?;
     # Stores details about a cash payment. Contains only non-confidential information. For more information, see 
     # [Take Cash Payments](https://developer.squareup.com/docs/payments-api/take-payments/cash-payments).
@@ -4422,6 +4747,7 @@ public type CreatePaymentRequest record {
     # characters are used.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
     # The location ID to associate with the payment. If not specified, the default location is
     # used.
@@ -4429,6 +4755,7 @@ public type CreatePaymentRequest record {
     # An optional note to be entered by the developer when creating a payment.
     # 
     # Limit 500 characters.
+    @constraint:String {maxLength: 500}
     string note?;
     # Associates a previously created order with this payment.
     string order_id?;
@@ -4438,6 +4765,7 @@ public type CreatePaymentRequest record {
     # (for example, you might specify an order ID that is generated by a third-party shopping cart).
     # 
     # Limit 40 characters.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # Represents a postal address in a country. The address format is based 
     # on an [open-source library from Google](https://github.com/google/libaddressinput). For more information, 
@@ -4474,6 +4802,7 @@ public type CreatePaymentRequest record {
     # received outside of Square, specify either "CASH" or "EXTERNAL". 
     # For more information, see 
     # [Take Payments](https://developer.squareup.com/docs/payments-api/take-payments).
+    @constraint:String {minLength: 1}
     string source_id;
     # Optional additional payment information to include on the customer's card statement
     # as part of the statement description. This can be, for example, an invoice number, ticket number,
@@ -4482,6 +4811,7 @@ public type CreatePaymentRequest record {
     # Note that the `statement_description_identifier` might get truncated on the statement description
     # to fit the required information including the Square identifier (SQ *) and name of the
     # seller taking the payment.
+    @constraint:String {maxLength: 20}
     string statement_description_identifier?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -4526,6 +4856,7 @@ public type InventoryChange record {
 # The type of the loyalty event.
 public type LoyaltyEventType string;
 
+# 
 public type DeleteCatalogObjectResponse record {
     # The database [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates)
     # of this deletion in RFC 3339 format, e.g., `2016-09-04T23:59:33.123Z`.
@@ -4539,7 +4870,9 @@ public type DeleteCatalogObjectResponse record {
     Error[] errors?;
 };
 
+# 
 public type CancelTerminalCheckoutResponse record {
+    # 
     TerminalCheckout checkout?;
     # Information about errors encountered during the request.
     Error[] errors?;
@@ -4568,6 +4901,7 @@ public type SearchTeamMembersQuery record {
     SearchTeamMembersFilter filter?;
 };
 
+# 
 public type V1ListSettlementsRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -4600,7 +4934,7 @@ public type GiftCard record {
     # seller at the time of activation.
     string created_at?;
     # The IDs of the customers to whom this gift card is linked.
-    string[] customer_ids?;
+    GiftcardCustomeridsItemsString[] customer_ids?;
     # The gift card account number.
     string gan?;
     GANSource gan_source?;
@@ -4645,6 +4979,7 @@ public type Invoice record {
     InvoiceCustomField[] custom_fields?;
     InvoiceDeliveryMethodinvoicedeliverymethod delivery_method?;
     # The description of the invoice. This is visible to the customer receiving the invoice.
+    @constraint:String {maxLength: 65536, minLength: 1}
     string description?;
     # The Square-assigned ID of the invoice.
     string id?;
@@ -4652,10 +4987,12 @@ public type Invoice record {
     # If not provided when creating an invoice, Square assigns a value.
     # It increments from 1 and padded with zeros making it 7 characters long
     # (for example, 0000001 and 0000002).
+    @constraint:String {maxLength: 191, minLength: 1}
     string invoice_number?;
     # The ID of the location that this invoice is associated with. 
     # 
     # If specified in a `CreateInvoice` request, the value must match the `location_id` of the associated order.
+    @constraint:String {maxLength: 255, minLength: 1}
     string location_id?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -4669,6 +5006,7 @@ public type Invoice record {
     # 
     # To view the line items and other information for the associated order, call the 
     # [RetrieveOrder](https://developer.squareup.com/reference/square_2021-08-18/orders-api/retrieve-order) endpoint using the order ID.
+    @constraint:String {maxLength: 255, minLength: 1}
     string order_id?;
     # The payment schedule for the invoice, represented by one or more payment requests that
     # define payment settings, such as amount due and due date. An invoice supports the following payment request combinations:
@@ -4710,6 +5048,7 @@ public type Invoice record {
     # of 2021-03-10T08:00:00Z).
     string timezone?;
     # The title of the invoice.
+    @constraint:String {maxLength: 255, minLength: 1}
     string title?;
     # The timestamp when the invoice was last updated, in RFC 3339 format.
     string updated_at?;
@@ -4720,12 +5059,14 @@ public type Invoice record {
 # A record of an employee's break during a shift.
 public type Break record {
     # The `BreakType` that this `Break` was templated on.
+    @constraint:String {minLength: 1}
     string break_type_id;
     # RFC 3339; follows the same timezone information as `Shift`. Precision up to
     # the minute is respected; seconds are truncated.
     string end_at?;
     # Format: RFC-3339 P[n]Y[n]M[n]DT[n]H[n]M[n]S. The expected length of
     # the break.
+    @constraint:String {minLength: 1}
     string expected_duration;
     # The UUID for this object.
     string id?;
@@ -4733,9 +5074,11 @@ public type Break record {
     # purposes.
     boolean is_paid;
     # A human-readable name.
+    @constraint:String {minLength: 1}
     string name;
     # RFC 3339; follows the same timezone information as `Shift`. Precision up to
     # the minute is respected; seconds are truncated.
+    @constraint:String {minLength: 1}
     string start_at;
 };
 
@@ -4746,25 +5089,30 @@ public type CreateCustomerGroupRequest record {
     # 
     # Customer groups can be created, be modified, and have their membership defined using 
     # the Customers API or within the Customer Directory in the Square Seller Dashboard or Point of Sale.
-    CustomerGroup 'group;
+    CustomerGroup group;
     # The idempotency key for the request. For more information, see [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency).
     string idempotency_key?;
 };
 
+# 
 public type CheckoutOptionsPaymentType string;
 
+# 
 public type ObtainTokenResponse record {
     # A valid OAuth access token. OAuth access tokens are 64 bytes long.
     # Provide the access token in a header with every request to Connect API
     # endpoints. See [OAuth API: Walkthrough](https://developer.squareup.com/docs/oauth-api/walkthrough)
     # for more information.
+    @constraint:String {maxLength: 1024, minLength: 2}
     string access_token?;
     # The date when access_token expires, in [ISO 8601](http://www.iso.org/iso/home/standards/iso8601.htm) format.
+    @constraint:String {maxLength: 48, minLength: 20}
     string expires_at?;
     # Then OpenID token belonging to this this person. Only present if the
     # OPENID scope is included in the authorize request.
     string id_token?;
     # The ID of the authorizing merchant's business.
+    @constraint:String {maxLength: 191, minLength: 8}
     string merchant_id?;
     # __LEGACY FIELD__. The ID of the subscription plan the merchant signed
     # up for. Only present if the merchant signed up for a subscription during
@@ -4772,6 +5120,7 @@ public type ObtainTokenResponse record {
     string plan_id?;
     # A refresh token. OAuth refresh tokens are 64 bytes long.
     # For more information, see [OAuth access token management](https://developer.squareup.com/docs/oauth-api/how-it-works#oauth-access-token-management).
+    @constraint:String {maxLength: 1024, minLength: 2}
     string refresh_token?;
     # A boolean indicating the access token is a short-lived access token.
     # The short-lived access token returned in the response will expire in 24 hours.
@@ -4780,6 +5129,7 @@ public type ObtainTokenResponse record {
     # for. Only present if the merchant signed up for a subscription during authorization.
     string subscription_id?;
     # This value is always _bearer_.
+    @constraint:String {maxLength: 10, minLength: 2}
     string token_type?;
 };
 
@@ -4817,6 +5167,7 @@ public type Subscription record {
     # The ID of the associated [customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) profile.
     string customer_id?;
     # The Square-assigned ID of the subscription.
+    @constraint:String {maxLength: 255}
     string id?;
     # The IDs of the [invoices](https://developer.squareup.com/reference/square_2021-08-18/objects/Invoice) created for the
     # subscription, listed in order when the invoices were created
@@ -4872,6 +5223,7 @@ public type GiftCardActivityAdjustDecrement record {
 # Represents a set of points for a loyalty account that are scheduled to expire on a specific date.
 public type LoyaltyAccountExpiringPointDeadline record {
     # The timestamp of when the points are scheduled to expire, in RFC 3339 format.
+    @constraint:String {minLength: 1}
     string expires_at;
     # The number of points scheduled to expire at the `expires_at` timestamp.
     int points;
@@ -4889,6 +5241,7 @@ public type ListLoyaltyProgramsResponse record {
 public type DeleteBreakTypeRequest record {
 };
 
+# 
 public type SearchTerminalCheckoutsResponse record {
     # The requested search result of `TerminalCheckout` objects.
     TerminalCheckout[] checkouts?;
@@ -4982,7 +5335,9 @@ public type SearchCustomersResponse record {
     Error[] errors?;
 };
 
+# 
 public type V1ListOrdersResponse record {
+    # 
     V1Order[] items?;
 };
 
@@ -5025,6 +5380,7 @@ public type Site record {
     # The domain of the site (without the protocol). For example, `mysite1.square.site`.
     string domain?;
     # The Square-assigned ID of the site.
+    @constraint:String {maxLength: 32}
     string id?;
     # Indicates whether the site is published.
     boolean is_published?;
@@ -5058,11 +5414,15 @@ public type RetrieveTransactionResponse record {
     Transaction 'transaction?;
 };
 
+# 
 public type RetrieveInventoryTransferRequest record {
 };
 
+# 
 public type TerminalRefundQuery record {
+    # 
     TerminalRefundQueryFilter filter?;
+    # 
     TerminalRefundQuerySort sort?;
 };
 
@@ -5101,6 +5461,7 @@ public type UpdateCustomerResponse record {
 # The days of the week.
 public type Weekday string;
 
+# 
 public type BusinessBookingProfile record {
     # Indicates whether customers can cancel or reschedule their own bookings (`true`) or not (`false`).
     boolean allow_user_cancel?;
@@ -5120,6 +5481,7 @@ public type BusinessBookingProfile record {
     string seller_id?;
 };
 
+# 
 public type RetrieveObsMigrationProfileRequest record {
 };
 
@@ -5169,7 +5531,9 @@ public type PublishInvoiceResponse record {
 
 # V1SettlementEntry
 public type V1SettlementEntry record {
+    # 
     V1Money amount_money?;
+    # 
     V1Money fee_money?;
     # The settlement's unique identifier.
     string payment_id?;
@@ -5194,6 +5558,7 @@ public type RetrieveCustomerRequest record {
 # [CancelPaymentByIdempotencyKey](https://developer.squareup.com/reference/square_2021-08-18/payments-api/cancel-payment-by-idempotency-key).
 public type CancelPaymentByIdempotencyKeyRequest record {
     # The `idempotency_key` identifying the payment to be canceled.
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
 };
 
@@ -5221,6 +5586,7 @@ public type BusinessAppointmentSettingsMaxAppointmentsPerDayLimitType string;
 
 public type Type anydata;
 
+# 
 public type RetrieveOrderResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -5240,7 +5606,7 @@ public type BatchRetrieveOrdersRequest record {
     # orders within the scope of the current authorization's merchant ID.
     string location_id?;
     # The IDs of the orders to retrieve. A maximum of 100 orders can be retrieved per request.
-    string[] order_ids;
+    BatchretrieveordersrequestOrderidsItemsString[] order_ids;
 };
 
 # A request to list `LoyaltyProgram`.
@@ -5257,10 +5623,13 @@ public type AdditionalRecipient record {
     # for more information.
     Money amount_money;
     # The description of the additional recipient.
+    @constraint:String {maxLength: 100}
     string description?;
     # The location ID for a recipient (other than the merchant) receiving a portion of this tender.
+    @constraint:String {maxLength: 50, minLength: 1}
     string location_id;
     # The unique ID for this [AdditionalRecipientReceivable](https://developer.squareup.com/reference/square_2021-08-18/objects/AdditionalRecipientReceivable), assigned by the server.
+    @constraint:String {maxLength: 192}
     string receivable_id?;
 };
 
@@ -5280,6 +5649,7 @@ public type LoyaltyAccountMapping record {
     # The timestamp when the mapping was created, in RFC 3339 format.
     string created_at?;
     # The Square-assigned ID of the mapping.
+    @constraint:String {maxLength: 36}
     string id?;
     # The phone number of the buyer, in E.164 format. For example, "+14155551111".
     string phone_number?;
@@ -5292,6 +5662,7 @@ public type LoyaltyAccountMappingType string;
 public type DigitalWalletDetails record {
     # The status of the `WALLET` payment. The status can be `AUTHORIZED`, `CAPTURED`, `VOIDED`, or
     # `FAILED`.
+    @constraint:String {maxLength: 50}
     string status?;
 };
 
@@ -5324,10 +5695,12 @@ public type ListRefundsRequest record {
     string sort_order?;
 };
 
+# 
 public type V1Money record {
     # Amount in the lowest denominated value of this Currency. E.g. in USD
     # these are cents, in JPY they are Yen (which do not have a 'cent' concept).
     int amount?;
+    # 
     string currency_code?;
 };
 
@@ -5337,14 +5710,17 @@ public type JobAssignmentPayType string;
 # Provides metadata when the event `type` is `ACCUMULATE_POINTS`.
 public type LoyaltyEventAccumulatePoints record {
     # The ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36}
     string loyalty_program_id?;
     # The ID of the [order](https://developer.squareup.com/reference/square_2021-08-18/objects/Order) for which the buyer accumulated the points.
     # This field is returned only if the Orders API is used to process orders.
     string order_id?;
     # The number of points accumulated by the event.
+    @constraint:Int {minValue: 1}
     int points?;
 };
 
+# 
 public type CalculateOrderRequest record {
     # Contains all information related to a single order to process with Square,
     # including line items that specify the products to purchase. `Order` objects also
@@ -5380,6 +5756,7 @@ public type V1TenderCardBrand string;
 public type ResumeSubscriptionRequest record {
 };
 
+# 
 public type RetrieveInventoryChangesResponse record {
     # The set of inventory changes for the requested object and locations.
     InventoryChange[] changes?;
@@ -5403,11 +5780,14 @@ public type ChargeRequestAdditionalRecipient record {
     # for more information.
     Money amount_money;
     # The description of the additional recipient.
+    @constraint:String {maxLength: 100, minLength: 1}
     string description;
     # The location ID for a recipient (other than the merchant) receiving a portion of the tender.
+    @constraint:String {maxLength: 50, minLength: 1}
     string location_id;
 };
 
+# 
 public type CashDrawerDevice record {
     # The device Square-issued ID
     string id?;
@@ -5415,6 +5795,7 @@ public type CashDrawerDevice record {
     string name?;
 };
 
+# 
 public type V1SettlementEntryType string;
 
 # A tender represents a discrete monetary exchange. Square represents this
@@ -5442,6 +5823,7 @@ public type V1SettlementEntryType string;
 public type V1Tender record {
     # The brand of credit card provided.
     string card_brand?;
+    # 
     V1Money change_back_money?;
     # The ID of the employee that processed the tender.
     string employee_id?;
@@ -5459,12 +5841,15 @@ public type V1Tender record {
     string payment_note?;
     # The URL of the receipt for the tender.
     string receipt_url?;
+    # 
     V1Money refunded_money?;
     # The time when the tender was settled, in ISO 8601 format.
     string settled_at?;
     # The time when the tender was created, in ISO 8601 format.
     string tendered_at?;
+    # 
     V1Money tendered_money?;
+    # 
     V1Money total_money?;
     # The type of tender.
     string 'type?;
@@ -5487,6 +5872,7 @@ public type Order record {
     # to be explicitly linked to the customer in the Seller Dashboard. If this field is omitted, the 
     # `customer_id` assigned to any underlying `Payment` objects is ignored and might result in the 
     # creation of new [instant profiles](https://developer.squareup.com/docs/customers-api/what-it-does#instant-profiles).
+    @constraint:String {maxLength: 191}
     string customer_id?;
     # The list of all discounts associated with the order.
     # 
@@ -5509,6 +5895,7 @@ public type Order record {
     # The line items included in the order.
     OrderLineItem[] line_items?;
     # The ID of the seller location that this order is associated with.
+    @constraint:String {minLength: 1}
     string location_id;
     # Application-defined data attached to this order. Metadata fields are intended
     # to store descriptive references or associations with an entity in another system or store brief
@@ -5537,6 +5924,7 @@ public type Order record {
     OrderPricingOptions pricing_options?;
     # A client-specified ID to associate an entity in another system
     # with this order.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # The refunds that are part of this order.
     Refund[] refunds?;
@@ -5641,8 +6029,10 @@ public type UpdateSubscriptionResponse record {
     Subscription subscription?;
 };
 
+# 
 public type CardSquareProduct string;
 
+# 
 public type Device record {
     # The device's Square-issued ID.
     string id?;
@@ -5650,6 +6040,7 @@ public type Device record {
     string name?;
 };
 
+# 
 public type V1ListRefundsRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -5675,6 +6066,7 @@ public type UpdateTeamMemberResponse record {
 # How to apply a CatalogDiscount to a CatalogItem.
 public type CatalogDiscountType string;
 
+# 
 public type PaymentOptions record {
     # Indicates whether the `Payment` objects created from this `TerminalCheckout` are automatically
     # `COMPLETED` or left in an `APPROVED` state for later modification.
@@ -5853,11 +6245,14 @@ public type OrderLineItemPricingBlocklistsBlockedTax record {
     # The `catalog_object_id` of the tax that should be blocked. 
     # Use this field to block catalog taxes. For ad hoc taxes, use the 
     # `tax_uid` field.
+    @constraint:String {maxLength: 192}
     string tax_catalog_object_id?;
     # The `uid` of the tax that should be blocked. Use this field to block 
     # ad hoc taxes. For catalog, taxes use the `tax_catalog_object_id` field.
+    @constraint:String {maxLength: 60}
     string tax_uid?;
     # A unique ID of the `BlockedTax` within the order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -5876,6 +6271,7 @@ public type TaxIds record {
     string fr_siret?;
 };
 
+# 
 public type BatchChangeInventoryResponse record {
     # Changes created for the request.
     InventoryChange[] changes?;
@@ -5899,6 +6295,7 @@ public type ListInvoicesRequest record {
     # If not provided, the server uses a default limit of 100 invoices.
     int 'limit?;
     # The ID of the location for which to list invoices.
+    @constraint:String {maxLength: 255, minLength: 1}
     string location_id;
 };
 
@@ -5974,6 +6371,7 @@ public type ListDisputesRequest record {
     string cursor?;
     # The ID of the location for which to return a list of disputes. If not specified, the endpoint returns
     # all open disputes (the dispute status is not `INQUIRY_CLOSED`, `WON`, or `LOST`) associated with all locations.
+    @constraint:String {maxLength: 40, minLength: 1}
     string location_id?;
     # The dispute states to filter the result.
     # If not specified, the endpoint returns all open disputes (the dispute status is not `INQUIRY_CLOSED`, `WON`,
@@ -5981,6 +6379,7 @@ public type ListDisputesRequest record {
     string[] states?;
 };
 
+# 
 public type TerminalCheckoutQuerySort record {
     # The order in which results are listed.
     # - `ASC` - Oldest to newest.
@@ -6005,18 +6404,24 @@ public type Tender record {
     # Represents the details of a tender with `type` `CASH`.
     TenderCashDetails cash_details?;
     # The timestamp for when the tender was created, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string created_at?;
     # If the tender is associated with a customer or represents a customer's card on file,
     # this is the ID of the associated customer.
+    @constraint:String {maxLength: 191}
     string customer_id?;
     # The tender's unique ID.
+    @constraint:String {maxLength: 192}
     string id?;
     # The ID of the transaction's associated location.
+    @constraint:String {maxLength: 50}
     string location_id?;
     # An optional note associated with the tender at the time of payment.
+    @constraint:String {maxLength: 500}
     string note?;
     # The ID of the [Payment](https://developer.squareup.com/reference/square_2021-08-18/objects/Payment) that corresponds to this tender.
     # This value is only present for payments created with the v2 Payments API.
+    @constraint:String {maxLength: 192}
     string payment_id?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -6033,6 +6438,7 @@ public type Tender record {
     # for more information.
     Money tip_money?;
     # The ID of the tender's associated transaction.
+    @constraint:String {maxLength: 192}
     string transaction_id?;
     # The type of tender, such as `CARD` or `CASH`.
     string 'type;
@@ -6072,6 +6478,7 @@ public type CatalogItemVariation record {
     # whole quantities.
     string measurement_unit_id?;
     # The item variation's name. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
     # The order in which this item variation should be displayed. This value is read-only. On writes, the ordinal
     # for each item variation within a parent `CatalogItem` is set according to the item variations's
@@ -6114,6 +6521,7 @@ public type CatalogItemVariation record {
     # unless it is updated to fit the expected format.
     string upc?;
     # Arbitrary user metadata to associate with the item variation. This attribute value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string user_data?;
 };
 
@@ -6190,6 +6598,7 @@ public type UpdateCustomerRequest record {
     int 'version?;
 };
 
+# 
 public type OrderCreated record {
     # The timestamp for when the order was created, in RFC 3339 format.
     string created_at?;
@@ -6316,9 +6725,11 @@ public type VoidTransactionResponse record {
 public type RetrieveLocationResponse record {
     # Information on errors encountered during the request.
     Error[] errors?;
+    # 
     Location location?;
 };
 
+# 
 public type UpdateItemModifierListsResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -6329,6 +6740,7 @@ public type UpdateItemModifierListsResponse record {
 # Provides metadata when the event `type` is `EXPIRE_POINTS`.
 public type LoyaltyEventExpirePoints record {
     # The Square-assigned ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_program_id;
     # The number of points expired.
     int points;
@@ -6337,10 +6749,12 @@ public type LoyaltyEventExpirePoints record {
 # Defines the parameters for a `CreateDisputeEvidenceText` request.
 public type CreateDisputeEvidenceTextRequest record {
     # The evidence string.
+    @constraint:String {maxLength: 500, minLength: 1}
     string evidence_text;
     # The type of evidence you are uploading.
     string evidence_type?;
     # The Unique ID. For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
 };
 
@@ -6358,6 +6772,7 @@ public type PublishInvoiceRequest record {
     # treats each request as independent.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 128}
     string idempotency_key?;
     # The version of the [invoice](https://developer.squareup.com/reference/square_2021-08-18/objects/Invoice) to publish.
     # This must match the current version of the invoice; otherwise, the request is rejected.
@@ -6401,6 +6816,7 @@ public type ListMerchantsResponse record {
 public type CreateDisputeEvidenceTextResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
+    # 
     DisputeEvidence evidence?;
 };
 
@@ -6454,6 +6870,7 @@ public type ListPaymentRefundsRequest record {
 public type RetrieveMerchantRequest record {
 };
 
+# 
 public type RevokeTokenResponse record {
     # If the request is successful, this is true.
     boolean success?;
@@ -6462,6 +6879,7 @@ public type RevokeTokenResponse record {
 # Defines supported stock levels of the item inventory.
 public type SearchCatalogItemsRequestStockLevel string;
 
+# 
 public type BatchRetrieveInventoryChangesRequest record {
     # The filter to return results by `CatalogObject` ID.
     # The filter is only applicable when set. The default value is null.
@@ -6497,11 +6915,13 @@ public type SearchTeamMembersRequest record {
     # [pagination](https://developer.squareup.com/docs/working-with-apis/pagination).
     string cursor?;
     # The maximum number of `TeamMember` objects in a page (100 by default).
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
     # Represents the parameters in a search for `TeamMember` objects.
     SearchTeamMembersQuery query?;
 };
 
+# 
 public type RetrieveInventoryAdjustmentResponse record {
     # Represents a change in state or quantity of product inventory at a
     # particular time and location.
@@ -6510,6 +6930,7 @@ public type RetrieveInventoryAdjustmentResponse record {
     Error[] errors?;
 };
 
+# 
 public type RetrieveBookingResponse record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
@@ -6531,12 +6952,14 @@ public type LoyaltyEventDateTimeFilter record {
 # A request to link a customer to a gift card
 public type LinkCustomerToGiftCardRequest record {
     # The ID of the customer to be linked.
+    @constraint:String {maxLength: 191, minLength: 1}
     string customer_id;
 };
 
 # A query filter to search for appointment segments by.
 public type SegmentFilter record {
     # The ID of the [CatalogItemVariation](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogItemVariation) representing the service booked in this segment.
+    @constraint:String {minLength: 1}
     string service_variation_id;
     # A filter to select resources based on an exact field value. For any given
     # value, the value can only be in one property. Depending on the field, either
@@ -6555,15 +6978,18 @@ public type CatalogSubscriptionPlan record {
     SubscriptionPhase[] phases;
 };
 
+# 
 public type V1RetrieveSettlementRequest record {
 };
 
+# 
 public type CancelTerminalCheckoutRequest record {
 };
 
 # The status of the location, whether a location is active or inactive.
 public type LocationStatus string;
 
+# 
 public type RetrieveTeamMemberBookingProfileRequest record {
 };
 
@@ -6576,10 +7002,13 @@ public type CatalogCustomAttributeDefinitionSelectionConfig record {
     # attribute is 100. The default value is 1. The value can be modified, but changing the value will not
     # affect existing custom attribute values on objects. Clients need to
     # handle custom attributes with more selected values than allowed by this limit.
+    @constraint:Int {maxValue: 100}
     int max_allowed_selections?;
 };
 
+# 
 public type GetDeviceCodeResponse record {
+    # 
     DeviceCode device_code?;
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -6594,6 +7023,7 @@ public type RetrieveGiftCardFromGANResponse record {
     GiftCard gift_card?;
 };
 
+# 
 public type CreateOrderRequest record {
     # A value you specify that uniquely identifies this
     # order among orders you have created.
@@ -6603,6 +7033,7 @@ public type CreateOrderRequest record {
     # worrying about creating duplicate orders.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency).
+    @constraint:String {maxLength: 192}
     string idempotency_key?;
     # Contains all information related to a single order to process with Square,
     # including line items that specify the products to purchase. `Order` objects also
@@ -6613,6 +7044,7 @@ public type CreateOrderRequest record {
     Order 'order?;
 };
 
+# 
 public type TerminalCheckout record {
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -6635,12 +7067,15 @@ public type TerminalCheckout record {
     # 
     # Maximum: 5 minutes
     string deadline_duration?;
+    # 
     DeviceCheckoutOptions device_options;
     # A unique ID for this `TerminalCheckout`.
+    @constraint:String {maxLength: 255, minLength: 10}
     string id?;
     # The location of the device where the `TerminalCheckout` was directed.
     string location_id?;
     # An optional note to associate with the checkout, as well as with any payments used to complete the checkout.
+    @constraint:String {maxLength: 250}
     string note?;
     # A list of IDs for payments created by this `TerminalCheckout`.
     string[] payment_ids?;
@@ -6650,6 +7085,7 @@ public type TerminalCheckout record {
     # this `TerminalCheckout` to another entity in an external system. For example, an order
     # ID generated by a third-party shopping cart. The ID is also associated with any payments
     # used to complete the checkout.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # The status of the `TerminalCheckout`.
     # Options: `PENDING`, `IN_PROGRESS`, `CANCEL_REQUESTED`, `CANCELED`, `COMPLETED`
@@ -6686,16 +7122,19 @@ public type LoyaltyEvent record {
     # Provides metadata when the event `type` is `CREATE_REWARD`.
     LoyaltyEventCreateReward create_reward?;
     # The timestamp when the event was created, in RFC 3339 format.
+    @constraint:String {minLength: 1}
     string created_at;
     # Provides metadata when the event `type` is `DELETE_REWARD`.
     LoyaltyEventDeleteReward delete_reward?;
     # Provides metadata when the event `type` is `EXPIRE_POINTS`.
     LoyaltyEventExpirePoints expire_points?;
     # The Square-assigned ID of the loyalty event.
+    @constraint:String {minLength: 1}
     string id;
     # The ID of the [location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the event occurred.
     string location_id?;
     # The ID of the [loyalty account](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyAccount) in which the event occurred.
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_account_id;
     # Provides metadata when the event `type` is `OTHER`.
     LoyaltyEventOther other_event?;
@@ -6718,6 +7157,7 @@ public type ListDisputesResponse record {
     Error[] errors?;
 };
 
+# 
 public type V1UpdateEmployeeRequest record {
     # Represents one of a business's employees.
     V1Employee body;
@@ -6734,10 +7174,13 @@ public type CatalogQueryItemVariationsForItemOptionValues record {
 # Object types to inline under their respective parent object in certain connect v2 responses
 public type InlineTypes string;
 
+# 
 public type RetrieveEmployeeRequest record {
 };
 
+# 
 public type V1ListEmployeesResponse record {
+    # 
     V1Employee[] items?;
 };
 
@@ -6758,6 +7201,7 @@ public type ListCardsResponse record {
     Error[] errors?;
 };
 
+# 
 public type BatchUpsertCatalogObjectsResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -6776,6 +7220,7 @@ public type RetrieveGiftCardRequest record {
 # Indicates how Square delivers the [invoice](https://developer.squareup.com/reference/square_2021-08-18/objects/Invoice) to the customer.
 public type InvoiceDeliveryMethod string;
 
+# 
 public type GiftCardType string;
 
 # Defines the response body returned from the [SearchCatalogItems](https://developer.squareup.com/reference/square_2021-08-18/catalog-api/search-catalog-items) endpoint.
@@ -6794,8 +7239,10 @@ public type SearchCatalogItemsResponse record {
 public type RedeemLoyaltyRewardRequest record {
     # A unique string that identifies this `RedeemLoyaltyReward` request. 
     # Keys can be any valid string, but must be unique for every request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # The ID of the [location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the reward is redeemed.
+    @constraint:String {minLength: 1}
     string location_id;
 };
 
@@ -6819,6 +7266,7 @@ public type CustomerQuery record {
 # When to calculate the taxes due on a cart.
 public type TaxCalculationPhase string;
 
+# 
 public type ListDeviceCodesRequest record {
     # A pagination cursor returned by a previous call to this endpoint.
     # Provide this to retrieve the next set of results for your original query.
@@ -6839,12 +7287,14 @@ public type ListDeviceCodesRequest record {
 # Contains the details necessary to fulfill a shipment order.
 public type OrderFulfillmentShipmentDetails record {
     # A description of why the shipment was canceled.
+    @constraint:String {maxLength: 100}
     string cancel_reason?;
     # The [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates)
     # indicating the shipment was canceled.
     # The timestamp must be in RFC 3339 format (for example, "2016-09-04T23:59:33.123Z").
     string canceled_at?;
     # The shipping carrier being used to ship this fulfillment (such as UPS, FedEx, or USPS).
+    @constraint:String {maxLength: 50}
     string carrier?;
     # The [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates)
     # indicating when the shipment is expected to be delivered to the shipping carrier.
@@ -6855,6 +7305,7 @@ public type OrderFulfillmentShipmentDetails record {
     # (for example, "2016-09-04T23:59:33.123Z").
     string failed_at?;
     # A description of why the shipment failed to be completed.
+    @constraint:String {maxLength: 100}
     string failure_reason?;
     # The [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates)
     # indicating when this fulfillment was moved to the `RESERVED` state, which  indicates that preparation
@@ -6876,13 +7327,17 @@ public type OrderFulfillmentShipmentDetails record {
     # (for example, "2016-09-04T23:59:33.123Z").
     string shipped_at?;
     # A note with additional information for the shipping carrier.
+    @constraint:String {maxLength: 500}
     string shipping_note?;
     # A description of the type of shipping product purchased from the carrier
     # (such as First Class, Priority, or Express).
+    @constraint:String {maxLength: 50}
     string shipping_type?;
     # The reference number provided by the carrier to track the shipment's progress.
+    @constraint:String {maxLength: 100}
     string tracking_number?;
     # A link to the tracking webpage on the carrier's website.
+    @constraint:String {maxLength: 2000}
     string tracking_url?;
 };
 
@@ -6892,6 +7347,7 @@ public type CardPrepaidType string;
 # Enumerates the possible invitation statuses the team member can have within a business.
 public type TeamMemberInvitationStatus string;
 
+# 
 public type V1PaymentItemizationItemizationType string;
 
 # Describes a payment request reminder (automatic notification) that Square sends
@@ -6899,10 +7355,12 @@ public type V1PaymentItemizationItemizationType string;
 # `due_date`.
 public type InvoicePaymentReminder record {
     # The reminder message.
+    @constraint:String {maxLength: 1000, minLength: 1}
     string message?;
     # The number of days before (a negative number) or after (a positive number)
     # the payment request `due_date` when the reminder is sent. For example, -3 indicates that
     # the reminder should be sent 3 days before the payment request `due_date`.
+    @constraint:Int {minValue: -32767, maxValue: 32767}
     int relative_scheduled_days?;
     # If sent, the timestamp when the reminder was sent, in RFC 3339 format.
     string sent_at?;
@@ -6913,6 +7371,7 @@ public type InvoicePaymentReminder record {
     string uid?;
 };
 
+# 
 public type GiftCardActivityAdjustDecrementReason string;
 
 # A response that includes the `LoyaltyEvent` published for redeeming the reward.
@@ -6930,6 +7389,7 @@ public type CatalogQueryItemsForModifierList record {
     string[] modifier_list_ids;
 };
 
+# 
 public type GiftCardActivityUnblockReason string;
 
 # Response object returned by GetBankAccountByV1Id.
@@ -6959,6 +7419,7 @@ public type RiskEvaluation record {
     string risk_level?;
 };
 
+# 
 public type UpdateBookingResponse record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
@@ -6974,6 +7435,7 @@ public type CatalogQueryRange record {
     # The desired minimum value for the search attribute (inclusive).
     int attribute_min_value?;
     # The name of the attribute to be searched.
+    @constraint:String {minLength: 1}
     string attribute_name;
 };
 
@@ -7002,6 +7464,7 @@ public type AcceptDisputeResponse record {
 
 # V1PaymentTax
 public type V1PaymentTax record {
+    # 
     V1Money applied_money?;
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -7021,12 +7484,14 @@ public type ListTeamMemberWagesRequest record {
     string cursor?;
     # The maximum number of `TeamMemberWage` results to return per page. The number can range between
     # 1 and 200. The default is 200.
+    @constraint:Int {minValue: 1, maxValue: 200}
     int 'limit?;
     # Filter the returned wages to only those that are associated with the
     # specified team member.
     string team_member_id?;
 };
 
+# 
 public type GiftCardActivityAdjustIncrementReason string;
 
 # Represents a contract to redeem loyalty points for a [reward tier](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgramRewardTier) discount. Loyalty rewards can be in an ISSUED, REDEEMED, or DELETED state. For more information, see [Redeem loyalty rewards](https://developer.squareup.com/docs/loyalty-api/overview#redeem-loyalty-rewards).
@@ -7034,16 +7499,20 @@ public type LoyaltyReward record {
     # The timestamp when the reward was created, in RFC 3339 format.
     string created_at?;
     # The Square-assigned ID of the loyalty reward.
+    @constraint:String {maxLength: 36}
     string id?;
     # The Square-assigned ID of the [loyalty account](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyAccount) to which the reward belongs.
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_account_id;
     # The Square-assigned ID of the [order](https://developer.squareup.com/reference/square_2021-08-18/objects/Order) to which the reward is attached.
     string order_id?;
     # The number of loyalty points used for the reward.
+    @constraint:Int {minValue: 1}
     int points?;
     # The timestamp when the reward was redeemed, in RFC 3339 format.
     string redeemed_at?;
     # The Square-assigned ID of the [reward tier](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgramRewardTier) used to create the reward.
+    @constraint:String {maxLength: 36, minLength: 1}
     string reward_tier_id;
     # The status of a loyalty reward.
     string status?;
@@ -7051,14 +7520,17 @@ public type LoyaltyReward record {
     string updated_at?;
 };
 
+# 
 public type UpdateBookingRequest record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
     Booking booking;
     # A unique key to make this request an idempotent operation.
+    @constraint:String {maxLength: 255}
     string idempotency_key?;
 };
 
+# 
 public type RetrieveInventoryPhysicalCountRequest record {
 };
 
@@ -7093,6 +7565,7 @@ public type OrderSource record {
     string name?;
 };
 
+# 
 public type RiskEvaluationRiskLevel string;
 
 # Time units of a service duration for bookings.
@@ -7101,6 +7574,7 @@ public type BusinessAppointmentSettingsAlignmentTime string;
 # Represents a request to create a `Shift`.
 public type CreateShiftRequest record {
     # A unique string value to ensure the idempotency of the operation.
+    @constraint:String {maxLength: 128}
     string idempotency_key?;
     # A record of the hourly rate, start, and end times for a single work shift
     # for an employee. This might include a record of the start and end times for breaks
@@ -7117,6 +7591,7 @@ public type AccumulateLoyaltyPointsResponse record {
     LoyaltyEvent event?;
 };
 
+# 
 public type ActionCancelReason string;
 
 # A response to a request to get a `TeamMemberWage`. The response contains
@@ -7133,6 +7608,7 @@ public type GetTeamMemberWageResponse record {
 # Indicates how the inventory change was applied to a tracked product quantity.
 public type InventoryChangeType string;
 
+# 
 public type V1PaymentTaxInclusionType string;
 
 # Represents the Square processing fee.
@@ -7173,6 +7649,7 @@ public type Money record {
 public type DeprecatedCreateDisputeEvidenceTextResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
+    # 
     DisputeEvidence evidence?;
 };
 
@@ -7218,6 +7695,7 @@ public type ListInvoicesResponse record {
     Invoice[] invoices?;
 };
 
+# 
 public type DeviceCode record {
     # The unique code that can be used to login.
     string code?;
@@ -7228,8 +7706,10 @@ public type DeviceCode record {
     # The unique id for this device code.
     string id?;
     # The location assigned to this code.
+    @constraint:String {maxLength: 50}
     string location_id?;
     # An optional user-defined name for the device code.
+    @constraint:String {maxLength: 128}
     string name?;
     # When this DeviceCode will expire and no longer login. Timestamp in RFC 3339 format.
     string pair_by?;
@@ -7243,6 +7723,7 @@ public type DeviceCode record {
     string status_changed_at?;
 };
 
+# 
 public type BatchUpsertCatalogObjectsRequest record {
     # A batch of CatalogObjects to be inserted/updated atomically.
     # The objects within a batch will be inserted in an all-or-nothing fashion, i.e., if an error occurs
@@ -7275,6 +7756,7 @@ public type BatchUpsertCatalogObjectsRequest record {
     # worrying about creating duplicate objects.
     # 
     # See [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {minLength: 1}
     string idempotency_key;
 };
 
@@ -7310,17 +7792,20 @@ public type ListCustomerGroupsRequest record {
     # The limit is ignored if it is less than 1 or greater than 50. The default value is 50.
     # 
     # For more information, see [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination).
+    @constraint:Int {minValue: 1, maxValue: 50}
     int 'limit?;
 };
 
 # Provides metadata when the event `type` is `CREATE_REWARD`.
 public type LoyaltyEventCreateReward record {
     # The ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_program_id;
     # The loyalty points used to create the reward.
     int points;
     # The Square-assigned ID of the created [loyalty reward](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyReward).
     # This field is returned only if the event source is `LOYALTY_API`.
+    @constraint:String {maxLength: 36}
     string reward_id?;
 };
 
@@ -7336,12 +7821,15 @@ public type BusinessHours record {
 # [Get discount details for the reward](https://developer.squareup.com/docs/loyalty-api/overview#get-discount-details).
 public type LoyaltyProgramRewardDefinitionType string;
 
+# 
 public type RevokeTokenRequest record {
     # The access token of the merchant whose token you want to revoke.
     # Do not provide a value for merchant_id if you provide this parameter.
+    @constraint:String {maxLength: 1024, minLength: 2}
     string access_token?;
     # The Square issued ID for your application, available from the
     # [developer dashboard](https://developer.squareup.com/apps).
+    @constraint:String {maxLength: 191}
     string client_id?;
     # The ID of the merchant whose token you want to revoke.
     # Do not provide a value for access_token if you provide this parameter.
@@ -7373,6 +7861,7 @@ public type V1UpdateOrderRequest record {
     string shipped_tracking_number?;
 };
 
+# 
 public type GetTerminalCheckoutRequest record {
 };
 
@@ -7487,14 +7976,16 @@ public type LoyaltyProgram record {
     # Defines how buyers can earn loyalty points.
     LoyaltyProgramAccrualRule[] accrual_rules;
     # The timestamp when the program was created, in RFC 3339 format.
+    @constraint:String {minLength: 1}
     string created_at;
     # Describes when the loyalty program expires.
     LoyaltyProgramExpirationPolicy expiration_policy?;
     # The Square-assigned ID of the loyalty program. Updates to 
     # the loyalty program do not modify the identifier.
+    @constraint:String {maxLength: 36, minLength: 1}
     string id;
     # The [locations](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) at which the program is active.
-    string[] location_ids;
+    LoyaltyprogramLocationidsItemsString[] location_ids;
     # The list of rewards for buyers, sorted by ascending points.
     LoyaltyProgramRewardTier[] reward_tiers;
     # Whether the program is currently active.
@@ -7502,6 +7993,7 @@ public type LoyaltyProgram record {
     # Represents the naming used for loyalty points.
     LoyaltyProgramTerminology terminology;
     # The timestamp when the reward was last updated, in RFC 3339 format.
+    @constraint:String {minLength: 1}
     string updated_at;
 };
 
@@ -7528,14 +8020,18 @@ public type TeamMemberAssignedLocations record {
 # ACH-specific details about `BANK_ACCOUNT` type payments with the `transfer_type` of `ACH`.
 public type ACHDetails record {
     # The last few digits of the bank account number.
+    @constraint:String {maxLength: 4, minLength: 1}
     string account_number_suffix?;
     # The type of the bank account performing the transfer. The account type can be `CHECKING`,
     # `SAVINGS`, or `UNKNOWN`.
+    @constraint:String {maxLength: 50}
     string account_type?;
     # The routing number for the bank account.
+    @constraint:String {maxLength: 50}
     string routing_number?;
 };
 
+# 
 public type GiftCardActivityClearBalanceReason string;
 
 # Indicates a card's brand, such as `VISA` or `MASTERCARD`.
@@ -7569,10 +8065,13 @@ public type RefundPaymentRequest record {
     # but must be unique for every `RefundPayment` request.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {minLength: 1}
     string idempotency_key;
     # The unique ID of the payment being refunded.
+    @constraint:String {minLength: 1}
     string payment_id;
     # A description of the reason for the refund.
+    @constraint:String {maxLength: 192}
     string reason?;
 };
 
@@ -7601,20 +8100,24 @@ public type OrderReturnServiceCharge record {
     # The calculation phase after which to apply the service charge.
     string calculation_phase?;
     # The catalog object ID of the associated [OrderServiceCharge](https://developer.squareup.com/reference/square_2021-08-18/objects/OrderServiceCharge).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this service charge references.
     int catalog_version?;
     # The name of the service charge.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the service charge, as a string representation of
     # a decimal number. For example, a value of `"7.25"` corresponds to a
     # percentage of 7.25%.
     # 
     # Either `percentage` or `amount_money` should be set, but not both.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # The service charge `uid` from the order containing the original
     # service charge. `source_service_charge_uid` is `null` for
     # unlinked returns.
+    @constraint:String {maxLength: 60}
     string source_service_charge_uid?;
     # Indicates whether the surcharge can be taxed. Service charges
     # calculated in the `TOTAL_PHASE` cannot be marked as taxable.
@@ -7634,6 +8137,7 @@ public type OrderReturnServiceCharge record {
     # for more information.
     Money total_tax_money?;
     # A unique ID that identifies the return service charge only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -7642,8 +8146,10 @@ public type CreateGiftCardRequest record {
     # Represents a Square gift card.
     GiftCard gift_card;
     # A unique string that identifies the `CreateGiftCard` request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # The location ID where the gift card that will be created should be registered.
+    @constraint:String {minLength: 1}
     string location_id;
 };
 
@@ -7654,6 +8160,7 @@ public type ListCardsRequest record {
     # Provide this to retrieve the next set of results for your original query.
     # 
     # See [Pagination](https://developer.squareup.com/docs/basics/api101/pagination) for more information.
+    @constraint:String {maxLength: 256}
     string cursor?;
     # Limit results to cards associated with the customer supplied.
     # By default, all cards owned by the merchant are returned.
@@ -7674,6 +8181,7 @@ public type AdjustLoyaltyPointsRequest record {
     LoyaltyEventAdjustPoints adjust_points;
     # A unique string that identifies this `AdjustLoyaltyPoints` request. 
     # Keys can be any valid string, but must be unique for every request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
 };
 
@@ -7683,11 +8191,14 @@ public type OrderLineItemPricingBlocklistsBlockedDiscount record {
     # The `catalog_object_id` of the discount that should be blocked. 
     # Use this field to block catalog discounts. For ad hoc discounts, use the 
     # `discount_uid` field.
+    @constraint:String {maxLength: 192}
     string discount_catalog_object_id?;
     # The `uid` of the discount that should be blocked. Use this field to block 
     # ad hoc discounts. For catalog discounts, use the `discount_catalog_object_id` field.
+    @constraint:String {maxLength: 60}
     string discount_uid?;
     # A unique ID of the `BlockedDiscount` within the order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -7706,12 +8217,14 @@ public type CreateShiftResponse record {
 # Provides metadata when the event `type` is `REDEEM_REWARD`.
 public type LoyaltyEventRedeemReward record {
     # The ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_program_id;
     # The ID of the [order](https://developer.squareup.com/reference/square_2021-08-18/objects/Order) that redeemed the reward.
     # This field is returned only if the Orders API is used to process orders.
     string order_id?;
     # The ID of the redeemed [loyalty reward](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyReward).
     # This field is returned only if the event source is `LOYALTY_API`.
+    @constraint:String {maxLength: 36}
     string reward_id?;
 };
 
@@ -7726,6 +8239,7 @@ public type GetPaymentRequest record {
 public type DisputeEvidenceCreatedWebhook record {
     # Timestamp of when the webhook event was created, in RFC 3339 format.
     string created_at?;
+    # 
     DisputeEvidenceCreatedWebhookData data?;
     # A unique ID for the webhook event.
     string event_id?;
@@ -7755,6 +8269,7 @@ public type OrderLineItemTax record {
     # [Automatically Apply Taxes to an Order](https://developer.squareup.com/docs/orders-api/apply-taxes-and-discounts/auto-apply-taxes).
     boolean auto_applied?;
     # The catalog object ID referencing [CatalogTax](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogTax).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this tax references.
     int catalog_version?;
@@ -7778,10 +8293,12 @@ public type OrderLineItemTax record {
     # For more information, see [Metadata](https://developer.squareup.com/docs/build-basics/metadata).
     record {} metadata?;
     # The tax's name.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the tax, as a string representation of a decimal
     # number. For example, a value of `"7.25"` corresponds to a percentage of
     # 7.25%.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # Indicates the level at which the tax applies. For `ORDER` scoped taxes,
     # Square generates references in `applied_taxes` on all order line items that do
@@ -7794,6 +8311,7 @@ public type OrderLineItemTax record {
     # Indicates the calculation method used to apply the tax.
     string 'type?;
     # A unique ID that identifies the tax only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -7809,6 +8327,7 @@ public type SearchCustomersRequest record {
     # The limit is ignored if it is less than the minimum or greater than the maximum value. The default value is 100.
     # 
     # For more information, see [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination).
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
     # Represents a query (including filtering criteria, sorting criteria, or both) used to search
     # for customer profiles.
@@ -7875,6 +8394,7 @@ public type JobAssignment record {
     # for more information.
     Money hourly_rate?;
     # The title of the job.
+    @constraint:String {minLength: 1}
     string job_title;
     # The current pay type for the job assignment used to
     # calculate the pay amount in a pay period.
@@ -7883,6 +8403,7 @@ public type JobAssignment record {
     int weekly_hours?;
 };
 
+# 
 public type V1CreateEmployeeRoleRequest record {
     # V1EmployeeRole
     V1EmployeeRole employee_role?;
@@ -7913,30 +8434,38 @@ public type ItemVariationLocationOverrides record {
     boolean track_inventory?;
 };
 
+# 
 public type ObtainTokenRequest record {
     # The Square-issued ID of your application, available from the
     # [developer dashboard](https://developer.squareup.com/apps).
+    @constraint:String {maxLength: 191}
     string client_id;
     # The Square-issued application secret for your application, available
     # from the [developer dashboard](https://developer.squareup.com/apps).
+    @constraint:String {maxLength: 1024, minLength: 2}
     string client_secret;
     # The authorization code to exchange.
     # This is required if `grant_type` is set to `authorization_code`, to indicate that
     # the application wants to exchange an authorization code for an OAuth access token.
+    @constraint:String {maxLength: 191}
     string code?;
     # Specifies the method to request an OAuth access token.
     # Valid values are: `authorization_code`, `refresh_token`, and `migration_token`
+    @constraint:String {maxLength: 20, minLength: 10}
     string grant_type;
     # Legacy OAuth access token obtained using a Connect API version prior
     # to 2019-03-13. This parameter is required if `grant_type` is set to
     # `migration_token` to indicate that the application wants to get a replacement
     # OAuth access token. The response also returns a refresh token.
     # For more information, see [Migrate to Using Refresh Tokens](https://developer.squareup.com/docs/oauth-api/migrate-to-refresh-tokens).
+    @constraint:String {maxLength: 1024, minLength: 2}
     string migration_token?;
     # The redirect URL assigned in the [developer dashboard](https://developer.squareup.com/apps).
+    @constraint:String {maxLength: 2048}
     string redirect_uri?;
     # A valid refresh token for generating a new OAuth access token.
     # A valid refresh token is required if `grant_type` is set to `refresh_token` , to indicate the application wants a replacement for an expired OAuth access token.
+    @constraint:String {maxLength: 1024, minLength: 2}
     string refresh_token?;
     # A JSON list of strings representing the permissions the application is requesting.
     # For example: "`["MERCHANT_PROFILE_READ","PAYMENTS_READ","BANK_ACCOUNTS_READ"]`"
@@ -7949,6 +8478,7 @@ public type ObtainTokenRequest record {
     boolean short_lived?;
 };
 
+# 
 public type DeleteCatalogObjectRequest record {
 };
 
@@ -8016,18 +8546,23 @@ public type ListCustomerSegmentsRequest record {
     # The limit is ignored if it is less than 1 or greater than 50. The default value is 50.
     # 
     # For more information, see [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination).
+    @constraint:Int {minValue: 1, maxValue: 50}
     int 'limit?;
 };
 
+# 
 public type RenewTokenResponse record {
     # The renewed access token.
     # This value might be different from the `access_token` you provided in your request.
     # You provide this token in a header with every request to Connect API endpoints.
     # See [Request and response headers](https://developer.squareup.com/docs/api/connect/v2/#requestandresponseheaders) for the format of this header.
+    @constraint:String {maxLength: 1024, minLength: 2}
     string access_token?;
     # The date when access_token expires, in [ISO 8601](http://www.iso.org/iso/home/standards/iso8601.htm) format.
+    @constraint:String {maxLength: 48, minLength: 20}
     string expires_at?;
     # The ID of the authorizing merchant's business.
+    @constraint:String {maxLength: 191, minLength: 8}
     string merchant_id?;
     # __LEGACY FIELD__. The ID of the subscription plan the merchant signed
     # up for. Only present if the merchant signed up for a subscription during
@@ -8038,6 +8573,7 @@ public type RenewTokenResponse record {
     # during authorization..
     string subscription_id?;
     # This value is always _bearer_.
+    @constraint:String {maxLength: 10, minLength: 2}
     string token_type?;
 };
 
@@ -8090,18 +8626,23 @@ public type GiftCardActivityRedeem record {
 # Represents a change in state or quantity of product inventory at a
 # particular time and location.
 public type InventoryAdjustment record {
+    # 
     InventoryAdjustmentGroup adjustment_group?;
     # The Square-generated ID of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked.
+    @constraint:String {maxLength: 100}
     string catalog_object_id?;
     # The [type](https://developer.squareup.com/reference/square_2021-08-18/enums/CatalogObjectType) of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked. Tracking is only
     # supported for the `ITEM_VARIATION` type.
+    @constraint:String {maxLength: 14}
     string catalog_object_type?;
     # An RFC 3339-formatted timestamp that indicates when the inventory adjustment is received.
+    @constraint:String {maxLength: 34}
     string created_at?;
     # The Square-generated ID of the [Employee](https://developer.squareup.com/reference/square_2021-08-18/objects/Employee) responsible for the
     # inventory adjustment.
+    @constraint:String {maxLength: 100}
     string employee_id?;
     # The [inventory state](https://developer.squareup.com/reference/square_2021-08-18/enums/InventoryState) of the related quantity
     # of items before the adjustment.
@@ -8109,32 +8650,40 @@ public type InventoryAdjustment record {
     # The Square-generated ID of the goods receipt that caused the
     # adjustment. Only relevant for state transitions from the Square for Retail
     # app.
+    @constraint:String {maxLength: 100}
     string goods_receipt_id?;
     # A unique ID generated by Square for the
     # `InventoryAdjustment`.
+    @constraint:String {maxLength: 100}
     string id?;
     # The Square-generated ID of the [Location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the related
     # quantity of items is being tracked.
+    @constraint:String {maxLength: 100}
     string location_id?;
     # A client-generated RFC 3339-formatted timestamp that indicates when
     # the inventory adjustment took place. For inventory adjustment updates, the `occurred_at`
     # timestamp cannot be older than 24 hours or in the future relative to the
     # time of the request.
+    @constraint:String {maxLength: 34}
     string occurred_at?;
     # The Square-generated ID of the purchase order that caused the
     # adjustment. Only relevant for state transitions from the Square for Retail
     # app.
+    @constraint:String {maxLength: 100}
     string purchase_order_id?;
     # The number of items affected by the adjustment as a decimal string.
     # Can support up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 26}
     string quantity?;
     # An optional ID provided by the application to tie the
     # `InventoryAdjustment` to an external
     # system.
+    @constraint:String {maxLength: 255}
     string reference_id?;
     # The Square-generated ID of the [Refund][#type-refund] that
     # caused the adjustment. Only relevant for refund-related state
     # transitions.
+    @constraint:String {maxLength: 255}
     string refund_id?;
     # Provides information about the application used to generate a change.
     SourceApplication 'source?;
@@ -8151,9 +8700,11 @@ public type InventoryAdjustment record {
     # The Square-generated ID of the [Transaction][#type-transaction] that
     # caused the adjustment. Only relevant for payment-related state
     # transitions.
+    @constraint:String {maxLength: 255}
     string transaction_id?;
 };
 
+# 
 public type BatchDeleteCatalogObjectsRequest record {
     # The IDs of the CatalogObjects to be deleted. When an object is deleted, other objects
     # in the graph that depend on that object will be deleted as well (for example, deleting a
@@ -8181,16 +8732,19 @@ public type CreateRefundRequest record {
     # worrying about duplicating the refund.
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/working-with-apis/idempotency) for more information.
+    @constraint:String {maxLength: 192, minLength: 1}
     string idempotency_key;
     # A description of the reason for the refund.
     # 
     # Default value: `Refund via API`
+    @constraint:String {maxLength: 192}
     string reason?;
     # The ID of the tender to refund.
     # 
     # A [`Transaction`](https://developer.squareup.com/reference/square_2021-08-18/objects/Transaction) has one or more `tenders` (i.e., methods
     # of payment) associated with it, and you refund each tender separately with
     # the Connect API.
+    @constraint:String {maxLength: 192, minLength: 1}
     string tender_id;
 };
 
@@ -8229,11 +8783,13 @@ public type InvoiceQuery record {
 public type ListSitesRequest record {
 };
 
+# 
 public type ListEmployeesRequest record {
     # The token required to retrieve the specified page of results.
     string cursor?;
     # The number of employees to be returned on each page.
     int 'limit?;
+    # 
     string location_id?;
     # Specifies the EmployeeStatus to filter the employee by.
     string status?;
@@ -8242,7 +8798,9 @@ public type ListEmployeesRequest record {
 # The status of the domain registration.
 public type RegisterDomainResponseStatus string;
 
+# 
 public type V1ListPaymentsResponse record {
+    # 
     V1Payment[] items?;
 };
 
@@ -8264,7 +8822,7 @@ public type CancelSubscriptionResponse record {
 # Refer to the documentation of the field.
 public type FilterValue record {
     # A list of terms that must be present on the field of the resource.
-    string[] 'all?;
+    string[] all?;
     # A list of terms where at least one of them must be present on the
     # field of the resource.
     string[] 'any?;
@@ -8289,6 +8847,7 @@ public type PayOrderResponse record {
 # Filter events by loyalty account.
 public type LoyaltyEventLoyaltyAccountFilter record {
     # The ID of the [loyalty account](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyAccount) associated with loyalty events.
+    @constraint:String {minLength: 1}
     string loyalty_account_id;
 };
 
@@ -8305,6 +8864,7 @@ public type CatalogModifierList record {
     # `CatalogModifier` data.
     CatalogObject[] modifiers?;
     # The name for the `CatalogModifierList` instance. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
     # Determines where this modifier list appears in a list of `CatalogModifierList` values.
     int ordinal?;
@@ -8313,25 +8873,31 @@ public type CatalogModifierList record {
     string selection_type?;
 };
 
+# 
 public type DisputeEvidenceCreatedWebhookData record {
     # ID of the affected dispute.
     string id?;
+    # 
     DisputeEvidenceCreatedWebhookObject 'object?;
     # Name of the affected dispute's type.
     string 'type?;
 };
 
+# 
 public type V1UpdateEmployeeRoleRequest record {
     # V1EmployeeRole
     V1EmployeeRole body;
 };
 
+# 
 public type CreateTerminalRefundRequest record {
     # A unique string that identifies this `CreateRefund` request. Keys can be any valid string but
     # must be unique for every `CreateRefund` request.
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {minLength: 1}
     string idempotency_key;
+    # 
     TerminalRefund refund?;
 };
 
@@ -8354,6 +8920,7 @@ public type CatalogQuickAmountsSettings record {
 # Filter events by the order associated with the event.
 public type LoyaltyEventOrderFilter record {
     # The ID of the [order](https://developer.squareup.com/reference/square_2021-08-18/objects/Order) associated with the event.
+    @constraint:String {minLength: 1}
     string order_id;
 };
 
@@ -8400,6 +8967,7 @@ public type LoyaltyAccount record {
     # The total number of points in this field equals the number of points in the `balance` field.
     LoyaltyAccountExpiringPointDeadline[] expiring_point_deadlines?;
     # The Square-assigned ID of the loyalty account.
+    @constraint:String {maxLength: 36}
     string id?;
     # The total points accrued during the lifetime of the account.
     int lifetime_points?;
@@ -8409,6 +8977,7 @@ public type LoyaltyAccount record {
     # [Loyalty Overview](https://developer.squareup.com/docs/loyalty/overview).
     LoyaltyAccountMapping mapping?;
     # The Square-assigned ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram) to which the account belongs.
+    @constraint:String {maxLength: 36, minLength: 1}
     string program_id;
     # The timestamp when the loyalty account was last updated, in RFC 3339 format.
     string updated_at?;
@@ -8426,6 +8995,7 @@ public type PayOrderRequest record {
     # it with the same idempotency key without worrying about duplicate payments.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 192, minLength: 1}
     string idempotency_key;
     # The version of the order being paid. If not supplied, the latest version will be paid.
     int order_version?;
@@ -8463,10 +9033,12 @@ public type CreateCustomerGroupResponse record {
     # 
     # Customer groups can be created, be modified, and have their membership defined using 
     # the Customers API or within the Customer Directory in the Square Seller Dashboard or Point of Sale.
-    CustomerGroup 'group?;
+    CustomerGroup group?;
 };
 
+# 
 public type CreateTerminalCheckoutResponse record {
+    # 
     TerminalCheckout checkout?;
     # Information about errors encountered during the request.
     Error[] errors?;
@@ -8527,6 +9099,7 @@ public type Payment record {
     # Japanese for an address in Japan, and so on.
     Address billing_address?;
     # The buyer's email address.
+    @constraint:String {maxLength: 255}
     string buyer_email_address?;
     # Actions that can be performed on this payment:
     # - `EDIT_AMOUNT_UP` - The payment amount can be edited up.
@@ -8540,8 +9113,10 @@ public type Payment record {
     # [Take Cash Payments](https://developer.squareup.com/docs/payments-api/take-payments/cash-payments).
     CashPaymentDetails cash_details?;
     # The timestamp of when the payment was created, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string created_at?;
     # The [Customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) ID of the customer associated with the payment.
+    @constraint:String {maxLength: 191}
     string customer_id?;
     # The action to be applied to the payment when the `delay_duration` has elapsed. This field
     # is read-only.
@@ -8571,29 +9146,37 @@ public type Payment record {
     # time on your local machine.
     string delayed_until?;
     # An optional ID of the employee associated with taking the payment.
+    @constraint:String {maxLength: 192}
     string employee_id?;
     # Stores details about an external payment. Contains only non-confidential information.
     # For more information, see 
     # [Take External Payments](https://developer.squareup.com/docs/payments-api/take-payments/external-payments).
     ExternalPaymentDetails external_details?;
     # A unique ID for the payment.
+    @constraint:String {maxLength: 192}
     string id?;
     # The ID of the location associated with the payment.
+    @constraint:String {maxLength: 50}
     string location_id?;
     # An optional note to include when creating a payment.
+    @constraint:String {maxLength: 500}
     string note?;
     # The ID of the order associated with the payment.
+    @constraint:String {maxLength: 192}
     string order_id?;
     # The processing fees and fee adjustments assessed by Square for this payment.
     ProcessingFee[] processing_fee?;
     # The payment's receipt number.
     # The field is missing if a payment is canceled.
+    @constraint:String {maxLength: 4}
     string receipt_number?;
     # The URL for the payment's receipt.
     # The field is only populated for COMPLETED payments.
+    @constraint:String {maxLength: 255}
     string receipt_url?;
     # An optional ID that associates the payment with an entity in
     # another system.
+    @constraint:String {maxLength: 40}
     string reference_id?;
     # A list of `refund_id`s identifying refunds for the payment.
     string[] refund_ids?;
@@ -8643,6 +9226,7 @@ public type Payment record {
     # The source type for this payment.
     # 
     # Current values include `CARD`, `BANK_ACCOUNT`, `WALLET`, `CASH`, or `EXTERNAL`.
+    @constraint:String {maxLength: 50}
     string source_type?;
     # Additional payment information that gets added to the customer's card statement
     # as part of the statement description.
@@ -8652,6 +9236,7 @@ public type Payment record {
     # seller taking the payment.
     string statement_description_identifier?;
     # Indicates whether the payment is APPROVED, PENDING, COMPLETED, CANCELED, or FAILED.
+    @constraint:String {maxLength: 50}
     string status?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -8668,6 +9253,7 @@ public type Payment record {
     # for more information.
     Money total_money?;
     # The timestamp of when the payment was last updated, in RFC 3339 format.
+    @constraint:String {maxLength: 32}
     string updated_at?;
     # Used for optimistic concurrency. This opaque token identifies a specific version of the
     # `Payment` object.
@@ -8678,6 +9264,7 @@ public type Payment record {
 
 public type InfoCode anydata;
 
+# 
 public type ListCatalogResponse record {
     # The pagination cursor to be used in a subsequent request. If unset, this is the final response.
     # See [Pagination](https://developer.squareup.com/docs/basics/api101/pagination) for more information.
@@ -8688,6 +9275,7 @@ public type ListCatalogResponse record {
     CatalogObject[] objects?;
 };
 
+# 
 public type RetrieveCatalogObjectRequest record {
     # Requests objects as of a specific version of the catalog. This allows you to retrieve historical
     # versions of objects. The value to retrieve a specific version of an object can be found
@@ -8718,6 +9306,7 @@ public type GiftCardActivityAdjustIncrement record {
     Reason reason;
 };
 
+# 
 public type ListTeamMemberBookingProfilesRequest record {
     # Indicates whether to include only bookable team members in the returned result (`true`) or not (`false`).
     boolean bookable_only?;
@@ -8741,8 +9330,10 @@ public type CreateCardRequest record {
     # Max: 45 characters
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {minLength: 1}
     string idempotency_key;
     # The ID of the source which represents the card information to be stored. This can be a card nonce or a payment id.
+    @constraint:String {maxLength: 16384, minLength: 1}
     string source_id;
     # An identifying token generated by [Payments.verifyBuyer()](https://developer.squareup.com/reference/sdks/web/payments/objects/Payments#Payments.verifyBuyer).
     # Verification tokens encapsulate customer device information and 3-D Secure
@@ -8752,9 +9343,11 @@ public type CreateCardRequest record {
     string verification_token?;
 };
 
+# 
 public type CancelTerminalRefundResponse record {
     # Information about errors encountered during the request.
     Error[] errors?;
+    # 
     TerminalRefund refund?;
 };
 
@@ -8808,6 +9401,7 @@ public type RegisterDomainResponse record {
     string status?;
 };
 
+# 
 public type ListCashDrawerShiftsResponse record {
     # Opaque cursor for fetching the next page of results. Cursor is not
     # present in the last page of results.
@@ -8825,6 +9419,7 @@ public type CreateBreakTypeRequest record {
     # instances on a `Shift`.
     BreakType break_type;
     # A unique string value to ensure the idempotency of the operation.
+    @constraint:String {maxLength: 128}
     string idempotency_key?;
 };
 
@@ -8837,6 +9432,7 @@ public type GetInvoiceResponse record {
     Invoice invoice?;
 };
 
+# 
 public type TerminalRefundQuerySort record {
     # The order in which results are listed.
     # - `ASC` - Oldest to newest.
@@ -8852,6 +9448,7 @@ public type CustomerSegment record {
     # The timestamp when the segment was created, in RFC 3339 format.
     string created_at?;
     # A unique Square-generated ID for the segment.
+    @constraint:String {maxLength: 255}
     string id?;
     # The name of the segment.
     string name;
@@ -8880,6 +9477,7 @@ public type ListBreakTypesRequest record {
     string cursor?;
     # The maximum number of `BreakType` results to return per page. The number can range between 1
     # and 200. The default is 200.
+    @constraint:Int {minValue: 1, maxValue: 200}
     int 'limit?;
     # Filter the returned `BreakType` results to only those that are associated with the
     # specified location.
@@ -8890,11 +9488,14 @@ public type ListBreakTypesRequest record {
 # reward tier criteria are met. Rewards are created through the Loyalty API.
 public type OrderReward record {
     # The identifier of the reward.
+    @constraint:String {minLength: 1}
     string id;
     # The identifier of the reward tier corresponding to this reward.
+    @constraint:String {minLength: 1}
     string reward_tier_id;
 };
 
+# 
 public type ListCashDrawerShiftEventsResponse record {
     # Opaque cursor for fetching the next page. Cursor is not present in
     # the last page of results.
@@ -8947,6 +9548,7 @@ public type V1PhoneNumber record {
 public type CatalogItem record {
     # The text of the item's display label in the Square Point of Sale app. Only up to the first five characters of the string are used.
     # This attribute is searchable, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 24}
     string abbreviation?;
     # If `true`, the item can be added to electronically fulfilled orders from the merchant's online store.
     boolean available_electronically?;
@@ -8957,6 +9559,7 @@ public type CatalogItem record {
     # The ID of the item's category, if any.
     string category_id?;
     # The item's description. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 4096}
     string description?;
     # List of item options IDs for this item. Used to manage and group item
     # variations in a specified order.
@@ -8971,6 +9574,7 @@ public type CatalogItem record {
     # may also be added to or deleted from an item using `UpdateItemModifierLists`.
     CatalogItemModifierListInfo[] modifier_list_info?;
     # The item's name. This is a searchable attribute for use in applicable query filters, its value must not be empty, and the length is of Unicode code points.
+    @constraint:String {maxLength: 512}
     string name?;
     # The product type of the item. May not be changed once an item has been created.
     # 
@@ -9033,13 +9637,16 @@ public type CustomAttributeFilter record {
 public type InventoryCount record {
     # An RFC 3339-formatted timestamp that indicates when the most recent physical count or adjustment affecting
     # the estimated count is received.
+    @constraint:String {maxLength: 34}
     string calculated_at?;
     # The Square-generated ID of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked.
+    @constraint:String {maxLength: 100}
     string catalog_object_id?;
     # The [type](https://developer.squareup.com/reference/square_2021-08-18/enums/CatalogObjectType) of the
     # [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) being tracked. Tracking is only
     # supported for the `ITEM_VARIATION` type.
+    @constraint:String {maxLength: 14}
     string catalog_object_type?;
     # Whether the inventory count is for composed variation (TRUE) or not (FALSE). If true, the inventory count will not be present in the response of
     # any of these endpoints: [BatchChangeInventory](https://developer.squareup.com/reference/square_2021-08-18/inventory-api/batch-change-inventory), 
@@ -9049,21 +9656,26 @@ public type InventoryCount record {
     boolean is_estimated?;
     # The Square-generated ID of the [Location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the related
     # quantity of items is being tracked.
+    @constraint:String {maxLength: 100}
     string location_id?;
     # The number of items affected by the estimated count as a decimal string.
     # Can support up to 5 digits after the decimal point.
+    @constraint:String {maxLength: 26}
     string quantity?;
     # The current [inventory state](https://developer.squareup.com/reference/square_2021-08-18/enums/InventoryState) for the related
     # quantity of items.
     string state?;
 };
 
+# 
 public type GetTerminalCheckoutResponse record {
+    # 
     TerminalCheckout checkout?;
     # Information about errors encountered during the request.
     Error[] errors?;
 };
 
+# 
 public type RetrieveInventoryCountRequest record {
     # A pagination cursor returned by a previous call to this endpoint.
     # Provide this to retrieve the next set of results for the original query.
@@ -9075,6 +9687,7 @@ public type RetrieveInventoryCountRequest record {
     string location_ids?;
 };
 
+# 
 public type V1CreateRefundRequestType string;
 
 # Describes a `SearchInvoices` response.
@@ -9115,6 +9728,7 @@ public type TenderCashDetails record {
     Money change_back_money?;
 };
 
+# 
 public type MerchantStatus string;
 
 # A query filter to search for availabilities by.
@@ -9183,6 +9797,7 @@ public type InvoiceRecipient record {
     string company_name?;
     # The ID of the customer. This is the customer profile ID that 
     # you provide when creating a draft invoice.
+    @constraint:String {maxLength: 255, minLength: 1}
     string customer_id?;
     # The recipient's email address.
     string email_address?;
@@ -9208,12 +9823,14 @@ public type CreatePaymentResponse record {
 # The query filter to return the search result by exact match of the specified attribute name and value.
 public type CatalogQueryExact record {
     # The name of the attribute to be searched. Matching of the attribute name is exact.
+    @constraint:String {minLength: 1}
     string attribute_name;
     # The desired value of the search attribute. Matching of the attribute value is case insensitive and can be partial.
     # For example, if a specified value of "sma", objects with the named attribute value of "Small", "small" are both matched.
     string attribute_value;
 };
 
+# 
 public type GiftCardActivityBlockReason string;
 
 # Square Checkout lets merchants accept online payments for supported
@@ -9299,12 +9916,15 @@ public type Checkout record {
     string redirect_url?;
 };
 
+# 
 public type CreateTerminalCheckoutRequest record {
+    # 
     TerminalCheckout checkout;
     # A unique string that identifies this `CreateCheckout` request. Keys can be any valid string but
     # must be unique for every `CreateCheckout` request.
     # 
     # See [Idempotency keys](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {maxLength: 64, minLength: 1}
     string idempotency_key;
 };
 
@@ -9327,7 +9947,7 @@ public type UpdateCustomerGroupResponse record {
     # 
     # Customer groups can be created, be modified, and have their membership defined using 
     # the Customers API or within the Customer Directory in the Square Seller Dashboard or Point of Sale.
-    CustomerGroup 'group?;
+    CustomerGroup group?;
 };
 
 # Request object for the [ListMerchant](https://developer.squareup.com/reference/square_2021-08-18/merchants-api/list-merchants) endpoint.
@@ -9339,11 +9959,13 @@ public type ListMerchantsRequest record {
 # Provides metadata when the event `type` is `DELETE_REWARD`.
 public type LoyaltyEventDeleteReward record {
     # The ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_program_id;
     # The number of points returned to the loyalty account.
     int points;
     # The ID of the deleted [loyalty reward](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyReward).
     # This field is returned only if the event source is `LOYALTY_API`.
+    @constraint:String {maxLength: 36}
     string reward_id?;
 };
 
@@ -9361,9 +9983,11 @@ public type ListBankAccountsResponse record {
     Error[] errors?;
 };
 
+# 
 public type RetrieveBusinessBookingProfileRequest record {
 };
 
+# 
 public type OnboardAppointmentsRequest record {
 };
 
@@ -9400,6 +10024,7 @@ public type ListCustomersRequest record {
     # The limit is ignored if it is less than 1 or greater than 100. The default value is 100.
     # 
     # For more information, see [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination).
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
     # Indicates how customers should be sorted.
     # 
@@ -9418,6 +10043,7 @@ public type InventoryAlertType string;
 # Determines the type of a specific Quick Amount.
 public type CatalogQuickAmountType string;
 
+# 
 public type BatchDeleteCatalogObjectsResponse record {
     # The database [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates) of this deletion in RFC 3339 format, e.g., "2016-09-04T23:59:33.123Z".
     string deleted_at?;
@@ -9439,6 +10065,7 @@ public type OrderPricingOptions record {
     boolean auto_apply_taxes?;
 };
 
+# 
 public type V1OrderHistoryEntryAction string;
 
 # Specific details for curbside pickup.
@@ -9448,6 +10075,7 @@ public type OrderFulfillmentPickupDetailsCurbsidePickupDetails record {
     # (for example, "2016-09-04T23:59:33.123Z").
     string buyer_arrived_at?;
     # Specific details for curbside pickup, such as parking number and vehicle model.
+    @constraint:String {maxLength: 250}
     string curbside_details?;
 };
 
@@ -9462,6 +10090,7 @@ public type SearchSubscriptionsFilter record {
 # Options to control how to override the default behavior of the specified modifier.
 public type CatalogModifierOverride record {
     # The ID of the `CatalogModifier` whose default behavior is being overridden.
+    @constraint:String {minLength: 1}
     string modifier_id;
     # If `true`, this `CatalogModifier` should be selected by default for this `CatalogItem`.
     boolean on_by_default?;
@@ -9501,6 +10130,7 @@ public type AddGroupToCustomerRequest record {
 # The unit of length used to measure a quantity.
 public type MeasurementUnitLength string;
 
+# 
 public type DeviceCheckoutOptions record {
     # The unique ID of the device intended for this `TerminalCheckout`.
     # A list of `DeviceCode` objects can be retrieved from the /v2/devices/codes endpoint.
@@ -9508,9 +10138,11 @@ public type DeviceCheckoutOptions record {
     string device_id;
     # Instructs the device to skip the receipt screen. Defaults to false.
     boolean skip_receipt_screen?;
+    # 
     TipSettings tip_settings?;
 };
 
+# 
 public type V1ListPaymentsRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -9530,6 +10162,7 @@ public type V1ListPaymentsRequest record {
 # Unit of time used to measure a quantity (a duration).
 public type MeasurementUnitTime string;
 
+# 
 public type V1OrderState string;
 
 # Represents a reward tier in a loyalty program. A reward tier defines how buyers can redeem points for a reward, such as the number of points required and the value and scope of the discount. A loyalty program can offer multiple reward tiers.
@@ -9541,10 +10174,13 @@ public type LoyaltyProgramRewardTier record {
     # [Get discount details for the reward](https://developer.squareup.com/docs/loyalty-api/overview#get-discount-details).
     LoyaltyProgramRewardDefinition definition;
     # The Square-assigned ID of the reward tier.
+    @constraint:String {maxLength: 36, minLength: 1}
     string id;
     # The name of the reward tier.
+    @constraint:String {minLength: 1}
     string name;
     # The points exchanged for the reward tier.
+    @constraint:Int {minValue: 1}
     int points;
     # A reference to a Catalog object at a specific version. In general this is
     # used as an entry point into a graph of catalog objects, where the objects exist
@@ -9552,6 +10188,7 @@ public type LoyaltyProgramRewardTier record {
     CatalogObjectReference pricing_rule_reference?;
 };
 
+# 
 public type V1EmployeeStatus string;
 
 # Stores details about a cash payment. Contains only non-confidential information. For more information, see 
@@ -9637,6 +10274,7 @@ public type ListPaymentsRequest record {
     int total?;
 };
 
+# 
 public type SearchTerminalRefundsResponse record {
     # The pagination cursor to be used in a subsequent request. If empty,
     # this is the final response.
@@ -9649,6 +10287,7 @@ public type SearchTerminalRefundsResponse record {
     TerminalRefund[] refunds?;
 };
 
+# 
 public type CalculateOrderResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -9676,6 +10315,7 @@ public type GetShiftResponse record {
 # A named selection for this `SELECTION`-type custom attribute definition.
 public type CatalogCustomAttributeDefinitionSelectionConfigCustomAttributeSelection record {
     # Selection name, unique within `allowed_selections`.
+    @constraint:String {maxLength: 255, minLength: 1}
     string name;
     # Unique ID set by Square.
     string uid?;
@@ -9684,10 +10324,12 @@ public type CatalogCustomAttributeDefinitionSelectionConfigCustomAttributeSelect
 # The status of a payment request reminder.
 public type InvoicePaymentReminderStatus string;
 
+# 
 public type CancelBookingRequest record {
     # The revision number for the booking used for optimistic concurrency.
     int booking_version?;
     # A unique key to make this request an idempotent operation.
+    @constraint:String {maxLength: 255}
     string idempotency_key?;
 };
 
@@ -9702,11 +10344,15 @@ public type CreateRefundResponse record {
     Refund refund?;
 };
 
+# 
 public type V1RetrieveEmployeeRoleRequest record {
 };
 
+# 
 public type TerminalCheckoutQuery record {
+    # 
     TerminalCheckoutQueryFilter filter?;
+    # 
     TerminalCheckoutQuerySort sort?;
 };
 
@@ -9766,6 +10412,7 @@ public type SearchLoyaltyRewardsRequest record {
     # see [Pagination](https://developer.squareup.com/docs/basics/api101/pagination).
     string cursor?;
     # The maximum number of results to return in the response.
+    @constraint:Int {minValue: 1, maxValue: 30}
     int 'limit?;
     # The set of search requirements.
     SearchLoyaltyRewardsRequestLoyaltyRewardQuery query?;
@@ -9795,13 +10442,16 @@ public type OrderReturnLineItemModifier record {
     # for more information.
     Money base_price_money?;
     # The catalog object ID referencing [CatalogModifier](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogModifier).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this line item modifier references.
     int catalog_version?;
     # The name of the item modifier.
+    @constraint:String {maxLength: 255}
     string name?;
     # The modifier `uid` from the order's line item that contains the
     # original sale of this line item modifier.
+    @constraint:String {maxLength: 60}
     string source_modifier_uid?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -9811,9 +10461,11 @@ public type OrderReturnLineItemModifier record {
     # for more information.
     Money total_price_money?;
     # A unique ID that identifies the return modifier only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
+# 
 public type RetrieveCashDrawerShiftResponse record {
     # This model gives the details of a cash drawer shift.
     # The cash_payment_money, cash_refund_money, cash_paid_in_money,
@@ -9860,6 +10512,7 @@ public type GetBreakTypeResponse record {
 # Determines a seller's option on Quick Amounts feature.
 public type CatalogQuickAmountsSettingsOption string;
 
+# 
 public type RetrieveEmployeeResponse record {
     # An employee object that is used by the external API.
     Employee employee?;
@@ -9982,6 +10635,7 @@ public type DeleteBreakTypeResponse record {
 public type RetrieveDisputeEvidenceResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
+    # 
     DisputeEvidence evidence?;
 };
 
@@ -10023,7 +10677,9 @@ public type SearchLoyaltyRewardsResponse record {
     LoyaltyReward[] rewards?;
 };
 
+# 
 public type V1ListSettlementsResponse record {
+    # 
     V1Settlement[] items?;
 };
 
@@ -10038,6 +10694,7 @@ public type CreateCustomerResponse record {
     Error[] errors?;
 };
 
+# 
 public type Location record {
     # Represents a postal address in a country. The address format is based 
     # on an [open-source library from Google](https://github.com/google/libaddressinput). For more information, 
@@ -10153,6 +10810,7 @@ public type V1CreateRefundRequest record {
     string payment_id;
     # The reason for the refund.
     string reason;
+    # 
     V1Money refunded_money?;
     # An optional key to ensure idempotence if you issue the same PARTIAL refund request more than once.
     string request_idempotence_key?;
@@ -10160,6 +10818,7 @@ public type V1CreateRefundRequest record {
     string 'type;
 };
 
+# 
 public type ListCashDrawerShiftsRequest record {
     # The inclusive start time of the query on opened_at, in ISO 8601 format.
     string begin_time?;
@@ -10169,8 +10828,10 @@ public type ListCashDrawerShiftsRequest record {
     string end_time?;
     # Number of cash drawer shift events in a page of results (200 by
     # default, 1000 max).
+    @constraint:Int {maxValue: 1000}
     int 'limit?;
     # The ID of the location to query for a list of cash drawer shifts.
+    @constraint:String {minLength: 1}
     string location_id;
     # The order in which cash drawer shifts are listed in the response,
     # based on their opened_at field. Default value: ASC
@@ -10199,6 +10860,7 @@ public type OrderLineItemDiscount record {
     # for more information.
     Money applied_money?;
     # The catalog object ID referencing [CatalogDiscount](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogDiscount).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this discount references.
     int catalog_version?;
@@ -10222,11 +10884,13 @@ public type OrderLineItemDiscount record {
     # For more information, see [Metadata](https://developer.squareup.com/docs/build-basics/metadata).
     record {} metadata?;
     # The discount's name.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the discount, as a string representation of a decimal number.
     # A value of `7.25` corresponds to a percentage of 7.25%.
     # 
     # `percentage` is not set for amount-based discounts.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # The object ID of a [pricing rule](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogPricingRule) to be applied 
     # automatically to this discount. The specification and application of the discounts, to 
@@ -10253,12 +10917,14 @@ public type OrderLineItemDiscount record {
     # `FIXED_PERCENTAGE` or `FIXED_AMOUNT`.
     string 'type?;
     # A unique ID that identifies the discount only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
 # Choices of customer-facing time zone used for bookings.
 public type BusinessBookingProfileCustomerTimezoneChoice string;
 
+# 
 public type UpdateItemModifierListsRequest record {
     # The IDs of the catalog items associated with the CatalogModifierList objects being updated.
     string[] item_ids;
@@ -10306,6 +10972,7 @@ public type SearchOrdersRequest record {
     # possible to receive fewer results than the specified limit on a given page.
     # 
     # Default: `500`
+    @constraint:Int {minValue: 1}
     int 'limit?;
     # The location IDs for the orders to query. All locations must belong to
     # the same merchant.
@@ -10330,13 +10997,17 @@ public type OrderFulfillmentPickupDetailsScheduleType string;
 # Details about the device that took the payment.
 public type DeviceDetails record {
     # The Square-issued ID of the device.
+    @constraint:String {maxLength: 255}
     string device_id?;
     # The Square-issued installation ID for the device.
+    @constraint:String {maxLength: 255}
     string device_installation_id?;
     # The name of the device set by the seller.
+    @constraint:String {maxLength: 255}
     string device_name?;
 };
 
+# 
 public type RetrieveTeamMemberBookingProfileResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -10354,6 +11025,7 @@ public type Booking record {
     # The ID of the [Customer](https://developer.squareup.com/reference/square_2021-08-18/objects/Customer) object representing the customer attending this booking
     string customer_id?;
     # The free-text field for the customer to supply notes about the booking. For example, the note can be preferences that cannot be expressed by supported attributes of a relevant [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) instance.
+    @constraint:String {maxLength: 4096}
     string customer_note?;
     # A unique ID of this object representing a booking.
     string id?;
@@ -10361,6 +11033,7 @@ public type Booking record {
     string location_id?;
     # The free-text field for the seller to supply notes about the booking. For example, the note can be preferences that cannot be expressed by supported attributes of a specific [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject) instance.
     # This field should not be visible to customers.
+    @constraint:String {maxLength: 4096}
     string seller_note?;
     # The timestamp specifying the starting time of this booking, in RFC 3339 format.
     string start_at?;
@@ -10414,6 +11087,7 @@ public type Card record {
     Address billing_address?;
     # The first six digits of the card number, known as the Bank Identification Number (BIN). Only the Payments API
     # returns this field.
+    @constraint:String {maxLength: 6}
     string bin?;
     # The card's brand.
     string card_brand?;
@@ -10421,6 +11095,7 @@ public type Card record {
     # The Card object includes this field only in response to Payments API calls.
     string card_type?;
     # The name of the cardholder.
+    @constraint:String {maxLength: 96}
     string cardholder_name?;
     # The ID of a customer created using the Customers API to be associated with the card.
     string customer_id?;
@@ -10433,10 +11108,13 @@ public type Card record {
     # __Not currently set.__ Intended as a Square-assigned identifier, based
     # on the card number, to identify the card across multiple locations within a
     # single application.
+    @constraint:String {maxLength: 255}
     string fingerprint?;
     # Unique ID for this card. Generated by Square.
+    @constraint:String {maxLength: 64}
     string id?;
     # The last 4 digits of the card number.
+    @constraint:String {maxLength: 4}
     string last_4?;
     # Indicates whether the Card is prepaid or not.
     # The Card object includes this field only in response to Payments API calls.
@@ -10444,6 +11122,7 @@ public type Card record {
     # An optional user-defined reference ID that associates this card with
     # another entity in an external system. For example, a customer ID from an
     # external customer management system.
+    @constraint:String {maxLength: 128}
     string reference_id?;
     # Current version number of the card. Increments with each card update. Requests to update an
     # existing Card object will be rejected unless the version in the request matches the current
@@ -10505,15 +11184,19 @@ public type DeleteLoyaltyRewardResponse record {
 
 # Request object for the [CreateLocation](https://developer.squareup.com/reference/square_2021-08-18/locations-api/create-location) endpoint.
 public type CreateLocationRequest record {
+    # 
     Location location?;
 };
 
+# 
 public type SearchTerminalRefundsRequest record {
     # A pagination cursor returned by a previous call to this endpoint.
     # Provide this cursor to retrieve the next set of results for the original query.
     string cursor?;
     # Limits the number of results returned for a single request.
+    @constraint:Int {minValue: 1, maxValue: 100}
     int 'limit?;
+    # 
     TerminalRefundQuery query?;
 };
 
@@ -10562,6 +11245,7 @@ public type OrderServiceCharge record {
     # The calculation phase at which to apply the service charge.
     string calculation_phase?;
     # The catalog object ID referencing the service charge [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject).
+    @constraint:String {maxLength: 192}
     string catalog_object_id?;
     # The version of the catalog object that this service charge references.
     int catalog_version?;
@@ -10585,11 +11269,13 @@ public type OrderServiceCharge record {
     # For more information, see [Metadata](https://developer.squareup.com/docs/build-basics/metadata).
     record {} metadata?;
     # The name of the service charge.
+    @constraint:String {maxLength: 255}
     string name?;
     # The service charge percentage as a string representation of a
     # decimal number. For example, `"7.25"` indicates a service charge of 7.25%.
     # 
     # Exactly 1 of `percentage` or `amount_money` should be set.
+    @constraint:String {maxLength: 10}
     string percentage?;
     # Indicates whether the service charge can be taxed. If set to `true`,
     # order-level taxes automatically apply to the service charge. Note that
@@ -10612,12 +11298,15 @@ public type OrderServiceCharge record {
     # The type of the service charge.
     string 'type?;
     # A unique ID that identifies the service charge only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
+# 
 public type VoidTransactionRequest record {
 };
 
+# 
 public type OrderServiceChargeType string;
 
 # The current state of this fulfillment.
@@ -10646,20 +11335,26 @@ public type RetrieveSnippetResponse record {
 public type RetrieveTeamMemberRequest record {
 };
 
+# 
 public type DisputeEvidence record {
     # The ID of the dispute the evidence is associated with.
+    @constraint:String {maxLength: 40, minLength: 1}
     string dispute_id?;
     # A file to be uploaded as dispute evidence.
     DisputeEvidenceFile evidence_file?;
     # The Square-generated ID of the evidence.
+    @constraint:String {maxLength: 40, minLength: 1}
     string evidence_id?;
     # Raw text
+    @constraint:String {maxLength: 500, minLength: 1}
     string evidence_text?;
     # The type of the evidence.
     string evidence_type?;
     # The Square-generated ID of the evidence.
+    @constraint:String {maxLength: 40, minLength: 1}
     string id?;
     # The time when the next action is due, in RFC 3339 format.
+    @constraint:String {maxLength: 40, minLength: 1}
     string uploaded_at?;
 };
 
@@ -10675,6 +11370,7 @@ public type OrderFulfillmentUpdatedUpdate record {
     string old_state?;
 };
 
+# 
 public type CheckAppointmentsOnboardedRequest record {
 };
 
@@ -10696,8 +11392,10 @@ public type LoyaltyEventFilter record {
 # The query filter to return the search result whose named attribute values are prefixed by the specified attribute value.
 public type CatalogQueryPrefix record {
     # The name of the attribute to be searched.
+    @constraint:String {minLength: 1}
     string attribute_name;
     # The desired prefix of the search attribute value.
+    @constraint:String {minLength: 1}
     string attribute_prefix;
 };
 
@@ -10726,6 +11424,7 @@ public type ListSubscriptionEventsRequest record {
     # in the response.
     # 
     # Default: `200`
+    @constraint:Int {minValue: 1}
     int 'limit?;
 };
 
@@ -10759,6 +11458,7 @@ public type OrderFulfillment record {
     # The type of the fulfillment.
     string 'type?;
     # A unique ID that identifies the fulfillment only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -10775,6 +11475,7 @@ public type OrderFulfillmentPickupDetails record {
     # If not set, this pickup fulfillment remains accepted until it is canceled or completed.
     string auto_complete_duration?;
     # A description of why the pickup was canceled. The maximum length: 100 characters.
+    @constraint:String {maxLength: 100}
     string cancel_reason?;
     # The [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates) 
     # indicating when the fulfillment was canceled. The timestamp must be in RFC 3339 format
@@ -10796,6 +11497,7 @@ public type OrderFulfillmentPickupDetails record {
     boolean is_curbside_pickup?;
     # A note meant to provide additional instructions about the pickup
     # fulfillment displayed in the Square Point of Sale application and set by the API.
+    @constraint:String {maxLength: 500}
     string note?;
     # The [timestamp](https://developer.squareup.com/docs/build-basics/working-with-dates)
     # indicating when the fulfillment was picked up by the recipient. The timestamp must be in RFC 3339 format
@@ -10833,6 +11535,7 @@ public type OrderFulfillmentPickupDetails record {
     string schedule_type?;
 };
 
+# 
 public type UpsertCatalogObjectResponse record {
     # The wrapper object for the Catalog entries of a given object type.
     # 
@@ -10923,6 +11626,7 @@ public type CatalogDiscount record {
     # If you are unsure whether you need to use this field, consult your tax professional.
     string modify_tax_basis?;
     # The discount name. This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
     # The percentage of the discount as a string representation of a decimal number, using a `.` as the decimal
     # separator and without a `%` sign. A value of `7.5` corresponds to `7.5%`. Specify a percentage of `0` if `discount_type`
@@ -10938,6 +11642,7 @@ public type CatalogDiscount record {
 # Indicates the status of an invoice.
 public type InvoiceStatus string;
 
+# 
 public type UpsertCatalogObjectRequest record {
     # A value you specify that uniquely identifies this
     # request among all your requests. A common way to create
@@ -10949,6 +11654,7 @@ public type UpsertCatalogObjectRequest record {
     # worrying about creating duplicate objects.
     # 
     # See [Idempotency](https://developer.squareup.com/docs/basics/api101/idempotency) for more information.
+    @constraint:String {minLength: 1}
     string idempotency_key;
     # The wrapper object for the Catalog entries of a given object type.
     # 
@@ -10998,18 +11704,23 @@ public type UpsertCatalogObjectRequest record {
 public type V1Payment record {
     # All of the additive taxes associated with the payment.
     V1PaymentTax[] additive_tax?;
+    # 
     V1Money additive_tax_money?;
     # The time when the payment was created, in ISO 8601 format. Reflects the time of the first payment if the object represents an incomplete partial payment, and the time of the last or complete payment otherwise.
     string created_at?;
     # The unique identifier of the Square account that took the payment.
     string creator_id?;
+    # 
     Device device?;
+    # 
     V1Money discount_money?;
+    # 
     V1Money gross_sales_money?;
     # The payment's unique identifier.
     string id?;
     # All of the inclusive taxes associated with the payment.
     V1PaymentTax[] inclusive_tax?;
+    # 
     V1Money inclusive_tax_money?;
     # Indicates whether or not the payment is only partially paid for.
     # If true, this payment will have the tenders collected so far, but the
@@ -11019,10 +11730,13 @@ public type V1Payment record {
     V1PaymentItemization[] itemizations?;
     # The unique identifier of the merchant that took the payment.
     string merchant_id?;
+    # 
     V1Money net_sales_money?;
+    # 
     V1Money net_total_money?;
     # The URL of the payment's detail page in the merchant dashboard. The merchant must be signed in to the merchant dashboard to view this page.
     string payment_url?;
+    # 
     V1Money processing_fee_money?;
     # The URL of the receipt for the payment. Note that for split tender
     # payments, this URL corresponds to the receipt for the first tender
@@ -11030,17 +11744,23 @@ public type V1Payment record {
     # receipt_url field you can use to get the other receipts associated with
     # a split tender payment.
     string receipt_url?;
+    # 
     V1Money refunded_money?;
     # All of the refunds applied to the payment. Note that the value of all refunds on a payment can exceed the value of all tenders if a merchant chooses to refund money to a tender after previously accepting returned goods as part of an exchange.
     V1Refund[] refunds?;
+    # 
     V1Money surcharge_money?;
     # A list of all surcharges associated with the payment.
     V1PaymentSurcharge[] surcharges?;
+    # 
     V1Money swedish_rounding_money?;
+    # 
     V1Money tax_money?;
     # All of the tenders associated with the payment.
     V1Tender[] tender?;
+    # 
     V1Money tip_money?;
+    # 
     V1Money total_collected_money?;
 };
 
@@ -11063,6 +11783,7 @@ public type AccumulateLoyaltyPointsRequest record {
     LoyaltyEventAccumulatePoints accumulate_points;
     # A unique string that identifies the `AccumulateLoyaltyPoints` request. 
     # Keys can be any valid string but must be unique for every request.
+    @constraint:String {maxLength: 128, minLength: 1}
     string idempotency_key;
     # The [location](https://developer.squareup.com/reference/square_2021-08-18/objects/Location) where the purchase was made.
     string location_id;
@@ -11087,8 +11808,10 @@ public type OrderLineItemAppliedTax record {
     # 
     # This field is immutable. To change which taxes apply to a line item, delete and add a new
     # `OrderLineItemAppliedTax`.
+    @constraint:String {maxLength: 60, minLength: 1}
     string tax_uid;
     # A unique ID that identifies the applied tax only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
@@ -11099,6 +11822,7 @@ public type CreateInvoiceRequest record {
     # treats each request as independent.
     # 
     # For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 128}
     string idempotency_key?;
     # Stores information about an invoice. You use the Invoices API to create and manage
     # invoices. For more information, see [Manage Invoices Using the Invoices API](https://developer.squareup.com/docs/invoices-api/overview).
@@ -11111,6 +11835,7 @@ public type CreateInvoiceRequest record {
 public type DisableCardRequest record {
 };
 
+# 
 public type GiftCardActivityType string;
 
 # Represents a response from a search request containing a filtered list of `TeamMember` objects.
@@ -11139,6 +11864,7 @@ public type OrderEntry record {
     int 'version?;
 };
 
+# 
 public type RetrieveOrderRequest record {
 };
 
@@ -11162,6 +11888,7 @@ public type CardPaymentTimeline record {
     string voided_at?;
 };
 
+# 
 public type UpdateItemTaxesResponse record {
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -11169,6 +11896,7 @@ public type UpdateItemTaxesResponse record {
     string updated_at?;
 };
 
+# 
 public type V1ListEmployeeRolesRequest record {
     # A pagination cursor to retrieve the next set of results for your
     # original query to the endpoint.
@@ -11179,6 +11907,7 @@ public type V1ListEmployeeRolesRequest record {
     string 'order?;
 };
 
+# 
 public type CreateBookingResponse record {
     # Represents a booking as a time-bound service contract for a seller's staff member to provide a specified service
     # at a given location to a requesting customer in one or more appointment segments.
@@ -11203,6 +11932,7 @@ public type CustomerGroup record {
     # The timestamp when the customer group was created, in RFC 3339 format.
     string created_at?;
     # A unique Square-generated ID for the customer group.
+    @constraint:String {maxLength: 255}
     string id?;
     # The name of the customer group.
     string name;
@@ -11210,9 +11940,11 @@ public type CustomerGroup record {
     string updated_at?;
 };
 
+# 
 public type GetTerminalRefundResponse record {
     # Information about errors encountered during the request.
     Error[] errors?;
+    # 
     TerminalRefund refund?;
 };
 
@@ -11237,10 +11969,12 @@ public type CustomerTextFilter record {
 # Defines the parameters for a `DeprecatedCreateDisputeEvidenceText` request.
 public type DeprecatedCreateDisputeEvidenceTextRequest record {
     # The evidence string.
+    @constraint:String {maxLength: 500, minLength: 1}
     string evidence_text;
     # The type of evidence you are uploading.
     string evidence_type?;
     # The Unique ID. For more information, see [Idempotency](https://developer.squareup.com/docs/working-with-apis/idempotency).
+    @constraint:String {maxLength: 45, minLength: 1}
     string idempotency_key;
 };
 
@@ -11282,6 +12016,7 @@ public type ListPaymentRefundsResponse record {
 # Provides metadata when the event `type` is `OTHER`.
 public type LoyaltyEventOther record {
     # The Square-assigned ID of the [loyalty program](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyProgram).
+    @constraint:String {maxLength: 36, minLength: 1}
     string loyalty_program_id;
     # The number of points added or removed.
     int points;
@@ -11297,9 +12032,10 @@ public type UpdateCustomerGroupRequest record {
     # 
     # Customer groups can be created, be modified, and have their membership defined using 
     # the Customers API or within the Customer Directory in the Square Seller Dashboard or Point of Sale.
-    CustomerGroup 'group;
+    CustomerGroup group;
 };
 
+# 
 public type OrderFulfillmentUpdated record {
     # The timestamp for when the order was created, in RFC 3339 format.
     string created_at?;
@@ -11340,6 +12076,7 @@ public type InvoicePaymentRequest record {
     string automatic_payment_source?;
     # The ID of the credit or debit card on file to charge for the payment request. To get the cards on file for a customer,
     # call [ListCards](https://developer.squareup.com/reference/square_2021-08-18/cards-api/list-cards) and include the `customer_id` of the invoice recipient.
+    @constraint:String {maxLength: 255, minLength: 1}
     string card_id?;
     # Represents an amount of money. `Money` fields can be signed or unsigned.
     # Fields that do not explicitly define whether they are signed or unsigned are
@@ -11406,6 +12143,7 @@ public type InvoicePaymentRequest record {
     # for more information.
     Money total_completed_amount_money?;
     # The Square-generated ID of the payment request in an [invoice](https://developer.squareup.com/reference/square_2021-08-18/objects/Invoice).
+    @constraint:String {maxLength: 255, minLength: 1}
     string uid?;
 };
 
@@ -11415,6 +12153,7 @@ public type DeleteDisputeEvidenceResponse record {
     Error[] errors?;
 };
 
+# 
 public type RetrieveInventoryPhysicalCountResponse record {
     # Represents the quantity of an item variation that is physically present
     # at a specific location, verified by a seller or a seller's employee. For example,
@@ -11464,18 +12203,22 @@ public type OrderFulfillmentRecipient record {
     # values overrides the information from the customer profile. If the
     # targeted customer profile does not contain the necessary information and
     # these fields are left unset, the request results in an error.
+    @constraint:String {maxLength: 191}
     string customer_id?;
     # The display name of the fulfillment recipient.
     # 
     # If provided, the display name overrides the value pulled from the customer profile indicated by `customer_id`.
+    @constraint:String {maxLength: 255}
     string display_name?;
     # The email address of the fulfillment recipient.
     # 
     # If provided, the email address overrides the value pulled from the customer profile indicated by `customer_id`.
+    @constraint:String {maxLength: 255}
     string email_address?;
     # The phone number of the fulfillment recipient.
     # 
     # If provided, the phone number overrides the value pulled from the customer profile indicated by `customer_id`.
+    @constraint:String {maxLength: 17}
     string phone_number?;
 };
 
@@ -11485,6 +12228,7 @@ public type Reason anydata;
 public type CreateLocationResponse record {
     # Information on errors encountered during the request.
     Error[] errors?;
+    # 
     Location location?;
 };
 
@@ -11513,6 +12257,7 @@ public type CatalogModifier record {
     # The ID of the `CatalogModifierList` associated with this modifier.
     string modifier_list_id?;
     # The modifier name.  This is a searchable attribute for use in applicable query filters, and its value length is of Unicode code points.
+    @constraint:String {maxLength: 255}
     string name?;
     # Determines where this `CatalogModifier` appears in the `CatalogModifierList`.
     int ordinal?;
@@ -11528,6 +12273,7 @@ public type CatalogModifier record {
 # Types of location where service is provided.
 public type BusinessAppointmentSettingsBookingLocationType string;
 
+# 
 public type V1RetrieveEmployeeRequest record {
 };
 
@@ -11549,6 +12295,7 @@ public type CatalogQuickAmount record {
     string 'type;
 };
 
+# 
 public type BatchRetrieveInventoryCountsResponse record {
     # The current calculated inventory counts for the requested objects
     # and locations.
@@ -11562,9 +12309,11 @@ public type BatchRetrieveInventoryCountsResponse record {
     Error[] errors?;
 };
 
+# 
 public type ListEmployeesResponse record {
     # The token to be used to retrieve the next page of results.
     string cursor?;
+    # 
     Employee[] employees?;
     # Any errors that occurred during the request.
     Error[] errors?;
@@ -11596,12 +12345,14 @@ public type OrderReturn record {
     # for unlinked returns.
     string source_order_id?;
     # A unique ID that identifies the return only within this order.
+    @constraint:String {maxLength: 60}
     string uid?;
 };
 
 # The query expression to specify the key to sort search results.
 public type CatalogQuerySortedAttribute record {
     # The attribute whose value is used as the sort key.
+    @constraint:String {minLength: 1}
     string attribute_name;
     # The first attribute value to be returned by the query. Ascending sorts will return only
     # objects with this value or greater, while descending sorts will return only objects with this value
@@ -11650,6 +12401,7 @@ public type CatalogCustomAttributeDefinitionStringConfig record {
 # the result set when they match the filtering criteria.
 public type CustomerInclusionExclusion string;
 
+# 
 public type BatchRetrieveInventoryCountsRequest record {
     # The filter to return results by `CatalogObject` ID.
     # The filter is applicable only when set.  The default is null.
@@ -11684,7 +12436,7 @@ public type ShiftFilter record {
     # how time ranges are handled.
     TimeRange end?;
     # Fetch shifts for the specified location.
-    string[] location_ids;
+    ShiftfilterLocationidsItemsString[] location_ids;
     # Represents a generic time range. The start and end values are
     # represented in RFC 3339 format. Time ranges are customized to be
     # inclusive or exclusive based on the needs of a particular endpoint.
@@ -11694,7 +12446,7 @@ public type ShiftFilter record {
     # Fetch a `Shift` instance by `Shift.status`.
     string status?;
     # Fetch shifts for the specified team members. Replaced `employee_ids` at version "2020-08-26".
-    string[] team_member_ids;
+    ShiftfilterTeammemberidsItemsString[] team_member_ids;
     # A `Shift` search query filter parameter that sets a range of days that
     # a `Shift` must start or end in before passing the filter condition.
     ShiftWorkday workday?;

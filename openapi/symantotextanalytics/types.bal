@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type TopicSentiment record {
     Topic topic?;
@@ -42,7 +44,8 @@ public type Prediction record {
 
 public type PredictionResults PostPredicted[];
 
-public type LanguageDetectionRequest LanguageDetection[64];
+@constraint:Array {maxLength: 64, minLength: 1}
+public type LanguageDetectionRequest LanguageDetection[];
 
 public type PostPredicted record {
     # id of the post.
@@ -58,7 +61,7 @@ public type Sentiment record {
     int end?;
     string text?;
     boolean positive?;
-    float scale?;
+    decimal scale?;
     string category?;
     string parentCategory?;
     string negationTerm?;
@@ -73,7 +76,8 @@ public type TopicSentimentOutput record {
     Topic[] topics?;
 };
 
-public type PostRequest Post[32];
+@constraint:Array {maxLength: 32, minLength: 1}
+public type PostRequest Post[];
 
 public type LanguageDetection record {
     # id of the text.
@@ -96,7 +100,7 @@ public type Topic record {
     string topic?;
     string text?;
     string category?;
-    float polarity?;
+    decimal polarity?;
 };
 
 public type LanguagePredicted record {

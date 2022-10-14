@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -90,7 +90,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostAssetsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostAssetsResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the detailed information of a particular asset. Unlike the [GetAssets](/#operation/GetAssets) request,
@@ -99,7 +99,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getAsset(string id) returns GetAssetResponse|error {
-        string resourcePath = string `/assets/${id}`;
+        string resourcePath = string `/assets/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetAssetResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -112,13 +112,13 @@ public isolated client class Client {
     # + payload - UpdateAsset request 
     # + return - 200 response 
     remote isolated function updateAsset(string id, UpdateAssetRequest payload) returns GetAssetResponse|error {
-        string resourcePath = string `/assets/${id}`;
+        string resourcePath = string `/assets/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetAssetResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        GetAssetResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Fetch the last location of a given asset. This is essentially the same as the [GetAsset](/#operation/GetAsset) request,
@@ -127,7 +127,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getAssetLastLocation(string id) returns GetAssetLastLocationResponse|error {
-        string resourcePath = string `/assets/${id}/location`;
+        string resourcePath = string `/assets/${getEncodedUri(id)}/location`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetAssetLastLocationResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -204,7 +204,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PutLevelsResponse response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        PutLevelsResponse response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Adds a single level to your account. Levels allow locations to be categorised and helps
@@ -220,7 +220,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostLevelResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostLevelResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the list of locations that belong to your account. This request will only return the first 20 locations,
@@ -267,7 +267,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostLocationsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostLocationsResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the detailed information of a particular location. Unlike the [GetLocations](/#operation/GetLocations) request,
@@ -276,7 +276,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getLocation(string id) returns GetLocationResponse|error {
-        string resourcePath = string `/locations/${id}`;
+        string resourcePath = string `/locations/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetLocationResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -289,13 +289,13 @@ public isolated client class Client {
     # + payload - UpdateLocation request 
     # + return - 200 response 
     remote isolated function updateLocation(string id, UpdateLocationRequest payload) returns GetLocationResponse|error {
-        string resourcePath = string `/locations/${id}`;
+        string resourcePath = string `/locations/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetLocationResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        GetLocationResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Fetches the list of assets that were last seen at this location. Use the timestamps against each item
@@ -304,7 +304,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getLocationInventory(string id) returns GetLocationInventoryResponse|error {
-        string resourcePath = string `/locations/${id}/inventory`;
+        string resourcePath = string `/locations/${getEncodedUri(id)}/inventory`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetLocationInventoryResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -353,7 +353,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostReadersResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostReadersResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the detailed information of a particular reader. Unlike the [GetReaders](/#operation/GetReaders) request,
@@ -362,7 +362,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getReader(string id) returns GetReaderResponse|error {
-        string resourcePath = string `/readers/${id}`;
+        string resourcePath = string `/readers/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetReaderResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -375,13 +375,13 @@ public isolated client class Client {
     # + payload - UpdateReader request 
     # + return - 200 response 
     remote isolated function updateReader(string id, UpdateReaderRequest payload) returns GetReaderResponse|error {
-        string resourcePath = string `/readers/${id}`;
+        string resourcePath = string `/readers/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetReaderResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        GetReaderResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Fetches the list of assets that were last seen by this reader. Use the timestamps against each item
@@ -392,7 +392,7 @@ public isolated client class Client {
     # + windowSize - Time in seconds to consider assets to be within the readers inventory 
     # + return - 200 response 
     remote isolated function getReaderInventory(string id, float? windowSize = ()) returns GetReaderInventoryResponse|error {
-        string resourcePath = string `/readers/${id}/inventory`;
+        string resourcePath = string `/readers/${getEncodedUri(id)}/inventory`;
         map<anydata> queryParam = {"windowSize": windowSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
@@ -406,7 +406,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getReaderStatus(string id) returns GetReaderStatusResponse|error {
-        string resourcePath = string `/readers/${id}/status`;
+        string resourcePath = string `/readers/${getEncodedUri(id)}/status`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetReaderStatusResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -487,7 +487,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostTriggersResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostTriggersResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the detailed information of a particular trigger. Unlike the [GetTriggers](/#operation/GetTriggers)
@@ -496,7 +496,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getTrigger(string id) returns GetTriggerResponse|error {
-        string resourcePath = string `/triggers/${id}`;
+        string resourcePath = string `/triggers/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetTriggerResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -509,10 +509,10 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function deleteTrigger(string id) returns DeleteResponse|error {
-        string resourcePath = string `/triggers/${id}`;
+        string resourcePath = string `/triggers/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # To update trigger information, we utilise a PATCH request to support partial updates.
@@ -522,13 +522,13 @@ public isolated client class Client {
     # + payload - UpdateTrigger request 
     # + return - 200 response 
     remote isolated function updateTrigger(string id, UpdateTriggerRequest payload) returns GetTriggerResponse|error {
-        string resourcePath = string `/triggers/${id}`;
+        string resourcePath = string `/triggers/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetTriggerResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        GetTriggerResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the list of users that belong to your account. This request will only return the first 20 users,
@@ -573,7 +573,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetUserResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        GetUserResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get the detailed information of a particular user. Unlike the [GetUsers](/#operation/GetUsers) request,
@@ -583,7 +583,7 @@ public isolated client class Client {
     # + withKey - If you have the API admin permissions you can view the API key of external users. 
     # + return - 200 response 
     remote isolated function getUser(string id, boolean? withKey = ()) returns GetUserResponse|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"withKey": withKey};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
@@ -598,10 +598,10 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function deleteUser(string id) returns DeleteResponse|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        DeleteResponse response = check self.clientEp->delete(resourcePath, httpHeaders);
+        DeleteResponse response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # To update user information, we utilise a PATCH request to support partial updates.
@@ -611,13 +611,13 @@ public isolated client class Client {
     # + payload - UpdateUser request 
     # + return - 200 response 
     remote isolated function updateUser(string id, UpdateUserRequest payload) returns GetUserResponse|error {
-        string resourcePath = string `/users/${id}`;
+        string resourcePath = string `/users/${getEncodedUri(id)}`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        GetUserResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        GetUserResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Access the API key for a specific **EXTERNAL** user. This request takes no query parameters.
@@ -625,7 +625,7 @@ public isolated client class Client {
     # + id - Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e` 
     # + return - 200 response 
     remote isolated function getKey(string id) returns GetKeyResponse|error {
-        string resourcePath = string `/users/${id}/key`;
+        string resourcePath = string `/users/${getEncodedUri(id)}/key`;
         map<any> headerValues = {"x-api-key": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         GetKeyResponse response = check self.clientEp->get(resourcePath, httpHeaders);

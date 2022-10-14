@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     OAuth2ClientCredentialsGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,9 +48,13 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
-# OAuth2 Client Credintials Grant Configs
+# OAuth2 Client Credentials Grant Configs
 public type OAuth2ClientCredentialsGrantConfig record {|
     *http:OAuth2ClientCredentialsGrantConfig;
     # Token URL
@@ -99,7 +103,7 @@ public isolated client class Client {
     # + tags - Filter by tag(s) 
     # + return - successful operation 
     remote isolated function fetchAllContacts(string accountId, int? offset = (), int? 'limit = (), string? firstName = (), string? lastName = (), string? mobile = (), string? email = (), string? tags = ()) returns ContactsResponse|error {
-        string resourcePath = string `/accounts/${accountId}/contacts`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/contacts`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "firstName": firstName, "lastName": lastName, "mobile": mobile, "email": email, "tags": tags};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ContactsResponse response = check self.clientEp->get(resourcePath);
@@ -112,7 +116,7 @@ public isolated client class Client {
     # + payload - Create contact request payload 
     # + return - successful operation 
     remote isolated function createContact(string accountId, ContactRequest payload, string? mergeStrategy = ()) returns InlineResponse201|error {
-        string resourcePath = string `/accounts/${accountId}/contacts`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/contacts`;
         map<anydata> queryParam = {"mergeStrategy": mergeStrategy};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -127,7 +131,7 @@ public isolated client class Client {
     # + contactId - ID of contact to return 
     # + return - successful operation 
     remote isolated function fetchContact(string accountId, string contactId) returns ContactResponse|error {
-        string resourcePath = string `/accounts/${accountId}/contacts/${contactId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/contacts/${getEncodedUri(contactId)}`;
         ContactResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -137,7 +141,7 @@ public isolated client class Client {
     # + contactId - ID of contact 
     # + return - successful operation 
     remote isolated function contactsUpdate(string accountId, string contactId) returns ContactResponse|error {
-        string resourcePath = string `/accounts/${accountId}/contacts/${contactId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/contacts/${getEncodedUri(contactId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         ContactResponse response = check self.clientEp-> put(resourcePath, request);
@@ -149,8 +153,8 @@ public isolated client class Client {
     # + contactId - Contact id to delete 
     # + return - successful operation 
     remote isolated function removeContact(string accountId, string contactId) returns InlineResponse200|error {
-        string resourcePath = string `/accounts/${accountId}/contacts/${contactId}`;
-        InlineResponse200 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/contacts/${getEncodedUri(contactId)}`;
+        InlineResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Fetch messages
@@ -162,7 +166,7 @@ public isolated client class Client {
     # + conversationId - ID of conversation 
     # + return - successful operation 
     remote isolated function fetchAllMessages(string accountId, int? offset = (), int? 'limit = (), string? contactId = (), string? conversationId = ()) returns MessagesResponse|error {
-        string resourcePath = string `/accounts/${accountId}/messages`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/messages`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "contactId": contactId, "conversationId": conversationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         MessagesResponse response = check self.clientEp->get(resourcePath);
@@ -174,7 +178,7 @@ public isolated client class Client {
     # + payload - Send message request payload 
     # + return - successful operation 
     remote isolated function sendMessage(string accountId, SendMessagesRequest payload) returns SendMessagesResponse|error {
-        string resourcePath = string `/accounts/${accountId}/messages`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/messages`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -187,7 +191,7 @@ public isolated client class Client {
     # + messageId - ID of message to return 
     # + return - successful operation 
     remote isolated function fetchMessages(string accountId, string messageId) returns MessageResponse|error {
-        string resourcePath = string `/accounts/${accountId}/messages/${messageId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/messages/${getEncodedUri(messageId)}`;
         MessageResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -199,7 +203,7 @@ public isolated client class Client {
     # + name - Filter by name or part of 
     # + return - successful operation 
     remote isolated function fetchAllTemplates(string accountId, int? offset = (), int? 'limit = (), string? name = ()) returns TemplatesResponse|error {
-        string resourcePath = string `/accounts/${accountId}/templates`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/templates`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         TemplatesResponse response = check self.clientEp->get(resourcePath);
@@ -211,7 +215,7 @@ public isolated client class Client {
     # + payload - Create template request payload. 
     # + return - successful operation 
     remote isolated function createTemplate(string accountId, TemplateRequest payload) returns TemplatesResponse|error {
-        string resourcePath = string `/accounts/${accountId}/templates`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/templates`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -224,7 +228,7 @@ public isolated client class Client {
     # + templateId - ID of template to return 
     # + return - successful operation 
     remote isolated function fetchTemplate(string accountId, string templateId) returns TemplateResponse|error {
-        string resourcePath = string `/accounts/${accountId}/templates/${templateId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/templates/${getEncodedUri(templateId)}`;
         TemplateResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -234,7 +238,7 @@ public isolated client class Client {
     # + templateId - ID of template 
     # + return - successful operation 
     remote isolated function updateTemplate(string accountId, string templateId) returns TemplateResponse|error {
-        string resourcePath = string `/accounts/${accountId}/templates/${templateId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/templates/${getEncodedUri(templateId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         TemplateResponse response = check self.clientEp-> put(resourcePath, request);
@@ -246,8 +250,8 @@ public isolated client class Client {
     # + templateId - Template id to delete 
     # + return - successful operation 
     remote isolated function removeTemplate(string accountId, string templateId) returns InlineResponse200|error {
-        string resourcePath = string `/accounts/${accountId}/templates/${templateId}`;
-        InlineResponse200 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/templates/${getEncodedUri(templateId)}`;
+        InlineResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Fetch campaigns
@@ -258,7 +262,7 @@ public isolated client class Client {
     # + name - Filter by name or part of 
     # + return - successful operation 
     remote isolated function fetchAllCampaigns(string accountId, int? offset = (), int? 'limit = (), string? name = ()) returns CampaignsResponse|error {
-        string resourcePath = string `/accounts/${accountId}/campaigns`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/campaigns`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "name": name};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CampaignsResponse response = check self.clientEp->get(resourcePath);
@@ -270,7 +274,7 @@ public isolated client class Client {
     # + payload - Create campaign request payload 
     # + return - successful operation 
     remote isolated function createCampaigns(string accountId, CampaignRequest payload) returns CampaignResponse|error {
-        string resourcePath = string `/accounts/${accountId}/campaigns`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/campaigns`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -283,7 +287,7 @@ public isolated client class Client {
     # + campaignId - ID of campaign to return 
     # + return - successful operation 
     remote isolated function fetchCampaign(string accountId, string campaignId) returns CampaignResponse|error {
-        string resourcePath = string `/accounts/${accountId}/campaigns/${campaignId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/campaigns/${getEncodedUri(campaignId)}`;
         CampaignResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -293,7 +297,7 @@ public isolated client class Client {
     # + campaignId - ID of campaign 
     # + return - successful operation 
     remote isolated function updateCampaign(string accountId, string campaignId) returns CampaignResponse|error {
-        string resourcePath = string `/accounts/${accountId}/campaigns/${campaignId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/campaigns/${getEncodedUri(campaignId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CampaignResponse response = check self.clientEp-> put(resourcePath, request);
@@ -305,8 +309,8 @@ public isolated client class Client {
     # + campaignId - Campaign id to delete 
     # + return - successful operation 
     remote isolated function removeCampaign(string accountId, string campaignId) returns InlineResponse200|error {
-        string resourcePath = string `/accounts/${accountId}/campaigns/${campaignId}`;
-        InlineResponse200 response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/campaigns/${getEncodedUri(campaignId)}`;
+        InlineResponse200 response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Fetch conversations
@@ -316,7 +320,7 @@ public isolated client class Client {
     # + 'limit - Maximum number of results to return 
     # + return - successful operation 
     remote isolated function fetchAllConversations(string accountId, int? offset = (), int? 'limit = ()) returns ConversationsResponse|error {
-        string resourcePath = string `/accounts/${accountId}/conversations`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/conversations`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ConversationsResponse response = check self.clientEp->get(resourcePath);
@@ -328,7 +332,7 @@ public isolated client class Client {
     # + conversationId - ID of template to return 
     # + return - successful operation 
     remote isolated function fetchConversation(string accountId, string conversationId) returns ConversationResponse|error {
-        string resourcePath = string `/accounts/${accountId}/conversations/${conversationId}`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/conversations/${getEncodedUri(conversationId)}`;
         ConversationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -338,7 +342,7 @@ public isolated client class Client {
     # + conversationId - ID of conversation 
     # + return - successful operation 
     remote isolated function closeConversation(string accountId, string conversationId) returns ConversationResponse|error {
-        string resourcePath = string `/accounts/${accountId}/conversations/${conversationId}/close`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/conversations/${getEncodedUri(conversationId)}/close`;
         http:Request request = new;
         //TODO: Update the request as needed;
         ConversationResponse response = check self.clientEp-> put(resourcePath, request);
@@ -360,7 +364,7 @@ public isolated client class Client {
     # + accountId - Account to apply operations to 
     # + return - successful operation 
     remote isolated function fetchAllWebhooks(string accountId) returns WebhooksResponse|error {
-        string resourcePath = string `/accounts/${accountId}/webhooks`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/webhooks`;
         WebhooksResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -370,7 +374,7 @@ public isolated client class Client {
     # + payload - Message event subscribe request payload 
     # + return - successful operation 
     remote isolated function subscribeWebhooks(string accountId, AccountidWebhooksBody payload) returns WebhookResponse|error {
-        string resourcePath = string `/accounts/${accountId}/webhooks`;
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/webhooks`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -383,8 +387,8 @@ public isolated client class Client {
     # + url - Account to apply operations to 
     # + return - successful operation 
     remote isolated function unsubscribeWebhooks(string accountId, string url) returns http:Response|error {
-        string resourcePath = string `/accounts/${accountId}/webhooks/${url}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/accounts/${getEncodedUri(accountId)}/webhooks/${getEncodedUri(url)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
 }

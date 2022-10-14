@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -14,475 +14,487 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/constraint;
+
 public type ImageClassificationResponse record {
-    string? 'object?;
-    LabelResult[]? probabilities?;
+    string 'object?;
+    LabelResult[] probabilities?;
     # Value passed in when the prediction call was made. Returned only if the sampleId request parameter is provided.
-    string? sampleId?;
+    string sampleId?;
 };
 
 # label
 public type LabelResult record {
     # Probability lable for the input. 
-    string? label?;
+    string label?;
     # Probability value for the input. Values are between 0�1.
-    float? probability?;
+    float probability?;
 };
 
 # Train dataset payload
 public type LanguageTrainBody record {
     # Algorithm used for train
-    string? algorithm?;
+    string algorithm?;
     # ID of the dataset to train.
-    int? datasetId?;
+    int datasetId?;
     # Number of training iterations for the neural network. Optional.
-    int? epochs?;
+    @constraint:Int {minValue: 1, maxValue: 1000}
+    int epochs?;
     # N/A for intent or sentiment models.
-    float? learningRate?;
+    decimal learningRate?;
     # Name of the model. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
     # JSON that contains parameters that specify how the model is created
-    V2LanguageTrainParams? trainParams?;
+    V2LanguageTrainParams trainParams?;
 };
 
 # Contains additional attributes related to the task parameter. If the task parameter is table, the row and column IDs for the detected text are returned. If the task parameter is contact, the detected entity tags will be returned.
 public type Attributes record {
     # Location information
-    CellLocation? cellLocation?;
+    CellLocation cellLocation?;
     # Language of the key and value. Defaults to English. Only English is currently supported. Returned only when the task parameter value is form.
-    string? language?;
+    string language?;
     # Page that contains the identified text. The model always returns 1, except when you send in a multi-page PDF.
-    string? pageNumber?;
+    string pageNumber?;
     # Entity that the model predicts for the detected text.
-    string? tag?;
+    string tag?;
     # Contains the detected text of the data that was entered in the form field. For example, in a driver's license, the value might be 09/13/1999 for issue date. Returned only when the task parameter value is form
-    EntityObject? value?;
+    EntityObject value?;
 };
 
 # Contains information about the label with which the example is associated.
 public type Label record {
     # ID of the dataset that the label belongs to.
-    int? datasetId;
+    int datasetId;
     # ID of the label.
-    int? id?;
+    int id?;
     # Name of the label.
-    string? name;
+    string name;
     # Number of examples that have the label.
-    int? numExamples?;
+    int numExamples?;
 };
 
 # Create dataset payload
 public type DatasetsUploadBody record {
     # Path to the .csv, .tsv, or .json file on the local drive (FilePart).
-    string? data?;
+    string data?;
     # Name of the dataset. Optional. If this parameter is omitted, the dataset name is derived from the file name.
-    string? name?;
+    string name?;
     # URL of the .csv, .tsv, or .json file.
-    string? path?;
+    string path?;
     # Type of dataset data.
-    string? 'type?;
+    string 'type?;
 };
 
 # Create dataset payload
 public type UploadSyncBody1 record {
     # Path to the .zip file on the local drive (FilePart).
-    string? data?;
+    string data?;
     # Name of the dataset. Optional. If this parameter is omitted, the dataset name is derived from the .zip file name.
-    string? name?;
+    string name?;
     # URL of the .zip file.
-    string? path?;
+    string path?;
     # Type of dataset data.
-    string? 'type?;
+    string 'type?;
 };
 
 public type ExampleList record {
-    Example[]? data?;
-    string? 'object?;
+    Example[] data?;
+    string 'object?;
 };
 
 public type Metrics record {
-    string? algorithm?;
+    string algorithm?;
     # Date and time that the model was created.
-    string? createdAt?;
+    string createdAt?;
     # Model Id
-    string? id?;
-    string? language?;
+    string id?;
+    string language?;
     # Model metrics values.
     record {} metricsData?;
-    string? 'object?;
+    string 'object?;
 };
 
 # Object detection payload
 public type ObjectDetectionRequest record {
     # ID of the model that makes the detection.
-    string? modelId;
+    string modelId;
     # The image contained in a base64 string.
-    string? sampleBase64Content?;
+    string sampleBase64Content?;
     # String that you can pass in to tag the prediction. Optional. Can be any value, and is returned in the response.
-    string? sampleId?;
+    string sampleId?;
     # URL of the image file.
-    string? sampleLocation?;
+    string sampleLocation?;
 };
 
 public type TrainResponse record {
     # Algorithm used to create the model. Returned only when the modelType is image-detection.
-    string? algorithm?;
+    string algorithm?;
     # Date and time that the model was created.
-    string? createdAt?;
+    string createdAt?;
     # ID of the dataset trained to create the model.
-    int? datasetId;
+    int datasetId;
     # Not available yet
-    int? datasetVersionId;
+    int datasetVersionId;
     # Number of epochs used during training.
-    int? epochs?;
+    int epochs?;
     # Reason the dataset training failed. Returned only if the training status is FAILED.
-    string? failureMsg?;
+    string failureMsg?;
     # Model language inherited from the dataset language. For image datasets, default is N/A. For text datasets, default is en_US.
-    string? language;
+    string language;
     # Learning rate used during training.
-    float? learningRate?;
+    decimal learningRate?;
     # ID of the model. Contains letters and numbers.
-    string? modelId;
+    string modelId;
     # Type of data from which the model was created.
-    string? modelType?;
+    string modelType?;
     # Name of the model.
-    string? name;
+    string name;
     # Object returned; in this case, training.
-    string? 'object?;
+    string 'object?;
     # How far the dataset training has progressed. Values are between 0�1.
-    decimal? progress;
+    decimal progress;
     # Where the training job is in the queue. This field appears in the response only if the status is QUEUED.
-    int? queuePosition?;
+    int queuePosition?;
     # Status of the model.
-    string? status;
+    string status;
     # Training parameters passed into the request.
-    string? trainParams?;
+    string trainParams?;
     # Returns null when you train a dataset. Training statistics are returned when the status is SUCCEEDED or FAILED.
-    string? trainStats?;
+    string trainStats?;
     # Date and time that the model was last updated.
-    string? updatedAt?;
+    string updatedAt?;
 };
 
 public type Example record {
     # Date and time that the example was created.
-    string? createdAt?;
+    string createdAt?;
     # ID of the example.
-    int? id;
+    int id;
     # Contains information about the label with which the example is associated.
-    Label? label?;
+    Label label?;
     # URL of the image in the dataset. This is a temporary URL that expires in 30 minutes. This URL can be used to display images that were uploaded to a dataset in a UI.
-    string? location?;
+    string location?;
     # Name of the example.
-    string? name;
+    string name;
     # Object returned; in this case, example.
-    string? 'object?;
+    string 'object?;
 };
 
 public type IntentPredictRequest record {
     # Text for which you want to return an intent prediction.
-    string? document;
+    string document;
     # ID of the model that makes the prediction. The model must have been created from a dataset with a type of text-sentiment.
-    string? modelId;
+    string modelId;
     # Number of probabilities to return. 
-    int? numResults?;
+    @constraint:Int {minValue: 1}
+    int numResults?;
     # String that you can pass in to tag the prediction. Optional. Can be any value, and is returned in the response.
-    string? sampleId?;
+    string sampleId?;
 };
 
 # Create dataset feedback payload
 public type LanguageFeedbackBody record {
     # Intent or sentiment string to add to the dataset.
-    string? document?;
+    string document?;
     # Correct label for the example. Must be a label that exists in the dataset.
-    string? expectedLabel?;
+    string expectedLabel?;
     # ID of the model that misclassified the image. The feedback example is added to the dataset associated with this model.
-    string? modelId?;
+    string modelId?;
     # Name of the example. Optional. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
 };
 
 # Contains the detected text of the data that was entered in the form field. For example, in a driver's license, the value might be 09/13/1999 for issue date. Returned only when the task parameter value is form
 public type EntityObject record {
     # Contains the coordinates for the bounding box that encloses the detected text.
-    BoundingBox? boundingBox?;
+    BoundingBox boundingBox?;
     # Entity
-    string? entity?;
+    string entity?;
     # The data value for the specified key. For example, For example, in a driver's license, if key text is 4a iss, the value text might be 09/13/1999.
-    string? text?;
+    string text?;
 };
 
 # Retrain dataset payload
 public type LanguageRetrainBody record {
     # Algorithm used for train
-    string? algorithm?;
+    string algorithm?;
     # Number of training iterations for the neural network. Optional.
-    int? epochs?;
+    @constraint:Int {minValue: 1, maxValue: 1000}
+    int epochs?;
     # N/A for intent or sentiment models.
-    float? learningRate?;
+    float learningRate?;
     # ID of the model to be updated from the training.
-    string? modelId?;
+    string modelId?;
     # JSON that contains parameters that specify how the model is created
-    V2LanguageTrainParams? trainParams?;
+    V2LanguageTrainParams trainParams?;
 };
 
 public type PlanData record {
-    int? amount?;
-    string? plan?;
-    string? 'source?;
+    int amount?;
+    string plan?;
+    string 'source?;
 };
 
 public type DatasetList record {
-    Dataset[]? data?;
-    string? 'object?;
+    Dataset[] data?;
+    string 'object?;
 };
 
 # Create dataset payload
 public type UploadSyncBody record {
     # Path to the .csv, .tsv, or .json file on the local drive (FilePart).
-    string? data?;
+    string data?;
     # Name of the dataset. Optional. If this parameter is omitted, the dataset name is derived from the file name.
-    string? name?;
+    string name?;
     # URL of the .csv, .tsv, or .json file.
-    string? path?;
+    string path?;
     # Type of dataset data.
-    string? 'type?;
+    string 'type?;
 };
 
 # Dataset upload payload
 public type DatasetidUploadBody record {
     # Path to the .csv, .tsv, or .json file on a local drive. 
-    string? data?;
+    string data?;
     # URL of the .csv, .tsv, or .json file.
-    string? 'type?;
+    string 'type?;
 };
 
 # label
 public type DetectionResult record {
     # Contains the coordinates for the bounding box that encloses the detected text.
-    BoundingBox? boundingBox?;
+    BoundingBox boundingBox?;
     # Probability lable for the input. 
-    string? label?;
+    string label?;
     # Probability value for the input. Values are between 0�1.
-    float? probability?;
+    float probability?;
 };
 
 public type GenerateAccessTokenResponse record {
-    string? access_token?;
-    string? expires_in?;
-    string? refresh_token?;
-    string? token_type?;
+    string access_token?;
+    string expires_in?;
+    string refresh_token?;
+    string token_type?;
 };
 
 public type SentimentPredictResponse record {
-    string? 'object?;
-    LabelResult[]? probabilities?;
+    string 'object?;
+    LabelResult[] probabilities?;
     # Value passed in when the prediction call was made. Returned only if the sampleId request parameter is provided.
-    string? sampleId?;
+    string sampleId?;
 };
 
 public type ApiUsage record {
-    string? endsAt?;
-    string? id?;
-    string? licenseId?;
-    string? 'object?;
-    string? organizationId?;
-    PlanData[]? planData?;
-    int? predictionsMax?;
-    int? predictionsUsed?;
-    string? startsAt?;
+    string endsAt?;
+    string id?;
+    string licenseId?;
+    string 'object?;
+    string organizationId?;
+    PlanData[] planData?;
+    int predictionsMax?;
+    int predictionsUsed?;
+    string startsAt?;
 };
 
 # Contains the labels array that contains all the labels for the dataset.
 public type LabelSummary record {
     # Contains information about the label with which the example is associated.
-    Label[]? labels?;
+    Label[] labels?;
 };
 
 # Detect OCR prediction payload.
 public type VisionOcrBody record {
     # ID of the model that makes the prediction. Valid values are OCRModel and tabulatev2.
-    string? modelId?;
+    string modelId?;
     # Binary content of image file uploaded as multipart/form-data. Optional.
-    string? sampleContent?;
+    string sampleContent?;
     # String that you can pass in to tag the prediction. Optional. Can be any value, and is returned in the response.
-    string? sampleId?;
+    string sampleId?;
     # URL of the image file. Use this parameter when sending in a file from a web location. Optional.
-    string? sampleLocation?;
+    string sampleLocation?;
     # Optional. Designates the type of data in the image. Default is text. Valid values: contact, table, and text.
-    string? task?;
+    string task?;
 };
 
 public type PredictionErrorResponse record {
-    string? message?;
-    string? 'object?;
+    string message?;
+    string 'object?;
 };
 
 # JSON that contains parameters that specify how the model is created
 public type V2VisionTrainParams record {
     # Lets you specify the ratio of data used to train the dataset and the data used to test the model.
-    float? trainSplitRatio?;
+    float trainSplitRatio?;
     # Lets you specify that feedback examples are included in the data to be trained to create the model.
-    boolean? withFeedback?;
+    boolean withFeedback?;
     # Lets you specify that a global dataset is used in addition to the specified dataset to create the model.
-    int? withGlobalDatasetId?;
+    int withGlobalDatasetId?;
 };
 
 public type OCRPredictResponse record {
-    string? 'object?;
-    OCRResult[]? probabilities?;
+    string 'object?;
+    OCRResult[] probabilities?;
     # Same value as request parameter. Returned only if the sampleId request parameter is provided.
-    string? sampleId?;
+    string sampleId?;
     # Same value as request parameter. Returns text if the request parameter isn't supplied.
-    string? task?;
+    string task?;
 };
 
 # Image prediction payload.
 public type ImageClassificationRequest record {
     # ID of the model that makes the prediction.
-    string? modelId;
+    string modelId;
     # Number of probabilities to return.
-    int? numResults?;
+    @constraint:Int {minValue: 1}
+    int numResults?;
     # The image contained in a base64 string.
-    string? sampleBase64Content?;
+    string sampleBase64Content?;
     # String that you can pass in to tag the prediction. Optional. Can be any value, and is returned in the response.
-    string? sampleId?;
+    string sampleId?;
     # URL of the image file.
-    string? sampleLocation?;
+    string sampleLocation?;
 };
 
 # Create dataset example payload
 public type DatasetidExamplesBody record {
     # Location of the local image file to upload.
-    string? data?;
+    string data?;
     # ID of the label to add to the example.
-    int? labelId?;
+    int labelId?;
     # Name of the example. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
 };
 
 # Array of probabilities for the prediction.
 public type OCRResult record {
     # Contains additional attributes related to the task parameter. If the task parameter is table, the row and column IDs for the detected text are returned. If the task parameter is contact, the detected entity tags will be returned.
-    Attributes? attributes?;
+    Attributes attributes?;
     # Contains the coordinates for the bounding box that encloses the detected text.
-    BoundingBox? boundingBox?;
+    BoundingBox boundingBox?;
     # Content of the detected text.
-    string? label?;
+    string label?;
     # Probability value for the input. Values are between 0�1.
-    float? probability?;
+    float probability?;
 };
 
 public type ObjectDetectionResponse record {
-    string? 'object?;
-    DetectionResult[]? probabilities?;
+    string 'object?;
+    DetectionResult[] probabilities?;
     # Value passed in when the prediction call was made. Returned only if the sampleId request parameter is provided.
-    string? sampleId?;
+    string sampleId?;
 };
 
 public type LearningCurveList record {
-    LearningCurve[]? data?;
-    string? 'object?;
+    LearningCurve[] data?;
+    string 'object?;
 };
 
 # Train dataset payload
 public type VisionTrainBody record {
     # Specifies the algorithm used to train the dataset. Optional. Use this parameter only when training a dataset with a type of image-detection. Valid values are object-detection-v1 and retail-execution.
-    string? algorithm?;
+    string algorithm?;
     # ID of the dataset to train.
-    int? datasetId?;
+    int datasetId?;
     # Number of training iterations for the neural network. Optional.
-    int? epochs?;
+    @constraint:Int {minValue: 1, maxValue: 1000}
+    int epochs?;
     # Specifies how much the gradient affects the optimization of the model at each time step. Optional.
-    float? learningRate?;
+    decimal learningRate?;
     # Name of the model. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
     # JSON that contains parameters that specify how the model is created
-    V2VisionTrainParams? trainParams?;
+    V2VisionTrainParams trainParams?;
 };
 
 # Create feedback payload.
 public type VisionBulkfeedbackBody record {
     # Local .zip file to upload. The maximum .zip file size you can upload from a local drive is 50 MB.
-    string? data?;
+    string data?;
     # ID of the model that misclassified the images. The feedback examples are added to the dataset associated with this model.
-    string? modelId?;
+    string modelId?;
 };
 
 public type ModelList record {
-    Model[]? data?;
-    string? 'object?;
+    Model[] data?;
+    string 'object?;
 };
 
 # JSON that contains parameters that specify how the model is created
 public type V2LanguageTrainParams record {
     # Lets you specify the ratio of data used to train the dataset and the data used to test the model.
-    float? trainSplitRatio?;
+    float trainSplitRatio?;
     # Lets you specify that feedback examples are included in the data to be trained to create the model.
-    boolean? withFeedback?;
+    boolean withFeedback?;
     # Lets you specify that a global dataset is used in addition to the specified dataset to create the model.
-    int? withGlobalDatasetId?;
+    int withGlobalDatasetId?;
 };
 
 # Contains the coordinates for the bounding box that encloses the detected text.
 public type BoundingBox record {
     # X-coordinate of the left side of the bounding box. The origin of the coordinate system is the top-left of the image. Number of pixels from the left edge of the image.
-    int? maxX?;
+    int maxX?;
     # Y-coordinate of the top of the bounding box. Number of pixels from the top edge of the image.
-    int? maxY?;
+    int maxY?;
     # X-coordinate of the right side of the bounding box. Number of pixels from the left edge of the image.
-    int? minX?;
+    int minX?;
     # Y-coordinate of the bottom of the bounding box. Number of pixels from the top edge of the image.
-    int? minY?;
+    int minY?;
 };
 
 # Sentiment predict payload
 public type SentimentPredictRequest record {
     # Text for which you want to return a sentiment prediction.
-    string? document;
+    string document;
     # ID of the model that makes the prediction. The model must have been created from a dataset with a type of text-sentiment.
-    string? modelId;
+    string modelId;
     # Number of probabilities to return. 
-    int? numResults?;
+    @constraint:Int {minValue: 1}
+    int numResults?;
     # String that you can pass in to tag the prediction. Optional. Can be any value, and is returned in the response.
-    string? sampleId?;
+    string sampleId?;
 };
 
 # Generate token payload
 public type Oauth2TokenBody record {
     # encrypted payload to identify yourself
-    string? assertion?;
+    string assertion?;
     # specify the authentication method desired
-    string? grant_type?;
+    string grant_type?;
     # The refresh token you created previously.
-    string? refresh_token?;
+    string refresh_token?;
     # set to `offline` to generate a refresh token
-    string? scope?;
+    string scope?;
     # Number of seconds until the access token expires. Default is 60 seconds. Maximum value is 30 days
-    int? valid_for?;
+    int valid_for?;
 };
 
 # Create dataset example payload
 public type DatasetidUploadBody1 record {
     # Location of the local image file to upload.
-    string? data?;
+    string data?;
     # URL of the .zip file.
-    string? path?;
+    string path?;
 };
 
 public type ApiUsageList record {
-    ApiUsage[]? data?;
-    string? 'object?;
+    ApiUsage[] data?;
+    string 'object?;
 };
 
 public type DeletionResponse record {
-    string? deletedObjectId?;
-    string? id?;
-    string? message?;
-    string? 'object?;
-    string? organizationId?;
-    float? progress?;
-    string? status?;
-    string? 'type?;
+    string deletedObjectId?;
+    string id?;
+    string message?;
+    string 'object?;
+    string organizationId?;
+    decimal progress?;
+    string status?;
+    string 'type?;
 };
 
 public type LearningCurve record {
@@ -493,120 +505,123 @@ public type LearningCurve record {
     # Model metrics values.
     record {} metricsData?;
     # Object returned; in this case, learningcurve.
-    string? 'object?;
+    string 'object?;
 };
 
 # Retrain dataset payload
 public type VisionRetrainBody record {
     # Specifies the algorithm used to train the dataset. Optional. Use this parameter only when training a dataset with a type of image-detection. Valid values are object-detection-v1 and retail-execution.
-    string? algorithm?;
+    string algorithm?;
     # Number of training iterations for the neural network. Optional.
-    int? epochs?;
+    @constraint:Int {minValue: 1, maxValue: 1000}
+    int epochs?;
     # Specifies how much the gradient affects the optimization of the model at each time step. Optional.
-    float? learningRate?;
+    float learningRate?;
     # ID of the model to be updated from the training.
-    string? modelId?;
+    string modelId?;
     # JSON that contains parameters that specify how the model is created
-    V2VisionTrainParams? trainParams?;
+    V2VisionTrainParams trainParams?;
 };
 
 public type Dataset record {
-    boolean? available?;
+    boolean available?;
     # Date and time that the dataset was created.
-    string? createdAt?;
-    int? id;
+    string createdAt?;
+    int id;
     # Contains the labels array that contains all the labels for the dataset.
-    LabelSummary? labelSummary?;
+    LabelSummary labelSummary?;
     # Dataset language.
-    string? language?;
-    string? name;
+    string language?;
+    string name;
     # Number of duplicate images. This number includes duplicates in the .zip file from which the dataset was created plus the number of duplicate images from subsequent PUT calls to add images to the dataset.
-    int? numOfDuplicates?;
+    int numOfDuplicates?;
     # Object returned; in this case, dataset.
-    string? 'object?;
-    string? statusMsg?;
+    string 'object?;
+    string statusMsg?;
     # Total number of examples in the dataset.
-    int? totalExamples?;
+    int totalExamples?;
     # Total number of labels in the dataset.
-    int? totalLabels?;
-    string? 'type?;
-    string? updatedAt?;
+    int totalLabels?;
+    string 'type?;
+    string updatedAt?;
 };
 
 # Location information
 public type CellLocation record {
     # Index of the column that contains the detected text.
-    int? colIndex?;
+    int colIndex?;
     # Index of the row that contains the detected text.
-    int? rowIndex?;
+    int rowIndex?;
 };
 
 public type IntentPredictResponse record {
-    string? 'object?;
-    LabelResult[]? probabilities?;
+    string 'object?;
+    LabelResult[] probabilities?;
     # Value passed in when the prediction call was made. Returned only if the sampleId request parameter is provided.
-    string? sampleId?;
+    string sampleId?;
 };
 
 public type Model record {
     # Algorithm used to create the model. Returned only when the modelType is image-detection.
-    string? algorithm?;
+    string algorithm?;
     # Date and time that the model was created.
-    string? createdAt?;
+    string createdAt?;
     # ID of the dataset trained to create the model.
-    int? datasetId;
+    int datasetId;
     # Not available yet
-    int? datasetVersionId;
+    int datasetVersionId;
     # Reason the dataset training failed. Returned only if the training status is FAILED.
-    string? failureMsg?;
+    string failureMsg?;
     # Model language inherited from the dataset language. For image datasets, default is N/A. For text datasets, default is en_US.
-    string? language?;
+    string language?;
     # ID of the model. Contains letters and numbers.
-    string? modelId;
+    string modelId;
     # Type of data from which the model was created.
-    string? modelType?;
+    string modelType?;
     # Name of the model.
-    string? name;
+    string name;
     # Object returned; in this case, model.
-    string? 'object?;
+    string 'object?;
     # How far the dataset training has progressed. Values are between 0�1.
-    decimal? progress;
+    decimal progress;
     # Status of the model.
-    string? status;
+    string status;
     # Date and time that the model was last updated.
-    string? updatedAt?;
+    string updatedAt?;
 };
 
 # Create dataset payload
 public type DatasetsUploadBody1 record {
     # Path to the .zip file on the local drive (FilePart).
-    string? data?;
+    string data?;
     # Name of the dataset. Optional. If this parameter is omitted, the dataset name is derived from the .zip file name.
-    string? name?;
+    string name?;
     # URL of the .zip file.
-    string? path?;
+    string path?;
     # Type of dataset data.
-    string? 'type?;
+    string 'type?;
 };
 
 # Create dataset payload
 public type VisionDatasetsBody record {
     # Optional comma-separated list of labels. If specified, creates the labels in the dataset. Maximum number of labels per dataset is 250.
-    string? labels?;
+    string labels?;
     # Name of the dataset. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
     # Type of dataset data
-    string? 'type?;
+    string 'type?;
 };
 
 # Create dataset feedback payload
 public type VisionFeedbackBody record {
     # Local image file to upload.
-    string? data?;
+    string data?;
     # Correct label for the example. Must be a label that exists in the dataset.
-    string? expectedLabel?;
+    string expectedLabel?;
     # ID of the model that misclassified the image. The feedback example is added to the dataset associated with this model.
-    string? modelId?;
+    string modelId?;
     # Name of the example. Optional. Maximum length is 180 characters.
-    string? name?;
+    @constraint:String {maxLength: 180}
+    string name?;
 };

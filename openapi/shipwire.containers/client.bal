@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:CredentialsConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.
@@ -100,7 +104,7 @@ public isolated client class Client {
     # + id - The container's id or external id. 
     # + return - OK 
     remote isolated function getContainersById(string id) returns GetAContainerResponse|error {
-        string resourcePath = string `/api/v3.1/containers/${id}`;
+        string resourcePath = string `/api/v3.1/containers/${getEncodedUri(id)}`;
         GetAContainerResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -110,7 +114,7 @@ public isolated client class Client {
     # + payload - UpdateAContainer request 
     # + return - OK 
     remote isolated function putContainersById(string id, UpdateAContainerRequest payload) returns UpdateAContainerResponse|error {
-        string resourcePath = string `/api/v3.1/containers/${id}`;
+        string resourcePath = string `/api/v3.1/containers/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

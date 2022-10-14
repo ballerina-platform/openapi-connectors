@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Sendgrid API v3](https://docs.sendgrid.com/api-reference/how-to-use-the-sendgrid-v3-api/) OpenAPI Specification. 
@@ -106,7 +110,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        PostAlertsResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        PostAlertsResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Delete an alert
@@ -116,10 +120,10 @@ public isolated client class Client {
     # + return - Succesful - No Content 
     @display {label: "Delete Alert by Id"}
     remote isolated function deleteAlertById(@display {label: "Alert Id"} int alertId, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns http:Response|error {
-        string resourcePath = string `/alerts/${alertId}`;
+        string resourcePath = string `/alerts/${getEncodedUri(alertId)}`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update an alert
@@ -130,13 +134,13 @@ public isolated client class Client {
     # + return - Updated alert details 
     @display {label: "Update Alert by Id"}
     remote isolated function updateAlertbyId(@display {label: "Alert Id"} int alertId, UpdateAlertbyIdRequest payload, @display {label: "Subuser's Username"} string? onBehalfOf = ()) returns UpdateAlertbyIdResponse|error {
-        string resourcePath = string `/alerts/${alertId}`;
+        string resourcePath = string `/alerts/${getEncodedUri(alertId)}`;
         map<any> headerValues = {"on-behalf-of": onBehalfOf};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        UpdateAlertbyIdResponse response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        UpdateAlertbyIdResponse response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # List all Subusers
@@ -171,8 +175,8 @@ public isolated client class Client {
     # + return - Successful - No Content 
     @display {label: "Update Subuser by Subuser Name"}
     remote isolated function deleteSubuserByName(@display {label: "Subuser Name"} string subuserName) returns http:Response|error {
-        string resourcePath = string `/subusers/${subuserName}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/subusers/${getEncodedUri(subuserName)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Retrieve all blocks

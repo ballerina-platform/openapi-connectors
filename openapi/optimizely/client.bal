@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://app.optimizely.com/oauth2/token";
 |};
 
 # Connects to [Optimizely API v2](https://www.optimizely.com/) from Ballerina
@@ -97,7 +108,7 @@ public isolated client class Client {
     # + attributeId - The Attribute ID of the Attribute you want to get 
     # + return - Successfully retrieved Attribute 
     remote isolated function getAttribute(int attributeId) returns Attribute|error {
-        string resourcePath = string `/attributes/${attributeId}`;
+        string resourcePath = string `/attributes/${getEncodedUri(attributeId)}`;
         Attribute response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -106,8 +117,8 @@ public isolated client class Client {
     # + attributeId - The ID of the Attribute you'd like to delete 
     # + return - Successfully deleted Attribute 
     remote isolated function deleteAttribute(int attributeId) returns http:Response|error {
-        string resourcePath = string `/attributes/${attributeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/attributes/${getEncodedUri(attributeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Attribute
@@ -116,7 +127,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Attribute 
     # + return - Successfully updated the Attribute 
     remote isolated function updateAttribute(int attributeId, AttributeUpdate payload) returns Attribute|error {
-        string resourcePath = string `/attributes/${attributeId}`;
+        string resourcePath = string `/attributes/${getEncodedUri(attributeId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -153,7 +164,7 @@ public isolated client class Client {
     # + audienceId - The Audience ID of the Audience you want to get 
     # + return - Return Audience info 
     remote isolated function getAudience(int audienceId) returns Audience|error {
-        string resourcePath = string `/audiences/${audienceId}`;
+        string resourcePath = string `/audiences/${getEncodedUri(audienceId)}`;
         Audience response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -163,7 +174,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Audience 
     # + return - Return the created Audience 
     remote isolated function updateAudience(int audienceId, AudienceUpdate payload) returns Audience|error {
-        string resourcePath = string `/audiences/${audienceId}`;
+        string resourcePath = string `/audiences/${getEncodedUri(audienceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -183,7 +194,7 @@ public isolated client class Client {
     # + 'order - The property to sort by. 
     # + return - Return Impression Usage info for account 
     remote isolated function getImpressionsUsageRequest(int accountId, string usageDateFrom, string usageDateTo, int perPage = 25, int page = 1, string[] platforms = ["edge","fullstack","web"], string? query = (), string sort = "impression_count", string 'order = "desc") returns ImpressionsUsage[]|error {
-        string resourcePath = string `/billing/usage/${accountId}`;
+        string resourcePath = string `/billing/usage/${getEncodedUri(accountId)}`;
         map<anydata> queryParam = {"per_page": perPage, "page": page, "usage_date_from": usageDateFrom, "usage_date_to": usageDateTo, "platforms": platforms, "query": query, "sort": sort, "order": 'order};
         map<Encoding> queryParamEncoding = {"platforms": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -195,7 +206,7 @@ public isolated client class Client {
     # + accountId - The account ID of the customer 
     # + return - Return Impression Usage Summary for account 
     remote isolated function getImpressionsUsageSummaryRequest(int accountId) returns ImpressionsUsageSummary|error {
-        string resourcePath = string `/billing/usage/${accountId}/summary`;
+        string resourcePath = string `/billing/usage/${getEncodedUri(accountId)}/summary`;
         ImpressionsUsageSummary response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -232,7 +243,7 @@ public isolated client class Client {
     # + campaignId - The Campaign ID of the Campaign you want to get 
     # + return - Return Campaign info 
     remote isolated function getCampaign(int campaignId) returns Campaign|error {
-        string resourcePath = string `/campaigns/${campaignId}`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}`;
         Campaign response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -241,8 +252,8 @@ public isolated client class Client {
     # + campaignId - The Campaign ID of the Campaign you want to delete 
     # + return - Deleted Campaign successfully 
     remote isolated function deleteCampaign(int campaignId) returns http:Response|error {
-        string resourcePath = string `/campaigns/${campaignId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Campaign
@@ -252,7 +263,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Campaign 
     # + return - Return the updated Campaign 
     remote isolated function updateCampaign(int campaignId, CampaignUpdate payload, string? action = ()) returns Campaign|error {
-        string resourcePath = string `/campaigns/${campaignId}`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}`;
         map<anydata> queryParam = {"action": action};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -274,7 +285,7 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Campaign results 
     remote isolated function getCampaignResults(int campaignId, string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns CampaignResults|error? {
-        string resourcePath = string `/campaigns/${campaignId}/results`;
+        string resourcePath = string `/campaigns/${getEncodedUri(campaignId)}/results`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CampaignResults? response = check self.clientEp->get(resourcePath);
@@ -330,7 +341,7 @@ public isolated client class Client {
     # + environmentId - The unique identifier for the Environment 
     # + return - Successfully retrieved the Environment 
     remote isolated function getEnvironment(int environmentId) returns Environment|error {
-        string resourcePath = string `/environments/${environmentId}`;
+        string resourcePath = string `/environments/${getEncodedUri(environmentId)}`;
         Environment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -339,8 +350,8 @@ public isolated client class Client {
     # + environmentId - The ID of the Environment you'd like to archive 
     # + return - Successfully archived the Environment 
     remote isolated function deleteEnvironment(int environmentId) returns http:Response|error {
-        string resourcePath = string `/environments/${environmentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/environments/${getEncodedUri(environmentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Environment
@@ -349,7 +360,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Environment 
     # + return - Successfully updated the Environment 
     remote isolated function updateEnvironment(int environmentId, EnvironmentUpdate payload) returns Environment|error {
-        string resourcePath = string `/environments/${environmentId}`;
+        string resourcePath = string `/environments/${getEncodedUri(environmentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -361,7 +372,7 @@ public isolated client class Client {
     # + environmentId - The Environment ID for the datafile you want to get. 
     # + return - Return Datafile for the Environment specified 
     remote isolated function getDatafile(int environmentId) returns json|error {
-        string resourcePath = string `/environments/${environmentId}/datafile`;
+        string resourcePath = string `/environments/${getEncodedUri(environmentId)}/datafile`;
         json response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -385,7 +396,7 @@ public isolated client class Client {
     # + includeClassic - Whether or not to return a classic Event if the specified event_id belongs to a classic Event. If this parameter is not provided it will default to false 
     # + return - Return Event specified by ID 
     remote isolated function getEvent(int eventId, boolean? includeClassic = ()) returns Event|error {
-        string resourcePath = string `/events/${eventId}`;
+        string resourcePath = string `/events/${getEncodedUri(eventId)}`;
         map<anydata> queryParam = {"include_classic": includeClassic};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Event response = check self.clientEp->get(resourcePath);
@@ -426,7 +437,7 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Experiment you want to get 
     # + return - Return Experiment info 
     remote isolated function getExperiment(int experimentId) returns Experiment|error {
-        string resourcePath = string `/experiments/${experimentId}`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}`;
         Experiment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -435,8 +446,8 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Experiment you want to delete 
     # + return - Deleted Experiment successfully 
     remote isolated function deleteExperiment(int experimentId) returns http:Response|error {
-        string resourcePath = string `/experiments/${experimentId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Experiment
@@ -446,7 +457,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Experiment 
     # + return - Successfully updated Experiment 
     remote isolated function updateExperiment(int experimentId, ExperimentUpdate payload, string? action = ()) returns Experiment|error {
-        string resourcePath = string `/experiments/${experimentId}`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}`;
         map<anydata> queryParam = {"action": action};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -469,7 +480,7 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Experiment results 
     remote isolated function getExperimentResults(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentResults|error? {
-        string resourcePath = string `/experiments/${experimentId}/results`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/results`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExperimentResults? response = check self.clientEp->get(resourcePath);
@@ -482,7 +493,7 @@ public isolated client class Client {
     # + experimentId - The Experiment ID of the Multivariate Test you want to get Sections for 
     # + return - Return Sections 
     remote isolated function getExperimentSections(int experimentId, int perPage = 25, int page = 1) returns Section[]|error {
-        string resourcePath = string `/experiments/${experimentId}/sections`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/sections`;
         map<anydata> queryParam = {"per_page": perPage, "page": page};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Section[] response = check self.clientEp->get(resourcePath);
@@ -494,7 +505,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Section 
     # + return - Section Created 
     remote isolated function createSection(int experimentId, Section payload) returns Section|error {
-        string resourcePath = string `/experiments/${experimentId}/sections`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/sections`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -507,7 +518,7 @@ public isolated client class Client {
     # + experimentId - The ID of the Multivariate Test the requested Section is part of 
     # + return - Return Section info 
     remote isolated function getSection(int sectionId, int experimentId) returns Section|error {
-        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/sections/${getEncodedUri(sectionId)}`;
         Section response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -517,8 +528,8 @@ public isolated client class Client {
     # + experimentId - The ID of the Multivariate Test the requested Section is part of 
     # + return - Successfully archived Section 
     remote isolated function deleteSection(int sectionId, int experimentId) returns http:Response|error {
-        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/sections/${getEncodedUri(sectionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Section by ID
@@ -528,7 +539,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Section 
     # + return - Successfully updated Section 
     remote isolated function updateSection(int sectionId, int experimentId, SectionUpdate payload) returns Section|error {
-        string resourcePath = string `/experiments/${experimentId}/sections/${sectionId}`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/sections/${getEncodedUri(sectionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -549,7 +560,7 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - Return Experiment results time series 
     remote isolated function getExperimentTimeseries(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns ExperimentTimeseries|error? {
-        string resourcePath = string `/experiments/${experimentId}/timeseries`;
+        string resourcePath = string `/experiments/${getEncodedUri(experimentId)}/timeseries`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ExperimentTimeseries? response = check self.clientEp->get(resourcePath);
@@ -568,7 +579,7 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - <p>Return Campaign results in CSV format</p> <p>Name of the columns returned: 'Start Time (UTC)', 'End Time (UTC)', 'Is Baseline Variation', 'Metric Event Name', 'Metric Event ID', 'Metric Numerator Type', 'Metric Denominator Type', 'Metric Winning Direction', 'Numerator Value', 'Denominator Value', 'Metric Value', 'Improvement Status from Baseline', 'Improvement Value from Baseline', 'Statistical Significance', 'Is Improvement Significant', 'Confidence Interval - Low', 'Confidence Interval - High', 'Samples Remaining to Significance'</p> <p>(<a href="https://help.optimizely.com/Export_to_CSV_column_reference_for_campaigns_and_experiments">Column reference guide for CSV export</a>)</p> 
     remote isolated function getCampaignResultsCsv(int campaignId, string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns http:Response|error {
-        string resourcePath = string `/export/campaigns/${campaignId}/results/csv`;
+        string resourcePath = string `/export/campaigns/${getEncodedUri(campaignId)}/results/csv`;
         map<anydata> queryParam = {"start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -599,7 +610,7 @@ public isolated client class Client {
     # + segmentConditions - (BETA) A string representation of a JSON Segment Conditions Expression. This parameter can be either URL-escaped stringified JSON or Base64-encoded stringified JSON using URL-safe alphabet (preferred). Segment Conditions Expressions consist of Logical Expressions and Match Expressions. Logical Expressions are represented as an array of the format [<operator>, <expression>...], where the supported operators are "and", "or" and "not". Match Expressions are represented as an object of the format {"attribute_id": <attribute_id>, "attribute_value": <value>[, "match_type": <match_type>]}, where supported values for match_type are "exact" match type will match only an exact string match between "value" string and the attribute value. "substring" match type will match if "value" is a substring of the attribute value. "prefix" match type will match if "value" is a string prefix of the attribute value. "regex" match type will match if "value" is a regular expression match for the attribute value. The default match_type is "exact". 
     # + return - <p>Return Experiment results in CSV format</p> <p>Name of the columns returned: 'Start time (UTC)', 'End time (UTC)', 'Variation Name', 'Variation ID', 'Is Baseline Variation', 'Metric Event Name', 'Metric Event ID', 'Metric Numerator Type', 'Metric Denominator Type', 'Metric Winning Direction', 'Numerator Value', 'Denominator Value', 'Metric Value', 'Improvement Status from Baseline', 'Improvement Value from Baseline', 'Statistical Significance', 'Is Improvement Significant', 'Confidence Interval - Low', 'Confidence Interval - High', 'Samples Remaining to Significance'</p> <p>(<a href="https://help.optimizely.com/Export_to_CSV_column_reference_for_campaigns_and_experiments">Column reference guide for CSV export</a>)</p> 
     remote isolated function getExperimentResultsCsv(int experimentId, string? baselineVariationId = (), string? startTime = (), string? endTime = (), string? browser = (), string? device = (), string? 'source = (), int? attributeId = (), string? attributeValue = (), string? segmentConditions = ()) returns http:Response|error {
-        string resourcePath = string `/export/experiments/${experimentId}/results/csv`;
+        string resourcePath = string `/export/experiments/${getEncodedUri(experimentId)}/results/csv`;
         map<anydata> queryParam = {"baseline_variation_id": baselineVariationId, "start_time": startTime, "end_time": endTime, "browser": browser, "device": device, "source": 'source, "attribute_id": attributeId, "attribute_value": attributeValue, "segment_conditions": segmentConditions};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Response response = check self.clientEp->get(resourcePath);
@@ -635,7 +646,7 @@ public isolated client class Client {
     # + extensionId - The ID of the extension you'd like to get 
     # + return - Return extension info 
     remote isolated function getExtension(int extensionId) returns Extension|error {
-        string resourcePath = string `/extensions/${extensionId}`;
+        string resourcePath = string `/extensions/${getEncodedUri(extensionId)}`;
         Extension response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -644,8 +655,8 @@ public isolated client class Client {
     # + extensionId - The ID of the extension you'd like to archive 
     # + return - Successfully archived extension 
     remote isolated function deleteExtension(int extensionId) returns http:Response|error {
-        string resourcePath = string `/extensions/${extensionId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/extensions/${getEncodedUri(extensionId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Extension
@@ -654,7 +665,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an extension 
     # + return - Return the updated extension 
     remote isolated function updateExtension(int extensionId, ExtensionUpdate payload) returns Extension|error {
-        string resourcePath = string `/extensions/${extensionId}`;
+        string resourcePath = string `/extensions/${getEncodedUri(extensionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -691,7 +702,7 @@ public isolated client class Client {
     # + featureId - The unique identifier for the Feature 
     # + return - Successfully retrieved the Feature 
     remote isolated function getFeature(int featureId) returns Feature|error {
-        string resourcePath = string `/features/${featureId}`;
+        string resourcePath = string `/features/${getEncodedUri(featureId)}`;
         Feature response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -700,8 +711,8 @@ public isolated client class Client {
     # + featureId - The ID of the Feature you'd like to archive 
     # + return - Successfully archived the Feature 
     remote isolated function deleteFeature(int featureId) returns http:Response|error {
-        string resourcePath = string `/features/${featureId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/features/${getEncodedUri(featureId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Feature
@@ -710,7 +721,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Feature 
     # + return - Successfully updated the Feature 
     remote isolated function updateFeature(int featureId, FeatureUpdate payload) returns Feature|error {
-        string resourcePath = string `/features/${featureId}`;
+        string resourcePath = string `/features/${getEncodedUri(featureId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -747,7 +758,7 @@ public isolated client class Client {
     # + groupId - The ID of the Exclusion Group you'd like to get 
     # + return - Return Exclusion Group info 
     remote isolated function getGroup(int groupId) returns Group|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         Group response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -756,8 +767,8 @@ public isolated client class Client {
     # + groupId - The ID of the Exclusion Group you'd like to archive 
     # + return - Successfully archived Exclusion Group 
     remote isolated function deleteGroup(int groupId) returns http:Response|error {
-        string resourcePath = string `/groups/${groupId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an Exclusion Group
@@ -766,7 +777,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an Exclusion Group 
     # + return - Return the updated Exclusion Group 
     remote isolated function updateGroup(int groupId, GroupUpdate payload) returns Group|error {
-        string resourcePath = string `/groups/${groupId}`;
+        string resourcePath = string `/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -801,7 +812,7 @@ public isolated client class Client {
     # + listAttributeId - the unique identifier for the List Attribute 
     # + return - Successfully retrieved List Attribute 
     remote isolated function getListAttribute(int listAttributeId) returns ListAttribute|error {
-        string resourcePath = string `/list_attributes/${listAttributeId}`;
+        string resourcePath = string `/list_attributes/${getEncodedUri(listAttributeId)}`;
         ListAttribute response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -810,8 +821,8 @@ public isolated client class Client {
     # + listAttributeId - The ID of the List Attribute you'd like to archive 
     # + return - Successfully archived List Attribute 
     remote isolated function archiveListAttribute(int listAttributeId) returns http:Response|error {
-        string resourcePath = string `/list_attributes/${listAttributeId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/list_attributes/${getEncodedUri(listAttributeId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a List Attribute
@@ -820,7 +831,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a List Attribute 
     # + return - Successfully updated the List Attribute 
     remote isolated function updateListAttribute(int listAttributeId, ListAttributeUpdate payload) returns ListAttribute|error {
-        string resourcePath = string `/list_attributes/${listAttributeId}`;
+        string resourcePath = string `/list_attributes/${getEncodedUri(listAttributeId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -857,7 +868,7 @@ public isolated client class Client {
     # + pageId - The Page ID of the Page you want to get 
     # + return - Return Page info 
     remote isolated function getPage(int pageId) returns Page|error {
-        string resourcePath = string `/pages/${pageId}`;
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}`;
         Page response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -866,8 +877,8 @@ public isolated client class Client {
     # + pageId - The Page ID of the Page you want to delete 
     # + return - Successfully deleted the Page 
     remote isolated function deletePage(int pageId) returns http:Response|error {
-        string resourcePath = string `/pages/${pageId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Page
@@ -876,7 +887,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Page 
     # + return - Return the updated Page 
     remote isolated function updatePage(int pageId, PageUpdate payload) returns Page|error {
-        string resourcePath = string `/pages/${pageId}`;
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -889,7 +900,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create an In-Page Event 
     # + return - Return the created In-Page event 
     remote isolated function createInPageEvent(int pageId, InPageEvent payload) returns InPageEvent|error {
-        string resourcePath = string `/pages/${pageId}/events`;
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}/events`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -902,8 +913,8 @@ public isolated client class Client {
     # + eventId - The In-Page Event ID of the In-Page Event you want to delete 
     # + return - Successfully deleted In-Page event 
     remote isolated function deleteInPageEvent(int pageId, int eventId) returns http:Response|error {
-        string resourcePath = string `/pages/${pageId}/events/${eventId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}/events/${getEncodedUri(eventId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update an In-Page Event
@@ -913,7 +924,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for an In-Page Event 
     # + return - Successfully updated the In-Page event 
     remote isolated function updateInPageEvent(int pageId, int eventId, InPageEventUpdate payload) returns InPageEvent|error {
-        string resourcePath = string `/pages/${pageId}/events/${eventId}`;
+        string resourcePath = string `/pages/${getEncodedUri(pageId)}/events/${getEncodedUri(eventId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -957,7 +968,7 @@ public isolated client class Client {
     # + projectId - The Project ID of the Project you want to get 
     # + return - Return Project info 
     remote isolated function getProject(int projectId) returns Project|error {
-        string resourcePath = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}`;
         Project response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -967,7 +978,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Project 
     # + return - Return the updated Project 
     remote isolated function updateProject(int projectId, ProjectUpdate payload) returns Project|error {
-        string resourcePath = string `/projects/${projectId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -980,7 +991,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields to create a Custom Event 
     # + return - Return the created Custom Event 
     remote isolated function createCustomEvent(int projectId, CustomEvent payload) returns CustomEvent|error {
-        string resourcePath = string `/projects/${projectId}/custom_events`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}/custom_events`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -993,8 +1004,8 @@ public isolated client class Client {
     # + eventId - The Event ID of the Custom Event you'd like to delete 
     # + return - Successfully deleted Custom Event 
     remote isolated function deleteCustomEvent(int projectId, int eventId) returns http:Response|error {
-        string resourcePath = string `/projects/${projectId}/custom_events/${eventId}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}/custom_events/${getEncodedUri(eventId)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a Custom Event
@@ -1004,7 +1015,7 @@ public isolated client class Client {
     # + payload - A string in JSON format that includes all the fields you'd like to change for a Custom Event 
     # + return - Return the updated Event 
     remote isolated function updateCustomEvent(int projectId, int eventId, CustomEventUpdate payload) returns CustomEvent|error {
-        string resourcePath = string `/projects/${projectId}/custom_events/${eventId}`;
+        string resourcePath = string `/projects/${getEncodedUri(projectId)}/custom_events/${getEncodedUri(eventId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1017,7 +1028,7 @@ public isolated client class Client {
     # + catalogId - The Catalog ID of the Catalog you want to download 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsCatalogCsv(string date, string catalogId) returns http:Response|error {
-        string resourcePath = string `/recommendations/catalogs/${catalogId}/catalog/${date}`;
+        string resourcePath = string `/recommendations/catalogs/${getEncodedUri(catalogId)}/catalog/${getEncodedUri(date)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1028,7 +1039,7 @@ public isolated client class Client {
     # + recommenderId - The Recommender ID of the Recommender you want to get output from 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsOutputCsv(string date, string catalogId, string recommenderId) returns http:Response|error {
-        string resourcePath = string `/recommendations/catalogs/${catalogId}/recommenders/${recommenderId}/${date}`;
+        string resourcePath = string `/recommendations/catalogs/${getEncodedUri(catalogId)}/recommenders/${getEncodedUri(recommenderId)}/${getEncodedUri(date)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1038,7 +1049,7 @@ public isolated client class Client {
     # + catalogId - The Catalog ID of the Catalog you want to download stats for 
     # + return - Return the CSV with correct headers to force download 
     remote isolated function getRecsStatsCsv(string date, string catalogId) returns http:Response|error {
-        string resourcePath = string `/recommendations/catalogs/${catalogId}/stats/${date}`;
+        string resourcePath = string `/recommendations/catalogs/${getEncodedUri(catalogId)}/stats/${getEncodedUri(date)}`;
         http:Response response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1071,7 +1082,7 @@ public isolated client class Client {
     # + requestId - The ID of the Subject Access Request 
     # + return - Return Subject Access Request info 
     remote isolated function getSarRequest(int requestId) returns SubjectAccessRequest|error {
-        string resourcePath = string `/subject-access-requests/${requestId}`;
+        string resourcePath = string `/subject-access-requests/${getEncodedUri(requestId)}`;
         SubjectAccessRequest response = check self.clientEp->get(resourcePath);
         return response;
     }

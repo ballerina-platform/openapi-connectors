@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -53,7 +53,7 @@ public type Page record {
 };
 
 public type InlineResponse500 record {
-    ServerError _error;
+    ServerError 'error;
 };
 
 # A design file descriptor
@@ -123,7 +123,7 @@ public type ServerError record {
 
 public type InlineResponse429 record {
     # The rate limit for the operation has been reached.
-    RateLimitReachedError _error;
+    RateLimitReachedError 'error;
 };
 
 public type DesignsUploadBody record {
@@ -134,25 +134,25 @@ public type DesignsUploadBody record {
 };
 
 public type InlineResponse4041 record {
-    DesignNotFoundError|DesignExportNotFoundError _error;
+    DesignNotFoundError|DesignExportNotFoundError 'error;
 };
 
 # The URL of a documentation web page with more info about the error.
 public type ErrorDocsUrl string;
 
 public type InlineResponse4042 record {
-    DesignNotFoundError|ArtboardNotFoundError _error;
+    DesignNotFoundError|ArtboardNotFoundError 'error;
 };
 
 public type InlineResponse4001 record {
-    InvalidHeaderError|InvalidFormatError|MissingUploadFileError|InvalidUploadFileFieldError|InvalidInputError _error;
+    InvalidHeaderError|InvalidFormatError|MissingUploadFileError|InvalidUploadFileFieldError|InvalidInputError 'error;
 };
 
 # An identifier of a "frame" component within a Figma file.
 public type FigmaFrameId string;
 
 public type InlineResponse4003 record {
-    InvalidFormatError|MultipleDesignExportsError|InvalidInputError _error;
+    InvalidFormatError|MultipleDesignExportsError|InvalidInputError 'error;
 };
 
 # The provided file URL is not valid.
@@ -166,7 +166,7 @@ public type InvalidUploadLinkError record {
 };
 
 public type InlineResponse4002 record {
-    InvalidUploadLinkError|InvalidFormatError|InvalidInputError _error;
+    InvalidUploadLinkError|InvalidFormatError|InvalidInputError 'error;
 };
 
 # The auth token provided via the `Authorization` HTTP header is not valid.
@@ -180,7 +180,7 @@ public type InvalidAuthTokenError record {
 };
 
 public type InlineResponse4004 record {
-    InvalidFormatError|DesignNotProcessedError|InvalidInputError _error;
+    InvalidFormatError|DesignNotProcessedError|InvalidInputError 'error;
 };
 
 public type DesignExport record {
@@ -277,12 +277,12 @@ public type DesignExportNotFoundError record {
 };
 
 public type InlineResponse401 record {
-    AuthTokenError _error;
+    AuthTokenError 'error;
 };
 
 public type InlineResponse400 record {
     # Some of the input parameters are invalid or missing.
-    InvalidInputError _error;
+    InvalidInputError 'error;
 };
 
 # The design file format. (This is not needed when the format can be inferred from the file extension.)
@@ -290,7 +290,7 @@ public type DesignImportFormatEnum string;
 
 public type InlineResponse404 record {
     # The specified design file is not found.
-    DesignNotFoundError _error;
+    DesignNotFoundError 'error;
 };
 
 # The target design file format of a export. (Only Sketch is supported currently.)
@@ -415,7 +415,7 @@ public type DesignIdExportsBody record {
 
 public type InlineResponse406 record {
     # The specified design file is not paged (`has_pages=false`).
-    DesignNotPagedError _error;
+    DesignNotPagedError 'error;
 };
 
 # The specified artboard does not have any content.

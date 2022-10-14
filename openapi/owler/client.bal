@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -64,7 +64,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function geCompetiterInformationById(string companyId, string format = "json") returns CompanyCompetitorVO|error {
-        string resourcePath = string `/v1/company/competitor/id/${companyId}`;
+        string resourcePath = string `/v1/company/competitor/id/${getEncodedUri(companyId)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByUrl(string website, string format = "json") returns CompanyCompetitorVO|error {
-        string resourcePath = string `/v1/company/competitor/url/${website}`;
+        string resourcePath = string `/v1/company/competitor/url/${getEncodedUri(website)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -93,7 +93,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByIdPremium(string companyId, string? paginationId = (), string format = "json") returns Competitors|error {
-        string resourcePath = string `/v1/company/competitorpremium/id/${companyId}`;
+        string resourcePath = string `/v1/company/competitorpremium/id/${getEncodedUri(companyId)}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -108,7 +108,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Competitors Data 
     remote isolated function getCompetitorInformationByUrlPremium(string website, string? paginationId = (), string format = "json") returns Competitors|error {
-        string resourcePath = string `/v1/company/competitorpremium/url/${website}`;
+        string resourcePath = string `/v1/company/competitorpremium/url/${getEncodedUri(website)}`;
         map<anydata> queryParam = {"pagination_id": paginationId, "format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -139,7 +139,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyById(string companyId, string format = "json") returns Company|error {
-        string resourcePath = string `/v1/company/id/${companyId}`;
+        string resourcePath = string `/v1/company/id/${getEncodedUri(companyId)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -170,7 +170,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByUrl(string website, string format = "json") returns Company|error {
-        string resourcePath = string `/v1/company/url/${website}`;
+        string resourcePath = string `/v1/company/url/${getEncodedUri(website)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -184,7 +184,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByIdPremium(string companyId, string format = "json") returns Company|error {
-        string resourcePath = string `/v1/companypremium/id/${companyId}`;
+        string resourcePath = string `/v1/companypremium/id/${getEncodedUri(companyId)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};
@@ -198,7 +198,7 @@ public isolated client class Client {
     # + format - Format of the response content - json (by default if not specified), xml 
     # + return - Company Data 
     remote isolated function getCompanyByUrlPremium(string website, string format = "json") returns Company|error {
-        string resourcePath = string `/v1/companypremium/url/${website}`;
+        string resourcePath = string `/v1/companypremium/url/${getEncodedUri(website)}`;
         map<anydata> queryParam = {"format": format};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"user_key": self.apiKeyConfig.userKey};

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,14 @@ public type ApiKeysConfig record {|
 # Provides Auth configurations needed when communicating with a remote HTTP endpoint.
 public type AuthConfig record {|
     # Auth Configuration
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://connect.squareup.com/oauth2/token";
 |};
 
 # This is a generated connector for [Square Connect API 2.0](https://squareup.com/us/en) OpenAPI Specification.
@@ -44,7 +51,7 @@ public isolated client class Client {
         if authConfig.auth is ApiKeysConfig {
             self.apiKeyConfig = (<ApiKeysConfig>authConfig.auth).cloneReadOnly();
         } else {
-            clientConfig.auth = <http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig>authConfig.auth;
+            clientConfig.auth = <http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig>authConfig.auth;
             self.apiKeyConfig = ();
         }
         http:Client httpEp = check new (serviceUrl, clientConfig);
@@ -69,7 +76,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function renewToken(string clientId, RenewTokenRequest payload) returns RenewTokenResponse|error {
-        string resourcePath = string `/oauth2/clients/${clientId}/access-token/renew`;
+        string resourcePath = string `/oauth2/clients/${getEncodedUri(clientId)}/access-token/renew`;
         map<any> headerValues = {};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["Authorization"] = self.apiKeyConfig?.authorization;
@@ -78,7 +85,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RenewTokenResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RenewTokenResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # RevokeToken
@@ -95,7 +102,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        RevokeTokenResponse response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        RevokeTokenResponse response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # ObtainToken
@@ -146,7 +153,7 @@ public isolated client class Client {
     # + employeeId - The employee's ID. 
     # + return - Success 
     remote isolated function retrieveEmployee(string employeeId) returns V1Employee|error {
-        string resourcePath = string `/v1/me/employees/${employeeId}`;
+        string resourcePath = string `/v1/me/employees/${getEncodedUri(employeeId)}`;
         V1Employee response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -156,7 +163,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateEmployee(string employeeId, V1Employee payload) returns V1Employee|error {
-        string resourcePath = string `/v1/me/employees/${employeeId}`;
+        string resourcePath = string `/v1/me/employees/${getEncodedUri(employeeId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -193,7 +200,7 @@ public isolated client class Client {
     # + roleId - The role's ID. 
     # + return - Success 
     remote isolated function retrieveEmployeeRole(string roleId) returns V1EmployeeRole|error {
-        string resourcePath = string `/v1/me/roles/${roleId}`;
+        string resourcePath = string `/v1/me/roles/${getEncodedUri(roleId)}`;
         V1EmployeeRole response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -203,7 +210,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateEmployeeRole(string roleId, V1EmployeeRole payload) returns V1EmployeeRole|error {
-        string resourcePath = string `/v1/me/roles/${roleId}`;
+        string resourcePath = string `/v1/me/roles/${getEncodedUri(roleId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -218,7 +225,7 @@ public isolated client class Client {
     # + batchToken - A pagination cursor to retrieve the next set of results for your original query to the endpoint. 
     # + return - Success 
     remote isolated function listOrders(string locationId, string? 'order = (), int? 'limit = (), string? batchToken = ()) returns V1Order[]|error {
-        string resourcePath = string `/v1/${locationId}/orders`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/orders`;
         map<anydata> queryParam = {"order": 'order, "limit": 'limit, "batch_token": batchToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         V1Order[] response = check self.clientEp->get(resourcePath);
@@ -230,7 +237,7 @@ public isolated client class Client {
     # + orderId - The order's Square-issued ID. You obtain this value from Order objects returned by the List Orders endpoint 
     # + return - Success 
     remote isolated function retrieveOrder(string locationId, string orderId) returns V1Order|error {
-        string resourcePath = string `/v1/${locationId}/orders/${orderId}`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/orders/${getEncodedUri(orderId)}`;
         V1Order response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -241,7 +248,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateOrder(string locationId, string orderId, V1UpdateOrderRequest payload) returns V1Order|error {
-        string resourcePath = string `/v1/${locationId}/orders/${orderId}`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/orders/${getEncodedUri(orderId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -259,7 +266,7 @@ public isolated client class Client {
     # + includePartial - Indicates whether or not to include partial payments in the response. Partial payments will have the tenders collected so far, but the itemizations will be empty until the payment is completed. 
     # + return - Success 
     remote isolated function listPayments(string locationId, string? 'order = (), string? beginTime = (), string? endTime = (), int? 'limit = (), string? batchToken = (), boolean? includePartial = ()) returns V1Payment[]|error {
-        string resourcePath = string `/v1/${locationId}/payments`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/payments`;
         map<anydata> queryParam = {"order": 'order, "begin_time": beginTime, "end_time": endTime, "limit": 'limit, "batch_token": batchToken, "include_partial": includePartial};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         V1Payment[] response = check self.clientEp->get(resourcePath);
@@ -271,7 +278,7 @@ public isolated client class Client {
     # + paymentId - The Square-issued payment ID. payment_id comes from Payment objects returned by the List Payments endpoint, Settlement objects returned by the List Settlements endpoint, or Refund objects returned by the List Refunds endpoint. 
     # + return - Success 
     remote isolated function retrievePayment(string locationId, string paymentId) returns V1Payment|error {
-        string resourcePath = string `/v1/${locationId}/payments/${paymentId}`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/payments/${getEncodedUri(paymentId)}`;
         V1Payment response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -285,7 +292,7 @@ public isolated client class Client {
     # + batchToken - A pagination cursor to retrieve the next set of results for your original query to the endpoint. 
     # + return - Success 
     remote isolated function listRefunds(string locationId, string? 'order = (), string? beginTime = (), string? endTime = (), int? 'limit = (), string? batchToken = ()) returns V1Refund[]|error {
-        string resourcePath = string `/v1/${locationId}/refunds`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/refunds`;
         map<anydata> queryParam = {"order": 'order, "begin_time": beginTime, "end_time": endTime, "limit": 'limit, "batch_token": batchToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         V1Refund[] response = check self.clientEp->get(resourcePath);
@@ -297,7 +304,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function createRefund(string locationId, V1CreateRefundRequest payload) returns V1Refund|error {
-        string resourcePath = string `/v1/${locationId}/refunds`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/refunds`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -315,7 +322,7 @@ public isolated client class Client {
     # + batchToken - A pagination cursor to retrieve the next set of results for your original query to the endpoint. 
     # + return - Success 
     remote isolated function listSettlements(string locationId, string? 'order = (), string? beginTime = (), string? endTime = (), int? 'limit = (), string? status = (), string? batchToken = ()) returns V1Settlement[]|error {
-        string resourcePath = string `/v1/${locationId}/settlements`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/settlements`;
         map<anydata> queryParam = {"order": 'order, "begin_time": beginTime, "end_time": endTime, "limit": 'limit, "status": status, "batch_token": batchToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         V1Settlement[] response = check self.clientEp->get(resourcePath);
@@ -327,7 +334,7 @@ public isolated client class Client {
     # + settlementId - The settlement's Square-issued ID. You obtain this value from Settlement objects returned by the List Settlements endpoint. 
     # + return - Success 
     remote isolated function retrieveSettlement(string locationId, string settlementId) returns V1Settlement|error {
-        string resourcePath = string `/v1/${locationId}/settlements/${settlementId}`;
+        string resourcePath = string `/v1/${getEncodedUri(locationId)}/settlements/${getEncodedUri(settlementId)}`;
         V1Settlement response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -361,7 +368,7 @@ public isolated client class Client {
     # + v1BankAccountId - Connect V1 ID of the desired `BankAccount`. For more information, see  [Retrieve a bank account by using an ID issued by V1 Bank Accounts API](https://developer.squareup.com/docs/bank-accounts-api#retrieve-a-bank-account-by-using-an-id-issued-by-v1-bank-accounts-api). 
     # + return - Success 
     remote isolated function getBankAccountByV1Id(string v1BankAccountId) returns GetBankAccountByV1IdResponse|error {
-        string resourcePath = string `/v2/bank-accounts/by-v1-id/${v1BankAccountId}`;
+        string resourcePath = string `/v2/bank-accounts/by-v1-id/${getEncodedUri(v1BankAccountId)}`;
         GetBankAccountByV1IdResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -370,7 +377,7 @@ public isolated client class Client {
     # + bankAccountId - Square-issued ID of the desired `BankAccount`. 
     # + return - Success 
     remote isolated function getBankAccount(string bankAccountId) returns GetBankAccountResponse|error {
-        string resourcePath = string `/v2/bank-accounts/${bankAccountId}`;
+        string resourcePath = string `/v2/bank-accounts/${getEncodedUri(bankAccountId)}`;
         GetBankAccountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -425,7 +432,7 @@ public isolated client class Client {
     # + teamMemberId - The ID of the team member to retrieve. 
     # + return - Success 
     remote isolated function retrieveTeamMemberBookingProfile(string teamMemberId) returns RetrieveTeamMemberBookingProfileResponse|error {
-        string resourcePath = string `/v2/bookings/team-member-booking-profiles/${teamMemberId}`;
+        string resourcePath = string `/v2/bookings/team-member-booking-profiles/${getEncodedUri(teamMemberId)}`;
         RetrieveTeamMemberBookingProfileResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -434,7 +441,7 @@ public isolated client class Client {
     # + bookingId - The ID of the [Booking](https://developer.squareup.com/reference/square_2021-08-18/objects/Booking) object representing the to-be-retrieved booking. 
     # + return - Success 
     remote isolated function retrieveBooking(string bookingId) returns RetrieveBookingResponse|error {
-        string resourcePath = string `/v2/bookings/${bookingId}`;
+        string resourcePath = string `/v2/bookings/${getEncodedUri(bookingId)}`;
         RetrieveBookingResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -444,7 +451,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateBooking(string bookingId, UpdateBookingRequest payload) returns UpdateBookingResponse|error {
-        string resourcePath = string `/v2/bookings/${bookingId}`;
+        string resourcePath = string `/v2/bookings/${getEncodedUri(bookingId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -457,7 +464,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function cancelBooking(string bookingId, CancelBookingRequest payload) returns CancelBookingResponse|error {
-        string resourcePath = string `/v2/bookings/${bookingId}/cancel`;
+        string resourcePath = string `/v2/bookings/${getEncodedUri(bookingId)}/cancel`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -496,7 +503,7 @@ public isolated client class Client {
     # + cardId - Unique ID for the desired Card. 
     # + return - Success 
     remote isolated function retrieveCard(string cardId) returns RetrieveCardResponse|error {
-        string resourcePath = string `/v2/cards/${cardId}`;
+        string resourcePath = string `/v2/cards/${getEncodedUri(cardId)}`;
         RetrieveCardResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -505,7 +512,7 @@ public isolated client class Client {
     # + cardId - Unique ID for the desired Card. 
     # + return - Success 
     remote isolated function disableCard(string cardId) returns DisableCardResponse|error {
-        string resourcePath = string `/v2/cards/${cardId}/disable`;
+        string resourcePath = string `/v2/cards/${getEncodedUri(cardId)}/disable`;
         http:Request request = new;
         //TODO: Update the request as needed;
         DisableCardResponse response = check self.clientEp-> post(resourcePath, request);
@@ -533,7 +540,7 @@ public isolated client class Client {
     # + shiftId - The shift ID. 
     # + return - Success 
     remote isolated function retrieveCashDrawerShift(string locationId, string shiftId) returns RetrieveCashDrawerShiftResponse|error {
-        string resourcePath = string `/v2/cash-drawers/shifts/${shiftId}`;
+        string resourcePath = string `/v2/cash-drawers/shifts/${getEncodedUri(shiftId)}`;
         map<anydata> queryParam = {"location_id": locationId};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RetrieveCashDrawerShiftResponse response = check self.clientEp->get(resourcePath);
@@ -547,7 +554,7 @@ public isolated client class Client {
     # + cursor - Opaque cursor for fetching the next page of results. 
     # + return - Success 
     remote isolated function listCashDrawerShiftEvents(string locationId, string shiftId, int? 'limit = (), string? cursor = ()) returns ListCashDrawerShiftEventsResponse|error {
-        string resourcePath = string `/v2/cash-drawers/shifts/${shiftId}/events`;
+        string resourcePath = string `/v2/cash-drawers/shifts/${getEncodedUri(shiftId)}/events`;
         map<anydata> queryParam = {"location_id": locationId, "limit": 'limit, "cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListCashDrawerShiftEventsResponse response = check self.clientEp->get(resourcePath);
@@ -629,7 +636,7 @@ public isolated client class Client {
     # + catalogVersion - Requests objects as of a specific version of the catalog. This allows you to retrieve historical versions of objects. The value to retrieve a specific version of an object can be found in the version field of [CatalogObject](https://developer.squareup.com/reference/square_2021-08-18/objects/CatalogObject)s. 
     # + return - Success 
     remote isolated function retrieveCatalogObject(string objectId, boolean? includeRelatedObjects = (), int? catalogVersion = ()) returns RetrieveCatalogObjectResponse|error {
-        string resourcePath = string `/v2/catalog/object/${objectId}`;
+        string resourcePath = string `/v2/catalog/object/${getEncodedUri(objectId)}`;
         map<anydata> queryParam = {"include_related_objects": includeRelatedObjects, "catalog_version": catalogVersion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RetrieveCatalogObjectResponse response = check self.clientEp->get(resourcePath);
@@ -640,8 +647,8 @@ public isolated client class Client {
     # + objectId - The ID of the catalog object to be deleted. When an object is deleted, other objects in the graph that depend on that object will be deleted as well (for example, deleting a catalog item will delete its catalog item variations). 
     # + return - Success 
     remote isolated function deleteCatalogObject(string objectId) returns DeleteCatalogObjectResponse|error {
-        string resourcePath = string `/v2/catalog/object/${objectId}`;
-        DeleteCatalogObjectResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/catalog/object/${getEncodedUri(objectId)}`;
+        DeleteCatalogObjectResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # SearchCatalogObjects
@@ -747,7 +754,7 @@ public isolated client class Client {
     # + groupId - The ID of the customer group to retrieve. 
     # + return - Success 
     remote isolated function retrieveCustomerGroup(string groupId) returns RetrieveCustomerGroupResponse|error {
-        string resourcePath = string `/v2/customers/groups/${groupId}`;
+        string resourcePath = string `/v2/customers/groups/${getEncodedUri(groupId)}`;
         RetrieveCustomerGroupResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -757,7 +764,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateCustomerGroup(string groupId, UpdateCustomerGroupRequest payload) returns UpdateCustomerGroupResponse|error {
-        string resourcePath = string `/v2/customers/groups/${groupId}`;
+        string resourcePath = string `/v2/customers/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -769,8 +776,8 @@ public isolated client class Client {
     # + groupId - The ID of the customer group to delete. 
     # + return - Success 
     remote isolated function deleteCustomerGroup(string groupId) returns DeleteCustomerGroupResponse|error {
-        string resourcePath = string `/v2/customers/groups/${groupId}`;
-        DeleteCustomerGroupResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/customers/groups/${getEncodedUri(groupId)}`;
+        DeleteCustomerGroupResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # SearchCustomers
@@ -802,7 +809,7 @@ public isolated client class Client {
     # + segmentId - The Square-issued ID of the customer segment. 
     # + return - Success 
     remote isolated function retrieveCustomerSegment(string segmentId) returns RetrieveCustomerSegmentResponse|error {
-        string resourcePath = string `/v2/customers/segments/${segmentId}`;
+        string resourcePath = string `/v2/customers/segments/${getEncodedUri(segmentId)}`;
         RetrieveCustomerSegmentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -811,7 +818,7 @@ public isolated client class Client {
     # + customerId - The ID of the customer to retrieve. 
     # + return - Success 
     remote isolated function retrieveCustomer(string customerId) returns RetrieveCustomerResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}`;
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}`;
         RetrieveCustomerResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -821,7 +828,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateCustomer(string customerId, UpdateCustomerRequest payload) returns UpdateCustomerResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}`;
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -834,10 +841,10 @@ public isolated client class Client {
     # + 'version - The current version of the customer profile. As a best practice, you should include this parameter to enable [optimistic concurrency](https://developer.squareup.com/docs/working-with-apis/optimistic-concurrency) control.  For more information, see [Delete a customer profile](https://developer.squareup.com/docs/customers-api/use-the-api/keep-records#delete-customer-profile). 
     # + return - Success 
     remote isolated function deleteCustomer(string customerId, int? 'version = ()) returns DeleteCustomerResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}`;
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}`;
         map<anydata> queryParam = {"version": 'version};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteCustomerResponse response = check self.clientEp->delete(resourcePath);
+        DeleteCustomerResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # CreateCustomerCard
@@ -846,7 +853,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function createCustomerCard(string customerId, CreateCustomerCardRequest payload) returns CreateCustomerCardResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}/cards`;
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}/cards`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -859,8 +866,8 @@ public isolated client class Client {
     # + cardId - The ID of the card on file to delete. 
     # + return - Success 
     remote isolated function deleteCustomerCard(string customerId, string cardId) returns DeleteCustomerCardResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}/cards/${cardId}`;
-        DeleteCustomerCardResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}/cards/${getEncodedUri(cardId)}`;
+        DeleteCustomerCardResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # AddGroupToCustomer
@@ -869,7 +876,7 @@ public isolated client class Client {
     # + groupId - The ID of the customer group to add the customer to. 
     # + return - Success 
     remote isolated function addGroupToCustomer(string customerId, string groupId) returns AddGroupToCustomerResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}/groups/${groupId}`;
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}/groups/${getEncodedUri(groupId)}`;
         http:Request request = new;
         //TODO: Update the request as needed;
         AddGroupToCustomerResponse response = check self.clientEp-> put(resourcePath, request);
@@ -881,8 +888,8 @@ public isolated client class Client {
     # + groupId - The ID of the customer group to remove the customer from. 
     # + return - Success 
     remote isolated function removeGroupFromCustomer(string customerId, string groupId) returns RemoveGroupFromCustomerResponse|error {
-        string resourcePath = string `/v2/customers/${customerId}/groups/${groupId}`;
-        RemoveGroupFromCustomerResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/customers/${getEncodedUri(customerId)}/groups/${getEncodedUri(groupId)}`;
+        RemoveGroupFromCustomerResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # ListDeviceCodes
@@ -916,7 +923,7 @@ public isolated client class Client {
     # + id - The unique identifier for the device code. 
     # + return - Success 
     remote isolated function getDeviceCode(string id) returns GetDeviceCodeResponse|error {
-        string resourcePath = string `/v2/devices/codes/${id}`;
+        string resourcePath = string `/v2/devices/codes/${getEncodedUri(id)}`;
         GetDeviceCodeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -938,7 +945,7 @@ public isolated client class Client {
     # + disputeId - The ID of the dispute you want more details about. 
     # + return - Success 
     remote isolated function retrieveDispute(string disputeId) returns RetrieveDisputeResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}`;
         RetrieveDisputeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -947,7 +954,7 @@ public isolated client class Client {
     # + disputeId - The ID of the dispute you want to accept. 
     # + return - Success 
     remote isolated function acceptDispute(string disputeId) returns AcceptDisputeResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/accept`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/accept`;
         http:Request request = new;
         //TODO: Update the request as needed;
         AcceptDisputeResponse response = check self.clientEp-> post(resourcePath, request);
@@ -959,7 +966,7 @@ public isolated client class Client {
     # + cursor - A pagination cursor returned by a previous call to this endpoint. Provide this cursor to retrieve the next set of results for the original query. For more information, see [Pagination](https://developer.squareup.com/docs/basics/api101/pagination). 
     # + return - Success 
     remote isolated function listDisputeEvidence(string disputeId, string? cursor = ()) returns ListDisputeEvidenceResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/evidence`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/evidence`;
         map<anydata> queryParam = {"cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListDisputeEvidenceResponse response = check self.clientEp->get(resourcePath);
@@ -971,7 +978,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function createDisputeEvidenceText(string disputeId, CreateDisputeEvidenceTextRequest payload) returns CreateDisputeEvidenceTextResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/evidence-text`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/evidence-text`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -984,7 +991,7 @@ public isolated client class Client {
     # + evidenceId - The ID of the evidence to retrieve. 
     # + return - Success 
     remote isolated function retrieveDisputeEvidence(string disputeId, string evidenceId) returns RetrieveDisputeEvidenceResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/evidence/${evidenceId}`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/evidence/${getEncodedUri(evidenceId)}`;
         RetrieveDisputeEvidenceResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -994,8 +1001,8 @@ public isolated client class Client {
     # + evidenceId - The ID of the evidence you want to remove. 
     # + return - Success 
     remote isolated function deleteDisputeEvidence(string disputeId, string evidenceId) returns DeleteDisputeEvidenceResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/evidence/${evidenceId}`;
-        DeleteDisputeEvidenceResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/evidence/${getEncodedUri(evidenceId)}`;
+        DeleteDisputeEvidenceResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # SubmitEvidence
@@ -1003,7 +1010,7 @@ public isolated client class Client {
     # + disputeId - The ID of the dispute that you want to submit evidence for. 
     # + return - Success 
     remote isolated function submitEvidence(string disputeId) returns SubmitEvidenceResponse|error {
-        string resourcePath = string `/v2/disputes/${disputeId}/submit-evidence`;
+        string resourcePath = string `/v2/disputes/${getEncodedUri(disputeId)}/submit-evidence`;
         http:Request request = new;
         //TODO: Update the request as needed;
         SubmitEvidenceResponse response = check self.clientEp-> post(resourcePath, request);
@@ -1027,7 +1034,7 @@ public isolated client class Client {
     # + id - UUID for the employee that was requested. 
     # + return - Success 
     remote isolated function getEmployeesById(string id) returns RetrieveEmployeeResponse|error {
-        string resourcePath = string `/v2/employees/${id}`;
+        string resourcePath = string `/v2/employees/${getEncodedUri(id)}`;
         RetrieveEmployeeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1118,7 +1125,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function linkCustomerToGiftCard(string giftCardId, LinkCustomerToGiftCardRequest payload) returns LinkCustomerToGiftCardResponse|error {
-        string resourcePath = string `/v2/gift-cards/${giftCardId}/link-customer`;
+        string resourcePath = string `/v2/gift-cards/${getEncodedUri(giftCardId)}/link-customer`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1130,7 +1137,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function unlinkCustomerFromGiftCard(string giftCardId, UnlinkCustomerFromGiftCardRequest payload) returns UnlinkCustomerFromGiftCardResponse|error {
-        string resourcePath = string `/v2/gift-cards/${giftCardId}/unlink-customer`;
+        string resourcePath = string `/v2/gift-cards/${getEncodedUri(giftCardId)}/unlink-customer`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1142,7 +1149,7 @@ public isolated client class Client {
     # + id - The ID of the gift card to retrieve. 
     # + return - Success 
     remote isolated function retrieveGiftCard(string id) returns RetrieveGiftCardResponse|error {
-        string resourcePath = string `/v2/gift-cards/${id}`;
+        string resourcePath = string `/v2/gift-cards/${getEncodedUri(id)}`;
         RetrieveGiftCardResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1151,7 +1158,7 @@ public isolated client class Client {
     # + adjustmentId - ID of the [InventoryAdjustment](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryAdjustment) to retrieve. 
     # + return - Success 
     remote isolated function deprecatedRetrieveInventoryAdjustment(string adjustmentId) returns RetrieveInventoryAdjustmentResponse|error {
-        string resourcePath = string `/v2/inventory/adjustment/${adjustmentId}`;
+        string resourcePath = string `/v2/inventory/adjustment/${getEncodedUri(adjustmentId)}`;
         RetrieveInventoryAdjustmentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1160,7 +1167,7 @@ public isolated client class Client {
     # + adjustmentId - ID of the [InventoryAdjustment](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryAdjustment) to retrieve. 
     # + return - Success 
     remote isolated function retrieveInventoryAdjustment(string adjustmentId) returns RetrieveInventoryAdjustmentResponse|error {
-        string resourcePath = string `/v2/inventory/adjustments/${adjustmentId}`;
+        string resourcePath = string `/v2/inventory/adjustments/${getEncodedUri(adjustmentId)}`;
         RetrieveInventoryAdjustmentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1241,7 +1248,7 @@ public isolated client class Client {
     # + physicalCountId - ID of the [InventoryPhysicalCount](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryPhysicalCount) to retrieve. 
     # + return - Success 
     remote isolated function deprecatedRetrieveInventoryPhysicalCount(string physicalCountId) returns RetrieveInventoryPhysicalCountResponse|error {
-        string resourcePath = string `/v2/inventory/physical-count/${physicalCountId}`;
+        string resourcePath = string `/v2/inventory/physical-count/${getEncodedUri(physicalCountId)}`;
         RetrieveInventoryPhysicalCountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1250,7 +1257,7 @@ public isolated client class Client {
     # + physicalCountId - ID of the [InventoryPhysicalCount](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryPhysicalCount) to retrieve. 
     # + return - Success 
     remote isolated function retrieveInventoryPhysicalCount(string physicalCountId) returns RetrieveInventoryPhysicalCountResponse|error {
-        string resourcePath = string `/v2/inventory/physical-counts/${physicalCountId}`;
+        string resourcePath = string `/v2/inventory/physical-counts/${getEncodedUri(physicalCountId)}`;
         RetrieveInventoryPhysicalCountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1259,7 +1266,7 @@ public isolated client class Client {
     # + transferId - ID of the [InventoryTransfer](https://developer.squareup.com/reference/square_2021-08-18/objects/InventoryTransfer) to retrieve. 
     # + return - Success 
     remote isolated function retrieveInventoryTransfer(string transferId) returns RetrieveInventoryTransferResponse|error {
-        string resourcePath = string `/v2/inventory/transfers/${transferId}`;
+        string resourcePath = string `/v2/inventory/transfers/${getEncodedUri(transferId)}`;
         RetrieveInventoryTransferResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1270,7 +1277,7 @@ public isolated client class Client {
     # + cursor - A pagination cursor returned by a previous call to this endpoint. Provide this to retrieve the next set of results for the original query. See the [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination) guide for more information. 
     # + return - Success 
     remote isolated function retrieveInventoryCount(string catalogObjectId, string? locationIds = (), string? cursor = ()) returns RetrieveInventoryCountResponse|error {
-        string resourcePath = string `/v2/inventory/${catalogObjectId}`;
+        string resourcePath = string `/v2/inventory/${getEncodedUri(catalogObjectId)}`;
         map<anydata> queryParam = {"location_ids": locationIds, "cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RetrieveInventoryCountResponse response = check self.clientEp->get(resourcePath);
@@ -1283,7 +1290,7 @@ public isolated client class Client {
     # + cursor - A pagination cursor returned by a previous call to this endpoint. Provide this to retrieve the next set of results for the original query. See the [Pagination](https://developer.squareup.com/docs/working-with-apis/pagination) guide for more information. 
     # + return - Success 
     remote isolated function retrieveInventoryChanges(string catalogObjectId, string? locationIds = (), string? cursor = ()) returns RetrieveInventoryChangesResponse|error {
-        string resourcePath = string `/v2/inventory/${catalogObjectId}/changes`;
+        string resourcePath = string `/v2/inventory/${getEncodedUri(catalogObjectId)}/changes`;
         map<anydata> queryParam = {"location_ids": locationIds, "cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         RetrieveInventoryChangesResponse response = check self.clientEp->get(resourcePath);
@@ -1331,7 +1338,7 @@ public isolated client class Client {
     # + invoiceId - The ID of the invoice to retrieve. 
     # + return - Success 
     remote isolated function getInvoice(string invoiceId) returns GetInvoiceResponse|error {
-        string resourcePath = string `/v2/invoices/${invoiceId}`;
+        string resourcePath = string `/v2/invoices/${getEncodedUri(invoiceId)}`;
         GetInvoiceResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1341,7 +1348,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateInvoice(string invoiceId, UpdateInvoiceRequest payload) returns UpdateInvoiceResponse|error {
-        string resourcePath = string `/v2/invoices/${invoiceId}`;
+        string resourcePath = string `/v2/invoices/${getEncodedUri(invoiceId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1354,10 +1361,10 @@ public isolated client class Client {
     # + 'version - The version of the [invoice](https://developer.squareup.com/reference/square_2021-08-18/objects/Invoice) to delete. If you do not know the version, you can call [GetInvoice](https://developer.squareup.com/reference/square_2021-08-18/invoices-api/get-invoice) or  [ListInvoices](https://developer.squareup.com/reference/square_2021-08-18/invoices-api/list-invoices). 
     # + return - Success 
     remote isolated function deleteInvoice(string invoiceId, int? 'version = ()) returns DeleteInvoiceResponse|error {
-        string resourcePath = string `/v2/invoices/${invoiceId}`;
+        string resourcePath = string `/v2/invoices/${getEncodedUri(invoiceId)}`;
         map<anydata> queryParam = {"version": 'version};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        DeleteInvoiceResponse response = check self.clientEp->delete(resourcePath);
+        DeleteInvoiceResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # CancelInvoice
@@ -1366,7 +1373,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function cancelInvoice(string invoiceId, CancelInvoiceRequest payload) returns CancelInvoiceResponse|error {
-        string resourcePath = string `/v2/invoices/${invoiceId}/cancel`;
+        string resourcePath = string `/v2/invoices/${getEncodedUri(invoiceId)}/cancel`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1379,7 +1386,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function publishInvoice(string invoiceId, PublishInvoiceRequest payload) returns PublishInvoiceResponse|error {
-        string resourcePath = string `/v2/invoices/${invoiceId}/publish`;
+        string resourcePath = string `/v2/invoices/${getEncodedUri(invoiceId)}/publish`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1416,7 +1423,7 @@ public isolated client class Client {
     # + id - The UUID for the `BreakType` being retrieved. 
     # + return - Success 
     remote isolated function getBreakType(string id) returns GetBreakTypeResponse|error {
-        string resourcePath = string `/v2/labor/break-types/${id}`;
+        string resourcePath = string `/v2/labor/break-types/${getEncodedUri(id)}`;
         GetBreakTypeResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1426,7 +1433,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateBreakType(string id, UpdateBreakTypeRequest payload) returns UpdateBreakTypeResponse|error {
-        string resourcePath = string `/v2/labor/break-types/${id}`;
+        string resourcePath = string `/v2/labor/break-types/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1438,8 +1445,8 @@ public isolated client class Client {
     # + id - The UUID for the `BreakType` being deleted. 
     # + return - Success 
     remote isolated function deleteBreakType(string id) returns DeleteBreakTypeResponse|error {
-        string resourcePath = string `/v2/labor/break-types/${id}`;
-        DeleteBreakTypeResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/labor/break-types/${getEncodedUri(id)}`;
+        DeleteBreakTypeResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # ListEmployeeWages
@@ -1460,7 +1467,7 @@ public isolated client class Client {
     # + id - The UUID for the `EmployeeWage` being retrieved. 
     # + return - Success 
     remote isolated function getEmployeeWage(string id) returns GetEmployeeWageResponse|error {
-        string resourcePath = string `/v2/labor/employee-wages/${id}`;
+        string resourcePath = string `/v2/labor/employee-wages/${getEncodedUri(id)}`;
         GetEmployeeWageResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1493,7 +1500,7 @@ public isolated client class Client {
     # + id - The UUID for the `Shift` being retrieved. 
     # + return - Success 
     remote isolated function getShift(string id) returns GetShiftResponse|error {
-        string resourcePath = string `/v2/labor/shifts/${id}`;
+        string resourcePath = string `/v2/labor/shifts/${getEncodedUri(id)}`;
         GetShiftResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1503,7 +1510,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateShift(string id, UpdateShiftRequest payload) returns UpdateShiftResponse|error {
-        string resourcePath = string `/v2/labor/shifts/${id}`;
+        string resourcePath = string `/v2/labor/shifts/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1515,8 +1522,8 @@ public isolated client class Client {
     # + id - The UUID for the `Shift` being deleted. 
     # + return - Success 
     remote isolated function deleteShift(string id) returns DeleteShiftResponse|error {
-        string resourcePath = string `/v2/labor/shifts/${id}`;
-        DeleteShiftResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/labor/shifts/${getEncodedUri(id)}`;
+        DeleteShiftResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # ListTeamMemberWages
@@ -1537,7 +1544,7 @@ public isolated client class Client {
     # + id - The UUID for the `TeamMemberWage` being retrieved. 
     # + return - Success 
     remote isolated function getTeamMemberWage(string id) returns GetTeamMemberWageResponse|error {
-        string resourcePath = string `/v2/labor/team-member-wages/${id}`;
+        string resourcePath = string `/v2/labor/team-member-wages/${getEncodedUri(id)}`;
         GetTeamMemberWageResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1559,7 +1566,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateWorkweekConfig(string id, UpdateWorkweekConfigRequest payload) returns UpdateWorkweekConfigResponse|error {
-        string resourcePath = string `/v2/labor/workweek-configs/${id}`;
+        string resourcePath = string `/v2/labor/workweek-configs/${getEncodedUri(id)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1591,7 +1598,7 @@ public isolated client class Client {
     # + locationId - The ID of the location to retrieve. If you specify the string "main", then the endpoint returns the main location. 
     # + return - Success 
     remote isolated function retrieveLocation(string locationId) returns RetrieveLocationResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}`;
         RetrieveLocationResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1601,7 +1608,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateLocation(string locationId, UpdateLocationRequest payload) returns UpdateLocationResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1614,7 +1621,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function createCheckout(string locationId, CreateCheckoutRequest payload) returns CreateCheckoutResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/checkouts`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/checkouts`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1630,7 +1637,7 @@ public isolated client class Client {
     # + cursor - A pagination cursor returned by a previous call to this endpoint. Provide this to retrieve the next set of results for your original query. See [Paginating results](https://developer.squareup.com/docs/working-with-apis/pagination) for more information. 
     # + return - Success 
     remote isolated function listRefundsByLocation(string locationId, string? beginTime = (), string? endTime = (), string? sortOrder = (), string? cursor = ()) returns ListRefundsResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/refunds`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/refunds`;
         map<anydata> queryParam = {"begin_time": beginTime, "end_time": endTime, "sort_order": sortOrder, "cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListRefundsResponse response = check self.clientEp->get(resourcePath);
@@ -1645,7 +1652,7 @@ public isolated client class Client {
     # + cursor - A pagination cursor returned by a previous call to this endpoint. Provide this to retrieve the next set of results for your original query. See [Paginating results](https://developer.squareup.com/docs/working-with-apis/pagination) for more information. 
     # + return - Success 
     remote isolated function listTransactions(string locationId, string? beginTime = (), string? endTime = (), string? sortOrder = (), string? cursor = ()) returns ListTransactionsResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions`;
         map<anydata> queryParam = {"begin_time": beginTime, "end_time": endTime, "sort_order": sortOrder, "cursor": cursor};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListTransactionsResponse response = check self.clientEp->get(resourcePath);
@@ -1657,7 +1664,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function charge(string locationId, ChargeRequest payload) returns ChargeResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1670,7 +1677,7 @@ public isolated client class Client {
     # + transactionId - The ID of the transaction to retrieve. 
     # + return - Success 
     remote isolated function retrieveTransaction(string locationId, string transactionId) returns RetrieveTransactionResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions/${transactionId}`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions/${getEncodedUri(transactionId)}`;
         RetrieveTransactionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1678,7 +1685,7 @@ public isolated client class Client {
     #
     # + return - Success 
     remote isolated function captureTransaction(string locationId, string transactionId) returns CaptureTransactionResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions/${transactionId}/capture`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions/${getEncodedUri(transactionId)}/capture`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CaptureTransactionResponse response = check self.clientEp-> post(resourcePath, request);
@@ -1691,7 +1698,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function initiateRefund(string locationId, string transactionId, CreateRefundRequest payload) returns CreateRefundResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions/${transactionId}/refund`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions/${getEncodedUri(transactionId)}/refund`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1702,7 +1709,7 @@ public isolated client class Client {
     #
     # + return - Success 
     remote isolated function voidTransaction(string locationId, string transactionId) returns VoidTransactionResponse|error {
-        string resourcePath = string `/v2/locations/${locationId}/transactions/${transactionId}/void`;
+        string resourcePath = string `/v2/locations/${getEncodedUri(locationId)}/transactions/${getEncodedUri(transactionId)}/void`;
         http:Request request = new;
         //TODO: Update the request as needed;
         VoidTransactionResponse response = check self.clientEp-> post(resourcePath, request);
@@ -1737,7 +1744,7 @@ public isolated client class Client {
     # + accountId - The ID of the [loyalty account](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyAccount) to retrieve. 
     # + return - Success 
     remote isolated function retrieveLoyaltyAccount(string accountId) returns RetrieveLoyaltyAccountResponse|error {
-        string resourcePath = string `/v2/loyalty/accounts/${accountId}`;
+        string resourcePath = string `/v2/loyalty/accounts/${getEncodedUri(accountId)}`;
         RetrieveLoyaltyAccountResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1747,7 +1754,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function accumulateLoyaltyPoints(string accountId, AccumulateLoyaltyPointsRequest payload) returns AccumulateLoyaltyPointsResponse|error {
-        string resourcePath = string `/v2/loyalty/accounts/${accountId}/accumulate`;
+        string resourcePath = string `/v2/loyalty/accounts/${getEncodedUri(accountId)}/accumulate`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1760,7 +1767,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function adjustLoyaltyPoints(string accountId, AdjustLoyaltyPointsRequest payload) returns AdjustLoyaltyPointsResponse|error {
-        string resourcePath = string `/v2/loyalty/accounts/${accountId}/adjust`;
+        string resourcePath = string `/v2/loyalty/accounts/${getEncodedUri(accountId)}/adjust`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1792,7 +1799,7 @@ public isolated client class Client {
     # + programId - The ID of the loyalty program or the keyword `main`. Either value can be used to retrieve the single loyalty program that belongs to the seller. 
     # + return - Success 
     remote isolated function retrieveLoyaltyProgram(string programId) returns RetrieveLoyaltyProgramResponse|error {
-        string resourcePath = string `/v2/loyalty/programs/${programId}`;
+        string resourcePath = string `/v2/loyalty/programs/${getEncodedUri(programId)}`;
         RetrieveLoyaltyProgramResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1802,7 +1809,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function calculateLoyaltyPoints(string programId, CalculateLoyaltyPointsRequest payload) returns CalculateLoyaltyPointsResponse|error {
-        string resourcePath = string `/v2/loyalty/programs/${programId}/calculate`;
+        string resourcePath = string `/v2/loyalty/programs/${getEncodedUri(programId)}/calculate`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1838,7 +1845,7 @@ public isolated client class Client {
     # + rewardId - The ID of the [loyalty reward](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyReward) to retrieve. 
     # + return - Success 
     remote isolated function retrieveLoyaltyReward(string rewardId) returns RetrieveLoyaltyRewardResponse|error {
-        string resourcePath = string `/v2/loyalty/rewards/${rewardId}`;
+        string resourcePath = string `/v2/loyalty/rewards/${getEncodedUri(rewardId)}`;
         RetrieveLoyaltyRewardResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1847,8 +1854,8 @@ public isolated client class Client {
     # + rewardId - The ID of the [loyalty reward](https://developer.squareup.com/reference/square_2021-08-18/objects/LoyaltyReward) to delete. 
     # + return - Success 
     remote isolated function deleteLoyaltyReward(string rewardId) returns DeleteLoyaltyRewardResponse|error {
-        string resourcePath = string `/v2/loyalty/rewards/${rewardId}`;
-        DeleteLoyaltyRewardResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/loyalty/rewards/${getEncodedUri(rewardId)}`;
+        DeleteLoyaltyRewardResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # RedeemLoyaltyReward
@@ -1857,7 +1864,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function redeemLoyaltyReward(string rewardId, RedeemLoyaltyRewardRequest payload) returns RedeemLoyaltyRewardResponse|error {
-        string resourcePath = string `/v2/loyalty/rewards/${rewardId}/redeem`;
+        string resourcePath = string `/v2/loyalty/rewards/${getEncodedUri(rewardId)}/redeem`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1880,7 +1887,7 @@ public isolated client class Client {
     # + merchantId - The ID of the merchant to retrieve. If the string "me" is supplied as the ID, then retrieve the merchant that is currently accessible to this call. 
     # + return - Success 
     remote isolated function retrieveMerchant(string merchantId) returns RetrieveMerchantResponse|error {
-        string resourcePath = string `/v2/merchants/${merchantId}`;
+        string resourcePath = string `/v2/merchants/${getEncodedUri(merchantId)}`;
         RetrieveMerchantResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1937,7 +1944,7 @@ public isolated client class Client {
     # + orderId - The ID of the order to retrieve. 
     # + return - Success 
     remote isolated function getOrderById(string orderId) returns RetrieveOrderResponse|error {
-        string resourcePath = string `/v2/orders/${orderId}`;
+        string resourcePath = string `/v2/orders/${getEncodedUri(orderId)}`;
         RetrieveOrderResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -1947,7 +1954,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateOrderById(string orderId, UpdateOrderRequest payload) returns UpdateOrderResponse|error {
-        string resourcePath = string `/v2/orders/${orderId}`;
+        string resourcePath = string `/v2/orders/${getEncodedUri(orderId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -1960,7 +1967,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function payOrder(string orderId, PayOrderRequest payload) returns PayOrderResponse|error {
-        string resourcePath = string `/v2/orders/${orderId}/pay`;
+        string resourcePath = string `/v2/orders/${getEncodedUri(orderId)}/pay`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2015,7 +2022,7 @@ public isolated client class Client {
     # + paymentId - A unique ID for the desired payment. 
     # + return - Success 
     remote isolated function getPayment(string paymentId) returns GetPaymentResponse|error {
-        string resourcePath = string `/v2/payments/${paymentId}`;
+        string resourcePath = string `/v2/payments/${getEncodedUri(paymentId)}`;
         GetPaymentResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2025,7 +2032,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updatePayment(string paymentId, UpdatePaymentRequest payload) returns UpdatePaymentResponse|error {
-        string resourcePath = string `/v2/payments/${paymentId}`;
+        string resourcePath = string `/v2/payments/${getEncodedUri(paymentId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2037,7 +2044,7 @@ public isolated client class Client {
     # + paymentId - The ID of the payment to cancel. 
     # + return - Success 
     remote isolated function cancelPayment(string paymentId) returns CancelPaymentResponse|error {
-        string resourcePath = string `/v2/payments/${paymentId}/cancel`;
+        string resourcePath = string `/v2/payments/${getEncodedUri(paymentId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelPaymentResponse response = check self.clientEp-> post(resourcePath, request);
@@ -2048,7 +2055,7 @@ public isolated client class Client {
     # + paymentId - The unique ID identifying the payment to be completed. 
     # + return - Success 
     remote isolated function completePayment(string paymentId) returns CompletePaymentResponse|error {
-        string resourcePath = string `/v2/payments/${paymentId}/complete`;
+        string resourcePath = string `/v2/payments/${getEncodedUri(paymentId)}/complete`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CompletePaymentResponse response = check self.clientEp-> post(resourcePath, request);
@@ -2089,7 +2096,7 @@ public isolated client class Client {
     # + refundId - The unique ID for the desired `PaymentRefund`. 
     # + return - Success 
     remote isolated function getPaymentRefund(string refundId) returns GetPaymentRefundResponse|error {
-        string resourcePath = string `/v2/refunds/${refundId}`;
+        string resourcePath = string `/v2/refunds/${getEncodedUri(refundId)}`;
         GetPaymentRefundResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2106,7 +2113,7 @@ public isolated client class Client {
     # + siteId - The ID of the site that contains the snippet. 
     # + return - Success 
     remote isolated function retrieveSnippet(string siteId) returns RetrieveSnippetResponse|error {
-        string resourcePath = string `/v2/sites/${siteId}/snippet`;
+        string resourcePath = string `/v2/sites/${getEncodedUri(siteId)}/snippet`;
         RetrieveSnippetResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2116,7 +2123,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function upsertSnippet(string siteId, UpsertSnippetRequest payload) returns UpsertSnippetResponse|error {
-        string resourcePath = string `/v2/sites/${siteId}/snippet`;
+        string resourcePath = string `/v2/sites/${getEncodedUri(siteId)}/snippet`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2128,8 +2135,8 @@ public isolated client class Client {
     # + siteId - The ID of the site that contains the snippet. 
     # + return - Success 
     remote isolated function deleteSnippet(string siteId) returns DeleteSnippetResponse|error {
-        string resourcePath = string `/v2/sites/${siteId}/snippet`;
-        DeleteSnippetResponse response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/v2/sites/${getEncodedUri(siteId)}/snippet`;
+        DeleteSnippetResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # CreateSubscription
@@ -2161,7 +2168,7 @@ public isolated client class Client {
     # + subscriptionId - The ID of the subscription to retrieve. 
     # + return - Success 
     remote isolated function retrieveSubscription(string subscriptionId) returns RetrieveSubscriptionResponse|error {
-        string resourcePath = string `/v2/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/v2/subscriptions/${getEncodedUri(subscriptionId)}`;
         RetrieveSubscriptionResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2171,7 +2178,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateSubscription(string subscriptionId, UpdateSubscriptionRequest payload) returns UpdateSubscriptionResponse|error {
-        string resourcePath = string `/v2/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/v2/subscriptions/${getEncodedUri(subscriptionId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2183,7 +2190,7 @@ public isolated client class Client {
     # + subscriptionId - The ID of the subscription to cancel. 
     # + return - Success 
     remote isolated function cancelSubscription(string subscriptionId) returns CancelSubscriptionResponse|error {
-        string resourcePath = string `/v2/subscriptions/${subscriptionId}/cancel`;
+        string resourcePath = string `/v2/subscriptions/${getEncodedUri(subscriptionId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelSubscriptionResponse response = check self.clientEp-> post(resourcePath, request);
@@ -2196,7 +2203,7 @@ public isolated client class Client {
     # + 'limit - The upper limit on the number of subscription events to return in the response. Default: `200` 
     # + return - Success 
     remote isolated function listSubscriptionEvents(string subscriptionId, string? cursor = (), int? 'limit = ()) returns ListSubscriptionEventsResponse|error {
-        string resourcePath = string `/v2/subscriptions/${subscriptionId}/events`;
+        string resourcePath = string `/v2/subscriptions/${getEncodedUri(subscriptionId)}/events`;
         map<anydata> queryParam = {"cursor": cursor, "limit": 'limit};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListSubscriptionEventsResponse response = check self.clientEp->get(resourcePath);
@@ -2207,7 +2214,7 @@ public isolated client class Client {
     # + subscriptionId - The ID of the subscription to resume. 
     # + return - Success 
     remote isolated function resumeSubscription(string subscriptionId) returns ResumeSubscriptionResponse|error {
-        string resourcePath = string `/v2/subscriptions/${subscriptionId}/resume`;
+        string resourcePath = string `/v2/subscriptions/${getEncodedUri(subscriptionId)}/resume`;
         http:Request request = new;
         //TODO: Update the request as needed;
         ResumeSubscriptionResponse response = check self.clientEp-> post(resourcePath, request);
@@ -2266,7 +2273,7 @@ public isolated client class Client {
     # + teamMemberId - The ID of the team member to retrieve. 
     # + return - Success 
     remote isolated function retrieveTeamMember(string teamMemberId) returns RetrieveTeamMemberResponse|error {
-        string resourcePath = string `/v2/team-members/${teamMemberId}`;
+        string resourcePath = string `/v2/team-members/${getEncodedUri(teamMemberId)}`;
         RetrieveTeamMemberResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2276,7 +2283,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateTeamMember(string teamMemberId, UpdateTeamMemberRequest payload) returns UpdateTeamMemberResponse|error {
-        string resourcePath = string `/v2/team-members/${teamMemberId}`;
+        string resourcePath = string `/v2/team-members/${getEncodedUri(teamMemberId)}`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2288,7 +2295,7 @@ public isolated client class Client {
     # + teamMemberId - The ID of the team member for which to retrieve the wage setting. 
     # + return - Success 
     remote isolated function retrieveWageSetting(string teamMemberId) returns RetrieveWageSettingResponse|error {
-        string resourcePath = string `/v2/team-members/${teamMemberId}/wage-setting`;
+        string resourcePath = string `/v2/team-members/${getEncodedUri(teamMemberId)}/wage-setting`;
         RetrieveWageSettingResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2298,7 +2305,7 @@ public isolated client class Client {
     # + payload - An object containing the fields to POST for the request. 
     # + return - Success 
     remote isolated function updateWageSetting(string teamMemberId, UpdateWageSettingRequest payload) returns UpdateWageSettingResponse|error {
-        string resourcePath = string `/v2/team-members/${teamMemberId}/wage-setting`;
+        string resourcePath = string `/v2/team-members/${getEncodedUri(teamMemberId)}/wage-setting`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -2334,7 +2341,7 @@ public isolated client class Client {
     # + checkoutId - The unique ID for the desired `TerminalCheckout`. 
     # + return - Success 
     remote isolated function getTerminalCheckout(string checkoutId) returns GetTerminalCheckoutResponse|error {
-        string resourcePath = string `/v2/terminals/checkouts/${checkoutId}`;
+        string resourcePath = string `/v2/terminals/checkouts/${getEncodedUri(checkoutId)}`;
         GetTerminalCheckoutResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2343,7 +2350,7 @@ public isolated client class Client {
     # + checkoutId - The unique ID for the desired `TerminalCheckout`. 
     # + return - Success 
     remote isolated function cancelTerminalCheckout(string checkoutId) returns CancelTerminalCheckoutResponse|error {
-        string resourcePath = string `/v2/terminals/checkouts/${checkoutId}/cancel`;
+        string resourcePath = string `/v2/terminals/checkouts/${getEncodedUri(checkoutId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelTerminalCheckoutResponse response = check self.clientEp-> post(resourcePath, request);
@@ -2378,7 +2385,7 @@ public isolated client class Client {
     # + terminalRefundId - The unique ID for the desired `TerminalRefund`. 
     # + return - Success 
     remote isolated function getTerminalRefund(string terminalRefundId) returns GetTerminalRefundResponse|error {
-        string resourcePath = string `/v2/terminals/refunds/${terminalRefundId}`;
+        string resourcePath = string `/v2/terminals/refunds/${getEncodedUri(terminalRefundId)}`;
         GetTerminalRefundResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -2387,7 +2394,7 @@ public isolated client class Client {
     # + terminalRefundId - The unique ID for the desired `TerminalRefund`. 
     # + return - Success 
     remote isolated function cancelTerminalRefund(string terminalRefundId) returns CancelTerminalRefundResponse|error {
-        string resourcePath = string `/v2/terminals/refunds/${terminalRefundId}/cancel`;
+        string resourcePath = string `/v2/terminals/refunds/${getEncodedUri(terminalRefundId)}/cancel`;
         http:Request request = new;
         //TODO: Update the request as needed;
         CancelTerminalRefundResponse response = check self.clientEp-> post(resourcePath, request);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type AgentArr Agent[];
 
@@ -66,6 +68,7 @@ public type Wireless record {
     string last_task_id?;
     string org_name?;
     string organization_id?;
+    @constraint:Int {maxValue: 100}
     int signal?;
     string site_id?;
     string site_name?;
@@ -101,7 +104,7 @@ public type Task record {
     string created_by_user_id?;
     string cruncher_id?;
     string description?;
-    string _error?;
+    string 'error?;
     boolean hidden?;
     string id;
     string name?;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -49,6 +49,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Open Design REST API v0.3.4](https://opendesign.dev/docs/api-reference/introduction) OpenAPI specification. 
@@ -125,7 +129,7 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns the design entity or its processing status. 
     remote isolated function getDesign(string designId) returns DesignProcessing|InlineResponse2002|error {
-        string resourcePath = string `/designs/${designId}`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}`;
         DesignProcessing|InlineResponse2002 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -135,7 +139,7 @@ public isolated client class Client {
     # + payload - Design export target 
     # + return - Returns the started design export task entity. 
     remote isolated function postDesignExport(string designId, DesignIdExportsBody payload) returns DesignExport|error {
-        string resourcePath = string `/designs/${designId}/exports`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}/exports`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
@@ -148,7 +152,7 @@ public isolated client class Client {
     # + exportId - An identifier of a export task of an imported design file. 
     # + return - Returns the design export task entity. 
     remote isolated function getDesignExport(string designId, string exportId) returns DesignExport|error {
-        string resourcePath = string `/designs/${designId}/exports/${exportId}`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}/exports/${getEncodedUri(exportId)}`;
         DesignExport response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -157,7 +161,7 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns an extended design entity with the complete page and artboard entity lists or the processing status of the design. 
     remote isolated function getDesignSummary(string designId) returns DesignProcessing|InlineResponse2003|error {
-        string resourcePath = string `/designs/${designId}/summary`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}/summary`;
         DesignProcessing|InlineResponse2003 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -166,7 +170,7 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns a page entity list. 
     remote isolated function getDesignPageList(string designId) returns InlineResponse2004|error {
-        string resourcePath = string `/designs/${designId}/pages`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}/pages`;
         InlineResponse2004 response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -175,7 +179,7 @@ public isolated client class Client {
     # + designId - A unique identifier (UUID) of an imported design file. 
     # + return - Returns a artboard entity list. 
     remote isolated function getDesignArtboardList(string designId) returns InlineResponse2005|error {
-        string resourcePath = string `/designs/${designId}/artboards`;
+        string resourcePath = string `/designs/${getEncodedUri(designId)}/artboards`;
         InlineResponse2005 response = check self.clientEp->get(resourcePath);
         return response;
     }

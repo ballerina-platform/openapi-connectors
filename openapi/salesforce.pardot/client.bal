@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -21,7 +21,7 @@ public type ClientConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,10 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
 |};
 
 # This is a generated connector for [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
@@ -73,7 +77,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readCampaign(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/campaigns/${id}`;
+        string resourcePath = string `/objects/campaigns/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -113,7 +117,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readCustomField(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/custom-fields/${id}`;
+        string resourcePath = string `/objects/custom-fields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -124,8 +128,8 @@ public isolated client class Client {
     # + id - (required) CustomField record id 
     # + return - No content 
     remote isolated function deleteCustomField(string id) returns http:Response|error {
-        string resourcePath = string `/objects/custom-fields/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/objects/custom-fields/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a custom field.
@@ -135,7 +139,7 @@ public isolated client class Client {
     # + payload - Custom Field update request 
     # + return - Response payload 
     remote isolated function updateCustomField(string fields, string id, CustomFieldUpdateRequest payload) returns Record|error {
-        string resourcePath = string `/objects/custom-fields/${id}`;
+        string resourcePath = string `/objects/custom-fields/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -192,7 +196,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readCustomRedirect(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/custom-redirects/${id}`;
+        string resourcePath = string `/objects/custom-redirects/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -203,8 +207,8 @@ public isolated client class Client {
     # + id - Record id 
     # + return - No content 
     remote isolated function deleteCustomRedirect(string id) returns http:Response|error {
-        string resourcePath = string `/objects/custom-redirects/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/objects/custom-redirects/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a custom redirect.
@@ -214,7 +218,7 @@ public isolated client class Client {
     # + payload - Custom Redirects update request 
     # + return - Response payload 
     remote isolated function updateCustomRedirect(string fields, string id, CustomRedirectsUpdateRequest payload) returns Record|error {
-        string resourcePath = string `/objects/custom-redirects/${id}`;
+        string resourcePath = string `/objects/custom-redirects/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -273,7 +277,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readFile(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/files/${id}`;
+        string resourcePath = string `/objects/files/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -284,8 +288,8 @@ public isolated client class Client {
     # + id - (required) record id 
     # + return - No content 
     remote isolated function deleteFile(string id) returns http:Response|error {
-        string resourcePath = string `/objects/files/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/objects/files/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates a file.
@@ -295,7 +299,7 @@ public isolated client class Client {
     # + payload - File update request 
     # + return - Response payload 
     remote isolated function updateFile(string fields, string id, FileUpdateRequest payload) returns Record|error {
-        string resourcePath = string `/objects/files/${id}`;
+        string resourcePath = string `/objects/files/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -337,7 +341,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readFolder(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/folders/${id}`;
+        string resourcePath = string `/objects/folders/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -373,7 +377,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readForm(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/forms/${id}`;
+        string resourcePath = string `/objects/forms/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -402,7 +406,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readLayoutTemplates(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/layout-templates/${id}`;
+        string resourcePath = string `/objects/layout-templates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -413,8 +417,8 @@ public isolated client class Client {
     # + id - (required) record id 
     # + return - No content 
     remote isolated function deleteLayoutTemplate(string id) returns http:Response|error {
-        string resourcePath = string `/objects/layout-templates/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/objects/layout-templates/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a layout template.
@@ -424,7 +428,7 @@ public isolated client class Client {
     # + payload - Layout Template update request 
     # + return - Response payload 
     remote isolated function updateLayoutTemplate(string fields, string id, LayoutTemplateUpdateRequest payload) returns Record|error {
-        string resourcePath = string `/objects/layout-templates/${id}`;
+        string resourcePath = string `/objects/layout-templates/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -471,7 +475,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readList(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/lists/${id}`;
+        string resourcePath = string `/objects/lists/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -482,8 +486,8 @@ public isolated client class Client {
     # + id - Record id 
     # + return - No content 
     remote isolated function deleteList(string id) returns http:Response|error {
-        string resourcePath = string `/objects/lists/${id}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/objects/lists/${getEncodedUri(id)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Update a list.
@@ -493,7 +497,7 @@ public isolated client class Client {
     # + payload - List update request 
     # + return - Response payload 
     remote isolated function updateList(string fields, string id, ListUpdateRequest payload) returns Record|error {
-        string resourcePath = string `/objects/lists/${id}`;
+        string resourcePath = string `/objects/lists/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -551,7 +555,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readProspect(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/prospects/${id}`;
+        string resourcePath = string `/objects/prospects/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -605,7 +609,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readProspectAccount(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/prospect-accounts/${id}`;
+        string resourcePath = string `/objects/prospect-accounts/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -634,7 +638,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readTrackerDomain(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/tracker-domains/${id}`;
+        string resourcePath = string `/objects/tracker-domains/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -663,7 +667,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readUser(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/users/${id}`;
+        string resourcePath = string `/objects/users/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -703,7 +707,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function readVisit(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/visits/${id}`;
+        string resourcePath = string `/objects/visits/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);
@@ -752,7 +756,7 @@ public isolated client class Client {
     # + id - Record id 
     # + return - Response payload 
     remote isolated function getVisitorPageViews(string fields, string id) returns Record|error {
-        string resourcePath = string `/objects/visitor-page-views/${id}`;
+        string resourcePath = string `/objects/visitor-page-views/${getEncodedUri(id)}`;
         map<anydata> queryParam = {"fields": fields};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Record response = check self.clientEp->get(resourcePath);

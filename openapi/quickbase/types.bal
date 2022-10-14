@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -13,6 +13,8 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
+
+import ballerina/constraint;
 
 public type InlineResponse200Arr InlineResponse200[];
 
@@ -255,6 +257,7 @@ public type RecordsQueryBody record {
     # An array of field ids for the fields that should be returned in the response. If empty, the default columns on the table will be returned.
     string[] 'select?;
     # The table identifier.
+    @constraint:String {minLength: 1}
     string 'from;
 };
 
@@ -338,6 +341,7 @@ public type ReportsQueryFormulafields record {
 
 public type RecordsBody record {
     # The table identifier.
+    @constraint:String {minLength: 1}
     string to;
     # Record data array.
     string[] data?;
@@ -464,6 +468,7 @@ public type FieldsfieldidProperties record {
     # Default user id value.
     int defaultValueLuid?;
     # The maximum number of versions configured for a file attachment.
+    @constraint:Int {minValue: 1}
     int maxVersions?;
     # The format to display time.
     int format?;
@@ -631,6 +636,7 @@ public type AppsBody record {
 # The example below shows all the properties that can be changed with this request. Additional properties that you can see with the corresponding GET request cannot be set through this API.
 public type TablesBody record {
     # The name for the table.
+    @constraint:String {minLength: 1}
     string name;
     # The plural noun for records in the table. If this value is not passed the default value is 'Records'.
     string pluralRecordName?;
@@ -685,6 +691,7 @@ public type FieldsProperties1 record {
     # Default user id value.
     int defaultValueLuid?;
     # The maximum number of versions configured for a file attachment.
+    @constraint:Int {minValue: 1}
     int maxVersions?;
     # The format to display time.
     int format?;

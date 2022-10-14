@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -179,9 +179,9 @@ public type SelzApiPublicModelsProductsProductresponse record {
     # Three-letter ISO currency code representing the currency of the product price
     string currency_code?;
     # The price of the product
-    float price?;
+    decimal price?;
     # The original price of the product
-    float regular_price?;
+    decimal regular_price?;
     # TBC
     boolean is_price_flexible?;
     # The number of items in stock for this product
@@ -277,13 +277,13 @@ public type SelzApiPublicModelsOrdersOrderitemresponse record {
     # Currency of the product ordered
     string currency?;
     # Tax rate of the line item
-    float tax_rate?;
+    decimal tax_rate?;
     # Tax name of the line item
     string tax_name?;
     # Tax amount of the line item
-    float total_tax?;
+    decimal total_tax?;
     # Discount amount of the line item
-    float total_discount?;
+    decimal total_discount?;
 };
 
 # SlicedListResponse
@@ -672,7 +672,7 @@ public type SelzApiPublicModelsOrdersOrderresponse record {
     # Total tax charged on shipping
     string shipping_tax?;
     # Shipping tax rate
-    float shipping_tax_rate?;
+    decimal shipping_tax_rate?;
     # Shipping tax name
     string shipping_tax_name?;
     # Total amount of tax charged for the whole order (including shipping)
@@ -1017,13 +1017,13 @@ public type SelzOrdersApiModelsRefundresponse record {
     string order_id?;
     string order_created_date?;
     string order_reference_id?;
-    float total_amount?;
-    float total_amount_in_base_currency?;
-    float disbursed?;
-    float balance?;
-    float balance_in_base_currency?;
+    decimal total_amount?;
+    decimal total_amount_in_base_currency?;
+    decimal disbursed?;
+    decimal balance?;
+    decimal balance_in_base_currency?;
     string currency_code?;
-    float currency_rate?;
+    decimal currency_rate?;
     boolean exclude_from_seller_balance?;
     string payment_gateway?;
     string payment_processor_type?;
@@ -1100,9 +1100,9 @@ public type SelzApiPublicModelsProductsProductvariantresponse record {
     # The title of the product variant.
     string title?;
     # The original price of the product variant
-    float price_regular?;
+    decimal price_regular?;
     # The price of the product variant
-    float price?;
+    decimal price?;
     # The number of items in stock for this product variant
     int quantity?;
     # The number of items in stock which is available for this product variant

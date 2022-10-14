@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://oauth.simple.api/token";
 |};
 
 # This is a generated connector from [Siemens IoT File Service API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification.
@@ -75,7 +86,7 @@ public isolated client class Client {
     # + range - Part of a file to return in Bytes, eg bytes=200-600 
     # + return - file content 
     remote isolated function getFile(string entityId, string filepath, int? ifNoneMatch = (), string? range = ()) returns string|error {
-        string resourcePath = string `/files/${entityId}/${filepath}`;
+        string resourcePath = string `/files/${getEncodedUri(entityId)}/${getEncodedUri(filepath)}`;
         map<any> headerValues = {"If-None-Match": ifNoneMatch, "range": range};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -87,8 +98,8 @@ public isolated client class Client {
     # + filepath - unique identifier of the file 
     # + return - deleted 
     remote isolated function deleteFile(string entityId, string filepath) returns http:Response|error {
-        string resourcePath = string `/files/${entityId}/${filepath}`;
-        http:Response response = check self.clientEp->delete(resourcePath);
+        string resourcePath = string `/files/${getEncodedUri(entityId)}/${getEncodedUri(filepath)}`;
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # search files
@@ -101,7 +112,7 @@ public isolated client class Client {
     # + filter - filter based on supported fields - see filter syntax for more details (name, path, type, size, timestamp, created, updated) 
     # + return - successful operation 
     remote isolated function searchFiles(string entityId, int? offset = (), int? 'limit = (), boolean? count = (), string? 'order = (), string? filter = ()) returns File[]|error {
-        string resourcePath = string `/files/${entityId}`;
+        string resourcePath = string `/files/${getEncodedUri(entityId)}`;
         map<anydata> queryParam = {"offset": offset, "limit": 'limit, "count": count, "order": 'order, "filter": filter};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         File[] response = check self.clientEp->get(resourcePath);
@@ -113,7 +124,7 @@ public isolated client class Client {
     # + filepath - path of the file 
     # + return - multi part list 
     remote isolated function getFileList(string entityId, string filepath) returns Fileslist[]|error {
-        string resourcePath = string `/fileslist/${entityId}/${filepath}`;
+        string resourcePath = string `/fileslist/${getEncodedUri(entityId)}/${getEncodedUri(filepath)}`;
         Fileslist[] response = check self.clientEp->get(resourcePath);
         return response;
     }
@@ -142,7 +153,7 @@ public isolated client class Client {
     # + id - Job Id of bulk delete operation 
     # + return - return bulk delete job by job id submitted by the tenant 1. <b>id</B>: Job Id created when bulk delete job is accepted 2. <b>timestamp</b>: Timestamp when the job was created 3. <b>status</b>: current status of the job. Possible values can be<br><b>[IN_PROGRESS, COMPLETED_WITH_ERRORS, COMPLETED, FAILED]</b> 
     remote isolated function getDeleteJobStatus(string id) returns BulkDeleteJobResponse|error {
-        string resourcePath = string `/files/deleteJobs/${id}`;
+        string resourcePath = string `/files/deleteJobs/${getEncodedUri(id)}`;
         BulkDeleteJobResponse response = check self.clientEp->get(resourcePath);
         return response;
     }

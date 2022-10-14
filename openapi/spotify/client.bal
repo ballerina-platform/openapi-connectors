@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.spotify.com/api/token";
 |};
 
 # This is a generated connector from [Spotify API v1](https://developer.spotify.com/documentation/web-api/) OpenAPI Specification. 
@@ -89,7 +100,7 @@ public isolated client class Client {
     # + return - On success, the response body contains a [playlist object](https://developer.spotify.com/documentation/web-api/reference/#object-playlistobject) in JSON format and the HTTP status code in the response header is `200` OK. If an episode is unavailable in the given `market`, its information will not be included in the response. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema). Requesting playlists that you do not have the user's authorization to access returns error `403` Forbidden. 
     @display {label: "Playlist By Id"}
     remote isolated function getPlaylistById(@display {label: "Playlist Id"} string playlistId, @display {label: "Market"} string? market = (), @display {label: "Fields to Return"} string? fields = (), @display {label: "Additional Types"} string? additionalTypes = ()) returns PlaylistObject|error {
-        string resourcePath = string `/playlists/${playlistId}`;
+        string resourcePath = string `/playlists/${getEncodedUri(playlistId)}`;
         map<anydata> queryParam = {"market": market, "fields": fields, "additional_types": additionalTypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PlaylistObject response = check self.clientEp->get(resourcePath);
@@ -103,13 +114,13 @@ public isolated client class Client {
     # + return - On success the HTTP status code in the response header is `200` OK. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema). Trying to change a playlist when you do not have the user's authorization returns error `403` Forbidden. 
     @display {label: "Update Playlist"}
     remote isolated function updatePlaylist(@display {label: "Content Type"} string contentType, @display {label: "Playlist Id"} string playlistId, ChangePlayListDetails payload) returns http:Response|error {
-        string resourcePath = string `/playlists/${playlistId}`;
+        string resourcePath = string `/playlists/${getEncodedUri(playlistId)}`;
         map<any> headerValues = {"Content-Type": contentType};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a Playlist's Items
@@ -123,7 +134,7 @@ public isolated client class Client {
     # + return - On success, the response body contains an array of [track objects](https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedtrackobject) and [episode objects](https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedepisodeobject) (depends on the `additional_types` parameter), wrapped in a [paging object](https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject) in JSON format and the HTTP status code in the response header is `200` OK. If an episode is unavailable in the given `market`, its information will not be included in the response. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema). Requesting playlists that you do not have the user's authorization to access returns error `403` Forbidden. 
     @display {label: "Playlist Tracks"}
     remote isolated function getPlaylistTracks(@display {label: "Playlist Id"} string playlistId, @display {label: "Market"} string market, @display {label: "Fields to Return"} string? fields = (), @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = (), string? additionalTypes = ()) returns PlaylistTrackDetails|error {
-        string resourcePath = string `/playlists/${playlistId}/tracks`;
+        string resourcePath = string `/playlists/${getEncodedUri(playlistId)}/tracks`;
         map<anydata> queryParam = {"market": market, "fields": fields, "limit": 'limit, "offset": offset, "additional_types": additionalTypes};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         PlaylistTrackDetails response = check self.clientEp->get(resourcePath);
@@ -137,7 +148,7 @@ public isolated client class Client {
     # + return - On a successful **reorder** operation, the response body contains a `snapshot_id` in JSON format and the HTTP status code in the response header is `200` OK. The `snapshot_id` can be used to identify your playlist version in future requests. On a successful **replace** operation, the HTTP status code in the response header is `201` Created. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes), the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema), and the existing playlist is unmodified. Trying to set an item when you do not have the user's authorization returns error `403` Forbidden. 
     @display {label: "Reorder or Replace Tracks"}
     remote isolated function reorderOrReplacePlaylistTracks(@display {label: "Playlist Id"} string playlistId, PlayListReorderDetails payload, @display {label: "Track URIs"} string? uris = ()) returns SnapshotIdObject|error? {
-        string resourcePath = string `/playlists/${playlistId}/tracks`;
+        string resourcePath = string `/playlists/${getEncodedUri(playlistId)}/tracks`;
         map<anydata> queryParam = {"uris": uris};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -154,7 +165,7 @@ public isolated client class Client {
     # + return - On success, the HTTP status code in the response header is `200` OK and the response body contains an array of simplified [playlist objects](https://developer.spotify.com/documentation/web-api/reference/#object-simplifiedplaylistobject) (wrapped in a [paging object](https://developer.spotify.com/documentation/web-api/reference/#object-pagingobject)) in JSON format. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema). 
     @display {label: "Playlist By User Id"}
     remote isolated function getPlayslistsByUserID(@display {label: "User Id"} string userId, @display {label: "Limit"} int? 'limit = (), @display {label: "Offset"} int? offset = ()) returns UserPlayListDetails|error {
-        string resourcePath = string `/users/${userId}/playlists`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/playlists`;
         map<anydata> queryParam = {"limit": 'limit, "offset": offset};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         UserPlayListDetails response = check self.clientEp->get(resourcePath);
@@ -167,7 +178,7 @@ public isolated client class Client {
     # + return - On success, the response body contains the created [playlist object](https://developer.spotify.com/documentation/web-api/reference/#object-playlistobject) in JSON format and the HTTP status code in the response header is `200` OK or `201` Created. There is also a `Location` response header giving the Web API endpoint for the new playlist. On error, the header status code is an [error code](https://developer.spotify.com/documentation/web-api/#response-status-codes) and the response body contains an [error object](https://developer.spotify.com/documentation/web-api/#response-schema). Trying to create a playlist when you do not have the user's authorization returns error `403` Forbidden. 
     @display {label: "Create Playlist"}
     remote isolated function createPlaylist(@display {label: "User Id"} string userId, PlayListDetails payload) returns PlaylistObject|error {
-        string resourcePath = string `/users/${userId}/playlists`;
+        string resourcePath = string `/users/${getEncodedUri(userId)}/playlists`;
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -234,7 +234,7 @@ public type Hotel record {
     string hotelId;
     string name;
     string currency;
-    float starRating;
+    decimal starRating;
     HotelDescription description?;
     boolean contractable;
     string[] emails;
@@ -382,7 +382,7 @@ public type BookingHotel record {
     string hotelId;
     string name;
     string currency?;
-    float starRating;
+    decimal starRating;
     string[] emails?;
     string[] phoneNumbers?;
     Image[] images;

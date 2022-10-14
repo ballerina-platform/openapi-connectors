@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -40,6 +40,7 @@ public isolated client class Client {
         http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
+        return;
     }
     # Categories
     #
@@ -47,10 +48,10 @@ public isolated client class Client {
     # + language - the language code to get localized result 
     # + return - OK 
     remote isolated function getCategories(string platform, string language) returns Categories|error {
-        string  path = string `/api/iconsets/v3/categories?platform=${platform}&language=${language}`;
+        string resourcePath = string `/api/iconsets/v3/categories?platform=${getEncodedUri(platform)}&language=${getEncodedUri(language)}`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
-        Categories response = check self.clientEp-> get(path, targetType = Categories);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Categories response = check self.clientEp->get(resourcePath);
         return response;
     }
     # By Category
@@ -63,10 +64,10 @@ public isolated client class Client {
     # + language - the language code to get localized result 
     # + return - OK 
     remote isolated function getByCategory(string category, string subcategory, decimal amount, decimal offset, string platform, string language) returns Icon|error {
-        string  path = string `/api/iconsets/v3/category?category=${category}&subcategory=${subcategory}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}`;
+        string resourcePath = string `/api/iconsets/v3/category?category=${getEncodedUri(category)}&subcategory=${getEncodedUri(subcategory)}&amount=${getEncodedUri(amount)}&offset=${getEncodedUri(offset)}&platform=${getEncodedUri(platform)}&language=${getEncodedUri(language)}`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
-        Icon response = check self.clientEp-> get(path, targetType = Icon);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Icon response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Latest
@@ -78,10 +79,10 @@ public isolated client class Client {
     # + language - the language code to get localized result 
     # + return - OK 
     remote isolated function getLatest(decimal amount, decimal offset, string term, string platform, string language) returns LatestIcons|error {
-        string  path = string `/api/iconsets/v3/latest?term=${term}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}`;
+        string resourcePath = string `/api/iconsets/v3/latest?term=${getEncodedUri(term)}&amount=${getEncodedUri(amount)}&offset=${getEncodedUri(offset)}&platform=${getEncodedUri(platform)}&language=${getEncodedUri(language)}`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
-        LatestIcons response = check self.clientEp-> get(path, targetType = LatestIcons);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        LatestIcons response = check self.clientEp->get(resourcePath);
         return response;
     }
     # By Keyword v3
@@ -94,10 +95,10 @@ public isolated client class Client {
     # + language - the language code to get localized result 
     # + return - OK 
     remote isolated function getByKeyword(string term, decimal amount, boolean exactAmount, decimal offset, string platform, string language) returns Category|error {
-        string  path = string `/api/iconsets/v3/search?term=${term}&amount=${amount}&offset=${offset}&platform=${platform}&language=${language}&exact_amount=${exactAmount}`;
+        string resourcePath = string `/api/iconsets/v3/search?term=${getEncodedUri(term)}&amount=${getEncodedUri(amount)}&offset=${getEncodedUri(offset)}&platform=${getEncodedUri(platform)}&language=${getEncodedUri(language)}&exact_amount=${getEncodedUri(exactAmount)}`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
-        Category response = check self.clientEp-> get(path, targetType = Category);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        Category response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Totals
@@ -105,38 +106,38 @@ public isolated client class Client {
     # + since - the optional date to calculate the total number of icons that were created after it. It should be in format "four year digits - dash - two month number digits - dash - two day number digits. For example 2014-12-31 means "31th of December, 2014". 
     # + return - OK 
     remote isolated function getTotals(string since) returns TotalsResponse|error {
-        string  path = string `/api/iconsets/v3/total?since=${since}`;
+        string resourcePath = string `/api/iconsets/v3/total?since=${getEncodedUri(since)}`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
-        TotalsResponse response = check self.clientEp-> get(path, targetType = TotalsResponse);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
+        TotalsResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # From a Collection
     #
     # + payload - Item to be added 
     # + return - OK 
-    remote isolated function postCollection(PostCollectionRequest payload) returns CreatedItem|error {
-        string  path = string `/api/task/web-font/collection`;
+    remote isolated function postCollection(json payload) returns CreatedItem|error {
+        string resourcePath = string `/api/task/web-font/collection`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedItem response = check self.clientEp->post(path, request, targetType=CreatedItem);
+        request.setPayload(jsonBody, "application/json");
+        CreatedItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # From Separate Icons
     #
     # + payload - Item to be added 
     # + return - OK 
-    remote isolated function postIcons(PostIconsRequest payload) returns CreatedItem|error {
-        string  path = string `/api/task/web-font/icons`;
+    remote isolated function postIcons(json payload) returns CreatedItem|error {
+        string resourcePath = string `/api/task/web-font/icons`;
         map<anydata> queryParam = {"token": self.apiKeyConfig.token};
-        path = path + check getPathForQueryParam(queryParam);
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
-        request.setPayload(jsonBody);
-        CreatedItem response = check self.clientEp->post(path, request, targetType=CreatedItem);
+        request.setPayload(jsonBody, "application/json");
+        CreatedItem response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

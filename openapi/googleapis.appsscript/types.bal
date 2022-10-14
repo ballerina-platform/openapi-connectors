@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -103,7 +103,7 @@ public type Operation record {
     # This field indicates whether the script execution has completed. A completed execution has a populated `response` field containing the ExecutionResponse from function that was executed.
     boolean done?;
     # If a `run` call succeeds but the script function (or Apps Script itself) throws an exception, the response body's error field contains this `Status` object.
-    Status _error?;
+    Status 'error?;
     # If the script function returns successfully, this field contains an ExecutionResponse object with the function's return value.
     record {} response?;
 };
@@ -305,7 +305,7 @@ public type Value record {
     # Represents a null value.
     string nullValue?;
     # Represents a double value.
-    float numberValue?;
+    decimal numberValue?;
     # Represents a structured proto value.
     record {} protoValue?;
     # Represents a string value.

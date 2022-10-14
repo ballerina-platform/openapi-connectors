@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + sortBy - Sorting of merchants by the field value 
     # + sortDir - Direction of sorting 
-    # + 'group - Filter merchants by a group name 
+    # + group - Filter merchants by a group name 
     # + processor - Filter merchants by a processor name 
     # + datasource - Filter merchants by a data source name 
     # + mid - Filter merchants by a partial merchant number 
@@ -63,9 +63,9 @@ public isolated client class Client {
     # + startDate - Start date for date_filter filter in format ISO 8601 for created and modified properties (**Please note that `+` sign should be encoded to `%2B`**), for others properties you should use simple date format (Y-m-d). 
     # + endDate - End date for date_filter filter in format ISO 8601 for created and modified properties (**Please note that `+` sign should be encoded to `%2B`**), for others properties you should use simple date format (Y-m-d) 
     # + return - A JSON array of merchants 
-    remote isolated function getMerchants(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? 'group = (), string? processor = (), string? datasource = (), string? mid = (), string? name = (), string? vim = (), string? active = (), string? status = (), string? dateFilter = (), string? startDate = (), string? endDate = ()) returns InlineResponse200|error {
+    remote isolated function getMerchants(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? group = (), string? processor = (), string? datasource = (), string? mid = (), string? name = (), string? vim = (), string? active = (), string? status = (), string? dateFilter = (), string? startDate = (), string? endDate = ()) returns InlineResponse200|error {
         string resourcePath = string `/api/v1/merchants`;
-        map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "group": 'group, "processor": processor, "datasource": datasource, "mid": mid, "name": name, "vim": vim, "active": active, "status": status, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate};
+        map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "group": group, "processor": processor, "datasource": datasource, "mid": mid, "name": name, "vim": vim, "active": active, "status": status, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
@@ -77,7 +77,7 @@ public isolated client class Client {
     # + merchantNumber - Merchant number 
     # + return - Detailed merchant account information 
     remote isolated function getMerchantInformation(int merchantNumber) returns InlineResponse2001|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         InlineResponse2001 response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -89,13 +89,13 @@ public isolated client class Client {
     # + payload - Merchant changes (send only fields you want to change) 
     # + return - Merchant has been updated successfully 
     remote isolated function updateMerchantInformation(int merchantNumber, MerchantsMerchantnumberBody payload) returns InlineResponse2002|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2002 response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        InlineResponse2002 response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of deposits records and totals
@@ -107,7 +107,7 @@ public isolated client class Client {
     # + endDate - Filter deposits by a date in format Y-m-d. Should be no more than 90 days from the start date. 
     # + return - A list of deposits 
     remote isolated function getDepositRecords(int merchantNumber, int year, int month, int day, string? endDate = ()) returns InlineResponse2003|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/deposits/${year}/${month}/${day}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/deposits/${getEncodedUri(year)}/${getEncodedUri(month)}/${getEncodedUri(day)}`;
         map<anydata> queryParam = {"end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -124,7 +124,7 @@ public isolated client class Client {
     # + endDate - Filter batches by a date (Y-m-d) 
     # + return - A list of batches and transactions 
     remote isolated function getBatches(int merchantNumber, int? page = (), int? perPage = (), string? startDate = (), string? endDate = ()) returns InlineResponse2004|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/transactions`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/transactions`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -141,7 +141,7 @@ public isolated client class Client {
     # + endDate - Filter batches by a date (Y-m-d) 
     # + return - A list of chargeback cases 
     remote isolated function getChargebacks(int merchantNumber, int? page = (), int? perPage = (), string? startDate = (), string? endDate = ()) returns InlineResponse2005|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -155,7 +155,7 @@ public isolated client class Client {
     # + caseNumber - Chargeback case number 
     # + return - Chargeback detail information 
     remote isolated function getChargebackCaseInformation(int merchantNumber, string caseNumber) returns ChargebackReplyResponse|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks/${caseNumber}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks/${getEncodedUri(caseNumber)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         ChargebackReplyResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -170,7 +170,7 @@ public isolated client class Client {
     # + endDate - Filter batches by a date (Y-m-d) 
     # + return - A list of retrieval cases 
     remote isolated function getRetrievalCases(int merchantNumber, int? page = (), int? perPage = (), string? startDate = (), string? endDate = ()) returns InlineResponse2007|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -184,7 +184,7 @@ public isolated client class Client {
     # + caseNumber - Retrieval case number 
     # + return - A list of retrieval cases 
     remote isolated function getDetailedRetrievalCaseInformation(int merchantNumber, string caseNumber) returns RetrievalsReplyResponse|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         RetrievalsReplyResponse response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -197,7 +197,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A list of statements 
     remote isolated function getStatements(int merchantNumber, int? page = (), int? perPage = ()) returns InlineResponse2008|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/statements`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/statements`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -211,7 +211,7 @@ public isolated client class Client {
     # + statementId - Statement Id 
     # + return - Statement file 
     remote isolated function downloadStatement(int merchantNumber, int statementId) returns string|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/statements/${statementId}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/statements/${getEncodedUri(statementId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         string response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -229,7 +229,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Download chargeback case files
@@ -239,7 +239,7 @@ public isolated client class Client {
     # + fileId - File Id (leave empty to get all case files) 
     # + return - Files 
     remote isolated function downloadChargebackCaseFiles(int merchantNumber, int caseNumber, int fileId) returns DisputeFile[]|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks/${caseNumber}/files/${fileId}`;
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks/${getEncodedUri(caseNumber)}/files/${getEncodedUri(fileId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         DisputeFile[] response = check self.clientEp->get(resourcePath, httpHeaders);

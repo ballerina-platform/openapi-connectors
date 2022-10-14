@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
@@ -157,7 +168,7 @@ public isolated client class Client {
     # + scriptId - The script project's Drive ID. 
     # + return - Successful response 
     remote isolated function getProjects(string scriptId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Project|error {
-        string resourcePath = string `/v1/projects/${scriptId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Project response = check self.clientEp->get(resourcePath);
@@ -176,7 +187,7 @@ public isolated client class Client {
     # + versionNumber - The version number of the project to retrieve. If not provided, the project's HEAD version is returned. 
     # + return - Successful response 
     remote isolated function getcontentProjects(string scriptId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? versionNumber = ()) returns Content|error {
-        string resourcePath = string `/v1/projects/${scriptId}/content`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/content`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "versionNumber": versionNumber};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Content response = check self.clientEp->get(resourcePath);
@@ -195,7 +206,7 @@ public isolated client class Client {
     # + payload - Content request 
     # + return - Successful response 
     remote isolated function updatecontentProjects(string scriptId, Content payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Content|error {
-        string resourcePath = string `/v1/projects/${scriptId}/content`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/content`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -218,7 +229,7 @@ public isolated client class Client {
     # + pageToken - The token for continuing a previous list request on the next page. This should be set to the value of `nextPageToken` from a previous response. 
     # + return - Successful response 
     remote isolated function listProjectsDeployments(string scriptId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListDeploymentsResponse|error {
-        string resourcePath = string `/v1/projects/${scriptId}/deployments`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/deployments`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListDeploymentsResponse response = check self.clientEp->get(resourcePath);
@@ -237,7 +248,7 @@ public isolated client class Client {
     # + payload - DeploymentConfig request 
     # + return - Successful response 
     remote isolated function createProjectsDeployments(string scriptId, DeploymentConfig payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Deployment|error {
-        string resourcePath = string `/v1/projects/${scriptId}/deployments`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/deployments`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -259,7 +270,7 @@ public isolated client class Client {
     # + deploymentId - The deployment ID. 
     # + return - Successful response 
     remote isolated function getProjectsDeployments(string scriptId, string deploymentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Deployment|error {
-        string resourcePath = string `/v1/projects/${scriptId}/deployments/${deploymentId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Deployment response = check self.clientEp->get(resourcePath);
@@ -279,7 +290,7 @@ public isolated client class Client {
     # + payload - UpdateDeployment request 
     # + return - Successful response 
     remote isolated function updateProjectsDeployments(string scriptId, string deploymentId, UpdateDeploymentRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Deployment|error {
-        string resourcePath = string `/v1/projects/${scriptId}/deployments/${deploymentId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -301,10 +312,10 @@ public isolated client class Client {
     # + deploymentId - The deployment ID to be undeployed. 
     # + return - Successful response 
     remote isolated function deleteProjectsDeployments(string scriptId, string deploymentId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns http:Response|error {
-        string resourcePath = string `/v1/projects/${scriptId}/deployments/${deploymentId}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        http:Response response = check self.clientEp->delete(resourcePath);
+        http:Response response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Get metrics data for scripts, such as number of executions and active users.
@@ -321,7 +332,7 @@ public isolated client class Client {
     # + metricsGranularity - Required field indicating what granularity of metrics are returned. 
     # + return - Successful response 
     remote isolated function getmetricsProjects(string scriptId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? metricsfilterDeploymentid = (), string? metricsGranularity = ()) returns Metrics|error {
-        string resourcePath = string `/v1/projects/${scriptId}/metrics`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/metrics`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "metricsFilter.deploymentId": metricsfilterDeploymentid, "metricsGranularity": metricsGranularity};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Metrics response = check self.clientEp->get(resourcePath);
@@ -341,7 +352,7 @@ public isolated client class Client {
     # + pageToken - The token for continuing a previous list request on the next page. This should be set to the value of `nextPageToken` from a previous response. 
     # + return - Successful response 
     remote isolated function listProjectsVersions(string scriptId, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListVersionsResponse|error {
-        string resourcePath = string `/v1/projects/${scriptId}/versions`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/versions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListVersionsResponse response = check self.clientEp->get(resourcePath);
@@ -360,7 +371,7 @@ public isolated client class Client {
     # + payload - Version description 
     # + return - Successful response 
     remote isolated function createProjectsVersions(string scriptId, Version payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Version|error {
-        string resourcePath = string `/v1/projects/${scriptId}/versions`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/versions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -382,7 +393,7 @@ public isolated client class Client {
     # + versionNumber - The version number. 
     # + return - Successful response 
     remote isolated function getProjectsVersions(string scriptId, int versionNumber, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Version|error {
-        string resourcePath = string `/v1/projects/${scriptId}/versions/${versionNumber}`;
+        string resourcePath = string `/v1/projects/${getEncodedUri(scriptId)}/versions/${getEncodedUri(versionNumber)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Version response = check self.clientEp->get(resourcePath);
@@ -401,7 +412,7 @@ public isolated client class Client {
     # + payload - Execution request 
     # + return - Successful response 
     remote isolated function runScripts(string scriptId, ExecutionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/scripts/${scriptId}:run`;
+        string resourcePath = string `/v1/scripts/${getEncodedUri(scriptId)}:run`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -49,7 +49,7 @@ public isolated client class Client {
     # + pageSize - How many items should be returned per page, maximum of 1,000 
     # + return - The author name was found in the database 
     remote isolated function getAuthorDetails(string name, int page = 1, int pageSize = 20) returns Author|error {
-        string resourcePath = string `/author/${name}`;
+        string resourcePath = string `/author/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -64,7 +64,7 @@ public isolated client class Client {
     # + page - The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them 
     # + return - The query string found results in the author's database 
     remote isolated function searchAuthors(string query, string? pageSize = (), string? page = ()) returns AuthorQueryResults|error {
-        string resourcePath = string `/authors/${query}`;
+        string resourcePath = string `/authors/${getEncodedUri(query)}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -78,7 +78,7 @@ public isolated client class Client {
     # + withPrices - indicate if shows Real Time Prices. Only with the Pro plan 
     # + return - The book ISBN was found in the database 
     remote isolated function getBookDetails(string isbn, string? withPrices = ()) returns Book|error {
-        string resourcePath = string `/book/${isbn}`;
+        string resourcePath = string `/book/${getEncodedUri(isbn)}`;
         map<anydata> queryParam = {"with_prices": withPrices};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -97,7 +97,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        http:Response response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        http:Response response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Search books
@@ -109,7 +109,7 @@ public isolated client class Client {
     # + beta - A integer (1 or 0) for enable or disable beta searching. 
     # + return - The query string found results in the books's database 
     remote isolated function searchBooksByQuery(string query, int page = 1, int pageSize = 20, string? column = (), int beta = 0) returns http:Response|error {
-        string resourcePath = string `/books/${query}`;
+        string resourcePath = string `/books/${getEncodedUri(query)}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize, "column": column, "beta": beta};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -124,7 +124,7 @@ public isolated client class Client {
     # + pageSize - How many items should be returned per page, maximum of 1,000 
     # + return - The publisher name was found in the database 
     remote isolated function getPublisherDetails(string name, int page = 1, int pageSize = 20) returns Publisher|error {
-        string resourcePath = string `/publisher/${name}`;
+        string resourcePath = string `/publisher/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -139,7 +139,7 @@ public isolated client class Client {
     # + page - The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them 
     # + return - The query string found results in the publisher's database 
     remote isolated function searchPublishers(string query, string? pageSize = (), string? page = ()) returns http:Response|error {
-        string resourcePath = string `/publishers/${query}`;
+        string resourcePath = string `/publishers/${getEncodedUri(query)}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -160,7 +160,7 @@ public isolated client class Client {
     # + publisher - The name of a publisher in the Publisher's database 
     # + return - Results were found in the requested database 
     remote isolated function searchISBNDB(string index, string? page = (), string? pageSize = (), string? isbn = (), string? isbn13 = (), string? author = (), string? text = (), string? subject = (), string? publisher = ()) returns http:Response|error {
-        string resourcePath = string `/search/${index}`;
+        string resourcePath = string `/search/${getEncodedUri(index)}`;
         map<anydata> queryParam = {"page": page, "pageSize": pageSize, "isbn": isbn, "isbn13": isbn13, "author": author, "text": text, "subject": subject, "publisher": publisher};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -183,7 +183,7 @@ public isolated client class Client {
     # + name - A subject in the Subject's database 
     # + return - The subject was found in the database 
     remote isolated function getSubjectDetails(string name) returns Subject|error {
-        string resourcePath = string `/subject/${name}`;
+        string resourcePath = string `/subject/${getEncodedUri(name)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         Subject response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -196,7 +196,7 @@ public isolated client class Client {
     # + page - The number of page to retrieve, please note the API will not return more than 10,000 results no matter how you paginate them 
     # + return - The query string found results in the subject's database 
     remote isolated function searchSubject(string query, string? pageSize = (), string? page = ()) returns http:Response|error {
-        string resourcePath = string `/subjects/${query}`;
+        string resourcePath = string `/subjects/${getEncodedUri(query)}`;
         map<anydata> queryParam = {"pageSize": pageSize, "page": page};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};

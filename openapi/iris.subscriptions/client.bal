@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -71,7 +71,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BriefSubscriptionInfo response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        BriefSubscriptionInfo response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Return a subscription by its id
@@ -79,7 +79,7 @@ public isolated client class Client {
     # + subscriptionId - Subscription Id 
     # + return - Subscription 
     remote isolated function getSubscriptionsById(int subscriptionId) returns BriefSubscriptionInfo|error {
-        string resourcePath = string `/api/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/api/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         BriefSubscriptionInfo response = check self.clientEp->get(resourcePath, httpHeaders);
@@ -90,10 +90,10 @@ public isolated client class Client {
     # + subscriptionId - Subscription Id 
     # + return - Subscription (1) has been deleted successfully 
     remote isolated function deleteSubscription(int subscriptionId) returns InlineResponse20057|error {
-        string resourcePath = string `/api/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/api/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20057 response = check self.clientEp->delete(resourcePath, httpHeaders);
+        InlineResponse20057 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update a subscription
@@ -102,13 +102,13 @@ public isolated client class Client {
     # + payload - Subscription details 
     # + return - Subscription has been updated successfully 
     remote isolated function updateSubscription(int subscriptionId, BriefSubscriptionInfo payload) returns BriefSubscriptionInfo|error {
-        string resourcePath = string `/api/v1/subscriptions/${subscriptionId}`;
+        string resourcePath = string `/api/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        BriefSubscriptionInfo response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        BriefSubscriptionInfo response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
     # Test payload for checking server response

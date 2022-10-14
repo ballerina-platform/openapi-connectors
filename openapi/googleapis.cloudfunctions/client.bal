@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,9 @@ import ballerina/http;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 public type ClientConfig record {|
     # Configurations related to client authentication
-    http:BearerTokenConfig|http:OAuth2RefreshTokenGrantConfig auth;
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
     # The HTTP version understood by the client
-    string httpVersion = "1.1";
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     http:ClientHttp1Settings http1Settings = {};
     # Configurations related to HTTP/2 protocol
@@ -48,6 +48,17 @@ public type ClientConfig record {|
     http:ResponseLimitConfigs responseLimits = {};
     # SSL/TLS-related options
     http:ClientSecureSocket? secureSocket = ();
+    # Proxy server related options
+    http:ProxyConfig? proxy = ();
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
 |};
 
 # This is a generated connector for [Google Cloud Functions REST API v1](https://cloud.google.com/functions/docs/reference/rest) OpenAPI specification.
@@ -101,7 +112,7 @@ public isolated client class Client {
     # + payload - Cloud function to be created 
     # + return - Successful response 
     remote isolated function createFunction(string location, CloudFunction payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${location}/functions`;
+        string resourcePath = string `/v1/${getEncodedUri(location)}/functions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -122,7 +133,7 @@ public isolated client class Client {
     # + name - Required. The name of the function which details should be obtained. 
     # + return - Successful response 
     remote isolated function getFunction(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CloudFunction|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         CloudFunction response = check self.clientEp->get(resourcePath);
@@ -140,10 +151,10 @@ public isolated client class Client {
     # + name - Required. The name of the function which should be deleted. 
     # + return - Successful response 
     remote isolated function deleteFunction(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Operation response = check self.clientEp->delete(resourcePath);
+        Operation response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # Updates existing function.
@@ -160,7 +171,7 @@ public isolated client class Client {
     # + payload - Cloud function to be updated 
     # + return - Successful response 
     remote isolated function updateFunction(string name, CloudFunction payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? updateMask = ()) returns Operation|error {
-        string resourcePath = string `/v1/${name}`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "updateMask": updateMask};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -184,7 +195,7 @@ public isolated client class Client {
     # + pageToken - A page token received from the `next_page_token` field in the response. Send that page token to receive the subsequent page. 
     # + return - Successful response 
     remote isolated function listLocations(string name, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), string? filter = (), int? pageSize = (), string? pageToken = ()) returns ListLocationsResponse|error {
-        string resourcePath = string `/v1/${name}/locations`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}/locations`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "filter": filter, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListLocationsResponse response = check self.clientEp->get(resourcePath);
@@ -203,7 +214,7 @@ public isolated client class Client {
     # + payload - Cloud function to be called 
     # + return - Successful response 
     remote isolated function callFunction(string name, CallFunctionRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns CallFunctionResponse|error {
-        string resourcePath = string `/v1/${name}:call`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:call`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -225,7 +236,7 @@ public isolated client class Client {
     # + payload - Download URL request payload 
     # + return - Successful response 
     remote isolated function generateFunctionDownloadUrl(string name, GenerateDownloadUrlRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GenerateDownloadUrlResponse|error {
-        string resourcePath = string `/v1/${name}:generateDownloadUrl`;
+        string resourcePath = string `/v1/${getEncodedUri(name)}:generateDownloadUrl`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -248,7 +259,7 @@ public isolated client class Client {
     # + pageToken - The value returned by the last `ListFunctionsResponse`; indicates that this is a continuation of a prior `ListFunctions` call, and that the system should return the next page of data. 
     # + return - Successful response 
     remote isolated function listFunctions(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? pageSize = (), string? pageToken = ()) returns ListFunctionsResponse|error {
-        string resourcePath = string `/v1/${parent}/functions`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/functions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "pageSize": pageSize, "pageToken": pageToken};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         ListFunctionsResponse response = check self.clientEp->get(resourcePath);
@@ -266,7 +277,7 @@ public isolated client class Client {
     # + parent - The project and location in which the Google Cloud Storage signed URL should be generated, specified in the format `projects/*/locations/*`. 
     # + return - Successful response 
     remote isolated function generateFunctionUploadUrl(string parent, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns GenerateUploadUrlResponse|error {
-        string resourcePath = string `/v1/${parent}/functions:generateUploadUrl`;
+        string resourcePath = string `/v1/${getEncodedUri(parent)}/functions:generateUploadUrl`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -287,7 +298,7 @@ public isolated client class Client {
     # + optionsRequestedpolicyversion - Optional. The policy format version to be returned. Valid values are 0, 1, and 3. Requests specifying an invalid value will be rejected. Requests for policies with any conditional bindings must specify version 3. Policies without any conditional bindings may specify any valid value or leave the field unset. To learn which resources support conditions in their IAM policies, see the [IAM documentation](https://cloud.google.com/iam/help/conditions/resource-policies). 
     # + return - Successful response 
     remote isolated function getFunctionIAMPolicy(string 'resource, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = (), int? optionsRequestedpolicyversion = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:getIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:getIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType, "options.requestedPolicyVersion": optionsRequestedpolicyversion};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         Policy response = check self.clientEp->get(resourcePath);
@@ -306,7 +317,7 @@ public isolated client class Client {
     # + payload - IAM policy to be set 
     # + return - Successful response 
     remote isolated function setFunctionIAMPolicy(string 'resource, SetIamPolicyRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns Policy|error {
-        string resourcePath = string `/v1/${'resource}:setIamPolicy`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:setIamPolicy`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
@@ -328,7 +339,7 @@ public isolated client class Client {
     # + payload - Permission to be tested 
     # + return - Successful response 
     remote isolated function testIAMPermissions(string 'resource, TestIamPermissionsRequest payload, string? xgafv = (), string? alt = (), string? callback = (), string? fields = (), string? quotaUser = (), string? uploadProtocol = (), string? uploadType = ()) returns TestIamPermissionsResponse|error {
-        string resourcePath = string `/v1/${'resource}:testIamPermissions`;
+        string resourcePath = string `/v1/${getEncodedUri('resource)}:testIamPermissions`;
         map<anydata> queryParam = {"$.xgafv": xgafv, "alt": alt, "callback": callback, "fields": fields, "quotaUser": quotaUser, "upload_protocol": uploadProtocol, "uploadType": uploadType};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;

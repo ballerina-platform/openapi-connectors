@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -49,16 +49,16 @@ public isolated client class Client {
     # + year - Residuals year 
     # + month - Residuals month 
     # + processor - Get residuals summary only for specific processor 
-    # + 'group - Get residuals summary only for specific group 
+    # + group - Get residuals summary only for specific group 
     # + agent - Get residuals summary only for specific user agent 
     # + search - Search query 
     # + hideNullMerchants - Flag for hiding inactive merchants (true by default) 
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A JSON array of totals 
-    remote isolated function getResidualsSummaryData(int year, int month, int? processor = (), int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20010|error {
-        string resourcePath = string `/api/v1/residuals/reports/summary/${year}/${month}`;
-        map<anydata> queryParam = {"processor": processor, "group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
+    remote isolated function getResidualsSummaryData(int year, int month, int? processor = (), int? group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20010|error {
+        string resourcePath = string `/api/v1/residuals/reports/summary/${getEncodedUri(year)}/${getEncodedUri(month)}`;
+        map<anydata> queryParam = {"processor": processor, "group": group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
@@ -70,7 +70,7 @@ public isolated client class Client {
     # + processorId - Processor ID 
     # + year - Residuals year 
     # + month - Residuals month 
-    # + 'group - Get residuals summary only for specific group 
+    # + group - Get residuals summary only for specific group 
     # + agent - Get residuals summary only for specific user agent 
     # + search - Search query 
     # + hideNullMerchants - Flag for hiding inactive merchants (true by default) 
@@ -78,9 +78,9 @@ public isolated client class Client {
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
-    remote isolated function getResiduals(int processorId, int year, int month, int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), boolean? template = (), int? page = (), int? perPage = ()) returns InlineResponse20011|error {
-        string resourcePath = string `/api/v1/residuals/reports/summary/rows/${processorId}/${year}/${month}`;
-        map<anydata> queryParam = {"group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "template": template, "page": page, "per_page": perPage};
+    remote isolated function getResiduals(int processorId, int year, int month, int? group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), boolean? template = (), int? page = (), int? perPage = ()) returns InlineResponse20011|error {
+        string resourcePath = string `/api/v1/residuals/reports/summary/rows/${getEncodedUri(processorId)}/${getEncodedUri(year)}/${getEncodedUri(month)}`;
+        map<anydata> queryParam = {"group": group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "template": template, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
@@ -92,16 +92,16 @@ public isolated client class Client {
     # + processorId - Processor ID 
     # + year - Residuals year 
     # + month - Residuals month 
-    # + 'group - Get residuals summary only for specific group 
+    # + group - Get residuals summary only for specific group 
     # + agent - Get residuals summary only for specific user agent 
     # + search - Search query 
     # + hideNullMerchants - Flag for hiding inactive merchants (true by default) 
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
-    remote isolated function getResidualsDetailsWithMerchantRows(int processorId, int year, int month, int? 'group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20012|error {
-        string resourcePath = string `/api/v1/residuals/reports/details/${processorId}/${year}/${month}`;
-        map<anydata> queryParam = {"group": 'group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
+    remote isolated function getResidualsDetailsWithMerchantRows(int processorId, int year, int month, int? group = (), int? agent = (), string? search = (), boolean? hideNullMerchants = (), int? page = (), int? perPage = ()) returns InlineResponse20012|error {
+        string resourcePath = string `/api/v1/residuals/reports/details/${getEncodedUri(processorId)}/${getEncodedUri(year)}/${getEncodedUri(month)}`;
+        map<anydata> queryParam = {"group": group, "agent": agent, "search": search, "hide_null_merchants": hideNullMerchants, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
@@ -121,7 +121,7 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
     remote isolated function getResidualsLineItems(int year, int month, string? created = (), string? dba = (), string? username = (), int? userId = (), string? description = (), int? page = (), int? perPage = ()) returns InlineResponse20013|error {
-        string resourcePath = string `/api/v1/residuals/lineitems/${year}/${month}`;
+        string resourcePath = string `/api/v1/residuals/lineitems/${getEncodedUri(year)}/${getEncodedUri(month)}`;
         map<anydata> queryParam = {"created": created, "dba": dba, "username": username, "user_id": userId, "description": description, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
@@ -152,14 +152,14 @@ public isolated client class Client {
     # + month - Residuals month 
     # + user - Filter templates by user 
     # + processor - Filter templates by processor 
-    # + 'group - Filter templates by group 
+    # + group - Filter templates by group 
     # + 'class - Filter templates by user class 
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A JSON array of rows 
-    remote isolated function getUsersWithAssignedResidualsTemplates(int year, int month, int? user = (), int? processor = (), int? 'group = (), int? 'class = (), int? page = (), int? perPage = ()) returns InlineResponse20015|error {
-        string resourcePath = string `/api/v1/residuals/templates/assigned/${year}/${month}`;
-        map<anydata> queryParam = {"user": user, "processor": processor, "group": 'group, "class": 'class, "page": page, "per_page": perPage};
+    remote isolated function getUsersWithAssignedResidualsTemplates(int year, int month, int? user = (), int? processor = (), int? group = (), int? 'class = (), int? page = (), int? perPage = ()) returns InlineResponse20015|error {
+        string resourcePath = string `/api/v1/residuals/templates/assigned/${getEncodedUri(year)}/${getEncodedUri(month)}`;
+        map<anydata> queryParam = {"user": user, "processor": processor, "group": group, "class": 'class, "page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,7 @@ public isolated client class Client {
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ShopperId response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ShopperId response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get details for the specified Shopper
@@ -60,7 +60,7 @@ public isolated client class Client {
     # + includes - Additional properties to be included in the response shopper object 
     # + return - Request was successful 
     remote isolated function get(string shopperId, string[]? includes = ()) returns Shopper|error {
-        string resourcePath = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${getEncodedUri(shopperId)}`;
         map<anydata> queryParam = {"includes": includes};
         map<Encoding> queryParamEncoding = {"includes": {style: FORM, explode: false}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -75,13 +75,13 @@ public isolated client class Client {
     # + payload - The Shopper details to update 
     # + return - Request was successful 
     remote isolated function update(string shopperId, ShopperUpdate payload) returns ShopperId|error {
-        string resourcePath = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${getEncodedUri(shopperId)}`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ShopperId response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        ShopperId response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Request the deletion of a shopper profile
@@ -90,12 +90,12 @@ public isolated client class Client {
     # + auditClientIp - The client IP of the user who originated the request leading to this call. 
     # + return - Request was successful 
     remote isolated function delete(string shopperId, string auditClientIp) returns http:Response|error {
-        string resourcePath = string `/v1/shoppers/${shopperId}`;
+        string resourcePath = string `/v1/shoppers/${getEncodedUri(shopperId)}`;
         map<anydata> queryParam = {"auditClientIp": auditClientIp};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        http:Response response = check self.clientEp->delete(resourcePath, httpHeaders);
+        http:Response response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Get details for the specified Shopper
@@ -104,7 +104,7 @@ public isolated client class Client {
     # + auditClientIp - The client IP of the user who originated the request leading to this call. 
     # + return - Request was successful 
     remote isolated function getStatus(string shopperId, string auditClientIp) returns ShopperStatus|error {
-        string resourcePath = string `/v1/shoppers/${shopperId}/status`;
+        string resourcePath = string `/v1/shoppers/${getEncodedUri(shopperId)}/status`;
         map<anydata> queryParam = {"auditClientIp": auditClientIp};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
@@ -118,13 +118,13 @@ public isolated client class Client {
     # + payload - The value to set the subaccount's password to 
     # + return - Request was successful 
     remote isolated function changePassword(string shopperId, Secret payload) returns ShopperId|error {
-        string resourcePath = string `/v1/shoppers/${shopperId}/factors/password`;
+        string resourcePath = string `/v1/shoppers/${getEncodedUri(shopperId)}/factors/password`;
         map<any> headerValues = {"Authorization": self.apiKeyConfig.authorization};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ShopperId response = check self.clientEp->put(resourcePath, request, headers = httpHeaders);
+        ShopperId response = check self.clientEp->put(resourcePath, request, httpHeaders);
         return response;
     }
 }

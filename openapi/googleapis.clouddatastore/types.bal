@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -105,9 +105,9 @@ public type GoogleDatastoreAdminV1Index record {
 # An object that represents a latitude/longitude pair. This is expressed as a pair of doubles to represent degrees latitude and degrees longitude. Unless specified otherwise, this object must conform to the WGS84 standard. Values must be within normalized ranges.
 public type LatLng record {
     # The latitude in degrees. It must be in the range [-90.0, +90.0].
-    float latitude?;
+    decimal latitude?;
     # The longitude in degrees. It must be in the range [-180.0, +180.0].
-    float longitude?;
+    decimal longitude?;
 };
 
 # The result of applying a mutation.
@@ -271,7 +271,7 @@ public type Value record {
     # A boolean value.
     boolean booleanValue?;
     # A double value.
-    float doubleValue?;
+    decimal doubleValue?;
     # A Datastore data object. An entity is limited to 1 megabyte when stored. That _roughly_ corresponds to a limit of 1 megabyte for the serialized form of this message.
     Entity entityValue?;
     # If the value should be excluded from all indexes including those defined explicitly.
@@ -555,7 +555,7 @@ public type GoogleLongrunningOperation record {
     # If the value is `false`, it means the operation is still in progress. If `true`, the operation is completed, and either `error` or `response` is available.
     boolean done?;
     # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).
-    Status _error?;
+    Status 'error?;
     # Service-specific metadata associated with the operation. It typically contains progress information and common metadata such as create time. Some services might not provide such metadata. Any method that returns a long-running operation should document the metadata type, if any.
     record {} metadata?;
     # The server-assigned name, which is only unique within the same service that originally returns it. If you use the default HTTP mapping, the `name` should be a resource name ending with `operations/{unique_id}`.

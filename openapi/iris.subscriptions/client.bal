@@ -51,13 +51,13 @@ public isolated client class Client {
     # + page - Page Number 
     # + perPage - Count of records per page 
     # + return - A JSON array of subscriptions 
-    remote isolated function getSubscriptions(int? page = (), int? perPage = ()) returns InlineResponse20056|error {
+    remote isolated function getSubscriptions(int? page = (), int? perPage = ()) returns InlineResponse200|error {
         string resourcePath = string `/api/v1/subscriptions`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20056 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a subscription
@@ -89,11 +89,11 @@ public isolated client class Client {
     #
     # + subscriptionId - Subscription Id 
     # + return - Subscription (1) has been deleted successfully 
-    remote isolated function deleteSubscription(int subscriptionId) returns InlineResponse20057|error {
+    remote isolated function deleteSubscription(int subscriptionId) returns InlineResponse2001|error {
         string resourcePath = string `/api/v1/subscriptions/${getEncodedUri(subscriptionId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20057 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
+        InlineResponse2001 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update a subscription

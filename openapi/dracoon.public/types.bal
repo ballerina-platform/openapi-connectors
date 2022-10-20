@@ -16,19 +16,7 @@
 
 import ballerina/constraint;
 
-public type AuditNodeResponseArr AuditNodeResponse[];
-
-public type UserKeyPairContainerArr UserKeyPairContainer[];
-
 public type ThirdPartyDependenciesDataArr ThirdPartyDependenciesData[];
-
-public type OpenIdIdpConfigArr OpenIdIdpConfig[];
-
-public type OAuthClientArr OAuthClient[];
-
-public type OAuthApprovalArr OAuthApproval[];
-
-public type OAuthAuthorizationArr OAuthAuthorization[];
 
 # Subscribed download share information
 public type SubscribedDownloadShare record {
@@ -832,10 +820,6 @@ public type PendingAssignmentList record {
     Range range?;
 };
 
-public type UploadsUploadIdBody record {
-    string file?;
-};
-
 # Request model for creating an Active Directory configuration
 public type CreateActiveDirectoryConfigRequest record {
     # If `userImport` is set to `true`,
@@ -892,7 +876,7 @@ public type SubscribedUploadShareList record {
     Range range;
 };
 
-public type InlineResponse400 ErrorResponse|PasswordPolicyViolationResponse;
+public type InlineResponse400 ChunkUploadResponse|ErrorResponse;
 
 # Request model for updating an OpenID Connect IDP configuration
 public type UpdateOpenIdIdpConfigRequest record {
@@ -1547,10 +1531,6 @@ public type RestoreDeletedNodesRequest record {
     string resolutionStrategy = "autorename";
 };
 
-public type AccountAvatarBody record {
-    string file?;
-};
-
 # Log operation
 public type LogOperation record {
     # Operation type ID
@@ -1573,10 +1553,6 @@ public type SubscribedUploadShare record {
     int id;
     # Target room or folder ID
     int targetNodeId?;
-};
-
-public type UploadsTokenBody record {
-    string file?;
 };
 
 # Request model for revoking group(s) from the room
@@ -3314,8 +3290,6 @@ public type PendingUserData record {
     # User login name
     string login;
 };
-
-public type InlineResponse4001 ChunkUploadResponse|ErrorResponse;
 
 # Public key container
 public type PublicKeyContainer record {

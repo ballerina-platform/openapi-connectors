@@ -92,11 +92,6 @@ public type InputMarketIndex record {
     string date?;
 };
 
-public type ShortenlinkBody record {
-    # String variable or text value
-    string 'source;
-};
-
 public type InputCollectionConversion record {
     # Collection containing strings to convert
     string[] input;
@@ -343,11 +338,6 @@ public type InputGenerateUniqueID record {
     string uppercase;
 };
 
-public type ValidateemailBody record {
-    # String variable or text value
-    string 'source;
-};
-
 public type OutputstockpriceResult record {
     # Date
     string date?;
@@ -365,11 +355,6 @@ public type OutputstockpriceResult record {
     decimal close?;
     # Volume
     decimal volume?;
-};
-
-public type UrldecodeBody record {
-    # Encoded string variable or text value
-    string 'source;
 };
 
 public type OutputStringArray record {
@@ -437,11 +422,6 @@ public type InputConvertPower record {
     decimal input;
     string 'source;
     string target;
-};
-
-public type DecodestringBody record {
-    # Encoded string variable or text value
-    string 'source;
 };
 
 public type InputCollectionSort record {

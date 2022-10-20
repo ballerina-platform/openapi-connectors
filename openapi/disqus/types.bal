@@ -17,227 +17,227 @@
 # Category
 public type PostObject record {
     # Is Julia Flagged
-    boolean isJuliaFlagged?;
+    boolean? isJuliaFlagged?;
     # Is Flagged
-    boolean isFlagged?;
+    boolean? isFlagged?;
     # Forum
-    string forum?;
+    string? forum?;
     # Is Default
-    decimal parent?;
+    decimal? parent?;
     # Author
-    Author author?;
+    Author? author?;
     # Is Approved
-    boolean isApproved?;
+    boolean? isApproved?;
     # Dislikes
-    decimal dislikes?;
+    decimal? dislikes?;
     # Raw message
-    string raw_message?;
+    string? raw_message?;
     # Post ID
-    string id?;
+    string? id?;
     # Thread
-    string thread?;
+    string? thread?;
     # Points
-    decimal points?;
+    decimal? points?;
     # Created At
-    string createdAt?;
+    string? createdAt?;
     # Is Edited
-    boolean isEdited?;
+    boolean? isEdited?;
     # Message
-    string message?;
+    string? message?;
     # Is Highlighted
-    boolean isHighlighted?;
+    boolean? isHighlighted?;
     # IP Address
-    string ipAddress?;
+    string? ipAddress?;
     # Is Spam
-    boolean isSpam?;
+    boolean? isSpam?;
     # Is Deleted
-    boolean isDeleted?;
+    boolean? isDeleted?;
     # Likes
-    decimal likes?;
+    decimal? likes?;
 };
 
 # An object with a single property response which is a Category object.
 public type Category record {
     # Code
-    decimal code?;
+    decimal? code?;
     # Category
-    CategoryObject response?;
+    CategoryObject? response?;
 };
 
 # Thread
 public type ThreadObject record {
     # Category ID
-    string category?;
+    string? category?;
     # Reactions
-    decimal reactions?;
+    decimal? reactions?;
     # Forum
-    string forum?;
+    string? forum?;
     # Title
-    string title?;
+    string? title?;
     # Dislikes
-    decimal dislikes?;
+    decimal? dislikes?;
     # Is Deleted
-    boolean isDeleted?;
+    boolean? isDeleted?;
     # Author
-    string author?;
+    string? author?;
     # UserScore
-    decimal userScore?;
+    decimal? userScore?;
     # Thread ID
-    string id?;
+    string? id?;
     # Is Closed
-    boolean isClosed?;
+    boolean? isClosed?;
     # Posts
-    decimal posts?;
+    decimal? posts?;
     # Link
-    string link?;
+    string? link?;
     # Likes
-    decimal likes?;
+    decimal? likes?;
     # Message
-    string message?;
+    string? message?;
     # IP Address
-    string ipAddress?;
+    string? ipAddress?;
     # Slug
-    string slug?;
+    string? slug?;
     # Created At
-    string createdAt?;
+    string? createdAt?;
 };
 
 # An object with a single property response which is an array of Category objects.
 public type Categories record {
     # Cursor
-    Cursor cursor?;
+    Cursor? cursor?;
     # Code
-    decimal code?;
+    decimal? code?;
     # An array of Category objects.
-    CategoryObject[] response?;
+    CategoryObject[]? response?;
 };
 
 # An object with a single property response which is a Post object.
 public type Post record {
     # Code
-    decimal code?;
+    decimal? code?;
     # Category
-    PostObject response?;
+    PostObject? response?;
 };
 
 # An object with a single property response which is a Thread object.
 public type DisqusThread record {
     # Code
-    decimal code?;
+    decimal? code?;
     # Thread
-    ThreadObject response?;
+    ThreadObject? response?;
 };
 
 # An object with a single property response which is an array of Post objects.
 public type Posts record {
     # Cursor
-    Cursor cursor?;
+    Cursor? cursor?;
     # Code
-    decimal code?;
+    decimal? code?;
     # An array of Post objects.
-    PostObject[] response?;
+    PostObject[]? response?;
 };
 
 # Cursor
 public type Cursor record {
     # Prev
-    string prev?;
+    string? prev?;
     # Has next
-    boolean hasNext?;
+    boolean? hasNext?;
     # Next
-    string next?;
+    string? next?;
     # Has prev
-    boolean hasPrev?;
+    boolean? hasPrev?;
     # Total
-    string total?;
+    string? total?;
     # ID
-    string id?;
+    string? id?;
     # More
-    boolean more?;
+    boolean? more?;
 };
 
 # Avatar
 public type Avatar record {
     # Permalink
-    string permalink?;
+    string? permalink?;
     # Cache
-    string cache?;
+    string? cache?;
 };
 
 # An object with a single property response which is a Forum object.
 public type Forum record {
     # Code
-    decimal code?;
+    decimal? code?;
     # Forum
-    ForumObject response?;
+    ForumObject? response?;
 };
 
 # Forum
 public type ForumObject record {
     # Forum ID
-    string id?;
+    string? id?;
     # Forum name
-    string name?;
+    string? name?;
     # Founder
-    string founder?;
+    string? founder?;
     # Favicon
-    Favicon favicon?;
+    Favicon? favicon?;
 };
 
 # An object with a single property response which is an array of Thread objects.
 public type Threads record {
     # Cursor
-    Cursor cursor?;
+    Cursor? cursor?;
     # Code
-    decimal code?;
+    decimal? code?;
     # An array of Thread objects.
-    ThreadObject[] response?;
+    ThreadObject[]? response?;
 };
 
 # Author
 public type Author record {
     # Username
-    string username?;
+    string? username?;
     # About
-    string about?;
+    string? about?;
     # Name
-    string name?;
+    string? name?;
     # Url
-    string url?;
+    string? url?;
     # Is Following
-    boolean isFollowing?;
+    boolean? isFollowing?;
     # Is Followed By
-    boolean isFollowedBy?;
+    boolean? isFollowedBy?;
     # Profile Url
-    string profileUrl?;
+    string? profileUrl?;
     # Avatar
-    Avatar avatar?;
+    Avatar? avatar?;
     # Author ID
-    string id?;
+    string? id?;
     # Is Anonymous
-    boolean isAnonymous?;
+    boolean? isAnonymous?;
     # Email
-    string email?;
+    string? email?;
 };
 
 # Category
 public type CategoryObject record {
     # Category ID
-    string id?;
+    string? id?;
     # Forum
-    string forum?;
+    string? forum?;
     # Order
-    decimal 'order?;
+    decimal? 'order?;
     # Is Default
-    boolean isDefault?;
+    boolean? isDefault?;
     # Title
-    string title?;
+    string? title?;
 };
 
 # Favicon
 public type Favicon record {
     # Permalink
-    string permalink?;
+    string? permalink?;
     # Cache
-    string cache?;
+    string? cache?;
 };

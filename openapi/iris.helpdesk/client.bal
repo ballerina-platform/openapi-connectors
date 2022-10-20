@@ -67,13 +67,13 @@ public isolated client class Client {
     # + assignedTo - Filter tickets by the assigned users. For sending multiple users please send them in comma seperated format. Please use an empty string to select all assigned tickets. 
     # + unassigned - Set this parameter to 1 if you need unassigned tickets also. For select only unassigned tickets exclude `assigned_to` from the request 
     # + return - A JSON array of tickets 
-    remote isolated function getHelpdeskTickets(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? group = (), string? 'type = (), decimal? creator = (), decimal? modifier = (), string? search = (), string? searchBy = (), decimal? resolver = (), decimal? lid = (), string? mid = (), boolean? hideResolved = (), string? assignedTo = (), boolean? unassigned = ()) returns InlineResponse20058|error {
+    remote isolated function getHelpdeskTickets(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? group = (), string? 'type = (), decimal? creator = (), decimal? modifier = (), string? search = (), string? searchBy = (), decimal? resolver = (), decimal? lid = (), string? mid = (), boolean? hideResolved = (), string? assignedTo = (), boolean? unassigned = ()) returns InlineResponse200|error {
         string resourcePath = string `/api/v1/helpdesk`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "group": group, "type": 'type, "creator": creator, "modifier": modifier, "search": search, "search_by": searchBy, "resolver": resolver, "lid": lid, "mid": mid, "hide_resolved": hideResolved, "assigned_to": assignedTo, "unassigned": unassigned};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20058 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse200 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new ticket
@@ -120,11 +120,11 @@ public isolated client class Client {
     #
     # + ticketId - Ticket Id 
     # + return - Ticket has been deleted successfully 
-    remote isolated function deleteTicket(int ticketId) returns InlineResponse20059|error {
+    remote isolated function deleteTicket(int ticketId) returns InlineResponse2001|error {
         string resourcePath = string `/api/v1/helpdesk/${getEncodedUri(ticketId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20059 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
+        InlineResponse2001 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update a ticket
@@ -146,11 +146,11 @@ public isolated client class Client {
     #
     # + ticketId - Ticket Id 
     # + return - A JSON array of assignments 
-    remote isolated function getTicketAssignmentLogs(int ticketId) returns InlineResponse20060[]|error {
+    remote isolated function getTicketAssignmentLogs(int ticketId) returns InlineResponse2002[]|error {
         string resourcePath = string `/api/v1/helpdesk/${getEncodedUri(ticketId)}/assignments`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20060[] response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2002[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a list of helpdesk ticket types
@@ -168,13 +168,13 @@ public isolated client class Client {
     # + creator - Creator 
     # + modifier - Filter ticket types by the ticket modifier 
     # + return - A JSON array of ticket types 
-    remote isolated function getHelpdeskTicketTypes(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? status = (), int? priority = (), decimal? daysToResolve = (), decimal? creator = (), decimal? modifier = ()) returns InlineResponse20061|error {
+    remote isolated function getHelpdeskTicketTypes(int? page = (), int? perPage = (), string? sortBy = (), string sortDir = "asc", string? dateFilter = (), string? startDate = (), string? endDate = (), string? status = (), int? priority = (), decimal? daysToResolve = (), decimal? creator = (), decimal? modifier = ()) returns InlineResponse2003|error {
         string resourcePath = string `/api/v1/helpdesk/types`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "sort_by": sortBy, "sort_dir": sortDir, "date_filter": dateFilter, "start_date": startDate, "end_date": endDate, "status": status, "priority": priority, "daysToResolve": daysToResolve, "creator": creator, "modifier": modifier};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20061 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new helpdesk ticket type
@@ -206,11 +206,11 @@ public isolated client class Client {
     #
     # + typeId - Ticket Type Id 
     # + return - Result message 
-    remote isolated function deleteTicketType(int typeId) returns InlineResponse20062|error {
+    remote isolated function deleteTicketType(int typeId) returns InlineResponse2004|error {
         string resourcePath = string `/api/v1/helpdesk/types/${getEncodedUri(typeId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20062 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
+        InlineResponse2004 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update a helpdesk ticket type
@@ -234,13 +234,13 @@ public isolated client class Client {
     # + perPage - Count of records per page 
     # + role - ID of user class 
     # + return - A JSON array of users 
-    remote isolated function getAvailableUsersToNotify(int? page = (), int? perPage = (), string? role = ()) returns InlineResponse20032|error {
+    remote isolated function getAvailableUsersToNotify(int? page = (), int? perPage = (), string? role = ()) returns InlineResponse2005|error {
         string resourcePath = string `/api/v1/helpdesk/users`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "role": role};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20032 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2005 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
 }

@@ -169,13 +169,13 @@ public isolated client class Client {
     # + startDate - Filter batches by a date (Y-m-d) 
     # + endDate - Filter batches by a date (Y-m-d) 
     # + return - A list of retrieval cases 
-    remote isolated function getRetrievalCases(int merchantNumber, int? page = (), int? perPage = (), string? startDate = (), string? endDate = ()) returns InlineResponse2007|error {
+    remote isolated function getRetrievalCases(int merchantNumber, int? page = (), int? perPage = (), string? startDate = (), string? endDate = ()) returns InlineResponse2006|error {
         string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals`;
         map<anydata> queryParam = {"page": page, "per_page": perPage, "start_date": startDate, "end_date": endDate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse2007 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2006 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get detailed retrieval case information
@@ -196,13 +196,13 @@ public isolated client class Client {
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A list of statements 
-    remote isolated function getStatements(int merchantNumber, int? page = (), int? perPage = ()) returns InlineResponse2008|error {
+    remote isolated function getStatements(int merchantNumber, int? page = (), int? perPage = ()) returns InlineResponse2007|error {
         string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/statements`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse2008 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2007 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Download a statement
@@ -221,7 +221,7 @@ public isolated client class Client {
     #
     # + filename - File name for validation 
     # + return - Document 
-    remote isolated function uploadAttachment(string filename) returns InlineResponse2009|error {
+    remote isolated function uploadAttachment(string filename) returns InlineResponse2008|error {
         string resourcePath = string `/api/v1/merchants/files`;
         map<anydata> queryParam = {"filename": filename};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
@@ -229,7 +229,7 @@ public isolated client class Client {
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2009 response = check self.clientEp->post(resourcePath, request, httpHeaders);
+        InlineResponse2008 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Download chargeback case files

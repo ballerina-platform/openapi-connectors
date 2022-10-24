@@ -16,6 +16,7 @@
 
 import ballerina/http;
 
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     # The HTTP version understood by the client

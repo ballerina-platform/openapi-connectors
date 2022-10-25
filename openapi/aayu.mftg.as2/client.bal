@@ -19,11 +19,6 @@ import ballerina/io;
 import ballerina/time;
 import ballerinax/aws.s3;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # Auth token retrieved from authorization endpoint or refresh token endpoint
-    string authorization;
-|};
 
 # This is a generated connector for [MFT REST API v1.0](https://documenter.getpostman.com/view/12285357/UV5WEe66) OpenAPI specification.
 # The [MFT REST API](https://documenter.getpostman.com/view/12285357/UV5WEe66)  provides a secure AS2 secured channel for such communications, and offers your company, multiple ways to upload/download files, or automate the exchange through integration mechanisms.
@@ -37,18 +32,40 @@ public isolated client class Client {
     private time:Utc expirationTime = [0, 0];
 
     # Gets invoked to initialize the `connector`.
-    # The connector initialization requires setting the API credentials. 
+    # The connector initialization requires setting the API credentials.
     # Create a [MFT account](https://console.mftgateway.com/auth/register) and obtain tokens following [this guide](https://aayutechnologies.com/docs/product/mft-gateway/user-guide/).
     # (Note : Token Validity is 1h)
     #
     # + username - Valid email address used to sign in [MFTG console](https://console.mftgateway.com/)
     # + password - Valid Password used to sign in [MFTG console](https://console.mftgateway.com/)
     # + as2From - Station AS2 identifier (which message is send from)
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(string username, string password, string as2From, http:ClientConfiguration clientConfig = {}, string serviceUrl = "https://api.mftgateway.com") returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(string username, string password, string as2From, ConnectionConfig config = {}, string serviceUrl = "https://api.mftgateway.com") returns error? {        
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         self.as2From = as2From;
         self.username = username;
@@ -67,14 +84,14 @@ public isolated client class Client {
         
         lock {
             if (time:utcDiffSeconds(self.expirationTime, time:utcNow()) < ZERO_SECONDS) {
-                http:Request request = new;
+        http:Request request = new;
                 request.setPayload({username, password}, "application/json");
                 SuccessfulAuthorizationResponse response = check self.clientEp->post(string `/authorize`, request);
                 self.expirationTime = time:utcAddSeconds(time:utcNow(), VALIDITY_PERIOD);
                 self.authToken =  response.api_token;
-            }
+    }
             return self.authToken;
-        }
+    }
     }
 
     // # Authorize

@@ -16,63 +16,63 @@
 
 public type ErrorModelReference record {
     # A description of the error
-    string 'error;
+    string? 'error;
 };
 
 public type OneTimePaymentInput record {
     # One-Time Payment Worktags for REST API
-    PayrollWorkTags[] payrollWorktags?;
-    PaymentCurrency paymentCurrency?;
+    PayrollWorkTags[]? payrollWorktags?;
+    PaymentCurrency? paymentCurrency?;
     # The start date of the Coverage Period for the payment, which enables Workday Payroll or Payroll Integration to associate dates with the one-time payment for Fair Labor Standards Act (FLSA) reporting requirements.
-    string coverageStartDate?;
+    string? coverageStartDate?;
     # Amount of compensation payment
     record {} paymentAmount?;
     # The end date of the Coverage Period for the payment, which enables Workday Payroll or Payroll Integration to associate dates with the one-time payment for Fair Labor Standards Act (FLSA) reporting requirements.
-    string coverageEndDate?;
+    string? coverageEndDate?;
     # Additional information for this compensation payment
-    string additionalInformation?;
+    string? additionalInformation?;
     # The actual amount for the ~bonus~ payment represented as a percentage.  The percentage is usually calculated as a percentage of base pay, but on the ~bonus~ plan setup it is possible to override the calculation basis to calculate as a percentage of a set of compensation elements.
-    int paymentPercent?;
-    OneTimePaymentPlan oneTimePaymentPlan?;
+    int? paymentPercent?;
+    OneTimePaymentPlan? oneTimePaymentPlan?;
     # The payment date scheduled for the one-time payment request.
-    string scheduledPaymentDate?;
+    string? scheduledPaymentDate?;
     # This is true if you selected Send to Payroll on the ~bonus~ payment, future payment, or one-time payment. If false, Workday Payroll doesn't process the payment.
-    boolean sendToPayroll?;
+    boolean? sendToPayroll?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type CreateScorecardProfiles record {
     # The ~goals~ for the Compensation Scorecard.
-    CreateGoals[] profileScorecardGoals;
-    EligibilityRule eligibilityRule;
+    CreateGoals[]? profileScorecardGoals;
+    EligibilityRule? eligibilityRule;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScoreCardProfile record {
-    EligibilityRule eligibilityRule?;
+    EligibilityRule? eligibilityRule?;
     # The goals for the Compensation Scorecard.
-    ScorecardGoalSummary[] profileScorecardGoals?;
+    ScorecardGoalSummary[]? profileScorecardGoals?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type OneTimePaymentPlanEventInput record {
-    Reason reason?;
+    Reason? reason?;
     # The date this business process takes effect.
-    string effectiveDate?;
+    string? effectiveDate?;
     # Returns the date that a compensation change is visible to a ~worker~.
-    string employeeVisibilityDate?;
-    Position position?;
+    string? employeeVisibilityDate?;
+    Position? position?;
     # All one-time payments associated with the event.
-    OneTimePaymentInput[] oneTimePayments?;
+    OneTimePaymentInput[]? oneTimePayments?;
     # Id of the instance
-    string id?;
+    string? id?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
 };
 
 public type ScoreCardID record {
@@ -81,8 +81,8 @@ public type ScoreCardID record {
 
 # collection something or other
 public type InlineResponse200 record {
-    ScoresetContainer[] data?;
-    int total?;
+    ScoresetContainer[]? data?;
+    int? total?;
 };
 
 public type PaymentCurrency record {
@@ -91,14 +91,14 @@ public type PaymentCurrency record {
 
 public type CreateScorecardResults record {
     # The ~goal~ name of the scorecard criteria result.
-    string scorecardName?;
-    ScoreCardID scorecardID;
+    string? scorecardName?;
+    ScoreCardID? scorecardID;
     # Scorecard Result Evaluation Date
-    string evaluationDate;
+    string? evaluationDate;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScorecardID record {
@@ -111,83 +111,83 @@ public type Reason record {
 
 public type WorkerProfile record {
     # The primary work email address for the ~worker~.
-    string primaryWorkEmail?;
+    string? primaryWorkEmail?;
     # Identifies if the ~worker~ has a ~manager~ role.
-    boolean isManager?;
+    boolean? isManager?;
     # The primary work phone number for the ~worker~ including the area code and ~country~ code.
-    string primaryWorkPhone?;
-    Location location?;
-    PrimarySupervisoryOrganization primarySupervisoryOrganization?;
+    string? primaryWorkPhone?;
+    Location? location?;
+    PrimarySupervisoryOrganization? primarySupervisoryOrganization?;
     # Returns the primary work address for the ~worker~, or from their default primary work location, full format on a single line.
-    string primaryWorkAddressText?;
+    string? primaryWorkAddressText?;
     # The years of service for the ~worker~.
-    int yearsOfService?;
+    int? yearsOfService?;
     # The business title for the ~worker's~ primary position. If no business title is defined for a position, the position title is returned back.
-    string businessTitle?;
+    string? businessTitle?;
     # All ~supervisory organizations~, excluding inherited organizations, in which the ~worker~ has a leadership role.
-    string supervisoryOrganizationsManaged?;
+    string? supervisoryOrganizationsManaged?;
     # The birth date of the ~worker~.
-    string dateOfBirth?;
+    string? dateOfBirth?;
     # A link to the instance
-    string href?;
+    string? href?;
     # Id of the instance
-    string id?;
+    string? id?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
 };
 
 public type ScorecardGoalSummary record {
     # The weight given to the Compensation Scorecard ~Goal~. [90% will be displayed as 0.9]
-    int goalWeight?;
+    int? goalWeight?;
     # The description of the Compensation Scorecard ~Goal~.
-    string goalDescription?;
+    string? goalDescription?;
     # The name of the Compensation Scorecard ~Goal~.
-    string goalName?;
+    string? goalName?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScoreCardGoals record {
     # Replaces the description of the Compensation Scorecard Goal as of the specified effectiveDate.  Deletes the description if a description exists as of the specified effectiveDate and this field is not included in the PUT.
-    string goalDescription?;
+    string? goalDescription?;
     # Replaces the weight of the Compensation Scorecard ~Goal~ as of the specified effectiveDate.  [Weight should be entered as 0.9 for a goalWeight of 90%]
-    int goalWeight;
+    int? goalWeight;
     # Replaces the name of the Compensation Scorecard Goal as of the specified effectiveDate.
-    string goalName;
+    string? goalName;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string id;
+    string? id;
     # A description of the instance
-    string descriptor?;
+    string? descriptor?;
     # A link to the instance
-    string href?;
+    string? href?;
 };
 
 public type CreateScoreCard record {
     # The Effective Date of the Compensation Scorecard in format YYYY-MM-DD
-    string effectiveDate;
+    string? effectiveDate;
     # The name of the Compensation Scorecard.
-    string scorecardName;
+    string? scorecardName;
     # The ~goals~ for the Compensation Scorecard.
-    CreateGoals[] defaultScorecardGoals;
+    CreateGoals[]? defaultScorecardGoals;
     # The profiles for the Compensation Scorecard.
-    CreateScorecardProfiles[] scorecardProfiles?;
+    CreateScorecardProfiles[]? scorecardProfiles?;
     # Indicates whether the Scorecard is inactive using a value of true/false.
-    boolean inactive?;
+    boolean? inactive?;
     # The description of the Compensation Scorecard.
-    string scorecardDescription?;
+    string? scorecardDescription?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[] errors?;
+    ErrorModelReference[]? errors?;
 };
 
 public type EligibilityRule record {
@@ -200,19 +200,19 @@ public type OneTimePaymentPlan record {
 
 public type EditScoreCards record {
     # Replaces the inactive status of the Compensation Scorecard as of the specified effectiveDate.  Default value: false.
-    boolean inactive?;
+    boolean? inactive?;
     # The Effective Date of the updates to the Compensation Scorecard.  Date must be entered in format: YYYY-MM-DD.
-    string effectiveDate;
+    string? effectiveDate;
     # Replaces the description of the Compensation Scorecard as of the specified effectiveDate.  Deletes the description if a description exists as of the specified effectiveDate and this field is not included in the PUT.
-    string scorecardDescription?;
+    string? scorecardDescription?;
     # Replaces the array of Profile Scorecard Goals and Eligibility Rules as of the specified effectiveDate.  Creates a new array if one does not exist.  Deletes the array if one exists as of the specified effectiveDate and the array is not included in the PUT.
-    ScorecardProfiles[] scorecardProfiles?;
+    ScorecardProfiles[]? scorecardProfiles?;
     # Replaces the array of Default Scorecard Goal fields as of the specified effectiveDate.
-    ScoreCardGoals[] defaultScorecardGoals;
+    ScoreCardGoals[]? defaultScorecardGoals;
     # Replaces the name of the Compensation Scorecard as of the specified effectiveDate.
-    string scorecardName;
+    string? scorecardName;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type Position record {
@@ -221,26 +221,26 @@ public type Position record {
 
 public type ScoresetContainer record {
     # Returns the Scorecard's Description
-    string scorecardDescription?;
+    string? scorecardDescription?;
     # The ~goal~ name of the scorecard criteria result.
-    string scorecardName?;
-    ScorecardID scorecardID?;
+    string? scorecardName?;
+    ScorecardID? scorecardID?;
     # Returns the Scorecard Profiles for a Scorecard Result
-    ScoreSet[] profileScorecardGoalsResult?;
-    DefaultScorecardGoalsResult defaultScorecardGoalsResult?;
+    ScoreSet[]? profileScorecardGoalsResult?;
+    DefaultScorecardGoalsResult? defaultScorecardGoalsResult?;
     # Scorecard Result Evaluation Date
-    string evaluationDate?;
+    string? evaluationDate?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
-public type FacetsModelReference FacetsModelReferenceInner[];
+public type FacetsModelReference FacetsModelReferenceInner[]?;
 
 public type MultipleInstanceModelReference record {
-    int total?;
-    InstanceModelReference[] data?;
+    int? total?;
+    InstanceModelReference[]? data?;
 };
 
 public type PrimarySupervisoryOrganization record {
@@ -249,118 +249,118 @@ public type PrimarySupervisoryOrganization record {
 
 public type ScoreCard record {
     # Indicates whether the Scorecard is inactive using a value of true/false.
-    boolean inactive?;
+    boolean? inactive?;
     # The goals for the Compensation Scorecard.
-    ScorecardGoalSummary[] defaultScorecardGoals?;
+    ScorecardGoalSummary[]? defaultScorecardGoals?;
     # The description of the Compensation Scorecard.
-    string scorecardDescription?;
+    string? scorecardDescription?;
     # The profiles for the Compensation Scorecard.
-    ScoreCardProfile[] scorecardProfiles?;
+    ScoreCardProfile[]? scorecardProfiles?;
     # The name of the Compensation Scorecard.
-    string scorecardName?;
+    string? scorecardName?;
     # The Effective Date of the Compensation Scorecard in format YYYY-MM-DD.
-    string effectiveDate?;
+    string? effectiveDate?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type CreateGoals record {
     # The description of the Compensation Scorecard Goal
-    string goalDescription?;
+    string? goalDescription?;
     # The weight given to the Compensation Scorecard Goal. [90% will be displayed as 0.9]
-    int goalWeight;
+    int? goalWeight;
     # The name of the Compensation Scorecard Goal.
-    string goalName;
+    string? goalName;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type WorkerSummary record {
     # The primary work phone number for the ~worker~ including the area code and ~country~ code.
-    string primaryWorkPhone?;
+    string? primaryWorkPhone?;
     # Identifies if the ~worker~ has a ~manager~ role.
-    boolean isManager?;
+    boolean? isManager?;
     # The primary work email address for the ~worker~.
-    string primaryWorkEmail?;
+    string? primaryWorkEmail?;
     # The business title for the ~worker's~ primary position. If no business title is defined for a position, the position title is returned back.
-    string businessTitle?;
-    PrimarySupervisoryOrganization primarySupervisoryOrganization?;
+    string? businessTitle?;
+    PrimarySupervisoryOrganization? primarySupervisoryOrganization?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
     # A link to the instance
-    string href?;
+    string? href?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScoreGoal record {
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScorecardProfiles record {
-    EligibilityRule eligibilityRule;
+    EligibilityRule? eligibilityRule;
     # Replaces the array of Profile Scorecard Goal fields as of the specified effectiveDate.  Creates a new array if one does not exist.  Deletes the array if one exists as of the specified effectiveDate and the scorecardProfiles array is not included in the PUT.
-    ScoreCardGoals[] profileScorecardGoals;
+    ScoreCardGoals[]? profileScorecardGoals;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type DefaultScoreCard record {
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type ScoresetScore record {
-    GoalID goalID?;
+    GoalID? goalID?;
     # The ~goal~ name of the scorecard criteria result.
-    string goalName?;
+    string? goalName?;
     # The achievement percentage for the scorecard criteria result.
-    int achievement?;
+    int? achievement?;
     # The criteria weighted percentage of the scorecard criteria result.
-    int goalWeight?;
+    int? goalWeight?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 # collection something or other
 public type InlineResponse2001 record {
-    ScoreCard[] data?;
-    int total?;
+    ScoreCard[]? data?;
+    int? total?;
 };
 
 public type ScoreInput record {
     # The achievement percentage for the scorecard criteria result.
-    int achievement?;
+    int? achievement?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
     # Id of the instance
-    string id?;
+    string? id?;
 };
 
 public type PayrollWorkTags record {
     # Id of the instance
-    string id?;
+    string? id?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
 };
 
 public type ScoreSet record {
-    EligibiltyRule eligibiltyRule?;
+    EligibiltyRule? eligibiltyRule?;
     # The set of Performance Scores for a Compensation Scorecard.
-    ScoresetScore[] performanceScores?;
+    ScoresetScore[]? performanceScores?;
     # Calculates the total Weighted Funding Percent for all the scores in the scorecard result set.
-    int weightedFundingPercent?;
+    int? weightedFundingPercent?;
     # Id of the instance
-    string id?;
+    string? id?;
     # A preview of the instance
-    string descriptor?;
+    string? descriptor?;
 };
 
 # collection something or other
 public type InlineResponse2002 record {
-    WorkerSummary[] data?;
-    int total?;
+    WorkerSummary[]? data?;
+    int? total?;
 };
 
 public type EligibiltyRule record {
@@ -374,20 +374,20 @@ public type DefaultScorecardGoalsResult record {
 # This object represents the possible facets for this resource
 public type FacetsModelReferenceInner record {
     # A description of the facet
-    string descriptor?;
+    string? descriptor?;
     # The alias used to select the facet
-    string facetParameter?;
+    string? facetParameter?;
     # the facet values
     record {
         # The number of instances returned by this facet
-        int count?;
+        int? count?;
         # wid / id / reference id
-        string id;
+        string? id;
         # A description of the facet
-        string descriptor?;
+        string? descriptor?;
         # A link to the instance
-        string href?;
-    }[] values?;
+        string? href?;
+    }[]? values?;
 };
 
 public type Location record {

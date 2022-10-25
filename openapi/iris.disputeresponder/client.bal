@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -48,14 +48,14 @@ public isolated client class Client {
     # + caseNumber - Chargeback case ID 
     # + payload - Chargeback reply dispute request data 
     # + return - Reply was successfully processed 
-    remote isolated function disputeChargeback(int merchantNumber, string caseNumber, ChargebackReplyDisputeRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks/${caseNumber}/dispute_reverse`;
+    remote isolated function disputeChargeback(int merchantNumber, string caseNumber, ChargebackReplyDisputeRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks/${getEncodedUri(caseNumber)}/dispute_reverse`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Chargeback Case - Credit Issued
@@ -64,14 +64,14 @@ public isolated client class Client {
     # + caseNumber - Chargeback case number 
     # + payload - Chargeback reply credit issued request data 
     # + return - Reply was successfully processed 
-    remote isolated function replyToChargebackCaseCreditIssued(int merchantNumber, string caseNumber, ChargebackReplyCreditIssuedRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks/${caseNumber}/credit_issued`;
+    remote isolated function replyToChargebackCaseCreditIssued(int merchantNumber, string caseNumber, ChargebackReplyCreditIssuedRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks/${getEncodedUri(caseNumber)}/credit_issued`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Chargeback Case - Accept Chargeback
@@ -79,13 +79,13 @@ public isolated client class Client {
     # + merchantNumber - Merchant number 
     # + caseNumber - Chargeback case number 
     # + return - Reply was successfully processed 
-    remote isolated function replyToChargebackCaseAcceptChargeback(int merchantNumber, string caseNumber) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/chargebacks/${caseNumber}/accept`;
+    remote isolated function replyToChargebackCaseAcceptChargeback(int merchantNumber, string caseNumber) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/chargebacks/${getEncodedUri(caseNumber)}/accept`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Retrieval Response
@@ -94,14 +94,14 @@ public isolated client class Client {
     # + caseNumber - Retrieval case number 
     # + payload - Retrieval reply response request data 
     # + return - Merchant has been updated successfully 
-    remote isolated function replyToRetrievalCaseRetrievalResponse(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/response`;
+    remote isolated function replyToRetrievalCaseRetrievalResponse(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/response`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Retrieval Response with Signature
@@ -110,14 +110,14 @@ public isolated client class Client {
     # + caseNumber - Retrieval case number 
     # + payload - Retrieval reply response request data 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseRetrievalResponseWithSignature(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/response_with_signature`;
+    remote isolated function replyToRetrievalCaseRetrievalResponseWithSignature(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/response_with_signature`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Unable to Fulfill Retrieval Case Request
@@ -125,13 +125,13 @@ public isolated client class Client {
     # + merchantNumber - Merchant number 
     # + caseNumber - Retrieval case number 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseUnableToFulfillRetrievalCaseRequest(int merchantNumber, string caseNumber) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/unable_to_fulfill_request`;
+    remote isolated function replyToRetrievalCaseUnableToFulfillRetrievalCaseRequest(int merchantNumber, string caseNumber) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/unable_to_fulfill_request`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Unable to Locate Retrieval Case
@@ -139,13 +139,13 @@ public isolated client class Client {
     # + merchantNumber - Merchant number 
     # + caseNumber - Retrieval case number 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseUnableToLocateRetrievalCase(int merchantNumber, string caseNumber) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/unable_to_locate_retrieval`;
+    remote isolated function replyToRetrievalCaseUnableToLocateRetrievalCase(int merchantNumber, string caseNumber) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/unable_to_locate_retrieval`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval - Credit Issued
@@ -154,14 +154,14 @@ public isolated client class Client {
     # + caseNumber - Chargeback case number 
     # + payload - Retrieval reply credit issued request data 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCreditIssued(int merchantNumber, string caseNumber, RetrievalReplyCreditIssuedRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/credit_issued`;
+    remote isolated function replyToRetrievalCreditIssued(int merchantNumber, string caseNumber, RetrievalReplyCreditIssuedRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/credit_issued`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Imprint and Signature
@@ -170,14 +170,14 @@ public isolated client class Client {
     # + caseNumber - Chargeback case number 
     # + payload - Retrieval reply response request data 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseImprintAndSignature(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/imprint_and_signature`;
+    remote isolated function replyToRetrievalCaseImprintAndSignature(int merchantNumber, string caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/imprint_and_signature`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Responding by Other Means
@@ -185,13 +185,13 @@ public isolated client class Client {
     # + merchantNumber - Merchant number 
     # + caseNumber - Retrieval case number 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseRespondingByOtherMeans(int merchantNumber, string caseNumber) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/responding_by_other_means`;
+    remote isolated function replyToRetrievalCaseRespondingByOtherMeans(int merchantNumber, string caseNumber) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/responding_by_other_means`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         //TODO: Update the request as needed;
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Reply To Retrieval Case - Add User Notes/Images
@@ -200,14 +200,14 @@ public isolated client class Client {
     # + caseNumber - Retrieval case number 
     # + payload - Retrieval reply response request 
     # + return - Reply was successfully processed 
-    remote isolated function replyToRetrievalCaseAddUserNotesImages(int merchantNumber, int caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse2006|error {
-        string resourcePath = string `/api/v1/merchants/${merchantNumber}/retrievals/${caseNumber}/add_notes_images`;
+    remote isolated function replyToRetrievalCaseAddUserNotesImages(int merchantNumber, int caseNumber, RetrievalReplyResponseRequest payload) returns InlineResponse200|error {
+        string resourcePath = string `/api/v1/merchants/${getEncodedUri(merchantNumber)}/retrievals/${getEncodedUri(caseNumber)}/add_notes_images`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse2006 response = check self.clientEp->post(resourcePath, request, headers = httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
 }

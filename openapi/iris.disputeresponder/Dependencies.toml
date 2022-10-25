@@ -265,6 +265,9 @@ version = "2.2.2"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
+modules = [
+	{org = "ballerina", packageName = "url", moduleName = "url"}
+]
 
 [[package]]
 org = "ballerinai"
@@ -284,6 +287,7 @@ name = "iris.disputeresponder"
 version = "1.4.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
+	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [

@@ -16,23 +16,6 @@
 
 import ballerina/http;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # All requests on this API needs to include an API key.  The API key can be provided as part of the query string or as a request header.  The name of the API key needs to be `api-key`
-    # Authentication for some endpoints, like write operations on the Articles API require a DEV API key.
-    # ### Getting an API key
-    # To obtain one, please follow these steps:
-    # 
-    #   - visit https://dev.to/settings/account
-    #   - in the "DEV API Keys" section create a new key by adding a
-    #     description and clicking on "Generate API Key"
-    # 
-    #     ![obtain a DEV API Key](https://user-images.githubusercontent.com/146201/64421366-af3f8b00-d0a1-11e9-8ff6-7cc0ca6e854e.png)
-    #   - You'll see the newly generated key in the same view
-    #     ![generated DEV API Key](https://user-images.githubusercontent.com/146201/64421367-af3f8b00-d0a1-11e9-9831-73d3bdfdff66.png)
-    string apiKey;
-|};
-
 # This is a generated connector for [DEV API v0.9.7](https://developers.forem.com/api/) OpenAPI specification.
 # Access Forem articles, users and other resources via API.
 # For a real-world example of Forem in action, check out [DEV](https://www.dev.to).
@@ -47,11 +30,33 @@ public isolated client class Client {
     # Create an [DEVto Account](https://dev.to/settings/account)  and obtain tokens by log into [DEV Account](https://www.interzoid.com/account).
     #
     # + apiKeyConfig - API keys for authorization 
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://dev.to/api") returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(ApiKeysConfig apiKeyConfig, ConnectionConfig config =  {}, string serviceUrl = "https://dev.to/api") returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
         return;

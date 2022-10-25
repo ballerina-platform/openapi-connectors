@@ -33,11 +33,6 @@ public type OutputImageMetadata record {
     OutputimagemetadataResult[] result?;
 };
 
-public type MaptimezoneBody record {
-    # Full or partial address
-    string 'source;
-};
-
 public type OutputHourlyForecast record {
     # Daily weather forecast
     OutputhourlyforecastResult[] result?;
@@ -181,11 +176,6 @@ public type InputMarketIndex record {
     string symbol;
     # Date (yyyy-MM-dd, leave empty for last trading day)
     string date?;
-};
-
-public type ShortenlinkBody record {
-    # String variable or text value
-    string 'source;
 };
 
 public type InputCollectionConversion record {
@@ -458,11 +448,6 @@ public type OutputIPLocation record {
     string locale?;
 };
 
-public type IplocationBody record {
-    # IP Address
-    string 'source;
-};
-
 public type InputDateTimeDifference record {
     # First date/time value
     string dateTime1;
@@ -482,11 +467,6 @@ public type InputGenerateUniqueID record {
     string uppercase;
 };
 
-public type ValidateemailBody record {
-    # String variable or text value
-    string 'source;
-};
-
 public type OutputstockpriceResult record {
     # Date
     string date?;
@@ -504,11 +484,6 @@ public type OutputstockpriceResult record {
     decimal close?;
     # Volume
     decimal volume?;
-};
-
-public type UrldecodeBody record {
-    # Encoded string variable or text value
-    string 'source;
 };
 
 public type OutputStringArray record {
@@ -610,11 +585,6 @@ public type OutputCollectionNumber record {
     decimal item?;
     # All Values
     decimal[] items?;
-};
-
-public type MapcoordinatesBody record {
-    # Full or partial address
-    string 'source;
 };
 
 public type OutputimagemetadataResult record {
@@ -798,11 +768,6 @@ public type InputConvertPower record {
     decimal input;
     string 'source;
     string target;
-};
-
-public type DecodestringBody record {
-    # Encoded string variable or text value
-    string 'source;
 };
 
 public type InputCollectionSort record {

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -50,14 +50,14 @@ public isolated client class Client {
     # + applicationId - Application Id 
     # + payload - Payload data 
     # + return - New E-Sign application hash and link to signature 
-    remote isolated function generateEsignatureDocument(int leadId, int applicationId, ApplicationidGenerateBody payload) returns InlineResponse20037|error {
+    remote isolated function generateEsignatureDocument(int leadId, int applicationId, ApplicationidGenerateBody payload) returns InlineResponse200|error {
         string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/signatures/${getEncodedUri(applicationId)}/generate`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20037 response = check self.clientEp->post(resourcePath, request, httpHeaders);
+        InlineResponse200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Send an e-signature document
@@ -66,14 +66,14 @@ public isolated client class Client {
     # + applicationId - Application Id 
     # + payload - Payload data 
     # + return - New E-Sign application hash and link to signature 
-    remote isolated function sendEsignatureDocument(int leadId, int applicationId, ApplicationidSendBody payload) returns InlineResponse20038|error {
+    remote isolated function sendEsignatureDocument(int leadId, int applicationId, ApplicationidSendBody payload) returns InlineResponse2001|error {
         string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/signatures/${getEncodedUri(applicationId)}/send`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        InlineResponse20038 response = check self.clientEp->post(resourcePath, request, httpHeaders);
+        InlineResponse2001 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;
     }
     # Get a list of all lead e-signatures documents
@@ -82,13 +82,13 @@ public isolated client class Client {
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A list with all lead e-signatures 
-    remote isolated function getAllLeadEsignaturesDocuments(int leadId, int? page = (), int? perPage = ()) returns InlineResponse20039|error {
+    remote isolated function getAllLeadEsignaturesDocuments(int leadId, int? page = (), int? perPage = ()) returns InlineResponse2002|error {
         string resourcePath = string `/api/v1/leads/${getEncodedUri(leadId)}/signatures`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20039 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2002 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Get a list of available applications
@@ -107,13 +107,13 @@ public isolated client class Client {
     # + page - Page number 
     # + perPage - Count of records per page 
     # + return - A list of available application field mappings 
-    remote isolated function getAvailableApplicationFieldMappings(int appId, int? page = (), int? perPage = ()) returns InlineResponse20050|error {
+    remote isolated function getAvailableApplicationFieldMappings(int appId, int? page = (), int? perPage = ()) returns InlineResponse2003|error {
         string resourcePath = string `/api/v1/leads/applications/${getEncodedUri(appId)}/mappings`;
         map<anydata> queryParam = {"page": page, "per_page": perPage};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20050 response = check self.clientEp->get(resourcePath, httpHeaders);
+        InlineResponse2003 response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Create a new application field mapping
@@ -148,11 +148,11 @@ public isolated client class Client {
     # + appId - Application Id 
     # + mapId - Mapping Id 
     # + return - Updated application field mapping 
-    remote isolated function deleteApplicationFieldMapping(int appId, int mapId) returns InlineResponse20051|error {
+    remote isolated function deleteApplicationFieldMapping(int appId, int mapId) returns InlineResponse2004|error {
         string resourcePath = string `/api/v1/leads/applications/${getEncodedUri(appId)}/mappings/${getEncodedUri(mapId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        InlineResponse20051 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
+        InlineResponse2004 response = check self.clientEp->delete(resourcePath, headers = httpHeaders);
         return response;
     }
     # Update an application field mapping
@@ -162,13 +162,13 @@ public isolated client class Client {
     # + payload - ApplicationField data 
     # + return - Updated application field mapping 
     remote isolated function updateApplicationFieldMapping(int appId, int mapId, ApplicationField payload) returns ApplicationField|error {
-        string resourcePath = string `/api/v1/leads/applications/${appId}/mappings/${mapId}`;
+        string resourcePath = string `/api/v1/leads/applications/${getEncodedUri(appId)}/mappings/${getEncodedUri(mapId)}`;
         map<any> headerValues = {"X-API-KEY": self.apiKeyConfig.xApiKey};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
         json jsonBody = check payload.cloneWithType(json);
         request.setPayload(jsonBody, "application/json");
-        ApplicationField response = check self.clientEp->patch(resourcePath, request, headers = httpHeaders);
+        ApplicationField response = check self.clientEp->patch(resourcePath, request, httpHeaders);
         return response;
     }
 }

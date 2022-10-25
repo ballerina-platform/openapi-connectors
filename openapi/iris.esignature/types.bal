@@ -16,11 +16,7 @@
 
 import ballerina/constraint;
 
-public type DisputeFileArr DisputeFile[];
-
 public type BriefApplicationInfoArr BriefApplicationInfo[];
-
-public type InlineResponse20060Arr InlineResponse20060[];
 
 public type Meta record {
     # The current page number of a data set
@@ -123,52 +119,10 @@ public type TicketResolved record {
     TicketresolvedData data?;
 };
 
-public type LeadidTasksBody record {
-    # Priority
-    string priority;
-    # Date in ISO 8601 format (Y-m-d\TH:i:sP)
-    string date;
-    # End date in ISO 8601 format (Y-m-d\TH:i:sP)
-    string date_end;
-    # Task description
-    string text;
-    # Task set by user (user Id)
-    string set_by;
-    # Task set for user (user Id)
-    string set_for;
-};
-
 # Statuses of leads whose documents should be uploaded
 public type BriefsubscriptioninfoOptionsLeaddocumentuploaded record {
     # Statuses of leads whose uploaded documents should be reported (any if not specified)
     int[] statuses?;
-};
-
-public type HelpdeskBody record {
-    # Type id
-    int 'type;
-    # Ticket subject
-    string subject;
-    # Ticket description
-    string description?;
-    # Priority (0 - Normal, 1 - Medium, 2 - Rush)
-    int priority;
-    int[] assignedUsers?;
-    string[] files?;
-    int[] attached_files?;
-    string[] preview_images?;
-    string assignType;
-    int assignTo;
-    int group_id?;
-    # Ticket due datetime
-    string due_date?;
-    # Calculate only business days
-    boolean only_business_days?;
-    # Notify assigned users
-    boolean notify_assigned_users?;
-    # Indicates if the ticket is visible to Merchant users
-    boolean merchantVisible?;
-    CheckListRequest[] checklist?;
 };
 
 public type CampaignActivity record {
@@ -226,11 +180,6 @@ public type ChargebackUpdated record {
     ChargebackaddedData data?;
 };
 
-public type InlineResponse20035Label record {
-    int id?;
-    string name?;
-};
-
 public type SourceActivity record {
     # Activity Id
     int id?;
@@ -245,32 +194,6 @@ public type SourceActivity record {
 public type ChargebackAdded record {
     ChargebackaddedHook hook?;
     ChargebackaddedData data?;
-};
-
-public type InlineResponse2008Data record {
-    # Statement Id
-    int id?;
-    # Statement date
-    string date?;
-};
-
-public type InlineResponse20025Data record {
-    # Note Id
-    int id?;
-    # Pin note to top
-    string sticky?;
-    BriefTabInfo tab?;
-    # Note text
-    string text?;
-    # Note creation date and time (ISO-8601)
-    string created?;
-    # Note modification date and time (ISO-8601)
-    string modified?;
-};
-
-public type LeadidUsersBody record {
-    # User Id
-    int user;
 };
 
 public type ChargebackaddedData record {
@@ -348,15 +271,6 @@ public type LeadupdatedeventinfoData record {
 public type SubscriptionCommentEdited record {
     SubscriptioncommenteditedHook hook?;
     TicketcommentedData data?;
-};
-
-public type InlineResponse2009 record {
-    string status?;
-    string file_id?;
-};
-
-public type InlineResponse2008 record {
-    InlineResponse2008Data[] data?;
 };
 
 public type TurboappdeclinedDataAccounts record {
@@ -467,11 +381,6 @@ public type ShortLeadSubscription record {
 
 public type InlineResponse403 record {
     string message?;
-};
-
-public type InlineResponse20035Tab record {
-    int id?;
-    string name?;
 };
 
 public type InlineResponse405 record {
@@ -690,11 +599,6 @@ public type Ticket record {
     boolean merchantVisible?;
 };
 
-public type HelpdeskTypesBody record {
-    *TicketTypeRequest;
-    record {*BriefTicketChecklistInfo; string[] files?;}[] checklist?;
-};
-
 public type TicketcreatedHook record {
     # Request ID
     int requestId?;
@@ -733,27 +637,27 @@ public type SignaturesignedHook record {
     string event?;
 };
 
-public type LeadsFieldsBody record {
-    *LeadField;
-    # Flag for overriding existing special field
-    boolean override?;
-};
-
 public type InlineResponse2001 record {
-    BriefMerchantInfo general?;
-    string[] account_information?;
-    # A list of linked lead Id's. First from this list is always used as a primary lead.
-    int[] leads?;
+    # Result message
+    string message?;
+    # Id of email what was sent
+    int emailId?;
+    # E-Sign hash
+    string hash?;
+    # E-Sign URL
+    string url?;
 };
 
 public type InlineResponse2003 record {
-    Deposits deposits?;
-    Adjustments adjustments?;
-    InlineResponse2003Totals totals?;
+    ApplicationField[] data?;
+    Links links?;
+    Meta meta?;
 };
 
 public type InlineResponse2002 record {
-    string message?;
+    InlineResponse2002Data[] data?;
+    Links links?;
+    Meta meta?;
 };
 
 public type DisputedetailsresponseFiles record {
@@ -765,27 +669,7 @@ public type DisputedetailsresponseFiles record {
     string api_url?;
 };
 
-public type InlineResponse2005 record {
-    Chargeback[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type InlineResponse2004 record {
-    MonetaryBatch[] data?;
-    Links links?;
-    Meta meta?;
-    Adjustments adjustments?;
-};
-
-public type InlineResponse2007 record {
-    Retrieval[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse2006 record {
-    int code?;
     string message?;
 };
 
@@ -843,15 +727,6 @@ public type TurboappdeclinedHook record {
     int requestId?;
     # Event ID
     string event?;
-};
-
-public type InlineResponse20018Fields record {
-    # Field Id
-    string id?;
-    # Field name
-    string 'field?;
-    # Field value
-    string value?;
 };
 
 public type LeadstatusupdatedeventinfoData record {
@@ -919,53 +794,11 @@ public type BriefTicketChecklistInfo record {
     int commentedBy?;
 };
 
-public type SmsTemplateidBody record {int fieldId?;}|record {string phone?;};
-
 public type LeadFieldOrder record {
     # New order position of lead field
     int value;
     # Type of changing order position
     string 'type?;
-};
-
-public type InlineResponse20061 record {
-    BriefTicketTypeInfo[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20060 record {
-    boolean active?;
-    string 'source?;
-    string date?;
-    decimal user?;
-    decimal assigned_by?;
-};
-
-public type InlineResponse20062 record {
-    string message?;
-    string movedTickets?;
-};
-
-public type MerchantsMerchantnumberBody record {
-    # Merchant name
-    string name?;
-    # Merchant open date (YYYY-MM-DD)
-    string opened?;
-    # Merchant closed date (YYYY-MM-DD)
-    string closed?;
-    # Processor name
-    string processor?;
-    # Data source name
-    string datasource?;
-    # Group name
-    string group?;
-    # Is VIM?
-    string vim?;
-    # Merchant status
-    string status?;
-    # Merchant active flag
-    string active?;
 };
 
 public type Apiv1leadsleadidsignaturesapplicationidsendRecipients record {
@@ -975,19 +808,6 @@ public type Apiv1leadsleadidsignaturesapplicationidsendRecipients record {
     string email?;
     # Recipient Name
     string name?;
-};
-
-public type LeadidAppointmentsBody record {
-    # Date in format ISO 8601 (Y-m-d\TH:i:sP)
-    string date;
-    # End date in format ISO 8601 (Y-m-d\TH:i:sP)
-    string date_end;
-    # Task description
-    string text;
-    # Task set by user (User Id)
-    string set_by;
-    # Task set for user (User Id)
-    string set_for;
 };
 
 public type LeadRestoredEventInfo record {
@@ -1216,21 +1036,6 @@ public type TicketresolvedHook record {
     string event?;
 };
 
-public type LeadsBody record {
-    # Campaign Id
-    int campaign?;
-    # Status Id
-    int status;
-    # Source Id
-    int 'source?;
-    # Group Id
-    int group?;
-    # Ids of users to assign to a new lead
-    int[] users?;
-    # Lead fields
-    LeadsFields[] fields;
-};
-
 public type BriefSmsTemplate record {
     int id?;
     string title?;
@@ -1307,28 +1112,6 @@ public type ResidualtemplateassignedTemplates record {
     int 'version?;
     int processor_id?;
     TemplateRules[] rules?;
-};
-
-public type InlineResponse20018Details record {
-    int id?;
-    string name?;
-    string 'type?;
-    # Record Id
-    int 'record?;
-    InlineResponse20018Fields[] fields?;
-};
-
-public type LeadsLeadidBody record {
-    # Campaign Id
-    int campaign?;
-    # Status Id
-    int status?;
-    # Source Id
-    int 'source?;
-    # Group Id
-    int group?;
-    # Lead fields
-    LeadsFields[] fields?;
 };
 
 public type ChargebackreminderData record {
@@ -1571,21 +1354,6 @@ public type LineitemsAgents record {
     int percentage?;
 };
 
-public type InlineResponse20035Data record {
-    # Document Id
-    string id?;
-    # Name
-    string name?;
-    # Size
-    string size?;
-    InlineResponse20035Tab tab?;
-    InlineResponse20035Label label?;
-};
-
-public type InlineResponse20019 record {
-    string message?;
-};
-
 public type ApplicationfieldDuplicates record {
     # Activity Id
     int instance?;
@@ -1694,16 +1462,6 @@ public type TicketcreatedData record {
     record {*Ticket; *TicketCreatedBlock; *TicketSubscriptionData;}[] tickets?;
 };
 
-public type InlineResponse20021 record {
-    LeadField[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20020 record {
-    string message?;
-};
-
 public type TicketGroup record {
     # Group id
     int id?;
@@ -1733,53 +1491,12 @@ public type TurboappupdatedDataAccounts record {
     string updatedAt?;
 };
 
-public type InlineResponse20023 record {
-    LeadFieldTab[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20022 record {
-    string result?;
-};
-
-public type InlineResponse20025 record {
-    InlineResponse20025Data[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20024 record {
-    InlineResponse20024Data[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20027 record {
-    LeadAppointment[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20026 record {
-    string message?;
-};
-
 public type DisputeDetailsResponse record {
     DisputedetailsresponseTransactions[] transactions?;
     DisputedetailsresponseTransactions[] auth_records?;
     DisputedetailsresponseNotes[] notes?;
     DisputedetailsresponseMessages[] messages?;
     DisputedetailsresponseDirectories[] directories?;
-};
-
-public type InlineResponse20029 record {
-    string message?;
-    string url?;
-};
-
-public type InlineResponse20028 record {
-    string message?;
 };
 
 # Statuses of leads whose notes should be added
@@ -1874,20 +1591,6 @@ public type SignatureGenerated record {
     SignaturegeneratedData data?;
 };
 
-public type InlineResponse2003TotalsAdjustments record {
-    string 'type?;
-    string amount?;
-};
-
-public type InlineResponse2003Totals record {
-    string total_paid_by_us?;
-    string monthly_total?;
-    InlineResponse2003TotalsAdjustments[] adjustments?;
-    InlineResponse2003TotalsDeposits[] deposits?;
-    InlineResponse2003TotalsPerCardType[] per_card_type?;
-    int transactions_count?;
-};
-
 public type FullleadsubscriptionCategory record {
     # Status category ID
     int id?;
@@ -1895,34 +1598,11 @@ public type FullleadsubscriptionCategory record {
     string name?;
 };
 
-public type InlineResponse20030 record {
-    InlineResponse20030Data[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20039Data record {
-    string status?;
-    string url?;
-    string templateId?;
-    string templateName?;
-};
-
-public type InlineResponse20032 record {
-    BriefUserInfoWithClass[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type TurboappapprovedHook record {
     # Request ID
     int requestId?;
     # Event ID
     string event?;
-};
-
-public type InlineResponse20031 record {
-    string message?;
 };
 
 public type ChecklistFullInfo record {
@@ -1936,58 +1616,11 @@ public type ChecklistFullInfo record {
     File[] files?;
 };
 
-public type InlineResponse20034 record {
-    string message?;
-};
-
-public type InlineResponse20033 record {
-    string message?;
-};
-
-public type InlineResponse20036 record {
-    FileLabel[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20035 record {
-    # A list of lead documents
-    InlineResponse20035Data[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20038 record {
-    # Result message
-    string message?;
-    # Id of email what was sent
-    int emailId?;
-    # E-Sign hash
-    string hash?;
-    # E-Sign URL
-    string url?;
-};
-
 public type BriefTabInfo record {
     # Tab Id
     int id?;
     # Tab name
     string name?;
-};
-
-public type InlineResponse20037 record {
-    # Result message
-    string message?;
-    # E-Sign hash
-    string hash?;
-    # E-Sign URL
-    string url?;
-};
-
-public type InlineResponse20039 record {
-    InlineResponse20039Data[] data?;
-    Links links?;
-    Meta meta?;
 };
 
 public type BriefSubscriptionInfo record {
@@ -2035,48 +1668,6 @@ public type FileLabel record {
     string name?;
 };
 
-public type InlineResponse20041 record {
-    BriefEmailTemplate[] data?;
-};
-
-public type InlineResponse20040 record {
-    # Email has been sent successfully
-    string message?;
-    # Id of email what will be sended to lead
-    string emailId?;
-};
-
-public type InlineResponse20043 record {
-    BriefSmsTemplate[] data?;
-};
-
-public type InlineResponse20042 record {
-    # SMS has been sent successfully.
-    string message?;
-    # Phone number of SMS receiver.
-    string receiver?;
-};
-
-public type EmailsTemplateidBody record {
-    # Lead Field Id with email address
-    int fieldId?;
-    # Object with template placeholders
-    record {} placeholders?;
-}|record {
-    # Recipient Email
-    string email?;
-    # Recipient Name
-    string name?;
-    # Object with template placeholders
-    record {} placeholders?;
-};
-
-public type InlineResponse20045 record {
-    DeletionActivity[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type DeletionActivity record {
     # Activity Id
     int id?;
@@ -2090,40 +1681,10 @@ public type DeletionActivity record {
     string undeletedAt?;
 };
 
-public type InlineResponse20044 record {
-    CampaignActivity[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 # Statuses of leads whose emails should received
 public type BriefsubscriptioninfoOptionsLeademailreceived record {
     # Statuses of leads whose received emails should be reported (any if not specified)
     int[] statuses?;
-};
-
-public type InlineResponse20047 record {
-    LinksActivity[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20046 record {
-    DuplicateActivity[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20049 record {
-    StatusActivity[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20048 record {
-    SourceActivity[] data?;
-    Links links?;
-    Meta meta?;
 };
 
 # Statuses from which a lead should be updated
@@ -2240,17 +1801,6 @@ public type BriefUserInfo record {
     string name?;
 };
 
-public type InlineResponse20050 record {
-    ApplicationField[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20052 record {
-    # A list of lead campaigns
-    BriefCampaignInfo[] data?;
-};
-
 public type BriefTicketInfo record {
     *Ticket;
     *TicketCreatedBlock;
@@ -2274,15 +1824,6 @@ public type BriefTicketInfo record {
     int files_count?;
 };
 
-public type InlineResponse20051 record {
-    string message?;
-};
-
-public type InlineResponse20054 record {
-    # A list of lead sources
-    BriefSourceInfo[] data?;
-};
-
 public type TicketTypeRequest record {
     # Ticket type name
     string name?;
@@ -2300,28 +1841,11 @@ public type TicketTypeRequest record {
     BrieftickettypeinfoAssignees assignees?;
 };
 
-public type InlineResponse20053 record {
-    # A list of lead groups
-    BriefGroupInfo[] data?;
-};
-
 public type TurboappupdatedHook record {
     # Request ID
     int requestId?;
     # Event ID
     string event?;
-};
-
-public type InlineResponse20056 record {
-    BriefSubscriptionInfo[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse2003TotalsPerCardType record {
-    string 'type?;
-    string amount?;
-    int count?;
 };
 
 public type BriefUserInfoWithClass record {
@@ -2339,11 +1863,6 @@ public type BriefUserInfoWithClass record {
     string 'class?;
 };
 
-public type InlineResponse20055 record {
-    # A list of lead statuses
-    CategoryWithStatuses[] data?;
-};
-
 public type BriefGroupInfo record {
     # Group Id
     int id?;
@@ -2356,26 +1875,11 @@ public type LeadEmailReceivedEventInfo record {
     LeademailreceivedeventinfoData data?;
 };
 
-public type InlineResponse20058 record {
-    record {*BriefTicketInfo; string created_username?; string modified_username?; string resolved_username?;}[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type LineitemsUser record {
     int user_id?;
     string username?;
     string full_name?;
     string 'class?;
-};
-
-public type InlineResponse20057 record {
-    # Subscription deletion message
-    string message?;
-};
-
-public type InlineResponse20059 record {
-    string status?;
 };
 
 # Add new list item
@@ -2458,17 +1962,6 @@ public type SignatureOpened record {
     SignaturegeneratedData data?;
 };
 
-public type TicketidCommentBody record {
-    # Comment text
-    string comment?;
-    int[] notify?;
-    string[] files?;
-    int[] attached_files?;
-    string[] preview_images?;
-    # Indicates if the comment is visible to Merchant users
-    boolean merchantVisible?;
-};
-
 public type TicketupdatedHook record {
     # Request ID
     int requestId?;
@@ -2487,15 +1980,6 @@ public type TurboappupdatedData record {
     TurboappupdatedDataAccounts[] accounts?;
 };
 
-public type LeadsFields record {
-    # Field Id
-    string id;
-    # Record Id
-    string 'record?;
-    # Field value
-    string value;
-};
-
 public type ChargebackaddedHook record {
     # Request ID
     int requestId?;
@@ -2507,6 +1991,13 @@ public type ChargebackaddedHook record {
 public type BriefsubscriptioninfoOptionsLeadcreated record {
     # Statuses with which a created lead should be reported (any if not specified)
     int[] statuses?;
+};
+
+public type InlineResponse2002Data record {
+    string status?;
+    string url?;
+    string templateId?;
+    string templateName?;
 };
 
 public type TicketDetail record {
@@ -2540,33 +2031,6 @@ public type RetrievalsReplyResponse record {
 public type TicketCreated record {
     TicketcreatedHook hook?;
     TicketcreatedData data?;
-};
-
-public type HelpdeskTicketidBody record {
-    # Type id
-    int 'type?;
-    # Ticket subject
-    string subject?;
-    # Ticket description
-    string description?;
-    # Ticket status
-    string status?;
-    # Priority (0 - Normal, 1 - Medium, 2 - Rush)
-    int priority?;
-    int[] assignedUsers?;
-    # Ticket due datetime
-    string due_date?;
-    # Calculate only business days
-    boolean only_business_days?;
-    string assignType?;
-    int assignTo?;
-    string[] files?;
-    int[] attached_files?;
-    string[] preview_images?;
-    int group_id?;
-    # Indicates if the ticket is visible to Merchant users
-    boolean merchantVisible?;
-    record {*CheckListRequest; string[] new_files?; int[] attached_files?;}[] checklist?;
 };
 
 public type RetrievalreminderData record {
@@ -2630,26 +2094,6 @@ public type LeadnoteaddedeventinfoData record {
             UserStructure createdBy?;
         } note?;
     }[] leads?;
-};
-
-public type InlineResponse20024Data record {
-    # Template Id
-    int id?;
-    # Template name
-    string name?;
-    # Template creator
-    int created_by?;
-    # Template modification date and time (ISO-8601)
-    string created_at?;
-    # Template modification date and time (ISO-8601)
-    int modified_by?;
-    # Last template editor
-    string modified_at?;
-    # Last fields editor
-    int fields_changed_by?;
-    # Last fileds modification date and time (ISO-8601)
-    string fields_changed_at?;
-    InlineResponse20024Values[] values?;
 };
 
 public type LeaddeletedeventinfoData record {
@@ -2716,26 +2160,9 @@ public type ApplicationField record {
     ApplicationfieldInfo[] info?;
 };
 
-public type TypesTypeidBody record {
-    *TicketTypeRequest;
-    record {*BriefTicketChecklistInfo; string[] files?; string[] new_files?;}[] checklist?;
-};
-
 public type TurboAppUpdated record {
     TurboappupdatedHook hook?;
     TurboappupdatedData data?;
-};
-
-public type InlineResponse20030Data record {
-    # Task Id
-    int id?;
-    BriefUserInfo user?;
-    # Task description
-    string text?;
-    # Task Date and time in format ISO 8601 (Y-m-d\TH:i:sP)
-    string date?;
-    # Task confirmed date and time in format ISO 8601 (Y-m-d\TH:i:sP)
-    string confirmed?;
 };
 
 public type LeadDeletedEventInfo record {
@@ -2743,19 +2170,13 @@ public type LeadDeletedEventInfo record {
     LeaddeletedeventinfoData data?;
 };
 
-public type InlineResponse2003TotalsDeposits record {
-    string date?;
-    string amount?;
-};
-
 public type InlineResponse200 record {
-    record {
-        *BriefMerchantInfo;
-        # List of Lead IDs
-        int[] leads?;
-    }[] data?;
-    Links links?;
-    Meta meta?;
+    # Result message
+    string message?;
+    # E-Sign hash
+    string hash?;
+    # E-Sign URL
+    string url?;
 };
 
 public type ChargebackupdatedHook record {
@@ -2911,11 +2332,6 @@ public type RetrievalupdatedHook record {
     string event?;
 };
 
-public type InlineResponse20024Values record {
-    int field_id?;
-    string value?;
-};
-
 public type ReportpublishedDataReports record {
     int id?;
     int month?;
@@ -2934,15 +2350,6 @@ public type ReportpublishedDataReports record {
     decimal sum_volume?;
     decimal sum_net?;
     int sum_agent_net?;
-};
-
-public type LeadidNotesBody record {
-    # Tab Id
-    int tab;
-    # Note text
-    string note;
-    # Pin to top?
-    string sticky;
 };
 
 public type LeadrestoredeventinfoHook record {
@@ -3002,24 +2409,6 @@ public type ReportpublishedHook record {
     string event?;
 };
 
-public type InlineResponse20010 record {
-    SummaryResponse[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type FieldsFieldidBody record {
-    *LeadField;
-    # Flag for overriding existing special field
-    boolean override?;
-};
-
-public type InlineResponse20012 record {
-    ResidualsDetails[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type Links record {
     # An URL to the first page of the data set
     string first?;
@@ -3029,12 +2418,6 @@ public type Links record {
     string prev?;
     # An URL to the next page of the data set
     string next?;
-};
-
-public type InlineResponse20011 record {
-    MerchantRow[] data?;
-    Links links?;
-    Meta meta?;
 };
 
 public type LeadfieldOptions record {
@@ -3072,43 +2455,7 @@ public type LeademailreceivedeventinfoDataLeadAddress record {
     string zip?;
 };
 
-public type InlineResponse20014 record {
-    ResidualTemplate[] data?;
-    Links links?;
-    Meta meta?;
-};
-
 public type TurboAppSubmited record {
     TurboappsubmitedHook hook?;
     TurboappsubmitedData data?;
-};
-
-public type InlineResponse20013 record {
-    LineItems[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20016 record {
-    BriefLeadInfo[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20015 record {
-    ResidualTemplateAssigned[] data?;
-    Links links?;
-    Meta meta?;
-};
-
-public type InlineResponse20018 record {
-    BriefLeadInfo general?;
-    InlineResponse20018Details[] details?;
-};
-
-public type InlineResponse20017 record {
-    # Lead Id
-    int leadId?;
-    # Result message
-    string message?;
 };

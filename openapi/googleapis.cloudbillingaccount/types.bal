@@ -14,6 +14,73 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://accounts.google.com/o/oauth2/token";
+|};
+
 # Associates `members` with a `role`.
 public type Binding record {
     # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec. Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.

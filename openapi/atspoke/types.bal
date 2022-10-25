@@ -14,6 +14,83 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # Users on atSpoke's Standard and Plus plans can
+    #            generate an API key by navigating to "My Profile" and then selecting
+    #            the API tab. All API actions are taken by the API user. If a
+    #            new key is generated or the user is deactivated, the old API key is
+    #            deactivated automatically.<br/><br/>
+    #            Requests made to atSpoke's public API are rate-limited to no more
+    #            than 6000 requests per minute per API key.<br/><br/>
+    #            <b> Warning:</b> _All_ private items viewable by the user whose
+    #         API key is being used will be viewable via the API. This means that if
+    #         an admin uses their key to connect atSpoke to an external system,
+    #         requests and resources that are private to a team in atSpoke will
+    #         accessible in the external system. Keep this in mind when building with
+    #         the API so that private data does not become public.
+    @display {label: "", kind: "password"}
+    string apiKey;
+|};
+
 public type RequesttypeinforesponseAnsweredfields record {
     string simpleValue?;
     RequesttypeinforesponseField 'field?;

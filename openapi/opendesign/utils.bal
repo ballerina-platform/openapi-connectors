@@ -32,10 +32,7 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
 
 # Get Encoded URI for a given value.
@@ -51,7 +48,7 @@ isolated function getEncodedUri(anydata value) returns string {
     }
 }
 
-isolated function createBodyParts(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {})
+isolated function createBodyParts(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {})
 returns mime:Entity[]|error {
     mime:Entity[] entities = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {

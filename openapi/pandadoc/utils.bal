@@ -32,10 +32,7 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
 
 final Encoding & readonly defaultEncoding = {};
@@ -45,7 +42,7 @@ final Encoding & readonly defaultEncoding = {};
 # + encodingMap - Includes the information about the encoding mechanism
 # + anyRecord - Record to be serialized
 # + return - Serialized request body or query parameter as a string
-isolated function createFormURLEncodedRequestBody(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {}) returns string {
+isolated function createFormURLEncodedRequestBody(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {}) returns string {
     string[] payload = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {
         Encoding encodingData = encodingMap.hasKey(key) ? encodingMap.get(key) : defaultEncoding;
@@ -267,7 +264,7 @@ isolated function getMapForHeaders(map<any> headerParam) returns map<string|stri
     return headerMap;
 }
 
-isolated function createBodyParts(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {})
+isolated function createBodyParts(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {})
 returns mime:Entity[]|error {
     mime:Entity[] entities = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {

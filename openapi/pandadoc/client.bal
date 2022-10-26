@@ -17,25 +17,6 @@
 import ballerina/http;
 import ballerina/mime;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # Represents API Key available in PandaDoc Developer Dashboard.
-    string authorization;
-|};
-
-# Provides Auth configurations needed when communicating with a remote HTTP endpoint.
-public type AuthConfig record {|
-    # Auth Configuration
-    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig|ApiKeysConfig auth;
-|};
-
-# OAuth2 Refresh Token Grant Configs
-public type OAuth2RefreshTokenGrantConfig record {|
-    *http:OAuth2RefreshTokenGrantConfig;
-    # Refresh URL
-    string refreshUrl = "https://api.pandadoc.com/oauth2/access_token";
-|};
-
 # This is a generated connector from [PandaDoc API version 4.3.0](https://developers.pandadoc.com/reference/about) OpenAPI Specification. 
 # PandaDoc API spans a broad range of functionality to help you build incredible documents automation experiences inside your product.
 # PandaDoc API is organized around REST. Our API has predictable resource-oriented URLs and uses standard HTTP response codes, authentication, and verbs.
@@ -48,18 +29,39 @@ public isolated client class Client {
     # You can start using PandaDoc API with our [free sandbox plan](https://signup.pandadoc.com/?ss=api-dev&plan=rec_plans_v5_api_dev_mn_free), which allows you to open all the available features. 
     # The [sandbox API key](https://developers.pandadoc.com/reference/api-key-authentication-process#sandbox-key) you can generate on the Developer Dashboard with predefined rate limits.
     #
-    # + authConfig - Configurations used for Authentication 
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(AuthConfig authConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.pandadoc.com") returns error? {
-        if authConfig.auth is ApiKeysConfig {
-            self.apiKeyConfig = (<ApiKeysConfig>authConfig.auth).cloneReadOnly();
+    public isolated function init(ConnectionConfig config, string serviceUrl = "https://api.pandadoc.com") returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        if config.auth is ApiKeysConfig {
+            self.apiKeyConfig = (<ApiKeysConfig>config.auth).cloneReadOnly();
         } else {
-            clientConfig.auth = <http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig>authConfig.auth;
+            config.auth = <http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig>config.auth;
             self.apiKeyConfig = ();
         }
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         return;
     }

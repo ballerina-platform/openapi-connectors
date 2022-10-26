@@ -16,51 +16,6 @@
 
 import ballerina/http;
 
-# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
-public type ClientConfig record {|
-    # Configurations related to client authentication
-    OAuth2PasswordGrantConfig auth;
-    # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_1_1;
-    # Configurations related to HTTP/1.x protocol
-    http:ClientHttp1Settings http1Settings = {};
-    # Configurations related to HTTP/2 protocol
-    http:ClientHttp2Settings http2Settings = {};
-    # The maximum time to wait (in seconds) for a response before closing the connection
-    decimal timeout = 60;
-    # The choice of setting `forwarded`/`x-forwarded` header
-    string forwarded = "disable";
-    # Configurations associated with Redirection
-    http:FollowRedirects? followRedirects = ();
-    # Configurations associated with request pooling
-    http:PoolConfiguration? poolConfig = ();
-    # HTTP caching related configurations
-    http:CacheConfig cache = {};
-    # Specifies the way of handling compression (`accept-encoding`) header
-    http:Compression compression = http:COMPRESSION_AUTO;
-    # Configurations associated with the behaviour of the Circuit Breaker
-    http:CircuitBreakerConfig? circuitBreaker = ();
-    # Configurations associated with retrying
-    http:RetryConfig? retryConfig = ();
-    # Configurations associated with cookies
-    http:CookieConfig? cookieConfig = ();
-    # Configurations associated with inbound response size limits
-    http:ResponseLimitConfigs responseLimits = {};
-    # SSL/TLS-related options
-    http:ClientSecureSocket? secureSocket = ();
-    # Proxy server related options
-    http:ProxyConfig? proxy = ();
-    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
-    boolean validation = true;
-|};
-
-# OAuth2 Password Grant Configs
-public type OAuth2PasswordGrantConfig record {|
-    *http:OAuth2PasswordGrantConfig;
-    # Token URL
-    string tokenUrl = "https:/<site_url>/rest/<version>/oauth2/token";
-|};
-
 # This is a generated connector for [SugarCRM REST API v12.0](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) OpenAPI Specification.
 # SugarCRM REST API provides capabilities to effectively manage the customer lifecycle with a set of modules that support each stage of the funnel.
 @display {label: "SugarCRM", iconPath: "icon.png"}
@@ -70,11 +25,33 @@ public isolated client class Client {
     # The connector initialization requires setting the API credentials.
     # Create [SugarCRM account](https://www.sugarcrm.com/au/?utm_source=google.com&utm_medium=organic) and obtain tokens by following [this guide](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/#Authentication).
     #
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ClientConfig clientConfig, string serviceUrl) returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(ConnectionConfig config, string serviceUrl) returns error? {
+        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         return;
     }

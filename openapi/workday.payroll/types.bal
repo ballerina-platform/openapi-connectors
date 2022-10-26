@@ -14,6 +14,67 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+import ballerina/constraint;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig auth;
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
 public type CompanyInstance record {
     *CompanyDetail;
 };
@@ -24,9 +85,9 @@ public type RunCategory2 record {
 
 public type WorkerDetail record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type NextPeriodToProcess record {
@@ -34,11 +95,11 @@ public type NextPeriodToProcess record {
 };
 
 public type InputLine record {
-    Type? 'type?;
+    Type 'type?;
     # The value for the input line.
-    int? value?;
+    int value?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type Currency record {
@@ -47,76 +108,77 @@ public type Currency record {
 
 public type CountryDataForLocationData record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type JobData record {
-    Location? location?;
+    Location location?;
     # The business title for the position.
-    string? businessTitle?;
-    Worker? 'worker?;
-    SupervisoryOrganization? supervisoryOrganization?;
+    string businessTitle?;
+    Worker 'worker?;
+    SupervisoryOrganization supervisoryOrganization?;
     # The next pay period start date for the job.
-    string? nextPayPeriodStartDate?;
-    JobType? jobType?;
-    JobProfile? jobProfile?;
+    string nextPayPeriodStartDate?;
+    JobType jobType?;
+    JobProfile jobProfile?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type PayComponentDetail record {
     # The payroll code of the pay component.
-    string? code?;
+    @constraint:String {maxLength: 20}
+    string code?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[]? errors?;
+    ErrorModelReference[] errors?;
 };
 
 public type PayrollInputView record {
     # The run category for the payroll input.
-    RunCategoryDetail[]? runCategories?;
-    PayComponent? payComponent?;
+    RunCategoryDetail[] runCategories?;
+    PayComponent payComponent?;
     # The text comment for this input.
-    string? comment?;
+    string comment?;
     # The start date before which this input does not apply.
-    string? startDate?;
-    Currency? currency?;
+    string startDate?;
+    Currency currency?;
     # The worktags associated with the payroll input.
-    Worktag[]? worktags?;
+    Worktag[] worktags?;
     # The details for this payroll input.
-    InputLine[]? inputDetails?;
+    InputLine[] inputDetails?;
     # If true, the payroll input is ongoing.
-    boolean? ongoing?;
-    Position? position?;
+    boolean ongoing?;
+    Position position?;
     # The editability status indicating the fields that can be updated in the payroll input request. Possible values: all, none, endDateOnly
-    string? fieldEditability?;
+    string fieldEditability?;
     # The end date after which this input does not apply.
-    string? endDate?;
-    WorkerDc? 'worker?;
+    string endDate?;
+    WorkerDc 'worker?;
     # If true, the input is for an adjustment as opposed to an override.
-    boolean? adjustment?;
+    boolean adjustment?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type InputInterfaceDetail record {
     # The alternate ID of the related calculation for the pay component and pay component related calculation.
-    string? name?;
+    string name?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type RunCategory record {
@@ -124,11 +186,11 @@ public type RunCategory record {
 };
 
 public type LocationDataJobView record {
-    Country? country?;
+    Country country?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type Position record {
@@ -145,23 +207,23 @@ public type FirstProcessingPeriod record {
 
 public type StateDetail record {
     # The Payroll Authority Tax Code for a Payroll Tax Authority.
-    string? payrollStateAuthorityTaxCode?;
+    string payrollStateAuthorityTaxCode?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
-public type FacetsModelReference FacetsModelReferenceInner[]?;
+public type FacetsModelReference FacetsModelReferenceInner[];
 
 public type MultipleInstanceModelReference record {
-    int? total?;
-    InstanceModelReference[]? data?;
+    int total?;
+    InstanceModelReference[] data?;
 };
 
 public type CompanyDetail2 record {
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type JobProfile record {
@@ -170,13 +232,13 @@ public type JobProfile record {
 
 public type CompanyDetail record {
     # The Reference ID to use for lookups within our Workday Web Services. For supervisory organizations, this is also the Organization_ID.
-    string? company?;
+    string company?;
     # The FEIN for the US company.
-    string? fein?;
+    string fein?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type PayComponent record {
@@ -193,41 +255,42 @@ public type Country record {
 
 public type PayRunGroupSimpleViewDetail record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type ErrorModelReference record {
     # A description of the error
-    string? 'error;
+    string 'error;
 };
 
 public type CompanySuiRateDetails record {
-    CompanyInstanceDetail? companyInstance;
-    StateInstanceDetail? stateInstance;
+    CompanyInstanceDetail companyInstance;
+    StateInstanceDetail stateInstance;
     # If true, the SUI rate is exempt.
-    boolean? exempt?;
+    boolean exempt?;
     # The start date for company tax reporting.
-    string? startDate;
+    string startDate;
     # The deduction for company tax reporting.
-    string? taxCode;
+    @constraint:String {maxLength: 20}
+    string taxCode;
     # The payroll tax authority EIN field for company tax reporting.
-    string? ein?;
+    string ein?;
     # The end date for company tax reporting.
-    string? endDate?;
+    string endDate?;
     # The tax override rate for company tax reporting.
-    string? applicableRate?;
+    string applicableRate?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type PayGroupDetailMiniViewDetail record {
-    RunCategory2? runCategory?;
+    RunCategory2 runCategory?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type CompanyInstanceDetail record {
@@ -244,29 +307,29 @@ public type WorkerDc record {
 
 public type SupervisoryOrganizationJobView record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse200 record {
-    PayGroupViewDetail[]? data?;
-    int? total?;
+    PayGroupViewDetail[] data?;
+    int total?;
 };
 
 public type State2 record {
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type Worker record {
@@ -279,32 +342,33 @@ public type StateInstanceDetail record {
 
 public type RunCategoryDetail record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type SuiRatesSummary record {
     # Unique identifier for company SUI rate.
-    string? id?;
+    string id?;
     # The EIN value for the company SUI rate.
-    string? ein?;
+    string ein?;
     # The start date value of the row for company SUI rate.
-    string? startDate?;
+    string startDate?;
     # If true, the SUI rate is exempt.
-    boolean? exempt?;
+    boolean exempt?;
     # The end date value of the row for company SUI rate.
-    string? endDate?;
+    string endDate?;
     # The EIN type. Valid values: SUI EIN, STATE EIN, FEIN.
-    string? einType?;
+    string einType?;
     # The rate type. Valid values: OR for override rate, DR for default rate.
-    string? rateType?;
+    string rateType?;
     # The payroll tax code. As of v1, the default value is W_SUIER.
-    string? taxCode?;
+    @constraint:String {maxLength: 20}
+    string taxCode?;
     # The applicable rate for the company SUI.
-    string? applicableRate?;
-    StateInstance? stateInstance?;
-    CompanyInstance? companyInstance?;
+    string applicableRate?;
+    StateInstance stateInstance?;
+    CompanyInstance companyInstance?;
 };
 
 public type PayGroup record {
@@ -313,21 +377,21 @@ public type PayGroup record {
 
 public type WorkerJobView record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type PayGroupSimpleViewDetail record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type JobTypeData record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type SupervisoryOrganization record {
@@ -336,32 +400,32 @@ public type SupervisoryOrganization record {
 
 public type Worktag record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type JobProfileJobView record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type PayGroupDetailView record {
-    RunCategory? runCategory?;
-    CurrentPeriodInProgress? currentPeriodInProgress?;
-    NextPeriodToProcess? nextPeriodToProcess?;
-    FirstProcessingPeriod? firstProcessingPeriod?;
-    LastPeriodCompleted? lastPeriodCompleted?;
-    PeriodSchedule? periodSchedule?;
+    RunCategory runCategory?;
+    CurrentPeriodInProgress currentPeriodInProgress?;
+    NextPeriodToProcess nextPeriodToProcess?;
+    FirstProcessingPeriod firstProcessingPeriod?;
+    LastPeriodCompleted lastPeriodCompleted?;
+    PeriodSchedule periodSchedule?;
     # Contains one or more pay groups that are processed or run at the same time.
-    PayRunGroupSimpleViewDetail[]? payRunGroup?;
-    PayGroup? payGroup?;
+    PayRunGroupSimpleViewDetail[] payRunGroup?;
+    PayGroup payGroup?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type Type record {
@@ -373,56 +437,56 @@ public type JobType record {
 };
 
 public type PayGroupViewDetail record {
-    Country? country?;
+    Country country?;
     # Contains the pay group detail.
-    PayGroupDetailMiniViewDetail[]? payGroupDetails?;
+    PayGroupDetailMiniViewDetail[] payGroupDetails?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 # collection something or other
 public type InlineResponse2001 record {
-    JobData[]? data?;
-    int? total?;
+    JobData[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2003 record {
-    PayrollInputView[]? data?;
-    int? total?;
+    PayrollInputView[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2002 record {
-    PayGroupDetailView[]? data?;
-    int? total?;
+    PayGroupDetailView[] data?;
+    int total?;
 };
 
 # collection something or other
 public type InlineResponse2004 record {
-    SuiRatesSummary[]? data?;
-    int? total?;
+    SuiRatesSummary[] data?;
+    int total?;
 };
 
 # This object represents the possible facets for this resource
 public type FacetsModelReferenceInner record {
     # A description of the facet
-    string? descriptor?;
+    string descriptor?;
     # The alias used to select the facet
-    string? facetParameter?;
+    string facetParameter?;
     # the facet values
     record {
         # The number of instances returned by this facet
-        int? count?;
+        int count?;
         # wid / id / reference id
-        string? id;
+        string id;
         # A description of the facet
-        string? descriptor?;
+        string descriptor?;
         # A link to the instance
-        string? href?;
-    }[]? values?;
+        string href?;
+    }[] values?;
 };
 
 public type StateInstance record {

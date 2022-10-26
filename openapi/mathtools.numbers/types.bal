@@ -74,16 +74,7 @@ public type ProxyConfig record {|
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # All requests on this API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+    # Represents API Key `X-Mathtools-Api-Secret`
     @display {label: "", kind: "password"}
-    string license;
+    string xMathtoolsApiSecret;
 |};
-
-public type PageLoadPerformance record {
-    string Origin?;
-    string Seconds?;
-    string PageResponseStatus?;
-    string Contents?;
-    string Code?;
-    string Credits?;
-};

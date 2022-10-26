@@ -6,6 +6,9 @@ on: [push, pull_request]
 jobs:
   container:
     runs-on: ubuntu-latest
+    # TODO: This is a temp fix to use DEV env while building PRs 
+    env: 
+     BALLERINA_DEV_CENTRAL: true
     container:
       image: ballerina/ballerina:2201.2.1
       options: --user root

@@ -16,14 +16,6 @@
 
 import ballerina/http;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # Represents API Key `Ocp-Apim-Subscription-Key`
-    string ocpApimSubscriptionKey;
-    # Represents API Key `subscription-key`
-    string subscriptionKey;
-|};
-
 # This is a generated connector for [Azure Text Analytics API v1](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/) OpenAPI specification.
 # The Text Analytics API is a suite of natural language processing (NLP) services built with best-in-class Microsoft machine learning algorithms.  The API can be used to analyze unstructured text for tasks such as sentiment analysis, key phrase extraction and language detection. Functionality for analysis of text specific to the healthcare domain and personal information are also available in the API. Further documentation can be found in <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview">https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview</a>
 @display {label: "Azure Text Analytics", iconPath: "icon.png"}
@@ -35,11 +27,33 @@ public isolated client class Client {
     # Create a [Azure Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal).
     #
     # + apiKeyConfig - API keys for authorization 
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, string serviceUrl, http:ClientConfiguration clientConfig =  {}) returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(ApiKeysConfig apiKeyConfig, string serviceUrl, ConnectionConfig config =  {}) returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
         return;

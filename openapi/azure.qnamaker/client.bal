@@ -16,14 +16,6 @@
 
 import ballerina/http;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # Represents API Key `Ocp-Apim-Subscription-Key`
-    string ocpApimSubscriptionKey;
-    # Represents API Key `subscription-key`
-    string subscriptionKey;
-|};
-
 # This is a generated connector for [Azure QnA Maker API v4](https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) OpenAPI specification.
 # The Azure QnA Maker API is a cloud-based Natural Language Processing (NLP) service that allows you to create a natural conversational layer over your data.  It is used to find the most appropriate answer for any input from your custom knowledge base (KB) of information. QnA Maker is commonly used to build conversational client applications,  which include social media applications, chat bots, and speech-enabled desktop applications.
 # QnA Maker REST API V4.0
@@ -36,11 +28,33 @@ public isolated client class Client {
     # Create a [Azure Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and  obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal).
     #
     # + apiKeyConfig - API keys for authorization 
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, string serviceUrl, http:ClientConfiguration clientConfig =  {}) returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(ApiKeysConfig apiKeyConfig, string serviceUrl, ConnectionConfig config =  {}) returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
         return;

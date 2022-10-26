@@ -31,10 +31,7 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
 
 final Encoding & readonly defaultEncoding = {};

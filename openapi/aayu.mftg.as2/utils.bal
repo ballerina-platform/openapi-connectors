@@ -1,4 +1,4 @@
-// Copyright (c) 2022 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,7 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
 
 final Encoding & readonly defaultEncoding = {};
@@ -175,12 +172,12 @@ isolated function getSerializedRecordArray(string parent, record {}[] value, str
 #
 # + value - Value to be encoded
 # + return - Encoded string
-isolated function getEncodedUri(string value) returns string {
-    string|error encoded = url:encode(value, "UTF8");
+isolated function getEncodedUri(anydata value) returns string {
+    string|error encoded = url:encode(value.toString(), "UTF8");
     if (encoded is string) {
         return encoded;
     } else {
-        return value;
+        return value.toString();
     }
 }
 
@@ -242,7 +239,7 @@ isolated function getMapForHeaders(map<any> headerParam) returns map<string|stri
     return headerMap;
 }
 
-isolated function createBodyParts(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {})
+isolated function createBodyParts(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {})
 returns mime:Entity[]|error {
     mime:Entity[] entities = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {

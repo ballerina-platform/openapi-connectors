@@ -32,10 +32,7 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
 
 final Encoding & readonly defaultEncoding = {};
@@ -217,7 +214,7 @@ isolated function getPathForQueryParam(map<anydata> queryParam, map<Encoding> en
     return restOfPath;
 }
 
-isolated function createBodyParts(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {})
+isolated function createBodyParts(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {})
 returns mime:Entity[]|error {
     mime:Entity[] entities = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {

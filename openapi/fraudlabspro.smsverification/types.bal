@@ -71,24 +71,3 @@ public type ProxyConfig record {|
     @display {label: "", kind: "password"}
     string password = "";
 |};
-
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # Represents API Key `X-API-Key`
-    @display {label: "", kind: "password"}
-    string xApiKey;
-|};
-
-public type ExtensionArr Extension[];
-
-public type Extension record {
-    float avg_rating?;
-    int extension_id?;
-    int install_count?;
-    float prev_avg_rating?;
-    int prev_install_count?;
-    int prev_rating_count?;
-    int rating_count?;
-    string update_ts?;
-    string url?;
-};

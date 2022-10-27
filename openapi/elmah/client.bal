@@ -16,12 +16,6 @@
 
 import ballerina/http;
 
-# Provides API key configurations needed when communicating with a remote HTTP endpoint.
-public type ApiKeysConfig record {|
-    # All requests on the elmah.io API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be <code>api_key</code>.<br/><br/>Additional resources:<br/><ul><li>[Where is my API key?](https://docs.elmah.io/where-is-my-api-key/)</li><li>[How to configure API key permissions](https://docs.elmah.io/how-to-configure-api-key-permissions/)</li></ul>
-    string apiKey;
-|};
-
 # This is a generated connector for [Elmah.io REST API v3](https://elmah.io) OpenAPI Specification.
 # The public REST API for elmah.io. All of the integrations communicates with elmah.io through this API.
 # For additional help getting started with the API, visit the following help articles:
@@ -36,11 +30,33 @@ public isolated client class Client {
     # Configure the API key to have the [required permission](https://docs.elmah.io/how-to-configure-api-key-permissions/).
     #
     # + apiKeyConfig - API keys for authorization 
-    # + clientConfig - The configurations to be used when initializing the `connector` 
+    # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ApiKeysConfig apiKeyConfig, http:ClientConfiguration clientConfig =  {}, string serviceUrl = "https://api.elmah.io") returns error? {
-        http:Client httpEp = check new (serviceUrl, clientConfig);
+    public isolated function init(ApiKeysConfig apiKeyConfig, ConnectionConfig config =  {}, string serviceUrl = "https://api.elmah.io") returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
+        do {
+            if config.http1Settings is ClientHttp1Settings {
+                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
+                httpClientConfig.http1Settings = {...settings};
+            }
+            if config.http2Settings is http:ClientHttp2Settings {
+                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
+            }
+            if config.cache is http:CacheConfig {
+                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
+            }
+            if config.responseLimits is http:ResponseLimitConfigs {
+                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
+            }
+            if config.secureSocket is http:ClientSecureSocket {
+                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
+            }
+            if config.proxy is http:ProxyConfig {
+                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
+            }
+        }
+        http:Client httpEp = check new (serviceUrl, httpClientConfig);
         self.clientEp = httpEp;
         self.apiKeyConfig = apiKeyConfig.cloneReadOnly();
         return;

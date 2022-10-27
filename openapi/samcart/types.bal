@@ -14,6 +14,71 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # Represents API Key `sc-api`
+    @display {label: "", kind: "password"}
+    string scApi;
+|};
+
 public type RefundServiceArr RefundService[];
 
 public type AddressServiceArr AddressService[];
@@ -29,13 +94,13 @@ public type SubscriptionHistoryServiceArr SubscriptionHistoryService[];
 # An optional coupon that is applied to the subscription rebill
 public type SubscriptionserviceCoupon record {
     # The ID of the coupon that was used on the subscription
-    int? id?;
+    int id?;
     # Whether the coupon applies only once or for recurring charges also
-    string? charge_instance?;
+    string charge_instance?;
     # The code of the coupon used
-    string? code?;
+    string code?;
     # The type of discount applied
-    string? 'type?;
+    string 'type?;
     # The flat_rate discount amount (in cents) on the subscription
     int? discount_amount?;
     # The percentage discount on the subscription
@@ -45,32 +110,32 @@ public type SubscriptionserviceCoupon record {
 # Customer
 public type CustomerService record {
     # The SamCart ID of the customer
-    int? id?;
+    int id?;
     # The first name of the customer
     string? first_name?;
     # The last name of the customer
     string? last_name?;
     # The email address of the customer
-    string? email?;
+    string email?;
     # The phone number of the customer
     string? phone?;
     # The tags applied to the customer
-    CustomerserviceCustomerTags[]? customer_tags?;
+    CustomerserviceCustomerTags[] customer_tags?;
     # The lifetime value (in cents) of the customer. Value is for live data only
-    int? lifetime_value?;
+    int lifetime_value?;
     # The UTC date and time when the customer information was updated
-    string? updated_at?;
+    string updated_at?;
     # The UTC date and time when the customer was created
-    string? created_at?;
+    string created_at?;
     # Addresses associated with the customer
-    AddressService[]? addresses?;
+    AddressService[] addresses?;
 };
 
 public type OrderserviceCartItems record {
     # The ID for the specific cart item
-    int? id?;
+    int id?;
     # The SamCart ID for the product
-    int? product_id?;
+    int product_id?;
     # The subscription ID for the product. If the cart item is for a non-subscription product the value will be null
     int? subscription_id?;
     # The optional product SKU of the cart item purchased
@@ -78,77 +143,77 @@ public type OrderserviceCartItems record {
     # An optional product name displayed on the marketplace dashboard
     string? internal_product_name?;
     # The product name displayed to customers
-    string? product_name?;
+    string product_name?;
     # The SamCart ID for the charge
-    int? charge_id?;
+    int charge_id?;
     # Indicates how the product is priced
-    string? pricing_type?;
+    string pricing_type?;
     # The processor ID generated for the charge
-    string? processor_transaction_id?;
+    string processor_transaction_id?;
     # The 3 letter identifier for the currency for the charge on the cart item
-    string? currency?;
+    string currency?;
     # The quantity of the cart item purchased
-    int? quantity?;
+    int quantity?;
     # The current status of the charge on the cart item
-    string? status?;
+    string status?;
     # The pricing structure for one-time purchases and for the first charge on subscription products
-    OrderserviceInitialPrice? initial_price?;
+    OrderserviceInitialPrice initial_price?;
     # The pricing structure for limited and recurring subscription products. This structure could differ from the initial price.
-    OrderserviceRecurringPrice? recurring_price?;
+    OrderserviceRecurringPrice recurring_price?;
     # An optional coupon that was applied to the cart item
-    OrderserviceCoupon? coupon?;
+    OrderserviceCoupon coupon?;
 };
 
 public type InlineResponse200 record {
-    ChargeService[]? data?;
+    ChargeService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 # Subscription
 public type SubscriptionService record {
     # The SamCart ID for the subscription
-    int? id?;
+    int id?;
     # The SamCart ID for the customer that created the charge
-    int? customer_id?;
+    int customer_id?;
     # The SamCart ID of the affiliate credited for the order.
     int? affiliate_id?;
     # The SamCart ID for the order. For subscriptions, this will be the order ID of the original purchase.
-    int? order_id?;
+    int order_id?;
     # The SamCart ID for a product in the cart
-    int? product_id?;
+    int product_id?;
     # The optional product SKU for the subscription
     string? sku?;
     # The status of the subscription
-    string? status?;
+    string status?;
     # Indicates the format of the subscription
-    string? 'type?;
+    string 'type?;
     # The name of the product for the subscription
-    string? product_name?;
+    string product_name?;
     # An optional product name displayed on the marketplace dashboard for the subscription
     string? internal_product_name?;
     # The pricing structure for the first charge of the subscription
-    SubscriptionserviceInitialPrice? initial_price?;
+    SubscriptionserviceInitialPrice initial_price?;
     # The pricing structure for all the recurring charges of the subscription
-    SubscriptionserviceRecurringPrice? recurring_price?;
+    SubscriptionserviceRecurringPrice recurring_price?;
     # An optional coupon that is applied to the subscription rebill
-    SubscriptionserviceCoupon? coupon?;
+    SubscriptionserviceCoupon coupon?;
     # The name of the processor for the order
-    string? processor_name?;
+    string processor_name?;
     # Indicates whether the transaction was done while the product was in test mode.
-    boolean? test_mode?;
+    boolean test_mode?;
     # The last 4 digits of the card that was used. PayPal charges will have a null value.
     decimal? card_used?;
     # The UTC date and time the subscription was created. This is also when the original order was created.
-    string? created_at?;
+    string created_at?;
     # The UTC date and time the first rebill occurred. For subscriptions with trials, this will be the first rebill after the trial.
-    string? start_date?;
+    string start_date?;
     # The UTC date and time that a limited subscription will end. Recurring subscriptions will not have a value.
     string? end_date?;
     # The UTC date and time of the next rebill for the subscription
-    string? next_rebilling_date?;
+    string next_rebilling_date?;
     # The number of unsuccessful charges for this subscription
-    int? total_failed_charges?;
+    int total_failed_charges?;
 };
 
 # Optional information for paginating large data sets.
@@ -162,110 +227,110 @@ public type Pagination record {
 # Address
 public type AddressService record {
     # The type of address for the customer
-    string? 'type?;
+    string 'type?;
     # The street for the customer
-    string? street?;
+    string street?;
     # The postal code for the customer
-    string? postal_code?;
+    string postal_code?;
     # The city name for the customer
-    string? city?;
+    string city?;
     # The 2-letter state code for US customers. For non-US addresses this value will be null.
     string? state?;
     # The optional sub-divided area of a country for international customers. For US addresses this value will be null.
     string? region?;
     # The country for the customer
-    string? country?;
+    string country?;
 };
 
 public type ProductserviceProductTags record {
     # The name of the product tag
-    string? name?;
+    string name?;
 };
 
 public type CustomerserviceCustomerTags record {
     # The name of the customer tag
-    string? name?;
+    string name?;
 };
 
 # Subscription History
 public type SubscriptionHistoryService record {
     # The SamCart ID for the subscription history record
-    int? id?;
+    int id?;
     # The SamCart ID for the subscription
-    int? subscription_id?;
+    int subscription_id?;
     # The status of the subscription
-    string? new_status?;
+    string new_status?;
     # The source of the change
-    string? 'source?;
+    string 'source?;
     # The type of change
-    string? 'type?;
+    string 'type?;
     # The UTC date and time that the change was made
-    string? change_date?;
+    string change_date?;
 };
 
 # Refund
 public type RefundService record {
     # The SamCart ID for the refund
-    int? id?;
+    int id?;
     # The SamCart ID for the charge
-    int? charge_id?;
+    int charge_id?;
     # The ID for the refunded cart item
-    int? cart_item_id?;
+    int cart_item_id?;
     # The UTC date and time the refund was issued
-    string? created_at?;
+    string created_at?;
     # Indicates whether the transaction was done while the transaction was in test mode.
-    boolean? test_mode?;
+    boolean test_mode?;
     # Indicates whether a refund and the type of refund. If no refund was created the value will be null.
     string? charge_refund_status?;
     # This will match the currency that the original charge was created in and will be the currency of the created refund
-    string? currency?;
+    string currency?;
     # The total refund amount (in cents)
-    int? refund_amount?;
+    int refund_amount?;
 };
 
 # Charge
 public type ChargeService record {
     # The SamCart ID for the charge
-    int? id?;
+    int id?;
     # The SamCart ID for the customer that created the charge
-    int? customer_id?;
+    int customer_id?;
     # The SamCart ID of the affiliate credited for the order
     int? affiliate_id?;
     # The SamCart ID for the order. For subscriptions, this will be the order ID of the original purchase
-    int? order_id?;
+    int order_id?;
     # The SamCart ID for the subscription rebill. If the charge is for a non-subscription product, this will be null.
     int? subscription_rebill_id?;
     # Indicates whether the transaction was done while the product was in test mode
-    boolean? test_mode?;
+    boolean test_mode?;
     # The name of the processor for the order
-    string? processor_name?;
+    string processor_name?;
     # The processor ID generated for the charge
-    string? processor_transaction_id?;
+    string processor_transaction_id?;
     # The 3 letter identifier for the currency for the charge
-    string? currency?;
+    string currency?;
     # The last 4 digits of the card that was used. PayPal charges will have a null value.
     decimal? card_used?;
     # Indicates whether a refund and the type of refund. If no refund was created the value will be null.
     string? charge_refund_status?;
     # The UTC date and time for when the order was created
-    string? order_date?;
+    string order_date?;
     # The UTC date and time that the charge was created
-    string? created_at?;
+    string created_at?;
     # The total (in cents) for the charge including taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 public type ProductserviceBundledProducts record {
     # The SamCart ID of the bundled product
-    int? product_id?;
+    int product_id?;
     # The bundled product name displayed to customers
-    string? product_name?;
+    string product_name?;
 };
 
 # Failed Charge
 public type FailedChargeService record {
     # The SamCart ID for the charge
-    int? id?;
+    int id?;
     # The SamCart ID for the customer that created the charge
     int? customer_id?;
     # The SamCart ID of the affiliate credited for the order
@@ -275,33 +340,33 @@ public type FailedChargeService record {
     # The SamCart ID for the subscription rebill. If the charge is for a non-subscription product, this will be null.
     int? subscription_rebill_id?;
     # Indicates whether the transaction was done while the product was in test mode
-    boolean? test_mode?;
+    boolean test_mode?;
     # The name of the processor for the order
-    string? processor_name?;
+    string processor_name?;
     # The processor ID generated for the charge
-    string? processor_transaction_id?;
+    string processor_transaction_id?;
     # The error message provided by the payment processor
     string? 'error?;
     # The 3 letter identifier for the currency for the charge
-    string? currency?;
+    string currency?;
     # The last 4 digits of the card that was used. PayPal charges will have a null value.
     decimal? card_used?;
     # The UTC date and time that the charge was created
-    string? created_at?;
+    string created_at?;
     # The total (in cents) for the charge including taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 # An optional coupon that was applied to the cart item
 public type OrderserviceCoupon record {
     # The ID of the coupon that was used on the cart item
-    int? id?;
+    int id?;
     # Whether the coupon applies only once or for recurring charges also
-    string? charge_instance?;
+    string charge_instance?;
     # The code of the coupon used
-    string? code?;
+    string code?;
     # The type of discount applied
-    string? 'type?;
+    string 'type?;
     # The flat_rate discount amount (in cents) on the cart item
     int? discount_amount?;
     # The percentage discount on the cart item
@@ -311,43 +376,43 @@ public type OrderserviceCoupon record {
 # Product
 public type ProductService record {
     # The SamCart ID of the product
-    int? id?;
+    int id?;
     # An optional product SKU displayed on the marketplace dashboard
     string? sku?;
     # An optional product name displayed on the marketplace dashboard
     string? internal_product_name?;
     # The product name displayed to customers
-    string? product_name?;
+    string product_name?;
     # The optional description of the product
     string? description?;
     # The 3 letter identifier for the currency currently configured on the product. This can be changed.
-    string? currency?;
+    string currency?;
     # The price of the product. For subscription products, it is the initial price (in cents)
-    float? price?;
+    float price?;
     # Indicates the type of product being sold
-    string? product_category?;
+    string product_category?;
     # Indicates how the product will be priced
-    string? pricing_type?;
+    string pricing_type?;
     # Indicates the current status of the product
-    string? status?;
+    string status?;
     # Indicates if the product is currently configured to have taxes. This can be changed.
-    boolean? taxes?;
+    boolean taxes?;
     # The name of the upsell funnel attached to the product
     string? upsell_funnel?;
     # An optional list of additional products added with the product before checkout
-    ProductserviceOrderBumps[]? order_bumps?;
+    ProductserviceOrderBumps[] order_bumps?;
     # An optional list of products bundled to the product
-    ProductserviceBundledProducts[]? bundled_products?;
+    ProductserviceBundledProducts[] bundled_products?;
     # The URL slug for the product
-    string? slug?;
+    string slug?;
     # An optional custom domain used for the product
     string? custom_domain?;
     # An optional list of product tags
-    ProductserviceProductTags[]? product_tags?;
+    ProductserviceProductTags[] product_tags?;
     # The UTC date and time the product was created
-    string? created_at?;
+    string created_at?;
     # The UTC date and time the product was updated
-    string? updated_at?;
+    string updated_at?;
     # The UTC date and time the product was archived. If the product has not been archive the value will be null.
     string? archived_date?;
 };
@@ -355,73 +420,73 @@ public type ProductService record {
 # The pricing structure for the first charge of the subscription
 public type SubscriptionserviceInitialPrice record {
     # The initial price (in cents) excluding discount, taxes and shipping fees
-    int? subtotal?;
+    int subtotal?;
     # The initial tax fees (in cents)
-    int? taxes?;
+    int taxes?;
     # The initial shipping fees (in cents)
-    int? shipping?;
+    int shipping?;
     # The initial price (in cents) including discount, taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 public type InlineResponse2001 record {
-    CustomerService[]? data?;
+    CustomerService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 # The pricing structure for one-time purchases and for the first charge on subscription products
 public type OrderserviceInitialPrice record {
     # The price for the cart item (in cents) excluding discount, taxes and shipping fees
-    int? subtotal?;
+    int subtotal?;
     # The tax fees (in cents) for the cart item
-    int? taxes?;
+    int taxes?;
     # The shipping fees (in cents) for the cart item
-    int? shipping?;
+    int shipping?;
     # The price for the cart item (in cents) including discount, taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 public type InlineResponse2003 record {
-    OrderService[]? data?;
+    OrderService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 public type InlineResponse2002 record {
-    FailedChargeService[]? data?;
+    FailedChargeService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 # Order
 public type OrderService record {
     # The SamCart ID of the order
-    int? id?;
+    int id?;
     # The SamCart ID of the customer
-    int? customer_id?;
+    int customer_id?;
     # The SamCart ID of the affiliate credited for the order
     int? affiliate_id?;
     # Indicates whether the transaction was done while the product was in test mode
-    boolean? test_mode?;
+    boolean test_mode?;
     # The UTC date and time for when the order was created
-    string? order_date?;
+    string order_date?;
     # A list of cart items on the order
-    OrderserviceCartItems[]? cart_items?;
+    OrderserviceCartItems[] cart_items?;
     # The total price of the order (in cents) excluding discount, shipping and tax fees
-    int? subtotal?;
+    int subtotal?;
     # The total discount (in cents) on the order
-    int? discount?;
+    int discount?;
     # The total of tax fees (in cents) of the order
-    int? taxes?;
+    int taxes?;
     # The total of shipping fees (in cents) of the order
-    int? shipping?;
+    int shipping?;
     # The total price of the order (in cents) including discount, shipping and tax fees
-    int? total?;
+    int total?;
     # The last 4 digits of the card that was used. PayPal charges will have a null value.
     string? card_used?;
     # The name of the processor for the order
-    string? processor_name?;
+    string processor_name?;
     # Optional custom fields applied to the order
     record {} custom_fields?;
 };
@@ -429,72 +494,72 @@ public type OrderService record {
 # Subscription Plan
 public type SubscriptionPlanService record {
     # The SamCart ID for the subscription plan
-    int? id?;
+    int id?;
     # The SamCart ID for the product
-    int? product_id?;
+    int product_id?;
     # The current status of the subscription plan
-    string? plan_status?;
+    string plan_status?;
     # The UTC date and time for when the subscription plan was archived
     string? plan_archived_date?;
     # For a limited subscription, this indicates the number of rebills
-    int? plan_duration?;
+    int plan_duration?;
     # Indicates how frequently the subscription will rebill
-    string? plan_frequency?;
+    string plan_frequency?;
     # The recurring price of subscription exclusing tax and shipping fees
-    int? plan_price?;
+    int plan_price?;
     # The number of days that the subscription has for a trial
-    int? trial_period?;
+    int trial_period?;
     # The number of days between each subscription rebill, used for 'days' frequency only
-    int? rebill_days?;
+    int rebill_days?;
     # Indicates whether the subscription will be Stripe-managed
-    boolean? stripe_compatible?;
+    boolean stripe_compatible?;
     # For Stripe-managed subscriptions, this is the plan ID from within Stripe
     string? stripe_plan_id?;
     # Indicates whether the subscription is associated with a Stripe testing environment
-    boolean? on_stripe_sandbox?;
+    boolean on_stripe_sandbox?;
     # Indicates whether the shipping prices for the subscription will be charged at every subscription rebill
-    boolean? recurring_shipping?;
+    boolean recurring_shipping?;
 };
 
 public type InlineResponse2005 record {
-    SubscriptionService[]? data?;
+    SubscriptionService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 # The pricing structure for all the recurring charges of the subscription
 public type SubscriptionserviceRecurringPrice record {
     # The recurring price (in cents) excluding discount, taxes and shipping fees
-    int? subtotal?;
+    int subtotal?;
     # The recurring tax fees (in cents)
-    int? taxes?;
+    int taxes?;
     # The recurring shipping fees (in cents)
-    int? shipping?;
+    int shipping?;
     # The recurring price (in cents) including discount, taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 public type InlineResponse2004 record {
-    ProductService[]? data?;
+    ProductService[] data?;
     # Optional information for paginating large data sets.
-    Pagination? pagination?;
+    Pagination pagination?;
 };
 
 # The pricing structure for limited and recurring subscription products. This structure could differ from the initial price.
 public type OrderserviceRecurringPrice record {
     # The recurring price for the cart item (in cents) excluding discount, taxes and shipping fees
-    int? subtotal?;
+    int subtotal?;
     # The recurring tax fees (in cents) for the cart item
-    int? taxes?;
+    int taxes?;
     # The recurring shipping fees (in cents) for the cart item
-    int? shipping?;
+    int shipping?;
     # The recurring price for the cart item (in cents) including discount, taxes and shipping fees
-    int? total?;
+    int total?;
 };
 
 public type ProductserviceOrderBumps record {
     # The SamCart ID for the additional product
-    int? product_id?;
+    int product_id?;
     # The name of the additional product
-    string? product_name?;
+    string product_name?;
 };

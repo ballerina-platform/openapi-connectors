@@ -14,512 +14,577 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
+# Provides API key configurations needed when communicating with a remote HTTP endpoint.
+public type ApiKeysConfig record {|
+    # Represents API Key `auth_token`
+    @display {label: "", kind: "password"}
+    string authToken;
+|};
+
 # The data required to create a comment.
 public type CommentRequest record {
     # Specifies the content of the comment. Either text or html must be present.
-    CommentRequestContent? content?;
+    CommentRequestContent content?;
 };
 
 # The data required to assign a ticket to a user.
 public type AssignUserRequest record {
     # The data required to assign a ticket to a user.
-    UserAssignmentRequest? user_assignment?;
+    UserAssignmentRequest user_assignment?;
 };
 
 # Specifies the content of the comment.
 public type CommentContent record {
     # Specifies the text content of the comment.
-    string? text?;
+    string text?;
     # Specifies the html content of the comment.
-    string? html?;
+    string html?;
     # Specifies the attachments of the comment.
-    Attachment[]? attachments?;
+    Attachment[] attachments?;
 };
 
 # User object
 public type User record {
     # Email ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # A reply object.
 public type ReplyObject record {
     # Reply object
-    Reply? reply?;
+    Reply reply?;
 };
 
 # Label object.
 public type Label record {
     # Label ID.
-    int? id?;
+    int id?;
     # Label name.
-    string? label?;
+    string label?;
     # Ticket ID.
-    int? ticket?;
+    int ticket?;
 };
 
 # Specifies the attachment object.
 public type Attachment record {
     # Attachment ID
-    int? id?;
+    int id?;
     # Created at
-    string? created_at?;
+    string created_at?;
     # Filename
-    string? filename?;
+    string filename?;
     # Content type
-    string? content_type?;
+    string content_type?;
     # URL object
-    Url? url?;
+    Url url?;
 };
 
 # The data required to create a reply.
 public type CreateReplyRequest record {
     # The data required to create a reply.
-    ReplyRequest? reply?;
+    ReplyRequest reply?;
 };
 
 # Created comment.
 public type CreatedComment record {
     # Comment object
-    Comment? comment?;
+    Comment comment?;
 };
 
 # An object with a property users which is an array of User objects.
 public type Users record {
     # An array of User objects.
-    UserObject[]? users?;
+    UserObject[] users?;
 };
 
 # The data required to create a ticket.
 public type TicketRequest record {
     # Specifies the subject of the ticket.
-    string? subject?;
+    string subject?;
     # Specifies the name of the requester of the ticket.
-    string? requester_name?;
+    string requester_name?;
     # Specifies the email of the requester of the ticket.
-    string? requester_email?;
+    string requester_email?;
     # Specifies the CC email addresses included in the ticket. If there are multiple emails, pass them comma separated. Up to 25 addresses are allowed.
-    string[]? cc?;
+    string[] cc?;
     # Specifies the BCC email addresses included in the ticket. If there are multiple emails, pass them comma separated. Up to 25 addresses are allowed.
-    string[]? bcc?;
+    string[] bcc?;
     # If true, a copy of the ticket is sent to the requester and all email addresses in CC and BCC. An auto-response is not sent when this parameter is true (even if it's enabled in the settings). The sender name in this copy is taken from the forwarding address used to create the ticket.
-    boolean? notify_requester?;
+    boolean notify_requester?;
     # Specifies the content of the ticket. Either text or html must be present.
-    Content? content?;
+    Content content?;
     # Specifies the attachment IDs of the ticket.
-    int[]? attachment_ids?;
+    int[] attachment_ids?;
     # This optional parameter lets you specify the email address/name to be used for sending out replies/auto-responses to the customer. You can find the forwarding address id by editing the desired forwarding address and copying the id from the URL once you are on the edit page (we are working on making this more straight forward). If you are using a SMTP server for delivering emails, it's important that you send this parameter and use the correct email address to avoid any delivery issues.
-    string? forwarding_address_id?;
+    string forwarding_address_id?;
 };
 
 # Source of the ticket
 public type Source record {
     # Email address
-    string? email?;
+    string email?;
 };
 
 # URL object
 public type Url record {
     # Original URL
-    string? original?;
+    string original?;
     # Thumbnail URL
-    string? thumb?;
+    string thumb?;
 };
 
 # The assigned user object
 public type AssignedUserObject record {
     # User assignment ID
-    int? id?;
+    int id?;
     # Created at
-    string? created_at?;
+    string created_at?;
     # User assignment ticket object
-    UserAssignmentTicket? ticket?;
+    UserAssignmentTicket ticket?;
     # Assignee object
-    Assignee? assignee?;
+    Assignee assignee?;
 };
 
 # Created label.
 public type CreatedLabel record {
     # Label object.
-    Label? label?;
+    Label label?;
 };
 
 # Requester object
 public type Requester record {
     # Email ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Role
-    string? role?;
+    string role?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # Replier object
 public type Replier record {
     # Replier ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # User assignment ticket object
 public type UserAssignmentTicket record {
     # User assignment ticket ID
-    int? id?;
+    int id?;
 };
 
 # Picture object
 public type Picture record {
     # Thumb 20
-    string? thumb20?;
+    string thumb20?;
     # Thumb 24
-    string? thumb24?;
+    string thumb24?;
     # Thumb 32
-    string? thumb32?;
+    string thumb32?;
     # Thumb 48
-    string? thumb48?;
+    string thumb48?;
     # Thumb 64
-    string? thumb64?;
+    string thumb64?;
     # Thumb 128
-    string? thumb128?;
+    string thumb128?;
 };
 
 # Specifies the content of the reply. Either text or html must be present.
 public type ReplyRequestContent record {
     # Specifies the text content of the ticket.
-    string? text?;
+    string text?;
     # Specifies the html content of the ticket.
-    string? html?;
+    string html?;
     # Specifies the attachment IDs of the ticket.
-    int[]? attachment_ids?;
+    int[] attachment_ids?;
 };
 
 # An object with a property tickets which is an array of Ticket objects.
 public type Tickets record {
     # Total tickets
-    int? total?;
+    int total?;
     # Current page count
-    int? current_page?;
+    int current_page?;
     # Per page count
-    int? per_page?;
+    int per_page?;
     # Total pages count
-    int? total_pages?;
+    int total_pages?;
     # An array of Ticket objects.
-    Ticket[]? tickets?;
+    Ticket[] tickets?;
 };
 
 # Team object
 public type Team record {
     # Email ID
-    int? id?;
+    int id?;
     # Name
-    string? name?;
+    string name?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # Specifies the content of the ticket.
 public type TicketContent record {
     # Specifies the text content of the ticket.
-    string? text?;
+    string text?;
     # Specifies the html content of the ticket.
-    string? html?;
+    string html?;
     # Specifies the attachments of the ticket.
-    Attachment[]? attachments?;
+    Attachment[] attachments?;
 };
 
 # An object with a property replies which is an array of Reply objects.
 public type Replies record {
     # An array of Reply objects.
-    Reply[]? replies?;
+    Reply[] replies?;
 };
 
 # Specifies the content of the comment. Either text or html must be present.
 public type CommentRequestContent record {
     # Specifies the text content of the comment.
-    string? text?;
+    string text?;
     # Specifies the html content of the comment.
-    string? html?;
+    string html?;
     # Specifies the attachment IDs of the comment.
-    int[]? attachment_ids?;
+    int[] attachment_ids?;
 };
 
 # CC object
 public type CC record {
     # Email ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Role
-    string? role?;
+    string role?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # Current user assignee
 public type CurrentUserAssignee record {
     # User object
-    User? user?;
+    User user?;
 };
 
 # Ticket object
 public type Ticket record {
     # Ticket ID
-    int? id?;
+    int id?;
     # Subject of the ticket
-    string? subject?;
+    string subject?;
     # Reply count for the ticket
-    int? replies_count?;
+    int replies_count?;
     # Comments count for the ticket
-    int? comments_count?;
+    int comments_count?;
     # Last activity at
-    string? last_activity_at?;
+    string last_activity_at?;
     # Created at
-    string? created_at?;
+    string created_at?;
     # Unanswered status
-    boolean? unanswered?;
+    boolean unanswered?;
     # Archived status
-    boolean? archived?;
+    boolean archived?;
     # Spam status
-    boolean? spam?;
+    boolean spam?;
     # Starred status
-    boolean? starred?;
+    boolean starred?;
     # Summary of the ticket
-    string? summary?;
+    string summary?;
     # Source of the ticket
-    Source? 'source?;
+    Source 'source?;
     # Specifies the CC email addresses included in the ticket.
-    CC[]? cc?;
+    CC[] cc?;
     # Specifies the BCC email addresses included in the ticket.
-    BCC[]? bcc?;
+    BCC[] bcc?;
     # Current user assignee
-    CurrentUserAssignee? current_user_assignee?;
+    CurrentUserAssignee current_user_assignee?;
     # Current team assignee
-    CurrentTeamAssignee? current_team_assignee?;
+    CurrentTeamAssignee current_team_assignee?;
     # Requester object
-    Requester? requester?;
+    Requester requester?;
     # Specifies the content of the ticket.
-    TicketContent? content?;
+    TicketContent content?;
 };
 
 # Current team assignee
 public type CurrentTeamAssignee record {
     # Team object
-    Team? team?;
+    Team team?;
 };
 
 # Assignee object
 public type Assignee record {
     # User object
-    User? user?;
+    User user?;
 };
 
 # Comment object
 public type Comment record {
     # Comment ID
-    int? id?;
+    int id?;
     # Created at
-    string? created_at?;
+    string created_at?;
     # Ticket object
-    Ticket? ticket?;
+    Ticket ticket?;
     # Commenter object
-    Commenter? commenter?;
+    Commenter commenter?;
     # Specifies the content of the comment.
-    CommentContent? content?;
+    CommentContent content?;
 };
 
 # BCC object
 public type BCC record {
     # Email ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Role
-    string? role?;
+    string role?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # An object with a property comments which is an array of Comment objects.
 public type Comments record {
     # An array of Comment objects.
-    Comment[]? comments?;
+    Comment[] comments?;
 };
 
 # User object
 public type UserObject record {
     # User ID
-    int? id?;
+    int id?;
     # User type
-    string? 'type?;
+    string 'type?;
     # Email address
-    string? email?;
+    string email?;
     # First name
-    string? first_name?;
+    string first_name?;
     # Last name
-    string? last_name?;
+    string last_name?;
     # Name
-    string? name?;
+    string name?;
     # Role
-    string? role?;
+    string role?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Two factor authentication enabled
-    boolean? two_factor_authentication_enabled?;
+    boolean two_factor_authentication_enabled?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
     # Can members access group tickets
-    boolean? can_members_access_group_tickets?;
+    boolean can_members_access_group_tickets?;
     # Members count
-    int? members_count?;
+    int members_count?;
     # Active tickets count
-    int? active_tickets_count?;
+    int active_tickets_count?;
 };
 
 # An object with a property labels which is an array of Label objects.
 public type Labels record {
     # An array of Label objects.
-    LabelObject[]? labels?;
+    LabelObject[] labels?;
 };
 
 # A ticket object.
 public type TicketObject record {
     # Ticket object
-    Ticket? ticket?;
+    Ticket ticket?;
 };
 
 # The data required to assign a ticket to a user.
 public type UserAssignmentRequest record {
     # User ID
-    int? user_id?;
+    int user_id?;
 };
 
 # Specifies the content of the reply.
 public type ReplyContent record {
     # Specifies the text content of the reply.
-    string? text?;
+    string text?;
     # Specifies the html content of the reply.
-    string? html?;
+    string html?;
     # Specifies the attachments of the reply.
-    Attachment[]? attachments?;
+    Attachment[] attachments?;
 };
 
 # Get user object
 public type GetUserObject record {
     # User object
-    UserObject? user?;
+    UserObject user?;
 };
 
 # Created reply.
 public type CreatedReply record {
     # Reply object
-    Reply? reply?;
+    Reply reply?;
 };
 
 # The data required to create a reply.
 public type ReplyRequest record {
     # Specifies the CC email addresses included in the reply. If there are multiple emails, pass them comma separated. Up to 25 addresses are allowed.
-    string[]? cc?;
+    string[] cc?;
     # Specifies the BCC email addresses included in the reply. If there are multiple emails, pass them comma separated. Up to 25 addresses are allowed.
-    string[]? bcc?;
+    string[] bcc?;
     # Specifies the content of the reply. Either text or html must be present.
-    ReplyRequestContent? content?;
+    ReplyRequestContent content?;
 };
 
 # The data required to create a comment.
 public type CreateCommentRequest record {
     # The data required to create a comment.
-    CommentRequest? comment?;
+    CommentRequest comment?;
 };
 
 # The data required to create a ticket.
 public type CreateTicketRequest record {
     # The data required to create a ticket.
-    TicketRequest? ticket?;
+    TicketRequest ticket?;
 };
 
 # Specifies the content of the ticket. Either text or html must be present.
 public type Content record {
     # Specifies the text content of the ticket.
-    string? text?;
+    string text?;
     # Specifies the html content of the ticket.
-    string? html?;
+    string html?;
     # Specifies the attachment IDs of the ticket.
-    int[]? attachment_ids?;
+    int[] attachment_ids?;
 };
 
 # Reply object
 public type Reply record {
     # Reply ID
-    int? id?;
+    int id?;
     # Created at
-    string? created_at?;
+    string created_at?;
     # Summary of the reply
-    string? summary?;
+    string summary?;
     # Specifies the CC email addresses included in the reply.
-    CC[]? cc?;
+    CC[] cc?;
     # Specifies the BCC email addresses included in the reply.
-    BCC[]? bcc?;
+    BCC[] bcc?;
     # Ticket object
-    Ticket? ticket?;
+    Ticket ticket?;
     # Replier object
-    Replier? replier?;
+    Replier replier?;
     # Specifies the content of the reply.
-    ReplyContent? content?;
+    ReplyContent content?;
 };
 
 # Commenter object
 public type Commenter record {
     # Replier ID
-    int? id?;
+    int id?;
     # Email address
-    string? email?;
+    string email?;
     # Name
-    string? name?;
+    string name?;
     # Agent status
-    boolean? agent?;
+    boolean agent?;
     # Picture object
-    Picture? picture?;
+    Picture picture?;
 };
 
 # Label object.
 public type LabelObject record {
     # Label name
-    string? name?;
+    string name?;
     # Label color
-    string? color?;
+    string color?;
 };
 
 # Created ticket.
 public type CreatedTicket record {
     # Ticket object
-    Ticket? ticket?;
+    Ticket ticket?;
 };

@@ -14,9 +14,70 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+import ballerina/constraint;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig auth;
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_2_0;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
 public type ErrorModelReference record {
     # A description of the error
-    string? 'error;
+    string 'error;
 };
 
 public type StatutoryInvoiceType record {
@@ -33,14 +94,15 @@ public type Company record {
 
 public type CreateAttachmentSummary record {
     # File length of the attachment.
-    int? fileLength?;
-    ContentType? contentType?;
+    int fileLength?;
+    ContentType contentType?;
     # File name of the attachment.
-    string? fileName?;
+    @constraint:String {maxLength: 255}
+    string fileName?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type HandlingCode record {
@@ -53,47 +115,48 @@ public type ContentType record {
 
 public type InvoiceRequestSummary record {
     # The date when a request for a supplier invoice is created.
-    string? invoiceDate?;
-    StatutoryInvoiceType? statutoryInvoiceType?;
+    string invoiceDate?;
+    StatutoryInvoiceType statutoryInvoiceType?;
     # The reference number that is encoded with key payment information on the invoice request document.
-    string? referenceNumber?;
+    @constraint:String {maxLength: 140}
+    string referenceNumber?;
     # Tax amount for the supplier invoice request.
     record {} taxAmount?;
-    HandlingCode? handlingCode?;
-    Status? status?;
+    HandlingCode handlingCode?;
+    Status status?;
     # The due date for payment for this Supplier Invoice Request. Example: If the payment terms are Net 30, the Due Date field is 30 days after the invoice date.
-    string? dueDate?;
-    RemitToConnection? remitToConnection?;
-    PaymentTerms? paymentTerms?;
+    string dueDate?;
+    RemitToConnection remitToConnection?;
+    PaymentTerms paymentTerms?;
     # The amount entered that should match the total of the line amounts.
     record {} controlTotalAmount?;
     # The memo for the supplier invoice request.
-    string? memo?;
+    string memo?;
     # The reference number provided by the supplier for the supplier invoice request.
-    string? suppliersInvoiceNumber?;
-    Currency? currency?;
+    string suppliersInvoiceNumber?;
+    Currency currency?;
     # The freight amount for the supplier invoice request.
     record {} freightAmount?;
-    ShipToAddress? shipToAddress?;
-    ReferenceType? referenceType?;
+    ShipToAddress shipToAddress?;
+    ReferenceType referenceType?;
     # The unique number assigned to the Supplier Invoice Request at the time of creation.
-    string? requestNumber?;
+    string requestNumber?;
     # The date the invoice was recieved
-    string? invoiceReceivedDate?;
-    Requester? requester?;
-    Supplier? supplier?;
-    Company? company?;
+    string invoiceReceivedDate?;
+    Requester requester?;
+    Supplier supplier?;
+    Company company?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type CurrencyEmbedded record {
     # The Reference ID to use for lookups within our Workday Web Services. For ~supervisory organizations~, this is also the 'Organization ID'
-    string? currencyID?;
+    string currencyID?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type SpendCategory record {
@@ -102,43 +165,44 @@ public type SpendCategory record {
 
 # collection something or other
 public type InlineResponse200 record {
-    InvoiceRequestSummary[]? data?;
-    int? total?;
+    InvoiceRequestSummary[] data?;
+    int total?;
 };
 
 public type CreateInvoiceRequestSummary record {
-    CurrencyInstanceModelRef? currency?;
-    Company? company;
+    CurrencyInstanceModelRef currency?;
+    Company company;
     # Tax amount for the supplier invoice request.
     record {} taxAmount?;
-    Requester? requester?;
+    Requester requester?;
     # The amount entered that should match the total of the line amounts.
     record {} controlTotalAmount?;
-    PaymentTerms? paymentTerms?;
-    ReferenceType? referenceType?;
+    PaymentTerms paymentTerms?;
+    ReferenceType referenceType?;
     # The Supplier Invoice Request Lines for a Supplier Invoice Request.
-    CreateLineSummary[]? lines?;
-    StatutoryInvoiceType? statutoryInvoiceType?;
+    CreateLineSummary[] lines?;
+    StatutoryInvoiceType statutoryInvoiceType?;
     # The reference number provided by the supplier for the supplier invoice request.
-    string? suppliersInvoiceNumber?;
+    string suppliersInvoiceNumber?;
     # The reference number that is encoded with key payment information on the invoice request document.
-    string? referenceNumber?;
+    @constraint:String {maxLength: 140}
+    string referenceNumber?;
     # The date an invoice is received.
-    string? invoiceReceivedDate?;
+    string invoiceReceivedDate?;
     # Freight amount for the supplier invoice request.
     record {} freightAmount?;
-    Supplier? supplier;
-    HandlingCode? handlingCode?;
-    ShipToAddress? shipToAddress?;
+    Supplier supplier;
+    HandlingCode handlingCode?;
+    ShipToAddress shipToAddress?;
     # The date when a request for a supplier invoice is created.
-    string? invoiceDate;
+    string invoiceDate;
     # The memo for the Supplier Invoice Request.
-    string? memo?;
-    RemitToConnection? remitToConnection?;
+    string memo?;
+    RemitToConnection remitToConnection?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type PaymentTerms record {
@@ -147,16 +211,16 @@ public type PaymentTerms record {
 
 public type LineSplitWorktagSummary record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ItemTagSummary record {
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
     # Id of the instance
-    string? id?;
+    string id?;
 };
 
 public type ReferenceType record {
@@ -181,11 +245,11 @@ public type Currency record {
 
 public type InstanceModelReference record {
     # wid / id / reference id
-    string? id;
+    string id;
     # A description of the instance
-    string? descriptor?;
+    string descriptor?;
     # A link to the instance
-    string? href?;
+    string href?;
 };
 
 public type Supplier record {
@@ -194,22 +258,22 @@ public type Supplier record {
 
 public type ItemIdentifierSummary record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type LinesWorkTagSummary record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type ValidationErrorModelReference record {
     *ErrorModelReference;
     # An array of validation errors
-    ErrorModelReference[]? errors?;
+    ErrorModelReference[] errors?;
 };
 
 public type Status record {
@@ -226,130 +290,131 @@ public type UnitOfMeasure record {
 
 public type LineSplitSummary record {
     # The percentage specified for the Business Document Line distribution line split.
-    int? percent?;
+    int percent?;
     # True if the supplier invoice request line or line split are billable.
-    boolean? billable?;
+    boolean billable?;
     # The memo for a line split
-    string? memo?;
+    string memo?;
     # The quantity specified for the Business Document Line distribution line split.
-    int? quantity?;
+    int quantity?;
     # The amount on the transaction line split. This value displays in the same currency as the business document.
     record {} amount?;
     # The accounting worktags for the line split.
-    LineSplitWorktagSummary[]? worktags?;
+    LineSplitWorktagSummary[] worktags?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
-public type FacetsModelReference FacetsModelReferenceInner[]?;
+public type FacetsModelReference FacetsModelReferenceInner[];
 
 public type MultipleInstanceModelReference record {
-    int? total?;
-    InstanceModelReference[]? data?;
+    int total?;
+    InstanceModelReference[] data?;
 };
 
 public type AttachmentSummary record {
     # Type of the file extension for an attachment.
-    string? fileExtension?;
+    string fileExtension?;
     # File length of the attachment
-    int? fileLength?;
+    int fileLength?;
     # File name of the attachment
-    string? fileName?;
+    @constraint:String {maxLength: 255}
+    string fileName?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type CreateLineSummary record {
     # The unit cost for the document line.
     record {} unitCost?;
     # The internal line memo for the supplier invoice request line.
-    string? internalMemo?;
+    string internalMemo?;
     # The description of the item on the document line. This is a text-only value.
-    string? itemDescription?;
+    string itemDescription?;
     # Accounting Worktags for Requisition. Used in REST API Only.
-    LinesWorkTagSummary[]? worktags?;
+    LinesWorkTagSummary[] worktags?;
     # The supplier invoice lines that includes the splits for the requested instance.
     # 
     # Note: Splits occur on a Supplier Invoice when a user decides to divide a line into multiple lines. For instance, if someone has a line which has a quantity of 4 items and they select "Splits" and they may split that line into 2 (so there will now be 2 lines, each of which has a quantity of 2 items)
-    LineSplitSummary[]? splits?;
+    LineSplitSummary[] splits?;
     # The order of the lines on a transaction. You can use this field to compare other transactions, such as supplier invoice matching events.
-    string? 'order?;
+    string 'order?;
     # True if the supplier invoice request line or line split are billable.
-    boolean? billable?;
-    SplitBy? splitBy?;
+    boolean billable?;
+    SplitBy splitBy?;
     # The quantity on the transaction line. This value can have 20 integer places, is precise to 2 decimal places, and can be negative.
-    int? quantity?;
+    int quantity?;
     # The extended amount for the document line.  Excludes extended amount on tax only invoices.
     record {} extendedAmount?;
-    SpendCategory? spendCategory?;
-    UnitOfMeasure? unitOfMeasure?;
+    SpendCategory spendCategory?;
+    UnitOfMeasure unitOfMeasure?;
     # The memo on the document line.
-    string? memo?;
+    string memo?;
     # The line type for supplier invoice request line.
-    boolean? serviceLine?;
-    Item? item?;
+    boolean serviceLine?;
+    Item item?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 public type SubmitSupplierInvoiceRequest record {
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 # collection something or other
 public type InlineResponse2001 record {
-    ViewLineSummary[]? data?;
-    int? total?;
+    ViewLineSummary[] data?;
+    int total?;
 };
 
 public type ViewLineSummary record {
     # Gets the line type for supplier invoice request.
-    string? 'type?;
+    string 'type?;
     # Contains list of Item Identifiers for Procurement Item on Business Document Line Distribution.
-    ItemIdentifierSummary[]? itemIdentifiers?;
-    UnitOfMeasure? unitOfMeasure?;
+    ItemIdentifierSummary[] itemIdentifiers?;
+    UnitOfMeasure unitOfMeasure?;
     # The internal line memo for the supplier invoice request line.
-    string? internalMemo?;
+    string internalMemo?;
     # Splits for the Supplier Invoice Request Line instance.
-    LineSplitSummary[]? splits?;
+    LineSplitSummary[] splits?;
     # The description of the item on the document line. This is a text-only value.
-    string? itemDescription?;
+    string itemDescription?;
     # Returns true if the Supplier Invoice Request Line or Line Split is Billable.
-    boolean? billable?;
+    boolean billable?;
     # The unit cost for the document line.
     record {} unitCost?;
     # The extended amount for the document line.  Excludes Extended Amounts on Tax Only Invoices.
     record {} extendedAmount?;
-    SpendCategory? spendCategory?;
+    SpendCategory spendCategory?;
     # The memo on the document line.
-    string? memo?;
+    string memo?;
     # All item tags for a goods delivery run line's item
-    ItemTagSummary[]? itemTags?;
-    Item? item?;
+    ItemTagSummary[] itemTags?;
+    Item item?;
     # The quantity on the transaction line. This value can have 20 integer places, is precise to 2 decimal places, and can be negative.
-    int? quantity?;
+    int quantity?;
     # Accounting Worktags for Requisition. Used in REST API Only.
-    LinesWorkTagSummary[]? worktags?;
-    SplitBy? splitBy?;
+    LinesWorkTagSummary[] worktags?;
+    SplitBy splitBy?;
     # Id of the instance
-    string? id?;
+    string id?;
     # A preview of the instance
-    string? descriptor?;
+    string descriptor?;
 };
 
 # collection something or other
 public type InlineResponse2002 record {
-    AttachmentSummary[]? data?;
-    int? total?;
+    AttachmentSummary[] data?;
+    int total?;
 };
 
 public type RemitToConnection record {
@@ -359,18 +424,18 @@ public type RemitToConnection record {
 # This object represents the possible facets for this resource
 public type FacetsModelReferenceInner record {
     # A description of the facet
-    string? descriptor?;
+    string descriptor?;
     # The alias used to select the facet
-    string? facetParameter?;
+    string facetParameter?;
     # the facet values
     record {
         # The number of instances returned by this facet
-        int? count?;
+        int count?;
         # wid / id / reference id
-        string? id;
+        string id;
         # A description of the facet
-        string? descriptor?;
+        string descriptor?;
         # A link to the instance
-        string? href?;
-    }[]? values?;
+        string href?;
+    }[] values?;
 };

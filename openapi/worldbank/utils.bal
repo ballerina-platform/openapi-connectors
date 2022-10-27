@@ -16,22 +16,23 @@
 
 import ballerina/url;
 
+type SimpleBasicType string|boolean|int|float|decimal;
+
 # Represents encoding mechanism details.
 type Encoding record {
     # Defines how multiple values are delimited
     string style = FORM;
     # Specifies whether arrays and objects should generate as separate fields
     boolean explode = true;
+    # Specifies the custom content type
+    string contentType?;
+    # Specifies the custom headers
+    map<any> headers?;
 };
 
 enum EncodingStyle {
-    DEEPOBJECT,
-    FORM,
-    SPACEDELIMITED,
-    PIPEDELIMITED
+    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
 }
-
-type SimpleBasicType string|boolean|int|float|decimal;
 
 final Encoding & readonly defaultEncoding = {};
 
@@ -167,12 +168,12 @@ isolated function getSerializedRecordArray(string parent, record {}[] value, str
 #
 # + value - Value to be encoded
 # + return - Encoded string
-isolated function getEncodedUri(string value) returns string {
-    string|error encoded = url:encode(value, "UTF8");
+isolated function getEncodedUri(anydata value) returns string {
+    string|error encoded = url:encode(value.toString(), "UTF8");
     if (encoded is string) {
         return encoded;
     } else {
-        return value;
+        return value.toString();
     }
 }
 

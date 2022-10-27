@@ -74,49 +74,10 @@ public type ProxyConfig record {|
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
-    # Represents API Key `Apikey`
+    # Represents API Key `Ocp-Apim-Subscription-Key`
     @display {label: "", kind: "password"}
-    string apikey;
+    string ocpApimSubscriptionKey;
+    # Represents API Key `subscription-key`
+    @display {label: "", kind: "password"}
+    string subscriptionKey;
 |};
-
-# Details of a specific currency
-public type AvailableCurrency record {
-    # ISO 4217 currency three-letter code associated with the country
-    string ISOCurrencyCode?;
-    # Symbol associated with the currency
-    string CurrencySymbol?;
-    # Full name of the currency
-    string CurrencyEnglishName?;
-    # Name of the country
-    string CountryName?;
-    # Three-letter ISO 3166-1 country code
-    string CountryThreeLetterCode?;
-    # Two-letter ISO 3166-1 country code
-    string CountryISOTwoLetterCode?;
-    # True if this country is currently a member of the European Union (EU), false otherwise
-    boolean IsEuropeanUnionMember?;
-};
-
-# Result of performing an enumerate currencies operation
-public type AvailableCurrencyResponse record {
-    # List of available currencies from the API
-    AvailableCurrency[] Currencies?;
-};
-
-# Result of performing a get exchange rate operation
-public type ExchangeRateResult record {
-    # The exchange rate from the source to the destination currency
-    decimal ExchangeRate?;
-};
-
-# Result of performing a Convert Currency operation
-public type ConvertedCurrencyResult record {
-    # The converted price in the destination currency
-    decimal ConvertedPrice?;
-    # ISO 4217 currency three-letter code of destination price
-    string ISOCurrencyCode?;
-    # Destination currency symbol
-    string CurrencySymbol?;
-    # Formatted price in the destination currency as a string
-    string FormattedPriceAsString?;
-};

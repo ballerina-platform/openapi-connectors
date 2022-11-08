@@ -6,7 +6,7 @@ name = "saps4hana.itcm.currency"
 icon = "icon.png"
 distribution = "2201.2.1"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.4.0"
+version = "1.4.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -5,7 +5,7 @@ org = "ballerinax"
 name = "xero.projects"
 icon = "icon.png"
 distribution = "2201.2.1"
-version = "1.4.0"
+version = "1.4.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

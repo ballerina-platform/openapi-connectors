@@ -1365,6 +1365,17 @@ public type PaymentMethodDetailsInteracPresent record {
 };
 
 # 
+public type UsageEventsResourceUsageRecordSummaryList record {
+    UsageRecordSummary[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
+# 
 public type DeletedSubscriptionItem record {
     # Always true for a deleted object
     boolean? deleted;

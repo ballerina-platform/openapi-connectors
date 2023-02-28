@@ -542,6 +542,25 @@ public isolated client class Client {
         UsageRecord response = check self.clientEp->post(resourcePath, request);
         return response;
     }
+
+    # <p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).</p>
+    #
+    # <p>The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
+    #
+    # + endingBefore - A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list. 
+    # + expand - Specifies which fields in the response should be expanded. 
+    # + 'limit - A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10. 
+    # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
+    # + return - Successful response. 
+    remote isolated function getSubscriptionItemsSubscriptionItemUsageRecordSummaries(string subscriptionItem, string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = ()) returns UsageEventsResourceUsageRecordSummaryList|error {
+        string resourcePath = string `/v1/subscription_items/${getEncodedUri(subscriptionItem)}/usage_record_summaries`;
+        map<anydata> queryParam = {"ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter};
+        map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        UsageEventsResourceUsageRecordSummaryList response = check self.clientEp->get(resourcePath);
+        return response;
+    }
+
     # <p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     #
     # + collectionMethod - The collection method of the subscriptions to retrieve. Either `charge_automatically` or `send_invoice`. 

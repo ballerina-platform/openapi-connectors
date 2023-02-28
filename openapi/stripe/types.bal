@@ -1393,6 +1393,40 @@ public type RecurringPriceData1 record {
     string? unit_amount_decimal?;
 };
 
+public type Period record {
+    # The end date of this usage period. All usage up to and including this point in time is included.
+    int? end?;
+    # The start date of this usage period. All usage after this point in time is included.
+    int? 'start?;
+};
+
+public type UsageRecordSummary record {
+    # Unique identifier for the object.
+    string? id;
+    # The invoice in which this usage period has been billed for.
+    string? invoice?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    #
+    Period? period;
+    # The ID of the subscription item this summary is describing.
+    string? subscription_item;
+    # The total usage within this usage period.
+    int? total_usage;
+};
+
+public type UsageEventsResourceUsageRecordSummaryList record {
+    UsageRecordSummary[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
 public type V1CustomersBody record {
     # The customer's address.
     CustomerAdresss|string? address?;

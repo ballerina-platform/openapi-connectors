@@ -293,7 +293,7 @@ modules = [
 ]
 
 [[package]]
-org = "nadheeshjihan"
+org = "ballerinax"
 name = "weaviate"
 version = "1.0.0"
 dependencies = [
@@ -302,6 +302,6 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "nadheeshjihan", packageName = "weaviate", moduleName = "weaviate"}
+	{org = "ballerinax", packageName = "weaviate", moduleName = "weaviate"}
 ]
 

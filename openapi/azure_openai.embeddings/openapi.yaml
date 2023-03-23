@@ -142,5 +142,6 @@ components:
       x-scopeValidateFunc: api.middleware.auth.validate_scopes
     apiKey:
       type: apiKey
+      description: The key used to access the OpenAI APIs
       name: api-key
       in: header

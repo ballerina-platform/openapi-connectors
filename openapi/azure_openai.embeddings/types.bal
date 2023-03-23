@@ -61,6 +61,8 @@ public type ProxyConfig record {|
 
 # Provides API key configurations needed when communicating with a remote HTTP endpoint.
 public type ApiKeysConfig record {|
+    # The key used to access the OpenAI APIs
+    @display {label: "", kind: "password"}
     string apiKey;
 |};
 

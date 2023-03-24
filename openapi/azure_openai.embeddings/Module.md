@@ -57,11 +57,11 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
     embeddings:Inline_response_200|error unionResult = check embeddingsClient->/deployments/["embedding"]/embeddings.post("2023-03-15-preview", embeddingsBody);
   
     if (unionResult is embeddings:Inline_response_200) {
-        io:println(unionResult);
-    } else {
-        io:println(unionResult);
+            io:println(unionResult);
+        } else {
+            io:println(unionResult);
+        }
     }
-}
     ```
 
 2. Use `bal run` command to compile and run the Ballerina program.

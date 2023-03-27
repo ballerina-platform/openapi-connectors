@@ -2,11 +2,21 @@ openapi: 3.0.0
 externalDocs:
   url: https://github.com/weaviate/weaviate
 info:
+  x-ballerina-display:
+    label: Weaviate
+    iconPath: "icon.png"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a Cluster using [Weaviate Cloud Service](https://weaviate.io/developers/weaviate/quickstart/installation#weaviate-cloud-services) or deploy using [Docker/Kubernetes](https://weaviate.io/developers/weaviate/quickstart/installation#running-weaviate-with-docker) and obtain the [OIDC Authentication key](https://weaviate.io/developers/weaviate/configuration/authentication).
   contact:
     email: hello@weaviate.io
     name: Weaviate
     url: https://github.com/weaviate
-  description: Cloud-native, modular vector search engine
+  description: 
+    This is a generated connector for [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. 
+    
+    Weaviate API provide access to the manipulations of weaviate schema, objects and search vectors based on various criterias.
   title: Weaviate
   version: 1.19.0-prealpha-oas3
 paths:
@@ -551,68 +561,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
       summary: Creates new Objects based on a Object template as a batch.
-      tags:
-        - batch
-        - objects
-      x-available-in-mqtt: false
-      x-available-in-websocket: false
-    delete:
-      description: Delete Objects in bulk that match a certain filter.
-      operationId: batch.objects.delete
-      x-serviceIds:
-        - weaviate.local.manipulate
-      x-ballerina-display:
-        label: Delete Objects (Batch)
-      parameters:
-        - $ref: '#/components/parameters/CommonConsistencyLevelParameterQuery'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BatchDelete'
-        required: true
-      responses:
-        '200':
-          description: >-
-            Request succeeded, see response body to get detailed information
-            about each batched item.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BatchDeleteResponse'
-        '400':
-          description: Malformed request.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '401':
-          description: Unauthorized or invalid credentials.
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '422':
-          description: >-
-            Request body is well-formed (i.e., syntactically correct), but
-            semantically erroneous. Are you sure the class is defined in the
-            configuration file?
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-        '500':
-          description: >-
-            An error has occurred while trying to fulfill the request. Most
-            likely the ErrorResponse will contain more information about the
-            error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
-      summary: Deletes Objects based on a match filter as a batch.
       tags:
         - batch
         - objects

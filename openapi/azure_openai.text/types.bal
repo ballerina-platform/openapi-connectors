@@ -81,7 +81,7 @@ public type Inline_response_200_usage record {
 public type Inline_response_200_logprobs record {
     string[] tokens?;
     decimal[] token_logprobs?;
-    record {}[] top_logprobs?;
+    record {||}[] top_logprobs?;
     int[] text_offset?;
 };
 

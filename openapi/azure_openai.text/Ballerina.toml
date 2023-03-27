@@ -2,4 +2,4 @@
 org = "ballerinax"
 name = "azure_openai.text"
 version = "0.1.0"
-distribution = "2201.3.2"
+distribution = "2201.4.1-20230319-195300-7a97d7bb"

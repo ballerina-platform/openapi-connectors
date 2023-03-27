@@ -7,7 +7,7 @@ The `azure_openai.chat` is a [Ballerina](https://ballerina.io/) connector for co
 #### Compatibility
 |                               | Version                     |
 |-------------------------------|-----------------------------|
-| Ballerina Language            | Balerina Swan Lake 2201.3.1 |
+| Ballerina Language            | Balerina Swan Lake 2201.4.1 |
 | Azure OpenAI Service REST API | v2023-03-15-preview         |
 
 ## Report issues

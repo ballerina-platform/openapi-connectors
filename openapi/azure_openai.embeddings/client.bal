@@ -56,7 +56,7 @@ public isolated client class Client {
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Inline_response_200 response = check self.clientEp->post(resourcePath, request, httpHeaders);
         return response;

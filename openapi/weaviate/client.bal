@@ -63,7 +63,7 @@ public isolated client class Client {
         map<anydata> queryParam = {"consistency_level": consistency_level};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Object response = check self.clientEp->post(resourcePath, request);
         return response;
@@ -94,7 +94,7 @@ public isolated client class Client {
         map<anydata> queryParam = {"consistency_level": consistency_level};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Object response = check self.clientEp->put(resourcePath, request);
         return response;
@@ -125,7 +125,7 @@ public isolated client class Client {
         map<anydata> queryParam = {"consistency_level": consistency_level};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         http:Response response = check self.clientEp->patch(resourcePath, request);
         return response;
@@ -151,7 +151,7 @@ public isolated client class Client {
     resource isolated function post objects/validate(Object payload) returns http:Response|error {
         string resourcePath = string `/objects/validate`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         http:Response response = check self.clientEp->post(resourcePath, request);
         return response;
@@ -166,7 +166,7 @@ public isolated client class Client {
         map<anydata> queryParam = {"consistency_level": consistency_level};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         ObjectsGetResponse[] response = check self.clientEp->post(resourcePath, request);
         return response;
@@ -179,7 +179,7 @@ public isolated client class Client {
     resource isolated function post graphql(GraphQLQuery payload) returns GraphQLResponse|error {
         string resourcePath = string `/graphql`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         GraphQLResponse response = check self.clientEp->post(resourcePath, request);
         return response;
@@ -213,7 +213,7 @@ public isolated client class Client {
     resource isolated function post schema(Class payload) returns Class|error {
         string resourcePath = string `/schema`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Class response = check self.clientEp->post(resourcePath, request);
         return response;
@@ -234,7 +234,7 @@ public isolated client class Client {
     resource isolated function put schema/[string className](Class payload) returns Class|error {
         string resourcePath = string `/schema/${getEncodedUri(className)}`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Class response = check self.clientEp->put(resourcePath, request);
         return response;
@@ -257,7 +257,7 @@ public isolated client class Client {
     resource isolated function post schema/[string className]/properties(Property payload) returns Property|error {
         string resourcePath = string `/schema/${getEncodedUri(className)}/properties`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         Property response = check self.clientEp->post(resourcePath, request);
         return response;

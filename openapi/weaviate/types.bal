@@ -61,17 +61,17 @@ public type ProxyConfig record {|
 public type ObjectsGetResponseArr ObjectsGetResponse[];
 
 # Definitions of semantic schemas (also see: https://github.com/weaviate/weaviate-semantic-schemas).
-public type Schema record {|
+public type Schema record {
     # Semantic classes that are available.
     Class[]? classes = ();
     # Email of the maintainer.
     string? maintainer = ();
     # Name of the schema.
     string? name = ();
-|};
+};
 
 # Filter search results using a where filter
-public type WhereFilter record {|
+public type WhereFilter record {
     # combine multiple where filters, requires 'And' or 'Or' operator
     WhereFilter[]? operands = ();
     # operator to use
@@ -92,7 +92,7 @@ public type WhereFilter record {|
     string? valueDate = ();
     # filter within a distance of a georange
     WhereFilterGeoRange valueGeoRange?;
-|};
+};
 
 # A list of GraphQL queries.
 public type GraphQLQueries GraphQLQuery[];
@@ -102,14 +102,14 @@ public type JsonObject record {
 };
 
 # fine-grained control over stopword list usage
-public type StopwordConfig record {|
+public type StopwordConfig record {
     # pre-existing list of common words by language
     string preset?;
     # stopwords to be considered additionally
     string[]? additions = ();
     # stopwords to be removed from consideration
     string[]? removals = ();
-|};
+};
 
 # Allow custom overrides of vector weights as math expressions. E.g. "pancake": "7" will set the weight for the word pancake to 7 in the vectorization, whereas "w * 3" would triple the originally calculated word. This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value (string/string) object.
 public type VectorWeights record {
@@ -123,7 +123,7 @@ public type ObjectsGetResponse record {
 };
 
 # Configure the inverted index built into Weaviate
-public type InvertedIndexConfig record {|
+public type InvertedIndexConfig record {
     # Asynchronous index clean up happens every n seconds
     int cleanupIntervalSeconds?;
     # tuning parameters for the BM25 algorithm
@@ -136,28 +136,28 @@ public type InvertedIndexConfig record {|
     boolean indexNullState?;
     # Index length of properties
     boolean indexPropertyLength?;
-|};
+};
 
-public type BatchDelete record {|
+public type BatchDelete record {
     # Outlines how to find the objects to be deleted.
     BatchDelete_match 'match?;
     # Controls the verbosity of the output, possible values are: "minimal", "verbose". Defaults to "minimal".
     string output?;
     # If true, objects will not be deleted yet, but merely listed. Defaults to false.
     boolean dryRun?;
-|};
+};
 
 # Results for this specific Object.
-public type BatchDeleteResponse_results_objects record {|
+public type BatchDeleteResponse_results_objects record {
     # ID of the Object.
     string id?;
     # Object processing status
     string status?;
     # An error response given by Weaviate end-points.
     ErrorResponse errors?;
-|};
+};
 
-public type Deprecation record {|
+public type Deprecation record {
     # The id that uniquely identifies this particular deprecations (mostly used internally)
     string id?;
     # Whether the problematic API functionality is deprecated (planned to be removed) or already removed
@@ -180,10 +180,10 @@ public type Deprecation record {|
     string sinceTime?;
     # The locations within the specified API affected by this deprecation
     string[] locations?;
-|};
+};
 
 # Either set beacon (direct reference) or set class and schema (concept reference)
-public type SingleRef record {|
+public type SingleRef record {
     # If using a concept reference (rather than a direct reference), specify the desired class name here
     string 'class?;
     # This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value OR a SingleRef definition.
@@ -194,31 +194,31 @@ public type SingleRef record {|
     string href?;
     # This meta field contains additional info about the classified reference property
     ReferenceMetaClassification classification?;
-|};
+};
 
 # An error response caused by a GraphQL query.
-public type GraphQLError record {|
+public type GraphQLError record {
     # Location of the graphQL query
     GraphQLError_locations[] locations?;
     # error message give by the graphQL query
     string message?;
     # paths in the schema
     string[]? path = ();
-|};
+};
 
 # Additional Meta information about a single object object.
 public type AdditionalProperties record {|
     record {}...;
 |};
 
-public type Batch_objects_body record {|
+public type Batch_objects_body record {
     # Define which fields need to be returned. Default value is ALL
     string[] fields?;
     Object[] objects?;
-|};
+};
 
 # Results due to the deletion operation
-public type BatchDeleteResponse_results record {|
+public type BatchDeleteResponse_results record {
     # How many objects were matched by the filter.
     int matches?;
     # The most amount of objects that can be deleted in a single query, equals QUERY_MAXIMUM_RESULTS.
@@ -229,9 +229,9 @@ public type BatchDeleteResponse_results record {|
     int failed?;
     # With output set to "minimal" only objects with error occurred will the be described. Successfully deleted objects would be omitted. Output set to "verbose" will list all of the objets with their respective statuses.
     BatchDeleteResponse_results_objects[]? objects = ();
-|};
+};
 
-public type Property record {|
+public type Property record {
     # Can be a reference to another type when it starts with a capital (for example Person), otherwise "string" or "int".
     string[] dataType?;
     # Description of the property.
@@ -244,10 +244,10 @@ public type Property record {|
     boolean? indexInverted = ();
     # Determines tokenization of the property as separate words or whole field. Optional. Applies to string, string[], text and text[] data types. Allowed values are `word` (default) and `field` for string and string[], `word` (default) for text and text[]. Not supported for remaining data types
     string tokenization?;
-|};
+};
 
 # Delete Objects response.
-public type BatchDeleteResponse record {|
+public type BatchDeleteResponse record {
     # Outlines how to find the objects to be deleted.
     BatchDelete_match 'match?;
     # Controls the verbosity of the output, possible values are: "minimal", "verbose". Defaults to "minimal".
@@ -256,25 +256,25 @@ public type BatchDeleteResponse record {|
     boolean dryRun?;
     # Results due to the deletion operation
     BatchDeleteResponse_results results?;
-|};
+};
 
 # Outlines how to find the objects to be deleted.
-public type BatchDelete_match record {|
+public type BatchDelete_match record {
     # Class (name) which objects will be deleted.
     string 'class?;
     # Filter search results using a where filter
     WhereFilter 'where?;
-|};
+};
 
-public type ErrorResponse_error record {|
+public type ErrorResponse_error record {
     string message?;
-|};
+};
 
 # Configure how replication is executed in a cluster
-public type ReplicationConfig record {|
+public type ReplicationConfig record {
     # Number of times a class is replicated
     int factor?;
-|};
+};
 
 # A Vector in the Contextionary
 public type C11yVector float[];
@@ -284,45 +284,45 @@ public type PropertySchema record {
 };
 
 # GraphQL based response: http://facebook.github.io/graphql/.
-public type GraphQLResponse record {|
+public type GraphQLResponse record {
     # GraphQL data object.
     record {|JsonObject...;|} data?;
     # Array with errors.
     GraphQLError[]? errors = ();
-|};
+};
 
 # filter within a distance of a georange
-public type WhereFilterGeoRange record {|
+public type WhereFilterGeoRange record {
     # GeoCoodinates based on longitute and latitude
     GeoCoordinates geoCoordinates?;
     # distace based on geoCoordinates
     WhereFilterGeoRange_distance distance?;
-|};
+};
 
 # Multiple instances of references to other objects.
 public type MultipleRef SingleRef[];
 
 # An error response given by Weaviate end-points.
-public type ErrorResponse record {|
+public type ErrorResponse record {
     # List of errors
     ErrorResponse_error[] 'error?;
-|};
+};
 
 # GraphQL query based on: http://facebook.github.io/graphql/.
-public type GraphQLQuery record {|
+public type GraphQLQuery record {
     # The name of the operation if multiple exist in the query.
     string operationName?;
     # Query based on GraphQL syntax.
     string query?;
     # Additional variables for the query.
     record {} variables?;
-|};
+};
 
 # A list of GraphQL responses.
 public type GraphQLResponses GraphQLResponse[];
 
 # This meta field contains additional info about the classified reference property
-public type ReferenceMetaClassification record {|
+public type ReferenceMetaClassification record {
     # overall neighbors checked as part of the classification. In most cases this will equal k, but could be lower than k - for example if not enough data was present
     int overallCount?;
     # size of the winning group, a number between 1..k
@@ -343,41 +343,41 @@ public type ReferenceMetaClassification record {|
     float? losingDistance = ();
     # Mean distance of all neighbors from the losing group. Optional. If k equals the size of the winning group, there is no losing group.
     float? meanLosingDistance = ();
-|};
+};
 
 # GeoCoodinates based on longitute and latitude
-public type GeoCoordinates record {|
+public type GeoCoordinates record {
     # The latitude of the point on earth in decimal form
     float? latitude = ();
     # The longitude of the point on earth in decimal form
     float? longitude = ();
-|};
+};
 
 # List of Objects.
-public type ObjectsListResponse record {|
+public type ObjectsListResponse record {
     # The actual list of Objects.
     Object[] objects?;
     # deprecations
     Deprecation[]? deprecations = ();
     # The total number of Objects for the query. The number of items in a response may be smaller due to paging.
     int totalResults?;
-|};
+};
 
 # Results for this specific Object.
-public type ObjectsGetResponse_result record {|
+public type ObjectsGetResponse_result record {
     # Object processing status
     string status?;
     # An error response given by Weaviate end-points.
     ErrorResponse errors?;
-|};
+};
 
 # distace based on geoCoordinates
-public type WhereFilterGeoRange_distance record {|
+public type WhereFilterGeoRange_distance record {
     # max distance
     float max?;
-|};
+};
 
-public type Class record {|
+public type Class record {
     # Name of the class as URI relative to the schema URL.
     string 'class?;
     # Name of the vector index to use, eg. (HNSW)
@@ -398,9 +398,9 @@ public type Class record {|
     string? description = ();
     # The properties of the class.
     Property[]? properties = ();
-|};
+};
 
-public type Object record {|
+public type Object record {
     # Class of the Object, defined in the schema.
     string 'class?;
     # Allow custom overrides of vector weights as math expressions. E.g. "pancake": "7" will set the weight for the word pancake to 7 in the vectorization, whereas "w * 3" would triple the originally calculated word. This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value (string/string) object.
@@ -417,17 +417,17 @@ public type Object record {|
     C11yVector vector?;
     # Additional Meta information about a single object object.
     AdditionalProperties additional?;
-|};
+};
 
-public type GraphQLError_locations record {|
+public type GraphQLError_locations record {
     int column?;
     int line?;
-|};
+};
 
 # tuning parameters for the BM25 algorithm
-public type BM25Config record {|
+public type BM25Config record {
     # calibrates term-weight scaling based on the term frequency within a document
     float k1?;
     # calibrates term-weight scaling based on the document length
     float b?;
-|};
+};

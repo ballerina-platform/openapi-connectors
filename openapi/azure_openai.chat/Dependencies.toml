@@ -102,6 +102,9 @@ dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
 ]
+modules = [
+	{org = "ballerina", packageName = "io", moduleName = "io"}
+]
 
 [[package]]
 org = "ballerina"
@@ -266,6 +269,18 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "test"
+version = "0.0.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"}
+]
+modules = [
+	{org = "ballerina", packageName = "test", moduleName = "test"}
+]
+
+[[package]]
+org = "ballerina"
 name = "time"
 version = "2.2.4"
 dependencies = [
@@ -284,13 +299,28 @@ modules = [
 ]
 
 [[package]]
+org = "ballerinai"
+name = "observe"
+version = "0.0.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "observe"}
+]
+modules = [
+	{org = "ballerinai", packageName = "observe", moduleName = "observe"}
+]
+
+[[package]]
 org = "ballerinax"
 name = "azure_openai.chat"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},
-	{org = "ballerina", name = "url"}
+	{org = "ballerina", name = "io"},
+	{org = "ballerina", name = "test"},
+	{org = "ballerina", name = "url"},
+	{org = "ballerinai", name = "observe"}
 ]
 modules = [
 	{org = "ballerinax", packageName = "azure_openai.chat", moduleName = "azure_openai.chat"}

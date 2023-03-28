@@ -46,7 +46,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
     public function main() returns error? {
 
     final text:Client textClient = check new (
-        config = {httpVersion: http:HTTP_1_1, auth: {apiKey: apiKey}},
+        config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
 

@@ -1,3 +1,19 @@
+// Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+//
+// WSO2 Inc. licenses this file to you under the Apache License,
+// Version 2.0 (the "License"); you may not use this file except
+// in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
 import ballerina/http;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
@@ -63,33 +79,33 @@ public type ObjectsGetResponseArr ObjectsGetResponse[];
 # Definitions of semantic schemas (also see: https://github.com/weaviate/weaviate-semantic-schemas).
 public type Schema record {
     # Semantic classes that are available.
-    Class[]? classes = ();
+    Class[]? classes?;
     # Email of the maintainer.
-    string? maintainer = ();
+    string? maintainer?;
     # Name of the schema.
-    string? name = ();
+    string? name?;
 };
 
 # Filter search results using a where filter
 public type WhereFilter record {
     # combine multiple where filters, requires 'And' or 'Or' operator
-    WhereFilter[]? operands = ();
+    WhereFilter[]? operands?;
     # operator to use
-    string? operator = ();
+    string? operator?;
     # path to the property currently being filtered
-    string[]? path = ();
+    string[]? path?;
     # value as integer
-    int? valueInt = ();
+    int? valueInt?;
     # value as number/float
-    float? valueNumber = ();
+    float? valueNumber?;
     # value as boolean
-    boolean? valueBoolean = ();
+    boolean? valueBoolean?;
     # value as string
-    string? valueString = ();
+    string? valueString?;
     # value as text (on text props)
-    string? valueText = ();
+    string? valueText?;
     # value as date (as string)
-    string? valueDate = ();
+    string? valueDate?;
     # filter within a distance of a georange
     WhereFilterGeoRange valueGeoRange?;
 };
@@ -106,9 +122,9 @@ public type StopwordConfig record {
     # pre-existing list of common words by language
     string preset?;
     # stopwords to be considered additionally
-    string[]? additions = ();
+    string[]? additions?;
     # stopwords to be removed from consideration
-    string[]? removals = ();
+    string[]? removals?;
 };
 
 # Allow custom overrides of vector weights as math expressions. E.g. "pancake": "7" will set the weight for the word pancake to 7 in the vectorization, whereas "w * 3" would triple the originally calculated word. This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value (string/string) object.
@@ -117,7 +133,7 @@ public type VectorWeights record {
 
 public type ObjectsGetResponse record {
     *Object;
-    Deprecation[]? deprecations = ();
+    Deprecation[]? deprecations?;
     # Results for this specific Object.
     ObjectsGetResponse_result result?;
 };
@@ -173,9 +189,9 @@ public type Deprecation record {
     # A best-effort guess of which upcoming version will remove the feature entirely
     string plannedRemovalVersion?;
     # If the feature has already been removed, it was removed in this version
-    string? removedIn = ();
+    string? removedIn?;
     # If the feature has already been removed, it was removed at this timestamp
-    string? removedTime = ();
+    string? removedTime?;
     # The deprecation was introduced in this version
     string sinceTime?;
     # The locations within the specified API affected by this deprecation
@@ -203,7 +219,7 @@ public type GraphQLError record {
     # error message give by the graphQL query
     string message?;
     # paths in the schema
-    string[]? path = ();
+    string[]? path?;
 };
 
 # Additional Meta information about a single object object.
@@ -228,7 +244,7 @@ public type BatchDeleteResponse_results record {
     # How many objects should have been deleted but could not be deleted.
     int failed?;
     # With output set to "minimal" only objects with error occurred will the be described. Successfully deleted objects would be omitted. Output set to "verbose" will list all of the objets with their respective statuses.
-    BatchDeleteResponse_results_objects[]? objects = ();
+    BatchDeleteResponse_results_objects[]? objects?;
 };
 
 public type Property record {
@@ -241,7 +257,7 @@ public type Property record {
     # Name of the property as URI relative to the schema URL.
     string name?;
     # Optional. Should this property be indexed in the inverted index. Defaults to true. If you choose false, you will not be able to use this property in where filters. This property has no affect on vectorization decisions done by modules
-    boolean? indexInverted = ();
+    boolean? indexInverted?;
     # Determines tokenization of the property as separate words or whole field. Optional. Applies to string, string[], text and text[] data types. Allowed values are `word` (default) and `field` for string and string[], `word` (default) for text and text[]. Not supported for remaining data types
     string tokenization?;
 };
@@ -288,7 +304,7 @@ public type GraphQLResponse record {
     # GraphQL data object.
     record {|JsonObject...;|} data?;
     # Array with errors.
-    GraphQLError[]? errors = ();
+    GraphQLError[]? errors?;
 };
 
 # filter within a distance of a georange
@@ -338,19 +354,19 @@ public type ReferenceMetaClassification record {
     # Closest distance of a neighbor from the winning group
     float closestWinningDistance?;
     # The lowest distance of a neighbor in the losing group. Optional. If k equals the size of the winning group, there is no losing group
-    float? closestLosingDistance = ();
+    float? closestLosingDistance?;
     # deprecated - do not use, to be removed in 0.23.0
-    float? losingDistance = ();
+    float? losingDistance?;
     # Mean distance of all neighbors from the losing group. Optional. If k equals the size of the winning group, there is no losing group.
-    float? meanLosingDistance = ();
+    float? meanLosingDistance?;
 };
 
 # GeoCoodinates based on longitute and latitude
 public type GeoCoordinates record {
     # The latitude of the point on earth in decimal form
-    float? latitude = ();
+    float? latitude?;
     # The longitude of the point on earth in decimal form
-    float? longitude = ();
+    float? longitude?;
 };
 
 # List of Objects.
@@ -358,7 +374,7 @@ public type ObjectsListResponse record {
     # The actual list of Objects.
     Object[] objects?;
     # deprecations
-    Deprecation[]? deprecations = ();
+    Deprecation[]? deprecations?;
     # The total number of Objects for the query. The number of items in a response may be smaller due to paging.
     int totalResults?;
 };
@@ -381,30 +397,30 @@ public type Class record {
     # Name of the class as URI relative to the schema URL.
     string 'class?;
     # Name of the vector index to use, eg. (HNSW)
-    string? vectorIndexType = ();
+    string? vectorIndexType?;
     # Vector-index config, that is specific to the type of index selected in vectorIndexType
-    record {}? vectorIndexConfig = ();
+    record {}? vectorIndexConfig?;
     # Manage how the index should be sharded and distributed in the cluster
-    record {}? shardingConfig = ();
+    record {}? shardingConfig?;
     # Configure how replication is executed in a cluster
     ReplicationConfig replicationConfig?;
     # Configure the inverted index built into Weaviate
     InvertedIndexConfig invertedIndexConfig?;
     # Specify how the vectors for this class should be determined. The options are either 'none' - this means you have to import a vector with each object yourself - or the name of a module that provides vectorization capabilities, such as 'text2vec-contextionary'. If left empty, it will use the globally configured default which can itself either be 'none' or a specific module.
-    string? vectorizer = ();
+    string? vectorizer?;
     # Configuration specific to modules this Weaviate instance has installed
-    record {}? moduleConfig = ();
+    record {}? moduleConfig?;
     # Description of the class.
-    string? description = ();
+    string? description?;
     # The properties of the class.
-    Property[]? properties = ();
+    Property[]? properties?;
 };
 
 public type Object record {
     # Class of the Object, defined in the schema.
     string 'class?;
     # Allow custom overrides of vector weights as math expressions. E.g. "pancake": "7" will set the weight for the word pancake to 7 in the vectorization, whereas "w * 3" would triple the originally calculated word. This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value (string/string) object.
-    VectorWeights? vectorWeights = ();
+    VectorWeights? vectorWeights?;
     # This is an open object, with OpenAPI Specification 3.0 this will be more detailed. See Weaviate docs for more info. In the future this will become a key/value OR a SingleRef definition.
     PropertySchema properties?;
     # ID of the Object.

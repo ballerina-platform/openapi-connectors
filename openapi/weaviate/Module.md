@@ -87,4 +87,3 @@ weaviate:GraphQLResponse|error results = check weaviateClient->/graphql.post({
 ``` 
 
 2. Use `bal run` command to compile and run the Ballerina program.
-

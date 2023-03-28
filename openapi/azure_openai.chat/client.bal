@@ -16,11 +16,15 @@
 
 import ballerina/http;
 
-# Azure OpenAI APIs for completions and search
+# This is a generated connector from [Azure OpenAI Chat Completions API v2023-03-15-preview](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#chat-completions/) OpenAPI specification.
+# The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create completions for chat messages with the ChatGPT (preview) and GPT-4 (preview) models.
+@display {label: "Azure OpenAI Chat", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig? apiKeyConfig;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials.
+    # Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account, an [Azure OpenAI resource with a model deployed](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource) and refer [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) to learn how to generate and use tokens
     #
     # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 

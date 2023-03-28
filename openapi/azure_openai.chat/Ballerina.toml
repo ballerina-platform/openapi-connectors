@@ -1,5 +1,12 @@
 [package]
+
+license = ["Apache-2.0"]
+keywords = ["AI/OpenAI", "Cost/Paid", "GPT-3.5", "ChatGPT"]
 org = "ballerinax"
 name = "azure_openai.chat"
-version = "0.1.0"
-distribution = "2201.4.1-20230319-195300-7a97d7bb"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+ 
+[build-options]
+observabilityIncluded = true

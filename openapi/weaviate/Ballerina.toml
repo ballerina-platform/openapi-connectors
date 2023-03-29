@@ -1,11 +1,12 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Vector", "Search", "Cost/Freemium", "AI/Weaviate"]
+keywords = ["AI/Weaviate", "Cost/Freemium", "Vector Database", "Embedding Search" ]
 org = "ballerinax"
 name = "weaviate"
+icon = "icon.png"
 version = "1.0.0"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

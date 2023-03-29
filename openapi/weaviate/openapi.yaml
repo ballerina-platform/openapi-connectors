@@ -1798,4 +1798,5 @@ components:
               type: number
               format: float
               description: max distance 
-          description: distace based on geoCoordinates 
+          description: distace based on geoCoordinates
+           

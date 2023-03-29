@@ -46,7 +46,7 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
     public function main() returns error? {
 
     final chat:Client chatClient = check new (
-        config = {httpVersion: http:HTTP_1_1, auth: {apiKey: apiKey}},
+        config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
 

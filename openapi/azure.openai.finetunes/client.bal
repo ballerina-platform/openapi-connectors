@@ -1,11 +1,29 @@
+// Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
+ //
+ // WSO2 Inc. licenses this file to you under the Apache License,
+ // Version 2.0 (the "License"); you may not use this file except
+ // in compliance with the License.
+ // You may obtain a copy of the License at
+ //
+ // http://www.apache.org/licenses/LICENSE-2.0
+ //
+ // Unless required by applicable law or agreed to in writing,
+ // software distributed under the License is distributed on an
+ // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ // KIND, either express or implied.  See the License for the
+ // specific language governing permissions and limitations
+ // under the License.
+ 
 import ballerina/http;
 import ballerina/mime;
 
 # APIs for fine-tuning and managing deployments of OpenAI models.
+@display {label: "Azure OpenAI Finetunes", iconPath: "icon.png"}
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig apiKeyConfig;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization requires setting the API credentials. Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account, an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource) and refer [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) to learn how to generate and use tokens
     #
     # + apiKeyConfig - API keys for authorization 
     # + config - The configurations to be used when initializing the `connector` 
@@ -152,7 +170,8 @@ public isolated client class Client {
     # The name of the fine-tuned model is added to the response once complete.
     #
     # + apiVersion - The requested API version. 
-    # + payload - The specification of the fine-tuned model to create. 
+    # + payload - The specification of the fine-tuned model to create.
+ 
     # + return - The fine tune has been successfully created. 
     resource isolated function post 'fine\-tunes(string apiVersion, FineTuneCreation payload) returns FineTune|error {
         string resourcePath = string `/fine-tunes`;

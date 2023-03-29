@@ -14,10 +14,10 @@ The Azure Azure OpenAI Service REST API Embeddings Endpoint will generate one a 
 To use the Azure OpenAI Embeddings connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-Import the `ballerinax/azure_openai.embeddings` module into the Ballerina project.
+Import the `ballerinax/azure.openai.embeddings` module into the Ballerina project.
 
 ```ballerina
-import ballerinax/azure_openai.embeddings;
+import ballerinax/azure.openai.embeddings;
 ```
 
 ### Step 2: Create a new connector instance

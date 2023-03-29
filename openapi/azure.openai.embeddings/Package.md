@@ -2,7 +2,7 @@ Connects to [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azur
 
 ### Package overview
 
-The `azure_openai.chat` is a [Ballerina](https://ballerina.io/) connector for connecting to the Azure OpenAI Service REST API Embeddings Endpoint.
+The `azure.openai.chat` is a [Ballerina](https://ballerina.io/) connector for connecting to the Azure OpenAI Service REST API Embeddings Endpoint.
 
 #### Compatibility
 |                               | Version                     |

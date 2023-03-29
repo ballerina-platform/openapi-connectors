@@ -1,0 +1,439 @@
+swagger: '2.0'
+info:
+  x-ballerina-display:
+        label: Azure OpenAI Deployment
+        iconPath: "icon.png"
+  title: Azure OpenAI API version 2022-12-01
+  description: APIs for managing deployments of OpenAI models.
+  x-ballerina-init-description: >
+      The connector initialization requires setting the API credentials.
+      Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account, an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource) and refer [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) to learn how to generate and use tokens
+  version: '2022-12-01'
+paths:
+  /deployments:
+    get:
+      tags:
+        - 'Deployments:'
+      summary: Gets the list of deployments owned by the Azure OpenAI resource.
+      operationId: Deployments_List
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/apiVersionQueryParameter'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/DeploymentList'
+        default:
+          description: An error occurred.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-ms-examples:
+        Getting all deployments owned by account.:
+          $ref: ./examples/get_deployments.json
+    post:
+      tags:
+        - 'Deployments:'
+      summary: Creates a new deployment for the Azure OpenAI resource according to the given specification.
+      operationId: Deployments_Create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - $ref: '#/parameters/apiVersionQueryParameter'
+        - in: body
+          name: deployment
+          description: The specification of the deployment including the model to deploy and the scale settings.
+          required: true
+          schema:
+            $ref: '#/definitions/Deployment'
+      responses:
+        '201':
+          description: The deployment has been successfully created.
+          schema:
+            $ref: '#/definitions/Deployment'
+          headers:
+            Location:
+              description: The location of the newly created item.
+              type: string
+              format: url
+        default:
+          description: An error occurred.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-ms-examples:
+        Creating a deployment.:
+          $ref: ./examples/post_deployment.json
+  /deployments/{deployment-id}:
+    get:
+      tags:
+        - 'Deployments:'
+      summary: Gets details for a single deployment specified by the given deployment-id.
+      operationId: Deployments_Get
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: deployment-id
+          description: The identifier of the deployment.
+          required: true
+          type: string
+        - $ref: '#/parameters/apiVersionQueryParameter'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Deployment'
+        default:
+          description: An error occurred.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-ms-examples:
+        Getting a specific deployment.:
+          $ref: ./examples/get_deployment.json
+    patch:
+      tags:
+        - 'Deployments:'
+      summary: Updates the mutable details of the deployment with the given deployment-id.
+      operationId: Deployments_Update
+      consumes:
+        - application/merge-patch+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: deployment-id
+          description: The identifier of the deployment.
+          required: true
+          type: string
+        - $ref: '#/parameters/apiVersionQueryParameter'
+        - in: body
+          name: deployment
+          description: The updated values for the deployment.
+          required: true
+          schema:
+            $ref: '#/definitions/DeploymentUpdate'
+      responses:
+        '200':
+          description: The update process was successfully started.
+          schema:
+            $ref: '#/definitions/Deployment'
+        '409':
+          description: The specified deployment does not exist or is in a non-terminal state.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+          x-ms-error-response: true
+        default:
+          description: An error occurred.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-ms-examples:
+        Updating an existing deployment with less capacity:
+          $ref: ./examples/patch_deployment_less_capacity.json
+    delete:
+      tags:
+        - 'Deployments:'
+      summary: Deletes the deployment specified by the given deployment-id.
+      operationId: Deployments_Delete
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: deployment-id
+          description: The identifier of the deployment.
+          required: true
+          type: string
+        - $ref: '#/parameters/apiVersionQueryParameter'
+      responses:
+        '204':
+          description: The deployment was successfully deleted.
+        default:
+          description: An error occurred.
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      x-ms-examples:
+        Deleting a deployment.:
+          $ref: ./examples/delete_deployment.json
+definitions:
+  Deployment:
+    title: Deployment
+    description: Deployments manage the reserved quota for Azure OpenAI models and make them available for inference requests.
+    required:
+      - model
+      - scale_settings
+    type: object
+    properties:
+      object:
+        $ref: '#/definitions/TypeDiscriminator'
+      status:
+        $ref: '#/definitions/State'
+      created_at:
+        format: unixtime
+        description: A timestamp when this job or item was created (in unix epochs).
+        type: integer
+        readOnly: true
+      updated_at:
+        format: unixtime
+        description: A timestamp when this job or item was modified last (in unix epochs).
+        type: integer
+        readOnly: true
+      id:
+        description: The identity of this item.
+        type: string
+        readOnly: true
+      model:
+        description: The OpenAI model identifier (model-id) to deploy. Can be a base model or a fine tune.
+        minLength: 1
+        type: string
+      owner:
+        description: The owner of this deployment. For Azure OpenAI only "organization-owner" is supported.
+        type: string
+        readOnly: true
+      scale_settings:
+        $ref: '#/definitions/ScaleSettings'
+      error:
+        $ref: '#/definitions/Error'
+  DeploymentList:
+    title: DeploymentList
+    description: Represents a list of deployments.
+    type: object
+    properties:
+      object:
+        $ref: '#/definitions/TypeDiscriminator'
+      data:
+        description: The list of items.
+        type: array
+        items:
+          $ref: '#/definitions/Deployment'
+  DeploymentUpdate:
+    title: DeploymentUpdate
+    description: Defines changes to the deployment.
+    type: object
+    properties:
+      model:
+        description: The new OpenAI model identifier (model-id) to be used for this deployment. Can be a base model or a fine tune.
+        type: string
+      scale_settings:
+        $ref: '#/definitions/ScaleSettingsUpdate'
+  Error:
+    title: Error
+    description: "Error content as defined in the Microsoft REST guidelines\r\n(https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)."
+    required:
+      - code
+      - message
+    type: object
+    properties:
+      code:
+        $ref: '#/definitions/ErrorCode'
+      message:
+        description: The message of this error.
+        minLength: 1
+        type: string
+      target:
+        description: The location where the error happened if available.
+        type: string
+      details:
+        description: The error details if available.
+        type: array
+        items:
+          $ref: '#/definitions/Error'
+      innererror:
+        $ref: '#/definitions/InnerError'
+  ErrorCode:
+    title: ErrorCode
+    description: "Error codes as defined in the Microsoft REST guidelines\r\n(https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)."
+    enum:
+      - conflict
+      - invalidPayload
+      - forbidden
+      - notFound
+      - unexpectedEntityState
+      - itemDoesAlreadyExist
+      - serviceUnavailable
+      - internalFailure
+      - quotaExceeded
+      - jsonlValidationFailed
+      - fileImportFailed
+    type: string
+    x-ms-enum:
+      name: ErrorCode
+      modelAsString: true
+      values:
+        - value: conflict
+          description: The requested operation conflicts with the current resource state.
+        - value: invalidPayload
+          description: The request data is invalid for this operation.
+        - value: forbidden
+          description: The operation is forbidden for the current user/api key.
+        - value: notFound
+          description: The resource is not found.
+        - value: unexpectedEntityState
+          description: The operation cannot be executed in the current resource's state.
+        - value: itemDoesAlreadyExist
+          description: The item does already exist.
+        - value: serviceUnavailable
+          description: The service is currently not available.
+        - value: internalFailure
+          description: Internal error. Please retry.
+        - value: quotaExceeded
+          description: Quota exceeded.
+        - value: jsonlValidationFailed
+          description: Validation of jsonl data failed.
+        - value: fileImportFailed
+          description: Import of file failed.
+  ErrorResponse:
+    title: ErrorResponse
+    description: "Error response as defined in the Microsoft REST guidelines\r\n(https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)."
+    required:
+      - error
+    type: object
+    properties:
+      error:
+        $ref: '#/definitions/Error'
+  InnerError:
+    title: InnerError
+    description: "Inner error as defined in the Microsoft REST guidelines\r\n(https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)."
+    type: object
+    properties:
+      code:
+        $ref: '#/definitions/InnerErrorCode'
+      innererror:
+        $ref: '#/definitions/InnerError'
+  InnerErrorCode:
+    title: InnerErrorCode
+    description: "Inner error codes as defined in the Microsoft REST guidelines\r\n(https://github.com/microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses)."
+    enum:
+      - invalidPayload
+    type: string
+    x-ms-enum:
+      name: InnerErrorCode
+      modelAsString: true
+      values:
+        - value: invalidPayload
+          description: The request data is invalid for this operation.
+  ScaleSettings:
+    title: ScaleSettings
+    description: The scale settings of a deployment. It defines the modes for scaling and the reserved capacity.
+    required:
+      - scale_type
+    type: object
+    properties:
+      scale_type:
+        $ref: '#/definitions/ScaleType'
+    discriminator: scale_type
+  ScaleSettingsUpdate:
+    title: ScaleSettingsUpdate
+    description: The scale settings of a deployment. It defines the modes for scaling and the reserved capacity.
+    required:
+      - scale_type
+    type: object
+    properties:
+      scale_type:
+        $ref: '#/definitions/ScaleType'
+    discriminator: scale_type
+  ScaleType:
+    title: ScaleType
+    description: Defines how scaling operations will be executed.
+    enum:
+      - manual
+      - standard
+    type: string
+    x-ms-enum:
+      name: ScaleType
+      modelAsString: true
+      values:
+        - value: manual
+          description: Scaling of a deployment will happen by manually specifying the capacity of a model.
+        - value: standard
+          description: Scaling of a deployment will happen automatically based on usage.
+  State:
+    title: State
+    description: The state of a job or item.
+    enum:
+      - notRunning
+      - running
+      - succeeded
+      - canceled
+      - failed
+      - deleted
+    type: string
+    readOnly: true
+    x-ms-enum:
+      name: State
+      modelAsString: true
+      values:
+        - value: notRunning
+          description: The operation was created and is not queued to be processed in the future.
+        - value: running
+          description: The operation has started to be processed.
+        - value: succeeded
+          description: The operation has successfully be processed and is ready for consumption.
+        - value: canceled
+          description: The operation has been canceled and is incomplete.
+        - value: failed
+          description: The operation has completed processing with a failure and cannot be further consumed.
+        - value: deleted
+          description: The entity has been deleted but may still be referenced by other entities predating the deletion.
+  TypeDiscriminator:
+    title: TypeDiscriminator
+    description: Defines the type of an object.
+    enum:
+      - list
+      - fine-tune
+      - file
+      - fine-tune-event
+      - model
+      - deployment
+    type: string
+    readOnly: true
+    x-ms-enum:
+      name: TypeDiscriminator
+      modelAsString: true
+      values:
+        - value: list
+          description: This object represents a list of other objects.
+        - value: fine-tune
+          description: This object represents a fine tune job.
+        - value: file
+          description: This object represents a file.
+        - value: fine-tune-event
+          description: This object represents an event of a fine tune job.
+        - value: model
+          description: This object represents a model (can be a base models or fine tune job result).
+        - value: deployment
+          description: This object represents a deployment.
+parameters:
+  endpoint:
+    in: path
+    name: endpoint
+    description: 'Supported Cognitive Services endpoints (protocol and hostname, for example: https://aoairesource.openai.azure.com. Replace "aoairesource" with your Azure OpenAI account name).'
+    required: true
+    type: string
+    format: url
+    x-ms-skip-url-encoding: true
+    x-ms-parameter-location: client
+  apiVersionQueryParameter:
+    in: query
+    name: api-version
+    description: The requested API version.
+    required: true
+    type: string
+    x-ms-client-default: '2022-12-01'
+    x-ms-parameter-location: client
+securityDefinitions:
+  api-key:
+    type: apiKey
+    name: api-key
+    in: header
+    description: Provide your Cognitive Services Azure OpenAI account key here.
+security:
+  - api-key: []
+schemes:
+  - https
+x-ms-parameterized-host:
+  hostTemplate: '{endpoint}/openai'
+  useSchemePrefix: false
+  parameters:
+    - $ref: '#/parameters/endpoint'

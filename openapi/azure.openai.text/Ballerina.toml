@@ -3,7 +3,7 @@
 license = ["Apache-2.0"]
 keywords = ["AI/OpenAI", "Cost/Paid", "Completions", "GPT-3", "Text completions"]
 org = "ballerinax"
-name = "azure_openai.text"
+name = "azure.openai.text"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
 version = "1.0.0"
 authors = ["Ballerina"]

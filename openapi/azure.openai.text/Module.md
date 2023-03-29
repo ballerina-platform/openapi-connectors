@@ -14,10 +14,10 @@ The Azure Azure OpenAI Service REST API Completions Endpoint will generate one o
 To use the Azure OpenAI Text connector in your Ballerina application, update the .bal file as follows:
 
 ### Step 1: Import connector
-Import the `ballerinax/azure_openai.text` module into the Ballerina project.
+Import the `ballerinax/azure.openai.text` module into the Ballerina project.
 
 ```ballerina
-import ballerinax/azure_openai.text;
+import ballerinax/azure.openai.text;
 ```
 
 ### Step 2: Create a new connector instance
@@ -27,7 +27,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
     ```ballerina
     
     final text:Client textClient = check new (
-        config = {httpVersion: http:HTTP_1_1, auth: {apiKey: apiKey}},
+        config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
 

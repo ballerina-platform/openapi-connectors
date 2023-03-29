@@ -2,7 +2,7 @@ Connects to [Azure OpenAI Completions API](https://learn.microsoft.com/en-us/azu
 
 ### Package overview
 
-The `azure_openai.text` is a [Ballerina](https://ballerina.io/) connector for connecting to the Azure OpenAI Service REST API Completions Endpoint.
+The `azure.openai.text` is a [Ballerina](https://ballerina.io/) connector for connecting to the Azure OpenAI Service REST API Completions Endpoint.
 
 #### Compatibility
 |                               | Version                     |

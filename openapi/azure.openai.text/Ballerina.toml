@@ -1,10 +1,10 @@
 [package]
 
 license = ["Apache-2.0"]
-keywords = ["AI/OpenAI", "Cost/Paid", "Completions", "GPT-3", "Text completions"]
+keywords = ["AI/Azure", "AI/OpenAI", "Cost/Paid", "Completions", "GPT-3", "Text completions", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.openai.text"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
 version = "1.0.0"
 authors = ["Ballerina"]
  

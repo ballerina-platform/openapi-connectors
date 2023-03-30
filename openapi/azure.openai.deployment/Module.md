@@ -14,36 +14,36 @@ To use the Azure OpenAI Deployment connector in your Ballerina application, upda
 ### Step 1: Import connector
 Import the `ballerinax/azure.openai.deployment` module into the Ballerina project.
 
-    ```ballerina
-    import ballerinax/azure.deployment;
-    ```
+```ballerina
+import ballerinax/azure.deployment;
+```
 
 ### Step 2: Create a new connector instance
 Create and initialize a `deployment:Client` with the obtained `apiKey` and a `serviceUrl` from the azure openAI resource
 
-    ```ballerina
-    final deployment:Client deploymentClient = check new (
-        apiKeyConfig = {auth: {apiKey: apiKey}},
-        serviceUrl = serviceUrl
-    );
-    ```
+```ballerina
+final deployment:Client deploymentClient = check new (
+    apiKeyConfig = {auth: {apiKey: apiKey}},
+    serviceUrl = serviceUrl
+);
+```
 
 ### Step 3: Invoke connector operation
 1. Now you can use the operations available within the connector.
 
-**Note:** that they are in the form of remote operations.
+>**Note:** that they are in the form of remote operations.
 
-    Following is an example on deploying text-davinci-002 model:
+Following is an example on deploying text-davinci-002 model:
 
-    ```ballerina
-    model_deployment:Deployment deploymentPayload = {
-        model: "text-davinci-002",
-        scale_settings: {
-            scale_type: "standard"
-        }
-    };
+```ballerina
+model_deployment:Deployment deploymentPayload = {
+    model: "text-davinci-002",
+    scale_settings: {
+        scale_type: "standard"
+    }
+};
 
-    model_deployment:Deployment modelDeployRes = check deploymentClient->/deployments.post("2022-12-01", deploymentPayload);
-    ```
+model_deployment:Deployment modelDeployRes = check deploymentClient->/deployments.post("2022-12-01", deploymentPayload);
+```
 
 2. Use `bal run` command to compile and run the Ballerina program.

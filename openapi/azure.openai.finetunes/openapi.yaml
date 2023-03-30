@@ -16,6 +16,8 @@ security:
 paths:
   /files:
     get:
+      x-ballerina-display:
+        label: Get All Files
       tags:
       - 'Files:'
       summary: "Gets a list of all files owned by the Azure OpenAI resource.\r\nThese\
@@ -52,6 +54,8 @@ paths:
         Getting all files owned by this account.:
           $ref: ./examples/get_files.json
     post:
+      x-ballerina-display:
+        label: Upload File
       tags:
       - 'Files:'
       summary: Creates a new file entity by uploading data from a local machine. Uploaded
@@ -122,6 +126,8 @@ paths:
           $ref: ./examples/upload_file.json
   /files/{file-id}:
     get:
+      x-ballerina-display:
+        label: Get File
       tags:
       - 'Files:'
       summary: Gets details for a single file specified by the given file-id including
@@ -161,6 +167,8 @@ paths:
         Getting a file.:
           $ref: ./examples/get_file.json
     delete:
+      x-ballerina-display:
+        label: Delete File
       tags:
       - 'Files:'
       summary: "Deletes the file with the given file-id.\r\nDeletion is also allowed\
@@ -198,6 +206,8 @@ paths:
           $ref: ./examples/delete_file.json
   /files/{file-id}/content:
     get:
+      x-ballerina-display:
+        label: Get File Content
       tags:
       - 'Files:'
       summary: "Gets the content of the file specified by the given file-id.\r\nFiles\
@@ -245,6 +255,8 @@ paths:
           $ref: ./examples/get_file_content.json
   /files/import:
     post:
+      x-ballerina-display:
+        label: Import File
       tags:
       - 'Files:'
       summary: Creates a new file entity by importing data from a provided url. Uploaded
@@ -294,6 +306,8 @@ paths:
       x-codegen-request-body-name: fileImport
   /fine-tunes:
     get:
+      x-ballerina-display:
+        label: Get Fine-tunes
       tags:
       - 'Fine-tunes:'
       summary: "Gets a list of all fine-tune jobs owned by the Azure OpenAI resource.\r\
@@ -330,6 +344,8 @@ paths:
         Getting all fine tune jobs owned by this account.:
           $ref: ./examples/get_finetunes.json
     post:
+      x-ballerina-display:
+        label: Create Fine-tune
       tags:
       - 'Fine-tunes:'
       summary: "Creates a job that fine-tunes a specified model from a given training\
@@ -387,6 +403,8 @@ paths:
       x-codegen-request-body-name: fineTune
   /fine-tunes/{fine-tune-id}:
     get:
+      x-ballerina-display:
+        label: Get Fine-tune
       tags:
       - 'Fine-tunes:'
       summary: "Gets details for a single fine-tune job specified by the given fine-tune-id.\r\
@@ -428,6 +446,8 @@ paths:
         Getting a fine tune job.:
           $ref: ./examples/get_finetune.json
     delete:
+      x-ballerina-display:
+        label: Delete Fine-tune
       tags:
       - 'Fine-tunes:'
       summary: Deletes the fine-tune job specified by the given fine-tune-id.
@@ -464,6 +484,8 @@ paths:
           $ref: ./examples/delete_finetune.json
   /fine-tunes/{fine-tune-id}/events:
     get:
+      x-ballerina-display:
+        label: Get Fine-tune Events
       tags:
       - 'Fine-tunes:'
       summary: "Gets the events for the fine-tune job specified by the given fine-tune-id.\r\
@@ -521,6 +543,8 @@ paths:
           $ref: ./examples/get_finetune_events.json
   /fine-tunes/{fine-tune-id}/cancel:
     post:
+      x-ballerina-display:
+        label: Cancel Fine-tune
       tags:
       - 'Fine-tunes:'
       summary: Cancels the processing of the fine-tune job specified by the given
@@ -561,6 +585,8 @@ paths:
           $ref: ./examples/cancel_finetune.json
   /models:
     get:
+      x-ballerina-display:
+        label: Get Models
       tags:
       - 'Models:'
       summary: "Gets a list of all models that are accessible by the Azure OpenAI\
@@ -596,6 +622,8 @@ paths:
           $ref: ./examples/get_models.json
   /models/{model-id}:
     get:
+      x-ballerina-display:
+        label: Get Model
       tags:
       - 'Models:'
       summary: Gets details for the model specified by the given modelId.

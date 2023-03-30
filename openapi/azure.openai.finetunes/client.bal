@@ -1,19 +1,3 @@
-// Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
- //
- // WSO2 Inc. licenses this file to you under the Apache License,
- // Version 2.0 (the "License"); you may not use this file except
- // in compliance with the License.
- // You may obtain a copy of the License at
- //
- // http://www.apache.org/licenses/LICENSE-2.0
- //
- // Unless required by applicable law or agreed to in writing,
- // software distributed under the License is distributed on an
- // "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- // KIND, either express or implied.  See the License for the
- // specific language governing permissions and limitations
- // under the License.
- 
 import ballerina/http;
 import ballerina/mime;
 
@@ -63,6 +47,7 @@ public isolated client class Client {
     #
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get All Files"}
     resource isolated function get files(string apiVersion) returns FileList|error {
         string resourcePath = string `/files`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -76,6 +61,7 @@ public isolated client class Client {
     #
     # + apiVersion - The requested API version. 
     # + return - The file has been successfully created. 
+    @display {label: "Upload File"}
     resource isolated function post files(string apiVersion, Files_body payload) returns File|error {
         string resourcePath = string `/files`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -93,6 +79,7 @@ public isolated client class Client {
     # + fileId - The identifier of the file. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get File"}
     resource isolated function get files/[string fileId](string apiVersion) returns File|error {
         string resourcePath = string `/files/${getEncodedUri(fileId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -108,6 +95,7 @@ public isolated client class Client {
     # + fileId - The identifier of the file. 
     # + apiVersion - The requested API version. 
     # + return - The file was successfully deleted. 
+    @display {label: "Delete File"}
     resource isolated function delete files/[string fileId](string apiVersion) returns http:Response|error {
         string resourcePath = string `/files/${getEncodedUri(fileId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -123,6 +111,7 @@ public isolated client class Client {
     # + fileId - The identifier of the file. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get File Content"}
     resource isolated function get files/[string fileId]/content(string apiVersion) returns byte[]|error {
         string resourcePath = string `/files/${getEncodedUri(fileId)}/content`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -137,6 +126,7 @@ public isolated client class Client {
     # + apiVersion - The requested API version. 
     # + payload - The definition of the file to create including its purpose, the file name and the url of the file location. 
     # + return - The file has been successfully created. 
+    @display {label: "Import File"}
     resource isolated function post files/'import(string apiVersion, FileImport payload) returns File|error {
         string resourcePath = string `/files/import`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -156,6 +146,7 @@ public isolated client class Client {
     #
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Fine-tunes"}
     resource isolated function get 'fine\-tunes(string apiVersion) returns FineTuneList|error {
         string resourcePath = string `/fine-tunes`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -170,9 +161,9 @@ public isolated client class Client {
     # The name of the fine-tuned model is added to the response once complete.
     #
     # + apiVersion - The requested API version. 
-    # + payload - The specification of the fine-tuned model to create.
- 
+    # + payload - The specification of the fine-tuned model to create. 
     # + return - The fine tune has been successfully created. 
+    @display {label: "Create Fine-tune"}
     resource isolated function post 'fine\-tunes(string apiVersion, FineTuneCreation payload) returns FineTune|error {
         string resourcePath = string `/fine-tunes`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -192,6 +183,7 @@ public isolated client class Client {
     # + fineTuneId - The identifier of the fine-tune job. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Fine-tune"}
     resource isolated function get 'fine\-tunes/[string fineTuneId](string apiVersion) returns FineTune|error {
         string resourcePath = string `/fine-tunes/${getEncodedUri(fineTuneId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -206,6 +198,7 @@ public isolated client class Client {
     # + fineTuneId - The identifier of the fine-tune job. 
     # + apiVersion - The requested API version. 
     # + return - The fine tune was successfully deleted. 
+    @display {label: "Delete Fine-tune"}
     resource isolated function delete 'fine\-tunes/[string fineTuneId](string apiVersion) returns http:Response|error {
         string resourcePath = string `/fine-tunes/${getEncodedUri(fineTuneId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -222,6 +215,7 @@ public isolated client class Client {
     # + 'stream - A flag indicating whether to stream events for the fine-tune job. If set to true, events will be sent as data-only server-sent events as they become available. The stream will terminate with    a data: [DONE] message when the job is finished (succeeded, cancelled, or failed).  If set to false, only events generated so far will be returned.. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Fine-tune Events"}
     resource isolated function get 'fine\-tunes/[string fineTuneId]/events(string apiVersion, boolean? 'stream = ()) returns EventList|error {
         string resourcePath = string `/fine-tunes/${getEncodedUri(fineTuneId)}/events`;
         map<anydata> queryParam = {"stream": 'stream, "api-version": apiVersion};
@@ -236,6 +230,7 @@ public isolated client class Client {
     # + fineTuneId - The identifier of the fine-tune job. 
     # + apiVersion - The requested API version. 
     # + return - The fine tune has been successfully canceled 
+    @display {label: "Cancel Fine-tune"}
     resource isolated function post 'fine\-tunes/[string fineTuneId]/cancel(string apiVersion) returns FineTune|error {
         string resourcePath = string `/fine-tunes/${getEncodedUri(fineTuneId)}/cancel`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -252,6 +247,7 @@ public isolated client class Client {
     #
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Models"}
     resource isolated function get models(string apiVersion) returns ModelList|error {
         string resourcePath = string `/models`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -266,6 +262,7 @@ public isolated client class Client {
     # + modelId - The identifier of the model. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Model"}
     resource isolated function get models/[string modelId](string apiVersion) returns Model|error {
         string resourcePath = string `/models/${getEncodedUri(modelId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};

@@ -23,7 +23,7 @@ import ballerinax/azure.finetunes;
 
 ### Step 2: Create a new connector instance
 
-Create and initialize a `finetunes:Client` with the obtained `apiKey` and a `serviceUrl` from the azure openAI resource
+Create and initialize a `finetunes:Client` with the obtained `apiKey` and a `serviceUrl` from the azure OpenAI resource
 
 ```ballerina
 final finetunes:Client finetunesClient = check new (

@@ -1,13 +1,13 @@
 ## Overview
-This is a generated connector from [Azure OpenAI Embeddings API v2023-03-15-preview](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) OpenAPI specification.
+This is a generated connector from [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) OpenAPI specification.
 
-The Azure Azure OpenAI Service REST API Embeddings Endpoint will generate one a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+The Azure OpenAI Service REST API Embeddings Endpoint will generate one a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account
-- Create an [Azure OpenAI resource with a model deployed](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource)
-- Obtain tokens
-    - Use [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens
+- Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource)
+- Deploy an appropriate model within the resource by referring to [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal#deploy-a-model)
+- Obtain tokens by following [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication)
 
 ## Quickstart
 
@@ -25,18 +25,18 @@ import ballerinax/azure.openai.embeddings;
 Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `serviceUrl` containing the deployed models.
 
     ```ballerina
-
     final embeddings:Client embeddingsClient = check new (
         config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
-
     ```
 
 ### Step 3: Invoke connector operation
-1. Now you can use the operations available within the connector. Note that they are in the form of remote operations.
+1. Now you can use the operations available within the connector. 
 
-    Following is an example on obtaining embeddings from a GPT-3 ada model::
+>**Note:** that they are in the form of remote operations.
+
+    Following is an example on obtaining embeddings from a GPT-3 ada model:
 
     Obtain embeddings from ada model
 

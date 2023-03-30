@@ -65,6 +65,7 @@ public isolated client class Client {
     # Creates a completion for the provided prompt, parameters and chosen model.
     #
     # + return - OK 
+    @display {label: "Generate Completions"}
     resource isolated function post deployments/[string deploymentId]/completions(string apiVersion, Deploymentid_completions_body payload) returns Inline_response_200|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}/completions`;
         map<any> headerValues = {};

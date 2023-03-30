@@ -25,6 +25,8 @@ security:
 paths:
   /deployments/{deployment-id}/completions:
     post:
+      x-ballerina-display:
+        label: Generate Completions
       summary: Creates a completion for the provided prompt, parameters and chosen model.
       operationId: Completions_Create
       parameters:

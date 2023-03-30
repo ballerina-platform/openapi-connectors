@@ -25,6 +25,8 @@ security:
 paths:
   /deployments/{deployment-id}/embeddings:
     post:
+      x-ballerina-display:
+        label: Generate Embeddings
       summary: Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.
       operationId: embeddings_create
       parameters:

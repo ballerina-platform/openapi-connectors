@@ -66,6 +66,7 @@ public isolated client class Client {
     #
     # + deploymentId - The deployment id of the model which was deployed. 
     # + return - OK 
+    @display {label: "Generate Embeddings"}
     resource isolated function post deployments/[string deploymentId]/embeddings(string apiVersion, Deploymentid_embeddings_body payload) returns Inline_response_200|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}/embeddings`;
         map<any> headerValues = {};

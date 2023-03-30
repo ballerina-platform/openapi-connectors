@@ -12,6 +12,8 @@ info:
 paths:
   /deployments:
     get:
+      x-ballerina-display:
+        label: Get All Deployments
       tags:
         - 'Deployments:'
       summary: Gets the list of deployments owned by the Azure OpenAI resource.
@@ -33,6 +35,8 @@ paths:
         Getting all deployments owned by account.:
           $ref: ./examples/get_deployments.json
     post:
+      x-ballerina-display:
+        label: Create Deployment
       tags:
         - 'Deployments:'
       summary: Creates a new deployment for the Azure OpenAI resource according to the given specification.
@@ -68,6 +72,8 @@ paths:
           $ref: ./examples/post_deployment.json
   /deployments/{deployment-id}:
     get:
+      x-ballerina-display:
+        label: Get Deployment
       tags:
         - 'Deployments:'
       summary: Gets details for a single deployment specified by the given deployment-id.
@@ -94,6 +100,8 @@ paths:
         Getting a specific deployment.:
           $ref: ./examples/get_deployment.json
     patch:
+      x-ballerina-display:
+        label: Update Deployment
       tags:
         - 'Deployments:'
       summary: Updates the mutable details of the deployment with the given deployment-id.
@@ -133,6 +141,8 @@ paths:
         Updating an existing deployment with less capacity:
           $ref: ./examples/patch_deployment_less_capacity.json
     delete:
+      x-ballerina-display:
+        label: Delete Deployment
       tags:
         - 'Deployments:'
       summary: Deletes the deployment specified by the given deployment-id.

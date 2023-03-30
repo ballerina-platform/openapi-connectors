@@ -1,7 +1,7 @@
 ## Overview
 This is a generated connector from [Azure OpenAI Deployments API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/) OpenAPI specification.
 
-The Azure OpenAI Deployments REST API endpoints will deploy openAI models in Azure openAI resource. 
+The Azure OpenAI Deployments REST API endpoints will deploy OpenAI models in Azure OpenAI resource. 
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.
@@ -19,7 +19,7 @@ import ballerinax/azure.deployment;
 ```
 
 ### Step 2: Create a new connector instance
-Create and initialize a `deployment:Client` with the obtained `apiKey` and a `serviceUrl` from the azure openAI resource
+Create and initialize a `deployment:Client` with the obtained `apiKey` and a `serviceUrl` from the azure OpenAI resource
 
 ```ballerina
 final deployment:Client deploymentClient = check new (

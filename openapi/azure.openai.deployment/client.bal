@@ -1,19 +1,3 @@
-// Copyright (c) 2023 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
 import ballerina/http;
 
 # APIs for managing deployments of OpenAI models.
@@ -60,6 +44,7 @@ public isolated client class Client {
     #
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get All Deployments"}
     resource isolated function get deployments(string apiVersion) returns DeploymentList|error {
         string resourcePath = string `/deployments`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -74,6 +59,7 @@ public isolated client class Client {
     # + apiVersion - The requested API version. 
     # + payload - The specification of the deployment including the model to deploy and the scale settings. 
     # + return - The deployment has been successfully created. 
+    @display {label: "Create Deployment"}
     resource isolated function post deployments(string apiVersion, Deployment payload) returns Deployment|error {
         string resourcePath = string `/deployments`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -91,6 +77,7 @@ public isolated client class Client {
     # + deploymentId - The identifier of the deployment. 
     # + apiVersion - The requested API version. 
     # + return - Success 
+    @display {label: "Get Deployment"}
     resource isolated function get deployments/[string deploymentId](string apiVersion) returns Deployment|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -105,6 +92,7 @@ public isolated client class Client {
     # + deploymentId - The identifier of the deployment. 
     # + apiVersion - The requested API version. 
     # + return - The deployment was successfully deleted. 
+    @display {label: "Delete Deployment"}
     resource isolated function delete deployments/[string deploymentId](string apiVersion) returns http:Response|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};
@@ -120,6 +108,7 @@ public isolated client class Client {
     # + apiVersion - The requested API version. 
     # + payload - The updated values for the deployment. 
     # + return - The update process was successfully started. 
+    @display {label: "Update Deployment"}
     resource isolated function patch deployments/[string deploymentId](string apiVersion, DeploymentUpdate payload) returns Deployment|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}`;
         map<anydata> queryParam = {"api-version": apiVersion};

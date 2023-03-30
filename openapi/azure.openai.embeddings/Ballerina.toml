@@ -4,7 +4,7 @@ license = ["Apache-2.0"]
 keywords = ["AI/Azure", "AI/OpenAI", "Cost/Paid", "OpenAI embeddings", "GPT-3 embeddings" ,"Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.openai.embeddings"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
 version = "1.0.0"
 authors = ["Ballerina"]
  

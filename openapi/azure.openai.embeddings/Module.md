@@ -38,10 +38,6 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
 
     Following is an example on obtaining embeddings from a GPT-3 ada model:
 
-    Obtain embeddings from ada model
-
-    Sample
-
     ```ballerina
     public function main() returns error? {
 

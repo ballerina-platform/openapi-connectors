@@ -6,10 +6,9 @@ This is a generated connector from [Azure OpenAI Files API](https://learn.micros
 The Azure OpenAI Files API give access to data files related operations such as delete, get, get content, import, list and upload. The Azure OpenAI Fine Tunes API give access to fine tuning of base models and related operations such as create, cancel, delete, get, get event and list. The Azure OpenAI  Models API give access to deteails about the existing models.
 
 ## Prerequisites
-- Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account
-- Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource)
-- Obtain tokens
-    - Use [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens
+- Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.
+- Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource).
+- Obtain the tokens. Refer [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens.
 
 ## Quickstart
 
@@ -18,48 +17,48 @@ To use the Azure OpenAI Fine Tunes connector in your Ballerina application, upda
 ### Step 1: Import connector
 Import the `ballerinax/azure.openai.finetunes` module into the Ballerina project.
 
-    ```ballerina
-    import ballerinax/azure.finetunes;
-    ```
+```ballerina
+import ballerinax/azure.finetunes;
+```
 
 ### Step 2: Create a new connector instance
 
 Create and initialize a `finetunes:Client` with the obtained `apiKey` and a `serviceUrl` from the azure openAI resource
 
-    ```ballerina
-    
-    final finetunes:Client finetunesClient = check new (
-        apiKeyConfig = {auth: {apiKey: apiKey}},
-        serviceUrl = serviceUrl
-    );
-
-    ```
+```ballerina
+final finetunes:Client finetunesClient = check new (
+    apiKeyConfig = {auth: {apiKey: apiKey}},
+    serviceUrl = serviceUrl
+);
+```
 
 ### Step 3: Invoke connector operation
-1. Now you can use the operations available within the connector. Note that they are in the form of remote operations.
+1. Now you can use the operations available within the connector. 
 
-    Following is an example on uploading a file and finetuning curie base model:
+>**Note:** that they are in the form of remote operations.
 
-    Uploading the data file from local machine
+Following is an example on uploading a file and finetuning curie base model:
 
-    ```ballerina
-    finetunes:Files_body filePayload = {
-        purpose: "fine-tune",
-        file: {fileContent: check io:fileReadBytes("sample.jsonl"), fileName: "sample.jsonl"}
-    };
+Uploading the data file from local machine.
 
-    finetunes:File fileResult = check finetunesClient->/files.post("2022-12-01", filePayload);
-    ```
+```ballerina
+finetunes:Files_body filePayload = {
+    purpose: "fine-tune",
+    file: {fileContent: check io:fileReadBytes("sample.jsonl"), fileName: "sample.jsonl"}
+};
 
-    Once the file is uploaded, get the file ID from the response and use it to finetune the base model
+finetunes:File fileResult = check finetunesClient->/files.post("2022-12-01", filePayload);
+```
 
-    ```ballerina
-    finetunes:FineTuneCreation finetunePayload = {
-        training_file: "file-5272129a77284a188239a68656fc7890", 
-        model: "curie"
-    };
+Once the file is uploaded, get the file ID from the response and use it to finetune the base model.
 
-    finetunes:FineTune fineTune = check finetunesClient->/fine\-tunes.post("2022-12-01", finetunePayload);
-    ```
+```ballerina
+finetunes:FineTuneCreation finetunePayload = {
+    training_file: "file-5272129a77284a188239a68656fc7890", 
+    model: "curie"
+};
+
+finetunes:FineTune fineTune = check finetunesClient->/fine\-tunes.post("2022-12-01", finetunePayload);
+```
 
 2. Use `bal run` command to compile and run the Ballerina program.

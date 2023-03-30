@@ -65,6 +65,7 @@ public isolated client class Client {
     # Creates a completion for the chat message
     #
     # + return - OK 
+    @display {label: "Create Chat Completion"}
     resource isolated function post deployments/[string deploymentId]/chat/completions(string apiVersion, Chat_completions_body payload) returns Inline_response_200|error {
         string resourcePath = string `/deployments/${getEncodedUri(deploymentId)}/chat/completions`;
         map<any> headerValues = {};

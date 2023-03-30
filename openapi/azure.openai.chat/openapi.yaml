@@ -25,6 +25,8 @@ security:
 paths:
   /deployments/{deployment-id}/chat/completions:
     post:
+      x-ballerina-display:
+        label: Create Chat Completion
       summary: Creates a completion for the chat message
       operationId: ChatCompletions_Create
       parameters:

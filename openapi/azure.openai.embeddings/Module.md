@@ -42,7 +42,7 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
     public function main() returns error? {
 
     final embeddings:Client embeddingsClient = check new (
-        config = {httpVersion: http:HTTP_1_1, auth: {apiKey: apiKey}},
+        config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
 

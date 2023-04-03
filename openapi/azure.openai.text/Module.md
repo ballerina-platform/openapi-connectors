@@ -36,7 +36,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
 
 >**Note:** that they are in the form of remote operations.
 
-    Following is an example on text completion using an OpenAI text-davinci-002 model:
+    Following is an example on text completion using an OpenAI `text-davinci-002` model:
 
     ```ballerina
     public function main() returns error? {

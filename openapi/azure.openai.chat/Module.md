@@ -7,7 +7,7 @@ The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create co
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account
 - Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource)
 - Deploy an appropriate model within the resource by referring to [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource?pivots=web-portal#deploy-a-model)
-- Obtain tokens by following [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication)
+- Obtain tokens by following [Azure OpenAI Authentication](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide
 
 ## Quickstart
 

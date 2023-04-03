@@ -51,14 +51,9 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
         prompt: "What is Ballerina?",
     };
 
-    text:Inline_response_200|error unionResult = check textClient->/deployments/["davinci"]/completions.post("2023-03-15-preview", completionsBody);
+    text:Inline_response_200 completionsResult = check textClient->/deployments/["davinci"]/completions.post("2023-03-15-preview", completionsBody);
 
-    if (unionResult is text:Inline_response_200) {
-            io:println(unionResult);
-        } else {
-            io:println(unionResult);
-        }
-    }
+    io:println(completionsResult);
     ```
 
 2. Use `bal run` command to compile and run the Ballerina program.

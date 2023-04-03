@@ -1,20 +1,20 @@
 ## Overview
 This is a generated connector from [Azure OpenAI Files API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/files/),
-[Azure OpenAI Fine Tunes API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/fine-tunes/) and
+[Azure OpenAI Fine Tunes API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/fine-tunes/), and
 [Azure OpenAI Models API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/) OpenAPI specification.
 
-The Azure OpenAI Files API give access to data files related operations such as delete, get, get content, import, list and upload. The Azure OpenAI Fine Tunes API give access to fine tuning of base models and related operations such as create, cancel, delete, get, get event and list. The Azure OpenAI  Models API give access to deteails about the existing models.
+The Azure OpenAI Files API gives access to data files related operations such as delete, get, get content, import, list, and upload. The Azure OpenAI Fine Tunes API gives access to fine-tuning of base models and related operations such as create, cancel, delete, get, get event, and list. The Azure OpenAI  Models API gives access to details about the existing models.
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.
 - Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource).
-- Obtain the tokens. Refer [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens.
+- Obtain the tokens. Refer to [Azure OpenAI Authentication](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens.
 
 ## Quickstart
 
 To use the Azure OpenAI Fine Tunes connector in your Ballerina application, update the .bal file as follows:
 
-### Step 1: Import connector
+### Step 1: Import the connector
 Import the `ballerinax/azure.openai.finetunes` module into the Ballerina project.
 
 ```ballerina
@@ -23,7 +23,7 @@ import ballerinax/azure.finetunes;
 
 ### Step 2: Create a new connector instance
 
-Create and initialize a `finetunes:Client` with the obtained `apiKey` and a `serviceUrl` from the azure OpenAI resource
+Create and initialize a `finetunes:Client` with the obtained `apiKey` and a `serviceUrl` from the Azure OpenAI resource
 
 ```ballerina
 final finetunes:Client finetunesClient = check new (
@@ -37,9 +37,9 @@ final finetunes:Client finetunesClient = check new (
 
 >**Note:** that they are in the form of remote operations.
 
-Following is an example on uploading a file and finetuning curie base model:
+Following is an example of uploading a file and finetuning `curie` base model:
 
-Uploading the data file from local machine.
+Uploading the data file from the local machine.
 
 ```ballerina
 finetunes:Files_body filePayload = {

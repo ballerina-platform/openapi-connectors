@@ -1,9 +1,9 @@
 Connects to [Azure OpenAI Files API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/files/),
-[Azure OpenAI Fine Tunes API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/fine-tunes/) and
+[Azure OpenAI Fine Tunes API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/fine-tunes/), and
 [Azure OpenAI Models API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/) from Ballerina.
 
 ## Package overview
-The `azure.openai.finetunes` is a [Ballerina](https://ballerina.io/) connector for Azure OpenAI Service Files API, Azure OpenAI Fine Tunes API and Azure OpenAI Models API.
+The `azure.openai.finetunes` is a [Ballerina](https://ballerina.io/) connector for Azure OpenAI Service Files API, Azure OpenAI Fine Tunes API, and Azure OpenAI Models API.
 
 ### Compatibility
 |                                   | Version                         |

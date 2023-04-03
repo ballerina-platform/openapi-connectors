@@ -48,7 +48,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
     );
 
     text:Deploymentid_completions_body completionsBody = {
-        prompt: "What is Ballerina?",
+        prompt: "What is Ballerina?"
     };
 
     text:Inline_response_200 completionsResult = check textClient->/deployments/["davinci"]/completions.post("2023-03-15-preview", completionsBody);

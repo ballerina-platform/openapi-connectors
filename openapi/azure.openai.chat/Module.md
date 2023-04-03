@@ -35,6 +35,8 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
 ### Step 3: Invoke connector operation
 1. Now you can use the operations available within the connector.
 
+    >**Note:** These operations are in the form of remote operations.
+
 
    Following is an example of creating a conversation with an OpenAI gpt-35-turbo model:
 

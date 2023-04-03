@@ -1,7 +1,7 @@
 ## Overview
 This is a generated connector from [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) OpenAPI specification.
 
-The Azure OpenAI Service REST API Embeddings Endpoint will generate one a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+The Azure OpenAI Service REST API Embeddings Endpoint will generate a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

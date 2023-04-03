@@ -18,23 +18,22 @@ Import the `ballerinax/azure.openai.text` module into the Ballerina project.
 
 ```ballerina
 import ballerinax/azure.openai.text;
+import ballerina/io;
 ```
 
 ### Step 2: Create a new connector instance
 
 Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceUrl` containing the deployed models.
 
-    ```ballerina
+```ballerina
     final text:Client textClient = check new (
         config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
-    ```
+```
 
 ### Step 3: Invoke connector operation
 1. Now you can use the operations available within the connector. 
-
->**Note:** that they are in the form of remote operations.
 
     Following is an example on text completion using an OpenAI `text-davinci-002` model:
 
@@ -47,7 +46,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
     );
 
     text:Deploymentid_completions_body completionsBody = {
-        prompt: ""What is Ballerina?",
+        prompt: "What is Ballerina?",
     };
 
     text:Inline_response_200|error unionResult = check textClient->/deployments/["davinci"]/completions.post("2023-03-15-preview", completionsBody);

@@ -54,6 +54,7 @@ Create and initialize a `text:Client` with the obtained `apiKey` and a `serviceU
     text:Inline_response_200 completionsResult = check textClient->/deployments/["davinci"]/completions.post("2023-03-15-preview", completionsBody);
 
     io:println(completionsResult);
+    }
     ```
 
 2. Use `bal run` command to compile and run the Ballerina program.

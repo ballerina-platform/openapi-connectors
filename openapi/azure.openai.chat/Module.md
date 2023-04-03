@@ -52,13 +52,9 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
         messages: [{role: "user", content: "What is Ballerina?"}]  
     };
 
-    chat:Inline_response_200|error unionResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-03-15-preview", chatBody);
+    chat:Inline_response_200 chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-03-15-preview", chatBody);
 
-    if (unionResult is chat:Inline_response_200) {
-            io:println(unionResult);
-        } else {
-            io:println(unionResult);
-        }
+    io:println(chatResult);
     }
     ```
 

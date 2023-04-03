@@ -6,7 +6,7 @@ The Azure OpenAI Deployments REST API endpoints will deploy OpenAI models in Azu
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.
 - Create an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource).
-- Obtain the tokens. Refer [this](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens.
+- Obtain the tokens. Refer to [Azure OpenAI Authentication](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) guide to learn how to generate and use tokens.
 
 ## Quickstart
 To use the Azure OpenAI Deployment connector in your Ballerina application, update the .bal file as follows:
@@ -33,7 +33,7 @@ final deployment:Client deploymentClient = check new (
 
 >**Note:** that they are in the form of remote operations.
 
-Following is an example on deploying text-davinci-002 model:
+Following is an example on deploying `text-davinci-002` model:
 
 ```ballerina
 model_deployment:Deployment deploymentPayload = {

@@ -18,27 +18,28 @@ Import the `ballerinax/azure.openai.embeddings` module into the Ballerina projec
 
 ```ballerina
 import ballerinax/azure.openai.embeddings;
+import ballerina/io;
 ```
 
 ### Step 2: Create a new connector instance
 
 Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `serviceUrl` containing the deployed models.
 
-    ```ballerina
+```ballerina
     final embeddings:Client embeddingsClient = check new (
         config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
-    ```
+```
 
 ### Step 3: Invoke connector operation
-1. Now you can use the operations available within the connector. 
+1. Now you can use the operations available within the connector.
 
->**Note:** that they are in the form of remote operations.
+    >**Note:** These operations are in the form of remote operations.
 
     Following is an example on obtaining embeddings from a GPT-3 ada model:
 
-    ```ballerina
+```ballerina
     public function main() returns error? {
 
     final embeddings:Client embeddingsClient = check new (
@@ -58,6 +59,6 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
             io:println(unionResult);
         }
     }
-    ```
+```
 
 2. Use `bal run` command to compile and run the Ballerina program.

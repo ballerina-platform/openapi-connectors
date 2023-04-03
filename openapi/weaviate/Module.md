@@ -1,6 +1,6 @@
 ## Overview
 
-This is a generated connector for the [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. Weaviate is an open-source vector search engine, which allows storing data objects and vector embeddings from the ML models including the LLMs offered by [OpenAI](https://openai.com/), [Hugging Face](https://huggingface.co/), and [Cohere](https://cohere.ai/). Weaviate provides a powerful GraphQL API for querying the embeddings while looking at the similarity and can scale seamlessly into billions of data objects.
+This is a generated connector for the [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. Weaviate is an open-source vector search engine, which allows storing data objects and vector embeddings from the ML models, including the LLMs offered by [OpenAI](https://openai.com/), [Hugging Face](https://huggingface.co/), and [Cohere](https://cohere.ai/). Weaviate provides a powerful GraphQL API for querying the embeddings while looking at the similarity and can scale seamlessly into billions of data objects.
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ First, import the `ballerinax/weaviate` module into the Ballerina project.
 import ballerinax/weaviate;
 ```
 ### Step 2: Create a new connector instance
-Create and initialize an `weaviate:Client` with your `Service URL` and the obtained `Authentication key`.
+Create and initialize a `weaviate:Client` with your `Service URL` and the obtained `Authentication key`.
 ```ballerina
     weaviate:Client weaviateClient = check new ({
         auth: {
@@ -54,12 +54,12 @@ foreach int i in 0...len {
         });
 }
 
-weaviate:ObjectsGetResponse[] responseArray =  check weaviateClient->/batch/objects.post({
-    objects : objArr
+weaviate:ObjectsGetResponse[] responseArray = check weaviateClient->/batch/objects.post({
+    objects: objArr
 });
 ```
 
-Once the new records are inserted, you can query the Weaviate vector storage using the [Weaviate GraphQL API](https://weaviate.io/developers/weaviate/api/graphql) similar to the example below.
+Once the new records are inserted, you can query the Weaviate vector storage using the [Weaviate GraphQL API](https://weaviate.io/developers/weaviate/api/graphql), similar to the example below.
 ```ballerina
 float[] embeddings;  // This is the embedding for the text being searched for similar content.
 

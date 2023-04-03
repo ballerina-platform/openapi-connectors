@@ -18,25 +18,25 @@ Import the `ballerinax/azure.openai.chat` module into the Ballerina project.
 
 ```ballerina
 import ballerinax/azure.openai.chat;
+import ballerina/io;
 ```
 
 ### Step 2: Create a new connector instance
 
 Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceUrl` containing the deployed models.
 
-    ```ballerina
+```ballerina
     final chat:Client chatClient = check new (
         config = {auth: {apiKey: apiKey}},
         serviceUrl = serviceUrl
     );
-    ```
+```
 
 ### Step 3: Invoke connector operation
 1. Now you can use the operations available within the connector.
 
->**Note:** that they are in the form of remote operations.
 
-    Following is an example of creating a conversation with an OpenAI gpt-35-turbo model:
+   Following is an example of creating a conversation with an OpenAI gpt-35-turbo model:
 
     ```ballerina
     public function main() returns error? {

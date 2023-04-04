@@ -43,18 +43,18 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
     ```ballerina
     public function main() returns error? {
 
-    final chat:Client chatClient = check new (
-        config = {auth: {apiKey: apiKey}},
-        serviceUrl = serviceUrl
-    );
+        final chat:Client chatClient = check new (
+            config = {auth: {apiKey: apiKey}},
+            serviceUrl = serviceUrl
+        );
 
-    chat:Chat_completions_body chatBody = {
-        messages: [{role: "user", content: "What is Ballerina?"}]  
-    };
+        chat:Chat_completions_body chatBody = {
+            messages: [{role: "user", content: "What is Ballerina?"}]  
+        };
 
-    chat:Inline_response_200 chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-03-15-preview", chatBody);
+        chat:Inline_response_200 chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-03-15-preview", chatBody);
 
-    io:println(chatResult);
+        io:println(chatResult);
     }
     ```
 

@@ -48,7 +48,7 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
         );
 
         embeddings:Deploymentid_embeddings_body embeddingsBody = {
-            input: "I have bought several of the Vitality canned"
+            input: "I have bought several of Vitality canned"
         };
 
         embeddings:Inline_response_200 embeddingsResult = check embeddingsClient->/deployments/["embedding"]/embeddings.post("2023-03-15-preview", embeddingsBody);

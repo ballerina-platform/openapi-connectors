@@ -18,7 +18,7 @@ To use the Azure OpenAI Fine Tunes connector in your Ballerina application, upda
 Import the `ballerinax/azure.openai.finetunes` module into the Ballerina project.
 
 ```ballerina
-import ballerinax/azure.finetunes;
+import ballerinax/azure.openai.finetunes;
 ```
 
 ### Step 2: Create a new connector instance

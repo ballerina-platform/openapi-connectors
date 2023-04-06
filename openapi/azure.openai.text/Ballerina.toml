@@ -1,5 +1,12 @@
 [package]
-org = "dulaj"
+
+license = ["Apache-2.0"]
+keywords = ["AI/Text", "Azure OpenAI", "Cost/Paid", "Completions", "GPT-3", "Vendor/Microsoft"]
+org = "ballerinax"
 name = "azure.openai.text"
-version = "0.1.0"
-distribution = "2201.4.1-20230319-195300-7a97d7bb"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+ 
+[build-options]
+observabilityIncluded = true

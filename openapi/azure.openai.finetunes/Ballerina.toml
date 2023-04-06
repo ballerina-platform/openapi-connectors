@@ -1,0 +1,13 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["AI/Fine-tunes", "Vendor/Microsoft", "Cost/Paid", "Fine-tunes", "Files", "Models", "Azure OpenAI"]
+org = "ballerinax"
+name = "azure.openai.finetunes"
+icon = "icon.png"
+distribution = "2201.4.1"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

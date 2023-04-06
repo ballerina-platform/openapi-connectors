@@ -39,22 +39,22 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey` and a `s
 
     Following is an example on obtaining embeddings from a GPT-3 ada model:
 
-```ballerina
+    ```ballerina
     public function main() returns error? {
 
-    final embeddings:Client embeddingsClient = check new (
-        config = {auth: {apiKey: apiKey}},
-        serviceUrl = serviceUrl
-    );
+        final embeddings:Client embeddingsClient = check new (
+            config = {auth: {apiKey: apiKey}},
+            serviceUrl = serviceUrl
+        );
 
-    embeddings:Deploymentid_embeddings_body embeddingsBody = {
-        input: "I have bought several of the Vitality canned"
-    };
+        embeddings:Deploymentid_embeddings_body embeddingsBody = {
+            input: "I have bought several of the Vitality canned"
+        };
 
-    embeddings:Inline_response_200 embeddingsResult = check embeddingsClient->/deployments/["embedding"]/embeddings.post("2023-03-15-preview", embeddingsBody);
+        embeddings:Inline_response_200 embeddingsResult = check embeddingsClient->/deployments/["embedding"]/embeddings.post("2023-03-15-preview", embeddingsBody);
 
-    io:println(embeddingsResult);
+        io:println(embeddingsResult);
     }
-```
+    ```
 
 2. Use `bal run` command to compile and run the Ballerina program.

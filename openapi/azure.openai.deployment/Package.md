@@ -4,10 +4,7 @@ Connects to [Azure OpenAI Deployments API](https://learn.microsoft.com/en-us/res
 The `azure.openai.deployment` is a [Ballerina](https://ballerina.io/) connector for Azure OpenAI Deployments API.
 
 ### Compatibility
-|                                   | Version                         |
-|-----------------------------------|---------------------------------|
-| Ballerina Language                | 2201.4.1 (Swan Lake Update 4)   | 
-| Azure OpenAI Authoring API        | v2022-12-01-stable              |
+Azure OpenAI Authoring API: v2022-12-01-stable
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library).

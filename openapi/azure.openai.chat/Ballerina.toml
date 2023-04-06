@@ -4,8 +4,9 @@ license = ["Apache-2.0"]
 keywords = ["AI/Chat", "Azure OpenAI", "Cost/Paid", "GPT-3.5", "ChatGPT", "Vendor/Microsoft"]
 org = "ballerinax"
 name = "azure.openai.chat"
+icon = "icon.png"
 repository = "https://github.com/ballerina-platform/openapi-connectors"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Ballerina"]
  
 [build-options]

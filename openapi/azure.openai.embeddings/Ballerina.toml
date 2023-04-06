@@ -1,0 +1,12 @@
+[package]
+
+license = ["Apache-2.0"]
+keywords = ["AI/Embeddings", "Azure OpenAI", "Cost/Paid", "GPT-3" ,"Vendor/Microsoft"]
+org = "ballerinax"
+name = "azure.openai.embeddings"
+repository = "https://github.com/ballerina-platform/openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+ 
+[build-options]
+observabilityIncluded = true

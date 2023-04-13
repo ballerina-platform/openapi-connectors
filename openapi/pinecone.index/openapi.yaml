@@ -1,0 +1,473 @@
+openapi: 3.0.2
+info:
+  x-ballerina-display:
+    label: Pinecone Index
+    iconPath: "icon.png"
+  title: Pinecone Index API
+  description: This is a generated connector for the `Index Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database which supports building developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles. 
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a new project in [Pinecone](https://www.pinecone.io/) and obtain an API Key.
+  contact:
+    name: Pinecone.io
+    url: "https://pinecone.io"
+    email: "support@pinecone.io"
+  version: "20230406.1"
+externalDocs:
+  url: https://docs.pinecone.io/
+  description: The official Pinecone API documentation
+tags:
+  - name: Index Operations
+    description: Endpoints for manipulating indexes and collections
+paths:
+  /collections:
+    get:
+      tags:
+        - Index Operations
+      summary: List collections
+      description: This operation returns a list of your Pinecone collections.
+      operationId: list_collections
+      x-ballerina-display:
+        label: List Collections
+      responses:
+        200:
+          description: This operation returns a list of your Pinecone collections.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionsList'
+    post:
+      tags:
+        - Index Operations
+      summary: Create collection
+      description: This operation creates a Pinecone collection.
+      operationId: create_collection
+      x-ballerina-display:
+        label: Create Collection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionDefinition'
+      responses:
+        201:
+          description: The collection has been successfully created.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        409:
+          description: A collection with the name provided already exists.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+  /collections/{collectionName}:
+    parameters:
+      - name: collectionName
+        required: true
+        in: path
+        schema:
+          description: The unique name of a collection.
+          type: string
+          format: CollectionName
+          nullable: false
+          example: "example"
+    get:
+      tags:
+        - Index Operations
+      summary: Describe collection
+      description: Get a description of a collection.
+      operationId: describe_collection
+      x-ballerina-display:
+        label: Describe Collection   
+      responses:
+        200:
+          description: This operation returns a description of a collection.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+        404:
+          $ref: '#/components/responses/CollectionNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+        - Index Operations
+      summary: Delete Collection
+      description: This operation deletes an existing collection.
+      operationId: delete_collection
+      x-ballerina-display:
+        label: Delete Collection
+      responses:
+        202:
+          description: The collection has been successfully deleted.
+        404:
+          $ref: '#/components/responses/CollectionNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+          
+  /databases:
+    get:
+      tags:
+        - Index Operations
+      summary: List indexes
+      description: This operation returns a list of your Pinecone indexes.
+      operationId: list_indexes
+      x-ballerina-display:
+        label: List Indexes
+      responses:
+        200:
+          description: This operation returns a list of your Pinecone indexes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexesList'
+    post:
+      tags:
+        - Index Operations
+      summary: Create index
+      description: This operation creates a Pinecone index. You can use it to specify the measure of similarity, the dimension of vectors to be stored in the index, the numbers of replicas to use, and more.
+      operationId: create_index
+      x-ballerina-display:
+        label: Create Index
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexDefinition'
+      responses:
+        201:
+          description: The index has been successfully created.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        409:
+          description: Index of given name already exists.
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        500:
+          $ref: '#/components/responses/InternalError'
+          
+  /databases/{indexName}:
+    parameters:
+      - name: indexName
+        required: true
+        in: path
+        schema:
+          description: The unique name of an index.
+          type: string
+          format: IndexName
+          nullable: false
+          minLength: 1
+          maxLength: 45
+          example: "example"
+    get:
+      tags:
+        - Index Operations
+      summary: Describe index
+      description: Get a description of an index.
+      operationId: describe_index
+      x-ballerina-display:
+        label: Describe Index
+      responses:
+        200:
+          description: This operation returns a description of an index.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Index'
+        404:
+          $ref: '#/components/responses/IndexNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+        - Index Operations
+      summary: Delete Index
+      description: This operation deletes an existing index.
+      operationId: delete_index
+      x-ballerina-display:
+        label: Delete Index
+      responses:
+        202:
+          description: The index has been successfully deleted.
+        404:
+          $ref: '#/components/responses/IndexNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+    patch:
+      tags:
+        - Index Operations
+      summary: Configure index
+      description: This operation specifies the pod type and number of replicas for an index.
+      operationId: configure_index
+      x-ballerina-display:
+        label: Configure Index
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IndexConfiguration'
+      responses:
+        201:
+          description: The index has been successfully updated.
+        400:
+          $ref: '#/components/responses/BadRequest'
+        404:
+          $ref: '#/components/responses/IndexNotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+components:
+  responses:
+    BadRequest:
+      description: Quota exceeded, or invalid parameters.
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    IndexNotFound:
+      description: Index not found.
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    CollectionNotFound:
+      description: Collection not found.
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+    InternalError:
+      description: Internal error. Can be caused by invalid parameters.
+      content:
+        text/plain:
+          schema:
+            $ref: '#/components/schemas/ErrorMessage'
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: Api-Key
+
+  schemas:
+    CollectionName:
+      description: The unique name of a collection.
+      type: string
+      format: CollectionName
+      nullable: false
+      example: "example"
+      
+    CollectionState:
+      description: The current status of a collection.
+      type: string
+      format: CollectionState
+      nullable: false
+      example: "Ready"
+  
+    CollectionDefinition:
+      type: object
+      required:
+        - name
+        - source
+      properties:
+        name:
+          $ref: '#/components/schemas/CollectionName'
+        source:
+          $ref: '#/components/schemas/IndexName'
+
+    Collection:
+      type: object
+      required:
+        - name
+        - size
+        - status
+      properties:
+        name:
+          $ref: '#/components/schemas/CollectionName'
+        size:
+          type: integer
+          format: int64
+          example: 3590359
+        status:
+          $ref: '#/components/schemas/CollectionState'
+  
+    CollectionsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CollectionName'
+        
+    VectorDimensionality:
+      type: integer
+      format: int32
+      description: The number of dimensions in the vector representation
+      minimum: 1
+      maximum: 20000
+        
+    PodType:
+      type: string
+      description: The pod type
+      enum:
+        - s1.x1
+        - s1.x2
+        - s1.x4
+        - s1.x8
+        - p1.x1
+        - p1.x2
+        - p1.x4
+        - p1.x8
+        - p2.x1
+        - p2.x2
+        - p2.x4
+        - p2.x8
+        
+    IndexState:
+      description: The current status of a index.
+      type: string
+      format: IndexState
+      nullable: false
+      example: "Ready"
+      enum:
+        - Initializing
+        - ScalingUp
+        - ScalingDown
+        - Terminating
+        - Ready
+      
+    IndexMetric:
+      type: string
+      description: The vector similarity metric of the index
+      enum:
+        - euclidean
+        - cosine
+        - dotproduct
+        
+    IndexName:
+      description: The unique name of an index.
+      type: string
+      format: IndexName
+      nullable: false
+      minLength: 1
+      maxLength: 45
+      example: "example"
+  
+    IndexesList:
+      type: array
+      items:
+        $ref: '#/components/schemas/IndexName'
+        
+    IndexMetadataConfig:
+      type: object
+      description: Configuration for the behavior of Pinecone's internal metadata index. By default, all metadata is indexed; when metadata_config is present, only specified metadata fields are indexed.
+      properties:
+        indexed:
+          type: array
+          minLength: 0
+          items:
+            type: string
+          example:
+            - "hello"
+            
+    IndexDefinition:
+      type: object
+      required:
+        - name
+        - dimension
+      properties:
+        name: 
+          $ref: '#/components/schemas/IndexName'
+        dimension:
+          $ref: '#/components/schemas/VectorDimensionality'
+        metric:
+          $ref: '#/components/schemas/IndexMetric'
+        pods:
+          type: integer
+          format: int32
+          description: The number of pods for the index to use,including replicas.
+          minimum: 1
+          default: 1
+        replicas:
+          type: integer
+          format: int32
+          description: The number of replicas. Replicas duplicate your index. They provide higher availability and throughput.
+          minimum: 1
+          default: 1
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+        metadata_config:
+          $ref: '#/components/schemas/IndexMetadataConfig'
+        source_collection:
+          $ref: '#/components/schemas/CollectionName'
+          
+    IndexConfiguration:
+      type: object
+      properties:
+        replicas:
+          description: The desired number of replicas for the index.
+          type: integer
+          format: int32
+          minimum: 1
+          default: 1
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+          
+    IndexDatabase:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/IndexName'
+        metric:
+          $ref: '#/components/schemas/IndexMetric'
+        dimension:
+          $ref: '#/components/schemas/VectorDimensionality'
+        replicas:
+          type: integer
+          format: int32
+          minimum: 1
+        shards:
+          type: integer
+          format: int32
+          minimum: 1
+        pods:
+          type: integer
+          format: int32
+          minimum: 1
+        pod_type:
+          $ref: '#/components/schemas/PodType'
+      
+    IndexStatus:
+      type: object
+      properties:
+        host:
+          type: string
+          format: Hostname
+        port:
+          type: integer
+          format: int32
+        state:
+          $ref: '#/components/schemas/IndexState'
+        ready:
+          type: boolean
+
+    Index:
+      type: object
+      properties:
+        database:
+          $ref: '#/components/schemas/IndexDatabase'
+        status:
+          $ref: '#/components/schemas/IndexStatus'
+  
+    ErrorMessage:
+      type: string
+      
+security:
+  - ApiKey: []

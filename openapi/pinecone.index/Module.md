@@ -26,7 +26,7 @@ Create and initialize a `index:Client` with your `Service URL` and the obtained 
 ```
 
 ### Step 3: Invoke the connector operation
-1. Now, you can use the operations available within the connector. You can list indexes in your proect as follows.
+1. Now, you can use the operations available within the connector. You can list indexes in your project as follows.
     ```ballerina
     index:IndexesList indexesList = check pineconeIndexClient->/databases.get();
     ```

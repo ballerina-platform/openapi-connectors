@@ -1,0 +1,335 @@
+openapi: 3.0.0
+info:
+  title: OpenAI API
+  version: "1.2.0"
+  x-ballerina-display:
+    label: OpenAI Images
+    iconPath: "icon.png"
+  description: >-
+    This is a generated connector for the [OpenAI API] (https://platform.openai.com/docs/api-reference/introduction) specification. Use the OpenAI API to access the state-of-the-art language models that can complete sentences, transcribe audio, and generate images. The API also supports natural language processing tasks such as text classification, entity recognition, and sentiment analysis. By using the OpenAI API, you can incorporate advanced AI capabilities into your own applications and services.
+  x-ballerina-init-description: >-
+    To use the OpenAI API, you will need an API key. You can sign up for an API key by creating an [account](https://beta.openai.com/signup/) on the OpenAI website and following the [provided instructions](https://platform.openai.com/docs/api-reference/authentication).
+servers:
+  - url: https://api.openai.com/v1
+tags:
+  - name: OpenAI
+    description: The OpenAI REST API
+security:
+  - BearerAuth: []
+paths:
+  /images/generations:
+    post:
+      x-ballerina-display:
+        label: Create Image
+      operationId: createImage
+      tags:
+        - OpenAI
+        - images
+      summary: Creates an image given a prompt.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateImageRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImagesResponse"
+      x-oaiMeta:
+        name: Create image
+        group: images
+        path: create
+        beta: true
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/images/generations \
+              -H 'Content-Type: application/json' \
+              -H 'Authorization: Bearer YOUR_API_KEY' \
+              -d '{
+              "prompt": "A cute baby sea otter",
+              "n": 2,
+              "size": "1024x1024"
+            }'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Image.create(
+              prompt="A cute baby sea otter",
+              n=2,
+              size="1024x1024"
+            )
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createImage({
+              prompt: "A cute baby sea otter",
+              n: 2,
+              size: "1024x1024",
+            });
+        parameters: |
+          {
+            "prompt": "A cute baby sea otter",
+            "n": 2,
+            "size": "1024x1024"
+          }
+        response: |
+          {
+            "created": 1589478378,
+            "data": [
+              {
+                "url": "https://..."
+              },
+              {
+                "url": "https://..."
+              }
+            ]
+          }
+
+  /images/edits:
+    post:
+      operationId: createImageEdit
+      tags:
+        - OpenAI
+        - images
+      summary: Creates an edited or extended image given an original image and a prompt.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateImageEditRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImagesResponse"
+      x-oaiMeta:
+        name: Create image edit
+        group: images
+        path: create-edit
+        beta: true
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/images/edits \
+              -H 'Authorization: Bearer YOUR_API_KEY' \
+              -F image='@otter.png' \
+              -F mask='@mask.png' \
+              -F prompt="A cute baby sea otter wearing a beret" \
+              -F n=2 \
+              -F size="1024x1024"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Image.create_edit(
+              image=open("otter.png", "rb"),
+              mask=open("mask.png", "rb"),
+              prompt="A cute baby sea otter wearing a beret",
+              n=2,
+              size="1024x1024"
+            )
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createImageEdit(
+              fs.createReadStream("otter.png"),
+              fs.createReadStream("mask.png"),
+              "A cute baby sea otter wearing a beret",
+              2,
+              "1024x1024"
+            );
+        response: |
+          {
+            "created": 1589478378,
+            "data": [
+              {
+                "url": "https://..."
+              },
+              {
+                "url": "https://..."
+              }
+            ]
+          }
+
+  /images/variations:
+    post:
+      x-ballerina-display:
+        label: Create Image Variation
+      operationId: createImageVariation
+      tags:
+        - OpenAI
+        - images
+      summary: Creates a variation of a given image.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateImageVariationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImagesResponse"
+      x-oaiMeta:
+        name: Create image variation
+        group: images
+        path: create-variation
+        beta: true
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/images/variations \
+              -H 'Authorization: Bearer YOUR_API_KEY' \
+              -F image='@otter.png' \
+              -F n=2 \
+              -F size="1024x1024"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Image.create_variation(
+              image=open("otter.png", "rb"),
+              n=2,
+              size="1024x1024"
+            )
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createImageVariation(
+              fs.createReadStream("otter.png"),
+              2,
+              "1024x1024"
+            );
+        response: |
+          {
+            "created": 1589478378,
+            "data": [
+              {
+                "url": "https://..."
+              },
+              {
+                "url": "https://..."
+              }
+            ]
+          }
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    CreateImageRequest:
+      type: object
+      properties:
+        prompt:
+          description: A text description of the desired image(s). The maximum length is 1000 characters.
+          type: string
+          example: "A cute baby sea otter"
+        n: &images_n
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 1
+          example: 1
+          nullable: true
+          description: The number of images to generate. Must be between 1 and 10.
+        size: &images_size
+          type: string
+          enum: ["256x256", "512x512", "1024x1024"]
+          default: "1024x1024"
+          example: "1024x1024"
+          nullable: true
+          description: The size of the generated images. Must be one of `256x256`, `512x512`, or `1024x1024`.
+        response_format: &images_response_format
+          type: string
+          enum: ["url", "b64_json"]
+          default: "url"
+          example: "url"
+          nullable: true
+          description: The format in which the generated images are returned. Must be one of `url` or `b64_json`.
+        user: &end_user_param_configuration
+          type: string
+          example: user-1234
+          description: |
+            A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+      required:
+        - prompt
+
+    ImagesResponse:
+      properties:
+        created:
+          type: integer
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              b64_json:
+                type: string
+      required:
+        - created
+        - data
+    CreateImageEditRequest:
+      type: object
+      properties:
+        image:
+          description: The image to edit. Must be a valid PNG file, less than 4MB, and square. If mask is not provided, image must have transparency, which will be used as the mask.
+          type: string
+          format: binary
+        mask:
+          description: An additional image whose fully transparent areas (e.g. where alpha is zero) indicate where `image` should be edited. Must be a valid PNG file, less than 4MB, and have the same dimensions as `image`.
+          type: string
+          format: binary
+        prompt:
+          description: A text description of the desired image(s). The maximum length is 1000 characters.
+          type: string
+          example: "A cute baby sea otter wearing a beret"
+        n: *images_n
+        size: *images_size
+        response_format: *images_response_format
+        user: *end_user_param_configuration
+      required:
+        - prompt
+        - image
+
+    CreateImageVariationRequest:
+      type: object
+      properties:
+        image:
+          description: The image to use as the basis for the variation(s). Must be a valid PNG file, less than 4MB, and square.
+          type: string
+          format: binary
+        n: *images_n
+        size: *images_size
+        response_format: *images_response_format
+        user: *end_user_param_configuration
+      required:
+        - image
+x-oaiMeta:
+  groups:
+    - id: images
+      title: Images
+      description: |
+        Given a prompt and/or an input image, the model will generate a new image.
+

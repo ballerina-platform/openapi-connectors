@@ -22,7 +22,7 @@ Create and initialize a `index:Client` with your `Service URL` and the obtained 
 ```ballerina
     index:Client pineconeIndexClient = check new ({
         apiKey: "XXXXX"
-    }, serviceUrl="https://controller.<environment>.pinecone.io");
+    }, serviceUrl = "https://controller.<environment>.pinecone.io");
 ```
 
 ### Step 3: Invoke the connector operation

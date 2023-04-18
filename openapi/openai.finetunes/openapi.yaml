@@ -1,0 +1,1258 @@
+openapi: 3.0.0
+info:
+  title: OpenAI API
+  version: "1.2.0"
+  x-ballerina-display:
+    label: OpenAI Finetunes
+    iconPath: "icon.png"
+  description: >-
+    This is a generated connector for the [OpenAI API] (https://platform.openai.com/docs/api-reference/introduction) specification. Use the OpenAI API to access the state-of-the-art language models that can complete sentences, transcribe audio, and generate images. The API also supports natural language processing tasks such as text classification, entity recognition, and sentiment analysis. By using the OpenAI API, you can incorporate advanced AI capabilities into your own applications and services.
+  x-ballerina-init-description: >-
+    To use the OpenAI API, you will need an API key. You can sign up for an API key by creating an [account](https://beta.openai.com/signup/) on the OpenAI website and following the [provided instructions](https://platform.openai.com/docs/api-reference/authentication).
+servers:
+  - url: https://api.openai.com/v1
+tags:
+  - name: OpenAI
+    description: The OpenAI REST API
+security:
+  - BearerAuth: []
+paths:
+  /files:
+    get:
+      x-ballerina-display:
+        label: List All Files
+      operationId: listFiles
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Returns a list of files that belong to the user's organization.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFilesResponse"
+      x-oaiMeta:
+        name: List files
+        group: files
+        path: list
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/files \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.File.list()
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.listFiles();
+        response: |
+          {
+            "data": [
+              {
+                "id": "file-ccdDZrC3iZVNiQVeEA6Z66wf",
+                "object": "file",
+                "bytes": 175,
+                "created_at": 1613677385,
+                "filename": "train.jsonl",
+                "purpose": "search"
+              },
+              {
+                "id": "file-XjGxS3KTG0uNmNOK362iJua3",
+                "object": "file",
+                "bytes": 140,
+                "created_at": 1613779121,
+                "filename": "puppy.jsonl",
+                "purpose": "search"
+              }
+            ],
+            "object": "list"
+          }
+    post:
+      x-ballerina-display:
+        label: Upload File
+      operationId: createFile
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact us if you need to increase the storage limit.
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateFileRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAIFile"
+      x-oaiMeta:
+        name: Upload file
+        group: files
+        path: upload
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/files \
+              -H "Authorization: Bearer YOUR_API_KEY" \
+              -F purpose="fine-tune" \
+              -F file='@mydata.jsonl'
+
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.File.create(
+              file=open("mydata.jsonl", "rb"),
+              purpose='fine-tune'
+            )
+          node.js: |
+            const fs = require("fs");
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createFile(
+              fs.createReadStream("mydata.jsonl"),
+              "fine-tune"
+            );
+        response: |
+          {
+            "id": "file-XjGxS3KTG0uNmNOK362iJua3",
+            "object": "file",
+            "bytes": 140,
+            "created_at": 1613779121,
+            "filename": "mydata.jsonl",
+            "purpose": "fine-tune"
+          }
+
+  /files/{file_id}:
+    delete:
+      x-ballerina-display:
+        label: Delete File
+      operationId: deleteFile
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Delete a file.
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to use for this request
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteFileResponse"
+      x-oaiMeta:
+        name: Delete file
+        group: files
+        path: delete
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/files/file-XjGxS3KTG0uNmNOK362iJua3 \
+              -X DELETE \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.File.delete("file-XjGxS3KTG0uNmNOK362iJua3")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.deleteFile("file-XjGxS3KTG0uNmNOK362iJua3");
+        response: |
+          {
+            "id": "file-XjGxS3KTG0uNmNOK362iJua3",
+            "object": "file",
+            "deleted": true
+          }
+    get:
+      x-ballerina-display:
+        label: Retrieve File
+      operationId: retrieveFile
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Returns information about a specific file.
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to use for this request
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenAIFile"
+      x-oaiMeta:
+        name: Retrieve file
+        group: files
+        path: retrieve
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/files/file-XjGxS3KTG0uNmNOK362iJua3 \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.File.retrieve("file-XjGxS3KTG0uNmNOK362iJua3")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.retrieveFile("file-XjGxS3KTG0uNmNOK362iJua3");
+        response: |
+          {
+            "id": "file-XjGxS3KTG0uNmNOK362iJua3",
+            "object": "file",
+            "bytes": 140,
+            "created_at": 1613779657,
+            "filename": "mydata.jsonl",
+            "purpose": "fine-tune"
+          }
+
+  /files/{file_id}/content:
+    get:
+      x-ballerina-display:
+        label: Retrieve File Content
+      operationId: downloadFile
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Returns the contents of the specified file
+      parameters:
+        - in: path
+          name: file_id
+          required: true
+          schema:
+            type: string
+          description: The ID of the file to use for this request
+      responses:
+        "200":
+          description: OK
+          content:
+          # manually edited to support byte[] response
+            application/octet-stream:
+              schema: {}
+      x-oaiMeta:
+        name: Retrieve file content
+        group: files
+        path: retrieve-content
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/files/file-XjGxS3KTG0uNmNOK362iJua3/content \
+              -H 'Authorization: Bearer YOUR_API_KEY' > file.jsonl
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            content = openai.File.download("file-XjGxS3KTG0uNmNOK362iJua3")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.downloadFile("file-XjGxS3KTG0uNmNOK362iJua3");
+  /fine-tunes:
+    post:
+      x-ballerina-display:
+        label: Create fine-tune
+      operationId: createFineTune
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        Creates a job that fine-tunes a specified model from a given dataset.
+
+        Response includes details of the enqueued job including job status and the name of the fine-tuned models once complete.
+
+        [Learn more about Fine-tuning](/docs/guides/fine-tuning)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFineTuneRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FineTune"
+      x-oaiMeta:
+        name: Create fine-tune
+        group: fine-tunes
+        path: create
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/fine-tunes \
+              -X POST \
+              -H "Content-Type: application/json" \
+              -H "Authorization: Bearer YOUR_API_KEY" \
+              -d '{
+              "training_file": "file-XGinujblHPwGLSztz8cPS8XY"
+            }'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.FineTune.create(training_file="file-XGinujblHPwGLSztz8cPS8XY")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createFineTune({
+              training_file: "file-XGinujblHPwGLSztz8cPS8XY",
+            });
+        response: |
+          {
+            "id": "ft-AF1WoRqd3aJAHsqc9NY7iL8F",
+            "object": "fine-tune",
+            "model": "curie",
+            "created_at": 1614807352,
+            "events": [
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807352,
+                "level": "info",
+                "message": "Job enqueued. Waiting for jobs ahead to complete. Queue number: 0."
+              }
+            ],
+            "fine_tuned_model": null,
+            "hyperparams": {
+              "batch_size": 4,
+              "learning_rate_multiplier": 0.1,
+              "n_epochs": 4,
+              "prompt_loss_weight": 0.1,
+            },
+            "organization_id": "org-...",
+            "result_files": [],
+            "status": "pending",
+            "validation_files": [],
+            "training_files": [
+              {
+                "id": "file-XGinujblHPwGLSztz8cPS8XY",
+                "object": "file",
+                "bytes": 1547276,
+                "created_at": 1610062281,
+                "filename": "my-data-train.jsonl",
+                "purpose": "fine-tune-train"
+              }
+            ],
+            "updated_at": 1614807352,
+          }
+    get:
+      x-ballerina-display:
+        label: List fine-tunes
+      operationId: listFineTunes
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        List your organization's fine-tuning jobs
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFineTunesResponse"
+      x-oaiMeta:
+        name: List fine-tunes
+        group: fine-tunes
+        path: list
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/fine-tunes \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.FineTune.list()
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.listFineTunes();
+        response: |
+          {
+            "object": "list",
+            "data": [
+              {
+                "id": "ft-AF1WoRqd3aJAHsqc9NY7iL8F",
+                "object": "fine-tune",
+                "model": "curie",
+                "created_at": 1614807352,
+                "fine_tuned_model": null,
+                "hyperparams": { ... },
+                "organization_id": "org-...",
+                "result_files": [],
+                "status": "pending",
+                "validation_files": [],
+                "training_files": [ { ... } ],
+                "updated_at": 1614807352,
+              },
+              { ... },
+              { ... }
+            ]
+          }
+
+  /fine-tunes/{fine_tune_id}:
+    get:
+      x-ballerina-display:
+        label: Retrieve fine-tune
+      operationId: retrieveFineTune
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        Gets info about the fine-tune job.
+
+        [Learn more about Fine-tuning](/docs/guides/fine-tuning)
+      parameters:
+        - in: path
+          name: fine_tune_id
+          required: true
+          schema:
+            type: string
+            example: ft-AF1WoRqd3aJAHsqc9NY7iL8F
+          description: |
+            The ID of the fine-tune job
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FineTune"
+      x-oaiMeta:
+        name: Retrieve fine-tune
+        group: fine-tunes
+        path: retrieve
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/fine-tunes/ft-AF1WoRqd3aJAHsqc9NY7iL8F \
+              -H "Authorization: Bearer YOUR_API_KEY"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.FineTune.retrieve(id="ft-AF1WoRqd3aJAHsqc9NY7iL8F")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.retrieveFineTune("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
+        response: |
+          {
+            "id": "ft-AF1WoRqd3aJAHsqc9NY7iL8F",
+            "object": "fine-tune",
+            "model": "curie",
+            "created_at": 1614807352,
+            "events": [
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807352,
+                "level": "info",
+                "message": "Job enqueued. Waiting for jobs ahead to complete. Queue number: 0."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807356,
+                "level": "info",
+                "message": "Job started."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807861,
+                "level": "info",
+                "message": "Uploaded snapshot: curie:ft-acmeco-2021-03-03-21-44-20."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807864,
+                "level": "info",
+                "message": "Uploaded result files: file-QQm6ZpqdNwAaVC3aSz5sWwLT."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807864,
+                "level": "info",
+                "message": "Job succeeded."
+              }
+            ],
+            "fine_tuned_model": "curie:ft-acmeco-2021-03-03-21-44-20",
+            "hyperparams": {
+              "batch_size": 4,
+              "learning_rate_multiplier": 0.1,
+              "n_epochs": 4,
+              "prompt_loss_weight": 0.1,
+            },
+            "organization_id": "org-...",
+            "result_files": [
+              {
+                "id": "file-QQm6ZpqdNwAaVC3aSz5sWwLT",
+                "object": "file",
+                "bytes": 81509,
+                "created_at": 1614807863,
+                "filename": "compiled_results.csv",
+                "purpose": "fine-tune-results"
+              }
+            ],
+            "status": "succeeded",
+            "validation_files": [],
+            "training_files": [
+              {
+                "id": "file-XGinujblHPwGLSztz8cPS8XY",
+                "object": "file",
+                "bytes": 1547276,
+                "created_at": 1610062281,
+                "filename": "my-data-train.jsonl",
+                "purpose": "fine-tune-train"
+              }
+            ],
+            "updated_at": 1614807865,
+          }
+
+  /fine-tunes/{fine_tune_id}/cancel:
+    post:
+      x-ballerina-display:
+        label: Cancel fine-tune
+      operationId: cancelFineTune
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        Immediately cancel a fine-tune job.
+      parameters:
+        - in: path
+          name: fine_tune_id
+          required: true
+          schema:
+            type: string
+            example: ft-AF1WoRqd3aJAHsqc9NY7iL8F
+          description: |
+            The ID of the fine-tune job to cancel
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FineTune"
+      x-oaiMeta:
+        name: Cancel fine-tune
+        group: fine-tunes
+        path: cancel
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/fine-tunes/ft-AF1WoRqd3aJAHsqc9NY7iL8F/cancel \
+              -X POST \
+              -H "Authorization: Bearer YOUR_API_KEY"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.FineTune.cancel(id="ft-AF1WoRqd3aJAHsqc9NY7iL8F")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.cancelFineTune("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
+        response: |
+          {
+            "id": "ft-xhrpBbvVUzYGo8oUO1FY4nI7",
+            "object": "fine-tune",
+            "model": "curie",
+            "created_at": 1614807770,
+            "events": [ { ... } ],
+            "fine_tuned_model": null,
+            "hyperparams": { ... },
+            "organization_id": "org-...",
+            "result_files": [],
+            "status": "cancelled",
+            "validation_files": [],
+            "training_files": [
+              {
+                "id": "file-XGinujblHPwGLSztz8cPS8XY",
+                "object": "file",
+                "bytes": 1547276,
+                "created_at": 1610062281,
+                "filename": "my-data-train.jsonl",
+                "purpose": "fine-tune-train"
+              }
+            ],
+            "updated_at": 1614807789,
+          }
+
+  /fine-tunes/{fine_tune_id}/events:
+    get:
+      x-ballerina-display:
+        label: Get fine-tune events
+      operationId: listFineTuneEvents
+      tags:
+        - OpenAI
+        - finetunes
+      summary: |
+        Get fine-grained status updates for a fine-tune job.
+      parameters:
+        - in: path
+          name: fine_tune_id
+          required: true
+          schema:
+            type: string
+            example: ft-AF1WoRqd3aJAHsqc9NY7iL8F
+          description: |
+            The ID of the fine-tune job to get events for.
+        - in: query
+          name: stream
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: |
+            Whether to stream events for the fine-tune job. If set to true,
+            events will be sent as data-only
+            [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format)
+            as they become available. The stream will terminate with a
+            `data: [DONE]` message when the job is finished (succeeded, cancelled,
+            or failed).
+
+            If set to false, only events generated so far will be returned.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListFineTuneEventsResponse"
+      x-oaiMeta:
+        name: List fine-tune events
+        group: fine-tunes
+        path: events
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/fine-tunes/ft-AF1WoRqd3aJAHsqc9NY7iL8F/events \
+              -H "Authorization: Bearer YOUR_API_KEY"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.FineTune.list_events(id="ft-AF1WoRqd3aJAHsqc9NY7iL8F")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.listFineTuneEvents("ft-AF1WoRqd3aJAHsqc9NY7iL8F");
+        response: |
+          {
+            "object": "list",
+            "data": [
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807352,
+                "level": "info",
+                "message": "Job enqueued. Waiting for jobs ahead to complete. Queue number: 0."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807356,
+                "level": "info",
+                "message": "Job started."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807861,
+                "level": "info",
+                "message": "Uploaded snapshot: curie:ft-acmeco-2021-03-03-21-44-20."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807864,
+                "level": "info",
+                "message": "Uploaded result files: file-QQm6ZpqdNwAaVC3aSz5sWwLT."
+              },
+              {
+                "object": "fine-tune-event",
+                "created_at": 1614807864,
+                "level": "info",
+                "message": "Job succeeded."
+              }
+            ]
+          }
+  /models:
+    get:
+      x-ballerina-display:
+        label: List models
+      operationId: listModels
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Lists the currently available models, and provides basic information about each one such as the owner and availability.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListModelsResponse"
+      x-oaiMeta:
+        name: List models
+        group: models
+        path: list
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/models \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Model.list()
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.listModels();
+        response: |
+          {
+            "data": [
+              {
+                "id": "model-id-0",
+                "object": "model",
+                "owned_by": "organization-owner",
+                "permission": [...]
+              },
+              {
+                "id": "model-id-1",
+                "object": "model",
+                "owned_by": "organization-owner",
+                "permission": [...]
+              },
+              {
+                "id": "model-id-2",
+                "object": "model",
+                "owned_by": "openai",
+                "permission": [...]
+              },
+            ],
+            "object": "list"
+          }
+
+  /models/{model}:
+    get:
+      x-ballerina-display:
+        label: Retrieve model
+      operationId: retrieveModel
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
+      parameters:
+        - in: path
+          name: model
+          required: true
+          schema:
+            type: string
+            # ideally this will be an actual ID, so this will always work from browser
+            example: text-davinci-001
+          description: The ID of the model to use for this request
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Model"
+      x-oaiMeta:
+        name: Retrieve model
+        group: models
+        path: retrieve
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/models/VAR_model_id \
+              -H 'Authorization: Bearer YOUR_API_KEY'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Model.retrieve("VAR_model_id")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.retrieveModel("VAR_model_id");
+        response: |
+          {
+            "id": "VAR_model_id",
+            "object": "model",
+            "owned_by": "openai",
+            "permission": [...]
+          }
+    delete:
+      operationId: deleteModel
+      tags:
+        - OpenAI
+        - finetunes
+      summary: Delete a fine-tuned model. You must have the Owner role in your organization.
+      parameters:
+        - in: path
+          name: model
+          required: true
+          schema:
+            type: string
+            example: curie:ft-acmeco-2021-03-03-21-44-20
+          description: The model to delete
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteModelResponse"
+      x-oaiMeta:
+        name: Delete fine-tune model
+        group: fine-tunes
+        path: delete-model
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/models/curie:ft-acmeco-2021-03-03-21-44-20 \
+              -X DELETE \
+              -H "Authorization: Bearer YOUR_API_KEY"
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Model.delete("curie:ft-acmeco-2021-03-03-21-44-20")
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.deleteModel('curie:ft-acmeco-2021-03-03-21-44-20');
+        response: |
+          {
+            "id": "curie:ft-acmeco-2021-03-03-21-44-20",
+            "object": "model",
+            "deleted": true
+          }
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    ListModelsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Model"
+      required:
+        - object
+        - data
+
+    DeleteModelResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        deleted:
+          type: boolean
+      required:
+        - id
+        - object
+        - deleted
+    ListFilesResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenAIFile"
+      required:
+        - object
+        - data
+
+    CreateFileRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          description: |
+            Name of the [JSON Lines](https://jsonlines.readthedocs.io/en/latest/) file to be uploaded.
+
+            If the `purpose` is set to "fine-tune", each line is a JSON record with "prompt" and "completion" fields representing your [training examples](/docs/guides/fine-tuning/prepare-training-data).
+          type: string
+          format: binary
+        purpose:
+          description: |
+            The intended purpose of the uploaded documents.
+
+            Use "fine-tune" for [Fine-tuning](/docs/api-reference/fine-tunes). This allows us to validate the format of the uploaded file.
+
+          type: string
+      required:
+        - file
+        - purpose
+
+    DeleteFileResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        deleted:
+          type: boolean
+      required:
+        - id
+        - object
+        - deleted
+    CreateFineTuneRequest:
+      type: object
+      properties:
+        training_file:
+          description: |
+            The ID of an uploaded file that contains training data.
+
+            See [upload file](/docs/api-reference/files/upload) for how to upload a file.
+
+            Your dataset must be formatted as a JSONL file, where each training
+            example is a JSON object with the keys "prompt" and "completion".
+            Additionally, you must upload your file with the purpose `fine-tune`.
+
+            See the [fine-tuning guide](/docs/guides/fine-tuning/creating-training-data) for more details.
+          type: string
+          example: "file-ajSREls59WBbvgSzJSVWxMCB"
+        validation_file:
+          description: |
+            The ID of an uploaded file that contains validation data.
+
+            If you provide this file, the data is used to generate validation
+            metrics periodically during fine-tuning. These metrics can be viewed in
+            the [fine-tuning results file](/docs/guides/fine-tuning/analyzing-your-fine-tuned-model).
+            Your train and validation data should be mutually exclusive.
+
+            Your dataset must be formatted as a JSONL file, where each validation
+            example is a JSON object with the keys "prompt" and "completion".
+            Additionally, you must upload your file with the purpose `fine-tune`.
+
+            See the [fine-tuning guide](/docs/guides/fine-tuning/creating-training-data) for more details.
+          type: string
+          example: "file-XjSREls59WBbvgSzJSVWxMCa"
+        model:
+          description: |
+            The name of the base model to fine-tune. You can select one of "ada",
+            "babbage", "curie", "davinci", or a fine-tuned model created after 2022-04-21.
+            To learn more about these models, see the
+            [Models](https://platform.openai.com/docs/models) documentation.
+          default: "curie"
+          type: string
+          nullable: true
+        n_epochs:
+          description: |
+            The number of epochs to train the model for. An epoch refers to one
+            full cycle through the training dataset.
+          default: 4
+          type: integer
+          nullable: true
+        batch_size:
+          description: |
+            The batch size to use for training. The batch size is the number of
+            training examples used to train a single forward and backward pass.
+
+            By default, the batch size will be dynamically configured to be
+            ~0.2% of the number of examples in the training set, capped at 256 -
+            in general, we've found that larger batch sizes tend to work better
+            for larger datasets.
+
+          type: integer
+        learning_rate_multiplier:
+          description: |
+            The learning rate multiplier to use for training.
+            The fine-tuning learning rate is the original learning rate used for
+            pretraining multiplied by this value.
+
+            By default, the learning rate multiplier is the 0.05, 0.1, or 0.2
+            depending on final `batch_size` (larger learning rates tend to
+            perform better with larger batch sizes). We recommend experimenting
+            with values in the range 0.02 to 0.2 to see what produces the best
+            results.
+
+          type: number
+        prompt_loss_weight:
+          description: |
+            The weight to use for loss on the prompt tokens. This controls how
+            much the model tries to learn to generate the prompt (as compared
+            to the completion which always has a weight of 1.0), and can add
+            a stabilizing effect to training when completions are short.
+
+            If prompts are extremely long (relative to completions), it may make
+            sense to reduce this weight so as to avoid over-prioritizing
+            learning the prompt.
+          default: 0.01
+          type: number
+          nullable: true
+        compute_classification_metrics:
+          description: |
+            If set, we calculate classification-specific metrics such as accuracy
+            and F-1 score using the validation set at the end of every epoch.
+            These metrics can be viewed in the [results file](/docs/guides/fine-tuning/analyzing-your-fine-tuned-model).
+
+            In order to compute classification metrics, you must provide a
+            `validation_file`. Additionally, you must
+            specify `classification_n_classes` for multiclass classification or
+            `classification_positive_class` for binary classification.
+          type: boolean
+          default: false
+          nullable: true
+        classification_n_classes:
+          description: |
+            The number of classes in a classification task.
+
+            This parameter is required for multiclass classification.
+          type: integer
+        classification_positive_class:
+          description: |
+            The positive class in binary classification.
+
+            This parameter is needed to generate precision, recall, and F1
+            metrics when doing binary classification.
+          type: string
+        classification_betas:
+          description: |
+            If this is provided, we calculate F-beta scores at the specified
+            beta values. The F-beta score is a generalization of F-1 score.
+            This is only used for binary classification.
+
+            With a beta of 1 (i.e. the F-1 score), precision and recall are
+            given the same weight. A larger beta score puts more weight on
+            recall and less on precision. A smaller beta score puts more weight
+            on precision and less on recall.
+          type: array
+          items:
+            type: number
+          example: [0.6, 1, 1.5, 2]
+        suffix:
+          description: |
+            A string of up to 40 characters that will be added to your fine-tuned model name.
+
+            For example, a `suffix` of "custom-model-name" would produce a model name like `ada:ft-your-org:custom-model-name-2022-02-15-04-21-04`.
+          type: string
+          minLength: 1
+          maxLength: 40
+      required:
+        - training_file
+
+    ListFineTunesResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/FineTune"
+      required:
+        - object
+        - data
+    ListFineTuneEventsResponse:
+      type: object
+      properties:
+        object:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/FineTuneEvent"
+      required:
+        - object
+        - data
+    Model:
+      title: Model
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created:
+          type: integer
+        owned_by:
+          type: string
+      required:
+        - id
+        - object
+        - created
+        - owned_by
+    OpenAIFile:
+      title: OpenAIFile
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        bytes:
+          type: integer
+        created_at:
+          type: integer
+        filename:
+          type: string
+        purpose:
+          type: string
+        status:
+          type: string
+        status_details:
+          type: object
+          nullable: true
+      required:
+        - id
+        - object
+        - bytes
+        - created_at
+        - filename
+        - purpose
+    FineTune:
+      title: FineTune
+      properties:
+        id:
+          type: string
+        object:
+          type: string
+        created_at:
+          type: integer
+        updated_at:
+          type: integer
+        model:
+          type: string
+        fine_tuned_model:
+          type: string
+          nullable: true
+        organization_id:
+          type: string
+        status:
+          type: string
+        hyperparams:
+          type: object
+        training_files:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenAIFile"
+        validation_files:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenAIFile"
+        result_files:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenAIFile"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/FineTuneEvent"
+      required:
+        - id
+        - object
+        - created_at
+        - updated_at
+        - model
+        - fine_tuned_model
+        - organization_id
+        - status
+        - hyperparams
+        - training_files
+        - validation_files
+        - result_files
+    FineTuneEvent:
+      title: FineTuneEvent
+      properties:
+        object:
+          type: string
+        created_at:
+          type: integer
+        level:
+          type: string
+        message:
+          type: string
+      required:
+        - object
+        - created_at
+        - level
+        - message
+        
+x-oaiMeta:
+  groups:
+    - id: models
+      title: Models
+      description: |
+        List and describe the various models available in the API. You can refer to the [Models](/docs/models) documentation to understand what models are available and the differences between them.
+    - id: fine-tunes
+      title: Fine-tunes
+      description: |
+        Manage fine-tuning jobs to tailor a model to your specific training data.
+
+        Related guide: [Fine-tune models](/docs/guides/fine-tuning)
+    - id: files
+      title: Files
+      description: |
+        Files are used to upload documents that can be used with features like [Fine-tuning](/docs/api-reference/fine-tunes).
+    - id: fine-tunes
+      title: Fine-tunes
+      description: |
+        Manage fine-tuning jobs to tailor a model to your specific training data.

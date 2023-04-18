@@ -1,0 +1,13 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["AI/Embeddings", "OpenAI", "Cost/Paid", "GPT-3" ,"Vendor/OpenAI"]
+org = "ballerinax"
+name = "openai.embeddings"
+icon = "icon.png"
+distribution = "2201.4.0"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.3"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

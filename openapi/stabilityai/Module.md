@@ -1,7 +1,6 @@
 ## Overview
 This is a generated connector from [Stability.ai REST API (v1)](https://platform.stability.ai/rest-api) OpenAPI specification. 
 
-
 ## Prerequisites
 - Create an [Satbility AI](https://beta.dreamstudio.ai/generate/) account.
 - Obtain the API key. Refer to [Satbility AI Authentication](https://platform.stability.ai/docs/getting-started/authentication/) to learn how to obtain API key.

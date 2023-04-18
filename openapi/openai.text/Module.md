@@ -50,25 +50,3 @@ Create and initialize a `text:Client` with the obtained `apiKey`.
     }
     ``` 
 2. Use the `bal run` command to compile and run the Ballerina program.
-
-## Sample
-
-```ballerina
-import ballerinax/openai.text;
-import ballerina/io;
-
-text:Client textClient = check new ({
-    auth: {
-        token: "sk-XXXXXXXXX"
-    }
-});
-
-public function main() returns error? {
-    text:CreateCompletionRequest createCompletionRequest = {
-        model: "text-davinci-002",
-        prompt: "What is Ballerina?"
-    };
-    text:CreateCompletionResponse res = check textClient->/completions.post(createCompletionRequest);
-    io:println(unionResult);
-}
-```

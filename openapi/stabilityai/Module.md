@@ -2,7 +2,7 @@
 This is a generated connector from [Stability.ai REST API (v1)](https://platform.stability.ai/rest-api) OpenAPI specification. 
 
 ## Prerequisites
-- Create an [Satbility AI](https://beta.dreamstudio.ai/generate/) account.
+- Create an [Stability AI](https://beta.dreamstudio.ai/generate/) account.
 - Obtain the API key. Refer to [Satbility AI Authentication](https://platform.stability.ai/docs/getting-started/authentication/) to learn how to obtain API key.
 
 ## Quickstart
@@ -43,16 +43,20 @@ stabilityai:ImageRes listResult = check stabilityaiClient->/v1/generation/["stab
 
 listResult.artifacts.forEach(function(stabilityai:Image image) {
     string? imageBytesString = image.'base64;
-    if (imageBytesString is string) {
-        byte[] imageBytes = imageBytesString.toBytes();
-        var base64Decode = mime:base64Decode(imageBytes);
-        if base64Decode is byte[] {
-            io:Error? fileWrite = io:fileWriteBytes("./output.png", base64Decode);
-            if fileWrite is io:Error {
-                io:println("Error: ", fileWrite);
-            }
-        } else if base64Decode is error {
-            io:println("Error: ", base64Decode);
+    if imageBytesString is null {
+        io:println("Image byte string is Empty");
+        return;
+    }
+    byte[] imageBytes = imageBytesString.toBytes();
+    var base64Decode = mime:base64Decode(imageBytes);
+    if base64Decode is error {
+        io:println("Error: ", base64Decode);
+        return;
+    }
+    if base64Decode is byte[] {
+        io:Error? fileWrite = io:fileWriteBytes("./output.png", base64Decode);
+        if fileWrite is io:Error {
+            io:println("Error: ", fileWrite);
         }
     }
 });

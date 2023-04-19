@@ -1,7 +1,7 @@
 Connects to [Stability.ai REST API (v1)](https://platform.stability.ai/rest-api) from Ballerina.
 
 ## Package overview
-The `stabilityai` is a [Ballerina](https://ballerina.io/) connector for Stability.ai REST API.
+The `stabilityai` is a [Ballerina](https://ballerina.io/) connector for [Stability.AI REST API](https://platform.stability.ai/rest-api).
 
 ### Compatibility
 Stability.ai REST API: v1

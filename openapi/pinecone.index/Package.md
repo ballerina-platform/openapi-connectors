@@ -1,7 +1,7 @@
 Connects to the `Index Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) from Ballerina.
 
 ## Package overview
-The `ballerinax/pinecone.index` package is a [Ballerina](https://ballerina.io/) connector for the Pinecone Vector Database API and it supports manipulations of Pinecone indexes and collections.
+The `ballerinax/pinecone.index` package is a [Ballerina](https://ballerina.io/) connector for the [Pinecone Vector Database API](https://docs.pinecone.io/reference) and it supports manipulations of Pinecone indexes and collections.
 
 ### Compatibility
 Pinecone Vector Database API: 20230406.1

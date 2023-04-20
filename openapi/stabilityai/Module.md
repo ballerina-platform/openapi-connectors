@@ -43,7 +43,7 @@ stabilityai:ImageRes listResult = check stabilityaiClient->/v1/generation/["stab
 
 listResult.artifacts.forEach(function(stabilityai:Image image) {
     string? imageBytesString = image.'base64;
-    if imageBytesString is null {
+    if imageBytesString is () {
         io:println("Image byte string is Empty");
         return;
     }

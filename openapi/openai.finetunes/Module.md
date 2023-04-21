@@ -1,4 +1,3 @@
-
 ## Overview
 
 This is a generated connector for the [OpenAI Fine-tunes API](https://beta.openai.com/docs/api-reference/fine-tunes) OpenAPI specification. OpenAI is an American artificial intelligence research laboratory consisting of a non-profit corporation and a for-profit subsidiary. OpenAI conducts AI research with the declared intention of promoting and developing friendly AI. The OpenAI Fine-tunes API provides a way to customize new AI models developed by OpenAI for your specific needs.

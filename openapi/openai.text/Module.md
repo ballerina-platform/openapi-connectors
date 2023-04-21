@@ -1,4 +1,3 @@
-
 ## Overview
 
 This is a generated connector for the [OpenAI Completions API](https://beta.openai.com/docs/api-reference/completions) OpenAPI Specification. OpenAI is an American artificial intelligence research laboratory consisting of a non-profit corporation and a for-profit subsidiary. OpenAI conducts AI research with the declared intention of promoting and developing friendly AI. The OpenAI Completions API provides a way to access new Text AI models developed by OpenAI for a variety of tasks.

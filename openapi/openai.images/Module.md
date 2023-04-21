@@ -37,8 +37,6 @@ Create and initialize an `images:Client` with the obtained `apiKey`.
 
     Following is an example on generating image using the OpenAI DALL.E model:
 
-    Generate image with DALL.E
-
     ```ballerina
     public function main() returns error? {
         images:CreateImageRequest createImageRequest = {

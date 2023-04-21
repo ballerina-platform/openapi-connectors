@@ -15,7 +15,7 @@ Before using this connector in your Ballerina application, complete the followin
 To use the OpenAI Images connector in your Ballerina application, update the `.bal` file as follows:
 
 ### Step 1: Import the connector
-First, import the `ballerinax/openai.images` module into the Ballerina project.
+First, import the `ballerinax/openai.images` module (along with the other required imports) as given below.
 
 ```ballerina
 import ballerinax/openai.images;

@@ -37,8 +37,6 @@ Create and initialize a `moderations:Client` with the obtained `apiKey`.
 
     Following is an example on identifying harmful content using the OpenAI moderations model:
 
-    Moderate with Text Moderation model
-
     ```ballerina
     public function main() returns error? {
         moderations:CreateModerationRequest createModerationRequest = {

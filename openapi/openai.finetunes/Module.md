@@ -39,8 +39,6 @@ Create and initialize a `finetunes:Client` with the  obtained `apiKey`.
 
    Following is an example on fine tuning the GPT-3 ada model:
 
-   Fine tune ada model
-
    ```ballerina
     public function main() returns error? {
         finetunes:CreateFileRequest req = {

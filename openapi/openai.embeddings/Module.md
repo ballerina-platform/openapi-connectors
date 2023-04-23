@@ -15,7 +15,6 @@ To use the OpenAI Embeddings connector in your Ballerina application, update the
 
 ### Step 1: Import the connector
 First, import the `ballerinax/openai.embeddings` module into the Ballerina project.
-
 ```ballerina
 import ballerinax/openai.embeddings;
 ```
@@ -23,16 +22,16 @@ import ballerinax/openai.embeddings;
 ### Step 2: Create a new connector instance
 Create and initialize an `embeddings:Client` with the obtained `apiKey`.
 ```ballerina
-    embeddings:Client embeddingsClient = check new ({
-        auth: {
-            token: "sk-XXXXXXXXX"
-        }
-    });
+embeddings:Client embeddingsClient = check new ({
+    auth: {
+        token: "sk-XXXXXXXXX"
+    }
+});
 ```
 
 ### Step 3: Invoke the connector operation
 1. Now, you can use the operations available within the connector. Following is an example on obtaining embeddings from GPT-3 ada model.
-```ballerina
+    ```ballerina
     public function main() returns error? {
         embeddings:CreateEmbeddingRequest req = {
             model: "text-embedding-ada-002",
@@ -40,6 +39,6 @@ Create and initialize an `embeddings:Client` with the obtained `apiKey`.
         };
         embeddings:CreateEmbeddingResponse res = check embeddingsClient->/embeddings.post(req);
     }
-```
+    ```
 
 2. Use `bal run` command to compile and run the Ballerina program.

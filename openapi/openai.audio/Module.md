@@ -17,34 +17,28 @@ To use the OpenAI Audio connector in your Ballerina application, update the `.ba
 First, import the `ballerinax/openai.audio` module into the Ballerina project.
 ```ballerina
 import ballerinax/openai.audio;
-import ballerina/io;
 ```
 
 ### Step 2: Create a new connector instance
 Create and initialize `audio:Client` with the `apiKey` obtained.
 ```ballerina
-    audio:Client audioClient = check new ({
-        auth: {
-            token: "sk-XXXXXXXXX"
-        }
-    });
+audio:Client audioClient = check new ({
+    auth: {
+        token: "sk-XXXXXXXXX"
+    }
+});
 ```
 
 ### Step 3: Invoke the connector operation
-1. Now, you can use the operations available within the connector. 
-
->**Note:** These operations are in the form of remote operations.
-
-Following is an example on transcribing audio using the OpenAI Whisper-1 model:
-```ballerina
-public function main() returns error? {
-    audio:CreateTranscriptionRequest req = {
-        file: {fileContent: check io:fileReadBytes("sample.mp3"), fileName: "sample.mp3"},
-        model: "whisper-1"
-    };
-    audio:CreateTranscriptionResponse res = check audioClient->/audio/transcriptions.post(req);
-    io:println(res.text);
-}
-``` 
+1. Now, you can use the operations available within the connector. Following is an example on transcribing audio using the OpenAI Whisper-1 model.
+    ```ballerina
+    public function main() returns error? {
+        audio:CreateTranscriptionRequest req = {
+            file: {fileContent: check io:fileReadBytes("sample.mp3"), fileName: "sample.mp3"},
+            model: "whisper-1"
+        };
+        audio:CreateTranscriptionResponse res = check audioClient->/audio/transcriptions.post(req);
+    }
+    ``` 
 
 2. Use the `bal run` command to compile and run the Ballerina program.

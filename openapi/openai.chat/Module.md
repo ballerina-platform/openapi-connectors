@@ -18,7 +18,6 @@ To use the OpenAI Chat connector in your Ballerina application, update the `.bal
 First, import the `ballerinax/openai.chat` module into the Ballerina project.
 ```ballerina
 import ballerinax/openai.chat;
-import ballerina/io;
 ```
 
 ### Step 2: Create a new connector instance
@@ -32,11 +31,7 @@ Create and initialize a `chat:Client` with the obtained `apiKey`.
 ```
 
 ### Step 3: Invoke the connector operation
-1. Now you can use the operations available within the connector. 
-
->**Note:** These operations are in the form of remote operations.
-
-Following is an example on creating a conversation with the GPT-3.5 model:
+1. Now you can use the operations available within the connector. Following is an example on creating a conversation with the GPT-3.5 model.
 ```ballerina
 public function main() returns error? {
     chat:CreateChatCompletionRequest req = {
@@ -44,7 +39,6 @@ public function main() returns error? {
         messages: [{"role": "user", "content": "What is Ballerina?"}]
     };
     chat:CreateChatCompletionResponse res = check chatClient->/chat/completions.post(req);
-    io:println(res);
 }
 ``` 
 

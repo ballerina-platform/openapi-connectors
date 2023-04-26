@@ -1,0 +1,215 @@
+openapi: 3.0.0
+info:
+  title: OpenAI API
+  version: "1.2.0"
+  x-ballerina-display:
+    label: OpenAI Moderations
+    iconPath: "icon.png"
+  description: >-
+    This is a generated connector for the [OpenAI API] (https://platform.openai.com/docs/api-reference/introduction) specification. Use the OpenAI API to access the state-of-the-art language models that can complete sentences, transcribe audio, and generate images. The API also supports natural language processing tasks such as text classification, entity recognition, and sentiment analysis. By using the OpenAI API, you can incorporate advanced AI capabilities into your own applications and services.
+  x-ballerina-init-description: >-
+    To use the OpenAI API, you will need an API key. You can sign up for an API key by creating an [account](https://beta.openai.com/signup/) on the OpenAI website and following the [provided instructions](https://platform.openai.com/docs/api-reference/authentication).
+servers:
+  - url: https://api.openai.com/v1
+tags:
+  - name: OpenAI
+    description: The OpenAI REST API
+security:
+  - BearerAuth: []
+paths:
+  /moderations:
+    post:
+      x-ballerina-display:
+        label: Create moderation
+      operationId: createModeration
+      tags:
+        - OpenAI
+        - moderations
+      summary: Classifies if text violates OpenAI's Content Policy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateModerationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateModerationResponse"
+      x-oaiMeta:
+        name: Create moderation
+        group: moderations
+        path: create
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/moderations \
+              -H 'Content-Type: application/json' \
+              -H 'Authorization: Bearer YOUR_API_KEY' \
+              -d '{
+              "input": "I want to kill them."
+            }'
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            openai.Moderation.create(
+              input="I want to kill them.",
+            )
+          node.js: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const response = await openai.createModeration({
+              input: "I want to kill them.",
+            });
+        parameters: |
+          {
+            "input": "I want to kill them."
+          }
+        response: |
+          {
+            "id": "modr-5MWoLO",
+            "model": "text-moderation-001",
+            "results": [
+              {
+                "categories": {
+                  "hate": false,
+                  "hate/threatening": true,
+                  "self-harm": false,
+                  "sexual": false,
+                  "sexual/minors": false,
+                  "violence": true,
+                  "violence/graphic": false
+                },
+                "category_scores": {
+                  "hate": 0.22714105248451233,
+                  "hate/threatening": 0.4132447838783264,
+                  "self-harm": 0.005232391878962517,
+                  "sexual": 0.01407341007143259,
+                  "sexual/minors": 0.0038522258400917053,
+                  "violence": 0.9223177433013916,
+                  "violence/graphic": 0.036865197122097015
+                },
+                "flagged": true
+              }
+            ]
+          }
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    CreateModerationRequest:
+      type: object
+      properties:
+        input:
+          description: The input text to classify
+          oneOf:
+            - type: string
+              default: ""
+              example: "I want to kill them."
+            - type: array
+              items:
+                type: string
+                default: ""
+                example: "I want to kill them."
+        model:
+          description: |
+            Two content moderations models are available: `text-moderation-stable` and `text-moderation-latest`.
+
+            The default is `text-moderation-latest` which will be automatically upgraded over time. This ensures you are always using our most accurate model. If you use `text-moderation-stable`, we will provide advanced notice before updating the model. Accuracy of `text-moderation-stable` may be slightly lower than for `text-moderation-latest`.
+          type: string
+          nullable: false
+          default: "text-moderation-latest"
+          example: "text-moderation-stable"
+      required:
+        - input
+
+    CreateModerationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        model:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              flagged:
+                type: boolean
+              categories:
+                type: object
+                properties:
+                  hate:
+                    type: boolean
+                  hate/threatening:
+                    type: boolean
+                  self-harm:
+                    type: boolean
+                  sexual:
+                    type: boolean
+                  sexual/minors:
+                    type: boolean
+                  violence:
+                    type: boolean
+                  violence/graphic:
+                    type: boolean
+                required:
+                  - hate
+                  - hate/threatening
+                  - self-harm
+                  - sexual
+                  - sexual/minors
+                  - violence
+                  - violence/graphic
+              category_scores:
+                type: object
+                properties:
+                  hate:
+                    type: number
+                  hate/threatening:
+                    type: number
+                  self-harm:
+                    type: number
+                  sexual:
+                    type: number
+                  sexual/minors:
+                    type: number
+                  violence:
+                    type: number
+                  violence/graphic:
+                    type: number
+                required:
+                  - hate
+                  - hate/threatening
+                  - self-harm
+                  - sexual
+                  - sexual/minors
+                  - violence
+                  - violence/graphic
+            required:
+              - flagged
+              - categories
+              - category_scores
+      required:
+        - id
+        - model
+        - results
+x-oaiMeta:
+  groups:
+    - id: moderations
+      title: Moderations
+      description: |
+        Given a input text, outputs if the model classifies it as violating OpenAI's content policy.
+
+        Related guide: [Moderations](/docs/guides/moderation)
+

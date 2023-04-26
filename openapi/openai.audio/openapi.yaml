@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: OpenAI API
+  version: "1.2.0"
+  x-ballerina-display:
+    label: OpenAI Audio
+    iconPath: "icon.png"
+  description: >-
+    This is a generated connector for the [OpenAI API] (https://platform.openai.com/docs/api-reference/introduction) specification. Use the OpenAI API to access the state-of-the-art language models that can complete sentences, transcribe audio, and generate images. The API also supports natural language processing tasks such as text classification, entity recognition, and sentiment analysis. By using the OpenAI API, you can incorporate advanced AI capabilities into your own applications and services.
+  x-ballerina-init-description: >-
+    To use the OpenAI API, you will need an API key. You can sign up for an API key by creating an [account](https://beta.openai.com/signup/) on the OpenAI website and following the [provided instructions](https://platform.openai.com/docs/api-reference/authentication).
+servers:
+  - url: https://api.openai.com/v1
+tags:
+  - name: OpenAI
+    description: The OpenAI REST API
+security:
+  - BearerAuth: []
+paths:
+  /audio/transcriptions:
+    post:
+      x-ballerina-display:
+        label: Create Transcription
+      operationId: createTranscription
+      tags:
+        - OpenAI
+        - audio
+      summary: Transcribes audio into the input language.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateTranscriptionRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateTranscriptionResponse"
+      x-oaiMeta:
+        name: Create transcription
+        group: audio
+        path: create
+        beta: true
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/audio/transcriptions \
+              -X POST \
+              -H 'Authorization: Bearer TOKEN' \
+              -H 'Content-Type: multipart/form-data' \
+              -F file=@/path/to/file/audio.mp3 \
+              -F model=whisper-1
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            audio_file = open("audio.mp3", "rb")
+            transcript = openai.Audio.transcribe("whisper-1", audio_file)
+          node: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const resp = await openai.createTranscription(
+              fs.createReadStream("audio.mp3"),
+              "whisper-1"
+            );
+        parameters: |
+          {
+            "file": "audio.mp3",
+            "model": "whisper-1"
+          }
+        response: |
+          {
+            "text": "Imagine the wildest idea that you've ever had, and you're curious about how it might scale to something that's a 100, a 1,000 times bigger. This is a place where you can get to do that."
+          }
+
+  /audio/translations:
+    post:
+      x-ballerina-display:
+        label: Create Translation
+      operationId: createTranslation
+      tags:
+        - OpenAI
+        - audio
+      summary: Translates audio into into English.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CreateTranslationRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateTranslationResponse"
+      x-oaiMeta:
+        name: Create translation
+        group: audio
+        path: create
+        beta: true
+        examples:
+          curl: |
+            curl https://api.openai.com/v1/audio/translations \
+                -X POST \
+                -H 'Authorization: Bearer TOKEN' \
+                -H 'Content-Type: multipart/form-data' \
+                -F file=@/path/to/file/german.m4a \
+                -F model=whisper-1
+          python: |
+            import os
+            import openai
+            openai.api_key = os.getenv("OPENAI_API_KEY")
+            audio_file = open("german.m4a", "rb")
+            transcript = openai.Audio.translate("whisper-1", audio_file)
+          node: |
+            const { Configuration, OpenAIApi } = require("openai");
+            const configuration = new Configuration({
+              apiKey: process.env.OPENAI_API_KEY,
+            });
+            const openai = new OpenAIApi(configuration);
+            const resp = await openai.createTranslation(
+              fs.createReadStream("audio.mp3"),
+              "whisper-1"
+            );
+        parameters: |
+          {
+            "file": "german.m4a",
+            "model": "whisper-1"
+          }
+        response: |
+          {
+            "text": "Hello, my name is Wolfgang and I come from Germany. Where are you heading today?"
+          }
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    CreateTranscriptionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          description: |
+            The audio file to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.
+          type: string
+          format: binary
+        model:
+          description: |
+            ID of the model to use. Only `whisper-1` is currently available.
+          type: string
+        prompt:
+          description: |
+            An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text/prompting) should match the audio language.
+          type: string
+        response_format:
+          description: |
+            The format of the transcript output, in one of these options: json, text, srt, verbose_json, or vtt.
+          type: string
+          default: json
+        temperature:
+          description: |
+            The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.
+          type: number
+          default: 0
+        language:
+          description: |
+            The language of the input audio. Supplying the input language in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) format will improve accuracy and latency.
+          type: string
+      required:
+        - file
+        - model
+
+    # Note: This does not currently support the non-default response format types.
+    CreateTranscriptionResponse:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
+
+    CreateTranslationRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        file:
+          description: |
+            The audio file to translate, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.
+          type: string
+          format: binary
+        model:
+          description: |
+            ID of the model to use. Only `whisper-1` is currently available.
+          type: string
+        prompt:
+          description: |
+            An optional text to guide the model's style or continue a previous audio segment. The [prompt](/docs/guides/speech-to-text/prompting) should be in English.
+          type: string
+        response_format:
+          description: |
+            The format of the transcript output, in one of these options: json, text, srt, verbose_json, or vtt.
+          type: string
+          default: json
+        temperature:
+          description: |
+            The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use [log probability](https://en.wikipedia.org/wiki/Log_probability) to automatically increase the temperature until certain thresholds are hit.
+          type: number
+          default: 0
+      required:
+        - file
+        - model
+
+    # Note: This does not currently support the non-default response format types.
+    CreateTranslationResponse:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
+
+x-oaiMeta:
+  groups:
+    - id: audio
+      title: Audio
+      description: |
+        Learn how to turn audio into text.
+
+        Related guide: [Speech to text](/docs/guides/speech-to-text)
+

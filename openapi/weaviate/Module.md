@@ -22,67 +22,63 @@ import ballerinax/weaviate;
 ### Step 2: Create a new connector instance
 Create and initialize a `weaviate:Client` with your `Service URL` and the obtained `Authentication key`.
 ```ballerina
-    weaviate:Client weaviateClient = check new ({
-        auth: {
-            token: "sk-XXXXXXXXX"
-        }
-    }, serviceURL: "https://weaviate-server:port/v1");
+weaviate:Client weaviateClient = check new ({
+    auth: {
+        token: "sk-XXXXXXXXX"
+    }
+}, serviceURL: "https://weaviate-server:port/v1");
 ```
 
 ### Step 3: Invoke the connector operation
-1. Now, you can use the operations available within the connector. 
+1. Now, you can use the operations available within the connector. Following is an example of inserting new objects to the Weaviate vector storage as a batch operation.
+    ```ballerina
+    string className = "DocClass"; // weaviate class name
+    string[] text; // list of text
+    float[][] embeddings; // list of embbedings for the texts
+    int len = text.length();
 
->**Note:** that they are in the form of remote operations.
+    // Creates the batch of Weaviate objects.
+    weaviate:Object[] objArr = [];
+    foreach int i in 0...len {
+        objArr.push(
+            {
+                'class: className,
+                vector: embeddings[i],
+                properties: {
+                    "docs": text[i]
+                }
+            });
+    }
 
-Following is an example of inserting new objects to the Weaviate vector storage as a batch operation.
-```ballerina
-string className = "DocClass"; // weaviate class name
-string[] text; // list of text
-float[][] embeddings; // list of embbedings for the texts
-int len = text.length();
+    weaviate:ObjectsGetResponse[] responseArray = check weaviateClient->/batch/objects.post({
+        objects: objArr
+    });
+    ```
 
-// Creates the batch of Weaviate objects.
-weaviate:Object[] objArr = [];
-foreach int i in 0...len {
-    objArr.push(
-        {
-            'class: className,
-            vector: embeddings[i],
-            properties: {
-                "docs": text[i]
-            }
-        });
-}
+    Once the new records are inserted, you can query the Weaviate vector storage using the [Weaviate GraphQL API](https://weaviate.io/developers/weaviate/api/graphql), similar to the example below.
+    ```ballerina
+    float[] embeddings;  // This is the embedding for the text being searched for similar content.
 
-weaviate:ObjectsGetResponse[] responseArray = check weaviateClient->/batch/objects.post({
-    objects: objArr
-});
-```
-
-Once the new records are inserted, you can query the Weaviate vector storage using the [Weaviate GraphQL API](https://weaviate.io/developers/weaviate/api/graphql), similar to the example below.
-```ballerina
-float[] embeddings;  // This is the embedding for the text being searched for similar content.
-
-string graphQLQuery =  string`{
-                            Get {
-                                DocStore (
-                                nearVector: {
-                                    vector: ${embeddings.toString()}
-                                    }
-                                    limit: 5
-                                ){
-                                docs
-                                _additional {
-                                    certainty,
-                                    id
+    string graphQLQuery =  string`{
+                                Get {
+                                    DocStore (
+                                    nearVector: {
+                                        vector: ${embeddings.toString()}
+                                        }
+                                        limit: 5
+                                    ){
+                                    docs
+                                    _additional {
+                                        certainty,
+                                        id
+                                        }
                                     }
                                 }
-                            }
-                        }`;
+                            }`;
 
-weaviate:GraphQLResponse|error results = check weaviateClient->/graphql.post({
-    query: graphQLQuery
-});
-``` 
+    weaviate:GraphQLResponse|error results = check weaviateClient->/graphql.post({
+        query: graphQLQuery
+    });
+    ``` 
 
 2. Use the `bal run` command to compile and run the Ballerina program.

@@ -20,9 +20,9 @@ import ballerinax/pinecone.index;
 ### Step 2: Create a new connector instance
 Create and initialize a `index:Client` with your `Service URL` and the obtained `Authentication key`.
 ```ballerina
-    index:Client pineconeIndexClient = check new ({
-        apiKey: "XXXXX"
-    }, serviceUrl = "https://controller.<environment>.pinecone.io");
+index:Client pineconeIndexClient = check new ({
+    apiKey: "XXXXX"
+}, serviceUrl = "https://controller.<environment>.pinecone.io");
 ```
 
 ### Step 3: Invoke the connector operation

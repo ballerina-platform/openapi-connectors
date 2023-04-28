@@ -20,7 +20,7 @@ import ballerina/http;
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
     # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_2_0;
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     ClientHttp1Settings http1Settings?;
     # Configurations related to HTTP/2 protocol

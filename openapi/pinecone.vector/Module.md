@@ -20,9 +20,9 @@ import ballerinax/pinecone.vector;
 ### Step 2: Create a new connector instance
 Create and initialize a `vector:Client` with your `Service URL` and the obtained `Authentication key`.
 ```ballerina
-    vector:Client pineconeVectorClient = check new ({
-        apiKey: "XXXXX"
-    }, serviceUrl = "https://<index_name>-<project_name>.svc.<environment>.pinecone.io");
+vector:Client pineconeVectorClient = check new ({
+    apiKey: "XXXXX"
+}, serviceUrl = "https://<index_name>-<project_name>.svc.<environment>.pinecone.io");
 ```
 
 ### Step 3: Invoke the connector operation

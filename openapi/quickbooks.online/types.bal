@@ -14,6 +14,73 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+@display {label: "Connection Config"}
+public type ConnectionConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|OAuth2RefreshTokenGrantConfig auth;
+    # The HTTP version understood by the client
+    http:HttpVersion httpVersion = http:HTTP_1_1;
+    # Configurations related to HTTP/1.x protocol
+    ClientHttp1Settings http1Settings?;
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings?;
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with request pooling
+    http:PoolConfiguration poolConfig?;
+    # HTTP caching related configurations
+    http:CacheConfig cache?;
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig circuitBreaker?;
+    # Configurations associated with retrying
+    http:RetryConfig retryConfig?;
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits?;
+    # SSL/TLS-related options
+    http:ClientSecureSocket secureSocket?;
+    # Proxy server related options
+    http:ProxyConfig proxy?;
+    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
+    boolean validation = true;
+|};
+
+# Provides settings related to HTTP/1.x protocol.
+public type ClientHttp1Settings record {|
+    # Specifies whether to reuse a connection for multiple requests
+    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
+    # The chunking behaviour of the request
+    http:Chunking chunking = http:CHUNKING_AUTO;
+    # Proxy server related options
+    ProxyConfig proxy?;
+|};
+
+# Proxy server configurations to be used with the HTTP client endpoint.
+public type ProxyConfig record {|
+    # Host name of the proxy server
+    string host = "";
+    # Proxy server port
+    int port = 0;
+    # Proxy server username
+    string userName = "";
+    # Proxy server password
+    @display {label: "", kind: "password"}
+    string password = "";
+|};
+
+# OAuth2 Refresh Token Grant Configs
+public type OAuth2RefreshTokenGrantConfig record {|
+    *http:OAuth2RefreshTokenGrantConfig;
+    # Refresh URL
+    string refreshUrl = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer";
+|};
+
 public type Account record {
     # Unique identifier for this object. Sort order is ASC by default.
     string Id?;
@@ -26,7 +93,7 @@ public type Account record {
     # Currency reference type
     CurrencyRefType CurrencyRef?;
     # Specifies the Parent AccountId if this represents a SubAccount.
-    AccountParentref ParentRef?;
+    Account_ParentRef ParentRef?;
     # User entered description for the account, which may include user entered information to guide bookkeepers/accountants in deciding what journal entries to post to the account.
     string Description?;
     # Whether or not active inactive accounts may be hidden from most display purposes and may not be posted to.
@@ -365,6 +432,14 @@ public type VendorResponse record {
     Vendor Vendor?;
 };
 
+# Reference to the vendor for this transaction. Query the Vendor name list resource to determine the appropriate Vendor object for this reference. Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.
+public type BillCreateObject_VendorRef record {
+    # The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.
+    string value?;
+    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.
+    string name?;
+};
+
 # Telephone number
 public type TelephoneNumber record {
     # Specifies the telephone number in free form.
@@ -540,19 +615,11 @@ public type PaymentResponse record {
 
 public type BillCreateObject record {
     # Reference to the vendor for this transaction. Query the Vendor name list resource to determine the appropriate Vendor object for this reference. Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.
-    BillcreateobjectVendorref VendorRef;
+    BillCreateObject_VendorRef VendorRef;
     # Individual line items of a transaction. Valid Line types include- ItemBasedExpenseLine and AccountBasedExpenseLine
     (ItemBasedExpenseLine|AccountBasedExpenseLine)[] Line;
     # Currency reference type
     CurrencyRefType CurrencyRef?;
-};
-
-# Specifies the Parent AccountId if this represents a SubAccount.
-public type AccountParentref record {
-    # The ID for the referenced object as found in the Id field of the object payload. - The context is set by the type of reference and is specific to the QuickBooks company file.
-    string value?;
-    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. - This varies by context and specific type of object referenced. - For example, references to a Customer object use Customer.DisplayName to populate this field. - Optionally returned in responses, implementation dependent.
-    string name?;
 };
 
 # Item Based Expense Line Detail
@@ -586,7 +653,7 @@ public type AccountBasedExpenseLineDetail record {
     # Sales tax paid as part of the expense.
     decimal TaxAmount?;
     # Reference to the Expense account associated with this item. Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Expense. Use Account.Id and Account.Name from that object for AccountRef.value and AccountRef.name, respectively. For France locales- The account associated with the referenced Account object is looked up in the account category list. If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same VAT as in the line item TaxCodeRef attribute, then this account is used. If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used. If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
-    AccountbasedexpenselinedetailAccountref AccountRef?;
+    AccountBasedExpenseLineDetail_AccountRef AccountRef?;
     # Reference type
     ReferenceType CustomerRef?;
     # Reference type
@@ -725,6 +792,14 @@ public type ItemBasedExpenseLine record {
     decimal LineNum?;
 };
 
+# Reference to the Expense account associated with this item. Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Expense. Use Account.Id and Account.Name from that object for AccountRef.value and AccountRef.name, respectively. For France locales- The account associated with the referenced Account object is looked up in the account category list. If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same VAT as in the line item TaxCodeRef attribute, then this account is used. If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used. If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
+public type AccountBasedExpenseLineDetail_AccountRef record {
+    # The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.
+    string value?;
+    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.
+    string name?;
+};
+
 # Modification metadata
 public type ModificationMetaData record {
     # Time the entity was created in the source domain.
@@ -848,14 +923,6 @@ public type EmailAddress record {
     string Address?;
 };
 
-# Reference to the Expense account associated with this item. Query the Account name list resource to determine the appropriate Account object for this reference, where Account.AccountType=Expense. Use Account.Id and Account.Name from that object for AccountRef.value and AccountRef.name, respectively. For France locales- The account associated with the referenced Account object is looked up in the account category list. If this account has same location as specified in the transaction by the TransactionLocationType attribute and the same VAT as in the line item TaxCodeRef attribute, then this account is used. If there is a mismatch, then the account from the account category list that matches the transaction location and VAT is used. If this account is not present in the account category list, then a new account is created with the new location, new VAT code, and all other attributes as in the default account.
-public type AccountbasedexpenselinedetailAccountref record {
-    # The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.
-    string value?;
-    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.
-    string name?;
-};
-
 public type Payment record {
     # Unique identifier for this object. Sort order is ASC by default.
     string Id?;
@@ -914,19 +981,19 @@ public type AccountBasedExpenseLine record {
     decimal LineNum?;
 };
 
-# Reference to the vendor for this transaction. Query the Vendor name list resource to determine the appropriate Vendor object for this reference. Use Vendor.Id and Vendor.Name from that object for VendorRef.value and VendorRef.name, respectively.
-public type BillcreateobjectVendorref record {
-    # The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.
-    string value?;
-    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.
-    string name?;
-};
-
 # Currency reference type
 public type CurrencyRefType record {
     # A three letter string representing the ISO 4217 code for the currency. For example, USD, AUD, EUR, and so on.
     string value?;
     # The full name of the currency.
+    string name?;
+};
+
+# Specifies the Parent AccountId if this represents a SubAccount.
+public type Account_ParentRef record {
+    # The ID for the referenced object as found in the Id field of the object payload. - The context is set by the type of reference and is specific to the QuickBooks company file.
+    string value?;
+    # An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. - This varies by context and specific type of object referenced. - For example, references to a Customer object use Customer.DisplayName to populate this field. - Optionally returned in responses, implementation dependent.
     string name?;
 };
 

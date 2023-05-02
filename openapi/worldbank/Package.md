@@ -9,7 +9,7 @@ This package provides the capability to easily access World Bank knowledge base.
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake 2201.4.1      |
+| Ballerina Language Version    | Swan Lake 2201.3.1      |
 | API Version                   | v2                    |
 
 ## Report issues

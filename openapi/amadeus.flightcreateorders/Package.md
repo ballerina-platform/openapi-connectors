@@ -9,7 +9,7 @@ Refer [flight booking flow](https://developers.amadeus.com/get-started/create-a-
 ### Compatibility
 |                                 | Version                        |
 |---------------------------------|--------------------------------|
-| Ballerina Language              | Ballerina Swan Lake 2201.2.1   |
+| Ballerina Language              | Ballerina Swan Lake 2201.4.1   |
 | Flight Create Orders API        | V1.5                           | 
 
 ## Report issues

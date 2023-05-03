@@ -7,7 +7,7 @@ This package provides the capability to access the asynchronous customer related
 ### Compatibility
 |                           | Version           |
 |---------------------------|-------------------|
-| Ballerina Language        | Swan Lake 2201.2.1| 
+| Ballerina Language        | Swan Lake 2201.4.1| 
 | Magento Customer Async API| v2.3.5            |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package provides the capability of tracking, prioritizing and solving custo
 ### Compatibility
 |                     | Version                   |
 |---------------------|---------------------------|
-| Ballerina Language  | Ballerina Swan Lake 2201.2.1| 
+| Ballerina Language  | Ballerina Swan Lake 2201.4.1| 
 | Zendesk Support API | v2                        |
 
 ## Report issues

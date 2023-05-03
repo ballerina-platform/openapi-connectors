@@ -8,7 +8,7 @@ The `microsoft.dynamics365businesscentral` is a [Ballerina](https://ballerina.io
 #### Compatibility
 |                                   | Version                  |
 |-----------------------------------|--------------------------|
-| Ballerina Language                | Balerina Swan Lake 2201.2.1|
+| Ballerina Language                | Balerina Swan Lake 2201.4.1|
 | Dynamics 365 Business Central API | v1.0                     |
 
 ## Report issues

@@ -7,7 +7,7 @@ This package enables retrieving listing violations for any eBay listings, regard
 #### Compatibility
 |                                   | Version                       |
 |-----------------------------------|-------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1    |
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1    |
 | eBay Compliance API               | 1.4.1                         |
 
 ## Report issues

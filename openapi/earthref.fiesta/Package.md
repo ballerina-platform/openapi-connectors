@@ -5,7 +5,7 @@ The earthref.fiesta is a [Ballerina](https://ballerina.io/) connector for EarthR
 ### Compatibility
 |                               | Version                   |
 |-------------------------------|---------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1|
 | EarthRef.org's FIESTA API     | 1.2.0                    |
 
 ## Report issues

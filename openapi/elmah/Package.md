@@ -7,7 +7,7 @@ The `ballerinax/elmah` is a [Ballerina](https://ballerina.io/) connector for con
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake 2201.2.1 |
+| Ballerina Language   | Ballerina Swan Lake 2201.4.1 |
 | Elmah.io REST API    | v3                         |
 
 ## Report issues

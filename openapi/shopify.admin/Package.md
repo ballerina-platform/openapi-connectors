@@ -7,7 +7,7 @@ This package provides the capability to access Shopify Admin API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1      | 
 | Shopify Admin API             | 2021-10                         |
 
 ## Report issues

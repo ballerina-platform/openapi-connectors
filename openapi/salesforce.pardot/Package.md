@@ -6,7 +6,7 @@ The `ballerinax/salesforce.pardot` is a [Ballerina](https://ballerina.io/) conne
 ### Compatibility
 |                             | Version                       |
 |-----------------------------|-------------------------------|
-| Ballerina Language          | Ballerina Swan Lake 2201.2.1  | 
+| Ballerina Language          | Ballerina Swan Lake 2201.4.1  | 
 | Pardot Synchronous API      | 5                             |
 
 ## Report issues

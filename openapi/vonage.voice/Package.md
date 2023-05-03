@@ -7,7 +7,7 @@ This package provides the capability to access Vonage Voice API.
 ### Compatibility
 |                               | Version                        |
 |-------------------------------|--------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1     |
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1     |
 | Vonage Voice API              | 1.3.6                          |
 
 ## Report issues

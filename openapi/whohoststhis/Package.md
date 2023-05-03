@@ -7,7 +7,7 @@ This package provides the capability to discover the hosting provider for any we
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1| 
+| Ballerina Language | Ballerina Swan Lake 2201.4.1| 
 | Who Hosts This API | v0.0.1                    |
 
 ## Report issues

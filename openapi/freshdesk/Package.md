@@ -7,7 +7,7 @@ This package provides a way that enables businesses of all sizes to deliver stel
 ### Compatibility
 |                    | Version                      |
 |--------------------|------------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1 | 
+| Ballerina Language | Ballerina Swan Lake 2201.4.1 | 
 | Freshdesk API      | v2.0                         |
 
 ## Report issues

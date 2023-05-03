@@ -10,7 +10,7 @@ This package provides the capability to easily access current weather data and w
 
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake 2201.2.1    |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.4.1    |
 | Openweathermap API Version    | 2.5                           |
 
 ## Report issues

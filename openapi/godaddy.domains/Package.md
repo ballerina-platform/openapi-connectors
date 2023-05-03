@@ -6,7 +6,7 @@ creating and managing Domains.
 ### Compatibility
 |                              | Version                   |
 |------------------------------|---------------------------|
-| Ballerina Language           | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language           | Ballerina Swan Lake 2201.4.1|
 | GoDaddy Domains API          | v1                        |
 
 ## Report issues

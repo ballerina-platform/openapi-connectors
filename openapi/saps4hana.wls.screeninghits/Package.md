@@ -6,7 +6,7 @@ The `ballerinax/saps4hana.wls.screeninghits` is a [Ballerina](https://ballerina.
 ### Compatibility
 |                                   | Version                      |
 |-----------------------------------|------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1 |
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1 |
 | SAPS4HANA WLS Screening Hits API  | 1.7                          |
  
 ## Report issues

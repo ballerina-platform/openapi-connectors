@@ -7,7 +7,7 @@ This package provides a way that helps organizations streamline digital work thr
 ### Compatibility
 |                    | Version                      |
 |--------------------|------------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1 | 
+| Ballerina Language | Ballerina Swan Lake 2201.4.1 | 
 | Formstack REST API | v2.0                         |
 
 ## Report issues

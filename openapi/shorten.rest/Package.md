@@ -7,7 +7,7 @@ This package provides the capability to programmatically create short URLs for l
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.2.1| 
+| Ballerina Language | Swan Lake 2201.4.1| 
 | Shorten.REST API   | v1.0            |
 
 ## Report issues

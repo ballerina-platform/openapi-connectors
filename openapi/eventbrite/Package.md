@@ -7,7 +7,7 @@ This package provides the capability to access Eventbrite API.
 ### Compatibility
 |                               | Version                         |
 |-------------------------------|---------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1      | 
 | Eventbrite API                | v3                              |
 
 ## Report issues

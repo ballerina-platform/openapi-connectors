@@ -6,7 +6,7 @@ The `ballerinax/orbitcrm` is a [Ballerina](https://ballerina.io/) connector for 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language | Ballerina Swan Lake 2201.4.1|
 | Orbit API          | V1                        |
 
 ## Report issues

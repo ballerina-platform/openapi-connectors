@@ -6,7 +6,7 @@ The `ballerinax/instagram` is a [Ballerina](https://ballerina.io/) connector con
 ### Compatibility
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1    | 
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1    | 
 | Instagram Basic Display API   | v12.0                         |
 
 ## Report issues

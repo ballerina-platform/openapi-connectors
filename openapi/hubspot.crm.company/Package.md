@@ -6,7 +6,7 @@ The `ballerinax/hubspot.crm` is a [Ballerina](https://ballerina.io/) connector f
 ### Compatibility
 |                      | Version                    |
 |----------------------|----------------------------|
-| Ballerina Language   | Ballerina Swan Lake 2201.2.1 |
+| Ballerina Language   | Ballerina Swan Lake 2201.4.1 |
 | HubSpot REST API     | V3                         |   
 
 ## Report issues

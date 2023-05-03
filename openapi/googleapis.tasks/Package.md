@@ -7,7 +7,7 @@ This package provides the capability to access Google Tasks API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1      | 
 | Google Tasks API                  | v1                              |
 
 ## Report issues

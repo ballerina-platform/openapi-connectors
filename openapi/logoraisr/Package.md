@@ -8,7 +8,7 @@ This package provides the capability to automate the graphic design processing s
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake 2201.2.1      |
+| Ballerina Language Version    | Swan Lake 2201.4.1      |
 | Logoraisr API                 | V1                    |
 
 ## Report issues

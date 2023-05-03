@@ -6,7 +6,7 @@ The `ballerinax/eloqua` is a [Ballerina](https://ballerina.io/) connector for Or
 ### Compatibility
 |                    | Version          |
 |--------------------|------------------|
-| Ballerina Language | Swan Lake 2201.2.1 |
+| Ballerina Language | Swan Lake 2201.4.1 |
 | Oracle Eloqua API  | 2021.08.12       |
 
 ## Report issues

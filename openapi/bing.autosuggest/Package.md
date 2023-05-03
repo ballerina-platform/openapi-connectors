@@ -8,7 +8,7 @@ The `bing.autosuggest` is a [Ballerina](https://ballerina.io/) connector for con
 #### Compatibility
 |                            | Version           |
 |----------------------------|-------------------|
-| Ballerina Language         | Swan Lake 2201.2.1  |
+| Ballerina Language         | Swan Lake 2201.4.1  |
 | Bing Autosuggest API       | v7                |
 
 ## Report issues

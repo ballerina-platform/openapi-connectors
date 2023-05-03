@@ -6,7 +6,7 @@ The `ballerinax/squareup` is a [Ballerina](https://ballerina.io/) connector for 
 ### Compatibility
 |                    | Version          |
 |--------------------|------------------|
-| Ballerina Language |  Swan Lake 2201.2.1|
+| Ballerina Language |  Swan Lake 2201.4.1|
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

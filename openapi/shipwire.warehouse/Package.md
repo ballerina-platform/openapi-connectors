@@ -7,7 +7,7 @@ This package provides the capability to access Shipwire Warehouses API.
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1      | 
 | Shipwire Warehouses API           | 3.0                             |
 
 ## Report issues

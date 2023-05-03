@@ -7,7 +7,7 @@ This package provides the capability to access OpenFIGI.
 
 |                               | Version                       |
 |-------------------------------|-------------------------------|
-| Ballerina Language            | Ballerina Swan Lake 2201.2.1    |
+| Ballerina Language            | Ballerina Swan Lake 2201.4.1    |
 | OpenFIGI API                  | v3                            |
 
 ## Report issues

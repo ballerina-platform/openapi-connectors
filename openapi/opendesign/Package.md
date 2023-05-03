@@ -6,7 +6,7 @@ The `ballerinax/opendesign` is a [Ballerina](https://ballerina.io/) connector co
 ### Compatibility
 |                       | Version                         |
 |-----------------------|---------------------------------|
-| Ballerina Language    | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language    | Ballerina Swan Lake 2201.4.1      | 
 | Open Design REST API  | 0.3.4                           |
 
 ## Report issues

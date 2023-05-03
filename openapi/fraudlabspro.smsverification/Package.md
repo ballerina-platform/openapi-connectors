@@ -7,7 +7,7 @@ This package provides the capability to access FraudLabsPro SMS Verification API
 ### Compatibility
 |                                   | Version                         |
 |-----------------------------------|---------------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1      | 
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1      | 
 | FraudLabsPro SMS Verification API | 1.0                             |
 
 ## Report issues

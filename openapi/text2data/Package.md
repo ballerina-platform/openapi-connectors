@@ -10,7 +10,7 @@ This package provides Text Analytics Platform that uses NLP (Natural Language Pr
 ### Compatibility
 |                                               | Version                   |
 |-----------------------------------------------|---------------------------|
-| Ballerina Language                            | Swan Lake 2201.2.1          |
+| Ballerina Language                            | Swan Lake 2201.4.1          |
 | Text Analytics & Sentiment Analysis API       | v3.4                      |
 
 ## Report issues

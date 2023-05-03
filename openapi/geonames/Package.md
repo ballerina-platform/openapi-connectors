@@ -6,7 +6,7 @@ The `ballerinax/geonames` is a [Ballerina](https://ballerina.io/) connector for 
 ### Compatibility
 |                    | Version          |
 |--------------------|------------------|
-| Ballerina Language |  Swan Lake 2201.2.1|
+| Ballerina Language |  Swan Lake 2201.4.1|
 | Geonames API       |  v1              |
 
 ## Report issues

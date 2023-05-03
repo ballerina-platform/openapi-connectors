@@ -6,7 +6,7 @@ name = "azure.iothub"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.4.1"
+version = "1.5.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

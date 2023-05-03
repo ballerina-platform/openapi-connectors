@@ -6,7 +6,7 @@ The `ballerinax/quickbase.online` is a [Ballerina](https://ballerina.io/) connec
 ### Compatibility
 |                           | Version                    |
 |---------------------------|----------------------------|
-| Ballerina Language        | Ballerina Swan Lake 2201.2.1 | 
+| Ballerina Language        | Ballerina Swan Lake 2201.4.1 | 
 | QuickBooks Online API     | v1                         |
 
 ## Report issues

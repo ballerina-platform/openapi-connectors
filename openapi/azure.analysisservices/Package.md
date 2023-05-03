@@ -7,7 +7,7 @@ The `azure.analysisservices` is a [Ballerina](https://ballerina.io/) connector f
 #### Compatibility
 |                             | Version                     |
 |-----------------------------|-----------------------------|
-| Ballerina Language          | Balerina Swan Lake 2201.2.1 |
+| Ballerina Language          | Balerina Swan Lake 2201.4.1 |
 | Azure Analysis Services API | v2017-08-01                 |
 
 ## Report issues

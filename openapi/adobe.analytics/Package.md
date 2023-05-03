@@ -6,7 +6,7 @@ The `ballerinax/adobe.analytics` is a [Ballerina](https://ballerina.io/) connect
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake 2201.2.1  | 
+| Ballerina Language    | Ballerina Swan Lake 2201.4.1  | 
 | Adobe Analytics API   | v2                            |
 
 ## Report issues

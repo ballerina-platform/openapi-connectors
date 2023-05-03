@@ -3,7 +3,7 @@ Connects to Ebay Browse API from Ballerina
 #### Compatibility
 |                               | Version         |
 |-------------------------------|-----------------|
-| Ballerina Language Version    | Swan Lake 2201.2.1|
+| Ballerina Language Version    | Swan Lake 2201.4.1|
 | API Version                   | 1.6.0           |
 
 ### Package Overview

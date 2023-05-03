@@ -7,7 +7,7 @@ This package provides the capability to identify market intelligence.
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.2.1| 
+| Ballerina Language | Swan Lake 2201.4.1| 
 | Automata API       | v1.0.1          |
 
 ## Report issues

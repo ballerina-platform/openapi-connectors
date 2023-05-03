@@ -6,7 +6,7 @@ The `ballerinax/interzoid.currencyrate` is a [Ballerina](https://ballerina.io/) 
 ### Compatibility
 |                                | Version                   |
 |--------------------------------|---------------------------|
-| Ballerina Language             | Swan Lake 2201.2.1          |
+| Ballerina Language             | Swan Lake 2201.4.1          |
 | Interzoid Currency Rate API    | 1.0.0                     |
 
 ## Report issues

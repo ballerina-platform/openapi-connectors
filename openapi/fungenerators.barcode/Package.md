@@ -6,7 +6,7 @@ This package provides capabilities of encoding and decoding barcode.
 ### Compatibility
 |                           | Version                   |
 |---------------------------|---------------------------|
-| Ballerina Language        | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language        | Ballerina Swan Lake 2201.4.1|
 | Fungenerators BarCode API | 1.5                       |
 
 ## Report issues

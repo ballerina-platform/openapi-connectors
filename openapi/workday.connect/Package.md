@@ -9,7 +9,7 @@ This package provides the capability to easily access Workday connect service re
 #### Compatibility
 |                               | Version                    |
 |-------------------------------|----------------------------|
-| Ballerina Language Version    | Ballerina Swan Lake 2201.2.1 |
+| Ballerina Language Version    | Ballerina Swan Lake 2201.4.1 |
 | API Version                   | v2                         |
 
 ## Report issues

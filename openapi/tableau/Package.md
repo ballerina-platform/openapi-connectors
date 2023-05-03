@@ -6,7 +6,7 @@ The `ballerinax/tableau` is a [Ballerina](https://ballerina.io/) connector for T
 ### Compatibility
 |                    | Version                     |
 |--------------------|-----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language | Ballerina Swan Lake 2201.4.1|
 | Tableau API        | V3.11                       |
 
 ## Report issues

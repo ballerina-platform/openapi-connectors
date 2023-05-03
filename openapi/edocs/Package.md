@@ -7,7 +7,7 @@ This package allows interaction with the resources stored on an eDOCS DM Server.
 #### Compatibility
 |                           | Version             |
 |---------------------------|---------------------|
-| Ballerina Language        | Swan Lake 2201.2.1    |
+| Ballerina Language        | Swan Lake 2201.4.1    |
 | eDocs API                 | 1.0.0               |
 
 ### Report issues

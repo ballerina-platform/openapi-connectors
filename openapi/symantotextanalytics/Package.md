@@ -8,7 +8,7 @@ This package provides the capability to access Symanto API to provide the deepes
 ### Compatibility
 |                               | Version               |
 |-------------------------------|-----------------------|
-| Ballerina Language Version    | Swan Lake 2201.2.1      |
+| Ballerina Language Version    | Swan Lake 2201.4.1      |
 | Symanto API                   | V1.0                  |
 
 ## Report issues

@@ -5,7 +5,7 @@ The ebay.negotiation is a [Ballerina](https://ballerina.io/) connector for eBay 
 ### Compatibility
 |                      | Version                   |
 |----------------------|---------------------------|
-| Ballerina Language   | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language   | Ballerina Swan Lake 2201.4.1|
 | eBay negotiation API | v1.1.0                    |
 
 ## Report issues

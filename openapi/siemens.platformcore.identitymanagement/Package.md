@@ -6,7 +6,7 @@ The `ballerinax/siemens.platformcore.identitymanagement` is a [Ballerina](https:
 ### Compatibility
 |                                   | Version                   |
 |-----------------------------------|---------------------------|
-| Ballerina Language                | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language                | Ballerina Swan Lake 2201.4.1|
 | Siemens Identity Management  API  | 3.3.0                     |
 
 ## Report issues

@@ -6,7 +6,7 @@ The `ballerinax/zoho.crm.rest` is a [Ballerina](https://ballerina.io/) connector
 ### Compatibility
 |                       | Version             |
 |-----------------------|---------------------|
-| Ballerina Language    | Swan Lake 2201.0.3  | 
+| Ballerina Language    | Swan Lake 2201.4.1  | 
 | Zoho CRM REST API     | v2                  |
 
 ## Report issues

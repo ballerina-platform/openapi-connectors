@@ -6,7 +6,7 @@ The `ballerinax/saps4hana.itcm.accountreceivable` is a [Ballerina](https://balle
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language | Ballerina Swan Lake 2201.4.1|
 | SAPS4HANA ITCM API | 1.0.0                     |
 
 ## Report issues

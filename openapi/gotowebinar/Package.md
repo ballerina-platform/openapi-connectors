@@ -7,7 +7,7 @@ This package provides the capability to schedule webinars and customize webinars
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.2.1| 
+| Ballerina Language | Swan Lake 2201.4.1| 
 | GoToWebinar API    | v2.0            |
 
 ## Report issues

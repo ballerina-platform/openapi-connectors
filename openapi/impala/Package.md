@@ -7,7 +7,7 @@ This package provides the capability to search, book or sell hotels rooms.
 ### Compatibility
 |                    | Version           |
 |--------------------|-------------------|
-| Ballerina Language | Swan Lake 2201.0.3| 
+| Ballerina Language | Swan Lake 2201.4.1| 
 | Impala API         | v1.0.0            |
 
 ## Report issues

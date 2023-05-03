@@ -6,7 +6,7 @@ The `ballerinax/commercetools.auditlog` is a [Ballerina](https://ballerina.io/) 
 ### Compatibility
 |                    | Version                     |
 |--------------------|-----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language | Ballerina Swan Lake 2201.4.1|
 | Commercetools API  | 1.0.0                       |
 
 ## Report issues

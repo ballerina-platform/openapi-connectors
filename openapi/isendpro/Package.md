@@ -9,7 +9,7 @@ This package provides the capability to send SMS to one or more recipients throu
 ### Compatibility
 |                    | Version         |
 |--------------------|-----------------|
-| Ballerina Language | Swan Lake 2201.2.1|
+| Ballerina Language | Swan Lake 2201.4.1|
 | iSendPro API       | 1.1.1           |
  
 ## Report issues

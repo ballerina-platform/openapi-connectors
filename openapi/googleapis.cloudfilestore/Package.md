@@ -7,7 +7,7 @@ This package provides the capability to create and manage cloud file servers.
 ### Compatibility
 |                            | Version         |
 |----------------------------|-----------------|
-| Ballerina Language         | Swan Lake 2201.2.1| 
+| Ballerina Language         | Swan Lake 2201.4.1| 
 | Google Cloud Filestore API | v1              |
 
 ## Report issues

@@ -6,7 +6,7 @@ The `ballerinax/instagram.bussiness` is a [Ballerina](https://ballerina.io/) con
 ### Compatibility
 |                       | Version                       |
 |-----------------------|-------------------------------|
-| Ballerina Language    | Ballerina Swan Lake 2201.2.1    | 
+| Ballerina Language    | Ballerina Swan Lake 2201.4.1    | 
 | Instagram Graph API   | v12.0                         |
 
 ## Report issues

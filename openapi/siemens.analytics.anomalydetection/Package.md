@@ -6,7 +6,7 @@ The `ballerinax/siemens.analytics.anomalydetection` is a [Ballerina](https://bal
 ### Compatibility
 |                                           | Version                   |
 |-------------------------------------------|---------------------------|
-| Ballerina Language                        | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language                        | Ballerina Swan Lake 2201.4.1|
 | Siemens Analytics Anomaly Detection API   | 3.4.0                     |
 
 ## Report issues

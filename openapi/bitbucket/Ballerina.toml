@@ -4,7 +4,7 @@ keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
 icon = "icon.png"
-distribution = "2201.2.1"
+distribution = "2201.4.1"
 version = "1.4.1"
 authors = ["Ballerina"]
 [build-options]

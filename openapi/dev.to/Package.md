@@ -7,7 +7,7 @@ The `ballerinax/dev.to` is a [Ballerina](https://ballerina.io/) connector for DE
 ### Compatibility
 |                           | Version                   |
 |---------------------------|---------------------------|
-| Ballerina Language        | Swan Lake 2201.2.1          |
+| Ballerina Language        | Swan Lake 2201.4.1          |
 | DEV API                   | 0.9.7                     |
 
 ## Report issues

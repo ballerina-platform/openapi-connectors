@@ -8,7 +8,7 @@ This package provides the capability to access worlds biggest online English dic
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1|
+| Ballerina Language | Ballerina Swan Lake 2201.4.1|
 | Wordnik API        | v4.0                      |
 
 ## Report issues

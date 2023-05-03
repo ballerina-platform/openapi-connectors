@@ -7,7 +7,7 @@ This package provides the capability to access Livestorm API operations such as 
 ### Compatibility
 |                    | Version                    |
 |--------------------|----------------------------|
-| Ballerina Language | Ballerina Swan Lake 2201.2.1 |
+| Ballerina Language | Ballerina Swan Lake 2201.4.1 |
 | Livestorm API      | V1                         |
 
 ## Report issues

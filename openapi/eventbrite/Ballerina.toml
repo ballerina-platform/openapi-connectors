@@ -6,5 +6,5 @@ name = "eventbrite"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/eventbrite"
-version = "1.6.0"
+version = "1.6.1"
 authors = ["Ballerina"]

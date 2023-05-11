@@ -6,8 +6,7 @@ name = "stabilityai"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/stabilityai"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Ballerina"]
-
 [build-options]
 observabilityIncluded = true

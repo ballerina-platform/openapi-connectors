@@ -6,7 +6,7 @@ name = "keap"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/keap"
-version = "1.3.0"
+version = "1.3.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

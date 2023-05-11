@@ -6,7 +6,7 @@ name = "godaddy.shopper"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/godaddy.shopper"
-version = "1.5.0"
+version = "1.5.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

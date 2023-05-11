@@ -1,5 +1,4 @@
 [package]
-
 license = ["Apache-2.0"]
 keywords = ["AI/Text", "Azure OpenAI", "Cost/Paid", "Completions", "GPT-3", "Vendor/Microsoft"]
 org = "ballerinax"
@@ -7,8 +6,7 @@ name = "azure.openai.text"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/azure.openai.text"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Ballerina"]
- 
 [build-options]
 observabilityIncluded = true

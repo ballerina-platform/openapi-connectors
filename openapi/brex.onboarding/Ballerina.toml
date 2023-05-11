@@ -6,7 +6,7 @@ name = "brex.onboarding"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/brex.onboarding"
-version = "1.5.0"
+version = "1.5.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

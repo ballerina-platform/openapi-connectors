@@ -5,8 +5,8 @@ org = "ballerinax"
 name = "hubspot.crm.property"
 icon = "icon.png"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "2.3.0"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/hubspot.crm.property"
+version = "2.3.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

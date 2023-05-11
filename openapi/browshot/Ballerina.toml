@@ -5,8 +5,8 @@ org = "ballerinax"
 name = "browshot"
 icon = "icon.png"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
-version = "1.5.0"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/browshot"
+version = "1.5.1"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

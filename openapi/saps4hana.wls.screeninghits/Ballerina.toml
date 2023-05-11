@@ -5,7 +5,7 @@ org = "ballerinax"
 name = "saps4hana.wls.screeninghits"
 icon = "icon.png"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/saps4hana.wls.screeninghits"
 version = "1.4.0"
 authors = ["Ballerina"]
 [build-options]

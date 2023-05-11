@@ -5,7 +5,7 @@ org = "ballerinax"
 name = "hubspot.files"
 icon = "icon.png"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/hubspot.files"
 version = "2.3.0"
 authors = ["Ballerina"]
 [build-options]

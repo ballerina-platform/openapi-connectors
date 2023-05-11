@@ -6,7 +6,7 @@ name = "pinecone.index"
 icon = "icon.png"
 version = "1.0.1"
 distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/openapi-connectors"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/pinecone.index"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

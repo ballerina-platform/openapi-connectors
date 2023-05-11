@@ -1,0 +1,13 @@
+id: cloudmersive.security
+displayName: Cloudmersive Security
+type: OpenAPI
+version: v1
+description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. The Cloudmersive Security APIs help you detect and block security threats.
+idlPath: /cloudmersive.security/v1/openapi.yaml
+thumbnailPath: /cloudmersive.security/v1/icon.png
+documentationPath: /cloudmersive.security/v1/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://testapi.cloudmersive.com/

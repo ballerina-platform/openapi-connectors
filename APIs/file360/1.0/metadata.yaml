@@ -1,0 +1,11 @@
+id: file360
+displayName: file360
+type: OpenAPI
+version: "1.0"
+description: This is the [file360](https://developer.opentext.com/apis/ebc5860f-3e04-4d1b-a8be-b2683738c701/File360) OpenAPI Specification. An API that allows interaction with File360 Web client. The File360 Web client, a world class user experience powered by Angular/CSS, is built upon a set of RESTful APIs. The power of the web application is available to our customers and partners with the RESTful APIs which power every bit of the web application. Please see https://file360demo.otxlab.com/File360Web/test/api for examples and test harness.
+idlPath: /file360/1.0/openapi.yaml
+thumbnailPath: /file360/1.0/icon.png
+documentationPath: /file360/1.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium

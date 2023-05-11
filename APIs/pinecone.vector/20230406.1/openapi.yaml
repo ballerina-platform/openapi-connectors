@@ -1,0 +1,425 @@
+openapi: 3.0.2
+info:
+  x-ballerina-display:
+    label: Pinecone Vector
+    iconPath: "icon.png"
+  title: Pinecone Vector API
+  description: This is a generated connector for the `Vector Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database which supports building developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles. 
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create a new project in [Pinecone](https://www.pinecone.io/) and obtain an API Key.
+  contact:
+    name: Pinecone.io
+    url: "https://pinecone.io"
+    email: "support@pinecone.io"
+  version: "20230406.1"
+externalDocs:
+  url: https://docs.pinecone.io/
+  description: The official Pinecone API documentation
+tags:
+  - name: Vector Operations
+    description: Endpoints for manipulating vectors
+paths:
+  /describe_index_stats:
+    post:
+      tags:
+        - Vector Operations
+      summary: Describe Index Stats
+      description: The `DescribeIndexStats` operation returns statistics about the index's contents, including the vector count per namespace and the number of dimensions.
+      operationId: DescribeIndexStats
+      x-ballerina-display:
+        label: Describe Index Stats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DescribeIndexStatsRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DescribeIndexStatsResponse'
+
+  /query:
+    post:
+      tags:
+        - Vector Operations
+      summary: Query
+      description: The `Query` operation searches a namespace, using a query vector. It retrieves the ids of the most similar items in a namespace, along with their similarity scores.
+      operationId: Query
+      x-ballerina-display:
+        label: Query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+
+  /vectors/delete:
+    post:
+      tags:
+        - Vector Operations
+      summary: Delete
+      description: The `Delete` operation deletes vectors, by id, from a single namespace. You can delete items by their id, from a single namespace.
+      operationId: Delete
+      x-ballerina-display:
+        label: Delete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+
+  /vectors/fetch:
+    get:
+      tags:
+        - Vector Operations
+      summary: Fetch
+      description: The `Fetch` operation looks up and returns vectors, by ID, from a single namespace. The returned vectors include the vector data and/or metadata.
+      operationId: Fetch
+      x-ballerina-display:
+        label: Fetch
+      parameters:
+        - name: ids
+          description: The vector IDs to fetch. Does not accept values containing spaces.
+          in: query
+          required: true
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: namespace
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FetchResponse'
+
+  /vectors/update:
+    post:
+      tags:
+        - Vector Operations
+      summary: Fetch
+      description: The `Update` operation updates vector in a namespace. If a value is included, it will overwrite the previous value. If a set_metadata is included, the values of the fields specified in it will be added or overwrite the previous value.
+      operationId: Update
+      x-ballerina-display:
+        label: Update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateResponse'
+
+  /vectors/upsert:
+    post:
+      tags:
+        - Vector Operations
+      summary: Upsert
+      description: The Upsert operation writes vectors into a namespace. If a new value is upserted for an existing vector id, it will overwrite the previous value.
+      operationId: Upsert
+      x-ballerina-display:
+        label: Upsert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertRequest'
+      responses:
+        200:
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertResponse'
+  
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: Api-Key
+
+  schemas:
+    VectorDimensionality:
+      type: integer
+      format: int32
+      description: The number of dimensions in the vector representation
+      minimum: 1
+      maximum: 20000
+      
+    NamespaceName:
+      type: string
+      format: NamespaceName
+      description: An index namespace name
+      example: "namespace-0"
+      
+    VectorId:
+      type: string
+      format: VectorId
+      description: The unique ID of a vector
+      example: "vector-0"
+          
+    VectorFilter:
+      type: object
+      description: If this parameter is present, the operation only affects vectors that satisfy the filter. See https://www.pinecone.io/docs/metadata-filtering/.
+      additionalProperties: true
+      example:
+        hello:
+          - "alpha"
+          - "bravo"
+      
+    VectorMetadata:
+      type: object
+      additionalProperties: true
+      example:
+        hello: "alpha"
+      
+    VectorData:
+      type: array
+      description: Vector dense data. This should be the same length as the dimension of the index being queried.
+      items:
+        type: number
+        format: float
+      example:
+        - 1.0
+        - 2.0
+        - 3.0
+        
+    SparseVectorData:
+      type: object
+      description: Vector sparse data. Represented as a list of indices and a list of corresponded values, which must be the same length.
+      required:
+        - indices
+        - values
+      properties:
+        indices:
+          description: The indices of the sparse data.
+          type: array
+          items:
+            type: integer
+            format: int64
+          example:
+            - 1
+        values:
+          description: The corresponding values of the sparse data, which must be the same length as the indices.
+          type: array
+          items:
+            type: number
+            format: float
+          example:
+            - 2
+
+    Vector:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/VectorId'
+        values:
+          $ref: '#/components/schemas/VectorData'
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        metadata:
+          $ref: '#/components/schemas/VectorMetadata'
+          
+    DescribeIndexStatsRequest:
+      type: object
+      properties:
+        filter:
+          $ref: '#/components/schemas/VectorFilter'
+          
+    IndexNamespaceStats:
+      type: object
+      properties:
+        vectorCount:
+          type: integer
+          format: int64
+          
+    DescribeIndexStatsResponse:
+      type: object
+      properties:
+        namespaces:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/IndexNamespaceStats'
+        dimension:
+          $ref: '#/components/schemas/VectorDimensionality'
+        indexFullness:
+          type: number
+          format: float
+          description: The fullness of the index, regardless of whether a metadata filter expression was passed. The granularity of this metric is 10%.
+        totalVectorCount:
+          type: integer
+          format: int64
+          
+    QueryRequest:
+      type: object
+      required:
+        - topK
+      properties:
+        namespace:
+          $ref: '#/components/schemas/NamespaceName'
+        topK:
+          type: integer
+          format: int64
+          default: 100
+          minimum: 0
+          maximum: 10000
+          description: The number of results to return for each query.
+        filter:
+          $ref: '#/components/schemas/VectorFilter'
+        includeValues:
+          type: boolean
+          default: false
+        includeMetadata:
+          type: boolean
+          default: false
+        vector:
+          $ref: '#/components/schemas/VectorData'
+        sparseVector:
+          $ref: '#/components/schemas/SparseVectorData'
+        id:
+          $ref: '#/components/schemas/VectorId'
+          
+    QueryMatch:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          $ref: '#/components/schemas/VectorId'
+        score:
+          type: number
+          format: float
+        values:
+          $ref: '#/components/schemas/VectorData'
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        metadata:
+          $ref: '#/components/schemas/VectorMetadata'
+          
+    QueryResponse:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryMatch'
+        namespace:
+          $ref: '#/components/schemas/NamespaceName'
+          
+    DeleteRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          maxLength: 1000
+          items:
+            $ref: '#/components/schemas/VectorId'
+        deleteAll:
+          type: boolean
+          default: false
+        namespace:
+          $ref: '#/components/schemas/NamespaceName'
+        filter:
+          $ref: '#/components/schemas/VectorFilter'
+          
+    DeleteResponse:
+      type: object
+      properties: {}
+        
+    FetchResponse:
+      type: object
+      properties: 
+        vectors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Vector'
+          title: The fetched vectors, in the form of a map between the fetched ids and the fetched vectors
+        namespace:
+          type: string
+          example: example-namespace
+          description: The namespace of the vectors.
+      description: The response for the `Fetch` operation.
+          
+    UpdateRequest:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: VectorId
+          description: The vector's unique ID
+        values:
+          $ref: '#/components/schemas/VectorData'
+        sparseValues:
+          $ref: '#/components/schemas/SparseVectorData'
+        setMetadata:
+          $ref: '#/components/schemas/VectorMetadata'
+        namespace:
+          $ref: '#/components/schemas/NamespaceName'
+          
+    UpdateResponse:
+      type: object
+      properties: {}
+      
+    UpsertRequest:
+      type: object
+      required:
+        - vectors
+      properties:
+        vectors:
+          type: array
+          maxLength: 100
+          items:
+            $ref: '#/components/schemas/Vector'
+        namespace:
+          $ref: '#/components/schemas/NamespaceName'
+          
+    UpsertResponse:
+      type: object
+      properties:
+        upsertedCount:
+          type: integer
+          format: int64
+  
+    ErrorMessage:
+      type: string
+      
+security:
+  - ApiKey: []

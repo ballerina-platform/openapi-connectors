@@ -1,0 +1,551 @@
+openapi: 3.0.1
+info:
+  title: Agreement Service
+  description: >
+    This is a generated connector for [SAP Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    In SAP Intelligent Trade Claims Management, agreements are used as contractual commitments or obligations to calculate accruals and promotion eligibility.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Agreement
+    iconPath: "icon.png"
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: Business Documentation for Agreement Service
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/fb28821dda6243489d10168516b8f971.html
+# servers:
+# - url: https://{host}.{environment}.{domain}/v1
+#   variables:
+#     host:
+#       default: api.dev1
+#       description: Your host where SAP Intelligent Trade Claims Management has deployed
+#     environment:
+#       default: e2e
+#       description: Your defined environment for your SAP Intelligent Trade Claims Management account
+#     domain:
+#       default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: Agreement
+paths:
+  /agreements:
+    post:
+      tags:
+      - Agreement
+      summary: Create a new Agreement
+      description: Using this API, user can create a Agreement. As of now, batch creation is not supported
+      operationId: createAgreement
+      requestBody:
+        description: Request payload to create an agreement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgreementHeaderDTOIncoming'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgreementMessage'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /agreements/{externalId}:
+    delete:
+      tags:
+      - Agreement
+      summary: Delete an Agreement
+      description: Using this API, user can delete an particular Agreement using {externalId}
+      operationId: deleteAgreement
+      parameters:
+      - name: externalId
+        in: path
+        description: agreement id to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success Deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAgreementDeletionMessage'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDeleteMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      security:
+      - OAuth2: []
+      deprecated: false
+components:
+  schemas:
+    AgreementHeaderDTOIncoming:
+      type: object
+      required:
+      - businessSystem
+      - salesHeader
+      properties:
+        additionalValueDays:
+          type: integer
+          format: int32
+          minimum: 0
+        accruals:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementAccrualDTOIncoming'
+        description:
+          type: string
+          minLength: 0
+          maxLength: 240
+        externalStatus:
+          type: string
+          minLength: 0
+          maxLength: 1
+        texts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementTextDTOOutgoing'
+        externalType:
+          type: string
+          minLength: 0
+          maxLength: 4
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: string
+          format: date
+        businessSystem:
+          type: integer
+          format: int64
+        externalCustomerId:
+          type: string
+        isMarkedForDeletion:
+          type: boolean
+          default: false
+        fixedValueDate:
+          type: string
+          format: date
+        externalPaymentMethod:
+          type: string
+          minLength: 0
+          maxLength: 1
+        externalPaymentTerms:
+          type: string
+          minLength: 0
+          maxLength: 4
+        promotionExternalID:
+          type: string
+        reference:
+          type: string
+          minLength: 0
+          maxLength: 40
+        externalSalesArea:
+          $ref: '#/components/schemas/SalesArea'
+        salesHeader:
+          $ref: '#/components/schemas/SalesDocument'
+        isInPrecisionMode:
+          type: boolean
+      title: Agreement Header
+      example:
+        businessSystem: 1
+        externalType: RAT2
+        agreementStatus: A
+        externalPaymentMethod: C
+        externalPaymentTerms: '30'
+        description: BB-Org South-DELI
+        additionalValueDays: null
+        fixedValueDate: '2020-01-03'
+        externalCustomerId: '9100021'
+        reference: P1234
+        externalSalesArea:
+          salesOrganization: '0002'
+          distributionChannel: '02'
+          salesDivision: '02'
+        promotionExternalId: TP72396729
+        isInPrecisionMode: false
+        isMarkedForDeletion: false
+        salesHeader:
+          displayId: '616147'
+          text: Sales Text
+          currencyCode: USD
+          processingStatus: AB
+        validFrom: '2020-01-03'
+        validTo: '2020-02-01'
+        texts:
+        - type:
+            externalId: '0001'
+            names:
+            - language: en.US
+              text: string
+          language: en.US
+          text: string
+        accruals:
+        - conditionRecordNumber: '1234'
+          externalKey: '{"KNUMH": 20006349, "VAKEY": 6062}'
+          conditionRecordAttributes: '{"PRODH1": "030104102401880570"}'
+          accrualAttributes: '{"KUNAG": "9200069", "MATNR": "92338391253"}'
+          conditionTypeExternalId: BB
+          customerHierarchyNode:
+            hierarchyID: H989
+            customerHierarchyTypeCode: C1
+            customerHierarchyNodeID: H989
+          productHierarchyNodeKeyLevel1:
+            hierarchyID: H999
+            productHierarchyTypeCode: P1
+            productGroupID: H999
+          productHierarchyNodeKeyLevel2:
+            hierarchyID: H999
+            productHierarchyTypeCode: P1
+            productGroupID: H999
+          productHierarchyNodeKeyLevel3:
+            hierarchyID: H999
+            productHierarchyTypeCode: P1
+            productGroupID: H999
+          customerExternalId: C999
+          externalProductId: PR999
+          externalSalesArea:
+            salesOrganization: '0002'
+            distributionChannel: '02'
+            salesDivision: '02'
+          rebatePercentage: null
+          rebateAmount:
+            amount: -20.0
+            currency: USD
+          rebateBaseUnit: CAS
+          rebateBaseAmount: 2
+          conditionCurrency: USD
+          paidOutAmount:
+            amount: -100.0
+            currency: USD
+          openAccrualAmount:
+            amount: -100.0
+            currency: USD
+          maxPayOutAmount:
+            amount: -100.0
+            currency: USD
+    AgreementTextDTOOutgoing:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AgreementTextType'
+        language:
+          type: string
+          minLength: 0
+          maxLength: 35
+        text:
+          type: string
+      title: Agreement Text
+    AgreementTextType:
+      type: object
+      properties:
+        externalId:
+          type: string
+          minLength: 0
+          maxLength: 4
+        names:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgreementTextTypeName'
+      title: Agreement Text Type
+    AgreementTextTypeName:
+      type: object
+      properties:
+        text:
+          type: string
+        language:
+          type: string
+          minLength: 0
+          maxLength: 35
+      title: Agreement Text Type Name
+    AgreementType:
+      type: object
+      required:
+      - rebateAgreementType
+      properties:
+        canConditionRecordValidityDiffer:
+          type: boolean
+        externalConditionTypeTableGroup:
+          type: string
+          minLength: 0
+          maxLength: 4
+        isEnhancedProcessingVakeyActive:
+          type: boolean
+        externalFinalSettlementOrderType:
+          type: string
+          minLength: 0
+          maxLength: 4
+        language:
+          type: string
+          minLength: 0
+          maxLength: 35
+        externalManualAccrualOrderType:
+          type: string
+          minLength: 0
+          maxLength: 4
+        externalManualPaymentProcedure:
+          type: string
+          minLength: 0
+          maxLength: 1
+        externalMinValueForFinalSettlement:
+          type: string
+          minLength: 0
+          maxLength: 1
+        externalPartialSettlementOrderType:
+          type: string
+          minLength: 0
+          maxLength: 4
+        externalPaymentMethod:
+          type: string
+          minLength: 0
+          maxLength: 1
+        canManualAccrualsBePosted:
+          type: boolean
+        rebateAgreementType:
+          type: string
+          minLength: 0
+          maxLength: 4
+        shallManualAccrualsBeReversed:
+          type: boolean
+        text:
+          type: string
+      title: Agreement Type
+    Amount:
+      type: object
+      properties:
+        amount:
+          type: number
+          example: 22.542284
+        currencyCode:
+          type: string
+          minLength: 0
+          maxLength: 3
+      title: Amount
+    ConditionTypeText:
+      type: object
+      properties:
+        externalConditonTypeId:
+          type: string
+          minLength: 0
+          maxLength: 4
+        text:
+          type: string
+        language:
+          type: string
+          minLength: 0
+          maxLength: 35
+      title: Condition Type Text
+    HierarchyNodeKey:
+      type: object
+      properties:
+        hierarchyID:
+          type: string
+          minLength: 0
+          maxLength: 20
+        hierarchyNodeID:
+          type: string
+          minLength: 0
+          maxLength: 18
+        hierarchyTypeCode:
+          type: string
+          minLength: 0
+          maxLength: 2
+      title: Hierarchy Node Key
+    ResponseAgreementDeletionMessage:
+      type: object
+      example:
+        externalId: TP72396729
+        message: Success Deleted!
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response Agreement Message
+    ResponseAgreementMessage:
+      type: object
+      example:
+        externalId: TP72396729
+        message: Success Created!
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response Agreement Message
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseDeleteMessage:
+      type: object
+      example:
+        message: externalId cannot be null
+        timestamp: '2021-01-18T18:33:18.914Z'
+        uri: string
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response Message
+    ResponseMessage:
+      type: object
+      example:
+        error: businessSystem is null
+        message: business system cannot be empty or null
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Response Message
+    SalesArea:
+      type: object
+      properties:
+        distributionChannel:
+          type: string
+          minLength: 0
+          maxLength: 2
+        salesDivision:
+          type: string
+          minLength: 0
+          maxLength: 2
+        salesOrganization:
+          type: string
+          minLength: 0
+          maxLength: 4
+      title: Sales Area
+    SalesDocument:
+      type: object
+      required:
+      - displayID
+      properties:
+        currencyCode:
+          type: string
+          minLength: 0
+          maxLength: 3
+        displayID:
+          type: string
+          minLength: 0
+          maxLength: 40
+      title: Sales Document
+    AgreementAccrualDTOIncoming:
+      type: object
+      required:
+      - externalKey
+      properties:
+        accrualAttributes:
+          type: string
+        conditionCurrency:
+          type: string
+          minLength: 0
+          maxLength: 3
+        conditionRecordAttributes:
+          type: string
+        conditionRecordNumber:
+          type: string
+          minLength: 0
+          maxLength: 10
+        conditionTypeExternalId:
+          type: string
+        customerHierarchyNode:
+          $ref: '#/components/schemas/HierarchyNodeKey'
+        customerExternalId:
+          type: string
+          minLength: 0
+          maxLength: 10
+        externalKey:
+          type: string
+        maxPayOutAmount:
+          $ref: '#/components/schemas/Amount'
+        openAccrualAmount:
+          $ref: '#/components/schemas/Amount'
+        paidOutAmount:
+          $ref: '#/components/schemas/Amount'
+        productHierarchyNodeLevel1:
+          $ref: '#/components/schemas/HierarchyNodeKey'
+        productHierarchyNodeLevel2:
+          $ref: '#/components/schemas/HierarchyNodeKey'
+        productHierarchyNodeLevel3:
+          $ref: '#/components/schemas/HierarchyNodeKey'
+        externalProductId:
+          type: string
+          minLength: 0
+          maxLength: 40
+        rebateAmount:
+          $ref: '#/components/schemas/Amount'
+        rebateBaseAmount:
+          type: integer
+          format: int32
+        rebateBaseUnit:
+          type: string
+          minLength: 0
+          maxLength: 3
+        rebatePercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          example: 30.65
+        externalSalesArea:
+          $ref: '#/components/schemas/SalesArea'
+      title: Agreement Accrual
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID and secret) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The Agreement service represent Agreement that can be posted to or delete from SAP Intelligent Trade Claims Management by a user.

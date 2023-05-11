@@ -1,0 +1,11 @@
+id: iris.merchants
+displayName: IRIS Merchants
+type: OpenAPI
+version: 1.6.4
+description: This is the [IRIS Merchants API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+idlPath: /iris.merchants/1.6.4/openapi.yaml
+thumbnailPath: /iris.merchants/1.6.4/icon.png
+documentationPath: /iris.merchants/1.6.4/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid

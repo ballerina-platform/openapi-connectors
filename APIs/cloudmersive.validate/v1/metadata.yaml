@@ -1,0 +1,13 @@
+id: cloudmersive.validate
+displayName: Cloudmersive Validate
+type: OpenAPI
+version: v1
+description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. The Cloudmersive Validation APIs help you validate data. Check if an E-mail address is real. Check if a domain is real. Check up on an IP address, and even where it is located. All this and much more is available in the validation API.
+idlPath: /cloudmersive.validate/v1/openapi.yaml
+thumbnailPath: /cloudmersive.validate/v1/icon.png
+documentationPath: /cloudmersive.validate/v1/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://testapi.cloudmersive.com/

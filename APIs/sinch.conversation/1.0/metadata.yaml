@@ -1,0 +1,14 @@
+id: sinch.conversation
+displayName: Sinch Conversation
+type: OpenAPI
+version: "1.0"
+description: This is the [Sinch Conversation API v1.0](https://www.sinch.com/) OpenAPI specification. Send and receive messages globally over SMS, RCS, WhatsApp, Viber Business, Facebook messenger and other popular channels using the Sinch Conversation API. The Conversation API endpoint uses built-in transcoding to give you the power of conversation across all supported channels and, if required, full control over channel specific features.
+idlPath: /sinch.conversation/1.0/openapi.yaml
+thumbnailPath: /sinch.conversation/1.0/icon.png
+documentationPath: /sinch.conversation/1.0/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: "https://eu.conversation.api.sinch.com"
+  - url: "https://us.conversation.api.sinch.com"

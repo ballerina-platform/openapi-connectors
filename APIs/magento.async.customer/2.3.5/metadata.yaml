@@ -1,0 +1,11 @@
+id: magento.async.customer
+displayName: Magento Asynchronous Customer
+type: OpenAPI
+version: 2.3.5
+description: This is the [Magento REST Asynchronous API v2.2](https://devdocs.magento.com/redoc/2.3/async-admin-rest-api.html) OpenAPI specification. The Magento Asynchronous Customer REST API service enables applications to build and manage the Magento e-commerce platform.
+idlPath: /magento.async.customer/2.3.5/openapi.yaml
+thumbnailPath: /magento.async.customer/2.3.5/icon.png
+documentationPath: /magento.async.customer/2.3.5/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

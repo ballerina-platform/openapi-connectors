@@ -1,0 +1,13 @@
+id: mitto.sms
+displayName: Mitto SMS
+type: OpenAPI
+version: "1"
+description: This is the [Mitto SMS and Bulk SMS APIs v1](https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
+idlPath: /mitto.sms/1/openapi.yaml
+thumbnailPath: /mitto.sms/1/icon.png
+documentationPath: /mitto.sms/1/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: https://rest.mittoapi.net

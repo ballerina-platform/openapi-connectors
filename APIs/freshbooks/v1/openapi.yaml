@@ -1,0 +1,3377 @@
+openapi: 3.0.1
+info:
+  title: FreshBooks API
+  version: v1
+  description: >
+    This is a generated connector for [FreshBooks API v1](https://www.freshbooks.com/api/start) OpenAPI specification.
+    FreshBooks lets you create professional looking invoices in seconds,
+    automatically record expenses with ease and track your time quickly and
+    efficiently so you can focus on what matters most - serving the needs of
+    your clients. The FreshBooks API is an interface for accessing your
+    FreshBooks data using JSON. 
+  x-ballerina-init-description: >-
+    The connector initialization requires setting the API credentials.
+    Create a [FreshBooks account](https://www.freshbooks.com/) and obtain tokens
+    by following [this guide](https://www.freshbooks.com/api/start).
+  x-ballerina-display:
+    label: FreshBooks
+    iconPath: icon.png
+servers:
+  - url: https://api.freshbooks.com/
+tags: []
+paths:
+  /accounting/account/{account-ID}/users/clients:
+    get:
+      tags:
+        - Client
+      description: List all clients
+      operationId: List Clients
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientListResponse'
+    post:
+      tags:
+        - Client
+      description: Create a new client
+      operationId: Create Client
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      requestBody:
+        description: New client data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientObjectResponse'
+  /accounting/account/{account-ID}/users/clients/{client-ID}:
+    get:
+      tags:
+        - Client
+      description: Get a single client with the parameter associated with clientId.
+      operationId: Get Client
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: client-ID
+          required: true
+          schema:
+            type: string
+          description: Client ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientObjectResponse'
+    put:
+      tags:
+        - Client
+      description: Upadate a client
+      operationId: Update Client
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: client-ID
+          required: true
+          schema:
+            type: string
+          description: Client ID.
+      requestBody:
+        description: Updated client data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientObjectResponse'
+  /accounting/account/{account-ID}/estimates/estimates:
+    get:
+      tags:
+        - Estimate
+      description: Get an entire list of estimates that exist within your account.
+      operationId: List Estimates
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateListResponse'
+  /accounting/account/{account-ID}/estimates/estimates/{estimate-ID}:
+    get:
+      tags:
+        - Estimate
+      description: Get a single estimate
+      operationId: Get Estimate
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: estimate-ID
+          required: true
+          schema:
+            type: string
+          description: Estimate ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateObjectResponse'
+    put:
+      tags:
+        - Estimate
+      description: Update an estimate
+      operationId: Update Estimate
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: estimate-ID
+          required: true
+          schema:
+            type: string
+          description: Estimate ID.
+      requestBody:
+        description: Updated estimate data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EstimateUpdateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimateObjectResponse'
+  /accounting/account/{account-ID}/expenses/expenses:
+    get:
+      tags:
+        - Expense
+      description: Get all expenses
+      operationId: List Expenses
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseListResponse'
+    post:
+      tags:
+        - Expense
+      description: Create a new expense
+      operationId: Create Expense
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      requestBody:
+        description: New expense data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseObjectResponse'
+  /accounting/account/{account-ID}/expenses/expenses/{expense-ID}:
+    get:
+      tags:
+        - Expense
+      description: Get a single expense
+      operationId: Get Expense
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: expense-ID
+          required: true
+          schema:
+            type: string
+          description: Expense ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseObjectResponse'
+    put:
+      tags:
+        - Expense
+      description: Update an expense
+      operationId: Update Expense
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: expense-ID
+          required: true
+          schema:
+            type: string
+          description: Expense ID.
+      requestBody:
+        description: Updated expense data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpenseUpdateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseObjectResponse'
+  /accounting/account/{account-ID}/invoices/invoices:
+    get:
+      tags:
+        - Invoice
+      description: Get all invoices
+      operationId: List Invoices
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceListResponse'
+    post:
+      tags:
+        - Invoice
+      description: Create a new invoice
+      operationId: Create Invoice
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      requestBody:
+        description: New invoice data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceObjectResponse'
+  /accounting/account/{account-ID}/invoices/invoices/{invoice-ID}:
+    get:
+      tags:
+        - Invoice
+      description: Get a single invoice
+      operationId: Get Invoice
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: invoice-ID
+          required: true
+          schema:
+            type: string
+          description: Invoice ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceObjectResponse'
+    put:
+      tags:
+        - Invoice
+      description: Update an invoice
+      operationId: Update Invoice
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: invoice-ID
+          required: true
+          schema:
+            type: string
+          description: Invoice ID.
+      requestBody:
+        description: Updated invoice data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceUpdateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceObjectResponse'
+  /timetracking/business/{business_id}/time_entries:
+    get:
+      tags:
+        - TimeEntry
+      description: Get time entries
+      operationId: List Time Entries
+      parameters:
+        - in: path
+          name: business_id
+          required: true
+          schema:
+            type: string
+          description: Bussiness ID.
+        - in: query
+          name: billable
+          description: True returns entries that can be automatically added to an invoice
+          schema:
+            type: boolean
+        - in: query
+          name: billed
+          description: True returns entries that have already been added to an invoice
+          schema:
+            type: boolean
+        - in: query
+          name: client_id
+          description: Matches exact client ID
+          schema:
+            type: integer
+        - in: query
+          name: include_deleted
+          description: True returns deleted time entries
+          schema:
+            type: boolean
+        - in: query
+          name: team
+          description: True returns entries logged by all members of the business
+          schema:
+            type: boolean
+        - in: query
+          name: include_unlogged
+          description: True returns entries currently in progress for a running timer
+          schema:
+            type: boolean
+        - in: query
+          name: started_from
+          description: >-
+            matches entries that take place at or after the specified UTC
+            date/time
+          schema:
+            type: boolean
+        - in: query
+          name: started_to
+          description: >-
+            matches entries that take place before or at the specified UTC
+            date/time
+          schema:
+            type: boolean
+        - in: query
+          name: updated_since
+          description: >-
+            matches entries that have been updated at or after the specified UTC
+            date/time
+          schema:
+            type: boolean
+        - in: query
+          name: identity_id
+          description: Matches entries logged against a specific teammate or user
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeEntryListResponse'
+    post:
+      tags:
+        - TimeEntry
+      description: Create a new time entry
+      operationId: Create Time Entry
+      parameters:
+        - in: path
+          name: business_id
+          required: true
+          schema:
+            type: string
+          description: Bussiness ID.
+      requestBody:
+        description: New time entries data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeEntryCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeEntryObjectResponse'
+  /timetracking/business/{business_id}/time_entries/{time_entry_id}:
+    put:
+      tags:
+        - TimeEntry
+      description: Update a time entry
+      operationId: Update Time Entry
+      parameters:
+        - in: path
+          name: business_id
+          required: true
+          schema:
+            type: string
+          description: Bussiness ID.
+        - in: path
+          name: time_entry_id
+          required: true
+          schema:
+            type: string
+          description: Time entry ID.
+      requestBody:
+        description: Updated time entry data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimeEntryUpdateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimeEntryObjectResponse'
+    delete:
+      tags:
+        - TimeEntry
+      description: Delete a time entry
+      operationId: Delete Time Entry
+      parameters:
+        - in: path
+          name: business_id
+          required: true
+          schema:
+            type: string
+          description: Bussiness ID.
+        - in: path
+          name: time_entry_id
+          required: true
+          schema:
+            type: string
+          description: Time entry ID.
+      responses:
+        '204':
+          description: Success
+  /projects/business/{business_id}/projects:
+    post:
+      tags:
+        - Projects
+      description: Create a new project
+      operationId: Create Project
+      parameters:
+        - in: path
+          name: business_id
+          required: true
+          schema:
+            type: string
+          description: Bussiness ID.
+      requestBody:
+        description: New project data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectObjectResponse'
+  /accounting/account/{account-ID}/taxes/taxes:
+    get:
+      tags:
+        - Tax
+      description: Get details of all taxes
+      operationId: List Taxes
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxListResponse'
+    post:
+      tags:
+        - Tax
+      description: Create a new tax
+      operationId: Create Tax
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      requestBody:
+        description: New tax data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxObjectResponse'
+  /accounting/account/{account-ID}/taxes/taxes/{tax-ID}:
+    get:
+      tags:
+        - Tax
+      description: Get a single tax details
+      operationId: Get Tax
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: tax-ID
+          required: true
+          schema:
+            type: string
+          description: Tax ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxObjectResponse'
+    put:
+      tags:
+        - Tax
+      description: Update a tax
+      operationId: Update Tax
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: tax-ID
+          required: true
+          schema:
+            type: string
+          description: Tax ID.
+      requestBody:
+        description: Updated tax entry data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaxUpdateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaxObjectResponse'
+    delete:
+      tags:
+        - Tax
+      description: Delete a tax
+      operationId: Delete Tax
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: tax-ID
+          required: true
+          schema:
+            type: string
+          description: Tax ID.
+      responses:
+        '204':
+          description: Success
+  /accounting/account/{account-ID}/expenses/categories:
+    get:
+      tags:
+        - ExpenseCategory
+      description: Get details of all expense categories
+      operationId: List Expense Categories
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseCategoryListResponse'
+  /accounting/account/{account-ID}/expenses/categories/{category-ID}:
+    get:
+      tags:
+        - ExpenseCategory
+      description: Get a single expense category details
+      operationId: Get Expense Category
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: category-ID
+          required: true
+          schema:
+            type: string
+          description: Category ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseCategoryObjectResponse'
+  /accounting/account/{account-ID}/payments/payments:
+    get:
+      tags:
+        - Payment
+      description: Get details of all payments
+      operationId: List Payments
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymemtListResponse'
+    post:
+      tags:
+        - Payment
+      description: Add a payment to a specific invoice
+      operationId: Make Payment
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+      requestBody:
+        description: New payment data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymemtCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymemtObjectResponse'
+  /accounting/account/{account-ID}/payments/payments/{payment-ID}:
+    get:
+      tags:
+        - Payment
+      description: Get a single payment details
+      operationId: Get Payment
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: payment-ID
+          required: true
+          schema:
+            type: string
+          description: Payment ID.
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymemtObjectResponse' 
+    put:
+      tags:
+        - Payment
+      description: Update a payment
+      operationId: Update Payment
+      parameters:
+        - in: path
+          name: account-ID
+          required: true
+          schema:
+            type: string
+          description: Account ID.
+        - in: path
+          name: payment-ID
+          required: true
+          schema:
+            type: string
+          description: Payment ID.
+      requestBody:
+        description: Updated tax entry data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymemtCreateObject'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymemtObjectResponse'
+components:
+  schemas:
+    PaymemtObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                payment:
+                  $ref: '#/components/schemas/Payment'
+    PaymemtListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                payments:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Payment'
+    PaymemtCreateObject:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/Payment'
+    Payment:
+      type: object
+      properties:
+        accounting _systemid:
+          type: string
+          description: Unique identifier of business client exists on
+        amount:
+          type: object
+          description: Amount paid on invoice
+          properties:
+            amount:
+              type: string
+              description:   string-decimal amount
+            code:
+              type: string
+              description:   three-letter currency code
+        bulk_paymentid:
+          type: integer
+        clientid:
+          type: integer
+          description: ID of client who made the payment
+        creditid:
+          type: integer
+          description: ID of related credit
+        date:
+          type: string
+          description: Date the payment was made, YYYY-MM-DD format
+        from_credit:
+          type: boolean
+          description: Whether or not the payment was converted from a Credit on a Client’s account
+        gateway:
+          type: string
+          description: The payment processor used, if any
+        ID:
+          type: integer
+          description: Unique ID (across this business) for payment
+        invoiceid:
+          type: integer
+          description: ID of related invoice
+        logid:
+          type: integer
+          description: Duplicate of ID
+        note:
+          type: string
+          description: Notes on payment, often used for credit card reference number
+        orderid:
+          type: integer
+          description: ID of related orderid
+        overpaymentid:
+          type: integer
+          description: ID of related overpayment if relevant
+        send_client_notification:
+          type: boolean
+          description: Whether to send the client a notification of this payment
+        transactionid:
+          type: integer
+          description: Transaction ID
+        type:
+          type: string
+          description: “Check”, “Credit”, “Cash”, etc.
+        updated:
+         type: string
+         description: Date payment was last updated, YYYY-MM-DD
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+      required:
+        - "invoiceid"
+    ExpenseCategoryObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                category:
+                  $ref: '#/components/schemas/ExpenseCategory'
+    ExpenseCategoryListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                categories:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ExpenseCategory'
+    ExpenseCategory:      
+      type: object
+      properties:
+        category:
+          type: string
+          description: Name for this category, e.g. “Advertising”
+        categoryid:
+          type: integer
+          description: Unique to this business ID for this category
+        ID:
+          type: integer
+          description: Duplicate of categoryid
+        is_editable:
+          type: boolean
+          description: True/false can be edited
+        is_cogs:
+          type: boolean
+          description: True/false represents cost of goods sold
+        parentid:
+          type: integer
+          description: Categorid of parent category
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+    TaxObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                tax:
+                  $ref: '#/components/schemas/Project'
+    TaxListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                taxes:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Tax'
+    TaxCreateObject:
+      type: object
+      properties:
+        tax:
+          $ref: '#/components/schemas/TaxCreate'      
+    TaxCreate:
+      type: object
+      properties:
+        accounting _systemid:
+          type: string
+          description: Unique identifier of business tax exists on
+        updated:
+          type: string
+          description: Date object was last updated, YYYY-MM-DD HH:MM:SS format
+        name:
+          type: string
+          description: Identifiable name for your tax, e.g. “GST”
+        number:
+          type: string
+          description: An external number that identifies your tax submission
+        taxid:
+          type: integer
+          description: Unique identifier of this tax within this business
+        amount:
+          type: number
+          description: String-decimal representing percentage value of tax
+        compound:
+          type: boolean
+          description: Compound taxes are calculated on top of primary taxes
+        ID:
+          type: integer
+          description: Unique ID to look this tax up later
+      required:
+        - "name"
+    TaxUpdateObject:
+      type: object
+      properties:
+        tax:
+          $ref: '#/components/schemas/TaxUpdate' 
+    TaxUpdate:
+      type: object
+      properties:
+        accounting _systemid:
+          type: string
+          description: Unique identifier of business tax exists on
+        updated:
+          type: string
+          description: Date object was last updated, YYYY-MM-DD HH:MM:SS format
+        name:
+          type: string
+          description: Identifiable name for your tax, e.g. “GST”
+        number:
+          type: string
+          description: An external number that identifies your tax submission
+        taxid:
+          type: integer
+          description: Unique identifier of this tax within this business
+        amount:
+          type: number
+          description: String-decimal representing percentage value of tax
+        compound:
+          type: boolean
+          description: Compound taxes are calculated on top of primary taxes
+        ID:
+          type: integer
+          description: Unique ID to look this tax up later
+      required:
+        - "name"
+    Tax:
+      type: object
+      properties:
+        accounting _systemid:
+          type: string
+          description: Unique identifier of business tax exists on
+        updated:
+          type: string
+          description: Date object was last updated, YYYY-MM-DD HH:MM:SS format
+        name:
+          type: string
+          description: Identifiable name for your tax, e.g. “GST”
+        number:
+          type: string
+          description: An external number that identifies your tax submission
+        taxid:
+          type: integer
+          description: Unique identifier of this tax within this business
+        amount:
+          type: number
+          description: String-decimal representing percentage value of tax
+        compound:
+          type: boolean
+          description: Compound taxes are calculated on top of primary taxes
+        ID:
+          type: integer
+          description: Unique ID to look this tax up later         
+    ProjectCreateObject:
+      type: object
+      properties:
+        project:
+          $ref: '#/components/schemas/ProjectCreate'
+    ProjectObjectResponse:
+      type: object
+      properties:
+        project:
+          $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      properties:
+        due_date:
+          type: string
+          description: Date of projected completion.
+        fixed_price:
+          type: string
+          description: >-
+            used for flat-rate projects. Represents the amount being charged to
+            the client for the project
+        group:
+          type: object
+          description: Subfields - pending_invitations, ID, members
+          properties:
+            pending_invitations:
+              type: array
+              items:
+                type: string
+              description: >-
+                the pending invites to employees and contractors within the
+                project
+            ID:
+              type: integer
+              description: Unique ID of group membership
+            members:
+              type: object
+              description: >-
+                subfields - first_name, last_name, role, identity_id, active,
+                company, ID, email
+              properties:
+                first_name:
+                  type: string
+                  description: First name of the identity
+                last_name:
+                  type: string
+                  description: Last name of the identity
+                role:
+                  type: string
+                  description: Named role identity holds in group
+                identity_id:
+                  type: integer
+                  description: The unique ID for the identity
+                active:
+                  type: boolean
+                  description: Whether the project is active or not
+                company:
+                  type: string
+                  description: The name of the business
+                ID:
+                  type: integer
+                  description: Unique ID for the membership
+                email:
+                  type: string
+                  description: Email of identity
+        description:
+          type: string
+          description: Description of project
+        complete:
+          type: boolean
+          description: Whether the project is completed or not
+        title:
+          type: string
+          description: The project’s title
+        project_type:
+          type: string
+          description: Type of project - fixed_price, hourly_rate
+        budget:
+          type: integer
+          description: Budget for project
+        updated_at:
+          type: string
+          description: The time the project was last updated
+        services:
+          type: object
+          description: Subfields - business_id, name, ID
+          properties:
+            business_id:
+              type: integer
+              description: Unique ID for business
+            name:
+              type: string
+              description: The name of the service
+            ID:
+              type: integer
+              description: Service ID
+        rate:
+          type: string
+          description: The hourly rate of the project. Only applies to hourly_rate projects
+        client_id:
+          type: integer
+          description: Unique ID of the client being billed for the project
+        created_at:
+          type: string
+          description: The date/time the project was created
+        logged_duration:
+          type: integer
+          description: The time logged for the project in seconds
+        ID:
+          type: integer
+          description: Unique ID for the project
+        billing_method:
+          type: string
+          description: The method of payment for the project
+        internal:
+          type: boolean
+          description: >-
+            clarifies that the project is internally within the company (client
+            is the company)
+    ProjectCreate:
+      type: object
+      properties:
+        due_date:
+          type: string
+          description: Date of projected completion.
+        fixed_price:
+          type: string
+          description: >-
+            used for flat-rate projects. Represents the amount being charged to
+            the client for the project
+        group:
+          type: object
+          description: Subfields - pending_invitations, ID, members
+          properties:
+            pending_invitations:
+              type: array
+              items:
+                type: string
+              description: >-
+                the pending invites to employees and contractors within the
+                project
+            ID:
+              type: integer
+              description: Unique ID of group membership
+            members:
+              type: object
+              description: >-
+                subfields - first_name, last_name, role, identity_id, active,
+                company, ID, email
+              properties:
+                first_name:
+                  type: string
+                  description: First name of the identity
+                last_name:
+                  type: string
+                  description: Last name of the identity
+                role:
+                  type: string
+                  description: Named role identity holds in group
+                identity_id:
+                  type: integer
+                  description: The unique ID for the identity
+                active:
+                  type: boolean
+                  description: Whether the project is active or not
+                company:
+                  type: string
+                  description: The name of the business
+                ID:
+                  type: integer
+                  description: Unique ID for the membership
+                email:
+                  type: string
+                  description: Email of identity
+        description:
+          type: string
+          description: Description of project
+        complete:
+          type: boolean
+          description: Whether the project is completed or not
+        title:
+          type: string
+          description: The project’s title
+        project_type:
+          type: string
+          description: Type of project - fixed_price, hourly_rate
+        budget:
+          type: integer
+          description: Budget for project
+        updated_at:
+          type: string
+          description: The time the project was last updated
+        services:
+          type: object
+          description: Subfields - business_id, name, ID
+          properties:
+            business_id:
+              type: integer
+              description: Unique ID for business
+            name:
+              type: string
+              description: The name of the service
+            ID:
+              type: integer
+              description: Service ID
+        rate:
+          type: string
+          description: The hourly rate of the project. Only applies to hourly_rate projects
+        client_id:
+          type: integer
+          description: Unique ID of the client being billed for the project
+        created_at:
+          type: string
+          description: The date/time the project was created
+        logged_duration:
+          type: integer
+          description: The time logged for the project in seconds
+        ID:
+          type: integer
+          description: Unique ID for the project
+        billing_method:
+          type: string
+          description: The method of payment for the project
+        internal:
+          type: boolean
+          description: >-
+            clarifies that the project is internally within the company (client
+            is the company)
+      required:
+        - title
+    TimeEntryCreateObject:
+      type: object
+      properties:
+        time_entry:
+          $ref: '#/components/schemas/TimeEntryCreate'
+    TimeEntryUpdateObject:
+      type: object
+      properties:
+        time_entry:
+          $ref: '#/components/schemas/TimeEntryUpdate'
+    TimeEntryObjectResponse:
+      type: object
+      properties:
+        time_entry:
+          $ref: '#/components/schemas/TimeEntry'
+    TimeEntryListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                time_entries:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TimeEntry'
+    TimeEntry:
+      type: object
+      properties:
+        billable:
+          type: boolean
+          description: True for entries that can be automatically added to an invoice
+        billed:
+          type: boolean
+          description: >-
+            True for entries that have already been added to an invoice or
+            manually marked as billed
+        client_id:
+          type: integer
+          description: The unique identifier of the client to be billed for this entry
+        duration:
+          type: integer
+          description: The length of time in seconds
+        internal:
+          type: boolean
+          description: True if the time entry is not assigned to a client
+        is_logged:
+          type: boolean
+          description: False if the time entry is being created from a running timer
+        note:
+          type: string
+          description: A short description of the work being done during the time
+        project_id:
+          type: integer
+          description: The unique identifier of the project worked on during the time
+        service_id:
+          type: integer
+          description: >-
+            The unique identifier of the project service worked on during the
+            time
+        started_at:
+          type: string
+          description: The date/time in UTC when the work started
+        identity_id:
+          type: integer
+          description: The unique identifier of the teammate or user logging the time entry
+    TimeEntryCreate:
+      type: object
+      properties:
+        billable:
+          type: boolean
+          description: True for entries that can be automatically added to an invoice
+        billed:
+          type: boolean
+          description: >-
+            True for entries that have already been added to an invoice or
+            manually marked as billed
+        client_id:
+          type: integer
+          description: The unique identifier of the client to be billed for this entry
+        duration:
+          type: integer
+          description: The length of time in seconds
+        internal:
+          type: boolean
+          description: True if the time entry is not assigned to a client
+        is_logged:
+          type: boolean
+          description: False if the time entry is being created from a running timer
+        note:
+          type: string
+          description: A short description of the work being done during the time
+        project_id:
+          type: integer
+          description: The unique identifier of the project worked on during the time
+        service_id:
+          type: integer
+          description: >-
+            The unique identifier of the project service worked on during the
+            time
+        started_at:
+          type: string
+          description: The date/time in UTC when the work started
+        identity_id:
+          type: integer
+          description: The unique identifier of the teammate or user logging the time entry
+      required:
+        - duration
+        - is_logged
+        - started_at
+    TimeEntryUpdate:
+      type: object
+      properties:
+        billable:
+          type: boolean
+          description: True for entries that can be automatically added to an invoice
+        billed:
+          type: boolean
+          description: >-
+            True for entries that have already been added to an invoice or
+            manually marked as billed
+        client_id:
+          type: integer
+          description: The unique identifier of the client to be billed for this entry
+        duration:
+          type: integer
+          description: The length of time in seconds
+        internal:
+          type: boolean
+          description: True if the time entry is not assigned to a client
+        is_logged:
+          type: boolean
+          description: False if the time entry is being created from a running timer
+        note:
+          type: string
+          description: A short description of the work being done during the time
+        project_id:
+          type: integer
+          description: The unique identifier of the project worked on during the time
+        service_id:
+          type: integer
+          description: >-
+            The unique identifier of the project service worked on during the
+            time
+        started_at:
+          type: string
+          description: The date/time in UTC when the work started
+        identity_id:
+          type: integer
+          description: The unique identifier of the teammate or user logging the time entry
+    InvoiceCreateObject:
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/InvoiceCreate'
+    InvoiceUpdateObject:
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/InvoiceUpdate'
+    InvoiceObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                invoice:
+                  $ref: '#/components/schemas/Invoice'
+    InvoiceListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                invoices:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Invoice'
+    Invoice:
+      type: object
+      properties:
+        ownerid:
+          type: integer
+          description: >-
+            ID of creator of invoice. 1 if business admin, other if created by
+            e.g. a contractor
+        estimateid:
+          type: integer
+          description: ID of associated estimate, 0 if none
+        sentid:
+          type: integer
+          description: Userid of user who sent the invoice, typically 1 for admin
+        status:
+          type: integer
+          description: Invoice Status
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+        parent:
+          type: integer
+          description: ID of object this invoice was generated from, 0 if none
+        display_status:
+          type: string
+          description: >-
+            Description of status shown in FreshBooks UI, one of ‘draft’,
+            ‘created’, ‘sent’, ‘viewed’, or ‘outstanding’.
+        autobill_status:
+          type: string
+          description: One of retry, failed, or success
+        payment_status:
+          type: string
+          description: >-
+            description of payment status. One of ‘unpaid’, ‘partial’, ‘paid’,
+            and ‘auto-paid’. See the v3_status table on this page for
+            descriptions of each.
+        last_order_status:
+          type: string
+          description: Describes status of last attempted payment
+        dispute_status:
+          type: string
+          description: Description of whether invoice has been disputed.
+        deposit_status:
+          type: string
+          description: >-
+            description of deposits applied to invoice. One of ‘paid’, ‘unpaid’,
+            ‘partial’, ‘none’, and ‘converted’.
+        auto_bill:
+          type: boolean
+          description: Whether this invoice has a credit card saved
+        v3_status:
+          type: string
+          description: Description of Invoice Status, see V3 Status Table.
+        invoice_number:
+          type: string
+          description: User-specified and visible invoice ID
+        customerid:
+          type: integer
+          description: Unique-to-this-system client-ID
+        create_date:
+          type: string
+          description: Date invoice was created, YYYY-MM-DD format
+        generation_date:
+          type: string
+          description: >-
+            date invoice generated from object, null if it wasn’t, YYYY-MM-DD if
+            it was
+        discount_value:
+          type: string
+          description: >-
+            percent amount being discounted from the subtotal, decimal-string
+            amount ranging from 0 to 100
+        discount_description:
+          type: string
+          description: Public note about discount
+        po_number:
+          type: string
+          description: Reference number for address on invoice.
+        template:
+          type: string
+          description: (internal, deprecated) choice of rendering style
+        currency_code:
+          type: string
+          description: Three-letter currency code for invoice
+        language:
+          type: string
+          description: Two-letter language code, e.g. “en”
+        terms:
+          type: string
+          description: Terms listed on invoice
+        notes:
+          type: string
+          description: Notes listed on invoice
+        address:
+          type: string
+          description: First line of address on invoice
+        deposit_amount:
+          type: object
+          description: Amount required as deposit, null if none
+          properties:
+            amount:
+              type: string
+              description: Total amount of invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        deposit_percentage:
+          type: string
+          description: Percent of the invoice’s value required as a deposit
+        gmail:
+          type: boolean
+          description: Whether to send via ground mail
+        show_attachments:
+          type: boolean
+          description: Whether attachments on invoice are rendered
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        street:
+          type: string
+          description: Street for address on invoice
+        street2:
+          type: string
+          description: Second line of street for address on invoice.
+        city:
+          type: string
+          description: City for address on invoice
+        province:
+          type: string
+          description: Province for address on invoice.
+        code:
+          type: string
+          description: Zip code for address on invoice
+        country:
+          type: string
+          description: Country for address on invoice
+        organization:
+          type: string
+          description: Name of organization being invoiced.
+        fname:
+          type: string
+          description: First name of Client on invoice
+        lname:
+          type: string
+          description: Last name of client being invoiced
+        vat_name:
+          type: string
+          description: Value Added Tax name if provided
+        vat_number:
+          type: string
+          description: Value Added Tax number if provided
+        due_offset_days:
+          type: integer
+          description: >-
+            Number of days from creation that invoice is due. If not set, the
+            due date will default to the date of issue.
+        lines:
+          type: array
+          description: Lines of the invoice
+          items:
+            $ref: '#/components/schemas/InvoiceLines'
+        presentation:
+          type: object
+          description: >-
+            where invoice logo and styles are defined. See our postman
+            collection for details.
+        invoiceid:
+          type: integer
+          description: Unique-to-this-system invoice ID
+        ID:
+          type: integer
+          description: Unique-to-this-system invoice ID, duplicate of invoiceid
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        accountid:
+          type: string
+          description: Unique ID for system, repeat of accounting_systemid
+        amount:
+          type: object
+          description: Total amount of invoice. subfields - amount, code
+          properties:
+            amount:
+              type: string
+              description: Total amount of invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        paid:
+          type: object
+          description: Subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Amount paid on invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        outstanding:
+          type: object
+          description: Subfields - amount, code
+          properties:
+            amount:
+              type: string
+              description: Amount outstanding on invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        discount_total:
+          type: object
+          description: Subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Amount of discount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        created_at:
+          type: string
+          description: Time the invoice was created, YYYY-MM-DD HH:MM:SS format
+        current_organization:
+          type: string
+          description: Name of organization being invoiced — denormalized from client
+        date_paid:
+          type: string
+          description: Date invoice was fully paid, YYYY-MM-DD format
+        description:
+          type: string
+          description: Description of first line of invoice
+        due_date:
+          type: string
+          description: >-
+            date invoice is marked as due by, YYYY-MM-DD format, calculated from
+            due_offset_days. If due_offset_days is not set, it will default to
+            the date of issue.
+        updated:
+          type: string
+          description: Time invoice last updated at, YYYY-MM-DD HH:MM:SS format
+    InvoiceUpdate:
+      type: object
+      properties:
+        ownerid:
+          type: integer
+          description: >-
+            ID of creator of invoice. 1 if business admin, other if created by
+            e.g. a contractor
+        estimateid:
+          type: integer
+          description: ID of associated estimate, 0 if none
+        sentid:
+          type: integer
+          description: Userid of user who sent the invoice, typically 1 for admin
+        status:
+          type: string
+          description: See Invoice Status table.
+        parent:
+          type: integer
+          description: ID of object this invoice was generated from, 0 if none
+        display_status:
+          type: string
+          description: >-
+            Description of status shown in FreshBooks UI, one of ‘draft’,
+            ‘created’, ‘sent’, ‘viewed’, or ‘outstanding’.
+        autobill_status:
+          type: string
+          description: One of retry, failed, or success
+        payment_status:
+          type: string
+          description: >-
+            description of payment status. One of ‘unpaid’, ‘partial’, ‘paid’,
+            and ‘auto-paid’. See the v3_status table on this page for
+            descriptions of each.
+        last_order_status:
+          type: string
+          description: Describes status of last attempted payment
+        dispute_status:
+          type: string
+          description: Description of whether invoice has been disputed.
+        deposit_status:
+          type: string
+          description: >-
+            description of deposits applied to invoice. One of ‘paid’, ‘unpaid’,
+            ‘partial’, ‘none’, and ‘converted’.
+        auto_bill:
+          type: boolean
+          description: Whether this invoice has a credit card saved
+        v3_status:
+          type: string
+          description: Description of Invoice Status, see V3 Status Table.
+        invoice_number:
+          type: string
+          description: User-specified and visible invoice ID
+        customerid:
+          type: integer
+          description: Unique-to-this-system client-ID
+        create_date:
+          type: string
+          description: Date invoice was created, YYYY-MM-DD format
+        generation_date:
+          type: string
+          description: >-
+            date invoice generated from object, null if it wasn’t, YYYY-MM-DD if
+            it was
+        discount_value:
+          type: string
+          description: >-
+            percent amount being discounted from the subtotal, decimal-string
+            amount ranging from 0 to 100
+        discount_description:
+          type: string
+          description: Public note about discount
+        po_number:
+          type: string
+          description: Reference number for address on invoice.
+        template:
+          type: string
+          description: (internal, deprecated) choice of rendering style
+        currency_code:
+          type: string
+          description: Three-letter currency code for invoice
+        language:
+          type: string
+          description: Two-letter language code, e.g. “en”
+        terms:
+          type: string
+          description: Terms listed on invoice
+        notes:
+          type: string
+          description: Notes listed on invoice
+        address:
+          type: string
+          description: First line of address on invoice
+        deposit_amount:
+          type: object
+          description: Amount required as deposit, null if none
+          properties:
+            amount:
+              type: string
+              description: Total amount of invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        deposit_percentage:
+          type: string
+          description: Percent of the invoice’s value required as a deposit
+        gmail:
+          type: boolean
+          description: Whether to send via ground mail
+        show_attachments:
+          type: boolean
+          description: Whether attachments on invoice are rendered
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        street:
+          type: string
+          description: Street for address on invoice
+        street2:
+          type: string
+          description: Second line of street for address on invoice.
+        city:
+          type: string
+          description: City for address on invoice
+        province:
+          type: string
+          description: Province for address on invoice.
+        code:
+          type: string
+          description: Zip code for address on invoice
+        country:
+          type: string
+          description: Country for address on invoice
+        organization:
+          type: string
+          description: Name of organization being invoiced.
+        fname:
+          type: string
+          description: First name of Client on invoice
+        lname:
+          type: string
+          description: Last name of client being invoiced
+        vat_name:
+          type: string
+          description: Value Added Tax name if provided
+        vat_number:
+          type: string
+          description: Value Added Tax number if provided
+        due_offset_days:
+          type: integer
+          description: >-
+            Number of days from creation that invoice is due. If not set, the
+            due date will default to the date of issue.
+        lines:
+          type: array
+          description: Lines of the invoice
+          items:
+            $ref: '#/components/schemas/InvoiceLinesWritable'
+        presentation:
+          type: object
+          description: >-
+            where invoice logo and styles are defined. See our postman
+            collection for details.
+    InvoiceCreate:
+      type: object
+      properties:
+        ownerid:
+          type: integer
+          description: >-
+            ID of creator of invoice. 1 if business admin, other if created by
+            e.g. a contractor
+        estimateid:
+          type: integer
+          description: ID of associated estimate, 0 if none
+        sentid:
+          type: integer
+          description: Userid of user who sent the invoice, typically 1 for admin
+        status:
+          type: string
+          description: See Invoice Status table.
+        parent:
+          type: integer
+          description: ID of object this invoice was generated from, 0 if none
+        display_status:
+          type: string
+          description: >-
+            Description of status shown in FreshBooks UI, one of ‘draft’,
+            ‘created’, ‘sent’, ‘viewed’, or ‘outstanding’.
+        autobill_status:
+          type: string
+          description: One of retry, failed, or success
+        payment_status:
+          type: string
+          description: >-
+            description of payment status. One of ‘unpaid’, ‘partial’, ‘paid’,
+            and ‘auto-paid’. See the v3_status table on this page for
+            descriptions of each.
+        last_order_status:
+          type: string
+          description: Describes status of last attempted payment
+        dispute_status:
+          type: string
+          description: Description of whether invoice has been disputed.
+        deposit_status:
+          type: string
+          description: >-
+            description of deposits applied to invoice. One of ‘paid’, ‘unpaid’,
+            ‘partial’, ‘none’, and ‘converted’.
+        auto_bill:
+          type: boolean
+          description: Whether this invoice has a credit card saved
+        v3_status:
+          type: string
+          description: Description of Invoice Status, see V3 Status Table.
+        invoice_number:
+          type: string
+          description: User-specified and visible invoice ID
+        customerid:
+          type: integer
+          description: Unique-to-this-system client-ID
+        create_date:
+          type: string
+          description: Date invoice was created, YYYY-MM-DD format
+        generation_date:
+          type: string
+          description: >-
+            date invoice generated from object, null if it wasn’t, YYYY-MM-DD if
+            it was
+        discount_value:
+          type: string
+          description: >-
+            percent amount being discounted from the subtotal, decimal-string
+            amount ranging from 0 to 100
+        discount_description:
+          type: string
+          description: Public note about discount
+        po_number:
+          type: string
+          description: Reference number for address on invoice.
+        template:
+          type: string
+          description: (internal, deprecated) choice of rendering style
+        currency_code:
+          type: string
+          description: Three-letter currency code for invoice
+        language:
+          type: string
+          description: Two-letter language code, e.g. “en”
+        terms:
+          type: string
+          description: Terms listed on invoice
+        notes:
+          type: string
+          description: Notes listed on invoice
+        address:
+          type: string
+          description: First line of address on invoice
+        deposit_amount:
+          type: object
+          description: Amount required as deposit, null if none
+          properties:
+            amount:
+              type: string
+              description: Total amount of invoice, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        deposit_percentage:
+          type: string
+          description: Percent of the invoice’s value required as a deposit
+        gmail:
+          type: boolean
+          description: Whether to send via ground mail
+        show_attachments:
+          type: boolean
+          description: Whether attachments on invoice are rendered
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        street:
+          type: string
+          description: Street for address on invoice
+        street2:
+          type: string
+          description: Second line of street for address on invoice.
+        city:
+          type: string
+          description: City for address on invoice
+        province:
+          type: string
+          description: Province for address on invoice.
+        code:
+          type: string
+          description: Zip code for address on invoice
+        country:
+          type: string
+          description: Country for address on invoice
+        organization:
+          type: string
+          description: Name of organization being invoiced.
+        fname:
+          type: string
+          description: First name of Client on invoice
+        lname:
+          type: string
+          description: Last name of client being invoiced
+        vat_name:
+          type: string
+          description: Value Added Tax name if provided
+        vat_number:
+          type: string
+          description: Value Added Tax number if provided
+        due_offset_days:
+          type: integer
+          description: >-
+            Number of days from creation that invoice is due. If not set, the
+            due date will default to the date of issue.
+        lines:
+          type: array
+          description: Lines of the invoice
+          items:
+            $ref: '#/components/schemas/InvoiceLinesWritable'
+        presentation:
+          type: object
+          description: >-
+            where invoice logo and styles are defined. See our postman
+            collection for details.
+      required:
+        - customerid
+        - create_date
+    InvoiceLines:
+      type: object
+      properties:
+        lineid:
+          type: integer
+          description: Unique-to-this-invoice line ID
+        amount:
+          type: object
+          description: >-
+            amount total of an invoice line, calculated with unit cost, quantity
+            and tax. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Amount of invoice line item account, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        updated:
+          type: string
+          description: Time invoice line last updated at, YYYY-MM-DD HH:MM:SS format
+        type:
+          type: integer
+          description: >-
+            invoice line type, 0 for normal invoice line, 1 for rebilling
+            expense line
+        expenseid:
+          type: integer
+          description: >-
+            ID of unbilled expense, required when invoice line type is 1,
+            otherwise should be excluded
+        qty:
+          type: integer
+          description: Quantity of the invoice line unit, multiplied against unit_cost
+        unit_cost:
+          type: object
+          description: Unit cost of the line item. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description for the invoice line item
+        name:
+          type: string
+          description: Name for the invoice line item
+        taxName1:
+          type: string
+          description: Name for the first tax on the invoice line
+        taxAmount1:
+          type: string
+          description: First tax amount, in percentage, up to 3 decimal places
+        taxName2:
+          type: string
+          description: Name for the second tax on the invoice line
+        taxAmount2:
+          type: string
+          description: Second tax amount, in percentage, up to 3 decimal places
+    InvoiceLinesWritable:
+      type: object
+      properties:
+        type:
+          type: integer
+          description: >-
+            invoice line type, 0 for normal invoice line, 1 for rebilling
+            expense line
+        expenseid:
+          type: integer
+          description: >-
+            ID of unbilled expense, required when invoice line type is 1,
+            otherwise should be excluded
+        qty:
+          type: integer
+          description: Quantity of the invoice line unit, multiplied against unit_cost
+        unit_cost:
+          type: object
+          description: Unit cost of the line item. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description for the invoice line item
+        name:
+          type: string
+          description: Name for the invoice line item
+        taxName1:
+          type: string
+          description: Name for the first tax on the invoice line
+        taxAmount1:
+          type: string
+          description: First tax amount, in percentage, up to 3 decimal places
+        taxName2:
+          type: string
+          description: Name for the second tax on the invoice line
+        taxAmount2:
+          type: string
+          description: Second tax amount, in percentage, up to 3 decimal places
+    ExpenseCreateObject:
+      type: object
+      properties:
+        expense:
+          $ref: '#/components/schemas/ExpenseCreate'
+    ExpenseCreate:
+      type: object
+      properties:
+        categoryid:
+          type: integer
+          description: ID of related expense category
+        markup_percent:
+          type: string
+          description: String-decimal, note of percent to mark expense up
+        projectid:
+          type: integer
+          description: ID of related project if applicable
+        clientid:
+          type: integer
+          description: ID of related client if applicable
+        taxPercent1:
+          oneOf:
+            - type: string
+            - type: number
+          description: >-
+            tax amount – indicates the maximum tax percentage for this expense,
+            this does not add tax to the expense, instead use taxAmount1
+        taxName1:
+          type: string
+          description: Name of first tax
+        taxPercent2:
+          type: string
+          description: >-
+            string-decimal tax amount for second tax – indicates the maximum tax
+            percentage for this expense, this does not add tax to the expense,
+            instead use taxAmount2
+        taxName2:
+          type: string
+          description: Name of second tax
+        isduplicate:
+          type: boolean
+          description: True/false is duplicated expense
+        profileid:
+          type: integer
+          description: ID of related profile if applicable
+        account_name:
+          type: string
+          description: Name of related account if applicable
+        transactionid:
+          type: integer
+          description: ID of related transaction if applicable
+        invoiceid:
+          type: integer
+          description: ID of related invoice if applicable
+        ID:
+          type: integer
+          description: Duplicate of expenseid
+        taxAmount1:
+          type: object
+          description: >-
+            The total for first tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        taxAmount2:
+          type: object
+          description: >-
+            The total for second tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        status:
+          type: integer
+          description: >-
+            Expense statuses are not directly modifiable. Each is a description
+            of the status of the expense
+          enum:
+            - 0
+            - 1
+            - 2
+            - 4
+        bank_name:
+          type: string
+          description: Name of bank expense was imported from, if applicable
+        updated:
+          type: string
+          description: Time invoice last updated at, YYYY-MM-DD HH:MM:SS format
+        vendor:
+          type: string
+          description: Name of vendor
+        ext_systemid:
+          type: integer
+          description: ID of related contractor system if applicable
+        staffid:
+          type: integer
+          description: ID of related staff member if applicable
+        date:
+          type: string
+          description: Date of expense, YYYY-MM-DD format
+        has_receipt:
+          type: boolean
+          description: True/false has receipt attached
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        background_jobid:
+          type: integer
+          description: (internal) ID for related background job if applicable
+        notes:
+          type: string
+          description: Notes about expense
+        ext_invoiceid:
+          type: integer
+          description: ID of related contractor invoice if applicable
+        amount:
+          type: object
+          description: Total amount of the expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount of the expense
+            code:
+              type: string
+              description: 3-letter currency code
+        expenseid:
+          type: integer
+          description: Unique to this business ID for expense
+        accountid:
+          type: integer
+          description: ID of expense account if applicable
+      required:
+        - categoryid
+        - amount
+        - date
+        - staffid
+    Expense:
+      type: object
+      properties:
+        categoryid:
+          type: integer
+          description: ID of related expense category
+        markup_percent:
+          type: string
+          description: String-decimal, note of percent to mark expense up
+        projectid:
+          type: integer
+          description: ID of related project if applicable
+        clientid:
+          type: integer
+          description: ID of related client if applicable
+        taxPercent1:
+          oneOf:
+            - type: string
+            - type: number
+          description: >-
+            tax amount – indicates the maximum tax percentage for this expense,
+            this does not add tax to the expense, instead use taxAmount1
+        taxName1:
+          type: string
+          description: Name of first tax
+        taxPercent2:
+          type: string
+          description: >-
+            string-decimal tax amount for second tax – indicates the maximum tax
+            percentage for this expense, this does not add tax to the expense,
+            instead use taxAmount2
+        taxName2:
+          type: string
+          description: Name of second tax
+        isduplicate:
+          type: boolean
+          description: True/false is duplicated expense
+        profileid:
+          type: integer
+          description: ID of related profile if applicable
+        account_name:
+          type: string
+          description: Name of related account if applicable
+        transactionid:
+          type: integer
+          description: ID of related transaction if applicable
+        invoiceid:
+          type: integer
+          description: ID of related invoice if applicable
+        ID:
+          type: integer
+          description: Duplicate of expenseid
+        taxAmount1:
+          type: object
+          description: >-
+            The total for first tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        taxAmount2:
+          type: object
+          description: >-
+            The total for second tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        status:
+          type: integer
+          description: Expense status
+          enum:
+            - 0
+            - 1
+            - 2
+            - 4
+        bank_name:
+          type: string
+          description: Name of bank expense was imported from, if applicable
+        updated:
+          type: string
+          description: Time invoice last updated at, YYYY-MM-DD HH:MM:SS format
+        vendor:
+          type: string
+          description: Name of vendor
+        ext_systemid:
+          type: integer
+          description: ID of related contractor system if applicable
+        staffid:
+          type: integer
+          description: ID of related staff member if applicable
+        date:
+          type: string
+          description: Date of expense, YYYY-MM-DD format
+        has_receipt:
+          type: boolean
+          description: True/false has receipt attached
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        background_jobid:
+          type: integer
+          description: (internal) ID for related background job if applicable
+        notes:
+          type: string
+          description: Notes about expense
+        ext_invoiceid:
+          type: integer
+          description: ID of related contractor invoice if applicable
+        amount:
+          type: object
+          description: Total amount of the expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount of the expense
+            code:
+              type: string
+              description: 3-letter currency code
+        expenseid:
+          type: integer
+          description: Unique to this business ID for expense
+        accountid:
+          type: integer
+          description: ID of expense account if applicable
+    ExpenseUpdateObject:
+      type: object
+      properties:
+        expense:
+          $ref: '#/components/schemas/ExpenseUpdate'
+    ExpenseUpdate:
+      type: object
+      properties:
+        categoryid:
+          type: integer
+          description: ID of related expense category
+        markup_percent:
+          type: string
+          description: String-decimal, note of percent to mark expense up
+        projectid:
+          type: integer
+          description: ID of related project if applicable
+        clientid:
+          type: integer
+          description: ID of related client if applicable
+        taxPercent1:
+          oneOf:
+            - type: string
+            - type: number
+          description: >-
+            tax amount – indicates the maximum tax percentage for this expense,
+            this does not add tax to the expense, instead use taxAmount1
+        taxName1:
+          type: string
+          description: Name of first tax
+        taxPercent2:
+          type: string
+          description: >-
+            string-decimal tax amount for second tax – indicates the maximum tax
+            percentage for this expense, this does not add tax to the expense,
+            instead use taxAmount2
+        taxName2:
+          type: string
+          description: Name of second tax
+        isduplicate:
+          type: boolean
+          description: True/false is duplicated expense
+        profileid:
+          type: integer
+          description: ID of related profile if applicable
+        account_name:
+          type: string
+          description: Name of related account if applicable
+        transactionid:
+          type: integer
+          description: ID of related transaction if applicable
+        invoiceid:
+          type: integer
+          description: ID of related invoice if applicable
+        ID:
+          type: integer
+          description: Duplicate of expenseid
+        taxAmount1:
+          type: object
+          description: >-
+            The total for first tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        taxAmount2:
+          type: object
+          description: >-
+            The total for second tax applied to the subtotal amount of the
+            expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount
+            code:
+              type: string
+              description: 3-letter currency code
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        status:
+          type: integer
+          description: >-
+            Expense statuses are not directly modifiable. Each is a description
+            of the status of the expense
+          enum:
+            - 0
+            - 1
+            - 2
+            - 4
+        bank_name:
+          type: string
+          description: Name of bank expense was imported from, if applicable
+        updated:
+          type: string
+          description: Time invoice last updated at, YYYY-MM-DD HH:MM:SS format
+        vendor:
+          type: string
+          description: Name of vendor
+        ext_systemid:
+          type: integer
+          description: ID of related contractor system if applicable
+        staffid:
+          type: integer
+          description: ID of related staff member if applicable
+        date:
+          type: string
+          description: Date of expense, YYYY-MM-DD format
+        has_receipt:
+          type: boolean
+          description: True/false has receipt attached
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        background_jobid:
+          type: integer
+          description: (internal) ID for related background job if applicable
+        notes:
+          type: string
+          description: Notes about expense
+        ext_invoiceid:
+          type: integer
+          description: ID of related contractor invoice if applicable
+        amount:
+          type: object
+          description: Total amount of the expense
+          properties:
+            amount:
+              type: string
+              description: String-decimal amount of the expense
+            code:
+              type: string
+              description: 3-letter currency code
+        expenseid:
+          type: integer
+          description: Unique to this business ID for expense
+        accountid:
+          type: integer
+          description: ID of expense account if applicable
+    ExpenseObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                expense:
+                  $ref: '#/components/schemas/Expense'
+    ExpenseListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                expenses:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Expense'
+    EstimateUpdateObject:
+      type: object
+      properties:
+        estimate:
+          $ref: '#/components/schemas/EstimateUpdate'
+    EstimateUpdate:
+      type: object
+      properties:
+        estimateid:
+          type: integer
+          description: Unique-to-this-system estimate ID
+        ID:
+          type: integer
+          description: Unique-to-this-system estimate ID, duplicate of estimateid
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        ui_status:
+          type: string
+          description: See Estimate UI Status table
+        status:
+          type: string
+          description: See Estimate Status table
+        amount:
+          type: object
+          description: >-
+            Amount total of an estimate line, calculated with unit cost,
+            quantity and tax. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Amount of estimate line item account, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        discount_total:
+          type: object
+          description: Subfields - Amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description of first line of estimate
+        current_organization:
+          type: string
+          description: Name of organization being estimated — denormalized from client
+        invoiced:
+          type: boolean
+          description: >-
+            Indicator of whether this estimate has been converted to an invoice
+            that was sent
+        ownerid:
+          type: integer
+          description: >-
+            ID of creator of estimate. 1 if business admin, other if created by
+            e.g. a contractor
+        sentid:
+          type: integer
+          description: Userid of user who sent the estimate, typically 1 for admin
+        created_at:
+          type: string
+          description: Time the estimate was created, YYYY-MM-DD HH:MM:SS format
+        updated:
+          type: string
+          description: Time estimate last updated at, YYYY-MM-DD HH:MM:SS format
+        display_status:
+          type: string
+          description: >-
+            Description of status shown in FreshBooks UI, one of ‘draft’,
+            ‘sent’, or ‘viewed’
+        estimate_number:
+          type: string
+          description: User-specified and visible estimate ID
+        customerid:
+          type: integer
+          description: Unique-to-this-system client-ID
+        create_date:
+          type: string
+          description: Date estimate was created, YYYY-MM-DD format
+        discount_value:
+          type: string
+          description: Decimal-string amount
+        po_number:
+          type: string
+          description: Post Office box number for address on estimate
+        currency_code:
+          type: string
+          description: Three-letter currency code for estimate
+        language:
+          type: string
+          description: Two-letter language code, e.g. “en”
+        terms:
+          type: string
+          description: Terms listed on estimate
+        notes:
+          type: string
+          description: Notes listed on estimate
+        address:
+          type: string
+          description: First line of address on estimate
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        street:
+          type: string
+          description: Street for address on estimate
+        street2:
+          type: string
+          description: Second line of street for address on estimate
+        city:
+          type: string
+          description: City for address on estimate
+        province:
+          type: string
+          description: Province for address on estimate
+        country:
+          type: string
+          description: Country for address on estimate
+        organization:
+          type: string
+          description: Name of organization being estimated
+        fname:
+          type: string
+          description: First name of Client on estimate
+        lname:
+          type: string
+          description: Last name of client being estimated
+        vat_name:
+          type: string
+          description: Value Added Tax name if provided
+        vat_number:
+          type: string
+          description: Value Added Tax number if provided
+        lines:
+          type: array
+          description: Lines of the estimate
+          items:
+            $ref: '#/components/schemas/EstimateLinesWritable'
+      required:
+        - customerid
+        - create_date
+    EstimateLinesWritable:
+      type: object
+      properties:
+        type:
+          type: integer
+          description: Estimate line type, 0 for normal estimate line
+        qty:
+          type: integer
+          description: Quantity of the estimate line unit, multiplied against unit_cost
+        unit_cost:
+          type: object
+          description: Unit cost of the line item. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description for the estimate line item
+        name:
+          type: string
+          description: Name for the estimate line item
+        taxName1:
+          type: string
+          description: Name for the first tax on the estimate line
+        taxAmount1:
+          type: string
+          description: First tax amount, in percentage, up to 3 decimal places
+        taxName2:
+          type: string
+          description: Name for the second tax on the estimate line
+        taxAmount2:
+          type: string
+          description: Second tax amount, in percentage, up to 3 decimal places
+    Estimate:
+      type: object
+      properties:
+        estimateid:
+          type: integer
+          description: Unique-to-this-system estimate ID
+        ID:
+          type: integer
+          description: Unique-to-this-system estimate ID, duplicate of estimateid
+        accounting_systemid:
+          type: string
+          description: Unique ID for system
+        ui_status:
+          type: string
+          description: >-
+            UI status fields give a descriptive name to states which can be used
+            in filters, and apply to many invoices, estimates, and recurring
+            profiles
+          enum:
+            - created
+            - draft
+            - sent
+            - viewed
+            - replied
+            - accepted
+            - invoiced
+        status:
+          type: integer
+          description: Estimate status
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+        amount:
+          type: object
+          description: Total amount of estimate, to two decimal places
+          properties:
+            amount:
+              type: string
+              description: Estimate amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        code:
+          type: string
+          description: Zip code for address on estimate
+        discount_total:
+          type: object
+          description: Subfields - Amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description of first line of estimate
+        current_organization:
+          type: string
+          description: Name of organization being estimated — denormalized from client
+        invoiced:
+          type: boolean
+          description: >-
+            Indicator of whether this estimate has been converted to an invoice
+            that was sent
+        ownerid:
+          type: integer
+          description: >-
+            ID of creator of estimate. 1 if business admin, other if created by
+            e.g. a contractor
+        sentid:
+          type: integer
+          description: Userid of user who sent the estimate, typically 1 for admin
+        created_at:
+          type: string
+          description: Time the estimate was created, YYYY-MM-DD HH:MM:SS format
+        updated:
+          type: string
+          description: Time estimate last updated at, YYYY-MM-DD HH:MM:SS format
+        display_status:
+          type: string
+          description: >-
+            Description of status shown in FreshBooks UI, one of ‘draft’,
+            ‘sent’, or ‘viewed’
+        estimate_number:
+          type: string
+          description: User-specified and visible estimate ID
+        customerid:
+          type: integer
+          description: Unique-to-this-system client-ID
+        create_date:
+          type: string
+          description: Date estimate was created, YYYY-MM-DD format
+        discount_value:
+          type: string
+          description: Decimal-string amount
+        po_number:
+          type: string
+          description: Post Office box number for address on estimate
+        currency_code:
+          type: string
+          description: Three-letter currency code for estimate
+        language:
+          type: string
+          description: Two-letter language code, e.g. “en”
+        terms:
+          type: string
+          description: Terms listed on estimate
+        notes:
+          type: string
+          description: Notes listed on estimate
+        address:
+          type: string
+          description: First line of address on estimate
+        vis_state:
+          type: integer
+          description: 0 for active, 1 for deleted
+        street:
+          type: string
+          description: Street for address on estimate
+        street2:
+          type: string
+          description: Second line of street for address on estimate
+        city:
+          type: string
+          description: City for address on estimate
+        province:
+          type: string
+          description: Province for address on estimate
+        country:
+          type: string
+          description: Country for address on estimate
+        organization:
+          type: string
+          description: Name of organization being estimated
+        fname:
+          type: string
+          description: First name of Client on estimate
+        lname:
+          type: string
+          description: Last name of client being estimated
+        vat_name:
+          type: string
+          description: Value Added Tax name if provided
+        vat_number:
+          type: string
+          description: Value Added Tax number if provided
+        lines:
+          type: array
+          description: Lines of the estimate
+          items:
+            $ref: '#/components/schemas/EstimateLines'
+    EstimateLines:
+      type: object
+      properties:
+        lineid:
+          type: integer
+          description: Unique-to-this-estimate line ID
+        amount:
+          type: object
+          description: >-
+            Amount total of an estimate line, calculated with unit cost,
+            quantity and tax. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Amount of estimate line item account, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        updated:
+          type: string
+          description: Time estimate line last updated at, YYYY-MM-DD HH:MM:SS format
+        type:
+          type: integer
+          description: Estimate line type, 0 for normal estimate line
+        qty:
+          type: integer
+          description: Quantity of the estimate line unit, multiplied against unit_cost
+        unit_cost:
+          type: object
+          description: Unit cost of the line item. subfields - amount and code
+          properties:
+            amount:
+              type: string
+              description: Unit cost amount, to two decimal places
+            code:
+              type: string
+              description: Three-letter currency code
+        description:
+          type: string
+          description: Description for the estimate line item
+        name:
+          type: string
+          description: Name for the estimate line item
+        taxName1:
+          type: string
+          description: Name for the first tax on the estimate line
+        taxAmount1:
+          type: string
+          description: First tax amount, in percentage, up to 3 decimal places
+        taxName2:
+          type: string
+          description: Name for the second tax on the estimate line
+        taxAmount2:
+          type: string
+          description: Second tax amount, in percentage, up to 3 decimal places
+    EstimateListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                estimates:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Estimate'
+                per_page:
+                  type: integer
+                  description: Record count per page
+                total:
+                  type: integer
+                  description: Total records
+                pages:
+                  type: integer
+                  description: Number of pages
+                page:
+                  type: integer
+                  description: Page
+    EstimateObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                estimate:
+                  $ref: '#/components/schemas/Estimate'
+    DeletionResponse:
+      type: object
+    DeleteBody:
+      type: object
+      properties:
+        vis_state:
+          type: string
+    Contact:
+      type: object
+      properties:
+        fname:
+          type: string
+          description: First name
+        lname:
+          type: string
+          description: Last name
+        email:
+          type: string
+          description: Email address
+        userid:
+          type: integer
+          description: Duplicate of ID
+        face:
+          type: string
+          description: Face
+    ClientCreateObject:
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientCreate'
+    ClientCreate:
+      type: object
+      properties:
+        fname:
+          type: string
+          description: First name
+        lname:
+          type: string
+          description: Last name
+        email:
+          type: string
+          description: Email address
+        organization:
+          type: string
+          description: Name for client’s business
+        vat_name:
+          type: string
+          description: Value Added Tax name
+        vat_number:
+          type: string
+          description: Value Added Tax number
+        status:
+          type: boolean
+          description: Status
+        note:
+          type: string
+          description: Notes kept by admin about client
+        home_phone:
+          type: string
+          description: Home phone number
+        userid:
+          type: integer
+          description: Duplicate of ID
+        source:
+          type: string
+          description: Source
+        highlight_string:
+          type: string
+          description: Highlight string
+        p_city:
+          type: string
+          description: Billing city
+        p_code:
+          type: string
+          description: Billing postal code
+        p_country:
+          type: string
+          description: Billing country
+        p_province:
+          type: string
+          description: Billing province
+        p_street:
+          type: string
+          description: Billing street address
+        p_street2:
+          type: string
+          description: Billing street address second part
+        currency_code:
+          type: string
+          description: Three letter shortcode for preferred currency
+        language:
+          type: string
+          description: Shortcode indicating user language e.g. “en”
+        last_activity:
+          type: string
+          description: Last client activity action
+        face:
+          type: string
+          description: Face
+        late_fee:
+          type: string
+          description: Late fee
+        late_reminders:
+          type: array
+          items: {}
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+    ClientObject:
+      type: object
+      properties:
+        allow_late_notifications:
+          type: boolean
+          description: Allow late notifications
+        accounting_systemid:
+          type: string
+          description: Unique identifier of business client exists on
+        bus_phone:
+          type: string
+          description: Business phone number
+        company_industry:
+          type: string
+          description: Description of industry client is in
+        company_size:
+          type: string
+          description: Size of client’s company
+        currency_code:
+          type: string
+          description: Three letter shortcode for preferred currency
+        email:
+          type: string
+          description: Email address
+        fax:
+          type: string
+          description: Fax number
+        fname:
+          type: string
+          description: First name
+        home_phone:
+          type: string
+          description: Home phone number
+        ID:
+          type: integer
+          description: Unique to this business ID for client
+        language:
+          type: string
+          description: Shortcode indicating user language e.g. “en”
+        last_activity:
+          type: string
+          description: Last client activity action
+        last_login:
+          type: string
+          description: Last login time
+        lname:
+          type: string
+          description: Last name
+        mob_phone:
+          type: string
+          description: Mobile phone number
+        note:
+          type: string
+          description: Notes kept by admin about client
+        num_logins:
+          type: integer
+          description: Number of logins
+        organization:
+          type: string
+          description: Name for client’s business
+        p_city:
+          type: string
+          description: Billing city
+        p_code:
+          type: string
+          description: Billing postal code
+        p_country:
+          type: string
+          description: Billing country
+        p_province:
+          type: string
+          description: Billing province
+        p_street:
+          type: string
+          description: Billing street address
+        p_street2:
+          type: string
+          description: Billing street address second part
+        pref_email:
+          type: boolean
+          description: Prefers email over ground mail
+        pref_gmail:
+          type: boolean
+          description: Prefers ground mail over email
+        s_city:
+          type: string
+          description: Shipping address city
+        s_code:
+          type: string
+          description: Shipping postal code
+        s_country:
+          type: string
+          description: Shipping country
+        s_province:
+          type: string
+          description: Short form for province
+        s_street:
+          type: string
+          description: Shipping street address
+        s_street2:
+          type: string
+          description: Shipping address second street info
+        signup_date:
+          type: string
+          description: Time of user signup
+        subdomain:
+          type: string
+          description: Unused in the new FreshBooks
+        updated:
+          type: string
+          description: Time of last modification to resource
+        userid:
+          type: integer
+          description: Duplicate of ID
+        vat_name:
+          type: string
+          description: Value Added Tax name
+        vat_number:
+          type: string
+          description: Value Added Tax number
+        vis_state:
+          type: integer
+          description: “visibility state”, active, deleted, or archived
+    ClientObjectResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                client:
+                  $ref: '#/components/schemas/ClientObject'
+    ClientListResponse:
+      type: object
+      properties:
+        response:
+          type: object
+          properties:
+            result:
+              type: object
+              properties:
+                clients:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ClientObject'
+                per_page:
+                  type: integer
+                  description: Record count per page
+                total:
+                  type: integer
+                  description: Total records
+                pages:
+                  type: integer
+                  description: Number of pages
+                page:
+                  type: integer
+                  description: Page
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+security:
+  - bearerAuth: []

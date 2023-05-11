@@ -1,0 +1,13 @@
+id: paylocity
+displayName: Paylocity
+type: OpenAPI
+version: "2"
+description: This is the [Paylocity API v2](https://www.paylocity.com/our-products/integrations/api-library/) OpenAPI Specification.
+idlPath: /paylocity/2/openapi.yaml
+thumbnailPath: /paylocity/2/icon.png
+documentationPath: /paylocity/2/readme.md
+keywords:
+  - Finance/Payroll
+  - Cost/Paid
+endpoint:
+  - url: https://api.paylocity.com/api

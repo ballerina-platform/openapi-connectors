@@ -1,0 +1,14 @@
+id: googleapis.vision
+displayName: Google Cloud Vision
+type: OpenAPI
+version: v1
+description: This is the [Google Cloud Vision API v1](https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification. Integrates Google Vision features, including image labeling, face, logo, and landmark detection, optical character recognition (OCR), and detection of explicit content, into applications.
+idlPath: /googleapis.vision/v1/openapi.yaml
+thumbnailPath: /googleapis.vision/v1/icon.png
+documentationPath: /googleapis.vision/v1/readme.md
+keywords:
+  - AI/Images
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://vision.googleapis.com/

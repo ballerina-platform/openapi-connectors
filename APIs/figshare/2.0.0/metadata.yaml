@@ -1,0 +1,13 @@
+id: figshare
+displayName: Figshare
+type: OpenAPI
+version: 2.0.0
+description: This is the [Figshare API v2.0.0](https://docs.figshare.com/) OpenAPI specification. Figshare is a repository where users can make all of their research outputs available in a citable, shareable and discoverable manner.
+idlPath: /figshare/2.0.0/openapi.yaml
+thumbnailPath: /figshare/2.0.0/icon.png
+documentationPath: /figshare/2.0.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://api.figshare.com/v2

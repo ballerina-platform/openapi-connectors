@@ -1,0 +1,14 @@
+id: listen.notes
+displayName: Listen Notes
+type: OpenAPI
+version: "2.0"
+description: This is the [Listen Notes API v2.0](https://www.listennotes.com/) OpenAPI specification.  Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
+idlPath: /listen.notes/2.0/openapi.yaml
+thumbnailPath: /listen.notes/2.0/icon.png
+documentationPath: /listen.notes/2.0/readme.md
+keywords:
+  - Content&Files/Video&Audio
+  - Cost/Freemium
+endpoint:
+  - url: https://listen-api.listennotes.com/api/v2
+    description: API Production Server

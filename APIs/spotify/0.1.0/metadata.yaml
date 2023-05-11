@@ -1,0 +1,13 @@
+id: spotify
+displayName: Spotify
+type: OpenAPI
+version: 0.1.0
+description: This is a generated connector from [Spotify API v1](https://developer.spotify.com/documentation/web-api/) OpenAPI Specification.  Through the Spotify Web API, external applications retrieve Spotify content such as album data and playlists.
+idlPath: /spotify/0.1.0/openapi.yaml
+thumbnailPath: /spotify/0.1.0/icon.png
+documentationPath: /spotify/0.1.0/readme.md
+keywords:
+  - Content&Files/Video&Audio
+  - Cost/Freemium
+endpoint:
+  - url: https://api.spotify.com/v1

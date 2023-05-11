@@ -1,0 +1,11 @@
+id: iris.lead
+displayName: IRIS Lead
+type: OpenAPI
+version: 1.6.4
+description: This is the [IRIS Leads API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+idlPath: /iris.lead/1.6.4/openapi.yaml
+thumbnailPath: /iris.lead/1.6.4/icon.png
+documentationPath: /iris.lead/1.6.4/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid

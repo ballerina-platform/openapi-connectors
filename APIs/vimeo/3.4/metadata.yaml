@@ -1,0 +1,14 @@
+id: vimeo
+displayName: Vimeo
+type: OpenAPI
+version: "3.4"
+description: This is the [Vimeo API v3.4](https://developer.vimeo.com/) OpenAPI specification. The Vimeo API provides access to manage Vimeo platform. This includes management of videos, channels, albums, users etc.
+idlPath: /vimeo/3.4/openapi.yaml
+thumbnailPath: /vimeo/3.4/icon.png
+documentationPath: /vimeo/3.4/readme.md
+keywords:
+  - Content&Files/Video&Audio
+  - Cost/Freemium
+endpoint:
+  - url: https://api.vimeo.com
+    description: Vimeo.com

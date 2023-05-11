@@ -1,0 +1,14 @@
+id: googleapis.youtube.data
+displayName: Youtube Data
+type: OpenAPI
+version: v3
+description: This is the [Youtube Data API v3](https://developers.google.com/youtube/v3/docs) OpenAPI specification.
+idlPath: /googleapis.youtube.data/v3/openapi.yaml
+thumbnailPath: /googleapis.youtube.data/v3/icon.png
+documentationPath: /googleapis.youtube.data/v3/readme.md
+keywords:
+  - Content&Files/Video&Audio
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://youtube.googleapis.com/

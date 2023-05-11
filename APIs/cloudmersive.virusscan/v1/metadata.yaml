@@ -1,0 +1,13 @@
+id: cloudmersive.virusscan
+displayName: Cloudmersive Virus Scan
+type: OpenAPI
+version: v1
+description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. The Cloudmersive Virus Scan API lets you scan files and content for viruses and identify security issues with content.
+idlPath: /cloudmersive.virusscan/v1/openapi.yaml
+thumbnailPath: /cloudmersive.virusscan/v1/icon.png
+documentationPath: /cloudmersive.virusscan/v1/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://testapi.cloudmersive.com/

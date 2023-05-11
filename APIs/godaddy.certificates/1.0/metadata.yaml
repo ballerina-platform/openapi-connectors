@@ -1,0 +1,13 @@
+id: godaddy.certificates
+displayName: GoDaddy Certificates
+type: OpenAPI
+version: "1.0"
+description: This is the [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification. The GoDaddy Certificates API provides capability to access GoDaddy operations related to certificates.
+idlPath: /godaddy.certificates/1.0/openapi.yaml
+thumbnailPath: /godaddy.certificates/1.0/icon.png
+documentationPath: /godaddy.certificates/1.0/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com/

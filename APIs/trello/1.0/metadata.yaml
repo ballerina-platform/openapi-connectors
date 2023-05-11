@@ -1,0 +1,13 @@
+id: trello
+displayName: Trello
+type: OpenAPI
+version: "1.0"
+description: This is the [Trello API v1](https://trello.com) OpenAPI specification. Client endpoint of Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
+idlPath: /trello/1.0/openapi.yaml
+thumbnailPath: /trello/1.0/icon.png
+documentationPath: /trello/1.0/readme.md
+keywords:
+  - Productivity/TaskManagement
+  - Cost/Freeemium
+endpoint:
+  - url: https://trello.com/1

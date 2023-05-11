@@ -1,0 +1,13 @@
+id: visiblethread
+displayName: VisibleThread
+type: OpenAPI
+version: "1.0"
+description: This is the [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification.  The VisibleThread API provides services for analyzing or searching documents and web pages.
+idlPath: /visiblethread/1.0/openapi.yaml
+thumbnailPath: /visiblethread/1.0/icon.png
+documentationPath: /visiblethread/1.0/readme.md
+keywords:
+  - BusinessIntelligence/LanguageAnalysis
+  - Cost/Paid
+endpoint:
+  - url: https://api.visiblethread.com/api/v1

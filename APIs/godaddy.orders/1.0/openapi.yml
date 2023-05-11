@@ -1,0 +1,1203 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: GoDaddy Orders
+    iconPath: "icon.png"
+  title: GoDaddy Orders API
+  description: >-
+    This is a generated connector for [GoDaddy Orders API
+    v1](https://developer.godaddy.com/doc/endpoint/orders) OpenAPI
+    specification.
+    The GoDaddy Orders API provides capability to access GoDaddy operations
+    related to orders.
+  version: '1.0'
+  x-ballerina-init-description: >-
+    The connector initialization requires setting the API credentials. 
+    Create a [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following
+    [this guide](https://developer.godaddy.com/getstarted).
+servers:
+  - url: https://api.ote-godaddy.com/
+tags:
+  - name: v1
+    description: ''
+paths:
+  /v1/orders:
+    get:
+      tags:
+        - v1
+      summary: >-
+        Retrieve a list of orders for the authenticated shopper. Only one filter
+        may be used at a time
+      description: >-
+        <strong>API Resellers</strong><ul><li>This endpoint does not support
+        subaccounts and therefore API Resellers should not supply an
+        X-Shopper-Id header</li></ul>
+      operationId: listOrders
+      parameters:
+        - name: periodStart
+          in: query
+          description: >-
+            Start of range indicating what time-frame should be returned.
+            Inclusive
+          schema:
+            type: string
+        - name: periodEnd
+          in: query
+          description: >-
+            End of range indicating what time-frame should be returned.
+            Inclusive
+          schema:
+            type: string
+        - name: domain
+          in: query
+          description: Domain name to use as the filter of results
+          schema:
+            type: string
+        - name: productGroupId
+          in: query
+          description: Product group id to use as the filter of results
+          schema:
+            type: integer
+        - name: paymentProfileId
+          in: query
+          description: Payment profile id to use as the filter of results
+          schema:
+            type: integer
+        - name: parentOrderId
+          in: query
+          description: Parent order id to use as the filter of results
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: Number of results to skip for pagination
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: Maximum number of items to return
+          schema:
+            maximum: 10000
+            minimum: 1
+            type: integer
+            default: 25
+        - name: sort
+          in: query
+          description: >-
+            Property name that will be used to sort results. '-' indicates
+            descending
+          schema:
+            type: string
+            default: '-createdAt'
+            enum:
+              - createdAt
+              - '-createdAt'
+              - orderId
+              - '-orderId'
+              - pricing.total
+              - '-pricing.total'
+        - name: X-Shopper-Id
+          in: header
+          description: >-
+            Shopper ID to be operated on, if different from JWT<br/><b>Reseller
+            subaccounts are not supported</b>
+          schema:
+            type: string
+        - name: X-Market-Id
+          in: header
+          description: Unique identifier of the Market in which the request is happening
+          schema:
+            type: string
+            default: en-US
+      responses:
+        '200':
+          description: Request was successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/OrderList'
+        '400':
+          description: Request was malformed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests received within interval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '504':
+          description: Gateway timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/orders/{orderId}:
+    get:
+      tags:
+        - v1
+      summary: Retrieve details for specified order
+      description: >-
+        <strong>API Resellers</strong><ul><li>This endpoint does not support
+        subaccounts and therefore API Resellers should not supply an
+        X-Shopper-Id header</li></ul>
+      operationId: getOrderByID
+      parameters:
+        - name: orderId
+          in: path
+          description: Order id whose details are to be retrieved
+          required: true
+          schema:
+            type: string
+        - name: X-Shopper-Id
+          in: header
+          description: >-
+            Shopper ID to be operated on, if different from JWT<br/><b>Reseller
+            subaccounts are not supported</b>
+          schema:
+            type: string
+        - name: X-Market-Id
+          in: header
+          description: Unique identifier of the Market in which the request is happening
+          schema:
+            type: string
+            default: en-US
+      responses:
+        '200':
+          description: Request was successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Order'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Order'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '400':
+          description: Request was malformed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests received within interval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '504':
+          description: Gateway timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:       
+      type: apiKey
+      in: header  
+      name: Authorization
+      description: Represents API Key 'Authorization'
+  schemas:
+    Address:
+      required:
+        - address1
+        - city
+        - country
+        - postalCode
+        - state
+      type: object
+      properties:
+        address1:
+          type: string
+          format: street-address
+        address2:
+          type: string
+          format: street-address2
+        city:
+          type: string
+          format: city-name
+        country:
+          type: string
+          description: >-
+            Two-letter ISO country code to be used as a hint for target
+            region<br/><br/>
+
+            NOTE: These are sample values, there are many
+
+            <a href='http://www.iso.org/iso/country_codes.htm'>more</a>
+          format: iso-country-code
+          default: US
+          enum:
+            - AC
+            - AD
+            - AE
+            - AF
+            - AG
+            - AI
+            - AL
+            - AM
+            - AO
+            - AQ
+            - AR
+            - AS
+            - AT
+            - AU
+            - AW
+            - AX
+            - AZ
+            - BA
+            - BB
+            - BD
+            - BE
+            - BF
+            - BG
+            - BH
+            - BI
+            - BJ
+            - BM
+            - BN
+            - BO
+            - BQ
+            - BR
+            - BS
+            - BT
+            - BV
+            - BW
+            - BY
+            - BZ
+            - CA
+            - CC
+            - CD
+            - CF
+            - CG
+            - CH
+            - CI
+            - CK
+            - CL
+            - CM
+            - CN
+            - CO
+            - CR
+            - CV
+            - CW
+            - CX
+            - CY
+            - CZ
+            - DE
+            - DJ
+            - DK
+            - DM
+            - DO
+            - DZ
+            - EC
+            - EE
+            - EG
+            - EH
+            - ER
+            - ES
+            - ET
+            - FI
+            - FJ
+            - FK
+            - FM
+            - FO
+            - FR
+            - GA
+            - GB
+            - GD
+            - GE
+            - GF
+            - GG
+            - GH
+            - GI
+            - GL
+            - GM
+            - GN
+            - GP
+            - GQ
+            - GR
+            - GS
+            - GT
+            - GU
+            - GW
+            - GY
+            - HK
+            - HM
+            - HN
+            - HR
+            - HT
+            - HU
+            - ID
+            - IE
+            - IL
+            - IM
+            - IN
+            - IO
+            - IQ
+            - IS
+            - IT
+            - JE
+            - JM
+            - JO
+            - JP
+            - KE
+            - KG
+            - KH
+            - KI
+            - KM
+            - KN
+            - KR
+            - KV
+            - KW
+            - KY
+            - KZ
+            - LA
+            - LB
+            - LC
+            - LI
+            - LK
+            - LR
+            - LS
+            - LT
+            - LU
+            - LV
+            - LY
+            - MA
+            - MC
+            - MD
+            - ME
+            - MG
+            - MH
+            - MK
+            - ML
+            - MM
+            - MN
+            - MO
+            - MP
+            - MQ
+            - MR
+            - MS
+            - MT
+            - MU
+            - MV
+            - MW
+            - MX
+            - MY
+            - MZ
+            - NA
+            - NC
+            - NE
+            - NF
+            - NG
+            - NI
+            - NL
+            - 'NO'
+            - NP
+            - NR
+            - NU
+            - NZ
+            - OM
+            - PA
+            - PE
+            - PF
+            - PG
+            - PH
+            - PK
+            - PL
+            - PM
+            - PN
+            - PR
+            - PS
+            - PT
+            - PW
+            - PY
+            - QA
+            - RE
+            - RO
+            - RS
+            - RU
+            - RW
+            - SA
+            - SB
+            - SC
+            - SE
+            - SG
+            - SH
+            - SI
+            - SJ
+            - SK
+            - SL
+            - SM
+            - SN
+            - SO
+            - SR
+            - ST
+            - SV
+            - SX
+            - SZ
+            - TC
+            - TD
+            - TF
+            - TG
+            - TH
+            - TJ
+            - TK
+            - TL
+            - TM
+            - TN
+            - TO
+            - TP
+            - TR
+            - TT
+            - TV
+            - TW
+            - TZ
+            - UA
+            - UG
+            - UM
+            - US
+            - UY
+            - UZ
+            - VA
+            - VC
+            - VE
+            - VG
+            - VI
+            - VN
+            - VU
+            - WF
+            - WS
+            - YE
+            - YT
+            - ZA
+            - ZM
+            - ZW
+        postalCode:
+          type: string
+          description: Postal or zip code
+          format: postal-code
+        state:
+          type: string
+          description: State or province or territory
+          format: state-province-territory
+    BillTo:
+      required:
+        - contact
+      type: object
+      properties:
+        contact:
+          $ref: '#/components/schemas/Contact'
+        taxId:
+          type: string
+          description: Tax id used for calculating the tax the customer is required to pay
+    Contact:
+      required:
+        - addressMailing
+        - email
+        - nameFirst
+        - nameLast
+        - phone
+      type: object
+      properties:
+        addressMailing:
+          $ref: '#/components/schemas/Address'
+        email:
+          type: string
+          format: email
+        fax:
+          type: string
+          format: phone
+        jobTitle:
+          type: string
+        nameFirst:
+          type: string
+          format: person-name
+        nameLast:
+          type: string
+          format: person-name
+        nameMiddle:
+          type: string
+        organization:
+          type: string
+          format: organization-name
+        phone:
+          type: string
+          format: phone
+    Error:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        fields:
+          type: array
+          description: >-
+            List of the specific fields, and the errors found with their
+            contents
+          items:
+            $ref: '#/components/schemas/ErrorField'
+        message:
+          type: string
+          description: Human-readable, English description of the error
+    ErrorField:
+      required:
+        - code
+        - path
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        message:
+          type: string
+          description: >-
+            Human-readable, English description of the problem with the contents
+            of the field
+        path:
+          type: string
+          description: >-
+            <ul>
+
+            <li style='margin-left: 12px;'>JSONPath referring to a field
+            containing an error</li>
+
+            <strong style='margin-left: 12px;'>OR</strong>
+
+            <li style='margin-left: 12px;'>JSONPath referring to a field that
+            refers to an object containing an error, with more detail in
+            `pathRelated`</li>
+
+            </ul>
+          format: json-path
+        pathRelated:
+          type: string
+          description: >-
+            JSONPath referring to a field containing an error, which is
+            referenced by `path`
+          format: json-path
+    ErrorLimit:
+      required:
+        - code
+        - retryAfterSec
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        fields:
+          type: array
+          description: >-
+            List of the specific fields, and the errors found with their
+            contents
+          items:
+            $ref: '#/components/schemas/ErrorField'
+        message:
+          type: string
+          description: Human-readable, English description of the error
+        retryAfterSec:
+          type: integer
+          description: Number of seconds to wait before attempting a similar request
+          format: integer-positive
+    LineItem:
+      required:
+        - label
+        - pricing
+        - quantity
+      type: object
+      properties:
+        domains:
+          type: array
+          description: >-
+            A collection of domain names purchased if the current product is
+            domain
+          items:
+            type: string
+        label:
+          type: string
+          description: Human readable description of the current product
+        period:
+          type: number
+          format: double
+          default: 1
+        periodUnit:
+          type: string
+          description: The unit of time that periodCount is measured in
+          default: MONTH
+          enum:
+            - MONTH
+            - QUARTER
+            - SEMI_ANNUAL
+            - YEAR
+            - ONE_TIME
+        pfid:
+          type: integer
+          description: Unique identifier of the current product
+        pricing:
+          $ref: '#/components/schemas/LineItemPricing'
+        quantity:
+          type: integer
+          description: Number of the current product included in the specified order
+          format: integer-positive
+        taxCollector:
+          $ref: '#/components/schemas/LineItemTaxCollector'
+    LineItemPricing:
+      required:
+        - discount
+        - fees
+        - list
+        - sale
+        - savings
+        - subtotal
+        - taxes
+        - unit
+      type: object
+      properties:
+        discount:
+          type: integer
+          description: >-
+            Discount off of sale price for given `quantity` and `period`
+            <pre>`discount` = `sale` - `subtotal`</pre>
+          format: currency-micro-unit
+        fees:
+          $ref: '#/components/schemas/OrderFee'
+        list:
+          type: integer
+          description: List price for given `quantity` and `period`
+          format: currency-micro-unit
+        sale:
+          type: integer
+          description: Actual price for the current product
+          format: currency-micro-unit
+        savings:
+          type: integer
+          description: >-
+            Savings off of list price for given `quantity` and `period`
+            <pre>`savings` = `list` - `subtotal`</pre>
+          format: currency-micro-unit
+        subtotal:
+          type: integer
+          description: >-
+            Price with any discounts and without taxes or fees for given
+            `quantity` and `period`
+          format: currency-micro-unit
+        taxes:
+          type: integer
+          description: Taxes for given `quantity` and `period`
+          format: currency-micro-unit
+        unit:
+          type: object
+          properties: {}
+          description: Pricing for a single unit of the given item
+    LineItemSummary:
+      required:
+        - label
+      type: object
+      properties:
+        label:
+          type: string
+          description: Product label of the current line item
+    LineItemTaxCollector:
+      required:
+        - taxCollectorId
+      type: object
+      properties:
+        taxCollectorId:
+          type: integer
+          description: Unique identifier for the company
+          format: integer-positive
+    LineItemPricingTaxDetail:
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Tax amount
+          format: currency-micro-unit
+        rate:
+          type: number
+          format: double
+    LineItemUnitPricing:
+      required:
+        - discount
+        - fees
+        - list
+        - sale
+        - savings
+        - taxes
+      type: object
+      properties:
+        discount:
+          type: integer
+          description: Discount without consideration of `quantity` and `period`
+          format: currency-micro-unit
+        fees:
+          $ref: '#/components/schemas/OrderFee'
+        list:
+          type: integer
+          description: List price without consideration of `quantity` and `period`
+          format: currency-micro-unit
+        sale:
+          type: integer
+          description: Sale price without consideration of `quantity` and `period`
+          format: currency-micro-unit
+        savings:
+          type: integer
+          description: Savings without consideration of `quantity` and `period`
+          format: currency-micro-unit
+        taxes:
+          type: integer
+          description: Taxes without consideration of `quantity` and `period`
+          format: currency-micro-unit
+    Order:
+      required:
+        - billTo
+        - createdAt
+        - currency
+        - items
+        - orderId
+        - payments
+        - pricing
+      type: object
+      properties:
+        billTo:
+          $ref: '#/components/schemas/BillTo'
+        createdAt:
+          type: string
+          description: Date and time when the current order is created on
+          format: iso-datetime
+        currency:
+          type: string
+          description: Currency in which the order has been placed
+          format: iso-currency-code
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItem'
+        orderId:
+          type: string
+          description: Unique identifier of current order
+        parentOrderId:
+          type: string
+          description: >-
+            Unique identifier of the parent order. All refund/chargeback orders
+            are tied to the original order.
+
+            The orginal order's `orderId` is the `parentOrderId` of
+            refund/chargeback orders
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        pricing:
+          $ref: '#/components/schemas/OrderPricing'
+    OrderFee:
+      required:
+        - total
+      type: object
+      properties:
+        icann:
+          type: integer
+          description: Domain registration transaction fee charged by ICANN
+          format: currency-micro-unit
+        total:
+          type: integer
+          description: Sum of all fees
+          format: currency-micro-unit
+    OrderList:
+      required:
+        - orders
+        - pagination
+      type: object
+      properties:
+        orders:
+          type: array
+          description: A collection of orders
+          items:
+            $ref: '#/components/schemas/OrderSummary'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    OrderPricing:
+      required:
+        - discount
+        - fees
+        - list
+        - savings
+        - subtotal
+        - taxes
+        - total
+      type: object
+      properties:
+        discount:
+          type: integer
+          description: Discount from promotional pricing
+          format: currency-micro-unit
+        fees:
+          $ref: '#/components/schemas/OrderFee'
+        id:
+          type: number
+          format: double
+        list:
+          type: integer
+          description: Sum of list prices for the entire cart
+          format: currency-micro-unit
+        savings:
+          type: integer
+          description: Savings off of list price <pre>`savings` = `list` - `subtotal`</pre>
+          format: currency-micro-unit
+        subtotal:
+          type: integer
+          description: Price with `discount` and without taxes or fees
+          format: currency-micro-unit
+        taxes:
+          type: integer
+          description: Taxes for the entire cart
+          format: currency-micro-unit
+        taxDetails:
+          type: array
+          description: A collection of line item tax details
+          items:
+            $ref: '#/components/schemas/LineItemPricingTaxDetail'
+        total:
+          type: integer
+          description: >-
+            Price the customer pays <pre>`total` = `subtotal` + `taxes` +
+            `fees.total`</pre>
+          format: currency-micro-unit
+    OrderSummary:
+      required:
+        - createdAt
+        - currency
+        - items
+        - orderId
+        - pricing
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Date and time when the current order was created
+          format: iso-datetime
+        currency:
+          type: string
+          description: Currency in which the order was placed
+          format: iso-currency-code
+        items:
+          type: array
+          description: Sets of two or more line items in current order
+          items:
+            $ref: '#/components/schemas/LineItemSummary'
+        orderId:
+          type: integer
+          description: Unique identifier of the current order
+        parentOrderId:
+          type: string
+          description: >-
+            Unique identifier of the parent order. All refund/chargeback orders
+            are tied to the original order.
+
+            The orginal order's `orderId` is the `parentOrderId` of
+            refund/chargeback orders
+        pricing:
+          $ref: '#/components/schemas/OrderSummaryPricing'
+    OrderSummaryPricing:
+      required:
+        - total
+      type: object
+      properties:
+        total:
+          type: string
+          description: >-
+            Total amount charged for the current order. Negative for Refund and
+            Chargeback
+          format: currency-micro-unit
+    Pagination:
+      type: object
+      properties:
+        first:
+          type: string
+          description: URI to access the first page
+        last:
+          type: string
+          description: URI to access the last page
+        next:
+          type: string
+          description: URI to access the next page
+        previous:
+          type: string
+          description: URI to access the previous page
+        total:
+          type: integer
+          description: Number of records available
+    Payment:
+      required:
+        - amount
+        - category
+        - paymentProfileId
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: Amount paid by the current payment
+          format: currency-micro-unit
+        category:
+          type: string
+          description: |-
+            The category of payment method used at the time of purchase.
+            Most common values are listed in the enum.
+          enum:
+            - CREDIT_CARD
+            - PAYPAL
+            - ACH
+            - GIFT_CARD
+            - IN_STORE_CREDIT
+            - PREPAID
+        paymentProfileId:
+          type: string
+          description: Unique identifier of the payment profile used by current payment
+        subcategory:
+          type: string
+          description: |-
+            The subcategory of payment method used at the time of purchase.
+             This field is only set for certain payment categories, such as ACH and CREDIT_CARD.
+            Most common values are listed in the enum.
+          enum:
+            - CHECKING_PERSONAL
+            - CHECKING_BUSINESS
+            - VISA
+            - MASTER_CARD
+            - AMEX
+            - JCB
+            - UNIONPAY

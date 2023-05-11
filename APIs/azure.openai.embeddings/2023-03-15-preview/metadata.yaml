@@ -1,0 +1,16 @@
+id: azure.openai.embeddings
+displayName: Azure OpenAI Embeddings
+type: OpenAPI
+version: 2023-03-15-preview
+description: This is a generated connector from [Azure OpenAI Embeddings API v2023-03-15-preview](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) OpenAPI specification. The Azure Azure OpenAI Service REST API Embeddings Endpoint will generate one a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+idlPath: /azure.openai.embeddings/2023-03-15-preview/openapi.yaml
+thumbnailPath: /azure.openai.embeddings/2023-03-15-preview/icon.png
+documentationPath: /azure.openai.embeddings/2023-03-15-preview/readme.md
+keywords:
+  - AI/Embeddings
+  - AzureOpenAI
+  - Cost/Paid
+  - GPT-3
+  - Vendor/Microsoft
+endpoint:
+  - url: https://your-resource-name.openai.azure.com/openai

@@ -1,0 +1,14 @@
+id: googleapis.cloudbillingaccount
+displayName: Google Cloud Billing Account
+type: OpenAPI
+version: v1
+description: This is the [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification. The Google Cloud Billing Account API allows developers to manage billing for their Google Cloud Platform projects programmatically.
+idlPath: /googleapis.cloudbillingaccount/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudbillingaccount/v1/icon.png
+documentationPath: /googleapis.cloudbillingaccount/v1/readme.md
+keywords:
+  - Finance/Billing
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://cloudbilling.googleapis.com/

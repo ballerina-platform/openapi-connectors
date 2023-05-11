@@ -1,0 +1,11 @@
+id: paypal.orders
+displayName: Paypal Orders
+type: OpenAPI
+version: v2
+description: This is the [Paypal Orders API v2](https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
+idlPath: /paypal.orders/v2/openapi.yaml
+thumbnailPath: /paypal.orders/v2/icon.png
+documentationPath: /paypal.orders/v2/readme.md
+keywords:
+  - Finance/Payment
+  - Cost/Freemium

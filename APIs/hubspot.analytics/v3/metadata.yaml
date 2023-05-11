@@ -1,0 +1,13 @@
+id: hubspot.analytics
+displayName: HubSpot Analytics
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. These APIs allow triggering instances of custom behavioral events
+idlPath: /hubspot.analytics/v3/openapi.yaml
+thumbnailPath: /hubspot.analytics/v3/icon.png
+documentationPath: /hubspot.analytics/v3/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

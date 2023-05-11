@@ -1,0 +1,14 @@
+id: xero.assets
+displayName: Xero Assets
+type: OpenAPI
+version: 2.9.4
+description: This is the [Xero Assets API v2.9.4](https://developer.xero.com/documentation/api/assets/overview/) OpenAPI specification. The Assets API exposes fixed asset related functions of the Xero Accounting application and can be used for a variety of purposes such as creating assets, retrieving asset valuations etc.
+idlPath: /xero.assets/2.9.4/openapi.yaml
+thumbnailPath: /xero.assets/2.9.4/icon.png
+documentationPath: /xero.assets/2.9.4/readme.md
+keywords:
+  - Finance/AssetManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.xero.com/assets.xro/1.0
+    description: Xero API servers

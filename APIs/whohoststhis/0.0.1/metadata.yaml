@@ -1,0 +1,13 @@
+id: whohoststhis
+displayName: Who Hosts This
+type: OpenAPI
+version: 0.0.1
+description: This is the [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification. The Who Hosts This API provides services to get discover the hosting provider for any web site.
+idlPath: /whohoststhis/0.0.1/openapi.yaml
+thumbnailPath: /whohoststhis/0.0.1/icon.png
+documentationPath: /whohoststhis/0.0.1/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://www.who-hosts-this.com/APIEndpoint

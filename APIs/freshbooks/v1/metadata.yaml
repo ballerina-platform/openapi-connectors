@@ -1,0 +1,13 @@
+id: freshbooks
+displayName: FreshBooks
+type: OpenAPI
+version: v1
+description: This is the [FreshBooks API v1](https://www.freshbooks.com/api/start) OpenAPI specification. FreshBooks lets you create professional looking invoices in seconds, automatically record expenses with ease and track your time quickly and efficiently so you can focus on what matters most - serving the needs of your clients. The FreshBooks API is an interface for accessing your FreshBooks data using JSON.
+idlPath: /freshbooks/v1/openapi.yaml
+thumbnailPath: /freshbooks/v1/icon.png
+documentationPath: /freshbooks/v1/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid
+endpoint:
+  - url: https://api.freshbooks.com/

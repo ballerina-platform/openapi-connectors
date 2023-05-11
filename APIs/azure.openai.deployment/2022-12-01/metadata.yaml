@@ -1,0 +1,14 @@
+id: azure.openai.deployment
+displayName: Azure OpenAI Deployment
+type: OpenAPI
+version: "2022-12-01"
+description: APIs for managing deployments of OpenAI models.
+idlPath: /azure.openai.deployment/2022-12-01/openapi.yaml
+thumbnailPath: /azure.openai.deployment/2022-12-01/icon.png
+documentationPath: /azure.openai.deployment/2022-12-01/readme.md
+keywords:
+  - AI/Deployment
+  - Vendor/Microsoft
+  - Cost/Paid
+  - ModelDeployment
+  - AzureOpenAI

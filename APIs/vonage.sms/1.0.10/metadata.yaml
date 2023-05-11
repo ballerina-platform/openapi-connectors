@@ -1,0 +1,13 @@
+id: vonage.sms
+displayName: Vonage SMS
+type: OpenAPI
+version: 1.0.10
+description: This is the [Vonage SMS API v1.0.10](https://nexmo-api-specification.herokuapp.com/sms) OpenAPI specification. With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers.  Numbers are specified in E.164 format. More SMS API documentation is at https://developer.nexmo.com/messaging/sms/overview
+idlPath: /vonage.sms/1.0.10/openapi.yaml
+thumbnailPath: /vonage.sms/1.0.10/icon.png
+documentationPath: /vonage.sms/1.0.10/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: https://rest.nexmo.com/sms

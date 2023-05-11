@@ -1,0 +1,14 @@
+id: spotto
+displayName: Spotto
+type: OpenAPI
+version: 1.0.0
+description: This is the [Spotto API v1.0.0](https://api-reference.spotto.io) OpenAPI specification.
+idlPath: /spotto/1.0.0/openapi.yaml
+thumbnailPath: /spotto/1.0.0/icon.png
+documentationPath: /spotto/1.0.0/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.spotto.cloud
+    description: Spotto API Base URL

@@ -1,0 +1,13 @@
+id: wordnik
+displayName: Wordnik
+type: OpenAPI
+version: "4.0"
+description: This is the [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification. Wordnik is the worlds biggest online English dictionary, by number of words.
+idlPath: /wordnik/4.0/openapi.yaml
+thumbnailPath: /wordnik/4.0/icon.png
+documentationPath: /wordnik/4.0/readme.md
+keywords:
+  - Education/Dictionary
+  - Cost/Freemium
+endpoint:
+  - url: https://api.wordnik.com/v4

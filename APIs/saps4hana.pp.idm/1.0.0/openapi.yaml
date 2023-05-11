@@ -1,0 +1,527 @@
+openapi: 3.0.2
+info:
+  description: >-
+    This is a generated connector for [SAP S/4HANA Procurement Planning System for Cross-domain Identity Management API v1.0.0](https://api.sap.com/api/SCIMService/overview) OpenAPI specification. 
+    This service allows to read and write user data. It will be used by the
+    Identity Provisioning Service. The SCIM Service is protected by the Identity
+    Authentication Service, so the customer must configure the authentication in
+    the Identity Provisioning Service.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA Cross-domain Identity Management
+    iconPath: "icon.png"
+  version: 1.0.0
+  title: System for Cross-domain Identity Management
+x-sap-shortText: This service enables you to write and read user data.
+security:
+  - OAuth2: []
+# servers:
+#   - url: https://procplanning-api.cfapps.eu10.hana.ondemand.com/api/scim/v1
+#     description: Production URL.
+externalDocs:
+  description: >-
+    More information is available at the SAP S/4HANA for procurement planning
+    SAP Help Portal page.
+  url: https://help.sap.com/viewer/product/SAP_PROCUREMENT_PLANNING/1.0/en-US
+tags:
+  - name: Users
+paths:
+  /Users:
+    post:
+      tags:
+        - Users
+      summary: Adds a new user.
+      description: >-
+        Adds a new user to the system. To add a user, an ID, a primary email, a
+        display name, and the "active" status are required.
+      operationId: addNewUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        description: User object
+        required: true
+      responses:
+        '201':
+          description: Created.
+        '400':
+          $ref: '#/components/responses/error400'
+        '401':
+          $ref: '#/components/responses/error401'
+        '403':
+          $ref: '#/components/responses/error403'
+        '404':
+          $ref: '#/components/responses/error404'
+        '405':
+          $ref: '#/components/responses/error405'
+        '406':
+          $ref: '#/components/responses/error406'
+        '409':
+          description: Email or User ID is not unique.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error409'
+        4XX:
+          $ref: '#/components/responses/error'
+    get:
+      tags:
+        - Users
+      summary: Retrieves all users.
+      description: Retrieves the data of all users.
+      operationId: getAllUsers
+      responses:
+        '200':
+          description: Retrieved entities.
+          content:
+            application/scim+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadMultipleUsers'
+  /Users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Retrieves the user.
+      description: Retrieves the user from the system with the corresponding ID parameter.
+      operationId: getUserById
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user that will be created.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retrieved entities.
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/ReadSingleUser'
+        '400':
+          $ref: '#/components/responses/error400'
+        '401':
+          $ref: '#/components/responses/error401'
+        '403':
+          $ref: '#/components/responses/error403'
+        '404':
+          $ref: '#/components/responses/error404'
+        '405':
+          $ref: '#/components/responses/error405'
+        '406':
+          $ref: '#/components/responses/error406'
+        4XX:
+          $ref: '#/components/responses/error'
+    put:
+      tags:
+        - Users
+      summary: Updates the user.
+      operationId: updateUserById
+      description: Updates the user with the corresponding ID parameter.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user that will be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/scim+json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '200':
+          description: Retrieved entities.
+          content:
+            application/scim+json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/error400'
+        '401':
+          $ref: '#/components/responses/error401'
+        '403':
+          $ref: '#/components/responses/error403'
+        '404':
+          $ref: '#/components/responses/error404'
+        '405':
+          $ref: '#/components/responses/error405'
+        '406':
+          $ref: '#/components/responses/error406'
+        4XX:
+          $ref: '#/components/responses/error'
+    delete:
+      tags:
+        - Users
+      summary: Deletes a user from the system.
+      operationId: deleteUserById
+      description: Deletes a user from the system. To delete a user, the ID is required.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the user that will be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: The task was successfully completed and the context was updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/success204'
+        '400':
+          $ref: '#/components/responses/error400'
+        '401':
+          $ref: '#/components/responses/error401'
+        '403':
+          $ref: '#/components/responses/error403'
+        '404':
+          $ref: '#/components/responses/error404'
+        '405':
+          $ref: '#/components/responses/error405'
+        '406':
+          $ref: '#/components/responses/error406'
+        4XX:
+          $ref: '#/components/responses/error'
+components:
+  schemas:
+    Emails:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          example: paula.projectsteerer@sap.procplan.com
+        type:
+          type: string
+          example: work
+        primary:
+          type: boolean
+    UserMeta:
+      type: object
+      properties:
+        resourceType:
+          type: string
+          example: User
+        created:
+          type: string
+          format: date
+          example: '2021-08-18T10:45:02.700Z'
+        lastModified:
+          type: string
+          format: date
+          example: '2021-08-18T10:45:02.700Z'
+        location:
+          type: string
+          example: ../Users/a638213c-177c-426d-9a5e-375367e17fa9
+    ReadSingleUser:
+      type: object
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            example: urn:ietf:params:scim:schemas:core:2.0:User
+        meta:
+          $ref: '#/components/schemas/UserMeta'
+        id:
+          type: string
+          example: paula.projectsteerer@sap.procplan.com
+        userName:
+          type: string
+          example: paula.projectsteerer
+        displayName:
+          type: string
+          example: Paula Project Steerer
+        active:
+          type: boolean
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Emails'
+    ReadMultipleUsers:
+      type: object
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            example: urn:ietf:params:scim:api:messages:2.0:ListResponse
+        totalResults:
+          type: number
+          example: 1
+        itemsPerPage:
+          type: number
+          example: 500
+        startIndex:
+          type: number
+          example: 1
+        Resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadSingleUser'
+    User:
+      type: object
+      required:
+        - id
+        - displayName
+        - active
+      properties:
+        id:
+          type: string
+          example: paula.projectsteerer@sap.procplan.com
+        userName:
+          type: string
+          example: paula.projectsteerer
+        displayName:
+          type: string
+          example: Paula Project Steerer
+        active:
+          type: boolean
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Emails'
+    error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+            message:
+              type: string
+    error400:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: Bad Request
+    error401:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Unauthorized
+    error403:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 403
+            message:
+              type: string
+              example: Forbidden
+    error404:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 404
+            message:
+              type: string
+              example: Not Found
+    error405:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 405
+            message:
+              type: string
+              example: Method Not Allowed
+    error406:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 406
+            message:
+              type: string
+              example: Not Acceptable
+    error409:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 409
+            message:
+              type: string
+              example: Email or User ID is not unique.
+    success204:
+      type: object
+      required:
+        - body
+      properties:
+        body:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 204
+            message:
+              type: string
+              example: No Content
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: >-
+        To use this REST API, you need to get OAuth client credentials (client
+        ID and secret) from SAP Cloud Platform using the cockpit. After that,
+        you need to pass the obtained client credentials to the SAP Cloud
+        Platform token endpoint to obtain an access token.
+      flows:
+        clientCredentials:
+          tokenUrl: ""
+          scopes:
+            scimapi.read: Can read user data from the service.
+            scimapi.write: Can write user data data.
+  responses:
+    error:
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error'
+    error400:
+      description: >-
+        Bad Request: The server cannot or will not process the request due to an
+        apparent client error (e.g. malformed request syntax, size too large,
+        invalid request message framing, or deceptive request routing).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error400'
+    error401:
+      description: >-
+        Unauthorized: The user does not have valid authentication credentials
+        for the target resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error401'
+    error403:
+      description: >-
+        Forbidden: The request contained valid data and was understood by the
+        server, but the server is refusing action. This may be due to the user
+        not having the necessary permissions for a resource or needing an
+        account of some sort, or attempting a prohibited action (e.g. creating a
+        duplicate record where only one is allowed).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error403'
+    error404:
+      description: >-
+        Not Found: The requested resource could not be found but may be
+        available in the future. Subsequent requests by the client are
+        permissible.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error404'
+    error405:
+      description: >-
+        Method Not Allowed: A request method is not supported for the requested
+        resource; for example, a GET request on a form that requires data to be
+        presented via POST, or a PUT request on a read-only resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error405'
+    error406:
+      description: >-
+        Not Acceptable: The requested resource is capable of generating only
+        content not acceptable according to the Accept headers sent in the
+        request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/error406'

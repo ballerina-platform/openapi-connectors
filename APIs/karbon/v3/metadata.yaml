@@ -1,0 +1,13 @@
+id: karbon
+displayName: Karbon
+type: OpenAPI
+version: v3
+description: This is the [Karbon API v3.0](https://developers.karbonhq.com/api) OpenAPI specification.
+idlPath: /karbon/v3/openapi.yaml
+thumbnailPath: /karbon/v3/icon.png
+documentationPath: /karbon/v3/readme.md
+keywords:
+  - Productivity/ProductManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.karbonhq.com

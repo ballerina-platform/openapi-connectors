@@ -1,0 +1,11 @@
+id: bmc.truesightpresentationserver
+displayName: Bmc TrueSight Presentation Server
+type: OpenAPI
+version: 11.1.00
+description: This is the [BMC Hardware Sentry TrueSight Presentation Server REST API v1.0](https://docs.bmc.com/docs/display/tsps107/Getting+started) OpenAPI specification.   The BMC Hardware Sentry TrueSight Presentation Server API provides the capability to access data from various TrueSight products to provide a consolidated set of views for monitoring the infrastructure, real and synthetic applications, and capacity planning.
+idlPath: /bmc.truesightpresentationserver/11.1.00/openapi.yaml
+thumbnailPath: /bmc.truesightpresentationserver/11.1.00/icon.png
+documentationPath: /bmc.truesightpresentationserver/11.1.00/readme.md
+keywords:
+  - ITOperations/ServerMonitoring
+  - Cost/Freemium

@@ -1,0 +1,11 @@
+id: servicenow
+displayName: ServiceNow
+type: OpenAPI
+version: 1.0.0
+description: This is the [ServiceNow REST API Quebec version] (https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification. ServiceNow provides extensive access to instances through a set of RESTful APIs.
+idlPath: /servicenow/1.0.0/openapi.yaml
+thumbnailPath: /servicenow/1.0.0/icon.png
+documentationPath: /servicenow/1.0.0/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Freemium

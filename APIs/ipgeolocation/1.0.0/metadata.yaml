@@ -1,0 +1,13 @@
+id: ipgeolocation
+displayName: Abstract IP Geolocation
+type: OpenAPI
+version: 1.0.0
+description: This is the [Abstract IP geolocation API version 1](https://www.abstractapi.com/ip-geolocation-api#docs) OpenAPI Specification. Abstract IP geolocation API allows developers to retrieve the region, country and city behind any IP worldwide. The API covers the geolocation of IPv4 and IPv6 addresses in 180+ countries worldwide. Extra information can be retrieved like the currency, flag or language associated to an IP.
+idlPath: /ipgeolocation/1.0.0/openapi.yaml
+thumbnailPath: /ipgeolocation/1.0.0/icon.png
+documentationPath: /ipgeolocation/1.0.0/readme.md
+keywords:
+  - ITOperations/GeographicInformationSystems
+  - Cost/Free
+endpoint:
+  - url: https://ipgeolocation.abstractapi.com

@@ -1,0 +1,634 @@
+openapi: 3.0.1
+info:
+  title: Promotion Service
+  description: >
+    This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    In SAPS4HANA Intelligent Trade Claims Management, the promotion service allows you to create, add, and delete information about promotions. Execution of Promotions should be done in an particular order.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Promotion
+    iconPath: "icon.png"
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: ' Business Documentation Promotion Service'
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/5de0a32f034a4692b023f586b80f9b01.html
+# servers:
+# - url: https://{host}.{environment}.{domain}/v1
+#   variables:
+#     host:
+#       default: api.dev1
+#       description: Your host where SAP Intelligent Trade Claims Management has deployed
+#     environment:
+#       default: e2e
+#       description: Your defined environment for your SAP Intelligent Trade Claims Management account
+#     domain:
+#       default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: Promotion
+paths:
+  /promotions:
+    post:
+      tags:
+      - Promotion
+      summary: Create a new Promotion
+      description: Using this API, user can create a Promotion. As of now, batch creation is not supported
+      operationId: createPromotion
+      requestBody:
+        description: Request payload to create promotion
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalPromotionDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePromotionCreationMessage'
+        '400':
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/ResponseInvalidCustomer'
+                - $ref: '#/components/schemas/ResponseInvalidDate'
+                - $ref: '#/components/schemas/ResponseInvalidProduct'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /promotions/{externalId}:
+    get:
+      tags:
+      - Promotion
+      summary: Get Promotion with externalId
+      description: Using this API, user can get a particular Promotion using {externalId}
+      operationId: getPromotionByExternalId
+      parameters:
+      - name: externalId
+        in: path
+        description: The external id of the promotion, for example `348328430`
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseExternalPromotionMessage'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Promotion
+      summary: Delete a Promotion with externalId
+      description: Using this API, a user can delete a particular Promotion using {externalId}
+      operationId: deletePromotion
+      parameters:
+      - name: externalId
+        in: path
+        description: The external id of the promotion, for example `348328430`
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePromotionDeletionMessage'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ExternalCustomerHierarchyNodeKeyVDTO:
+      type: object
+      required:
+      - customerHierarchyNodeId
+      - customerHierarchyTypeCode
+      - hierarchyId
+      properties:
+        customerHierarchyNodeId:
+          type: string
+          minLength: 0
+          maxLength: 18
+        customerHierarchyTypeCode:
+          type: string
+          minLength: 0
+          maxLength: 2
+        hierarchyId:
+          type: string
+          minLength: 0
+          maxLength: 20
+          pattern: '[a-zA-Z0-9/ ]*'
+      title: Customer HierarchyNode Key
+    ExternalProductHierarchyNodeKeyVDTO:
+      type: object
+      required:
+      - productHierarchyNodeId
+      - productHierarchyTypeCode
+      - hierarchyId
+      properties:
+        hierarchyId:
+          type: string
+          minLength: 0
+          maxLength: 20
+          pattern: '[a-zA-Z0-9/ ]*'
+        productHierarchyNodeId:
+          type: string
+          minLength: 0
+          maxLength: 18
+        productHierarchyTypeCode:
+          type: string
+          minLength: 0
+          maxLength: 2
+      title: Product Hierarchy NodeKey
+    ExternalPromotionCustomerVDTO:
+      type: object
+      properties:
+        customerExternalId:
+          type: string
+          minLength: 0
+          maxLength: 60
+        customerHierarchyNodeKey:
+          $ref: '#/components/schemas/ExternalCustomerHierarchyNodeKeyVDTO'
+      title: Promotion Customer
+    ExternalPromotionDTO:
+      type: object
+      required:
+      - externalId
+      - businessSystem
+      - promotionCustomer
+      - promotionDates
+      - promotionProducts
+      properties:
+        businessSystem:
+          type: integer
+          format: int64
+        description:
+          type: string
+          minLength: 0
+          maxLength: 240
+        documentReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalPromotionReferenceDTO'
+        externalId:
+          type: string
+          minLength: 1
+          maxLength: 36
+        externalSalesArea:
+          $ref: '#/components/schemas/ExternalSalesAreaVDTO'
+        id:
+          type: integer
+          format: int64
+        internalId:
+          type: string
+        isMarkedForDeletion:
+          type: boolean
+        promotionCustomer:
+          $ref: '#/components/schemas/ExternalPromotionCustomerVDTO'
+        promotionDates:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionDateDTO'
+        promotionProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalPromotionProductDTO'
+        status:
+          type: string
+          enum:
+          - PLANNED
+          - INPROCESS
+          - CLOSED
+          - Approved
+          - NotAssigned
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionTypeCodeV'
+      title: Promotion
+      example:
+        externalId: '348'
+        businessSystem: 123
+        description: Adding Promotion description
+        types: []
+        isMarkedForDeletion: false
+        promotionCustomer:
+          customerExternalId: '1'
+        status: PLANNED
+        promotionDates:
+        - promotionDateTypeCode: SELL_IN
+          validFrom: 3-29-19
+          validTo: 01-02-21
+        promotionProducts:
+        - productExternalId: null
+          productHierarchyNodeKey:
+            hierarchyId: '123456'
+            productHierarchyTypeCode: P1
+            productHierarchyNodeId: '0101010'
+        documentReferences:
+        - documentType: text
+          documentId: referenceDocument 01
+        externalSalesArea:
+          salesOrganization: '002'
+          salesDivision: '0037'
+          distributionChannel: '001'
+    PromotionDateDTO:
+      title: Promotion Date
+      type: object
+      required:
+      - promotionDateTypeCode
+      - validFrom
+      - validTo
+      properties:
+        promotionDateTypeCode:
+          type: string
+          enum:
+          - SELL_IN
+          - SELL_OUT
+        validFrom:
+          type: string
+          example: MM-dd-yy
+        validTo:
+          type: string
+          example: MM-dd-yy
+    ExternalPromotionProductDTO:
+      type: object
+      required:
+      - productExternalId
+      - productHierarchyNodeKey
+      properties:
+        productExternalId:
+          type: string
+          minLength: 0
+          maxLength: 40
+        productHierarchyNodeKey:
+          $ref: '#/components/schemas/ExternalProductHierarchyNodeKeyVDTO'
+      title: Promotion Product
+    ExternalPromotionReferenceDTO:
+      type: object
+      properties:
+        documentId:
+          type: string
+          minLength: 0
+          maxLength: 20
+        documentType:
+          type: string
+          minLength: 0
+          maxLength: 2
+      title: Promotion Reference
+    PromotionTypeCodeV:
+      title: Promotion Type Code
+      type: object
+      properties:
+        promotionTypeCode:
+          type: string
+          enum:
+          - BillBack
+          - CorrectionRebate
+          - ExclusivityPreferre
+          - CorrectionListFees
+          - CorrectionBillBack
+          - CorrectionEXCL
+          - Rebate
+          - AdFees
+          - LSLumpSum
+          - EDLP
+          - NotAssigned
+          - NonConsPriceAdj
+          - CorrectionNCPA
+          - Merchandising
+          - CorrectionMerch
+          - EndUser
+          - MarketingDealOI
+    ExternalSalesAreaVDTO:
+      type: object
+      properties:
+        distributionChannel:
+          type: string
+          minLength: 0
+          maxLength: 2
+        salesDivision:
+          type: string
+          minLength: 0
+          maxLength: 2
+        salesOrganization:
+          type: string
+          minLength: 0
+          maxLength: 4
+      title: Sales Area
+    ResponseExternalPromotionListMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        promotions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalPromotionDTO'
+        timestamp:
+          type: string
+          format: date-time
+      title: All promotions
+    ResponseMessage:
+      title: Response Message
+      type: object
+      properties:
+        message:
+          type: string
+        uri:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponsePromotionCreationMessage:
+      title: Promotion creation
+      type: object
+      example:
+        message: Success Created!
+        externalid: '3483284'
+        timestamp: '2021-01-18T21:07:56.026+00:00'
+      properties:
+        externalId:
+          type: integer
+          format: int64
+          example: '1234567'
+        message:
+          type: string
+          example: Success Created!
+        timestamp:
+          type: string
+          format: date-time
+    ResponseInvalidDate:
+      title: Invalid Date
+      type: object
+      example:
+        message: Invalid Date Format, expected format - MM-dd-yy.
+        timestamp: '2021-01-18T21:09:12.961+00:00'
+        uri: /v1/promotions
+      properties:
+        externalId:
+          type: integer
+          format: int64
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseInvalidCustomer:
+      title: Invalid Customer
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid Customer. Customer related to this Promotion doesn't exists. Please refer to the sequence documentation.
+        uri:
+          type: string
+          example: /v1/promotions
+        timestamp:
+          type: string
+          format: date-time
+          example: '2021-01-18T21:08:43.123+00:00'
+    ResponseNotFoundMessage:
+      type: object
+      example:
+        message: There is no data found based on the given inputs.
+        error: No Result Found
+        timestamp: '2021-01-18T19:37:13.701+00:00'
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Not Found Message
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseUnauthorizedMessage:
+      type: object
+      example:
+        message: Unauthorized/API key not found
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Unauthorized Message
+    ResponseInvalidProduct:
+      title: Invalid Product
+      type: object
+      example:
+        message: Invalid productHierarchyNodeId object. Hierarchy Node doesn't exists for the given productHierarchyNodeId. Please refer to the sequence documentation.
+        timestamp: '2021-01-18T21:09:50.119+00:00'
+        uri: /v1/promotions
+      properties:
+        message:
+          type: string
+        uri:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponsePromotionDeleteAllMessage:
+      title: All promotions deletion
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+        message:
+          type: string
+          example: Promotions deleted.
+        timestamp:
+          type: string
+          format: date-time
+    ResponsePromotionDeletionMessage:
+      title: Single promotion deletion
+      type: object
+      example:
+        message: Promotion deleted.
+        externalid: '3483284'
+        timestamp: '2021-01-18T21:15:22.833+00:00'
+      properties:
+        externalId:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseNotFoundPromotionDeletionMessage:
+      title: Promotion not Found
+      type: object
+      example:
+        message: Promotion has already been deleted or does not exist.
+        externalid: '34832847811'
+        timestamp: '2021-01-18T21:14:38.269+00:00'
+      properties:
+        externalId:
+          type: string
+        message:
+          type: string
+        promotion:
+          $ref: '#/components/schemas/ExternalPromotionDTO'
+        timestamp:
+          type: string
+          format: date-time
+    ResponseExternalPromotionMessage:
+      type: object
+      example:
+        message: Found the promotion for the given externalId.
+        externalid: '3483284'
+        promotion:
+          id: 18353
+          externalId: '3483284'
+          businessSystem: 5279
+          description: Adding new one more Promotion description after few changes
+          types: null
+          isMarkedForDeletion: false
+          promotionCustomer:
+            customerExternalId: '1'
+            customerHierarchyNodeKey: null
+          status: PLANNED
+          promotionDates:
+          - promotionDateTypeCode: SELL_IN
+            validFrom: 03-29-19
+            validTo: 01-02-21
+          promotionProducts:
+          - productExternalId: null
+            productHierarchyNodeKey:
+              hierarchyId: 12sdf3456
+              productHierarchyTypeCode: P1
+              productHierarchyNodeId: '0101010'
+          documentReferences:
+          - documentType: text document
+            documentId: referenceDocument 01
+          externalSalesArea:
+            salesOrganization: '002'
+            salesDivision: '0037'
+            distributionChannel: '001'
+        timestamp: '2021-01-18T21:11:39.143+00:00'
+      properties:
+        externalId:
+          type: string
+        message:
+          type: string
+        count:
+          type: integer
+          format: int32
+        promotion:
+          $ref: '#/components/schemas/ExternalPromotionDTO'
+        timestamp:
+          type: string
+          format: date-time
+      title: Promotion found
+    ResponseNotFoundPromotionMessage:
+      title: Promotion not found
+      type: object
+      example:
+        message: Not Found.
+        externalid: '34832841'
+        promotion: null
+        timestamp: '2021-01-18T21:11:56.232+00:00'
+      properties:
+        externalId:
+          type: string
+          example: '123456'
+        message:
+          type: string
+          example: Not Found
+        promotion:
+          $ref: '#/components/schemas/ExternalPromotionDTO'
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID, secret) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The Promotion Service represent the promotion that can be posted to, deleted or queried from SAP Intelligent Trade Claims Management by a user.

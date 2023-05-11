@@ -1,0 +1,13 @@
+id: kinto
+displayName: Kinto
+type: OpenAPI
+version: "1.22"
+description: This is the [Kinto v1.22](https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification.
+idlPath: /kinto/1.22/openapi.yaml
+thumbnailPath: /kinto/1.22/icon.png
+documentationPath: /kinto/1.22/readme.md
+keywords:
+  - Website&AppBuilding/AppBuilders
+  - Cost/Free
+endpoint:
+  - url: https://firefox.settings.services.mozilla.com/v1

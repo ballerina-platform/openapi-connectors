@@ -1,0 +1,14 @@
+id: nytimes.mostpopular
+displayName: New York Times Most Popular
+type: OpenAPI
+version: 2.0.0
+description: This is the [New York Times Most Popular API v2.0.0](https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification. With the New York Times Most Popular API you can get popular articles on NYTimes.com.  The Most Popular API provides services for getting the most popular articles on NYTimes.com based on emails, shares, or views.
+idlPath: /nytimes.mostpopular/2.0.0/openapi.yaml
+thumbnailPath: /nytimes.mostpopular/2.0.0/icon.png
+documentationPath: /nytimes.mostpopular/2.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Free
+endpoint:
+  - url: http://api.nytimes.com/svc/mostpopular/v2
+  - url: https://api.nytimes.com/svc/mostpopular/v2

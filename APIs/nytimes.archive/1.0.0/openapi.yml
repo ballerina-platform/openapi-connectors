@@ -1,0 +1,215 @@
+openapi: 3.0.0
+servers:
+  - url: http://api.nytimes.com/svc/archive/v1
+  - url: https://api.nytimes.com/svc/archive/v1
+info:
+  x-ballerina-display:
+    label: New York Times Archive
+    iconPath: "icon.png"
+  description: >
+    This is a generated connector for [New York Times Archive API v1.0.0](https://developer.nytimes.com/docs/archive-product/1/overview) OpenAPI specification. 
+    With the New York Times Archive API you can get all NYTimes article metadata for a given month. The Archive API returns an array of NYT articles for a given month, going back to 1851. Its response fields are the same as the Article Search API. 
+    The Archive API is very useful if you want to build your own database of NYT article metadata. You simply pass the API the year and month and it returns all articles for that month. The response size can be large (~20mb).
+  termsOfService: http://developer.nytimes.com/tou
+  title: Archive API
+  version: 1.0.0
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
+  x-apiClientRegistration:
+    url: http://developer.nytimes.com/signup
+  x-apisguru-categories:
+    - media
+    - open_data
+  x-logo:
+    url: https://static01.nyt.com/images/icons/t_logo_291_black.png
+  x-origin:
+    - format: openapi
+      url: https://raw.githubusercontent.com/nytimes/public_api_specs/master/archive_api/archive_api.json
+      version: "3.0"
+  x-providerName: nytimes.com
+  x-serviceName: archive
+externalDocs:
+  url: http://developer.nytimes.com/
+security:
+  - apikey: []
+paths:
+  "/{year}/{month}.json":
+    get:
+      operationId: getArticles
+      description: |
+        The Archive API provides lists of NYT articles by month going back to 1851.  Simply pass in the year and month you want and it returns a JSON object with all articles for that month.
+      parameters:
+        - description: The year (e.g. 2016).
+          in: path
+          name: year
+          required: true
+          schema:
+            default: "2016"
+            format: int32
+            maximum: 2030
+            minimum: 1851
+            type: integer
+          x-consoleDefault: "2016"
+        - description: The month number (e.g. 1 for January).
+          in: path
+          name: month
+          required: true
+          schema:
+            default: "1"
+            format: int32
+            maximum: 12
+            minimum: 1
+            type: integer
+          x-consoleDefault: "1"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                properties:
+                  response:
+                    properties:
+                      docs:
+                        items:
+                          $ref: "#/components/schemas/Doc"
+                        type: array
+                      meta:
+                        properties:
+                          hits:
+                            type: integer
+                          offset:
+                            type: integer
+                          time:
+                            type: integer
+                        type: object
+                    type: object
+                type: object
+          description: The docs requested.
+      summary: Archive API
+      tags:
+        - Archive
+components:
+  schemas:
+    Doc:
+      properties:
+        _id:
+          type: string
+          nullable: true
+        abstract:
+          type: string
+          nullable: true
+        blog:
+          items: {}
+          type: array
+          nullable: true
+        byline:
+          properties:
+            organization:
+              type: string
+              nullable: true
+            original:
+              type: string
+              nullable: true
+            person:
+              items: {}
+              type: array
+              nullable: true
+          type: object
+          nullable: true
+        document_type:
+          type: string
+          nullable: true
+        headline:
+          properties:
+            kicker:
+              type: string
+              nullable: true
+            main:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        keywords:
+          properties:
+            name:
+              type: string
+              nullable: true
+            rank:
+              type: string
+              nullable: true
+            value:
+              type: string
+              nullable: true
+          type: object
+          nullable: true
+        lead_paragraph:
+          type: string
+          nullable: true
+        multimedia:
+          items:
+            properties:
+              caption:
+                type: string
+                nullable: true
+              copyright:
+                type: string
+                nullable: true
+              format:
+                type: string
+                nullable: true
+              height:
+                type: integer
+                nullable: true
+              subtype:
+                type: string
+                nullable: true
+              type:
+                type: string
+                nullable: true
+              url:
+                type: string
+                nullable: true
+              width:
+                type: integer
+                nullable: true
+            type: object
+          type: array
+          nullable: true
+        news_desk:
+          type: string
+          nullable: true
+        print_page:
+          type: string
+          nullable: true
+        pub_date:
+          type: string
+          nullable: true
+        section_name:
+          type: string
+          nullable: true
+        slideshow_credits:
+          type: string
+          nullable: true
+        snippet:
+          type: string
+          nullable: true
+        source:
+          type: string
+          nullable: true
+        subsection_name:
+          type: string
+          nullable: true
+        type_of_material:
+          type: string
+          nullable: true
+        web_url:
+          type: string
+          nullable: true
+      type: object
+  securitySchemes:
+    apikey:
+      in: query
+      name: api-key
+      type: apiKey
+      description: Represents API Key `api-key`

@@ -1,0 +1,13 @@
+id: chaingateway
+displayName: Chaingateway
+type: OpenAPI
+version: "1.0"
+description: This is the [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
+idlPath: /chaingateway/1.0/openapi.yaml
+thumbnailPath: /chaingateway/1.0/icon.png
+documentationPath: /chaingateway/1.0/readme.md
+keywords:
+  - Finance/Cryptocurrency
+  - Cost/Freemium
+endpoint:
+  - url: https://eu.eth.chaingateway.io/v1

@@ -1,0 +1,313 @@
+openapi: 3.0.1
+info:
+  title: Instagram Basic Display API
+  version: v12.0
+  description: >
+    This is a generated connector for [Instagram Basic Display API v12.0](https://developers.facebook.com/docs/instagram-basic-display-api) OpenAPI specification. 
+    Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks.
+    The Instagram Basic Display API allows users of your app to get basic profile information, photos, and videos in their Instagram accounts.
+  x-ballerina-init-description: 
+    The connector initialization requires setting the API credentials.
+    Create an [Instagram account](https://www.instagram.com/?hl=en) and obtain tokens by following [this guide](https://developers.facebook.com/docs/instagram-basic-display-api/overview#instagram-user-access-tokens).
+  x-ballerina-display:
+    label: Instagram
+    iconPath: icon.png
+servers:
+  - url: https://graph.instagram.com/
+tags: []
+paths:
+  /{media-id}:
+    get:
+      tags:
+        - "Media"
+      description: Get fields and edges on an image, video, or album. 
+      operationId: Get Media
+      parameters:
+          - in: path
+            name: media-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+              type: array
+              items: 
+                type: string
+                enum:
+                  - caption
+                  - id
+                  - media_type
+                  - media_url
+                  - permalink
+                  - thumbnail_url
+                  - timestamp
+                  - username
+            description: A list of fields and edges you want returned. If omitted, default fields will be returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFieldsObject'
+      security:
+        - ApiKeyAuth: []
+  /{album-id}/children:
+    get:
+      tags:
+        - "Media"
+      description: Get a list of images and videos on an album.. 
+      operationId: Get Album Media
+      parameters:
+          - in: path
+            name: album-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+              type: array
+              items: 
+                type: string
+                enum:
+                  - caption
+                  - id
+                  - media_type
+                  - media_url
+                  - permalink
+                  - thumbnail_url
+                  - timestamp
+                  - username
+            description: A list of fields and edges you want returned. If omitted, default fields will be returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+      security:
+        - ApiKeyAuth: []
+  /{api-version}/{user-id}/media:
+    get:
+      tags:
+        - "Media"
+        - "User"
+      description: Get a collection of Media on a User. 
+      operationId: Get User Media
+      parameters:
+          - in: path
+            name: api-version
+            required: true
+            schema:
+              type: string
+            description: API version.
+          - in: path
+            name: user-id
+            required: true
+            schema:
+              type: string
+            description: App user's app-scoped user ID (version 11.0+) or raw user ID (all versions).
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+              type: array
+              items: 
+                type: string
+                enum:
+                  - caption
+                  - id
+                  - media_type
+                  - media_url
+                  - permalink
+                  - thumbnail_url
+                  - timestamp
+                  - username
+            description: A list of fields and edges you want returned. If omitted, default fields will be returned.
+          - in: query
+            name: since
+            schema:
+              type: string
+            description: A Unix timestamp or strtotime data value that points to the start of a range of time-based data.
+          - in: query
+            name: until
+            schema:
+              type: string
+            description: A Unix timestamp or strtotime data value that points to the end of a range of time-based data.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+      security:
+        - ApiKeyAuth: []
+  /me:
+    get:
+      tags:
+        - "User"
+      description: Get fields and edges on the User whose Instagram User Access Token is being used in the query. 
+      operationId: Get My Fields
+      parameters:
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+              type: array
+              items: 
+                type: string
+                enum:
+                  - account_type
+                  - id
+                  - media_count
+                  - username
+            description: A list of fields and edges you want returned. If omitted, default fields will be returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFieldsObject'
+      security:
+        - ApiKeyAuth: []
+  /{api-version}/{user-id}:
+    get:
+      tags:
+        - "User"
+      description: Get fields and edges on a User.
+      operationId: Get User Fields
+      parameters:
+          - in: path
+            name: api-version
+            required: true
+            schema:
+              type: string
+            description: API version.
+          - in: path
+            name: user-id
+            required: true
+            schema:
+              type: string
+            description: App user's app-scoped user ID (version 11.0+) or raw user ID (all versions).
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - account_type
+                    - id
+                    - media_count
+                    - username
+            description: A list of fields and edges you want returned. If omitted, default fields will be returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFieldsObject'
+      security:
+        - ApiKeyAuth: []
+
+components:
+  schemas:
+    Media:
+      properties:
+        data:
+          type: array
+          description: An array containing requested media fields.
+          items:
+            $ref: '#/components/schemas/MediaFieldsObject'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      description: An object containing the media data requested.
+    MediaFieldsObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Media's ID.
+        caption:
+          type: string
+          description: The Media's caption text. Not returnable for Media in albums.
+        media_type:
+          type: string
+          description: The Media's type. Can be `IMAGE`, `VIDEO`, or `CAROUSEL_ALBUM`.
+        media_url:
+          type: string
+          description: The Media's URL.
+        permalink:
+          type: string
+          description: The Media's permanent URL. Will be omitted if the Media contains copyrighted material, or has 
+            been flagged for a copyright violation.
+        thumbnail_url:
+          type: string
+          description: The Media's thumbnail image URL. Only available on VIDEO Media.
+        timestamp:
+          type: string
+          description: The Media's publish date in ISO 8601 format.
+        username:
+          type: string
+          description: The Media owner's username.
+      description: Media fields.
+    UserFieldsObject:
+      type: object
+      properties:
+        account_type:
+          type: string
+          description: The User's account type. Can be BUSINESS, MEDIA_CREATOR, or PERSONAL.
+        id:
+          type: string
+          description: The app user's app-scoped ID (version 11.0+) or raw user ID (version 10.0 and lower).
+        media_count:
+          type: string
+          description: The number of Media on the User. This field requires the instagram_graph_user_media permission.
+        username:
+          type: string
+          description: The User's username.
+      description: User fields.
+    Paging:
+      type: object
+      properties:
+        cursors:
+          type: object
+          description: Pagination cursor.
+          properties:
+            before:
+              type: string
+              description: This is the cursor that points to the start of the page of data that has been returned.
+            after:
+              type: string
+              description: This is the cursor that points to the end of the page of data that has been returned.
+        next:
+          description: |
+            The Graph API endpoint that will return the next page of data. If not included, this is the last page of data. 
+            
+            Due to how pagination works with visibility and privacy, it is possible that a page may be empty but contain 
+            a next paging link. Stop paging when the next link no longer appears.
+        previous:
+          description: The Graph API endpoint that will return the previous page of data. If not included, this is the first page of data.
+      description: A cursor-paginated edge.
+  securitySchemes:
+    ApiKeyAuth:      
+      type: apiKey
+      in: query
+      name: access_token
+      description: "Represents Access Token  `access_token`"

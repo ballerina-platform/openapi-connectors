@@ -1,0 +1,14 @@
+id: box
+displayName: Box
+type: OpenAPI
+version: 2.0.0
+description: This is the [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification. [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+idlPath: /box/2.0.0/openapi.yaml
+thumbnailPath: /box/2.0.0/icon.png
+documentationPath: /box/2.0.0/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Freemium
+endpoint:
+  - url: https://api.box.com/2.0
+    description: Box Platform API server

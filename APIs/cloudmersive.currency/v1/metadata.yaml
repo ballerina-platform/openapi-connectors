@@ -1,0 +1,13 @@
+id: cloudmersive.currency
+displayName: Cloudmersive Currency
+type: OpenAPI
+version: v1
+description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
+idlPath: /cloudmersive.currency/v1/openapi.yaml
+thumbnailPath: /cloudmersive.currency/v1/icon.png
+documentationPath: /cloudmersive.currency/v1/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://testapi.cloudmersive.com/

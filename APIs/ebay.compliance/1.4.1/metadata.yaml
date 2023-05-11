@@ -1,0 +1,14 @@
+id: ebay.compliance
+displayName: eBay Compliance
+type: OpenAPI
+version: 1.4.1
+description: This is the [eBay Compliance API v1.4.1](https://developer.ebay.com) OpenAPI specification. Service for providing information to sellers about their listings being non-compliant, or at risk for becoming non-compliant, against eBay listing policies.
+idlPath: /ebay.compliance/1.4.1/openapi.yaml
+thumbnailPath: /ebay.compliance/1.4.1/icon.png
+documentationPath: /ebay.compliance/1.4.1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/compliance/v1
+    description: Production

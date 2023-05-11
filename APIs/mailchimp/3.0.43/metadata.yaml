@@ -1,0 +1,13 @@
+id: mailchimp
+displayName: Mailchimp
+type: OpenAPI
+version: 3.0.43
+description: This is the [Mailchimp Marketing API v3.0.52](https://mailchimp.com/developer/marketing/) OpenAPI Specification.
+idlPath: /mailchimp/3.0.43/openapi.yaml
+thumbnailPath: /mailchimp/3.0.43/icon.png
+documentationPath: /mailchimp/3.0.43/readme.md
+keywords:
+  - Marketing/EmailNewsletters
+  - Cost/Freemium
+endpoint:
+  - url: https://server.api.mailchimp.com/3.0

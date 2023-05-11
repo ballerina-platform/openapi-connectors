@@ -1,0 +1,13 @@
+id: godaddy.countries
+displayName: GoDaddy Countries
+type: OpenAPI
+version: "1.0"
+description: This is the [GoDaddy Countries API v1](https://developer.godaddy.com/doc/endpoint/countries) OpenAPI specification. The GoDaddy Countries API provides capability to access GoDaddy operations related to countries.
+idlPath: /godaddy.countries/1.0/openapi.yaml
+thumbnailPath: /godaddy.countries/1.0/icon.png
+documentationPath: /godaddy.countries/1.0/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com

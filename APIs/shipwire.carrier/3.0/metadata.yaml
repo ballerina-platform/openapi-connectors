@@ -1,0 +1,13 @@
+id: shipwire.carrier
+displayName: Shipwire Carrier
+type: OpenAPI
+version: "3.0"
+description: This is the [Shipwire Carrier API v3.0](https://www.shipwire.com/developers/carrier/) OpenAPI specification.
+idlPath: /shipwire.carrier/3.0/openapi.yaml
+thumbnailPath: /shipwire.carrier/3.0/icon.png
+documentationPath: /shipwire.carrier/3.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.shipwire.com/

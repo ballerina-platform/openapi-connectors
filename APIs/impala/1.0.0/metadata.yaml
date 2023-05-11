@@ -1,0 +1,13 @@
+id: impala
+displayName: Impala
+type: OpenAPI
+version: 1.0.0
+description: This is the [Impala API v1.0.0](https://docs.impala.travel/docs/booking-api/branches/v1.003/YXBpOjQwMDYwNDY-impala-hotel-booking-api) OpenAPI specification.
+idlPath: /impala/1.0.0/openapi.yaml
+thumbnailPath: /impala/1.0.0/icon.png
+documentationPath: /impala/1.0.0/readme.md
+keywords:
+  - Sales&CRM/Scheduling&Booking
+  - Cost/Freemium
+endpoint:
+  - url: https://sandbox.impala.travel/v1/

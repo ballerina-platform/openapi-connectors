@@ -1,0 +1,15 @@
+id: weaviate
+displayName: Weaviate
+type: OpenAPI
+version: 1.19.0-prealpha-oas3
+description: This is the [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. Weaviate API provide access to the manipulations of weaviate schema, objects and search vectors based on various criterias.
+idlPath: /weaviate/1.19.0-prealpha-oas3/openapi.yaml
+thumbnailPath: /weaviate/1.19.0-prealpha-oas3/icon.png
+documentationPath: /weaviate/1.19.0-prealpha-oas3/readme.md
+keywords:
+  - AI/VectorDatabases
+  - Cost/Freemium
+  - Vendor/Weaviate
+  - EmbeddingSearch
+endpoint:
+  - url: /v1

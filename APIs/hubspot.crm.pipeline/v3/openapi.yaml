@@ -1,0 +1,978 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: HubSpot CRM Pipeline
+    iconPath: "icon.png"
+  title: CRM Pipelines
+  description: |-
+    This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+    Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. Pipelines support `deals` and `tickets` object types.
+    When calling endpoints that take pipelineId as a parameter, that ID must correspond to an existing, un-archived pipeline. Otherwise the request will fail with a `404 Not Found` response.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
+  version: v3
+servers:
+  - url: 'https://api.hubapi.com'
+tags:
+  - name: Pipelines
+  - name: Pipeline Stages
+paths:
+  '/crm/v3/pipelines/{objectType}':
+    get:
+      tags:
+        - Pipelines
+      summary: Retrieve all pipelines
+      description: 'Return all pipelines for the object type specified by `{objectType}`.'
+      operationId: 'getAll'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePipeline'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    post:
+      tags:
+        - Pipelines
+      summary: Create a pipeline
+      description: 'Create a new pipeline with the provided property values. The entire pipeline object, including its unique ID, will be returned in the response.'
+      operationId: 'create'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Pipeline input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineInput'
+        required: false
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+  '/crm/v3/pipelines/{objectType}/{pipelineId}':
+    get:
+      tags:
+        - Pipelines
+      summary: Return a pipeline by ID
+      description: 'Return a single pipeline object identified by its unique `{pipelineId}`.'
+      operationId: 'getById'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    put:
+      tags:
+        - Pipelines
+      summary: Replace a pipeline
+      description: Replace all the properties of an existing pipeline with the values provided. This will overwrite any existing pipeline stages. The updated pipeline will be returned in the response.
+      operationId: 'replace'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Pipeline input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineInput'
+        required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    delete:
+      tags:
+        - Pipelines
+      summary: Archive a pipeline
+      description: 'Archive the pipeline identified by `{pipelineId}`.'
+      operationId: 'archive'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    patch:
+      tags:
+        - Pipelines
+      summary: Update a pipeline
+      description: 'Perform a partial update of the pipeline identified by `{pipelineId}`. The updated pipeline will be returned in the response.'
+      operationId: 'update'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Attributes to update in pipeline
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelinePatchInput'
+        required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+  '/crm/v3/pipelines/{objectType}/{pipelineId}/stages':
+    get:
+      tags:
+        - Pipeline Stages
+      summary: Return all stages of a pipeline
+      description: 'Return all the stages associated with the pipeline identified by `{pipelineId}`.'
+      operationId: 'stage_getAll'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponsePipelineStage'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    post:
+      tags:
+        - Pipeline Stages
+      summary: Create a pipeline stage
+      description: 'Create a new stage associated with the pipeline identified by `{pipelineId}`. The entire stage object, including its unique ID, will be returned in the response.'
+      operationId: 'stage_create'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Pipeline stage input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineStageInput'
+        required: false
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStage'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+  '/crm/v3/pipelines/{objectType}/{pipelineId}/stages/{stageId}':
+    get:
+      tags:
+        - Pipeline Stages
+      summary: Return a pipeline stage by ID
+      description: 'Return the stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`.'
+      operationId: 'stage_getById'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: stageId
+          in: path
+          description: Stage ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStage'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    put:
+      tags:
+        - Pipeline Stages
+      summary: Replace a pipeline stage
+      description: Replace all the properties of an existing pipeline stage with the values provided. The updated stage will be returned in the response.
+      operationId: 'stage_replace'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: stageId
+          in: path
+          description: Stage ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: Pipeline stage input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineStageInput'
+        required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStage'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    delete:
+      tags:
+        - Pipeline Stages
+      summary: Archive a pipeline stage
+      description: 'Archive the pipeline stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`.'
+      operationId: 'stage_archive'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: stageId
+          in: path
+          description: Stage ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No content
+          content: {}
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+    patch:
+      tags:
+        - Pipeline Stages
+      summary: Update a pipeline stage
+      description: 'Perform a partial update of the pipeline stage identified by `{stageId}` associated with the pipeline identified by `{pipelineId}`. Any properties not included in this update will keep their existing values. The updated stage will be returned in the response.'
+      operationId: 'stage_update'
+      parameters:
+        - name: objectType
+          in: path
+          description: CRM object type
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: pipelineId
+          in: path
+          description: Pipeline ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: stageId
+          in: path
+          description: Stage ID
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: archived
+          in: query
+          description: Whether to return only results that have been archived.
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Pipeline stage patch input
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PipelineStagePatchInput'
+        required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineStage'
+        default:
+          $ref: '#/components/responses/Error'
+      security:
+        - oauth2:
+            - crm.objects.contacts.read
+            - crm.schemas.contacts.read
+            - contacts
+            - tickets
+        - hapikey: []
+components:
+  schemas:
+    CollectionResponsePipeline:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pipeline'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    CollectionResponsePipelineStage:
+      required:
+        - results
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Error:
+      required:
+        - category
+        - correlationId
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+          example: An error occurred
+        correlationId:
+          type: string
+          description: A unique identifier for the request. Include this value with any error reports or support tickets
+          format: uuid
+          example: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category:
+          type: string
+          description: The error category
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+        errors:
+          type: array
+          description: further information about the error
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example:
+            invalidPropertyName:
+              - propertyValue
+            missingScopes:
+              - scope1
+              - scope2
+        links:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of link names to associated URIs containing documentation about the error or recommended remediation steps
+      example:
+        message: Invalid input (details will vary based on the error)
+        correlationId: aeb5f871-7f07-4993-9211-075dc63e7cbf
+        category: VALIDATION_ERROR
+        links:
+          knowledge-base: 'https://www.hubspot.com/products/service/knowledge-base'
+    ErrorDetail:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human readable message describing the error along with remediation steps where appropriate
+        in:
+          type: string
+          description: The name of the field or parameter in which the error was found.
+        code:
+          type: string
+          description: The status code associated with the error detail
+        subCategory:
+          type: string
+          description: A specific category that contains more specific detail about the error
+        context:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Context about the error condition
+          example:
+            missingScopes:
+              - scope1
+              - scope2
+    NextPage:
+      required:
+        - after
+      type: object
+      properties:
+        after:
+          type: string
+        link:
+          type: string
+      example:
+        link: '?after=dfa7a8a%3D%3D'
+        after: dfa7a8a==
+    Paging:
+      type: object
+      properties:
+        next:
+          $ref: '#/components/schemas/NextPage'
+    Pipeline:
+      required:
+        - archived
+        - createdAt
+        - displayOrder
+        - id
+        - label
+        - stages
+        - updatedAt
+      type: object
+      properties:
+        stages:
+          type: array
+          description: The stages associated with the pipeline. They can be retrieved and updated via the pipeline stages endpoints.
+          items:
+            $ref: '#/components/schemas/PipelineStage'
+        createdAt:
+          type: string
+          description: The date the pipeline was created. The default pipelines will have createdAt = 0.
+          format: date-time
+        archivedAt:
+          type: string
+          description: The date the pipeline was archived. `archivedAt` will only be present if the pipeline is archived.
+          format: date-time
+        updatedAt:
+          type: string
+          description: The date the pipeline was last updated.
+          format: date-time
+        archived:
+          type: boolean
+          description: Whether the pipeline is archived.
+        label:
+          type: string
+          description: A unique label used to organize pipelines in HubSpot's UI
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+        id:
+          type: string
+          description: A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline.
+      description: A pipeline definition.
+      example:
+        createdAt: '2019-10-30T03:30:17.883Z'
+        archived: false
+        displayOrder: 0
+        stages:
+          - label: In Progress
+            displayOrder: 0
+            metadata:
+              ticketState: OPEN
+            createdAt: '2019-10-30T03:30:17.883Z'
+            updatedAt: '2019-12-07T16:50:06.678Z'
+            archived: false
+            id: '1234912'
+          - label: Done
+            displayOrder: 0
+            metadata:
+              ticketState: CLOSED
+            createdAt: '2019-10-30T03:30:17.883Z'
+            updatedAt: '2019-12-07T16:50:06.678Z'
+            archived: false
+            id: '1234914'
+        label: My ticket pipeline
+        id: '812723471'
+        updatedAt: '2019-12-07T16:50:06.678Z'
+    PipelineInput:
+      required:
+        - displayOrder
+        - label
+        - stages
+      type: object
+      properties:
+        stages:
+          type: array
+          description: Pipeline stage inputs used to create the new or replacement pipeline.
+          items:
+            $ref: '#/components/schemas/PipelineStageInput'
+        label:
+          type: string
+          description: A unique label used to organize pipelines in HubSpot's UI
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+      description: An input used to create or replace a pipeline's definition.
+      example:
+        displayOrder: 0
+        stages:
+          - label: In Progress
+            displayOrder: 0
+            metadata:
+              ticketState: OPEN
+          - label: Done
+            displayOrder: 1
+            metadata:
+              ticketState: CLOSED
+        label: My replaced pipeline
+    PipelinePatchInput:
+      type: object
+      properties:
+        label:
+          type: string
+          description: A unique label used to organize pipelines in HubSpot's UI
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline. If two pipelines have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+        archived:
+          type: boolean
+          description: 'Whether the pipeline is archived. This property should only be provided when restoring an archived pipeline. If it''s provided in any other call, the request will fail and a `400 Bad Request` will be returned.'
+      description: An input used to update some properties on a pipeline definition.
+      example:
+        displayOrder: 0
+        label: My updated pipeline
+    PipelineStage:
+      required:
+        - archived
+        - createdAt
+        - displayOrder
+        - id
+        - label
+        - metadata
+        - updatedAt
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: The date the pipeline stage was created. The stages on default pipelines will have createdAt = 0.
+          format: date-time
+        archivedAt:
+          type: string
+          description: The date the pipeline was archived. `archivedAt` will only be present if the pipeline is archived.
+          format: date-time
+        updatedAt:
+          type: string
+          description: The date the pipeline stage was last updated.
+          format: date-time
+        archived:
+          type: boolean
+          description: Whether the pipeline is archived.
+        label:
+          type: string
+          description: A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: |-
+            A JSON object containing properties that are not present on all object pipelines.
+
+            For `deals` pipelines, the `probability` field is required (`{ "probability": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.
+
+            For `tickets` pipelines, the `ticketState` field is optional (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.
+        id:
+          type: string
+          description: A unique identifier generated by HubSpot that can be used to retrieve and update the pipeline stage.
+      description: A pipeline stage definition.
+      example:
+        createdAt: '2019-10-30T03:30:17.883Z'
+        archived: false
+        metadata:
+          ticketState: OPEN
+        displayOrder: 0
+        label: In Progress
+        id: '1234912'
+        updatedAt: '2019-12-07T16:50:06.678Z'
+    PipelineStageInput:
+      required:
+        - displayOrder
+        - label
+        - metadata
+      type: object
+      properties:
+        label:
+          type: string
+          description: A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: |-
+            A JSON object containing properties that are not present on all object pipelines.
+
+            For `deals` pipelines, the `probability` field is required (`{ "probability": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.
+
+            For `tickets` pipelines, the `ticketState` field is optional (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.
+      description: An input used to create or replace a pipeline stage's definition.
+      example:
+        metadata:
+          ticketState: CLOSED
+        displayOrder: 1
+        label: Done
+    PipelineStagePatchInput:
+      required:
+        - metadata
+      type: object
+      properties:
+        label:
+          type: string
+          description: A label used to organize pipeline stages in HubSpot's UI. Each pipeline stage's label must be unique within that pipeline.
+        archived:
+          type: boolean
+          description: Whether the pipeline is archived.
+        displayOrder:
+          type: integer
+          description: 'The order for displaying this pipeline stage. If two pipeline stages have a matching `displayOrder`, they will be sorted alphabetically by label.'
+          format: int32
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: |-
+            A JSON object containing properties that are not present on all object pipelines.
+
+            For `deals` pipelines, the `probability` field is required (`{ "probability": 0.5 }`), and represents the likelihood a deal will close. Possible values are between 0.0 and 1.0 in increments of 0.1.
+
+            For `tickets` pipelines, the `ticketState` field is optional (`{ "ticketState": "OPEN" }`), and represents whether the ticket remains open or has been closed by a member of your Support team. Possible values are `OPEN` or `CLOSED`.
+      description: An input used to update some properties on a pipeline definition.
+      example:
+        metadata:
+          ticketState: CLOSED
+        displayOrder: 1
+        label: Done
+  responses:
+    Error:
+      description: An error occurred.
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    # hapikey:
+    #   type: apiKey
+    #   name: hapikey
+    #   in: query
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://app.hubspot.com/oauth/authorize'
+          tokenUrl: 'https://api.hubapi.com/oauth/v1/token'
+          scopes:
+            crm.schemas.contacts.read: ' '
+            contacts: Read from and write to my Contacts
+            crm.objects.contacts.read: ' '
+            tickets: Read and write tickets
+x-hubspot-available-client-libraries:
+  - PHP
+  - Node
+  - Python
+  - Ruby

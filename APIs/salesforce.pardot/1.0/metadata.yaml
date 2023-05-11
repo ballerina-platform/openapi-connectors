@@ -1,0 +1,13 @@
+id: salesforce.pardot
+displayName: Salesforce Pardot
+type: OpenAPI
+version: "1.0"
+description: This is the [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
+idlPath: /salesforce.pardot/1.0/openapi.yaml
+thumbnailPath: /salesforce.pardot/1.0/icon.png
+documentationPath: /salesforce.pardot/1.0/readme.md
+keywords:
+  - Marketing/MarketingAutomation
+  - Cost/Paid
+endpoint:
+  - url: https://pi.demo.pardot.com/api/v5

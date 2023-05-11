@@ -1,0 +1,14 @@
+id: googleapis.tasks
+displayName: Google Tasks
+type: OpenAPI
+version: v1
+description: This is the [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
+idlPath: /googleapis.tasks/v1/openapi.yaml
+thumbnailPath: /googleapis.tasks/v1/icon.png
+documentationPath: /googleapis.tasks/v1/readme.md
+keywords:
+  - Productivity/TaskManagement
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://tasks.googleapis.com/

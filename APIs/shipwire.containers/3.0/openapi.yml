@@ -1,0 +1,566 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: Shipwire Containers
+    iconPath: "icon.png"
+  title: Shipwire Containers API
+  description: |
+    This is a generated connector for [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.
+    The Container API is used to manage shipping containers and boxes within Shipwire Anywhere warehouses and dropship locations. 
+    Use it to create a new container, to update an existing container, or to get information about already created containers.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Shipwire account](https://www.shipwire.com) and obtain tokens by following [this guide](https://www.shipwire.com/developers/getting-started).
+  version: "3.0"
+servers:
+- url: https://api.shipwire.com/
+security:
+- basicAuth: []
+paths:
+  /api/v3.1/containers:
+    get:
+      summary: Get containers
+      description: Get a collection of containers.
+      operationId: getContainers
+      parameters:
+      - name: isActive
+        in: query
+        description: Returns containers that are active or not. Valid options are
+          1 or 0.
+        schema:
+          type: integer
+          format: enum
+          enum:
+          - 1
+          - 0
+      - name: warehouseIds
+        in: query
+        description: Returns all containers that exist in the provided warehouse.
+          Single warehouse's id or comma separated list of warehouse ids.
+        schema:
+          type: string
+      - name: warehouseExternalIds
+        in: query
+        description: Returns all containers that exist in the provided warehouse.
+          Single warehouse's external id or comma separated list of warehouse external
+          ids.
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: Container type. Valid options are 'box', 'envelope', 'tube',
+          'pallet'
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+            format: enum
+            enum:
+            - box
+            - envelope
+            - tube
+            - pallet
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContainersResponse'
+    post:
+      summary: Create a new container
+      operationId: postContainers
+      requestBody:
+        description: CreateANewContainer request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateANewContainerRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateANewContainerResponse'
+      x-codegen-request-body-name: body
+  /api/v3.1/containers/{id}:
+    get:
+      summary: Get a container
+      description: Get a container by container's id or external id.
+      operationId: getContainersById
+      parameters:
+      - name: id
+        in: path
+        description: The container's id or external id.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAContainerResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContainerNotFound404Response'
+    put:
+      summary: Update a container
+      description: Modify a container based on its containers's id or external id
+      operationId: putContainersById
+      parameters:
+      - name: id
+        in: path
+        description: The containers's id or external id.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: UpdateAContainer request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAContainerRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAContainerResponse'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    GetContainersResponse:
+      title: Get containers response
+      description: Get container details
+      allOf:
+      - $ref: '#/components/schemas/GetResponseModel'
+      - type: object
+    CreateANewContainerRequest:
+      title: Create a new container request
+      required:
+      - basis
+      - dimensions
+      - isActive
+      - name
+      - type
+      - values
+      - warehouseId
+      type: object
+      properties:
+        warehouseExternalId:
+          type: string
+          description: A unique user-provided identifier for a Shipwire Anywhere warehouse
+            in an external system.
+          example: WH005
+        externalId:
+          type: string
+          description: A unique user-provided identifier for a container in an external
+            system.
+          example: "1002"
+        name:
+          type: string
+          description: A unique identifier for the container in the Shipwire system.
+            It can be standardized to be the dimensions of the container (length,
+            width, height) and type.
+          example: 25.00 X 5.00 X 5.00 box update
+        type:
+          type: string
+          description: This is the type of container based on the contents stored
+            in it.
+          format: enum
+          example: box
+          enum:
+          - box
+          - envelope
+          - tube
+          - pallet
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            use the container for a particular customer for packaging
+          format: enum
+          example: 1
+        warehouseId:
+          type: integer
+          description: A unique identifier for a Shipwire or Shipwire Anywhere warehouse.
+            (See the warehouses API.)
+          example: 3071
+        basis:
+          type: string
+          description: Basis is a parameter used to prioritize the use of some containers
+            over others. To give preference to one container over another, assign
+            a higher basis value.
+          example: "5045.0"
+        serviceSpecificCarrierCode:
+          type: string
+          description: It indicates that this container is used with a particular
+            carrier service (eg. FDX 1D).
+          example: FDX FT
+        dimensions:
+          description: Dimensions
+          type: object
+        values:
+          description: Values
+          type: object
+      description: Request to create new container
+    ContainerNotFound404Response:
+      title: Create a new container response
+      description: Get using invalid container Id
+      allOf:
+      - $ref: '#/components/schemas/Get404ResponseModel'
+      - type: object
+    CreateANewContainerResponse:
+      title: Create a new container response
+      description: Response post container creation
+      allOf:
+      - $ref: '#/components/schemas/PutPostResponseModel'
+      - type: object
+    UpdateAContainerRequest:
+      title: Update a container request
+      required:
+      - basis
+      - dimensions
+      - isActive
+      - name
+      - type
+      - values
+      - warehouseId
+      type: object
+      properties:
+        warehouseExternalId:
+          type: string
+          description: A unique user-provided identifier for a Shipwire Anywhere warehouse
+            in an external system.
+          example: WH005
+        externalId:
+          type: string
+          description: A unique user-provided identifier for a container in an external
+            system.
+          example: "1002"
+        name:
+          type: string
+          description: A unique identifier for the container in the Shipwire system.
+            It can be standardized to be the dimensions of the container (length,
+            width, height) and type.
+          example: 25.00 X 5.00 X 5.00 box update
+        type:
+          type: string
+          description: This is the type of container based on the contents stored
+            in it.
+          format: enum
+          example: box
+          enum:
+          - box
+          - envelope
+          - tube
+          - pallet
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            use the container for a particular customer for packaging
+          format: enum
+          example: 1
+        warehouseId:
+          type: integer
+          description: A unique identifier for a Shipwire or Shipwire Anywhere warehouse.
+            (See the warehouses API.)
+          example: 3071
+        basis:
+          type: string
+          description: Basis is a parameter used to prioritize the use of some containers
+            over others. To give preference to one container over another, assign
+            a higher basis value.
+          example: "5045.0"
+        serviceSpecificCarrierCode:
+          type: string
+          description: It indicates that this container is used with a particular
+            carrier service (eg. FDX 1D).
+          example: FDX FT
+        dimensions:
+          description: Dimensions
+          type: object
+        values:
+          description: Values
+          type: object
+      description: Request to update container information
+    UpdateAContainerResponse:
+      title: Update a container response
+      description: Response for container update
+      allOf:
+      - $ref: '#/components/schemas/PutPostResponseModel'
+      - type: object
+    getAContainerResponse:
+      title: Get a Container Response
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Successful
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A 'null' value would mean that no further information is available for
+            that resource.
+          example: https://api.shipwire.com/api/v3.1/containers/245641
+        resource:
+          $ref: '#/components/schemas/ContainerResponseModel'
+      description: Get container details
+    ContainerDimensions:
+      type: object
+      description: Container dimensions
+      properties:
+        length:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the length of the container based on its Unit of Measurement
+            (lengthUnit)
+          example: 20.0
+        width:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the width of the container based on its Unit of Measurement
+            (widthUnit)
+          example: 5.0
+        height:
+          maximum: 108
+          minimum: 0.1
+          type: number
+          description: This is the height of the container based on its Unit of Measurement
+            (heightUnit)
+          format: float
+          example: 5.0
+        weight:
+          type: number
+          description: This is the weight of the container based on its Unit of Measurement
+            (weightUnit)
+          format: float
+          example: 0.46
+        maxWeight:
+          type: number
+          description: This is the maximum weight that the container can hold based
+            on its Unit of Measurement (maxWeightUnit)
+          format: float
+          example: 40.0
+        lengthUnit:
+          type: string
+          description: This is the Unit of Measurement for Container length (e.g.
+            inches)
+          example: IN
+        widthUnit:
+          type: string
+          description: This is the Unit of Measurement for Container width (e.g. inches)
+          example: IN
+        heightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container height (e.g.
+            inches)
+          example: IN
+        weightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container weight (e.g.
+            pounds)
+          example: LB
+        maxWeightUnit:
+          type: string
+          description: This is the Unit of Measurement for Container's max weight
+            (e.g. pounds)
+          example: LB
+    ContainerValue:
+      description: Container value
+      type: object
+      properties:
+        costValue:
+          maximum: 1E+6
+          minimum: 0
+          type: number
+          description: This is the cost value for the container. During the carton
+            selection phase for an order, Shipwire will first consider containers
+            with a lower cost, even if chosing one will end up making the shipping
+            cost comparatively higher. (i.e. Shipwire will chose a container 1 with
+            a $0 cost over a container 2 with a $1 cost, even if the shipping cost
+            for using container 1 is higher than it would be using container 2.)
+          example: 20.0
+        retailValue:
+          maximum: 1E+6
+          minimum: 0
+          type: number
+          description: This is the retail value for the container. Container retail
+            value will be added to the shipping quote for the customer. If a merchant
+            doesn't plan to charge customers for cartons/boxes, the container retail
+            value should be set to $0.
+          example: 20.0
+        costValueCurrency:
+          type: string
+          description: This is the currency used in determining cost value for the
+            container.
+          example: USD
+        retailValueCurrency:
+          type: string
+          description: This is the currency used in determining retail value for the
+            container.
+          example: USD
+    Get404ResponseModel:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 404
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Container not found
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A null value would mean that no further information is available for that
+            resource.
+          example: null
+    PutPostResponseModel:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Successful
+        warnings:
+          type: object
+          properties: {}
+          description: A notification that warns the user of something or that serves
+            as a caution. Eg. an externalId supplied greater than 32 characters.
+        errors:
+          type: object
+          properties: {}
+          description: A fatal error that prevents the user from performing some action.
+            (e.g. invalid warehouseId specified when creating a container)
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A null value would mean that no further information is available for that
+            resource.
+          example: https://api.shipwire.com/api/v3.1/containers?offset=0&limit=20
+    GetResponseModel:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: This is the HTTP status code.
+          example: 200
+        message:
+          type: string
+          description: This is the HTTP status message.
+          example: Successful
+        resourceLocation:
+          type: string
+          description: A URL that gives more information about the linked resource.
+            A null value would mean that no further information is available for that
+            resource.
+          example: https://api.shipwire.com/api/v3.1/containers?offset=0&limit=20
+    ContainerResponseModel:
+      description: Container response model
+      type: object
+      properties:
+        id:
+          type: integer
+          description: A unique auto-generated ID assigned to each new container added
+            to the Shipwire Platform.
+          example: 245641
+        externalId:
+          type: string
+          description: A unique user-provided identifier for a container in an external
+            system.
+          example: "1002"
+        name:
+          type: string
+          description: A unique identifier for the container in the Shipwire system.
+            It can be standardized to be the dimensions of the container (length,
+            width, height) and type.
+          example: 25.00 X 5.00 X 5.00 box update
+        type:
+          type: string
+          description: This is the type of container based on the contents stored
+            in it.
+          format: enum
+          example: box
+          enum:
+          - box
+          - envelope
+          - tube
+          - pallet
+        isActive:
+          type: integer
+          description: A boolean which indicates whether or not the warehouse can
+            use the container for a particular customer for packaging
+          format: enum
+          example: 1
+        warehouseId:
+          type: integer
+          description: A unique identifier for a Shipwire or Shipwire Anywhere warehouse.
+            (See the warehouses API.)
+          example: 3071
+        warehouseExternalId:
+          type: string
+          description: A unique user-provided identifier for a Shipwire Anywhere warehouse
+            in an external system.
+          example: WH005
+        basis:
+          type: string
+          description: Basis is a parameter used to prioritize the use of some containers
+            over others. To give preference to one container over another, assign
+            a higher basis value.
+          example: "5045.0"
+        serviceSpecificCarrierCode:
+          type: string
+          description: It indicates that this container is used with a particular
+            carrier service (eg. FDX 1D).
+          example: FDX FT
+        dimensions:
+          $ref: '#/components/schemas/ContainerResponseModel_dimensions'
+        values:
+          $ref: '#/components/schemas/ContainerResponseModel_values'
+    ContainerResponseModel_dimensions:
+      type: object
+      description: Dimensions
+      properties:
+        resourceLocation:
+          description: Resource location
+          type: string
+          example: null
+        resource:
+          $ref: '#/components/schemas/ContainerDimensions'
+    ContainerResponseModel_values:
+      type: object
+      description: Values
+      properties:
+        resourceLocation:
+          description: Resource location
+          type: string
+          example: null
+        resource:
+          $ref: '#/components/schemas/ContainerValue'
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

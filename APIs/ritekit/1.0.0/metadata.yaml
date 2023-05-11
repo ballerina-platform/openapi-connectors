@@ -1,0 +1,13 @@
+id: ritekit
+displayName: RiteKit
+type: OpenAPI
+version: 1.0.0
+description: This is the [RitKit API v1.0](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.
+idlPath: /ritekit/1.0.0/openapi.yaml
+thumbnailPath: /ritekit/1.0.0/icon.png
+documentationPath: /ritekit/1.0.0/readme.md
+keywords:
+  - Marketing/SocialMediaMarketing
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ritekit.com

@@ -1,0 +1,14 @@
+id: azure.sqldb
+displayName: Azure SQL DB
+type: OpenAPI
+version: 2017-03-01-preview
+description: This is the [Azure SQL DB API v1.0](https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview) OpenAPI specification. This Azure SQL Database management API provides a RESTful set of web APIs that interact with Azure SQL Database services to manage your databases. The API enables users to create, retrieve, update, and delete databases, servers, and other entities.
+idlPath: /azure.sqldb/2017-03-01-preview/openapi.yaml
+thumbnailPath: /azure.sqldb/2017-03-01-preview/icon.png
+documentationPath: /azure.sqldb/2017-03-01-preview/readme.md
+keywords:
+  - ITOperations/Databases
+  - Cost/Paid
+  - Vendor/Microsoft
+endpoint:
+  - url: https://management.azure.com/

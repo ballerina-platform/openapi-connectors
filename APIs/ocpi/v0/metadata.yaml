@@ -1,0 +1,14 @@
+id: ocpi
+displayName: OCPI
+type: OpenAPI
+version: v0
+description: This is the [OCPI v2.2](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf) OpenAPI specification. The Open Charge Point Interface (OCPI) enables a scalable, automated EV roaming setup between Charge Point Operators  and e-Mobility Service Providers. It supports authorization, charge point information exchange (including live status updates and transaction events), charge detail record exchange, remote charge point commands and the exchange of  smart-charging related information between parties.
+idlPath: /ocpi/v0/openapi.yaml
+thumbnailPath: /ocpi/v0/icon.png
+documentationPath: /ocpi/v0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Free
+endpoint:
+  - url: http://localhost:8080
+    description: Generated server url for OCN

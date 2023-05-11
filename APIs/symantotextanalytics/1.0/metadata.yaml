@@ -1,0 +1,13 @@
+id: symantotextanalytics
+displayName: Symanto Text Analytics
+type: OpenAPI
+version: "1.0"
+description: This is the [Symanto Psycholinguistic Text Analytics version 1.5.0](https://api.symanto.net/docs) OpenAPI Specification. Symanto psycholinguistic text analytics API provides capability to access operations related to the deepest understanding of people through psychology & AI
+idlPath: /symantotextanalytics/1.0/openapi.yaml
+thumbnailPath: /symantotextanalytics/1.0/icon.png
+documentationPath: /symantotextanalytics/1.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Paid
+endpoint:
+  - url: https://api.symanto.net

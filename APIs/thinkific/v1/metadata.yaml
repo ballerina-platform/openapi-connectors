@@ -1,0 +1,13 @@
+id: thinkific
+displayName: Thinkific
+type: OpenAPI
+version: v1
+description: Thinkific's public API can be used to integrate your application with your Thinkific site.
+idlPath: /thinkific/v1/openapi.yaml
+thumbnailPath: /thinkific/v1/icon.png
+documentationPath: /thinkific/v1/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Freemium
+endpoint:
+  - url: https://api.thinkific.com/api/public/v1

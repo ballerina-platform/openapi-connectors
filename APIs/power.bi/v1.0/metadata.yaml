@@ -1,0 +1,14 @@
+id: power.bi
+displayName: Power BI
+type: OpenAPI
+version: v1.0
+description: This is the [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification. Power BI REST API provides service endpoints for embedding, administration, and user resources.
+idlPath: /power.bi/v1.0/openapi.yaml
+thumbnailPath: /power.bi/v1.0/icon.png
+documentationPath: /power.bi/v1.0/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Paid
+  - Vendor/Microsoft
+endpoint:
+  - url: https://api.powerbi.com/v1.0/myorg/

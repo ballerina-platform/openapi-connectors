@@ -1,0 +1,13 @@
+id: prodpad
+displayName: ProdPad
+type: OpenAPI
+version: "1.0"
+description: This is the [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification.  ProdPad is product management software that helps product managers develop product strategy. Easily manage teams, customers and roadmaps.
+idlPath: /prodpad/1.0/openapi.yaml
+thumbnailPath: /prodpad/1.0/icon.png
+documentationPath: /prodpad/1.0/readme.md
+keywords:
+  - Productivity/ProductManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.prodpad.com/v1

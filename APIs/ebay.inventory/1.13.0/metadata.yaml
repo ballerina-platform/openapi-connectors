@@ -1,0 +1,14 @@
+id: ebay.inventory
+displayName: eBay Inventory
+type: OpenAPI
+version: 1.13.0
+description: This is the [eBay Inventory API v1.13.0](https://developer.ebay.com/api-docs/sell/inventory/overview.html) OpenAPI Specification. The Inventory API is used to create and manage inventory, and then to publish and manage this inventory on an eBay marketplace. There are also methods in this API that will convert eligible, active eBay listings into the Inventory API model.
+idlPath: /ebay.inventory/1.13.0/openapi.yaml
+thumbnailPath: /ebay.inventory/1.13.0/icon.png
+documentationPath: /ebay.inventory/1.13.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/inventory/v1
+    description: Production

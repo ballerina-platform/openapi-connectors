@@ -1,0 +1,13 @@
+id: hubspot.crm.schema
+displayName: HubSpot CRM Schema
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. The CRM uses schemas to define how custom objects should store and represent information in the HubSpot CRM. Schemas define details about an object's type, properties, and associations. The schema can be uniquely identified by its **object type ID**.
+idlPath: /hubspot.crm.schema/v3/openapi.yaml
+thumbnailPath: /hubspot.crm.schema/v3/icon.png
+documentationPath: /hubspot.crm.schema/v3/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

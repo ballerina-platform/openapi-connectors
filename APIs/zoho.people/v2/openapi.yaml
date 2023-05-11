@@ -1,0 +1,1669 @@
+openapi: 3.0.0
+info:
+  title: Zoho People API
+  description: >
+    This is a generated connector for [Zoho People](https://www.zoho.com/people/overview.html) OpenAPI specification.
+    Zoho People API provides the capability to integrate HR modules with
+    third-party applications. With Zoho People API, you can extract employees' data and form data in XML or JSON format to develop new applications or integrate with your existing business applications.
+  version: v2
+  x-ballerina-display:
+    label: Zoho People
+    iconPath: "icon.png"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Zoho People account](https://www.zoho.com/people/) and obtain tokens by following [this guide](https://www.zoho.com/people/oauth-steps.html).
+servers:
+  - description: API server
+    url: https://people.zoho.com/people/api
+security:
+  - OAuth2: []
+  - Bearer: []
+tags:
+  - name: Forms
+  - name: Leave
+  - name: Cases
+  - name: Onboarding
+  - name: Attendance
+paths:
+  /forms/{inputType}/{formLinkName}/insertRecord:
+    post:
+      summary: Add a record to the form.
+      operationId: insertRecord
+      tags:
+        - Forms
+      parameters:
+        - name: inputType
+          in: path
+          required: true
+          description: Type of inputs(json or xml)
+          schema:
+            type: string
+        - name: formLinkName
+          in: path
+          required: true
+          description: Form Lable Name
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InputData'
+        description: Input data in stringify JSON format or XML format
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormRecordResponse'
+          description: Success
+  /forms/{inputType}/{formLinkName}/updateRecord:
+    post:
+      summary: Modify the field values of the specified record.
+      operationId: updateRecord
+      tags:
+        - Forms
+      parameters:
+        - name: inputType
+          in: path
+          required: true
+          description: Type of inputs(json or xml)
+          schema:
+            type: string
+        - name: formLinkName
+          in: path
+          required: true
+          description: Form Lable Name
+          schema:
+            type: string
+        - name: recordId
+          in: query
+          required: true
+          description: Specifies the record Id of the record being fetched.
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InputData'
+        description: Input data in stringify JSON format or XML format
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormRecordResponse'
+          description: Success
+  /department/records:
+    post:
+      summary: Add various departments one by one
+      operationId: addDepartment
+      tags:
+        - Forms
+      parameters:
+        - name: xmlData
+          in: query
+          required: true
+          description: Input data in stringify XML format
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepartmentResponse'
+          description: Success
+  /forms/{formLinkName}/getRecords:
+    get:
+      summary: >-
+        Fetch bulk records along with its tabular section details from
+        particular forms. (maximum:200 records per api calls)
+      operationId: getBulkRecords
+      tags:
+        - Forms
+      parameters:
+        - name: formLinkName
+          in: path
+          required: true
+          description: Form Lable Name
+          schema:
+            type: string
+        - name: sIndex
+          in: query
+          required: false
+          description: starting index of the records to fetch (record index starts from 1)
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          required: false
+          description: >-
+            number of records to be fetched in the current request (maximum 200
+            records)
+          schema:
+            type: integer
+        - name: SearchColumn
+          in: query
+          required: false
+          description: Search EMPLOYEEID or EMPLOYEEMAILALIAS
+          schema:
+            type: string
+        - name: SearchValue
+          in: query
+          required: false
+          description: Search Employeeid of the employee or the Employee MailID
+          schema:
+            type: string
+        - name: modifiedtime
+          in: query
+          required: false
+          description: >-
+            To fetch records added & modified after the given time . value
+            should be  timestamp in milliseconds
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+          description: Success
+  /forms/{formLinkName}/getDataByID:
+    get:
+      summary: Display the record of a specific form indexed using a Record ID
+      operationId: getSingleRecord
+      tags:
+        - Forms
+      parameters:
+        - name: formLinkName
+          in: path
+          required: true
+          description: Form Lable Name
+          schema:
+            type: string
+        - name: recordId
+          in: query
+          required: true
+          description: >-
+            Specifies the record Id of the record being fetched. The record Id
+            can be identified using the getBulkRecords operation.
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+          description: Success
+  /forms/{formLinkName}/getRecordByID:
+    get:
+      summary: >-
+        Fetch all the record of a specific form indexed using a Record ID by
+        section-wise
+      operationId: getRecordByID
+      tags:
+        - Forms
+      parameters:
+        - name: formLinkName
+          in: path
+          required: true
+          description: Form Lable Name
+          schema:
+            type: string
+        - name: recordId
+          in: query
+          required: true
+          description: >-
+            Specifies the record Id of the record being fetched. The record Id
+            can be identified using the getBulkRecords operation.
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Records'
+          description: Success
+  /forms:
+    get:
+      summary: >-
+        Retrieve the list of forms and its details available in your Zoho People
+        account.
+      operationId: getForms
+      tags:
+        - Forms
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormDetailResponse'
+          description: Success
+  /forms/json/leave/insertRecord:
+    post:
+      summary: Add leave records using Add Leave API
+      operationId: addLeave
+      tags:
+        - Leave
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InputData'
+        description: Input data in stringify JSON format
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FormRecordResponse'
+          description: Success
+  /leave/addBalance:
+    post:
+      summary: To modify an employee's leave balance
+      operationId: addLeaveBalance
+      tags:
+        - Leave
+      parameters:
+        - name: dateFormat
+          in: query
+          required: false
+          description: >-
+            Specify the date format (Org date format will be considered if
+            nothing is specified)
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BalanceData'
+        description: Balance data to insert in Json string format
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDataResponse'
+          description: Success
+  /forms/leave/getDataByID:
+    post:
+      summary: Fetch the record of leave from indexed using a Record ID
+      operationId: getSingleLeaveRecord
+      tags:
+        - Leave
+      parameters:
+        - name: recordId
+          in: query
+          required: true
+          description: >-
+            Specifies the record Id of the leave record being fetched. The
+            record Id can be identified using the fetch Records API.
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveDetail'
+          description: Success
+  /leave/getLeaveTypeDetails:
+    get:
+      summary: Get leave types of a specific employee
+      operationId: getLeaveTypes
+      tags:
+        - Leave
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: Employee Id/Employee MailId/Record Id of the Employee
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveTypes'
+          description: Success
+  /leave/getHolidays:
+    get:
+      summary: >-
+        Fetch specific holidays of any employees using their employee ID, email
+        ID and record ID parameters.
+      operationId: getHolidays
+      tags:
+        - Leave
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: Employee Id/Employee MailId/Record Id of the Employee
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Holidays'
+          description: Success
+  /leave/v2/holidays/get:
+    get:
+      summary: Fetch the holidays of a location, shift or for an employee.
+      operationId: getAllHolidays
+      tags:
+        - Leave
+      parameters:
+        - name: location
+          in: query
+          required: false
+          description: Location name
+          schema:
+            type: string
+        - name: shift
+          in: query
+          required: false
+          description: Shift name
+          schema:
+            type: string
+        - name: employee
+          in: query
+          required: false
+          description: Emp ID or Email ID or Erecno of the employee
+          schema:
+            type: string
+        - name: upcoming
+          in: query
+          required: false
+          description: To get the holidays for the next 365 days
+          schema:
+            type: boolean
+        - name: from
+          in: query
+          required: false
+          description: From date
+          schema:
+            type: string
+        - name: to
+          in: query
+          required: false
+          description: To date
+          schema:
+            type: string
+        - name: dateFormat
+          in: query
+          required: false
+          description: Date format used to specify From and To as String
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllHolidays'
+          description: Success
+  /v2/leavetracker/reports/user:
+    get:
+      summary: Get user report for current leave year.
+      operationId: getLeaveReportOfUser
+      tags:
+        - Leave
+      parameters:
+        - name: employee
+          in: query
+          required: true
+          description: Erecno of the employee
+          schema:
+            type: integer
+        - name: to
+          in: query
+          required: false
+          description: Report till date of the current year
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaveReport'
+          description: Success
+  /hrcases/addcase:
+    post:
+      summary: Add case
+      operationId: addCase
+      tags:
+        - Cases
+      parameters:
+        - name: categoryId
+          in: query
+          required: true
+          description: Specify the category ID
+          schema:
+            type: integer
+        - name: subject
+          in: query
+          required: true
+          description: Specify the subject of the case
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          description: Specify the description of the case
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedCase'
+          description: Success
+  /hrcases/viewcase:
+    get:
+      summary: View case details
+      operationId: viewCaseDetails
+      tags:
+        - Cases
+      parameters:
+        - name: recordId
+          in: query
+          required: true
+          description: Specify the record ID of the case
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseDetailsResponse'
+          description: Success
+  /hrcases/getAllCases:
+    get:
+      summary: List all case details
+      operationId: getAllCases
+      tags:
+        - Cases
+      parameters:
+        - name: index
+          in: query
+          required: true
+          description: Specify the index of the listing
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          description: >-
+            String of status IDs separated by (,) comma - (Open- "1", In
+            Progress- "2", Awaiting action from Requestor- "3", On Hold- "4",
+            Closed- "5") - empty for all status
+          schema:
+            type: string
+        - name: categoryId
+          in: query
+          required: false
+          description: Category IDs separated by (,) comma
+          schema:
+            type: string
+        - name: query
+          in: query
+          required: false
+          description: Specify the query string of the case
+          schema:
+            type: string
+        - name: requestorErecno
+          in: query
+          required: false
+          description: Employee record IDs separated by (,) comma
+          schema:
+            type: string
+        - name: periodOfTime
+          in: query
+          required: false
+          description: >-
+            Send single time limit(Today - 0, Yesterday - 1, Past 7 days - 2,
+            Past 30 days - 3)
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseList'
+          description: Success
+  /hrcases/listCategory:
+    get:
+      summary: List categories that a user case raise query to
+      operationId: viewListOfCategories
+      tags:
+        - Cases
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseCategory'
+          description: Success
+  /{onboardingType}/triggerOnboarding:
+    post:
+      summary: Trigger onboarding for an existing candidate or employee
+      operationId: triggerOnboarding
+      tags:
+        - Onboarding
+      parameters:
+        - name: onboardingType
+          in: path
+          required: true
+          description: Select either one type for onboarding - `Employee` or `Candidate`
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: true
+          description: Specify the record ID of the candidate employee
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OnboardingResponse'
+          description: Success​
+  /attendance/bulkImport:
+    post:
+      summary: Import bulk check-in and check-out details of the employees
+      operationId: importBulkAttendance
+      tags:
+        - Attendance
+      parameters:
+        - name: dateFormat
+          in: query
+          required: false
+          description: Format for date (Eg- yyyy-MM-dd HH:mm:ss)
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AttendanceImportData'
+        description: Input data in stringify JSON array format
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkAttendance'
+          description: Success
+  /attendance:
+    post:
+      summary: Capture the check-in and check-out entries of an individual employee
+      operationId: createAttendance
+      tags:
+        - Attendance
+      parameters:
+        - name: dateFormat
+          in: query
+          required: true
+          description: Specify the correct date format(eg- dd/MM/yyyy HH:mm:ss )
+          schema:
+            type: string
+        - name: checkIn
+          in: query
+          required: false
+          description: Specify the check-in time of an employee
+          schema:
+            type: string
+        - name: checkOut
+          in: query
+          required: false
+          description: Specify the check-out time of an employee
+          schema:
+            type: string
+        - name: empId
+          in: query
+          required: false
+          description: Specify the employee ID of an employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: emailId
+          in: query
+          required: false
+          description: Specify the email ID of an employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: mapId
+          in: query
+          required: false
+          description: Specify the mapper ID of an employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttendanceEntry'
+          description: Success
+  /attendance/getAttendanceEntries:
+    post:
+      summary: Get the employee attendance entries.
+      operationId: getAttendanceEntries
+      tags:
+        - Attendance
+      parameters:
+        - name: dateFormat
+          in: query
+          required: false
+          description: Specify the response date format
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: false
+          description: Specify the date in organisation date format
+          schema:
+            type: string
+        - name: erecno
+          in: query
+          required: false
+          description: Specify employee erecno
+          schema:
+            type: string
+        - name: empId
+          in: query
+          required: false
+          description: Specify employee id. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: emailId
+          in: query
+          required: false
+          description: Specify employee email id. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: mapId
+          in: query
+          required: false
+          description: Specify mapper id. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttendanceEntries'
+          description: Success
+  /attendance/fetchLatestAttEntries:
+    get:
+      summary: >-
+        Get the latest attendance entries with Regularisation entries that has
+        been added/updated within the latest minutes(given in param)
+      operationId: getLatestAttendance
+      tags:
+        - Attendance
+      parameters:
+        - name: duration
+          in: query
+          required: true
+          description: >-
+            Duration in minutes within which the latest entries should be
+            fetched
+          schema:
+            type: integer
+        - name: dateTimeFormat
+          in: query
+          required: false
+          description: >-
+            Format of the date and time of Attendance entries in response is
+            returned
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LatestAttendance'
+          description: Success
+  /attendance/updateUserShift:
+    post:
+      summary: Map employees to respective shifts
+      operationId: updateUserShift
+      tags:
+        - Attendance
+      parameters:
+        - name: empId
+          in: query
+          required: true
+          description: Employee ID of an employee
+          schema:
+            type: string
+        - name: shiftName
+          in: query
+          required: true
+          description: Shift to be mapped
+          schema:
+            type: string
+        - name: fdate
+          in: query
+          required: false
+          description: From date
+          schema:
+            type: string
+        - name: tdate
+          in: query
+          required: false
+          description: To date
+          schema:
+            type: string
+        - name: dateFormat
+          in: query
+          required: false
+          description: >-
+            Correct date format. Date Format of organisation or specify the
+            format
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftUpdate'
+          description: Success
+  /attendance/getShiftConfiguration:
+    get:
+      summary: Fetch the shift configuration details of an employee
+      operationId: getShiftDetails
+      tags:
+        - Attendance
+      parameters:
+        - name: empId
+          in: query
+          required: false
+          description: Employee ID of an employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: emailId
+          in: query
+          required: false
+          description: Mail ID of the employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: mapId
+          in: query
+          required: false
+          description: Mapper ID of the employee. Out of the 3 parameters - empId, emailId & mapId, at least one of them must be given as an input to map the entry of an employee.
+          schema:
+            type: string
+        - name: sdate
+          in: query
+          required: true
+          description: Start date
+          schema:
+            type: string
+        - name: edate
+          in: query
+          required: true
+          description: End date
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShiftDetails'
+          description: Success
+components:
+  schemas:
+    FormDetailResponse:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/FormDetail'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              oneOf:
+                - type: object
+                - type: array
+                  items:
+                    type: object
+    FormDetail:
+      properties:
+        componentId:
+          type: integer
+        iscustom:
+          type: boolean
+        displayName:
+          type: string
+        formLinkName:
+          type: string
+        PermissionDetails:
+          $ref: '#/components/schemas/PermissionDetails'
+        isVisible:
+          type: boolean
+        viewDetails:
+          $ref: '#/components/schemas/ViewDetails'
+    ViewDetails:
+      properties:
+        view_Id:
+          type: integer
+        view_Name:
+          type: string
+    PermissionDetails:
+      properties:
+        Add:
+          type: integer
+        Edit:
+          type: integer
+        View:
+          type: integer
+    Records:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                type: object
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              oneOf:
+                - type: object
+                - type: array
+                  items:
+                    type: object
+    DepartmentResponse:
+      properties:
+        Response:
+          type: integer
+        pkId:
+          type: string
+        code:
+          type: integer
+        message:
+          oneOf:
+            - type: string
+            - type: object
+            - type: array
+              items:
+                type: object
+        errorcode:
+          type: integer
+        Response status:
+          type: integer
+    LeaveReport:
+      properties:
+        employeeName:
+          type: string
+        employeeId:
+          type: string
+        leavetypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeaveInfo'
+    LeaveInfo:
+      properties:
+        taken:
+          type: integer
+        leavetypeName:
+          type: string
+        available:
+          type: integer
+        type:
+          type: string
+        leavetypeColor:
+          type: string
+        leavetypeID:
+          type: integer
+    LeaveTypes:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/LeaveType'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            error_msg:
+              type: string
+            error_code:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/Errors'
+    LeaveType:
+      properties:
+        Name:
+          type: string
+        PermittedCount:
+          type: integer
+        AvailedCount:
+          type: integer
+        Id:
+          oneOf:
+            - type: string
+            - type: integer
+        Unit:
+          type: string
+        BalanceCount:
+          oneOf:
+            - type: string
+            - type: integer
+    Holidays:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/Holiday'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            error_msg:
+              type: string
+            error_code:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/Errors'
+    AllHolidays:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Holiday'
+        message:
+          type: string
+        uri:
+          type: string
+        status:
+          type: integer
+        error_msg:
+          type: string
+        error_code:
+          type: integer
+    Holiday:
+      properties:
+        isRestrictedHoliday:
+          type: boolean
+        ShiftName:
+          type: string
+        Remarks:
+          type: string
+        LocationId:
+          type: string
+        ShiftId:
+          type: string
+        Id:
+          oneOf:
+            - type: string
+            - type: integer
+        Date:
+          type: string
+        isHalfday:
+          type: boolean
+        Name:
+          type: string
+        LocationName:
+          type: string
+        Session:
+          type: integer
+        fromDate:
+          type: string
+        toDate:
+          type: string
+    Fields:
+      properties:
+        comptype:
+          type: string
+        Options:
+          type: object
+        description:
+          type: string
+        labelname:
+          type: string
+        ismandatory:
+          type: boolean
+        displayType:
+          type: string
+        ReferedFormId:
+          type: integer
+        isPrimary:
+          type: boolean
+        displayname:
+          type: string
+        autofillvalue:
+          type: string
+        formcomponentid:
+          type: integer
+        ReferedFormName:
+          type: string
+        ReferedFieldId:
+          type: integer
+        ReferedFieldName:
+          type: string
+        maxLength:
+          type: integer
+    FormFields:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/Fields'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/Errors'
+    BalanceData:
+      required:
+        - balanceData
+      properties:
+        balanceData:
+          type: string
+    BalanceDataResponse:
+      properties:
+        response:
+          properties:
+            result:
+              type: object
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              oneOf:
+                - type: object
+                - type: array
+                  items:
+                    type: object
+    Leave:
+      properties:
+        Employee_ID:
+          type: string
+        DayDetails:
+          type: object
+        Leavetype.ID:
+          type: string
+        From:
+          type: string
+        Unit:
+          type: string
+        ApprovalStatus:
+          type: string
+        Daystaken:
+          type: string
+        Reasonforleave:
+          type: string
+        TeamEmailID:
+          type: string
+        Leavetype:
+          type: string
+        To:
+          type: string
+        Employee_ID.ID:
+          type: string
+        DateOfRequest:
+          type: string
+    LeaveDetail:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/Leave'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/Errors'
+    CreatedCase:
+      properties:
+        response:
+          properties:
+            result:
+              properties:
+                zp_recordId:
+                  type: string
+                caseId:
+                  type: string
+                desc:
+                  type: string
+                status:
+                  type: string
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/CaseErrors'
+    FileList:
+      properties:
+        fileName:
+          type: string
+        downloadUrl:
+          type: string
+        filesize:
+          type: string
+        fileUploadId:
+          type: string
+    Agent:
+      properties:
+        empid:
+          type: string
+        allowPickup:
+          type: boolean
+        valueId:
+          type: string
+        erecno:
+          type: string
+        employeePhoto:
+          type: string
+        name:
+          type: string
+        details:
+          type: string
+        typeId:
+          type: string
+        type:
+          type: string
+        zuid:
+          type: string
+        employeeEmailAlias:
+          type: string
+    PermittedCaseStatus:
+      properties:
+        sequence:
+          type: string
+        optionValue:
+          type: string
+        fcid:
+          type: string
+        optionId:
+          type: string
+        systemValue:
+          type: string
+    PermittedCasePriority:
+      properties:
+        sequence:
+          type: string
+        optionValue:
+          type: string
+        fcid:
+          type: string
+        optionId:
+          type: string
+        systemValue:
+          type: string
+    PermittedCaseSource:
+      properties:
+        sequence:
+          type: string
+        isReopenDisabled:
+          type: boolean
+        optionValue:
+          type: string
+        fcid:
+          type: string
+        optionId:
+          type: string
+        systemValue:
+          type: string
+    Requestor:
+      properties:
+        empid:
+          type: string
+        erecno:
+          type: string
+        employeePhoto:
+          type: string
+        name:
+          type: string
+        zuid:
+          type: string
+        employeeEmailAlias:
+          type: string
+    CaseDetail:
+      properties:
+        sourceId:
+          type: string
+        agentId:
+          type: string
+        agent:
+          $ref: '#/components/schemas/Agent'
+        permittedCaseStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermittedCaseStatus'
+        permittedCasePriority:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermittedCasePriority'
+        subject:
+          type: string
+        description:
+          type: string
+        source:
+          type: string
+        categoryName:
+          type: string
+        priorityId:
+          type: string
+        isAgent:
+          type: boolean
+        caseId:
+          type: string
+        createdTime:
+          type: string
+        permittedCaseSource:
+          type: array
+          items:
+            $ref: '#/components/schemas/PermittedCaseSource'
+        isEscalatedUser:
+          type: boolean
+        agentValueId:
+          type: string
+        agentTypeId:
+          type: string
+        priority:
+          type: string
+        requestor:
+          $ref: '#/components/schemas/Requestor'
+        agentDetails:
+          type: string
+        statusId:
+          type: string
+        categoryIcon:
+          type: string
+        categoryId:
+          type: string
+        status:
+          type: string
+    SLA:
+      properties:
+        nextViolation:
+          type: string
+        currentStatus:
+          type: integer
+        isViolated:
+          type: boolean
+    CaseDetails:
+      properties:
+        assignedToList:
+          type: boolean
+        filesList:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileList'
+        caseDetails:
+          $ref: '#/components/schemas/CaseDetail'
+        needCategoryChange:
+          type: boolean
+        sla:
+          $ref: '#/components/schemas/SLA'
+    CaseDetailsResponse:
+      properties:
+        response:
+          properties:
+            result:
+              $ref: '#/components/schemas/CaseDetails'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              $ref: '#/components/schemas/CaseErrors'
+    HrcaseList:
+      properties:
+        agent:
+          $ref: '#/components/schemas/Agent'
+        subject:
+          type: string
+        SLA:
+          $ref: '#/components/schemas/SLA'
+        priority:
+          type: string
+        categoryName:
+          type: string
+        requestor:
+          $ref: '#/components/schemas/Requestor'
+        priorityId:
+          type: string
+        recordId:
+          type: string
+        statusId:
+          type: string
+        caseId:
+          type: string
+        createdTime:
+          type: string
+        categoryId:
+          type: string
+        status:
+          type: string
+        hasAttachment:
+          type: boolean
+    CaseList:
+      properties:
+        response:
+          properties:
+            result:
+              properties:
+                hrcaseList:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/HrcaseList'
+                isNextAvailable:
+                  type: boolean
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+    CaseCategory:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/CaseCategoryResult'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+    SubCategory:
+      properties:
+        subcategoryname:
+          type: string
+        subCategoryId:
+          type: string
+    CaseCategoryResult:
+      properties:
+        isAgent:
+          type: boolean
+        categoryIcon:
+          type: string
+        isEnabled:
+          type: boolean
+        subCategoryList:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubCategory'
+        categoryShortDescription:
+          type: string
+        enable_moderation:
+          type: boolean
+        serviceId:
+          type: string
+        applicableLocations:
+          type: array
+          items: {}
+        categoryName:
+          type: string
+        categoryId:
+          type: string
+    CaseErrors:
+      properties:
+        desc:
+          type: string
+        status:
+          type: string
+    OnboardingResponse:
+      properties:
+        msg:
+          type: string
+        Success:
+          type: boolean
+    OnboardingType:
+      type: string
+      enum:
+        - Employee
+        - Candidate
+    FormRecordResponse:
+      properties:
+        response:
+          properties:
+            result:
+              properties:
+                pkId:
+                  type: string
+                message:
+                  type: string
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: integer
+            errors:
+              oneOf:
+                - type: object
+                - type: array
+                  items:
+                    type: object
+    InputData:
+      required:
+        - inputData
+      properties:
+        inputData:
+          type: string
+    AttendanceImportData:
+      required:
+        - data
+      properties:
+        data:
+          type: string
+    BulkAttendance:
+      properties:
+        response:
+          type: string
+    AttendanceEntry:
+      properties:
+        inputType_in:
+          type: integer
+        inputType_out:
+          type: integer
+        tdate:
+          type: string
+        fdate:
+          type: string
+        punchIn:
+          type: string
+        dateFormat:
+          type: string
+        response:
+          type: string
+        tsecs:
+          type: integer
+        msg:
+          type: string
+    AttendanceEntryInfo:
+      properties:
+        checkIn:
+          type: string
+        checkOut_Location:
+          type: string
+        sourceOfPunchOut:
+          type: string
+        checkIn_Location:
+          type: string
+        checkOut:
+          type: string
+        sourceOfPunchIn:
+          type: string
+    AttendanceEntries:
+      properties:
+        firstIn:
+          type: string
+        totalHrs:
+          type: string
+        entries:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttendanceEntryInfo'
+        lastOut_Location:
+          type: string
+        lastOut:
+          type: string
+        allowedToCheckIn:
+          type: boolean
+        firstIn_Location:
+          type: string
+        status:
+          type: string
+    LatestAttendanceEntries:
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        entries:
+          type: array
+          items:
+            type: object
+        erecNo:
+          type: integer
+        employeeId:
+          type: string
+        emailId:
+          type: string
+    LatestAttendance:
+      properties:
+        response:
+          properties:
+            result:
+              type: array
+              items:
+                $ref: '#/components/schemas/LatestAttendanceEntries'
+            message:
+              type: string
+            uri:
+              type: string
+            status:
+              type: string
+    ShiftUpdate:
+      properties:
+        result:
+          properties:
+            msg:
+              type: string
+        msg:
+          type: string
+    ShiftList:
+      properties:
+        date:
+          type: string
+        shiftId:
+          type: string
+        shiftName:
+          type: string
+        shiftColor:
+          type: string
+        shiftStartTime:
+          type: string
+        shiftEndTime:
+          type: string
+        isWeekend:
+          type: boolean
+    UserShiftDetails:
+      properties:
+        employeeName:
+          type: string
+        erecno:
+          type: string
+        employeePhoto:
+          type: string
+        locationId:
+          type: string
+        emailId:
+          type: string
+        employeeId:
+          type: string
+        isShiftEditable:
+          type: boolean
+        shiftList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShiftList'
+    ShiftDetails:
+      properties:
+        userShiftDetails:
+          $ref: '#/components/schemas/UserShiftDetails'
+    Errors:
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://accounts.zoho.com/oauth/v2/auth
+          tokenUrl: https://accounts.zoho.com/oauth/v2/token
+          scopes: {}
+    Bearer:
+      type: http
+      scheme: bearer

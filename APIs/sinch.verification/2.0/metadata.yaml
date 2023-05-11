@@ -1,0 +1,13 @@
+id: sinch.verification
+displayName: Sinch Verification
+type: OpenAPI
+version: "2.0"
+description: This is the [Sinch Verification API v2.0](https://www.sinch.com/) OpenAPI specification. Verify users with SMS, flash calls (missed calls), a regular call, or data verification.
+idlPath: /sinch.verification/2.0/openapi.yaml
+thumbnailPath: /sinch.verification/2.0/icon.png
+documentationPath: /sinch.verification/2.0/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Paid
+endpoint:
+  - url: https://verificationapi-v1.sinch.com

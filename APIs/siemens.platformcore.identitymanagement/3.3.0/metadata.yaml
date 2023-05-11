@@ -1,0 +1,11 @@
+id: siemens.platformcore.identitymanagement
+displayName: Siemens Platform Core Identity Management
+type: OpenAPI
+version: 3.3.0
+description: This is the [Siemens identity management API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification.
+idlPath: /siemens.platformcore.identitymanagement/3.3.0/openapi.yaml
+thumbnailPath: /siemens.platformcore.identitymanagement/3.3.0/icon.png
+documentationPath: /siemens.platformcore.identitymanagement/3.3.0/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium

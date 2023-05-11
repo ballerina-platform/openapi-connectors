@@ -1,0 +1,13 @@
+id: eventbrite
+displayName: Eventbrite
+type: OpenAPI
+version: v3
+description: This is the [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
+idlPath: /eventbrite/v3/openapi.yaml
+thumbnailPath: /eventbrite/v3/icon.png
+documentationPath: /eventbrite/v3/readme.md
+keywords:
+  - Marketing/EventManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://www.eventbriteapi.com/v3

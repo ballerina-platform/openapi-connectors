@@ -1,0 +1,13 @@
+id: readme
+displayName: Readme
+type: OpenAPI
+version: 2.0.0
+description: This is the [Readme API v2.0](https://docs.readme.com/reference) OpenAPI specification.
+idlPath: /readme/2.0.0/openapi.yaml
+thumbnailPath: /readme/2.0.0/icon.png
+documentationPath: /readme/2.0.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://dash.readme.io/api/v1

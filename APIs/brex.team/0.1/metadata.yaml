@@ -1,0 +1,16 @@
+id: brex.team
+displayName: brex.team
+type: OpenAPI
+version: "0.1"
+description: This is the [Brex Team API v0.1](https://developer.brex.com/openapi/team_api/) OpenAPI specification.  Team API lets you manage users, departments, locations and cards.
+idlPath: /brex.team/0.1/openapi.yaml
+thumbnailPath: /brex.team/0.1/icon.png
+documentationPath: /brex.team/0.1/readme.md
+keywords:
+  - HumanResources/HRMS
+  - Cost/Freemium
+endpoint:
+  - url: https://platform.staging.brexapps.com
+    description: 'Staging API (Note: this is not sandbox)'
+  - url: https://platform.brexapis.com
+    description: Production servers

@@ -1,0 +1,13 @@
+id: optirtc.public
+displayName: Optirtc Public 
+type: OpenAPI
+version: "1.0"
+description: This is the [Optirtc Public API v1.0](https://docs.optirtc.com/api/opti-publicapi-v1.html) OpenAPI specification.
+idlPath: /optirtc.public/1.0/openapi.yaml
+thumbnailPath: /optirtc.public/1.0/icon.png
+documentationPath: /optirtc.public/1.0/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Free
+endpoint:
+  - url: https://public.optirtc.com/api

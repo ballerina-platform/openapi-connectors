@@ -1,0 +1,14 @@
+id: xero.finance
+displayName: Xero Finance
+type: OpenAPI
+version: 2.16.0
+description: This is the [Xero Finance API v2.16.0](https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
+idlPath: /xero.finance/2.16.0/openapi.yaml
+thumbnailPath: /xero.finance/2.16.0/icon.png
+documentationPath: /xero.finance/2.16.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid
+endpoint:
+  - url: https://api.xero.com/finance.xro/1.0
+    description: Xero API servers

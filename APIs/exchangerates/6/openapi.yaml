@@ -1,0 +1,99 @@
+openapi: 3.0.2
+servers:
+  - description: Returns latest exchange rates and some metadata.
+    url: https://v6.exchangerate-api.com/v6/
+info:
+  x-ballerina-display:
+    label: Exchange Rates
+    iconPath: "icon.png"
+  description: >
+    This is the [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification.
+    This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key.
+  termsOfService: https://www.exchangerate-api.com/terms
+  title: ExchangeRate-API
+  version: "6"
+  x-apisguru-categories:
+    - financial
+  x-logo:
+    backgroundColor: "#FFFFFF"
+    url: https://www.exchangerate-api.com/img/logo-cube-135px.png
+  x-origin:
+    - converter:
+        url: https://github.com/mermade/oas-kit
+        version: 7.0.4
+      format: openapi
+      url: https://www.exchangerate-api.com/openapi.yaml
+      version: "3.0"
+  x-providerName: exchangerate-api.com
+externalDocs:
+  description: API Documentation
+  url: https://www.exchangerate-api.com/docs/documentation
+paths:
+  "/{apikey}/latest/{base_currency}":
+    get:
+      operationId: getExchangeRateFor
+      parameters:
+        - description: "**API Key**. Please create an [ExchangeRate-API account](https://app.exchangerate-api.com/sign-up) and obtain api-key."
+          in: path
+          name: apikey
+          required: true
+          schema:
+            type: string
+        - description: "**Base Currency**. *Example: USD*. You an use any of the ISO 4217 currency codes we support. See https://www.exchangerate-api.com/docs/supported-currencies"
+          in: path
+          name: base_currency
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyExchangeInfomation"
+                type: object
+          description: Successful response
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyExchangeError"
+                type: object
+          description: Currency code not supported
+      summary: Returns latest exchange rates in parameter-supplied base currency.
+components:
+  schemas:
+    CurrencyExchangeInfomation:
+      properties:
+        result:
+          type: string
+        documentation:
+          type: string
+        terms_of_use:
+          type: string
+        time_last_update_unix:
+          type: integer
+        time_last_update_utc:
+          type: string
+        time_next_update_unix:
+          type: integer
+        time_next_update_utc:
+          type: string
+        base_code:
+          type: string
+        conversion_rates:
+          type: object
+    CurrencyExchangeError:
+      properties:
+        result:
+          type: string
+        documentation:
+          type: string
+        terms-of-use:
+          type: string
+        error-type:
+          type: string      
+      

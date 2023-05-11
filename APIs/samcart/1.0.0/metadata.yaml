@@ -1,0 +1,14 @@
+id: samcart
+displayName: SamCart
+type: OpenAPI
+version: 1.0.0
+description: This is the [SamCart API v1.0.0](https://developer.samcart.com/) OpenAPI specification.
+idlPath: /samcart/1.0.0/openapi.yaml
+thumbnailPath: /samcart/1.0.0/icon.png
+documentationPath: /samcart/1.0.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+endpoint:
+  - url: https://api.samcart.com/v1
+    description: 'Public API server'

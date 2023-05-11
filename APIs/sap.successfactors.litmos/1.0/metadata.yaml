@@ -1,0 +1,11 @@
+id: sap.successfactors.litmos
+displayName: SAP SuccessFactors Litmos
+type: OpenAPI
+version: "1.0"
+description: This is the [SAP SuccessFactors Litmos API v1.0](https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification. Litmos is a cloud-based solution that unifies virtual, classroom, mobile, and social learning. Our solutions empower training departments, sales and service leaders, safety and compliance managers, and HR teams to collaborate, author, globally distribute, and track web-based training courses, as well as schedule and track instructor-led courses. It automates formerly burdensome tasks so that teams can focus their energy on aligning training with the company's strategic agenda.
+idlPath: /sap.successfactors.litmos/1.0/openapi.yaml
+thumbnailPath: /sap.successfactors.litmos/1.0/icon.png
+documentationPath: /sap.successfactors.litmos/1.0/readme.md
+keywords:
+  - HumanResources/HRMS
+  - Cost/Paid

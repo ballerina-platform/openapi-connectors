@@ -1,0 +1,14 @@
+id: googleapis.cloudtranslation
+displayName: Google Cloud Translation
+type: OpenAPI
+version: v3
+description: This is the [Google Cloud Translation API v3](https://cloud.google.com/translate/docs/quickstarts) OpenAPI specification.
+idlPath: /googleapis.cloudtranslation/v3/openapi.yaml
+thumbnailPath: /googleapis.cloudtranslation/v3/icon.png
+documentationPath: /googleapis.cloudtranslation/v3/readme.md
+keywords:
+  - Education/Translator
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://translation.googleapis.com/

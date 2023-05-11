@@ -1,0 +1,540 @@
+openapi: 3.0.0
+externalDocs:
+  description: Pushcut Help Page
+  url: https://www.pushcut.io/help
+info:
+  contact:
+    name: Pushcut
+    email: feedback@pushcut.io
+    url: https://www.pushcut.io
+  description: |
+    This is a generated connector for [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
+    API to send Pushcut notifications, execute Automation Server actions, and register custom webhooks as online actions.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Pushcut account](https://www.pushcut.io) and obtain tokens by following [this guide](https://www.pushcut.io/help).
+  x-ballerina-display:
+    label: Pushcut
+    iconPath: "icon.png"
+  title: Pushcut API
+  version: v1
+paths:
+  /devices:
+    get:
+      operationId: GetDevices
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  properties:
+                    id:
+                      description: Name of the device
+                      type: string
+                      example: Simon's iPhone
+                  type: object
+                type: array
+        "401":
+          $ref: "#/components/responses/401"
+      summary: Get devices
+      description: Gets a list of all active devices.
+      tags:
+        - Notifications
+      x-ms-visibility: internal
+  /notifications:
+    get:
+      operationId: GetNotifications
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  properties:
+                    id:
+                      description: Name of the notification definition
+                      type: string
+                      example: MyNotification
+                    title:
+                      type: string
+                      description: Title of the notification
+                      example: Notification Title
+                  type: object
+                type: array
+        "401":
+          $ref: "#/components/responses/401"
+      summary: Get defined notifications
+      description: Gets a list of all defined notifications.
+      tags:
+        - Notifications
+      x-ms-visibility: internal
+  "/notifications/{notificationName}":
+    post:
+      description: Sends a smart notification to your devices.
+      operationId: SendNotification
+      summary: Send a smart notification
+      tags:
+        - Notifications
+      x-ms-visibility: important
+      parameters:
+        - description: Notification Name
+          x-ms-summary: Notification
+          in: path
+          name: notificationName
+          required: true
+          example: MyNotification
+          x-ms-dynamic-values:
+            operationId: GetNotifications
+            value-path: id
+            value-title: id
+          x-ms-visibility: important
+          schema:
+            type: string
+      requestBody:
+        description: Extend and customize the defined notification by providing dynamic content.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+      responses:
+        "200":
+          description: Success
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+  /subscriptions:
+    get:
+      operationId: GetSubscriptions
+      summary: Get a list of all online action subscriptions
+      description: Gets a list of all active webhook subscriptions created from this API Key.
+      tags:
+        - Subscriptions
+      x-ms-visibility: internal
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/SubscriptionData"
+                type: array
+        "401":
+          $ref: "#/components/responses/401"
+    post:
+      operationId: ActionExecuted
+      description: |
+        Adds a webhook that is triggered when an online action is executed in Pushcut.
+        If *isLocalUrl* is set to true, your device will trigger the webhook on its local network.
+      tags:
+        - Subscriptions
+      summary: Subscribe to an online action
+      requestBody:
+        description: Subscription request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Subscription"
+        required: true
+      responses:
+        "200":
+          description: Success
+          headers:
+            Location:
+              schema:
+                type: string
+              description: "URI to the subscription"
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: ID of the subscription
+                    type: string
+                    example: "1234567890abc"
+                type: object
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+      callbacks:
+        ActionExecuted:
+          "{$request.body#/url}":
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/EventData"
+              responses:
+                200:
+                  description: Success
+    x-ms-notification-content:
+      description: Details for Webhook
+      schema:
+        $ref: "#/components/schemas/EventData"
+  "/subscriptions/{subscriptionId}":
+    delete:
+      parameters:
+        - in: path
+          name: subscriptionId
+          description: Id that was returned when creating the subscription.
+          required: true
+          schema:
+            type: string
+      operationId: DeleteSubscription
+      description: Deletes a webhook subscription.
+      summary: Remove an online action subscription
+      tags:
+        - Subscriptions
+      responses:
+        200:
+          description: Success
+
+        "401": { $ref: "#/components/responses/401" }
+      x-ms-visibility: internal
+  /execute:
+    post:
+      description: Schedules an Automation Server action request. Specify either a shortcut name or a HomeKit scene.
+      operationId: Execute
+      summary: Execute an Automation Server action.
+      tags:
+        - Automation Server
+      x-ms-visibility: important
+      parameters:
+        - description: Shortcut
+          in: query
+          name: shortcut
+          required: false
+          example: My Shortcut
+          schema:
+            type: string
+        - description: HomeKit scene
+          in: query
+          name: homekit
+          required: false
+          example: Downstairs Lights On
+          schema:
+            type: string
+        - description: Timout in seconds, or 'nowait'
+          in: query
+          name: timeout
+          required: false
+          example: nowait
+          schema:
+            type: string
+        - description: "Duration in which this request should be executed. Eg: 10s, 15m, 6h"
+          in: query
+          name: delay
+          required: false
+          example: 10s
+          schema:
+            type: string
+        - description: "Only used for delayed requests. Use an identifier to overwrite or cancel a scheduled execution."
+          in: query
+          name: identifier
+          required: false
+          example: MyIdentifier
+          schema:
+            type: string
+      requestBody:
+        description: Pass an input or optional configuration with the request.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Execute"
+      responses:
+        "200":
+          description: Success
+        "202":
+          description: Accepted (when scheduled with 'nowait')
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+        "404": { $ref: "#/components/responses/404" }
+        "502": { $ref: "#/components/responses/502" }
+        "504": { $ref: "#/components/responses/504" }
+  /cancelExecution:
+    post:
+      description: Cancels an Automation Server requests that was scheduled for future execution.
+      operationId: CancelExecution
+      summary: Cancel a scheduled Automation Server action.
+      tags:
+        - Automation Server
+      x-ms-visibility: important
+      parameters:
+        - description: "Identifier of the request."
+          in: query
+          name: identifier
+          required: false
+          example: MyIdentifier
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+        "400": { $ref: "#/components/responses/400" }
+        "401": { $ref: "#/components/responses/401" }
+
+x-ms-capabilities:
+  testConnection:
+    operationId: GetDevices
+    parameters: {}
+security:
+  - api_key: []
+tags:
+  - description: For sending smart notifications
+    name: Notifications
+  - description: For executing Automation Server actions
+    name: Automation Server
+  - description: For registering online actions
+    name: Subscriptions
+
+servers:
+  - url: https://api.pushcut.io/v1
+components:
+  responses:
+    "400":
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GeneralError"
+    "401":
+      description: Unauthorized
+    "404":
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GeneralError"
+    "502":
+      description: Bad Gateway (Automation Server not running)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GeneralError"
+    "504":
+      description: Gateway Timeout (Automation Server did not respond in time)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GeneralError"
+  securitySchemes:
+    api_key:
+      description: API-Keys can be managed in the Account view of the Pushcut app.
+      in: header
+      name: API-Key
+      type: apiKey
+      
+  schemas:
+    Notification:
+      type: object
+      properties:
+        text:
+          description: Text that is used instead of the one defined in the app.
+          x-ms-summary: Dynamic Text
+          type: string
+          x-ms-visibility: null
+        title:
+          description: Title that is used instead of the one defined in the app.
+          x-ms-summary: Dynamic Title
+          type: string
+          x-ms-visibility: null
+        input:
+          description: Value that is passed as input to the notification action.
+          x-ms-summary: Input Parameter
+          type: string
+          x-ms-visibility: null
+        defaultAction:
+          type: object
+          $ref: "#/components/schemas/NotificationAction"
+        image:
+          type: string
+          description: "Name of importet image, or URL to an image. (https or local network)"
+          example: MyFunnyNotificationImage
+        sound:
+          type: string
+          description: "Name of a sound that is used to the notification."
+          example: subtle
+          enum:
+            - vibrateOnly
+            - system
+            - subtle
+            - question
+            - jobDone
+            - problem
+            - loud
+            - lasers
+            - "<your-custom-sound>"
+        actions:
+          type: array
+          description: List of dynamic actions that will added or merged with the static ones.
+          items:
+            $ref: "#/components/schemas/NotificationAction"
+        devices:
+          description:
+            List of devices this notification is sent to. (default is all
+            devices)
+          items:
+            type: string
+            x-ms-dynamic-values:
+              operationId: GetDevices
+              value-path: id
+              value-title: id
+            x-ms-visibility: null
+          type: array
+      example:
+        text: "My dynamic text"
+        title: "My dynamic title"
+        input: "My dynamic input"
+        actions:
+          - name: A Dynamic Action
+            url: https://www.pushcut.io/
+    NotificationAction:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the action.
+          example: "Open Website"
+        input:
+          type: string
+          description: Value that will be passed as input to this action when executed.
+        url:
+          type: string
+          description: "URL that will be opened."
+          example: "https://www.pushcut.io"
+        homekit:
+          type: string
+          description: "HomeKit scene that will be set."
+          example: "Close Garage Door"
+        runOnServer:
+          type: boolean
+          description: "If true, run the Shortcut or HomeKit scenes on the Automation Server."
+        online:
+          type: string
+          description: "Online Action that will be executed."
+          example: "Zapier: Add Timer"
+        urlBackgroundOptions:
+          type: object
+          description: "Configuration for a web request."
+          properties:
+            httpMethod:
+              type: string
+              description: "HTTP Method (GET, POST, PUT)"
+              example: "POST"
+            httpContentType:
+              type: string
+              description: "HTTP Content Type"
+              example: "application/json"
+            httpBody:
+              type: string
+              description: "Request body"
+              example: '{"value": "[\input\]"}'
+            httpHeader:
+              type: array
+              description: "HTTP Headers"
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    example: "API-Key"
+                  value:
+                    type: string
+                    example: "SomeKey"
+        shortcut:
+          type: string
+          description: "Shortcut that will be run."
+          example: "My Shortcut"
+        keepNotification:
+          type: boolean
+          description: "If true, this action will not dismiss the notification"
+      required:
+        - name
+    Subscription:
+      properties:
+        actionName:
+          description: A unique name to identify the online action.
+          x-ms-summary: Action Name
+          type: string
+          example: My Online Action
+          x-ms-visibility: important
+        url:
+          description: The URL to which EventData will be posted to.
+          type: string
+          format: url
+          example: "https://my-server/pushcut-hook"
+          x-ms-notification-url: true
+          x-ms-visibility: internal
+        isLocalUrl:
+          description: If set to true, the device will call the webhook on its local network.
+          type: boolean
+      required:
+        - url
+        - actionName
+      type: object
+    SubscriptionData:
+      properties:
+        id:
+          type: string
+          description: ID of the subscription.
+          example: "1234567890abc"
+        serviceName:
+          type: string
+          description: Name of the service that registered it.
+          example: "My Service"
+        actionName:
+          type: string
+          description: Identifier of the online action.
+          example: "My Online Action"
+        url:
+          type: string
+          format: url
+          description: URL of the registered webhook
+          example: "https://my-server/pushcut-hook"
+        isLocalUrl:
+          type: boolean
+          description: True if the URL should be triggered locally.
+    Execute:
+      type: object
+      properties:
+        input:
+          description: Value that is passed as input to the shortcut.
+          x-ms-summary: Input Parameter
+          type: string
+      example:
+        input: "my dynamic input"
+    EventData:
+      type: object
+      properties:
+        id:
+          description: Unique id of trigger event
+          type: string
+          example: "1234567890abc"
+          x-ms-visibility: internal
+        actionName:
+          description: Name of the triggered action.
+          type: string
+          example: "My Online Action"
+          x-ms-summary: Action Name
+        input:
+          description: Input passed with the action.
+          type: string
+          example: "Optional input"
+          x-ms-visibility: important
+          x-ms-summary: Action Input
+        timestamp:
+          description: Timestamp of the event
+          type: number
+          example: 1564579405
+          x-ms-visibility: advanced
+          x-ms-summary: Action Timestamp
+    GeneralError:
+      type: object
+      properties:
+        error:
+          description: Error message
+          type: string
+          example: "Something went wrong."

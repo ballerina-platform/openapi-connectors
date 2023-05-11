@@ -1,0 +1,13 @@
+id: text2data
+displayName: Text2data
+type: OpenAPI
+version: v3.4
+description: This is the [Text Analytics & Sentiment Analysis API v3.4](http://api.text2data.com/swagger/ui/index#/) OpenAPI specification. The current api version is <b>v3.4</b></p><br><br><p>The api methods listed below can be called directly from this page to test the output. You might set the api_key to pre-authenticate all requests on this page (this will work if your secret is blank).</p><br><br> API endpoint URL. http://{apiName}.text2data.com/v3/ {method}<br><br>The api can be consumed directly or using our SDK. Our Excel Add-In and Google Sheets Add-on are also using this api to process the data.'
+idlPath: /text2data/v3.4/openapi.yaml
+thumbnailPath: /text2data/v3.4/icon.png
+documentationPath: /text2data/v3.4/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Freemium
+endpoint:
+  - url: http://api.text2data.org/

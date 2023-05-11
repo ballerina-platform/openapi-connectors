@@ -1,0 +1,13 @@
+id: shipwire.containers
+displayName: Shipwire Containers
+type: OpenAPI
+version: "3.0"
+description: This is the [Shipwire Containers API v3.0](https://www.shipwire.com/developers/container/) OpenAPI specification.
+idlPath: /shipwire.containers/3.0/openapi.yaml
+thumbnailPath: /shipwire.containers/3.0/icon.png
+documentationPath: /shipwire.containers/3.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.shipwire.com/

@@ -1,0 +1,12 @@
+id: azure.timeseries
+displayName: Azure Time Series
+type: OpenAPI
+version: "2020-07-31"
+description: This is the [Azure Time Series Insights API 2020-07-31 version](https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification. Time Series Insights environment data plane client for Gen2 (GA L1 SKU) environments.
+idlPath: /azure.timeseries/2020-07-31/openapi.yaml
+thumbnailPath: /azure.timeseries/2020-07-31/icon.png
+documentationPath: /azure.timeseries/2020-07-31/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+  - Vendor/Microsoft

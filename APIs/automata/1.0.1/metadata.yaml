@@ -1,0 +1,13 @@
+id: automata
+displayName: Automata
+type: OpenAPI
+version: 1.0.1
+description: This is the [Automata API v1.0.1](https://byautomata.io/api/) OpenAPI specification. The Automata API provides the capability to identify the market intelligence.
+idlPath: /automata/1.0.1/openapi.yaml
+thumbnailPath: /automata/1.0.1/icon.png
+documentationPath: /automata/1.0.1/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Paid
+endpoint:
+  - url: https://api.byautomata.io/

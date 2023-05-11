@@ -1,0 +1,13 @@
+id: ynab
+displayName: YNAB
+type: OpenAPI
+version: 1.0.0
+description: This is the [YNAB API v1.0.0](https://api.youneedabudget.com) OpenAPI specification.
+idlPath: /ynab/1.0.0/openapi.yaml
+thumbnailPath: /ynab/1.0.0/icon.png
+documentationPath: /ynab/1.0.0/readme.md
+keywords:
+  - Finance/AssetManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.youneedabudget.com/v1

@@ -1,0 +1,11 @@
+id: wordpress
+displayName: WordPress
+type: OpenAPI
+version: 0.1.0
+description: This is the [WordPress API v1.0](https://developer.wordpress.org/rest-api/) OpenAPI specification. The WordPress REST API provides an interface for applications to interact with your WordPress site.  WordPress API provides a rich set of tools and interfaces for building sites, and you should not feel pressured to use the REST API  if your site is already working the way you expect. You do not need to use the REST API to build a WordPress theme or plugin.
+idlPath: /wordpress/0.1.0/openapi.yaml
+thumbnailPath: /wordpress/0.1.0/icon.png
+documentationPath: /wordpress/0.1.0/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Freemium

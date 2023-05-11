@@ -1,0 +1,14 @@
+id: googleapis.cloudbuild
+displayName: Google Cloud Build
+type: OpenAPI
+version: v1
+description: This is the [Google Cloud Build REST API v1](https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
+idlPath: /googleapis.cloudbuild/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudbuild/v1/icon.png
+documentationPath: /googleapis.cloudbuild/v1/readme.md
+keywords:
+  - Finance/Billing
+  - Cost/Paid
+  - Vendor/Google
+endpoint:
+  - url: https://cloudbuild.googleapis.com/

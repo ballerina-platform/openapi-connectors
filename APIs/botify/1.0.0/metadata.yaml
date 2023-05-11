@@ -1,0 +1,13 @@
+id: botify
+displayName: Botify
+type: OpenAPI
+version: 1.0.0
+description: This is the [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
+idlPath: /botify/1.0.0/openapi.yaml
+thumbnailPath: /botify/1.0.0/icon.png
+documentationPath: /botify/1.0.0/readme.md
+keywords:
+  - Website&AppBuilding/SearchEngineOptimization
+  - Cost/Paid
+endpoint:
+  - url: https://api.botify.com/v1

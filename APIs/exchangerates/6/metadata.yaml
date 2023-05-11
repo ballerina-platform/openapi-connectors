@@ -1,0 +1,14 @@
+id: exchangerates
+displayName: Exchange Rates
+type: OpenAPI
+version: "6"
+description: This is the [ExchangeRates-API](https://exchangeratesapi.io/documentation/) OpenAPI Specification. This is the public REST API for ExchangeRate-API. Fetch the latest currency exchange rates via API.
+idlPath: /exchangerates/6/openapi.yaml
+thumbnailPath: /exchangerates/6/icon.png
+documentationPath: /exchangerates/6/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://v6.exchangerate-api.com/v6/
+    description: Returns latest exchange rates and some metadata.

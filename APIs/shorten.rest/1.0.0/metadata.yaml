@@ -1,0 +1,13 @@
+id: shorten.rest
+displayName: Shorten.REST
+type: OpenAPI
+version: 1.0.0
+description: This is the [Shorten.REST v1.0](https://docs.shorten.rest/) OpenAPI Specification.
+idlPath: /shorten.rest/1.0.0/openapi.yaml
+thumbnailPath: /shorten.rest/1.0.0/icon.png
+documentationPath: /shorten.rest/1.0.0/readme.md
+keywords:
+  - Marketing/UrlShortener
+  - Cost/Freemium
+endpoint:
+  - url: https://api.shorten.rest

@@ -1,0 +1,275 @@
+openapi: 3.0.0
+info:
+  title: Freshdesk API
+  x-ballerina-display:
+    label: Freshdesk
+    iconPath: "icon.png"
+  description: >-
+    This is a generated connector for [Freshdesk API v2.0](https://developers.freshdesk.com/api/#intro) OpenAPI specification.
+    Freshdesk is a cloud-based customer service software that enables businesses of all sizes to deliver stellar customer support.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create an [Freshdesk Account](https://freshdesk.com/signup) and obtain tokens following [this guide](https://developers.freshdesk.com/api/#getting-started)
+  version: 2.0
+security:
+  - BasicAuth: []
+paths:
+  /api/v2/tickets:
+    get:
+      summary: List tickets
+      operationId: listTickets 
+      responses:
+        "200":
+          content:
+            application/json: 
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+          description: Tickets details
+    post:
+      summary: Add a ticket
+      operationId: addTicket 
+      requestBody:
+        description: Add a ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TicketPayload'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Ticket'
+          description: Ticket detail
+  /api/v2/tickets/{id}:
+    get:
+      summary: Get a ticket
+      operationId: getTicket
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique identifier for a ticket   
+      responses:
+        "200":
+          content:
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Ticket'
+          description: Ticket detail
+    delete:
+      summary: Delete a ticket
+      operationId: deleteTicket
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique identifier for a ticket   
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+  /api/v2/contacts:
+    get:
+      summary: List contacts
+      operationId: listContacts
+      responses:
+        "200":
+          content:
+            application/json: 
+              schema: 
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contact'
+          description: Contacts details
+  /api/v2/contacts/{id}:
+    get:
+      summary: Get a contact
+      operationId: getContact
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique identifier for a contact   
+      responses:
+        "200":
+          content:
+            application/json: 
+              schema: 
+                $ref: '#/components/schemas/Contact'
+          description: Contact detail
+    delete:
+      summary: Delete a contact
+      operationId: deleteContact
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Unique identifier for a contact   
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Basic authentication
+  schemas:
+    Ticket:
+      properties:
+        cc_emails:      
+          type: array
+          items:
+            type: string
+          nullable: true
+        fwd_emails:
+          type: array
+          items:
+            type: string
+          nullable: true
+        reply_cc_emails:
+          type: array
+          items:
+            type: string
+          nullable: true
+        fr_escalated:
+          type: boolean
+        spam:
+          type: boolean
+        email_config_id:
+          type: integer
+          nullable: true
+        group_id:
+          type: integer
+          nullable: true
+        priority:
+          type: integer
+        source:
+          type: integer
+        description:
+          type: string
+        status: 
+          type: integer
+        subject:
+          type: string
+        id: 
+          type: integer
+        type:
+          type: string
+          nullable: true
+        due_by:
+          type: string
+        fr_due_by:
+          type: string
+        is_escalated:
+          type: boolean
+        description_text:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        tags: 
+          type: array
+          items:
+            type: string  
+        source_additional_info:
+          type: string
+          nullable: true
+        nr_due_by:
+          type: string  
+          nullable: true  
+        nr_escalated:
+          type: boolean                
+        company_id:
+          type: integer 
+          nullable: true 
+        requester_id:
+          type: integer 
+        responder_id:
+          type: integer 
+          nullable: true 
+    TicketPayload:
+      properties:
+        description: 
+          type: string
+        subject:
+          type: string
+        email:
+          type: string
+        priority:
+          type: integer
+        status:
+          type: integer
+        cc_emails:      
+          type: array
+          items:
+            type: string
+    Contact:
+      properties:
+        active:
+          type: boolean
+        address:
+          type: string
+          nullable: true
+        company_id:
+          type: integer
+          nullable: true
+        view_all_tickets:
+          type: boolean
+          nullable: true
+        deleted:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        email:
+          type: string
+        id:
+          type: integer
+        job_title:
+          type: string
+          nullable: true
+        language:
+          type: string
+        mobile:
+          type: string
+          nullable: true
+        name:
+          type: string
+        other_emails:      
+          type: array
+          items:
+            type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        tags:      
+          type: array
+          items:
+            type: string
+          nullable: true
+        time_zone:
+          type: string
+        twitter_id:
+          type: string
+          nullable: true
+        unique_external_id:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+        updated_at:
+          type: string

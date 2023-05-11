@@ -1,0 +1,13 @@
+id: owler
+displayName: Owler
+type: OpenAPI
+version: 1.0.0
+description: Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.
+idlPath: /owler/1.0.0/openapi.yaml
+thumbnailPath: /owler/1.0.0/icon.png
+documentationPath: /owler/1.0.0/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Freemium
+endpoint:
+  - url: https://api.owler.com/

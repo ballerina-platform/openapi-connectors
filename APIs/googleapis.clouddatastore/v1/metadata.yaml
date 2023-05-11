@@ -1,0 +1,14 @@
+id: googleapis.clouddatastore
+displayName: Google Cloud Datastore
+type: OpenAPI
+version: v1
+description: This is the [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
+idlPath: /googleapis.clouddatastore/v1/openapi.yaml
+thumbnailPath: /googleapis.clouddatastore/v1/icon.png
+documentationPath: /googleapis.clouddatastore/v1/readme.md
+keywords:
+  - ITOperations/Databases
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://datastore.googleapis.com/

@@ -1,0 +1,13 @@
+id: hubspot.marketing
+displayName: HubSpot Marketing
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. These APIs allow you to interact with HubSpot's Marketing Events Extension.
+idlPath: /hubspot.marketing/v3/openapi.yaml
+thumbnailPath: /hubspot.marketing/v3/icon.png
+documentationPath: /hubspot.marketing/v3/readme.md
+keywords:
+  - Marketing/MarketingAutomation
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

@@ -1,0 +1,14 @@
+id: nytimes.moviereviews
+displayName: New York Times Movie Reviews
+type: OpenAPI
+version: 2.0.0
+description: This is the [New York Times Movie Review API v2.0.0](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification. With the New York Times Movie Reviews API you can search for movie reviews.  The Movie Reviews API provides services for searching New York Times movie reviews by keyword and opening date and filter by Critics' Picks.
+idlPath: /nytimes.moviereviews/2.0.0/openapi.yaml
+thumbnailPath: /nytimes.moviereviews/2.0.0/icon.png
+documentationPath: /nytimes.moviereviews/2.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Free
+endpoint:
+  - url: http://api.nytimes.com/svc/movies/v2
+  - url: https://api.nytimes.com/svc/movies/v2

@@ -1,0 +1,13 @@
+id: insightly.custom
+displayName: Insightly Custom
+type: OpenAPI
+version: v3.1
+description: This is the [Insightly API v3.1](https://api.insightly.com/v3.1/Help?_ga=2.145122291.690415835.1637494899-1873531480.1637320890#!/Overview/Introduction) OpenAPI specification. This API enables you to integrate Insightly with external systems and applications. This uses HTTPS to access data within the Insightly web application.
+idlPath: /insightly.custom/v3.1/openapi.yaml
+thumbnailPath: /insightly.custom/v3.1/icon.png
+documentationPath: /insightly.custom/v3.1/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.insightly.com/v3.1

@@ -1,0 +1,13 @@
+id: docusign.click
+displayName: DocuSign Click
+type: OpenAPI
+version: v1
+description: This is the [DocuSign Click API](https://developers.docusign.com/docs/click-api/) OpenAPI specification. DocuSign Click lets you capture consent to standard agreement terms with a single click terms and conditions, terms of service, terms of use, privacy policies, and more. The Click API lets you include this customizable clickwrap solution in your DocuSign integrations.
+idlPath: /docusign.click/v1/openapi.yaml
+thumbnailPath: /docusign.click/v1/icon.png
+documentationPath: /docusign.click/v1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://www.docusign.net/clickapi

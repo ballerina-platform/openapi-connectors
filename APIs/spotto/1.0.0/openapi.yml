@@ -1,0 +1,3784 @@
+openapi: 3.0.2
+info:
+  title: Spotto-API
+  description: |
+    This is a generated connector for [Spotto API v1.0.0](https://api-reference.spotto.io) OpenAPI specification.
+    The Spotto API provides a broad set of operations and resources that allow you to:
+    - Access and manage the Spotto registry of assets, locations and readers
+    - Control levels of access to Spotto applications and APIs across your account
+    - Query the Spotto event log to gain valuable insights into your historical data
+    - Setup event based hooks when something significant changes in Spotto.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Spotto account](https://www.spotto.io/developers) and obtain tokens by following [this guide](https://www.spotto.io/developers/using-the-spotto-api).
+  x-ballerina-display:
+    label: Spotto
+    iconPath: "icon.png"
+  version: 1.0.0
+  x-logo:
+    url: https://uploads-ssl.webflow.com/5e264918496ea05957137f62/5f39f489fb8e3e51d7d3cb23_brand%20combo%20black.svg
+    altText: Spotto logo
+    href: http://www.spotto.io
+paths:
+  /assets:
+    post:
+      tags:
+        - Assets
+      description: |-
+        Add one or more assets into the Spotto Asset registry. You can pass either a single object,
+        or an array of objects. If you already know the ID of one or more tags that will be used
+        to identify this asset, you can add them to the `tagIds` array.
+      operationId: PostAssets
+      parameters: []
+      requestBody:
+        description: PostAssets request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAssetsRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostAssetsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostAssetsErrorResponse'
+    get:
+      tags:
+        - Assets
+      description: |-
+        Get the list of assets that belong to your account. This request will only return the first 20 assets,
+        unless otherwise specified using the `pagination` parameters below. To enrich the response with
+        additional data such as tag identifiers, location state and created/updated timestamps, check out
+        the `embed` parameter.
+      operationId: GetAssets
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: ids
+          in: query
+          description: Lookup specific assets by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: tagIds
+          in: query
+          description: Lookup assets with specific tag IDs e.g. Beacon MAC addresses and RFID EPC codes.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: hasTags
+          in: query
+          description: Only return assets that have tags registered.
+          required: false
+          schema:
+            type: boolean
+        - name: archived
+          in: query
+          description: Return deleted assets, the default is false.
+          required: false
+          schema:
+            type: boolean
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with `sortOrder`, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchableSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: search
+          in: query
+          description: Search query string, for lucene based full text search.
+          required: false
+          schema:
+            type: string
+        - name: searchFuzzy
+          in: query
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+          required: false
+          schema:
+            type: boolean
+        - name: searchFields
+          in: query
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AssetSearchField'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional asset information:
+
+            - **meta** includes basic CRUD status information.
+            - **tags** includes the tag IDs connected to this asset.
+            - **lastLocation** includes the last known time and location the asset was seen.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AssetEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /assets/{id}:
+    patch:
+      tags:
+        - Assets
+      description: |-
+        To update asset information, we utilise a PATCH request to support partial updates.
+        This enables any number of fields to be updated in a single request.
+      operationId: UpdateAsset
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateAsset request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAssetRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAssetErrorResponse'
+    get:
+      tags:
+        - Assets
+      description: |-
+        Get the detailed information of a particular asset. Unlike the [GetAssets](/#operation/GetAssets) request,
+        this automatically attaches location state information, tag identifiers and created/updated timestamps.
+      operationId: GetAsset
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /assets/{id}/location:
+    get:
+      tags:
+        - Assets
+      description: |-
+        Fetch the last location of a given asset. This is essentially the same as the [GetAsset](/#operation/GetAsset) request,
+        however is optimised to return faster without resolving the additional information.
+      operationId: GetAssetLastLocation
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetLastLocationResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /events:
+    get:
+      tags:
+        - Events
+      description: |-
+        Get the list of all events for your organisations. This request will only
+        return the first 20 events, unless otherwise specified using the pagination
+        parameters below. To enrich the response with the names of any connected entities,
+        check out the `embed` parameter.
+
+        ⚠️ **Warning**: Embedding the names of entities significantly impacts query time if the
+        `limit` is adjusted to return large quantities of events.
+      operationId: GetEvents
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: readers
+          in: query
+          description: Lookup events for specific readers by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: locations
+          in: query
+          description: Lookup events for specific locations by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: assets
+          in: query
+          description: Lookup events for specific assets by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          description: Lookup events for specific event types, e.g. only show Reader Online/Offline events.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/EventType'
+        - name: timeFrom
+          in: query
+          description: |-
+            Filter events from a given timestamp. It will yield events up until the
+            current server time, unless otherwise specified by `timeTo`.
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: timeTo
+          in: query
+          description: |-
+            Filter events until a given timestamp. It will yield all events prior to the specified time,
+            unless otherwise specified by `timeFrom`.
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /integrations/mqtt:
+    get:
+      tags:
+        - Integrations
+      description: |-
+        Get the credentials required to connect to the Spotto MQTT broker.
+        There is only a single set of credentials for your account, however you may connect
+        many MQTT clients by using the same username/password.
+
+        Your MQTT credentials should be enabled by default, but if for any reason the request
+        returns without credentials, [get in touch](https://www.spotto.io/contact) and we'll get you online.
+      operationId: GetMQTTSettings
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MQTTSettings'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /organisations/levels:
+    post:
+      tags:
+        - Levels
+      description: |-
+        Adds a single level to your account. Levels allow locations to be categorised and helps
+        Readers better assign locations to assets, especially when readers between floors are
+        competing for the best signal.
+      operationId: PostLevel
+      parameters: []
+      requestBody:
+        description: PostLevel request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostLevelRequest'
+        required: true
+      responses:
+        '201':
+          description: 201 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostLevelResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    put:
+      tags:
+        - Levels
+      description: |-
+        Updates the entire list of levels in your account. Levels allow locations to be categorised and helps
+        Readers better assign locations to assets, especially when readers between floors are
+        competing for the best signal.
+
+        ⚠️ **Warning**: This will overwrite the existing list of Levels, so make sure that you're starting with
+        the current list of Levels, using the [GetLevels](/#operation/GetLevels) request.
+      operationId: PutLevels
+      parameters: []
+      requestBody:
+        description: PutLevels request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutLevelsRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutLevelsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Levels
+      description: |-
+        Gets the list of levels connected to your organisation.
+        Levels allow locations to be categorised and helps Readers better assign locations to assets,
+        especially when readers between floors are competing for the best signal.
+      operationId: GetLevels
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLevelsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /locations:
+    post:
+      tags:
+        - Locations
+      description: |-
+        Add one or more locations into the Spotto Location registry. You can pass either a single object,
+        or an array of objects. If you already know the ID of one or more tags that will be used
+        to identify this location, you can add them to the `tagIds` array.
+      operationId: PostLocations
+      parameters: []
+      requestBody:
+        description: PostLocations request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostLocationsRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostLocationsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostLocationsErrorResponse'
+    get:
+      tags:
+        - Locations
+      description: |-
+        Get the list of locations that belong to your account. This request will only return the first 20 locations,
+        unless otherwise specified using the `pagination` parameters below. To enrich the response with
+        additional data such as tag identifiers, connected readers and created/updated timestamps, check out
+        the `embed` parameter.
+      operationId: GetLocations
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: ids
+          in: query
+          description: Lookup specific locations by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: tagIds
+          in: query
+          description: Lookup locations with specific tag IDs e.g. Beacon MAC addresses and RFID EPC codes.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: levels
+          in: query
+          description: Lookup locations at specific floor levels, e.g. Ground and Level 1 ONLY.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: hasTags
+          in: query
+          description: Only return locations that have tags registered.
+          required: false
+          schema:
+            type: boolean
+        - name: hasReaders
+          in: query
+          description: Only return locations that have readers attached.
+          required: false
+          schema:
+            type: boolean
+        - name: setupComplete
+          in: query
+          description: Only return locations that either have tags OR readers attached
+          required: false
+          schema:
+            type: boolean
+        - name: archived
+          in: query
+          description: Return deleted locations, the default is false.
+          required: false
+          schema:
+            type: boolean
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with `sortOrder`, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchableSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: search
+          in: query
+          description: Search query string, for lucene based full text search.
+          required: false
+          schema:
+            type: string
+        - name: searchFuzzy
+          in: query
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+          required: false
+          schema:
+            type: boolean
+        - name: searchFields
+          in: query
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationSearchField'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional location information:
+
+            - **meta** includes basic CRUD status information.
+            - **tags** includes the tag IDs connected to this location.
+            - **readers** includes any readers configured at the given location.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/LocationEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationsResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /locations/{id}:
+    patch:
+      tags:
+        - Locations
+      description: |-
+        To update location information, we utilise a PATCH request to support partial updates.
+        This enables any number of fields to be updated in a single request.
+      operationId: UpdateLocation
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateLocation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateLocationRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateLocationErrorResponse'
+    get:
+      tags:
+        - Locations
+      description: |-
+        Get the detailed information of a particular location. Unlike the [GetLocations](/#operation/GetLocations) request,
+        this automatically attaches tag identifiers, any connected readers and created/updated timestamps.
+      operationId: GetLocation
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /locations/{id}/inventory:
+    get:
+      tags:
+        - Locations
+      description: |-
+        Fetches the list of assets that were last seen at this location. Use the timestamps against each item
+        in the response to determine if the asset is still being seen at this location.
+      operationId: GetLocationInventory
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationInventoryResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /readers:
+    post:
+      tags:
+        - Readers
+      description: |-
+        Add one or more readers into the Spotto Reader registry. You can pass either a single object,
+        or an array of objects. Adding readers into the system requires a bit more information than
+        Assets or Locations. See below for more details.
+      operationId: PostReaders
+      parameters: []
+      requestBody:
+        description: PostReaders request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostReadersRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostReadersResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Readers
+      description: |-
+        Get the list of readers that belong to your account. This request will only return the first 20 readers,
+        unless otherwise specified using the `pagination` parameters below. To enrich the response with
+        additional data such as reader state information and created/updated timestamps, check out
+        the `embed` parameter.
+      operationId: GetReaders
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: ids
+          in: query
+          description: Lookup specific readers by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: locationIds
+          in: query
+          description: Lookup readers that are positioned at specific location IDs
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: deviceIds
+          in: query
+          description: |-
+            Lookup specific readers by passing an array of device IDs.
+            These are typically the MAC address of the reader.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: types
+          in: query
+          description: Filter based on the reader behavioural type.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ReaderType'
+        - name: deviceTypes
+          in: query
+          description: Lookup readers belonging to specific device types.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/DeviceType'
+        - name: archived
+          in: query
+          description: Return deleted readers, the default is false.
+          required: false
+          schema:
+            type: boolean
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with `sortOrder`, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchableSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: search
+          in: query
+          description: Search query string, for Lucene based full text search.
+          required: false
+          schema:
+            type: string
+        - name: searchFuzzy
+          in: query
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+          required: false
+          schema:
+            type: boolean
+        - name: searchFields
+          in: query
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ReaderSearchField'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional reader information:
+
+            - **meta** includes basic CRUD status information.
+            - **status** includes dynamic status information about the reader such as
+            the time it came online and when we last heard from it.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ReaderEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReadersResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /readers/{id}:
+    get:
+      tags:
+        - Readers
+      description: |-
+        Get the detailed information of a particular reader. Unlike the [GetReaders](/#operation/GetReaders) request,
+        this automatically attaches reader state information and created/updated timestamps.
+      operationId: GetReader
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReaderResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    patch:
+      tags:
+        - Readers
+      description: |-
+        To update reader information, we utilise a PATCH request to support partial updates.
+        This enables any number of fields to be updated in a single request.
+      operationId: UpdateReader
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateReader request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateReaderRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReaderResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /readers/{id}/inventory:
+    get:
+      tags:
+        - Readers
+      description: |-
+        Fetches the list of assets that were last seen by this reader. Use the timestamps against each item
+        in the response to determine if the asset is still being seen by this reader. You can pass in an optional
+        query to set the threshold for how recent assets must be seen to be included in the inventory.
+      operationId: GetReaderInventory
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+        - name: windowSize
+          in: query
+          description: Time in seconds to consider assets to be within the readers inventory
+          required: false
+          schema:
+            type: number
+            format: float
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReaderInventoryResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /readers/{id}/status:
+    get:
+      tags:
+        - Readers
+      description: |-
+        Fetch the status of a given reader. This is essentially the same as the [GetReader](/#operation/GetReader) request,
+        however is optimised to return faster without resolving the additional information.
+      operationId: GetReaderStatus
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetReaderStatusResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /roles:
+    get:
+      tags:
+        - Roles
+      description: |-
+        Get the list of roles that belong to your account. This request will return all roles, without pagination.
+        It will typically only return the default roles that your account has access e.g. if you are 'Admin' it will
+        return 'Admin', 'Power User' and 'User'. If your account has custom roles it will return these instead.
+        [Get in touch](https://spotto.io/contact) if you need custom fine grained access control for your account.
+        To enrich the response with additional data such as created/updated timestamps, check out the `embed` parameter.
+      operationId: GetRoles
+      parameters:
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with *sortOrder*, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/StandardSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with *sort* to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional user information:
+
+            **meta** includes basic CRUD status information.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/RoleEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRolesResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /triggers:
+    post:
+      tags:
+        - Triggers
+      description: |-
+        Add one or more triggers into the Spotto Trigger registry. You can pass either a single object,
+        or an array of objects. Triggers allow people and systems outside of Spotto to be notified when
+        something significant occurs in Spotto. We call these significant state changes **Events**
+        (see [GetEvents](/#operation/GetEvents)) that we can hook into using Triggers. Adding a trigger
+        requires us to choose which Event type we want to respond to. Each event type will have a different
+        set of rules we can apply. These are explained below:
+
+        - **WentOffline**: Spotto hasn't heard from a reader in a while so is transitioned to offline.
+        - **WentOnline**: Spotto heard from a reader that hadn't reported in a while so was transitioned to online.
+        - **ArrivedAt**: An asset moved to a specific location or group of locations.
+        - **Moved**: An asset moved to any location.
+
+        Each trigger will have `subjectRules` which allow us to filter the subject of the event either by name or ID.
+        Matching on name uses a case insensitive regular expression so we can match on multiple objects that share
+        similar names e.g. 'chair' could match names 'Wheelchair', 'M1 Shower Chair'.
+        The subject of **WentOffline** and **WentOnline** events are always the Reader (that's turning online/offline).
+        The subject of **ArrivedAt** and **Moved** can either be an Asset, or a ROVING reader moving locations.
+
+        **ArrivedAt** triggers also call for `locationRules` which allow us to specify either the name or ID of locations.
+        These operate in the same way as `subjectRules` and allow us to filter the range of locations that cause the trigger to fire.
+
+        We must also specify `actions` that fire when all the conditions are satisfied. We can add multiple actions to a trigger.
+      operationId: PostTriggers
+      parameters: []
+      requestBody:
+        description: PostTriggers request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostTriggersRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostTriggersResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Triggers
+      description: |-
+        Get the list of triggers that belong to your account. This request will only return the first 20 triggers,
+        unless otherwise specified using the `pagination` parameters below. To enrich the response with
+        additional data such as the created/updated timestamps, check out the `embed` parameter.
+      operationId: GetTriggers
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: ids
+          in: query
+          description: Lookup specific triggers by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: enabled
+          in: query
+          description: Lookup triggers that are only enabled or disabled.
+          required: false
+          schema:
+            type: boolean
+        - name: type
+          in: query
+          description: Filter based on the trigger type.
+          required: false
+          schema:
+            $ref: '#/components/schemas/TriggerType'
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with `sortOrder`, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/StandardSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional trigger information:
+            - **meta** includes basic CRUD status information.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TriggerEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTriggersResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /triggers/{id}:
+    delete:
+      tags:
+        - Triggers
+      description: |-
+        Unlike a number of the other requests, triggers does not have an impact on the
+        event log so we allow the permanent deletion of triggers. It takes no query parameters
+        or body, and returns with the standard REST deletion response of an empty object.
+      operationId: DeleteTrigger
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Triggers
+      description: |-
+        Get the detailed information of a particular trigger. Unlike the [GetTriggers](/#operation/GetTriggers)
+        request, this automatically attaches the created/updated timestamps.
+      operationId: GetTrigger
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTriggerResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    patch:
+      tags:
+        - Triggers
+      description: |-
+        To update trigger information, we utilise a PATCH request to support partial updates.
+        This enables any number of fields to be updated in a single request.
+      operationId: UpdateTrigger
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateTrigger request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTriggerRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTriggerResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /users:
+    post:
+      tags:
+        - Users
+      description: |-
+        Add one or more users into the Spotto User registry. You can only send a single object at a time
+        as there a number of provisioning steps that must occur per user.
+
+        You can add **EXTERNAL** users to create additional API users of varying access levels by setting the `role`.
+        **EXTERNAL** users cannot access Spotto applications and only have access to the Spotto REST API.
+
+        **INTERNAL** users have access to Spotto applications and require an email address for logging in.
+        A random password will be generated and sent to the elected address, unless a custom password is specified.
+        **INTERNAL** users cannot access the Spotto API, instead an **EXTERNAL** user must be created.
+      operationId: PostUser
+      parameters: []
+      requestBody:
+        description: PostUser request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostUserRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Users
+      description: |-
+        Get the list of users that belong to your account. This request will only return the first 20 users,
+        unless otherwise specified using the `pagination` parameters below. To enrich the response with
+        additional data such as the created/updated timestamps, check out the `embed` parameter.
+      operationId: GetUsers
+      parameters:
+        - name: page
+          in: query
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: limit
+          in: query
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: ids
+          in: query
+          description: Lookup specific users by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: role
+          in: query
+          description: Lookup users belonging to specific roles by passing an array of valid Spotto IDs.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: type
+          in: query
+          description: Lookup only internal or external API users.
+          required: false
+          schema:
+            $ref: '#/components/schemas/UserType'
+        - name: sort
+          in: query
+          description: |-
+            **Sorting:** Which field the results are to be sorted by.
+            Use in combination with `sortOrder`, the default is ascending.
+          required: false
+          schema:
+            $ref: '#/components/schemas/StandardSortFields'
+        - name: sortOrder
+          in: query
+          description: |-
+            **Sorting:** Whether to sort the results in ascending or descending order.
+            Use in combination with `sort` to determine the field this is acting on.
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortOrders'
+        - name: embed
+          in: query
+          description: |-
+            Attach additional user information:
+            - **meta** includes basic CRUD status information.
+          style: form
+          explode: false
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserEmbedField'
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /users/{id}:
+    delete:
+      tags:
+        - Users
+      description: |-
+        Unlike a number of the other requests, users do not have an impact on the
+        event log so we allow the permanent deletion of users. It takes no query parameters
+        or body, and returns with the standard REST deletion response of an empty object.
+      operationId: DeleteUser
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    get:
+      tags:
+        - Users
+      description: |-
+        Get the detailed information of a particular user. Unlike the [GetUsers](/#operation/GetUsers) request,
+        this automatically attaches the created/updated timestamps.
+      operationId: GetUser
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+        - name: withKey
+          in: query
+          description: |-
+            If you have the API admin permissions you can view the API key
+            of external users.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+    patch:
+      tags:
+        - Users
+      description: |-
+        To update user information, we utilise a PATCH request to support partial updates.
+        This enables any number of fields to be updated in a single request.
+      operationId: UpdateUser
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateUser request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+  /users/{id}/key:
+    get:
+      tags:
+        - Users
+      description: Access the API key for a specific **EXTERNAL** user. This request takes no query parameters.
+      operationId: GetKey
+      parameters:
+        - name: id
+          in: path
+          description: 'Spotto ID for this object, should look something like this: `6161acddc5a257c8c7d6b60e`'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetKeyResponse'
+        default:
+          description: default response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DefaultError'
+components:
+  schemas:
+    PostAssetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the new asset, try to be descriptive to make it easy for people find it when searching.
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: Array of tag identifiers, these will typically be BLE tag MAC addresses e.g. 00:11:22:33:44:55.
+      required:
+        - name
+    PostAssetsRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/PostAssetRequest'
+    IEntityMeta:
+      type: object
+      properties:
+        created:
+          type: number
+          format: float
+          description: Created timestamp
+        updated:
+          type: number
+          format: float
+          description: Last updated timestamp
+        deleted:
+          type: number
+          format: float
+          description: Deletion timestamp
+      required:
+        - created
+      description: Metadata, holding important timestamps of this object's lifecycle.
+    ILastLocation:
+      type: object
+      properties:
+        firstSeen:
+          type: number
+          format: float
+          description: When the asset was first seen at this location.
+        lastSeen:
+          type: number
+          format: float
+          description: When the asset was last seen at this location.
+        id:
+          type: string
+          description: Unique Spotto ID of this object.
+        name:
+          type: string
+          description: Human readable name of this object.
+      required:
+        - firstSeen
+        - lastSeen
+        - id
+        - name
+    GetAssetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this Asset.
+        name:
+          type: string
+          description: 'Human readable asset name NOTE: We do not enforce unique names for assets, instead we rely on the `id` for uniqueness.'
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: List of connected tag identifiers, these will typically be  BLE tag MAC addresses e.g. 00:11:22:33:44:55.
+        score:
+          type: number
+          format: float
+          description: Lucene based search score, added as an optional meta field when searching.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+        lastLocation:
+          $ref: '#/components/schemas/ILastLocation'
+      required:
+        - id
+        - name
+    PostAssetsResponse:
+      type: object
+      properties:
+        inserted:
+          type: number
+          format: float
+          description: Total number of records that were inserted.
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAssetResponse'
+          description: The list of inserted items.
+      required:
+        - inserted
+        - items
+    DefaultError:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    TagsExistConflict:
+      type: object
+      properties:
+        tagId:
+          type: string
+          description: Tag ID causing the conflict
+        type:
+          type: string
+          enum:
+            - LOCATION
+            - ASSET
+          description: Type of entity the tag ID exists on
+        id:
+          type: string
+          description: ID of the entity the tag ID exists on
+      required:
+        - tagId
+        - type
+        - id
+      description: A single conflict with a new tag ID existing on an existing entity
+    TagsExistError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - TagsExistError
+          description: Type
+        message:
+          type: string
+          description: Message
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagsExistConflict'
+          description: Conflicts
+      required:
+        - type
+        - message
+        - conflicts
+      description: Error structure for revealing tag ID conflicts
+    TagsDuplicatedConflict:
+      type: object
+      properties:
+        tagId:
+          type: string
+          description: Tag ID causing the conflict
+        index:
+          type: number
+          format: float
+          description: Index in this request the tag ID was first found
+      required:
+        - tagId
+        - index
+      description: A single conflict with a new tag ID existing on a previous item in the request
+    TagsDuplicatedError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - TagsDuplicatedError
+          description: Type
+        message:
+          type: string
+          description: Message
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagsDuplicatedConflict'
+          description: Conflicts
+      required:
+        - type
+        - message
+        - conflicts
+      description: Error structure for revealing tag ID conflicts within the request
+    TagErrorInList:
+      type: object
+      properties:
+        index:
+          type: number
+          format: float
+          description: Index within the request that errors occurred
+        errors:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/TagsExistError'
+              - $ref: '#/components/schemas/TagsDuplicatedError'
+            discriminator:
+              propertyName: type
+              mapping:
+                TagsExistError: '#/components/schemas/TagsExistError'
+                TagsDuplicatedError: '#/components/schemas/TagsDuplicatedError'
+          description: List of errors for the asset at the given index of the request body
+      required:
+        - index
+        - errors
+    PostAssetsError:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagErrorInList'
+        message:
+          type: string
+      required:
+        - data
+        - message
+    PostAssetsErrorResponse:
+      oneOf:
+        - $ref: '#/components/schemas/DefaultError'
+        - $ref: '#/components/schemas/PostAssetsError'
+    StandardSortFields:
+      type: string
+      enum:
+        - name
+        - updated
+        - created
+      description: Common sort fields across most GET endpoints
+    SearchableSortFields:
+      oneOf:
+        - $ref: '#/components/schemas/StandardSortFields'
+        - type: string
+          enum:
+            - relevancy
+    SortOrders:
+      type: string
+      enum:
+        - asc
+        - desc
+      description: Sort orders - ascending and descending
+    AssetSearchField:
+      type: string
+      enum:
+        - name
+        - tagIds
+    AssetEmbedField:
+      type: string
+      enum:
+        - meta
+        - tagIds
+        - lastLocation
+    GetAssetsQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        ids:
+          type: array
+          items:
+            type: string
+          description: Lookup specific assets by passing an array of valid Spotto IDs.
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: Lookup assets with specific tag IDs e.g. Beacon MAC addresses and RFID EPC codes.
+        hasTags:
+          type: boolean
+          description: Only return assets that have tags registered.
+        archived:
+          type: boolean
+          description: Return deleted assets, the default is false.
+        sort:
+          $ref: '#/components/schemas/SearchableSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        search:
+          type: string
+          description: Search query string, for lucene based full text search.
+        searchFuzzy:
+          type: boolean
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+        searchFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetSearchField'
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetEmbedField'
+          description: |-
+            Attach additional asset information:
+
+            - **meta** includes basic CRUD status information.
+            - **tags** includes the tag IDs connected to this asset.
+            - **lastLocation** includes the last known time and location the asset was seen.
+    GetAssetsResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetAssetsQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetAssetResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    UpdateAssetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Update the name of the asset, perhaps because of a typo or to be more descriptive.
+        archived:
+          type: boolean
+          description: |-
+            Setting the archived status to true hides the asset from view, you can reveal
+            archived assets by using the [GetAssets](/#operation/GetAssets) request.
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: New list of tag identifiers, perhaps adding a new tag if the original tag is low on battery.
+    UpdateAssetError:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TagsExistError'
+        message:
+          type: string
+      required:
+        - data
+        - message
+    UpdateAssetErrorResponse:
+      oneOf:
+        - $ref: '#/components/schemas/DefaultError'
+        - $ref: '#/components/schemas/UpdateAssetError'
+    GetAssetLastLocationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this Asset.
+        lastLocation:
+          $ref: '#/components/schemas/ILastLocation'
+          nullable: true
+      required:
+        - id
+        - lastLocation
+    EventType:
+      type: string
+      enum:
+        - ReaderArrived
+        - ReaderExited
+        - Arrived
+        - ExplicitArrived
+        - Exited
+        - ReaderOnline
+        - ReaderOffline
+    GetEventsQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        readers:
+          type: array
+          items:
+            type: string
+          description: Lookup events for specific readers by passing an array of valid Spotto IDs.
+        locations:
+          type: array
+          items:
+            type: string
+          description: Lookup events for specific locations by passing an array of valid Spotto IDs.
+        assets:
+          type: array
+          items:
+            type: string
+          description: Lookup events for specific assets by passing an array of valid Spotto IDs.
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventType'
+          description: Lookup events for specific event types, e.g. only show Reader Online/Offline events.
+        timeFrom:
+          type: number
+          format: float
+          description: |-
+            Filter events from a given timestamp. It will yield events up until the
+            current server time, unless otherwise specified by `timeTo`.
+        timeTo:
+          type: number
+          format: float
+          description: |-
+            Filter events until a given timestamp. It will yield all events prior to the specified time,
+            unless otherwise specified by `timeFrom`.
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+    IEmbeddedEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Spotto ID of this object.
+        name:
+          type: string
+          description: Human readable name of this object.
+      required:
+        - id
+        - name
+    GetEventResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this Event.
+        timestamp:
+          type: number
+          format: float
+          description: Unix numeric timestamp (milliseconds) of when the event was recorded.
+        type:
+          $ref: '#/components/schemas/EventType'
+        asset:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        location:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        reader:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+      required:
+        - id
+        - timestamp
+        - type
+    GetEventsResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetEventsQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetEventResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    MQTTEnabledWithDetails:
+      type: object
+      properties:
+        password:
+          type: string
+          description: Password for accessing the Spotto MQTT broker.
+        host:
+          type: string
+          description: Host URL of Spotto MQTT broker.
+        rootTopic:
+          type: string
+          description: MQTT Topic that will subscribe to all events for this organisation.
+        enabled:
+          type: boolean
+          enum:
+            - true
+          description: Enabled
+        username:
+          type: string
+          description: Username for accessing the Spotto MQTT broker.
+      required:
+        - password
+        - host
+        - rootTopic
+        - enabled
+        - username
+      description: |-
+        Extends the base shape returned in the integrations list with
+        additional information about the integration.
+    MQTTDisabled:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          enum:
+            - false
+          description: Enabled
+      required:
+        - enabled
+      description: '==== INTEGRATIONS ===='
+    MQTTSettings:
+      oneOf:
+        - $ref: '#/components/schemas/MQTTEnabledWithDetails'
+        - $ref: '#/components/schemas/MQTTDisabled'
+    PostLevelRequest:
+      type: object
+      properties:
+        level:
+          type: string
+          description: Name of the new level to be inserted.
+      required:
+        - level
+    PostLevelResponse:
+      type: object
+    PutLevelsRequest:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            type: string
+          description: New list of levels to save against the account.
+      required:
+        - levels
+    PutLevelsResponse:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            type: string
+          description: The new list of levels for this organisation.
+      required:
+        - levels
+    GetLevelsResponse:
+      type: object
+      properties:
+        levels:
+          type: array
+          items:
+            type: string
+          description: List of levels saved against the account.
+      required:
+        - levels
+    PostLocationsRequest:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name of the new location, try to be descriptive to make it easy for people find it when searching.
+          level:
+            type: string
+            description: Attach a building level to the location if appropriate, this should match an existing level from [GetLevels](/#operation/GetLevels)
+          tagIds:
+            type: array
+            items:
+              type: string
+            description: |-
+              If this location can be sensed by a mobile reader, you can add identifiers so it can be seen.
+              It accepts an array of tag identifiers, these will typically be BLE tag MAC addresses e.g. 00:11:22:33:44:55.
+          address:
+            type: string
+            description: ⚠️ Experimental - You can assign an address to a Location however this is not used in any Spotto interfaces
+          geoLocation:
+            type: string
+            enum:
+              - GeoJSON
+            description: |-
+              ⚠️ Experimental - You can assign coordinates to a Location however this is not used in any Spotto interfaces.
+              For brevity this option has been set to a string. Any valid GeoJSON object
+              will be accepted for this field. Check https://geojson.org/ for details.
+        required:
+          - name
+    GetLocationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this Location.
+        name:
+          type: string
+          description: 'Human readable location name NOTE: We do not enforce unique names, instead relying on `id` for uniqueness.'
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: List of connected tag identifiers, these will typically be  BLE tag MAC addresses e.g. 00:11:22:33:44:55.
+        readers:
+          type: array
+          items:
+            $ref: '#/components/schemas/IEmbeddedEntity'
+          description: List of readers configured at this location.
+        level:
+          type: string
+          description: The name of the building level the location is on. This should match an existing level from [GetLevels](/#operation/GetLevels).
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - id
+        - name
+    PostLocationsResponse:
+      type: object
+      properties:
+        inserted:
+          type: number
+          format: float
+          description: Total number of records that were inserted
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetLocationResponse'
+          description: The list of inserted items
+      required:
+        - inserted
+        - items
+    PostLocationsError:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagErrorInList'
+        message:
+          type: string
+      required:
+        - data
+        - message
+    PostLocationsErrorResponse:
+      oneOf:
+        - $ref: '#/components/schemas/DefaultError'
+        - $ref: '#/components/schemas/PostLocationsError'
+    LocationSearchField:
+      type: string
+      enum:
+        - name
+    LocationEmbedField:
+      type: string
+      enum:
+        - meta
+        - tagIds
+        - readers
+    GetLocationsQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        ids:
+          type: array
+          items:
+            type: string
+          description: Lookup specific locations by passing an array of valid Spotto IDs.
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: Lookup locations with specific tag IDs e.g. Beacon MAC addresses and RFID EPC codes.
+        levels:
+          type: array
+          items:
+            type: string
+          description: Lookup locations at specific floor levels, e.g. Ground and Level 1 ONLY.
+        hasTags:
+          type: boolean
+          description: Only return locations that have tags registered.
+        hasReaders:
+          type: boolean
+          description: Only return locations that have readers attached.
+        setupComplete:
+          type: boolean
+          description: Only return locations that either have tags OR readers attached
+        archived:
+          type: boolean
+          description: Return deleted locations, the default is false.
+        sort:
+          $ref: '#/components/schemas/SearchableSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        search:
+          type: string
+          description: Search query string, for lucene based full text search.
+        searchFuzzy:
+          type: boolean
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+        searchFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationSearchField'
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocationEmbedField'
+          description: |-
+            Attach additional location information:
+
+            - **meta** includes basic CRUD status information.
+            - **tags** includes the tag IDs connected to this location.
+            - **readers** includes any readers configured at the given location.
+    GetLocationsResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetLocationsQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetLocationResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    UpdateLocationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Update the name of the location, perhaps because of a typo or to be more descriptive.
+        level:
+          type: string
+          description: Update the building level of the location. This should match an existing level from [GetLevels](/#operation/GetLevels).
+        tagIds:
+          type: array
+          items:
+            type: string
+          description: New list of tag identifiers, perhaps adding a new tag if the original tag is low on battery.
+        archived:
+          type: boolean
+          description: |-
+            Setting the archived status to true hides the location from view, you can reveal
+            archived assets by using the [GetLocations](/#operation/GetLocations) request.
+        address:
+          type: string
+          description: ⚠️ Experimental - You can edit a Locations address however this is not used in any Spotto interfaces.
+        geoLocation:
+          type: string
+          enum:
+            - GeoJSON
+          description: |-
+            ⚠️ Experimental - You can edit Location coordinates however this is not used in any Spotto interfaces.
+            NOTE: For brevity this option has been set to a string. Any valid GeoJSON object
+            will be accepted for this field. Check https://geojson.org/ for details.
+    UpdateLocationError:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/TagsExistError'
+        message:
+          type: string
+      required:
+        - data
+        - message
+    UpdateLocationErrorResponse:
+      oneOf:
+        - $ref: '#/components/schemas/DefaultError'
+        - $ref: '#/components/schemas/UpdateLocationError'
+    IInventoryItem:
+      type: object
+      properties:
+        firstSeen:
+          type: number
+          format: float
+          description: When the asset was first seen at this location.
+        lastSeen:
+          type: number
+          format: float
+          description: When the asset was last seen at this location.
+        id:
+          type: string
+          description: Unique Spotto ID of this object.
+        name:
+          type: string
+          description: Human readable name of this object.
+      required:
+        - firstSeen
+        - lastSeen
+        - id
+        - name
+    GetLocationInventoryResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/IInventoryItem'
+    ReaderType:
+      type: string
+      enum:
+        - FIXED
+        - ROVING
+        - VIRTUAL
+        - PORTAL
+      description: |-
+        The reader behaviour type:
+        - **FIXED** - regular non-moving readers.
+        - **ROVING** - readers that move around and look for location tags, assigning nearby assets to the locations it sees.
+        - **VIRTUAL** -  allow different antennas plugged into a reader to report as their own readers.
+        - **PORTAL** - similar to virtual but for differentiating 2 adjacent zones e.g. IN/OUT.
+    DeviceType:
+      type: string
+      enum:
+        - B1
+        - RF1A4
+        - RF1F
+        - HD1
+        - ZEBRA
+        - IMPINJ
+        - TURCK
+        - OTHER
+        - APPLICATION
+      description: |-
+        The physical reader device type:
+        - **B1** - Spotto B1 Bluetooth Reader.
+        - **RF1A4** - Spotto RF1A4 4 Port RFID Reader.
+        - **RF1F** - Spotto RF1F FEIG Reader.
+        - **HD1** - Spotto HD1 HID Reader.
+        - **ZEBRA** - Zebra RFID Reader.
+        - **IMPINJ** - Impinj RFID Reader.
+        - **TURCK** - Turck Handheld RFID Reader.
+        - **OTHER** - Custom Reader (BYO Device).
+        - **APPLICATION** - Spotto Detector Application.
+    IUpsertedLocation:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name
+        level:
+          type: string
+          description: Level
+      required:
+        - name
+      description: |-
+        If a location object is specified, a new location will be created and
+        added to the locations list.
+    INetworkRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: SSID of the network.
+        username:
+          type: string
+          description: Optional network username, this is only required for WPA2 Enterprise networks.
+        password:
+          type: string
+          description: Optional network password, this is not required for open networks.
+      required:
+        - name
+      description: WiFi network credentials.
+    IAntennaRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        port:
+          type: number
+          format: float
+        locationId:
+          type: string
+        location:
+          type: object
+          properties:
+            name:
+              type: string
+            level:
+              type: string
+          required:
+            - name
+      required:
+        - port
+    DefaultReaderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: |-
+            Name of the new reader, try to be descriptive to make it easy for
+            people find it when searching.
+            <br>
+            This field is optional for **FIXED** readers, see *IFixedReaderRequest*.
+        type:
+          $ref: '#/components/schemas/ReaderType'
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
+        locationId:
+          type: string
+          description: locationId is used for specifying an already existing location.
+        location:
+          $ref: '#/components/schemas/IUpsertedLocation'
+        deviceId:
+          type: string
+          description: |-
+            Reader Device ID. This will typically be a MAC address e.g. *00:11:22:33:44:55*.
+            <br>
+            It is only applicable to IoTX3 readers.
+        network:
+          $ref: '#/components/schemas/INetworkRequest'
+        saveNetwork:
+          type: boolean
+          description: |-
+            When this flag is true, it will save any provided WiFi details to the account.
+            It will be ignored if no networks are present.
+        antennas:
+          type: array
+          items:
+            $ref: '#/components/schemas/IAntennaRequest'
+          description: Additional antenna config. This is only applicable to VIRTUAL or PORTAL readers.
+      required:
+        - name
+        - type
+        - deviceType
+    IFixedReaderRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - FIXED
+        name:
+          type: string
+          description: |-
+            Name is optional for FIXED reader. This field is appended to the
+            location name separated by a ' - '.
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
+        locationId:
+          type: string
+          description: locationId is used for specifying an already existing location.
+        location:
+          $ref: '#/components/schemas/IUpsertedLocation'
+        deviceId:
+          type: string
+          description: |-
+            Reader Device ID. This will typically be a MAC address e.g. *00:11:22:33:44:55*.
+            <br>
+            It is only applicable to IoTX3 readers.
+        network:
+          $ref: '#/components/schemas/INetworkRequest'
+        saveNetwork:
+          type: boolean
+          description: |-
+            When this flag is true, it will save any provided WiFi details to the account.
+            It will be ignored if no networks are present.
+        antennas:
+          type: array
+          items:
+            $ref: '#/components/schemas/IAntennaRequest'
+          description: Additional antenna config. This is only applicable to VIRTUAL or PORTAL readers.
+      required:
+        - type
+        - deviceType
+    PostReaderRequest:
+      oneOf:
+        - $ref: '#/components/schemas/DefaultReaderRequest'
+        - $ref: '#/components/schemas/IFixedReaderRequest'
+    PostReadersRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/PostReaderRequest'
+    IFixedReaderLocation:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - FIXED
+        id:
+          type: string
+          description: Unique Spotto ID of this object.
+        name:
+          type: string
+          description: Human readable name of this object.
+      required:
+        - type
+        - id
+        - name
+    IRovingReaderLocation:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ROVING
+        firstSeen:
+          type: number
+          format: float
+          description: First time the location was seen by this reader
+        lastSeen:
+          type: number
+          format: float
+          description: Last time the location was seen by this reader
+        id:
+          type: string
+          description: Unique Spotto ID of this object.
+        name:
+          type: string
+          description: Human readable name of this object.
+      required:
+        - type
+        - firstSeen
+        - lastSeen
+        - id
+        - name
+    ReaderLocation:
+      oneOf:
+        - $ref: '#/components/schemas/IFixedReaderLocation'
+        - $ref: '#/components/schemas/IRovingReaderLocation'
+      discriminator:
+        propertyName: type
+        mapping:
+          FIXED: '#/components/schemas/IFixedReaderLocation'
+          ROVING: '#/components/schemas/IRovingReaderLocation'
+      description: |-
+        Reader Locations can either be:
+
+        FIXED: Are static and don't have a timestamp<br>
+        ROVING: Are dynamic and have a lastSeen timestamp
+    IReaderStatus:
+      type: object
+      properties:
+        online:
+          type: boolean
+          description: Whether or not the reader is currently online.
+        onlineTime:
+          type: number
+          format: float
+          description: Unix numeric timestamp (milliseconds) of when the reader came online.
+        lastReportedTime:
+          type: number
+          format: float
+          description: Unix numeric timestamp (milliseconds) of when the reader last reported.
+      required:
+        - online
+        - onlineTime
+        - lastReportedTime
+      description: |-
+        Reader online status information.
+
+        Note: Other IoT style status information will ultimately end up here
+        e.g. Temperature, WiFi signal, Battery level (for portable readers).
+    GetReaderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of this Reader.
+        name:
+          type: string
+          description: 'Human readable reader name NOTE: We do not enforce unique names, instead we rely on `id` for uniqueness.'
+        type:
+          $ref: '#/components/schemas/ReaderType'
+        deviceType:
+          $ref: '#/components/schemas/DeviceType'
+        deviceId:
+          type: string
+          description: Reader Device ID. This will typically be a MAC address e.g. 00:11:22:33:44:55.
+        endpoint:
+          type: string
+          description: |-
+            Endpoint this reader will POST reads to. This is only needed when manually setting
+            up a reader, or when using a BYO device.
+        network:
+          type: string
+          description: SSID of the network the reader is connected to, if any.
+        location:
+          $ref: '#/components/schemas/ReaderLocation'
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+        status:
+          $ref: '#/components/schemas/IReaderStatus'
+      required:
+        - id
+        - name
+        - type
+        - deviceType
+        - endpoint
+    PostReadersResponse:
+      type: object
+      properties:
+        inserted:
+          type: number
+          format: float
+          description: Total number of records that were inserted
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetReaderResponse'
+          description: The list of inserted items
+      required:
+        - inserted
+        - items
+    ReaderSearchField:
+      type: string
+      enum:
+        - name
+        - deviceId
+    ReaderEmbedField:
+      type: string
+      enum:
+        - meta
+        - status
+    GetReadersQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        ids:
+          type: array
+          items:
+            type: string
+          description: Lookup specific readers by passing an array of valid Spotto IDs.
+        locationIds:
+          type: array
+          items:
+            type: string
+          description: Lookup readers that are positioned at specific location IDs
+        deviceIds:
+          type: array
+          items:
+            type: string
+          description: |-
+            Lookup specific readers by passing an array of device IDs.
+            These are typically the MAC address of the reader.
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReaderType'
+          description: Filter based on the reader behavioural type.
+        deviceTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeviceType'
+          description: Lookup readers belonging to specific device types.
+        archived:
+          type: boolean
+          description: Return deleted readers, the default is false.
+        sort:
+          $ref: '#/components/schemas/SearchableSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        search:
+          type: string
+          description: Search query string, for Lucene based full text search.
+        searchFuzzy:
+          type: boolean
+          description: |-
+            Whether or not to run the search in *fuzzy* mode. The level of fuzziness
+            depends on the character length of search terms:
+
+            - 1-2: Must match exactly.
+            - 3-5: Off by at most 1 character.
+            - 6+: Off by at most 2 characters.
+        searchFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReaderSearchField'
+          description: |-
+            Reduce the scope of fields to perform the search on.
+            When left blank it will search all of these fields.
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReaderEmbedField'
+          description: |-
+            Attach additional reader information:
+
+            - **meta** includes basic CRUD status information.
+            - **status** includes dynamic status information about the reader such as
+            the time it came online and when we last heard from it.
+    GetReadersResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetReadersQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetReaderResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    GetReaderInventoryResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/IInventoryItem'
+    UpdateReaderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Update the name of the reader, perhaps because of a typo or to be more descriptive.
+        archived:
+          type: boolean
+          description: |-
+            Setting the archived status to true hides the reader from view, you can reveal
+            archived readers by using the [GetReaders](/#operation/GetReaders) request.
+        locationId:
+          type: string
+          description: locationId is used for specifying an already existing location.
+        location:
+          $ref: '#/components/schemas/IUpsertedLocation'
+        deviceId:
+          type: string
+          description: |-
+            Reader Device ID. This will typically be a MAC address e.g. *00:11:22:33:44:55*.
+            <br>
+            It is only applicable to IoTX3 readers.
+        network:
+          $ref: '#/components/schemas/INetworkRequest'
+        saveNetwork:
+          type: boolean
+          description: |-
+            When this flag is true, it will save any provided WiFi details to the account.
+            It will be ignored if no networks are present.
+        antennas:
+          type: array
+          items:
+            $ref: '#/components/schemas/IAntennaRequest'
+          description: Additional antenna config. This is only applicable to VIRTUAL or PORTAL readers.
+    GetReaderStatusResponse:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/IRovingReaderLocation'
+        status:
+          $ref: '#/components/schemas/IReaderStatus'
+      required:
+        - status
+    RoleEmbedField:
+      type: string
+      enum:
+        - meta
+    GetRolesQuery:
+      type: object
+      properties:
+        sort:
+          $ref: '#/components/schemas/StandardSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleEmbedField'
+          description: |-
+            Attach additional user information:
+
+            **meta** includes basic CRUD status information.
+    GetRoleResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique Spotto ID of the role.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+        name:
+          type: string
+          description: Human readable name of the role.
+        description:
+          type: string
+          description: Short description of the role including the scope of access.
+        permissions:
+          type: array
+          items:
+            type: string
+          description: |-
+            List of permissions this role has access to, following
+            the entity:action pattern.
+        default:
+          type: boolean
+          description: Whether or not this role is a default system role, available to all organisations.
+      required:
+        - id
+        - name
+        - description
+        - permissions
+    GetRolesResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetRolesQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetRoleResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    MatchNameRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MatchName
+        match:
+          type: string
+          description: Case insensitive name or substring to match on the event subject.
+      required:
+        - type
+        - match
+    StrictMatchIdRule:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - StrictMatchId
+        match:
+          type: string
+          description: Case sensitive exact Spotto ID of the event subject.
+      required:
+        - type
+        - match
+    Rule:
+      oneOf:
+        - $ref: '#/components/schemas/MatchNameRule'
+        - $ref: '#/components/schemas/StrictMatchIdRule'
+      discriminator:
+        propertyName: type
+        mapping:
+          MatchName: '#/components/schemas/MatchNameRule'
+          StrictMatchId: '#/components/schemas/StrictMatchIdRule'
+    WebhookAction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Webhook
+        endpoint:
+          type: string
+          description: Endpoint URL to POST the event payload to.
+      required:
+        - type
+        - endpoint
+    MQTTAction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MQTT
+        topic:
+          type: string
+          description: Custom MQTT topic to publish the event payload to.
+      required:
+        - type
+        - topic
+    EmailAction:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Email
+        address:
+          type: string
+          description: Email address of the trigger recipient.
+      required:
+        - type
+        - address
+    Action:
+      oneOf:
+        - $ref: '#/components/schemas/WebhookAction'
+        - $ref: '#/components/schemas/MQTTAction'
+        - $ref: '#/components/schemas/EmailAction'
+      discriminator:
+        propertyName: type
+        mapping:
+          Webhook: '#/components/schemas/WebhookAction'
+          MQTT: '#/components/schemas/MQTTAction'
+          Email: '#/components/schemas/EmailAction'
+    PostArrivedAtTriggerRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ArrivedAt
+          description: Type
+        locationRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Location rules filter the possible events that cause this
+            trigger to fire.
+        name:
+          type: string
+          description: |-
+            The name of the trigger, for easily identifying the trigger
+            and its purpose.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+      required:
+        - type
+        - locationRules
+        - name
+        - actions
+        - subjectRules
+      description: Asset or Reader moved in relation to selected locations
+    PostMovedTriggerRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Moved
+          description: Type
+        name:
+          type: string
+          description: |-
+            The name of the trigger, for easily identifying the trigger
+            and its purpose.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+      required:
+        - type
+        - name
+        - actions
+        - subjectRules
+      description: Asset or Reader moved anywhere (No location rules).
+    PostWentOnlineTriggerRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - WentOnline
+          description: Type
+        name:
+          type: string
+          description: |-
+            The name of the trigger, for easily identifying the trigger
+            and its purpose.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+      required:
+        - type
+        - name
+        - actions
+        - subjectRules
+      description: Reader went online after a given threshold.
+    PostWentOfflineTriggerRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - WentOffline
+          description: Type
+        name:
+          type: string
+          description: |-
+            The name of the trigger, for easily identifying the trigger
+            and its purpose.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+      required:
+        - type
+        - name
+        - actions
+        - subjectRules
+      description: Reader went online after a given threshold.
+    PostTriggerRequest:
+      oneOf:
+        - $ref: '#/components/schemas/PostArrivedAtTriggerRequest'
+        - $ref: '#/components/schemas/PostMovedTriggerRequest'
+        - $ref: '#/components/schemas/PostWentOnlineTriggerRequest'
+        - $ref: '#/components/schemas/PostWentOfflineTriggerRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          ArrivedAt: '#/components/schemas/PostArrivedAtTriggerRequest'
+          Moved: '#/components/schemas/PostMovedTriggerRequest'
+          WentOnline: '#/components/schemas/PostWentOnlineTriggerRequest'
+          WentOffline: '#/components/schemas/PostWentOfflineTriggerRequest'
+    PostTriggersRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/PostTriggerRequest'
+    GetArrivedAtTriggerResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - ArrivedAt
+          description: Type
+        locationRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Location rules filter the possible events that cause this
+            trigger to fire.
+        id:
+          type: string
+          description: Unique ID of the Trigger.
+        name:
+          type: string
+          description: |-
+            The human readable name of the trigger, for easily identifying the trigger
+            and its purpose.
+        enabled:
+          type: boolean
+          description: Status of the trigger, disabled triggers will not fire.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - locationRules
+        - id
+        - name
+        - enabled
+        - actions
+        - subjectRules
+      description: Asset or Reader moved in relation to selected locations
+    GetMovedTriggerResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - Moved
+          description: Type
+        id:
+          type: string
+          description: Unique ID of the Trigger.
+        name:
+          type: string
+          description: |-
+            The human readable name of the trigger, for easily identifying the trigger
+            and its purpose.
+        enabled:
+          type: boolean
+          description: Status of the trigger, disabled triggers will not fire.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - id
+        - name
+        - enabled
+        - actions
+        - subjectRules
+      description: Asset or Reader moved anywhere (No location rules)
+    GetWentOnlineTriggerResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - WentOnline
+          description: Type
+        id:
+          type: string
+          description: Unique ID of the Trigger.
+        name:
+          type: string
+          description: |-
+            The human readable name of the trigger, for easily identifying the trigger
+            and its purpose.
+        enabled:
+          type: boolean
+          description: Status of the trigger, disabled triggers will not fire.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - id
+        - name
+        - enabled
+        - actions
+        - subjectRules
+      description: Reader went online after a given threshold
+    GetWentOfflineTriggerResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - WentOffline
+          description: Type
+        id:
+          type: string
+          description: Unique ID of the Trigger.
+        name:
+          type: string
+          description: |-
+            The human readable name of the trigger, for easily identifying the trigger
+            and its purpose.
+        enabled:
+          type: boolean
+          description: Status of the trigger, disabled triggers will not fire.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: The list of actions that fire for this trigger.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Subject rules filter the possible events that cause this
+            trigger to fire.
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - id
+        - name
+        - enabled
+        - actions
+        - subjectRules
+      description: Reader went online after a given threshold
+    GetTriggerResponse:
+      oneOf:
+        - $ref: '#/components/schemas/GetArrivedAtTriggerResponse'
+        - $ref: '#/components/schemas/GetMovedTriggerResponse'
+        - $ref: '#/components/schemas/GetWentOnlineTriggerResponse'
+        - $ref: '#/components/schemas/GetWentOfflineTriggerResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          ArrivedAt: '#/components/schemas/GetArrivedAtTriggerResponse'
+          Moved: '#/components/schemas/GetMovedTriggerResponse'
+          WentOnline: '#/components/schemas/GetWentOnlineTriggerResponse'
+          WentOffline: '#/components/schemas/GetWentOfflineTriggerResponse'
+    PostTriggersResponse:
+      type: object
+      properties:
+        inserted:
+          type: number
+          format: float
+          description: Total number of records that were inserted
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetTriggerResponse'
+          description: The list of inserted items
+      required:
+        - inserted
+        - items
+    TriggerType:
+      type: string
+      enum:
+        - ArrivedAt
+        - Moved
+        - WentOnline
+        - WentOffline
+      description: '==== TRIGGER TYPES ===='
+    TriggerEmbedField:
+      type: string
+      enum:
+        - meta
+    GetTriggersQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        ids:
+          type: array
+          items:
+            type: string
+          description: Lookup specific triggers by passing an array of valid Spotto IDs.
+        enabled:
+          type: boolean
+          description: Lookup triggers that are only enabled or disabled.
+        type:
+          $ref: '#/components/schemas/TriggerType'
+        sort:
+          $ref: '#/components/schemas/StandardSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/TriggerEmbedField'
+          description: |-
+            Attach additional trigger information:
+            - **meta** includes basic CRUD status information.
+    GetTriggersResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetTriggersQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetTriggerResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    DeleteResponse:
+      type: object
+      description: Standard deletion response is an empty object
+    UpdateTriggerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: |-
+            The human readable name of the trigger, for easily identifying the trigger
+            and its purpose.
+        enabled:
+          type: boolean
+          description: Change the status of the trigger, disabled triggers will not fire.
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+          description: |-
+            Change the actions that fire for this trigger, you must send the
+            entire array as part of the request. Use the [GetTrigger](/#operation/GetTrigger)
+            request to fetch the existing actions to prevent accidentally deleting any.
+        subjectRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Change the subject rules to filter the events that cause this
+            trigger to fire, you must send the entire array as part of
+            the request. Use the [GetTrigger](/#operation/GetTrigger)
+            request to fetch the existing subjectRules to prevent accidentally deleting any.
+        locationRules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+          description: |-
+            Change the location rules to filter the events that cause this
+            trigger to fire, you must send the entire array as part of
+            the request. Use the [GetTrigger](/#operation/GetTrigger)
+            request to fetch the existing actions to prevent accidentally deleting any.
+
+            ⚠️ Warning: This is only allowed for ArrivedAt triggers.
+    PostExternalUserRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - EXTERNAL
+          description: User type for identifying external API users.
+        name:
+          type: string
+          description: The User's full name, or an identifier of the external API user.
+        role:
+          type: string
+          description: |-
+            The role ID the new user will be assigned. To fetch a list of available roles,
+            check out the [GetRoles](/#operation/GetRoles) request.
+      required:
+        - type
+        - name
+        - role
+    PostInternalUserRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - INTERNAL
+          description: User type for identifying internal users.
+        email:
+          type: string
+          description: The User's unique email address. We send a welcome email including their password.
+        password:
+          type: string
+          description: |-
+            Optionally provide a custom password rather than have Spotto automatically generate one.
+            This will be forwarded to the new User's email address so that they can log into Spotto.
+        name:
+          type: string
+          description: The User's full name, or an identifier of the external API user.
+        role:
+          type: string
+          description: |-
+            The role ID the new user will be assigned. To fetch a list of available roles,
+            check out the [GetRoles](/#operation/GetRoles) request.
+      required:
+        - type
+        - email
+        - name
+        - role
+    PostUserRequest:
+      oneOf:
+        - $ref: '#/components/schemas/PostExternalUserRequest'
+        - $ref: '#/components/schemas/PostInternalUserRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          EXTERNAL: '#/components/schemas/PostExternalUserRequest'
+          INTERNAL: '#/components/schemas/PostInternalUserRequest'
+    GetExternalUserResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - EXTERNAL
+          description: User type for identifying external API users from internal users.
+        key:
+          type: string
+          description: The API key is returned when creating new **EXTERNAL** users, or where requested.
+        id:
+          type: string
+          description: Unique Spotto ID assigned to this User.
+        name:
+          type: string
+          description: |-
+            Human readable full name or identifier of the User.
+            NOTE: We do not enforce unique names, we instead rely on `id` for uniqueness.
+        role:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        organisation:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - id
+        - name
+        - role
+        - organisation
+    GetInternalUserResponse:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - INTERNAL
+          description: User type for identifying internal users from external API users.
+        email:
+          type: string
+          description: The User's unique email address.
+        id:
+          type: string
+          description: Unique Spotto ID assigned to this User.
+        name:
+          type: string
+          description: |-
+            Human readable full name or identifier of the User.
+            NOTE: We do not enforce unique names, we instead rely on `id` for uniqueness.
+        role:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        organisation:
+          $ref: '#/components/schemas/IEmbeddedEntity'
+        meta:
+          $ref: '#/components/schemas/IEntityMeta'
+      required:
+        - type
+        - email
+        - id
+        - name
+        - role
+        - organisation
+    GetUserResponse:
+      oneOf:
+        - $ref: '#/components/schemas/GetExternalUserResponse'
+        - $ref: '#/components/schemas/GetInternalUserResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          EXTERNAL: '#/components/schemas/GetExternalUserResponse'
+          INTERNAL: '#/components/schemas/GetInternalUserResponse'
+    UserType:
+      type: string
+      enum:
+        - INTERNAL
+        - EXTERNAL
+    UserEmbedField:
+      type: string
+      enum:
+        - meta
+    GetUsersQuery:
+      type: object
+      properties:
+        page:
+          type: number
+          format: float
+          description: |-
+            **Pagination:** What page of results, assuming the limit (defaulting to 20)
+            to start from. The default is page 0 (the first page of results).
+
+            e.g. With a limit of 20, page 1 gets us results 20-39 (with zero based indexing).
+        limit:
+          type: number
+          format: float
+          description: '**Pagination:** Max number of results to return in the request. The default is 20.'
+        ids:
+          type: array
+          items:
+            type: string
+          description: Lookup specific users by passing an array of valid Spotto IDs.
+        role:
+          type: array
+          items:
+            type: string
+          description: Lookup users belonging to specific roles by passing an array of valid Spotto IDs.
+        type:
+          $ref: '#/components/schemas/UserType'
+        sort:
+          $ref: '#/components/schemas/StandardSortFields'
+        sortOrder:
+          $ref: '#/components/schemas/SortOrders'
+        embed:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserEmbedField'
+          description: |-
+            Attach additional user information:
+            - **meta** includes basic CRUD status information.
+    GetUsersResponse:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/GetUsersQuery'
+          nullable: true
+        total:
+          type: number
+          format: float
+          description: Total number of records that match the query (without pagination).
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetUserResponse'
+          description: |-
+            This is the list of paginated results, which will be an array of 20 items
+            or less, unless another limit was specified in the query params.
+      required:
+        - query
+        - total
+        - items
+    GetKeyResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: |-
+            Access key for using the Spotto REST API. Insert this key into the `x-api-key`
+            header, then call any request in this spec, provided the user this key is associated
+            with has the correct permissions.
+      required:
+        - key
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Change the User's full name, or name of the external API user.
+        role:
+          type: string
+          description: |-
+            Change the role ID assigned to a user. To fetch a list of available roles,
+            check out the [GetRoles](/#operation/GetRoles) request.
+        organisation:
+          type: string
+          description: |-
+            If you have super-admin permissions you can move users
+            between organisations.
+  securitySchemes:
+    SecurityHeader:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: |-
+        To authenticate API requests, Spotto uses a header based API key scheme. To gain access to the Spotto REST API,
+        simply set the `x-api-key` header to an API Key associated with your account. If you don't have an API key,
+        [follow this guide](https://www.spotto.io/developers/using-the-spotto-api) to get one.
+        Include the header in all API calls, otherwise you will receive a `403 Forbidden` response.
+security:
+  - SecurityHeader: []
+servers:
+  - url: https://api.spotto.cloud
+    description: Spotto API Base URL
+externalDocs:
+  url: http://www.spotto.io/developers
+  description: Back to the Spotto Developer Portal

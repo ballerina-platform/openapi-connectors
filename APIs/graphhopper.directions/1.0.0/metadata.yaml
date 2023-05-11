@@ -1,0 +1,13 @@
+id: graphhopper.directions
+displayName: GraphHopper Directions
+type: OpenAPI
+version: 1.0.0
+description: This is the [GraphHopper Directions API v1.0.0](https://docs.graphhopper.com/) OpenAPI Specification.
+idlPath: /graphhopper.directions/1.0.0/openapi.yaml
+thumbnailPath: /graphhopper.directions/1.0.0/icon.png
+documentationPath: /graphhopper.directions/1.0.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://graphhopper.com/api/1

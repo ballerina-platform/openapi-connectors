@@ -1,0 +1,13 @@
+id: pagerduty
+displayName: PagerDuty
+type: OpenAPI
+version: 2.0.0
+description: This is the [Pagerduty REST API v2](https://developer.pagerduty.com/api-reference/) OpenAPI specification. The Pagerduty REST API provides capability to programmatically interact with a PagerDuty account. This document describes the PagerDuty REST APIs. For guides and examples please visit our [Documentation.](https://developer.pagerduty.com/docs/get-started/getting-started/) Our REST APIs are defined in OpenAPI v3.x. You can view the schema at [github.com/PagerDuty/api-schema](https://github.com/PagerDuty/api-schema). Note that properties in some schemas have fields not shown by default such as `readOnly`, `format`, and `default`. Hover your cursor over the right column that looks like `optional+1` to see the full list of fields.
+idlPath: /pagerduty/2.0.0/openapi.yaml
+thumbnailPath: /pagerduty/2.0.0/icon.png
+documentationPath: /pagerduty/2.0.0/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Freemium
+endpoint:
+  - url: https://api.pagerduty.com

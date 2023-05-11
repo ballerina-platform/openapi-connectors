@@ -1,0 +1,13 @@
+id: optitune
+displayName: Optitune
+type: OpenAPI
+version: V1
+description: This is the [OptiTune API v1](https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
+idlPath: /optitune/V1/openapi.yaml
+thumbnailPath: /optitune/V1/icon.png
+documentationPath: /optitune/V1/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+endpoint:
+  - url: https://manage.opti-tune.com/

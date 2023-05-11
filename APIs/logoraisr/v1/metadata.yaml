@@ -1,0 +1,13 @@
+id: logoraisr
+displayName: Logoraisr
+type: OpenAPI
+version: v1
+description: This is the [Logoraisr API v1](https://docs.logoraisr.com/) OpenAPI Specification. Logoraisr API provides capability to access operations related to your graphic design tasks automatically using best-in-class algorithms and artificial intelligence.
+idlPath: /logoraisr/v1/openapi.yaml
+thumbnailPath: /logoraisr/v1/icon.png
+documentationPath: /logoraisr/v1/readme.md
+keywords:
+  - Content&Files/Images&Design
+  - Cost/Paid
+endpoint:
+  - url: https://api.logoraisr.com/rest-v1

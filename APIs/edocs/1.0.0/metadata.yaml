@@ -1,0 +1,11 @@
+id: edocs
+displayName: eDocs
+type: OpenAPI
+version: 1.0.0
+description: This is the [eDocs](https://www.opentext.com/products-and-solutions/industries/legal/legal-content-management-edocs) OpenAPI Specification. An API that allows interaction with the resources stored on an eDOCS DM Server.
+idlPath: /edocs/1.0.0/openapi.yaml
+thumbnailPath: /edocs/1.0.0/icon.png
+documentationPath: /edocs/1.0.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium

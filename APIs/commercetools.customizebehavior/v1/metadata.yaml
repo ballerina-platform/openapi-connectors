@@ -1,0 +1,11 @@
+id: commercetools.customizebehavior
+displayName: Commercetools Customize Behavior
+type: OpenAPI
+version: v1
+description: This is the [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.  The commercetools Platform HTTP API(Customize Behavior) offers an interface for programmatic access to the data stored on the platform and associated functionality for customize behavior.
+idlPath: /commercetools.customizebehavior/v1/openapi.yaml
+thumbnailPath: /commercetools.customizebehavior/v1/icon.png
+documentationPath: /commercetools.customizebehavior/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

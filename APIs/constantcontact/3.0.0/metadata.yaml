@@ -1,0 +1,13 @@
+id: constantcontact
+displayName: Constant Contact
+type: OpenAPI
+version: 3.0.0
+description: This is the [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
+idlPath: /constantcontact/3.0.0/openapi.yaml
+thumbnailPath: /constantcontact/3.0.0/icon.png
+documentationPath: /constantcontact/3.0.0/readme.md
+keywords:
+  - Marketing/MarketingAutomation
+  - Cost/Paid
+endpoint:
+  - url: https://api.cc.email/v3

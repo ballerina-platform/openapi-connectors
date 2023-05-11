@@ -1,0 +1,11 @@
+id: commercetools.customizedata
+displayName: Commercetools Customize Data
+type: OpenAPI
+version: v1
+description: v1
+idlPath: /commercetools.customizedata/v1/openapi.yaml
+thumbnailPath: /commercetools.customizedata/v1/icon.png
+documentationPath: /commercetools.customizedata/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

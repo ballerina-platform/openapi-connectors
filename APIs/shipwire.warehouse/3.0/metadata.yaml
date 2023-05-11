@@ -1,0 +1,13 @@
+id: shipwire.warehouse
+displayName: Shipwire Warehouse
+type: OpenAPI
+version: "3.0"
+description: This is the [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
+idlPath: /shipwire.warehouse/3.0/openapi.yaml
+thumbnailPath: /shipwire.warehouse/3.0/icon.png
+documentationPath: /shipwire.warehouse/3.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.shipwire.com/

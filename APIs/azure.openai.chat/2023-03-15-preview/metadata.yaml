@@ -1,0 +1,17 @@
+id: azure.openai.chat
+displayName: Azure OpenAI Chat
+type: OpenAPI
+version: 2023-03-15-preview
+description: This is the [Azure OpenAI Chat Completions API v2023-03-15-preview](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#chat-completions/) OpenAPI specification. The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create completions for chat messages with the ChatGPT (preview) and GPT-4 (preview) models.
+idlPath: /azure.openai.chat/2023-03-15-preview/openapi.yaml
+thumbnailPath: /azure.openai.chat/2023-03-15-preview/icon.png
+documentationPath: /azure.openai.chat/2023-03-15-preview/readme.md
+keywords:
+  - AI/Chat
+  - AzureOpenAI
+  - Cost/Paid
+  - GPT-3.5
+  - ChatGPT
+  - Vendor/Microsoft
+endpoint:
+  - url: https://your-resource-name.openai.azure.com/openai

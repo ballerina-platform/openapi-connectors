@@ -1,0 +1,13 @@
+id: interzoid.currencyrate
+displayName: Interzoid Currency Rate
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Currency Rate API v1.0.0](https://interzoid.com/services/getcurrencyrate) OpenAPI specification. This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
+idlPath: /interzoid.currencyrate/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.currencyrate/1.0.0/icon.png
+documentationPath: /interzoid.currencyrate/1.0.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

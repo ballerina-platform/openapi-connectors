@@ -1,0 +1,14 @@
+id: ebay.metadata
+displayName: eBay Metadata
+type: OpenAPI
+version: v1.4.1
+description: This is the [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification.  'The Metadata API has operations that retrieve configuration details pertaining to the different eBay marketplaces.  In addition to marketplace information, the API also has operations that get information that helps sellers list items on eBay.'
+idlPath: /ebay.metadata/v1.4.1/openapi.yaml
+thumbnailPath: /ebay.metadata/v1.4.1/icon.png
+documentationPath: /ebay.metadata/v1.4.1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/metadata/v1
+    description: Production

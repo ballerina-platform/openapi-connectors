@@ -1,0 +1,13 @@
+id: hubspot.crm.pipeline
+displayName: HubSpot CRM Pipeline
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification.
+idlPath: /hubspot.crm.pipeline/v3/openapi.yaml
+thumbnailPath: /hubspot.crm.pipeline/v3/icon.png
+documentationPath: /hubspot.crm.pipeline/v3/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

@@ -1,0 +1,13 @@
+id: themoviedb
+displayName: The Movie Database (TMDB)
+type: OpenAPI
+version: "3"
+description: This is the [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
+idlPath: /themoviedb/3/openapi.yaml
+thumbnailPath: /themoviedb/3/icon.png
+documentationPath: /themoviedb/3/readme.md
+keywords:
+  - Content&Files/Video&Audio
+  - Cost/Free
+endpoint:
+  - url: https://api.themoviedb.org/3

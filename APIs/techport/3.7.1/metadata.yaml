@@ -1,0 +1,13 @@
+id: techport
+displayName: TechPort
+type: OpenAPI
+version: 3.7.1
+description: This is the [TechPort RESTful API v3.4.0](https://stats.bis.org/api-doc/v1/) OpenAPI specification. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
+idlPath: /techport/3.7.1/openapi.yaml
+thumbnailPath: /techport/3.7.1/icon.png
+documentationPath: /techport/3.7.1/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Free
+endpoint:
+  - url: https://techport.nasa.gov

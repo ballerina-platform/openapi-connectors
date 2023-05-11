@@ -1,0 +1,13 @@
+id: quickbooks.online
+displayName: QuickBooks Online
+type: OpenAPI
+version: v3
+description: This is the [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.  The QuickBooks Online Accounting API utilizes the REST architecture. It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem
+idlPath: /quickbooks.online/v3/openapi.yaml
+thumbnailPath: /quickbooks.online/v3/icon.png
+documentationPath: /quickbooks.online/v3/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid
+endpoint:
+  - url: https://quickbooks.api.intuit.com

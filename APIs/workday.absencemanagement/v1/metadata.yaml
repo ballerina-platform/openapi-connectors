@@ -1,0 +1,11 @@
+id: workday.absencemanagement
+displayName: Workday Absence Management
+type: OpenAPI
+version: v1
+description: This is the [WorkDay AbsenceManagement REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification. The Absence Management service enables applications to access worker information about leaves of absence and time off details.
+idlPath: /workday.absencemanagement/v1/openapi.yaml
+thumbnailPath: /workday.absencemanagement/v1/icon.png
+documentationPath: /workday.absencemanagement/v1/readme.md
+keywords:
+  - HumanResources/HRMS
+  - Cost/Paid

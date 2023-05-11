@@ -1,0 +1,14 @@
+id: googleapis.cloudfilestore
+displayName: Google Cloud Filestore
+type: OpenAPI
+version: v1
+description: This is the [Google Cloud Filestore REST API v1](https://cloud.google.com/filestore/docs/reference/rest) OpenAPI specification.
+idlPath: /googleapis.cloudfilestore/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudfilestore/v1/icon.png
+documentationPath: /googleapis.cloudfilestore/v1/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Paid
+  - Vendor/Google
+endpoint:
+  - url: https://file.googleapis.com/

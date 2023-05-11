@@ -1,0 +1,13 @@
+id: apple.appstore
+displayName: Apple App Store
+type: OpenAPI
+version: 1.4.1
+description: This is the [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification. The App Store Connect API enables the automation of actions you take in App Store Connect.
+idlPath: /apple.appstore/1.4.1/openapi.yaml
+thumbnailPath: /apple.appstore/1.4.1/icon.png
+documentationPath: /apple.appstore/1.4.1/readme.md
+keywords:
+  - Lifestyle&Entertainment/AppStore
+  - Cost/Paid
+endpoint:
+  - url: https://api.appstoreconnect.apple.com/

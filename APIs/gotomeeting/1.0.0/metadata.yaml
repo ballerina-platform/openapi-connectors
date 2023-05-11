@@ -1,0 +1,13 @@
+id: gotomeeting
+displayName: GoTo Meeting
+type: OpenAPI
+version: 1.0.0
+description: This is the [GoToMeeting API v1.0](https://developer.goto.com/GoToMeetingV1) OpenAPI specification.
+idlPath: /gotomeeting/1.0.0/openapi.yaml
+thumbnailPath: /gotomeeting/1.0.0/icon.png
+documentationPath: /gotomeeting/1.0.0/readme.md
+keywords:
+  - Communication/VideoConferencing
+  - Cost/Paid
+endpoint:
+  - url: https://api.getgo.com/G2M/rest

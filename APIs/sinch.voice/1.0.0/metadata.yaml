@@ -1,0 +1,24 @@
+id: sinch.voice
+displayName: Sinch Voice
+type: OpenAPI
+version: 1.0.0
+description: This is the [Sinch Voice API v1.0.0](https://www.sinch.com/) OpenAPI specification.  The Calling API exposes calling- and conference-related functionality in the Sinch Voice Platform.
+idlPath: /sinch.voice/1.0.0/openapi.yaml
+thumbnailPath: /sinch.voice/1.0.0/icon.png
+documentationPath: /sinch.voice/1.0.0/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: https://calling.api.sinch.com
+    description: redirected by Sinch to an appropriate region
+  - url: https://calling-use1.api.sinch.com
+    description: United States
+  - url: https://calling-euc1.api.sinch.com
+    description: Europe
+  - url: https://calling-sae1.api.sinch.com
+    description: South America
+  - url: https://calling-apse1.api.sinch.com
+    description: Southeast Asia 1
+  - url: https://calling-apse2.api.sinch.com
+    description: Southeast Asia 2

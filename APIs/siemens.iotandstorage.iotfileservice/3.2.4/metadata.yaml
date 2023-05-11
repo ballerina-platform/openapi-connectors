@@ -1,0 +1,11 @@
+id: siemens.iotandstorage.iotfileservice
+displayName: Siemens IoT And Storage File Service
+type: OpenAPI
+version: 3.2.4
+description: This is the [Siemens IoT File Service API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification. The IoT File API enables storing and retrieving files for asset (entity) instances.
+idlPath: /siemens.iotandstorage.iotfileservice/3.2.4/openapi.yaml
+thumbnailPath: /siemens.iotandstorage.iotfileservice/3.2.4/icon.png
+documentationPath: /siemens.iotandstorage.iotfileservice/3.2.4/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid

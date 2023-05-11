@@ -1,0 +1,1180 @@
+openapi: 3.0.1
+info:
+  title: Identity Management API
+  description: |-
+    This is the [Siemens identity management API](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification.
+    The Identity Management API provides a means form managing users, groups and OAuth clients.<br> The user and group management is based on SCIM (System for Cross-domain Identity Management).<br><br> <i>Note:</i> Unless stated otherwise the Identity Management APIs allow each caller only to act within the context of the tenant to which the caller belong's to.</br>
+    <i>Note2:</i> UIAM stands for User Identity Access Management, since users and providers are separated in system. Therefore this API documentation is related to users generally.
+  version: 3.3.0
+  x-visibility: external
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a (Siemens MindSphere)(https://siemens.mindsphere.io/en) account and obtain tokens by following [this guide](https://developer.mindsphere.io/howto/howto-selfhosted-api-access.html)
+  x-ballerina-display:
+   label: Siemens Platform Core Identity Management
+   iconPath: "icon.png"
+
+tags:
+- name: uiam user
+  description: API for Managing Users in a Tenant
+- name: uiam group
+  description: API for Managing Roles/Groups & Roles/Group Memberships of Users in
+    a Tenant<br><i>Note:</i> Roles and groups are made available under /Groups.<br><i>Reserved
+    displayNames:</i> starting with "mdspiam:subtenant:"
+paths:
+  /Groups:
+    get:
+      tags:
+      - uiam group
+      summary: List all the groups of a tenant.
+      description: List all the groups of a tenant.
+      operationId: listGroups
+      parameters:
+      - name: filter
+        in: query
+        description: 'SCIM filter for searching see [here](http://www.simplecloud.info/specs/draft-scim-api-01.html).
+          The available filter attributes are: id, displayname, created or meta.created,
+          lastmodified or meta.lastmodified, version or meta.version'
+        schema:
+          type: string
+      - name: count
+        in: query
+        description: Number of objects to be returned (defaults to 100)
+        schema:
+          type: number
+          default: 100.0
+      - name: startIndex
+        in: query
+        description: The starting index of the search results when paginated. Index
+          starts with 1.
+        schema:
+          type: number
+          default: 1.0
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroupSearchResults'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.r
+    post:
+      tags:
+      - uiam group
+      summary: Create group
+      description: Create a group.
+      operationId: createGroup
+      requestBody:
+        description: Details of group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimGroupPost'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        400:
+          description: Bad request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        409:
+          description: Conflict
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.c
+      x-codegen-request-body-name: group
+  /Groups/{id}:
+    get:
+      tags:
+      - uiam group
+      summary: Get group
+      description: Get details of a group.<br/>Example path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d
+      operationId: getGroup
+      parameters:
+      - name: id
+        in: path
+        description: Id of group
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.r
+    put:
+      tags:
+      - uiam group
+      summary: Update group.
+      description: Update details of a group. If any field is left empty or is is
+        omitted, it will be null.<br/>Example path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d
+      operationId: updateGroup
+      parameters:
+      - name: id
+        in: path
+        description: Id of group
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimGroupPost'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        400:
+          description: Bad request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.u
+      x-codegen-request-body-name: group
+    delete:
+      tags:
+      - uiam group
+      summary: Delete group
+      description: Delete group and every connection to that group, too.<br/>Example
+        path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d
+      operationId: deleteGroup
+      parameters:
+      - name: id
+        in: path
+        description: Id of the group
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroup'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.d
+  /Groups/{id}/members:
+    get:
+      tags:
+      - uiam group
+      summary: List members of a group
+      description: List the members (both users and groups) of a group.<br/>Example
+        path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d/members
+      operationId: listGroupMembers
+      parameters:
+      - name: id
+        in: path
+        description: Id of group
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroupMemberList'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.r
+    post:
+      tags:
+      - uiam group
+      summary: Add member to a group
+      description: Add new member (either user or group) to an existing group.<br/>Example
+        path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d/members
+      operationId: addMemberToGroup
+      parameters:
+      - name: id
+        in: path
+        description: Id of group
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Details of the new member
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimGroupMember'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroupMember'
+        400:
+          description: Bad request
+          content: {}
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+        409:
+          description: Conflict
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.u
+      x-codegen-request-body-name: member
+  /Groups/{id}/members/{memberId}:
+    delete:
+      tags:
+      - uiam group
+      summary: Delete member from a group
+      description: Delete member (either user or group) from a group.<br/>Example
+        path <b>/api/identitymanagement/v3/Groups/68af46d-e9b8-4t04-5a20-7d557f5da8d/members/e74ff46d-8bb8-4d04-b420-7d557fe86a8d
+      operationId: removeMemberFromGroup
+      parameters:
+      - name: id
+        in: path
+        description: Id of user group
+        required: true
+        schema:
+          type: string
+      - name: memberId
+        in: path
+        description: Id of member
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimGroupMember'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_group_auth:
+        - im.g.u
+  /Users:
+    get:
+      tags:
+      - uiam user
+      summary: List of users of a tenant.
+      description: List of users of a tenant. Please note, in order to request only
+        the list of users (without the information to which group a user belongs)
+        it is recommended to make use of the "attributes" query parameter as follows
+        /Users?attributes=userName,name,meta (this will significantly improve the
+        performance over simply calling /Users).
+      operationId: list
+      parameters:
+      - name: filter
+        in: query
+        description: |
+          "SCIM filter for searching see [here](http://www.simplecloud.info/specs/draft-scim-api-01.html). The available filter attributes are: id, username, email or emails.value, givenname, familyname, active, phonenumber, verified, origin, created or meta.created, lastmodified or meta.lastmodified, version or meta.version, groups.display.
+          </br>
+          <b>Note</b>: <i>groups.display</i> parameter cannot be used in complex filter expression and only <i>eq</i> operator is allowed eg. <i>filter=groups.display eq "MyGroupName"</i>
+        schema:
+          type: string
+      - name: attributes
+        in: query
+        description: Comma separated list of attribute names to be returned, e.g.,
+          userName, name, meta. The attributes parameters does not support the parameter
+          "subtenants".
+        schema:
+          type: string
+      - name: sortBy
+        in: query
+        description: Sorting field name, like email or id
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: Sort order, ascending/descending (defaults to ascending)
+        schema:
+          type: string
+          default: ascending
+      - name: count
+        in: query
+        description: Number of objects to be returned (defaults to 100)
+        schema:
+          type: number
+          default: 100.0
+      - name: startIndex
+        in: query
+        description: The starting index of the search results when paginated. Index
+          starts with 1 (defaults to 1).
+        schema:
+          type: number
+          default: 1.0
+      - name: subtenant
+        in: query
+        description: Filter for subtenant users
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUserResponseSearchResults'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.r
+    post:
+      tags:
+      - uiam user
+      summary: Create user
+      description: 'Create a new user in a tenant.<br/><br/> <b>Note</b>: The ‘subtenants’
+        field is optional. If it is present, the user is considered to be a subtenant
+        user.'
+      operationId: create
+      requestBody:
+        description: Details of user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUserPost'
+        required: true
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUserPostResponse'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+        409:
+          description: Conflict
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.c
+      x-codegen-request-body-name: user
+  /Users/{id}:
+    get:
+      tags:
+      - uiam user
+      summary: Get user
+      description: Get details of a user.<br/>Example path <b>/api/identitymanagement/v3/Users/2f95913-d3d9-4a4a-951a-c21184080cf3
+      operationId: get
+      parameters:
+      - name: id
+        in: path
+        description: Id of user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUserResponse'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.r
+    put:
+      tags:
+      - uiam user
+      summary: Update user
+      description: 'Update details of user.<br/><br/> <b>Note</b>: Username must not
+        be changed. Email address is required and must be equal to the username.<br/>The
+        ‘subtenants’ field is optional. If it is present, the user is considered to
+        be a subtenant user. Upgrading a subtenant user to a tenant user and vice
+        versa is not allowed.<br/>Example path <b>/api/identitymanagement/v3/Users/2f95913-d3d9-4a4a-951a-c21184080cf3'
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        description: Id of user
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: New details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScimUserPut'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUserResponse'
+        401:
+          description: Unauthorized
+          content: {}
+        403:
+          description: Forbidden
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.u
+      x-codegen-request-body-name: user
+    delete:
+      tags:
+      - uiam user
+      summary: Delete user
+      description: Delete user of tenant.<br/> Note that tenant can have user if it
+        purchased at least the <b>simple</b> offering.<br/>Example path <b>/api/identitymanagement/v3/Users/2f95913-d3d9-4a4a-951a-c21184080cf3
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        description: Id of user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScimUserResponse'
+        401:
+          description: Unauthorized
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.d
+  /Users/me:
+    get:
+      tags:
+      - uiam user
+      summary: Get list of groups starting with the prefix "mdsp:" in which the user
+        is a member.
+      description: Get list of groups starting with the prefix "mdsp:" in which the
+        user is a member.
+      operationId: getUserRoles
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        401:
+          description: Unauthorized
+          content: {}
+        404:
+          description: Not Found
+          content: {}
+      security:
+      - im_user_auth:
+        - im.usr.me
+  /provider/oauth/clients/{id}:
+    get:
+      tags:
+      - piam oauth client
+      summary: Get OAuth client details
+      description: |-
+        Get details of OAuth client currently in use.
+        Example path <b>/api/identitymanagement/v3/provider/oauth/clients/assetManagementClient</b>
+      operationId: getProviderOAuthClient
+      parameters:
+      - name: id
+        in: path
+        description: Id of your client. It must be the same as the `client_id` claim
+          in the bearer token.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthClient'
+        400:
+          description: The `id` path parameter is different from the `client_id` claim
+            of the bearer token.
+          content: {}
+        401:
+          description: Unauthorized.
+          content: {}
+        403:
+          description: Insufficient priviledge.
+          content: {}
+        404:
+          description: No client exists with the given client id.
+          content: {}
+        500:
+          description: Internal server error.
+          content: {}
+      security:
+      - im_client_auth:
+        - prv.oc.r
+  /provider/oauth/clients/{id}/secrets:
+    put:
+      tags:
+      - piam oauth client
+      summary: Update OAuth client's secret
+      description: Replaces current client's secret(s) with new one. If a new secret
+        is not provided, it will be automatically generated. If the scope is `prv.oc.sec.ch`,
+        then the client can change it's own secret and needs to provide its old secret.
+        If the scope is `prv.oc.sec.admin`, then it can change arbitrary client secret
+        in the tenant. This is for technical users only.
+      operationId: updateSecret
+      parameters:
+      - name: id
+        in: path
+        description: Client identifier
+        required: true
+        schema:
+          type: string
+      - name: Current-Secret
+        in: header
+        description: Required, unless your have `prv.oc.sec.admin` scope. It is used
+          to make sure the requestor has permission to modify the given client's secret.
+        schema:
+          type: string
+      requestBody:
+        description: Parameters of the new secret.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeSecretRequest'
+        required: true
+      responses:
+        200:
+          description: Secret has been changed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangedSecretResponse'
+        400:
+          description: Invalid request.
+          content: {}
+        401:
+          description: Authorization information is missing or invalid.
+          content: {}
+        403:
+          description: Insufficient priviledge.
+          content: {}
+        404:
+          description: Client id was not found.
+          content: {}
+        500:
+          description: Internal server error.
+          content: {}
+      security:
+      - im_client_auth:
+        - prv.oc.sec.ch
+        - prv.oc.sec.admin
+      x-codegen-request-body-name: newSecretRequest
+    post:
+      tags:
+      - piam oauth client
+      summary: Add new OAuth client's secret
+      description: Introduce new secret. If a new secret is not provided, it will
+        be automatically generated. Up to two client secrets are supported. If the
+        scope is `prv.oc.sec.ch`, then the client can change it's own secret and needs
+        to provide its old secret. If the scope is `prv.oc.sec.admin`, then it can
+        change arbitrary client secret in the tenant. This is for technical users
+        only.
+      operationId: createSecret
+      parameters:
+      - name: id
+        in: path
+        description: Client identifier
+        required: true
+        schema:
+          type: string
+      - name: Current-Secret
+        in: header
+        description: Required, unless your have `prv.oc.sec.admin` scope. It is used
+          to make sure the requestor has permission to modify the given client's secret.
+        schema:
+          type: string
+      requestBody:
+        description: Parameters of the new secret.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeSecretRequest'
+        required: true
+      responses:
+        200:
+          description: Secret has been added successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangedSecretResponse'
+        400:
+          description: Invalid request.
+          content: {}
+        401:
+          description: Authorization information is missing or invalid.
+          content: {}
+        403:
+          description: Insufficient priviledge.
+          content: {}
+        404:
+          description: Client id was not found.
+          content: {}
+        500:
+          description: Internal server error.
+          content: {}
+      security:
+      - im_client_auth:
+        - prv.oc.sec.ch
+        - prv.oc.sec.admin
+      x-codegen-request-body-name: newSecretRequest
+    delete:
+      tags:
+      - piam oauth client
+      summary: Delete old OAuth client's secret
+      description: Delete the old client's secret. If there is only one secret, the
+        request will fail. If the scope is `prv.oc.sec.ch`, then the client can change
+        it's own secret and needs to provide its old secret. If the scope is `prv.oc.sec.admin`,
+        then it can change arbitrary client secret in the tenant. This is for technical
+        users only.
+      operationId: deleteSecret
+      parameters:
+      - name: id
+        in: path
+        description: Client identifier
+        required: true
+        schema:
+          type: string
+      - name: Current-Secret
+        in: header
+        description: Required, unless your have `prv.oc.sec.admin` scope. It is used
+          to make sure the requestor has permission to modify the given client's secret.
+        schema:
+          type: string
+      responses:
+        204:
+          description: Older secret has been removed successfully.
+          content: {}
+        400:
+          description: Invalid request.
+          content: {}
+        401:
+          description: Authorization information is missing or invalid.
+          content: {}
+        403:
+          description: Insufficient priviledge.
+          content: {}
+        404:
+          description: Client id was not found.
+          content: {}
+        500:
+          description: Internal server error.
+          content: {}
+      security:
+      - im_client_auth:
+        - prv.oc.sec.ch
+        - prv.oc.sec.admin
+components:
+  schemas:
+    Email:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: string
+          description: The email address.
+          example: johndoe@example.com
+    Group:
+      required:
+      - display
+      type: object
+      properties:
+        display:
+          type: string
+          example: mdsp:core:StandardUser
+        type:
+          type: string
+          example: DIRECT
+          enum:
+          - DIRECT
+          - INDIRECT
+        value:
+          type: string
+          example: 85300c9f-9616-4596-ac1c-1ca837426d7e
+    NameRequest:
+      description: Name request
+      required:
+      - familyName
+      - givenName
+      type: object
+      properties:
+        familyName:
+          type: string
+          example: Doe
+          description: Family name
+        givenName:
+          description: Given name
+          type: string
+          example: John
+    UserName:
+      maxLength: 60
+      pattern: ^[a-zA-Z0-9._%+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$
+      type: string
+      description: The e-mail address of the user.
+      format: email
+      example: johndoe@example.com
+    NameResponse:
+      type: object
+      properties:
+        familyName:
+          type: string
+          example: Doe
+        givenName:
+          type: string
+          example: John
+    ScimGroupPost:
+      required:
+      - displayName
+      type: object
+      properties:
+        description:
+          type: string
+          description: Human readable description of the group, displayed e.g. when
+            approving scopes
+          example: Very amazing group for amazing people
+        displayName:
+          type: string
+          description: The identifier specified upon creation of the group, unique
+            within the identity zone
+          example: AmazingGroup
+        members:
+          type: array
+          description: If given members array is empty, all members will be deleted.
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+    ScimGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The globally unique group ID
+          example: 68af46d-e9b8-4t04-5a20-7d557f5da8d
+        description:
+          type: string
+          description: Human readable description of the group, displayed e.g. when
+            approving scopes
+          example: Very amazing group for amazing people
+        displayName:
+          type: string
+          description: The identifier specified upon creation of the group, unique
+            within the identity zone
+          example: AmazingGroup
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScimGroupMember'
+        meta:
+          $ref: '#/components/schemas/ScimMeta'
+    ScimGroupMember:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          type: string
+          description: Either "USER" or "GROUP"
+          example: USER
+          enum:
+          - USER
+          - GROUP
+        value:
+          type: string
+          description: Globally unique identifier of the member, either a user ID
+            or another group ID
+          example: e74ff46d-8bb8-4d04-b420-7d557fe86a8d
+    ScimMeta:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          example: 2018-02-08T15:20:43Z
+        lastModified:
+          type: string
+          format: date-time
+          example: 2018-02-08T15:20:43Z
+        version:
+          type: integer
+          format: int32
+          example: 0
+    ScimUserPut:
+      required:
+      - emails
+      - name
+      - userName
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: False means a soft delete.
+        name:
+          $ref: '#/components/schemas/NameRequest'
+        userName:
+          $ref: '#/components/schemas/UserName'
+        emails:
+          description: An array of emails
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        subtenants:
+          description: An array of subtenants.
+          type: array
+          items:
+            $ref: '#/components/schemas/SubtenantId'
+      description: 'Name object can be null. Example: "name": {}. Name attributes
+        are fetched from WebKey during authentication.'
+    ScimUserPost:
+      required:
+      - userName
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: False means a soft delete.
+        name:
+          $ref: '#/components/schemas/NameRequest'
+        userName:
+          $ref: '#/components/schemas/UserName'
+        subtenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubtenantId'
+    ScimUserResponse:
+      type: object
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            example: urn:scim:schemas:core:1.0
+        id:
+          type: string
+          example: 2f95913-d3d9-4a4a-951a-c21184080cf3
+        userName:
+          type: string
+          description: The e-mail address of the user.
+          example: johndoe@example.com
+        name:
+          $ref: '#/components/schemas/NameResponse'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        active:
+          type: boolean
+        meta:
+          $ref: '#/components/schemas/ScimMeta'
+        subtenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubtenantId'
+    ScimUserPostResponse:
+      type: object
+      properties:
+        schemas:
+          type: array
+          items:
+            type: string
+            example: urn:scim:schemas:core:1.0
+        id:
+          type: string
+          example: 2f95913-d3d9-4a4a-951a-c21184080cf3
+        userName:
+          type: string
+          description: The e-mail address of the user.
+          example: johndoe@example.com
+        name:
+          $ref: '#/components/schemas/NameResponse'
+        groups:
+          type: array
+          example: []
+          items:
+            $ref: '#/components/schemas/Group'
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        active:
+          type: boolean
+        meta:
+          $ref: '#/components/schemas/ScimMeta'
+        subtenants:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubtenantId'
+    ScimGroupMemberList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ScimGroupMember'
+    ScimGroupSearchResults:
+      type: object
+      properties:
+        itemsPerPage:
+          type: integer
+          format: int32
+          example: 100
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScimGroup'
+        schemas:
+          type: array
+          items:
+            type: string
+            example: urn:scim:schemas:core:1.0
+        startIndex:
+          type: integer
+          format: int32
+          example: 1
+        totalResults:
+          type: integer
+          format: int32
+          example: 1
+    ScimUserResponseSearchResults:
+      type: object
+      properties:
+        itemsPerPage:
+          type: integer
+          format: int32
+          example: 100
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScimUserResponse'
+        schemas:
+          type: array
+          items:
+            type: string
+        startIndex:
+          type: integer
+          format: int32
+          example: 1
+        totalResults:
+          type: integer
+          format: int32
+          example: 1
+    SubtenantId:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID / name of the subtenant.
+          example: octopus
+      example:
+        id: octopus
+    OAuthClient:
+      type: object
+      properties:
+        clientId:
+          type: string
+          description: Identifier of the client, unique within the identity zone
+        authorizedGrantTypes:
+          type: array
+          description: List of grant types that can be used to obtain a token with
+            this client. Can include authorization_code, password, implicit, and/or
+            client_credentials.
+          example:
+          - client_credentials
+          items:
+            type: string
+        redirectUri:
+          type: array
+          example:
+          - https://coreservicesqa-appname.eu-central-rc.mindapps.io/login
+          items:
+            type: string
+        name:
+          type: string
+          description: A human readable name for the client
+          example: Client for calling assetmanagement
+        authorities:
+          type: array
+          description: Scopes which the client is able to grant when creating a client.
+            Defaults to "uaa.none". E.g. with client_credentials as authorized_grant_types,
+            the client will get the scopes listed here.
+          example:
+          - client.r
+          - client.u
+          items:
+            type: string
+        scopes:
+          type: array
+          description: Scopes allowed for the client. Defaults to "uaa.none". E.g.
+            with *password* as authorized_grant_types the user can get the intersection
+            of his scopes and the scopes listed here.
+          example:
+          - client.c
+          - client.d
+          items:
+            type: string
+        lastModified:
+          type: integer
+          description: Epoch (milliseconds) of the moment the client information was
+            last altered. Not affected by secret changes.
+          format: int64
+          example: 1530798206000
+        secretCreationTimes:
+          $ref: '#/components/schemas/ClientSecretCreationTimes'
+    ClientSecretCreationTimes:
+      type: array
+      description: |-
+        Epoch (milliseconds) of the moment the client secret was introduced. Array contains creation times in ascending order.
+        Most of the time it should contain only one item, except during secret rotation - in that case, two items will be there.
+      example:
+      - 1530798206000
+      - 1550842313000
+      items:
+        type: integer
+        format: int64
+    ChangeSecretRequest:
+      type: object
+      properties:
+        newSecret:
+          type: string
+          description: |
+            New secret for the client. Must meet the following requirements:
+              * alphabet is a-zA-Z0-9
+              * minimum 43 characters
+              * maximum 255 characters
+            If parameter is missing, then new secret will be generated.
+    ChangedSecretResponse:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: the new secret.
+  securitySchemes:
+    im_user_auth:
+      type: oauth2
+      description: User controller based scopes
+      flows:
+        authorizationCode:
+          authorizationUrl: http://UAA_DOMAIN/oauth/authorize
+          tokenUrl: http://UAA_DOMAIN/oauth/token
+          scopes:
+            im.usr.c: Create user
+            im.usr.r: See details of user; List users
+            im.usr.u: Update details of user
+            im.usr.d: Delete user
+            im.usr.me: See the assigened roles of the user
+    im_group_auth:
+      type: oauth2
+      description: Group controller based scopes
+      flows:
+        authorizationCode:
+          authorizationUrl: http://UAA_DOMAIN/oauth/authorize
+          tokenUrl: http://UAA_DOMAIN/oauth/token
+          scopes:
+            im.g.c: UserUaa - Create group
+            im.g.r: UserUaa - See details of group; UserUaa - List groups; UserUaa
+              - List members of group
+            im.g.u: UserUaa - Update details of group; UserUaa - Add member to group;
+              UserUaa - Remove member of group
+            im.g.d: UserUaa - Delete group
+    im_client_auth:
+      type: oauth2
+      description: OAuth client controller based scopes
+      flows:
+        authorizationCode:
+          authorizationUrl: http://UAA_DOMAIN/oauth/authorize
+          tokenUrl: http://UAA_DOMAIN/oauth/token
+          scopes:
+            prv.oc.r: read client informations
+            prv.oc.sec.ch: Change own client secret
+            prv.oc.sec.admin: Change arbitrary client secret

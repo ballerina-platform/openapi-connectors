@@ -1,0 +1,122 @@
+openapi: 3.0.1
+info:
+  title: Monitor API
+  description: >-
+    This is a generated connector for [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification.
+    DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking. 
+    The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization 
+    tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats. 
+    It also provides the flexibility security teams need to customize dashboards and alerts to meet specific business needs.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/web
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.0
+  x-ballerina-init-description: 
+    The connector initialization requires setting the API credentials.
+    Create a [DocuSign account](https://www.docusign.com/) and obtain tokens by following [this guide](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
+  x-ballerina-display:
+    label: DocuSign Monitor
+    iconPath: "icon.png" 
+servers:
+- url: //lens.docusign.net/
+security:
+- Bearer: []
+tags:
+- name: DataSet
+  description: 'Valid value: ''monitor'''
+paths:
+  /api/v{version}/datasets/{dataSetName}/stream:
+    get:
+      tags:
+      - DataSet
+      summary: Gets customer event data for an organization.
+      description: |+
+        Gets customer event data for the
+        organization that owns
+        the integration key.
+
+        Use the `limit` query parameter
+        to limit the number of records
+        returned.
+
+      operationId: Get Datasets By Data Set Name
+      parameters:
+      - name: dataSetName
+        in: path
+        description: The data product to which the endpoints are executed against.
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: path
+        description: |
+          Must be `2`.
+        required: true
+        schema:
+          type: string
+          default: "2.0"
+      - name: cursor
+        in: query
+        description: A location in the DataSet that continues querying data.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of records to return.
+        schema:
+          type: integer
+          format: int32
+          default: 1000
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursoredResult'
+      # x-ds-methodname: getStream
+      # x-ds-method: getStream
+      # x-ds-service: DataSet
+      # x-ds-in-sdk: true
+components:
+  schemas:
+    CursoredResult:
+      type: object
+      properties:
+        endCursor:
+          type: string
+          description: "End cursor"
+        data:
+          type: array
+          description: "Data"
+          items:
+            type: object
+            properties: {}
+      description: "Cursored Result"
+      x-ds-definition-name: CursoredResult
+    # DataSet:
+    #   type: object
+    #   description: ""
+    #   x-ds-category: Monitor
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # Bearer:
+    #   type: oauth2
+    #   description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
+    #     Bearer {token}"'
+    #   name: Authorization
+    #   in: header
+x-ds-categories:
+- name: Monitor
+  summary: The DocuSign Monitor API receives a data feed containing security events
+    for your DocuSign account. This data goes directly to whichever application or
+    website you choose to integrate with DocuSign's eSignature REST API.
+  description: |
+    Each time an event occurs, DocuSign Monitor returns JSON Data Types from a download endpoint. The endpoints include the Monitor UI, SIEMs such as Splunk, and other Customer API endpoints.
+
+    **Note**: Your accounts must exist inside an organization to access this data.

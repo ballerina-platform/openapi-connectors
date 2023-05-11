@@ -1,0 +1,13 @@
+id: dracoon.public
+displayName: Dracoon Public
+type: OpenAPI
+version: 4.28.3
+description: This is the [Dracoon API v4.28.3](https://www.dracoon.com/en/home) OpenAPI specification. REST Web Services for DRACOON. <a title='Developer Information' href='https://developer.dracoon.com'>Developer Information</a>&emsp;&emsp;<a title='Get SDKs on GitHub' href='https://github.com/dracoon'>Get SDKs on GitHub</a><br><br><a title='Terms of service' href='https://www.dracoon.com/terms/general-terms-and-conditions/'>Terms of service</a>
+idlPath: /dracoon.public/4.28.3/openapi.yaml
+thumbnailPath: /dracoon.public/4.28.3/icon.png
+documentationPath: /dracoon.public/4.28.3/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Paid
+endpoint:
+  - url: https://stats.bis.org/api/v1

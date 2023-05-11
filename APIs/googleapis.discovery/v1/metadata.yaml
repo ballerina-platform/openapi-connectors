@@ -1,0 +1,14 @@
+id: googleapis.discovery
+displayName: Google Discovery
+type: OpenAPI
+version: v1
+description: This is the [Google Discovery REST API v1](https://developers.google.com/discovery/v1/reference) OpenAPI specification. Provides information about other Google APIs, such as what APIs are available, the resource, and method details for each API.
+idlPath: /googleapis.discovery/v1/openapi.yaml
+thumbnailPath: /googleapis.discovery/v1/icon.png
+documentationPath: /googleapis.discovery/v1/readme.md
+keywords:
+  - Marketing/Ads&Conversion
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://www.googleapis.com/discovery/v1

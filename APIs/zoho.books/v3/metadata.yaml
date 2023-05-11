@@ -1,0 +1,13 @@
+id: zoho.books
+displayName: Zoho Books
+type: OpenAPI
+version: v3
+description: This is the [Zoho Books API] OpenAPI specification. Zoho Books is online accounting software that manages your finances, automates business workflows, and helps you work collectively across departments.
+idlPath: /zoho.books/v3/openapi.yaml
+thumbnailPath: /zoho.books/v3/icon.png
+documentationPath: /zoho.books/v3/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://books.zoho.com

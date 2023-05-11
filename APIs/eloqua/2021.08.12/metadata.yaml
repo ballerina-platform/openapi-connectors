@@ -1,0 +1,12 @@
+id: eloqua
+displayName: Eloqua
+type: OpenAPI
+version: 2021.08.12
+description: This is the [Eloqua Marketing Cloud Service API Version 2021.08.12](https://www.oracle.com/cx/marketing/automation/) OpenAPI Specification. The Oracle Eloqua Marketing Cloud Service REST APIs enable you to extend the functionality of the product, build Apps, and perform high volume data transfers. Oracle Eloqua is a software as a service (SaaS) platform for marketing automation offered by Oracle that aims to help B2B marketers and organizations manage marketing campaigns and sales lead generation
+idlPath: /eloqua/2021.08.12/openapi.yaml
+thumbnailPath: /eloqua/2021.08.12/icon.png
+documentationPath: /eloqua/2021.08.12/readme.md
+keywords:
+  - Marketing/MarketingAutomation
+  - Cost/Paid
+

@@ -1,0 +1,2636 @@
+openapi: 3.0.1
+info:
+  title: absenceManagement
+  description: >-
+    This is a generated connector for [WorkDay AbsenceManagement REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    The Absence Management service enables applications to access worker information about leaves of absence and time off details.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Absence Management
+    iconPath: "icon.png"
+  version: v1
+# Apply the security globally to all operations
+security:
+  - bearerAuth: [] 
+tags:
+  - name: balances
+    description: Provides the ability to get absence plan and leave of absence balances.
+  - name: workers
+    description: >-
+      Retrieves staffing information about workers. This resource also provides
+      the ability to create, update, delete, and archive check-ins and check-in
+      topics.
+  - name: Prompt Values
+    description: >-
+      Retrieves instances that can be used as values for other endpoint
+      parameters in this service.
+paths:
+  /workers/{id}/leavesOfAbsence/{subresourceID}:
+    get:
+      tags:
+        - workers
+      summary: Retrieves the leave of absence for the specified worker.
+      operationId: retrieveWorkerLeaveOfAbsence
+      description: >-
+        Retrieves information about the leave of absence for the worker with the
+        specified ID.
+
+
+        Secured by: Worker Data: Leave of Absence, Self-Service: Leave of
+        Absence
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/LeavesOfAbsenceView
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /values/leave/status/:
+    get:
+      tags:
+        - Prompt Values
+      summary: >-
+        Retrieves instances that can be used as values for other endpoint
+        parameters in this service.
+      operationId: retrievesInstanceAsValuesForEndpointParameters
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MULTIPLE_INSTANCE_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /balances/{id}:
+    get:
+      tags:
+        - balances
+      summary: >-
+        Retrieves the specified balance of all absence plan and leave of absence
+        types.
+      operationId: retrieveAbsencePlaneBalance
+      description: >-
+        Retrieves the specified balance of all absence plan and leave of absence
+        types for the specified balance ID. You can use a returned id from GET
+        /balances.
+
+
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time
+        Off (Time Off Balances Manager View), Self-Service: Time Off Balances,
+        Worker Data: Leave of Absence, Self-Service: Leave of Absence
+        Entitlements
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/AbsenceBalanceView
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /values/timeOff/status/:
+    get:
+      tags:
+        - Prompt Values
+      summary: >-
+        Retrieves instances that can be used as values for other endpoint
+        parameters in this service.
+      operationId: retrievesTimeOffInstancesForEndpointParameters
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/MULTIPLE_INSTANCE_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/eligibleAbsenceTypes:
+    get:
+      tags:
+        - workers
+      summary: >-
+        Retrieves a collection of eligible absence types for the specified
+        worker.
+      operationId: retrievesCollectionOfAbsenceTypes
+      description: >-
+        Retrieves all the eligible absence types for the specified worker ID for
+        a category type. If you don't specify a query parameter, this will get
+        all time off types, absence tables, and leave types a worker is eligible
+        for.
+
+
+        Specify the category to filter the result based on absence type.
+
+
+        Secured by: Request Leave of Absence (REST Service), Request Time Off
+        (REST Service)
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: category
+          in: query
+          description: |-
+            The Workday ID of the absence type category. Valid values:
+            * Leave of Absence Type: 17bd6531c90c100016d74f8dfae007d0 
+
+            * Absence Table: 17bd6531c90c100016da3f5b554007d2
+
+            * Time Off: 17bd6531c90c100016d4b06f2b8a07ce
+          schema:
+            type: string
+        - name: effective
+          in: query
+          description: >-
+            The effective date for which eligible absence types need to be
+            returned for the worker.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/EligibleAbsenceTypeView
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/leavesOfAbsence:
+    get:
+      tags:
+        - workers
+      summary: Retrieves the Leaves Of Absence for a specified worker ID.
+      operationId: retrievesLeavesOfAbsenceByWorkerID
+      description: >-
+        Retrieves Leaves Of Absence for a specified worker ID for a date range,
+        status, and type. If you don't specify query parameters, this method
+        returns all Leaves Of Absence.
+
+
+        If you specify a date range, this method returns Leaves Of Absence
+        events based on First Day Of Leave, Estimated Last Day Of Leave, and
+        Actual Last Day Of Leave. The Actual Last Day Of Leave is used only if
+        the Request Return from Leave business process is completed, else the
+        Actual Last Day Of Leave is assumed to be blank. In particular, this
+        method:
+
+
+        * Returns an event if the Actual Last Day Of Leave is blank and the
+        Estimated Last Day Of Leave is in the past but before the fromDate or
+        toDate parameters.
+
+
+        * Does not return an event if the Actual Last Day Of Leave is blank and
+        the Estimated Last Day Of Leave is in the future but before the fromDate
+        or toDate parameters.
+
+
+        Secured by: Worker Data: Leave of Absence, Self-Service: Leave of
+        Absence
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: The start of a date range filter using the yyyy-mm-dd format.
+          schema:
+            type: string
+            format: date
+        - name: leaveType
+          in: query
+          description: >-
+            The Workday ID of the type of Leave Of Absence. You can specify
+            multiple leaveType query parameters.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: >-
+            The Workday ID of the status of the Leave Of Absence. The valid
+            statuses are Successfully Completed, In Progress, Canceled,
+            Rescinded, and Process Terminated. To get the Workday ID of a
+            status, call the GET /values/leave/status endpoint. You can specify
+            multiple status query parameters.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: toDate
+          in: query
+          description: The end of a date range filter using the yyyy-mm-dd format.
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/LeavesOfAbsenceView
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /balances:
+    get:
+      tags:
+        - balances
+      summary: >-
+        Retrieves the balance of all absence plan and leave of absence type for
+        the specified worker ID.
+      operationId: retrievesBalanacesAllAbasencePalnbyWorkerID
+      description: >-
+        Retrieves the balance of all absence plan and leave of absence type for
+        the specified worker ID.
+
+        You can filter the balances by category, effective date, and worker.
+
+        Specify category to filter the result based on absence type.
+
+
+        There are 3 category types:
+
+
+        * Leave of Absence Type, WID=17bd6531c90c100016d74f8dfae007d0 
+
+
+        * Absence Table, WID=17bd6531c90c100016da3f5b554007d2
+
+
+        * Time Off, WID=7bd6531c90c100016d4b06f2b8a07ce
+
+
+        Secured by: Worker Data: Time Off (Time Off Balances), Worker Data: Time
+        Off (Time Off Balances Manager View), Self-Service: Time Off Balances,
+        Worker Data: Leave of Absence, Self-Service: Leave of Absence
+        Entitlements
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: category
+          in: query
+          description: The Workday ID of the Time Off, Leave Type, or Absence Table.
+          schema:
+            type: string
+        - name: effective
+          in: query
+          description: >-
+            Absence balances as of the specified date using the yyyy-mm-dd
+            format.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: worker
+          in: query
+          description: The Workday ID of the worker for which balances are returned.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/AbsenceBalanceView
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/requestTimeOff:
+    post:
+      tags:
+        - workers
+      summary: >-
+        Creates a time off request for the specified worker ID and initiates the
+        business process.
+      operationId: createsTimeOffRequest
+      description: >-
+        Creates a time off request for the specified worker ID and initiates the
+        Request Time Off business process. 
+
+
+        In the request body, if using business process parameters, specify at
+        least the required field: action {id}. You must specify the submit
+        action WID: d9e4223e446c11de98360015c5e6daf6
+
+
+        Secured by: Request Time Off (REST Service)
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request payload
+        content:
+          'application/json':
+            schema:
+              $ref: >-
+                #/components/schemas/TimeOffRequestEventView
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/TimeOffRequestEventView
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+            Error Code | Validation Message
+
+            --- | ---
+
+            A1011 | You don't have a sufficient balance or aren't eligible to
+            satisfy the request for [type] as of [date].
+
+            A1023 | [absence REST API increment warning time off error message]
+
+            A1014 | [absence REST API min warning time off error message]
+
+            A1021 | [REST Validation Message - Time Off Reason Not Valid for
+            Time Off]
+
+            A1028 | Some of the start and end times you're trying to submit
+            overlap with existing time blocks. Edit your start and end times so
+            that they don't overlap.
+
+            A221 | The attachment category isn't enabled for this business
+            process.
+
+            A1022 | [absence REST API max critical time off error message]
+
+            A205 | You don't have the security permission on this business
+            process to add attachments.
+
+            A1009 | Type is required and must have a value.
+
+            A178 | The business process has already been initiated.
+
+            A1017 | Daily Quantity is required and must have a value.
+
+            A1015 | [absence REST API max unpaid critical time off error
+            message]
+
+            A1034 | Requires Start Time
+
+            A1038 | Date is required and must have a value.
+
+            A165 | The attachment category is invalid for this business process.
+
+            A1033 | [REST Validation Message - Invalid Days Included]
+
+            A1016 | Enter an hourly or daily quantity that is greater than zero.
+
+            A228 | [customer event validation message]
+
+            A200 | Commenting isn't enabled for this business process.
+
+            A1027 | [absence REST API consecutive day maximum critical time off
+            error message]
+
+            A1019 | [absence REST API multiple time offs warning time off error
+            message]
+
+            A219 | The business process action isn't valid.
+
+            A1040 | [absence REST API max warning time off error message]
+
+            A206 | Attachments are not enabled for this business process.
+
+            A1008 | Some of the start and end times you're trying to submit
+            overlap with start and end times for an existing time off request on
+            the same date(s). Edit your start and end times so that they don't
+            overlap.
+
+            A1050 | [REST Validation Message - Position Needed for Position
+            Based/Required Time Off]
+
+            A1007 | [absence REST API consecutive day minimum warning time off
+            error message]
+
+            A1041 | [REST Validation Message - Worker Not Eligible for Time Off
+            Type]
+
+            A1032 | You can't have multiple entries for the same Time Off Type
+            for a given date.
+
+            A1026 | [REST Validation Message - Position Not Eligible for Time
+            Off Type]
+
+            A1012 | Requires End Time
+
+            A1037 | [absence REST API beyond last override warning time off
+            error message]
+
+            A1044 | When the Time Off Type is an Absence Table, ensure that the
+            Position field is blank.
+
+            A1039 | [absence REST API consecutive day maximum warning time off
+            error message]
+
+            A1048 | Your request includes days that aren't allowed for [Time Off
+            Type]. To include the invalid days, provide a different Time Off
+            Type. Otherwise, enter valid dates.
+
+            A1043 | [REST Validation Message - Time Off Reason Not Enabled for
+            Time Off]
+
+            A1042 | [absence REST API multiple time offs critical time off error
+            message]
+
+            A1025 | [absence REST API consecutive day minimum critical time off
+            error message]
+
+            A1052 | [absence REST API beyond last override critical time off
+            error message]
+
+            A1030 | [REST Validation Message - Position Provided for Worker
+            Based Time Off]
+
+            A1029 | Enter an End Time that is after the Start Time.
+
+            A1047 | The dates for the Start and End fields must match the Date
+            field: [date].
+
+            A1020 | The request can't have a Total Hourly or Daily Quantity of
+            zero.
+
+            A1046 | Start Time and End Time are optional for [Time Off Type].
+            Enter both values or neither.
+
+            A175 | The file is required.
+
+            A1006 | [absence REST API max unpaid warning time off error message]
+
+            A1018 | [absence REST API increment critical time off error message]
+
+            A1045 | [absence REST API min critical time off error message]
+
+            A211 | The attachment category is required.
+
+            A1036 | [REST Validation Message - Time Off Reason Required But Not
+            Provided]
+
+            A207 | You've exceeded the attachment file size limit of [tenant
+            setup attachment limit]KB.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: timeOffRequestEventView
+  /workers/{id}/validTimeOffDates/{subresourceID}:
+    get:
+      tags:
+        - workers
+      summary: Retrieves the valid time off dates for the specified worker.
+      operationId: retrievesValidTimeOffDates
+      description: >-
+        Retrieves information about the valid time off dates for the worker with
+        the specified ID.
+
+
+        Secured by: Request Time Off (REST Service)
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/DailyQuantityView
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}:
+    get:
+      tags:
+        - workers
+      summary: Retrieves a collection of workers and current staffing information.
+      operationId: retrievesWorkersInfo
+      description: >-
+        Retrieves a collection of workers and current staffing information.
+
+
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current
+        Staffing Information
+
+
+        Scope: Staffing
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/WorkerData
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/timeOffDetails:
+    get:
+      tags:
+        - workers
+      summary: Retrieves a collection of time off details for the specified worker.
+      operationId: retrievesWorkerTimeOffDetails
+      description: >-
+        Retrieves the Time Off Entries for the specified worker ID. You can
+        filter by date range, status, and type. If you don't specify query
+        parameters, this method returns all Time Off Entries.
+
+
+        Secured by: Worker Data: Time Off (Time Off), Worker Data: Time Off
+        (Time Off Manager View), Self-Service: Time Off
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: fromDate
+          in: query
+          description: The start of a date range filter using the yyyy-mm-dd format.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: status
+          in: query
+          description: >-
+            The Workday ID of the time off status. You can specify multiple
+            status query parameters. This method returns the most recent
+            instance of a time off entry based on this query parameter. 
+
+
+            The valid statuses are Approved, Submitted, Not Submitted, and Sent
+            Back. This method does not return Canceled and Denied Time Off
+            Entries. To get the Workday ID of a status, call the GET
+            /values/timeOff/status endpoint. You can specify multiple status
+            query parameters.
+
+
+            Example:
+
+            An approved Time Off Entry for Vacation 8 hours was corrected to
+            Vacation 4 hours and is not in submitted status. If the query
+            parameter is status = approved, the Time Off Entry of Vacation, 8
+            hours, Approved is returned. If query parameter status = submitted,
+            the Time Off Entry of Vacation, 4 hours, Submitted is returned. If
+            no query parameter is passed, the Time Off Entry of Vacation, 4
+            hours, Submitted is returned.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: timeOffType
+          in: query
+          description: >-
+            The Workday ID of the Time Off Type. You can specify multiple
+            timeOffType query parameters.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: toDate
+          in: query
+          description: The end of a date range filter using the yyyy-mm-dd format.
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/TimeOffDetailsView
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/validTimeOffDates:
+    get:
+      tags:
+        - workers
+      summary: >-
+        Retrieves the valid time off dates for the specified worker ID for the
+        given dates.
+      operationId: retrievesTimeOffDateByWorkerId
+      description: >-
+        Retrieves the valid time off dates for a specified worker ID for any
+        given dates. You can specify Position, Time Off Type, and Dates in the
+        query parameter. The date query parameter supports multiple dates.
+
+
+        Secured by: Request Time Off (REST Service)
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: >-
+            The dates being requested for which to validate using the yyyy-mm-dd
+            format.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: position
+          in: query
+          description: The Workday ID of the Position.
+          schema:
+            type: string
+        - name: timeOff
+          in: query
+          description: The Workday ID of the Time Off.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/DailyQuantityView
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers:
+    get:
+      tags:
+        - workers
+      summary: Retrieves a collection of workers and current staffing information.
+      operationId: retrievesStaffAndWorkersInfo
+      description: >-
+        Retrieves a collection of workers and current staffing information.
+
+
+        Secured by: Worker Data: Public Worker Reports, Self-Service: Current
+        Staffing Information
+
+
+        Scope: Staffing
+      parameters:
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: search
+          in: query
+          description: >-
+            Searches workers by name. The search is case-insensitive. You can
+            include space-delimited search strings for an OR search.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/WorkerData
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /workers/{id}/eligibleAbsenceTypes/{subresourceID}:
+    get:
+      tags:
+        - workers
+      summary: Retrieves the eligible absence type for the specified worker.
+      operationId: retrievesWorkerEligibleAbsenceType
+      description: >-
+        Retrieves information about an eligible absence type for the worker with
+        the specified ID.
+
+
+        Secured by: Request Leave of Absence (REST Service), Request Time Off
+        (REST Service)
+
+
+        Scope: Time Off and Leave
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/EligibleAbsenceTypeView
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+        - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+        - type: object
+          properties:
+            errors:
+              type: array
+              description: An array of validation errors
+              items:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    FACETS_MODEL_REFERENCE:
+      type: array
+      items:
+        type: object
+        properties:
+          descriptor:
+            type: string
+            description: A description of the facet
+          facetParameter:
+            type: string
+            description: The alias used to select the facet
+          values:
+            type: array
+            description: the facet values
+            items:
+              required:
+                - id
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: The number of instances returned by this facet
+                  format: int32
+                id:
+                  pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+                  type: string
+                  description: wid / id / reference id
+                descriptor:
+                  type: string
+                  description: A description of the facet
+                href:
+                  type: string
+                  description: A link to the instance
+                  readOnly: true
+        description: This object represents the possible facets for this resource
+        readOnly: true
+    MULTIPLE_INSTANCE_MODEL_REFERENCE:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+    Unit:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Position:
+      allOf:
+        - $ref: '#/components/schemas/PositionView'
+        - type: object
+    AbsencePlan:
+      allOf:
+        - $ref: >-
+            #/components/schemas/AbsenceContainerViewForBalance
+        - type: object
+    Category:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Worker:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    AbsenceBalanceView:
+      allOf:
+        - type: object
+          properties:
+            unit:
+              $ref: '#/components/schemas/Unit'
+            position:
+              $ref: '#/components/schemas/Position'
+            quantity:
+              type: integer
+              description: The balance for the time off, absence table or leave type.
+              example: 627296905
+              x-workday-type: Numeric
+            absencePlan:
+              $ref: >-
+                #/components/schemas/AbsencePlan
+            dateOfFirstAbsence:
+              type: string
+              description: >-
+                The first day of leave for the corresponding leave type for
+                which the balance is returned.
+              format: date
+              x-workday-type: Date
+            effectiveDate:
+              type: string
+              description: The date for which the balance is returned.
+              format: date
+              x-workday-type: Date
+            category:
+              $ref: '#/components/schemas/Category'
+            worker:
+              $ref: '#/components/schemas/Worker'
+    PrimaryJob:
+      allOf:
+        - $ref: >-
+            #/components/schemas/JobDataForWorker
+        - type: object
+    Person:
+      allOf:
+        - $ref: '#/components/schemas/PersonDataView'
+        - type: object
+    WorkerData:
+      allOf:
+        - type: object
+          properties:
+            primaryJob:
+              $ref: '#/components/schemas/PrimaryJob'
+            person:
+              $ref: '#/components/schemas/Person'
+            additionalJobs:
+              type: array
+              description: The employee’s additional jobs and international assignments.
+              items:
+                $ref: >-
+                  #/components/schemas/JobDataForWorker
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    BusinessProcessParameters:
+      allOf:
+        - $ref: >-
+            #/components/schemas/BusinessProcessParameters2
+        - type: object
+    TimeOffRequestEventView:
+      allOf:
+        - type: object
+          properties:
+            businessProcessParameters:
+              $ref: >-
+                #/components/schemas/BusinessProcessParameters
+            days:
+              type: array
+              description: Time Off Entries
+              items:
+                $ref: >-
+                  #/components/schemas/TimeOffRequestEntryView
+              x-workday-type: Multi-instance
+    UnitTimeView:
+      allOf:
+        - $ref: '#/components/schemas/UnitOfTimeView'
+        - type: object
+    DailyQuantityView:
+      allOf:
+        - type: object
+          properties:
+            date:
+              type: string
+              description: The dates of the time off entry.
+              format: date
+              x-workday-type: Date
+            unit:
+              $ref: '#/components/schemas/UnitTimeView'
+            dailyDefaultQuantity:
+              type: integer
+              description: >-
+                The daily default quantity configured on the Time Off Plan or as
+                an override on the Time Off.
+              example: 111629
+              x-workday-type: Numeric
+    Reason:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    AdditionalFields:
+      allOf:
+        - $ref: >-
+            #/components/schemas/AdditionalFieldsLeavesOfAbsenceView
+        - type: object
+    LeaveImpactFields:
+      allOf:
+        - $ref: >-
+            #/components/schemas/LeaveImpactFieldsLeavesOfAbsenceView
+        - type: object
+    PositionInstanceModelRef:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    PriorLeaveEvent:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Status:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    LeaveType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    LeavesOfAbsenceView:
+      allOf:
+        - type: object
+          properties:
+            businessProcessStepStatus:
+              type: string
+              description: The Business Process Step Status of the Leave Of Absence.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            reason:
+              $ref: '#/components/schemas/Reason'
+            additionalFields:
+              $ref: >-
+                #/components/schemas/AdditionalFields
+            actualLastDayOfLeave:
+              type: string
+              description: >-
+                The Actual Last Day Of Work for the Leave Of Absence using the
+                yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            latestLeaveComment:
+              type: string
+              description: The Latest Leave Comment of the Leave Of Absence.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            worker:
+              $ref: '#/components/schemas/Worker'
+            estimatedLastDayOfLeave:
+              type: string
+              description: >-
+                The Estimated Last Day Of Leave of the Leave Of Absence using
+                the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            lastDayOfWork:
+              type: string
+              description: >-
+                The Last Day Of Work of the Leave Of Absence using the
+                yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            leaveImpactFields:
+              $ref: >-
+                #/components/schemas/LeaveImpactFields
+            position:
+              $ref: '#/components/schemas/PositionInstanceModelRef'
+            priorLeaveEvent:
+              $ref: >-
+                #/components/schemas/PriorLeaveEvent
+            status:
+              $ref: '#/components/schemas/Status'
+            firstDayOfLeave:
+              type: string
+              description: >-
+                The First Day Of Leave of the Leave Of Absence using the
+                yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            leaveType:
+              $ref: '#/components/schemas/LeaveType'
+            id:
+              type: string
+              description: Id of the instance
+    TimeOffType:
+      allOf:
+        - $ref: >-
+            #/components/schemas/CoordinatedTimeOffTypeView
+        - type: object
+    TimeOffDetailsView:
+      allOf:
+        - type: object
+          properties:
+            position:
+              $ref: '#/components/schemas/PositionInstanceModelRef'
+            comment:
+              type: string
+              description: The comment on the time off entry.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            reason:
+              $ref: '#/components/schemas/Reason'
+            timeOffType:
+              $ref: >-
+                #/components/schemas/TimeOffType
+            quantity:
+              type: integer
+              description: >-
+                The Quantity of the Time Off Entry in the units specified by the
+                Unit response field.
+              example: 1040828873
+              x-workday-type: Numeric
+            status:
+              $ref: '#/components/schemas/Status'
+            date:
+              type: string
+              description: The Date of the Time Off Entry using the format yyyy-mm-dd.
+              format: date
+              x-workday-type: Date
+            unit:
+              $ref: '#/components/schemas/Unit'
+            worker:
+              $ref: '#/components/schemas/Worker'
+    UnitOfTime:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    AbsenceTypeGroup:
+      allOf:
+        - $ref: >-
+            #/components/schemas/AbsenceTypeGroupView
+        - type: object
+    EntryOption:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    EligibleAbsenceTypeView:
+      allOf:
+        - type: object
+          properties:
+            unitOfTime:
+              $ref: '#/components/schemas/UnitOfTime'
+            positionBased:
+              type: boolean
+              description: If true, the time off type or leave type is position based.
+              example: true
+              x-workday-type: Boolean
+            position:
+              type: array
+              description: The position associated to the time off or leave of absence.
+              items:
+                $ref: >-
+                  #/components/schemas/PositionView
+              x-workday-type: Multi-instance
+            absenceReasons:
+              type: array
+              description: The reason for the time off, absence table, or leave of absence.
+              items:
+                $ref: >-
+                  #/components/schemas/AbsenceReasonView
+              x-workday-type: Multi-instance
+            reasonRequired:
+              type: boolean
+              description: >-
+                If true, the time off type, absence table, or leave type
+                requires a reason.
+              example: true
+              x-workday-type: Boolean
+            displayStartAndEndTime:
+              type: boolean
+              description: If true, the time off type has start and end times enabled.
+              example: true
+              x-workday-type: Boolean
+            id:
+              maxLength: 36
+              type: string
+              description: Workday ID
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            category:
+              $ref: '#/components/schemas/Category'
+            additionalFields:
+              type: array
+              description: The additional field associated with a leave of absence type.
+              items:
+                $ref: >-
+                  #/components/schemas/EligibleAbsenceTypesAdditionalFieldView
+              x-workday-type: Multi-instance
+            dailyDefaultQuantity:
+              type: integer
+              description: Daily default quantity
+              example: 101603
+              x-workday-type: Numeric
+            absenceTypeGroup:
+              $ref: >-
+                #/components/schemas/AbsenceTypeGroup
+            calculateQuantityBasedOnStartAndEndTime:
+              type: boolean
+              description: >-
+                If true, the quantity is based on the start and end times for
+                the time off type.
+              example: true
+              x-workday-type: Boolean
+            descriptor:
+              type: string
+              description: Descriptor for Coordinated Absence Type
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            entryOption:
+              $ref: >-
+                #/components/schemas/EntryOption
+            startAndEndTimeRequired:
+              type: boolean
+              description: >-
+                If true, the start and end times are required for the time off
+                type.
+              example: true
+              x-workday-type: Boolean
+    AbsenceTypeGroupView:
+      allOf:
+        - type: object
+          properties:
+            displayOrder:
+              type: string
+              description: Absence Type Group display order.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    SupervisoryOrganization:
+      allOf:
+        - $ref: >-
+            #/components/schemas/SupervisoryOrganizationJobView
+        - type: object
+    JobType:
+      allOf:
+        - $ref: '#/components/schemas/JobTypeData'
+        - type: object
+    JobProfile:
+      allOf:
+        - $ref: >-
+            #/components/schemas/JobProfileJobView
+        - type: object
+    Location:
+      allOf:
+        - $ref: >-
+            #/components/schemas/LocationDataJobView
+        - type: object
+    WorkSpace:
+      allOf:
+        - $ref: >-
+            #/components/schemas/JobWorkspaceData
+        - type: object
+    JobDataForWorker:
+      allOf:
+        - type: object
+          properties:
+            businessTitle:
+              type: string
+              description: The business title for the position.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            supervisoryOrganization:
+              $ref: >-
+                #/components/schemas/SupervisoryOrganization
+            jobType:
+              $ref: '#/components/schemas/JobType'
+            jobProfile:
+              $ref: '#/components/schemas/JobProfile'
+            location:
+              $ref: '#/components/schemas/Location'
+            workSpace:
+              $ref: '#/components/schemas/WorkSpace'
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    PositionView:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    JobTypeData:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    PersonInstanceModelRef:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Comments:
+      allOf:
+        - type: object
+          properties:
+            commentDate:
+              type: string
+              description: Gives the moment at which the instance was originally created.
+              format: date
+              x-workday-type: Date
+            comment:
+              type: string
+              description: Comment
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            person:
+              $ref: '#/components/schemas/PersonInstanceModelRef'
+    AbsenceContainerViewForBalance:
+      allOf:
+        - type: object
+          properties:
+            timeoffs:
+              type: string
+              description: The Time Off name for which the balance is returned.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            descriptor:
+              type: string
+              description: >-
+                Descriptor for Absence Container based on Calendar Display
+                Option
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            absenceTable:
+              type: array
+              description: Returns the Absence Table for the Absence Balance.
+              items:
+                $ref: >-
+                  #/components/schemas/AbsenceTable
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: ID for Absence Container.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+    UnitOfTimeView:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    CountryDataForLocationData:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    TimeOffRequestAbsenceTypeView:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    AbsenceTable:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    PersonDataView:
+      allOf:
+        - type: object
+          properties:
+            phone:
+              type: string
+              description: Returns the primary public work phone number for the worker.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            email:
+              type: string
+              description: Returns the public primary work email address for the worker.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    SupervisoryOrganizationJobView:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    OverallBusinessProcess:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+      x-readOnly: true
+    Action:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    For_:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+      x-readOnly: true
+    BusinessProcessParameters2:
+      allOf:
+        - required:
+            - action
+          type: object
+          properties:
+            overallBusinessProcess:
+              $ref: >-
+                #/components/schemas/OverallBusinessProcess
+            action:
+              $ref: '#/components/schemas/Action'
+            comment:
+              type: string
+              description: Returns a null.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            comments:
+              type: array
+              description: Returns the comments for the current business process.
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/Comments'
+              x-workday-type: Multi-instance
+            warningValidations:
+              type: string
+              description: Warning message for an action event triggered by a condition.
+              readOnly: true
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            attachments:
+              type: array
+              description: >-
+                Returns attachments associated with this business process that
+                are uploaded from the toolbar and are accessible to the
+                processing person. Returns blank if either of these conditions
+                are not met.
+              items:
+                $ref: >-
+                  #/components/schemas/EventAttachmentsForToolbar
+              x-workday-type: Multi-instance
+            overallStatus:
+              type: string
+              description: >-
+                The current status of the business process.  For example:
+                Successfully Completed, Denied, Terminated.
+              readOnly: true
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            criticalValidations:
+              type: string
+              description: Validation message for an action event triggered by a condition.
+              readOnly: true
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            for:
+              $ref: '#/components/schemas/For_'
+    JobProfileJobView:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    EligibleAbsenceTypesAdditionalFieldView:
+      allOf:
+        - type: object
+          properties:
+            required:
+              type: boolean
+              description: True if Leave Additional Fields are required.
+              example: true
+              x-workday-type: Boolean
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    AbsenceReasonView:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    TimeOffTypeAbsenceTypeView:
+      allOf:
+        - $ref: >-
+            #/components/schemas/TimeOffRequestAbsenceTypeView
+        - type: object
+    TimeOffRequestEntryView:
+      allOf:
+        - type: object
+          properties:
+            start:
+              type: string
+              description: The start time of the time off entry.
+              format: date
+              x-workday-type: Date
+            date:
+              type: string
+              description: Time Off Entry date
+              format: date
+              x-workday-type: Date
+            position:
+              $ref: '#/components/schemas/Position'
+            end:
+              type: string
+              description: The end time of the time off entry.
+              format: date
+              x-workday-type: Date
+            reason:
+              $ref: '#/components/schemas/Reason'
+            dailyQuantity:
+              type: integer
+              description: Time Off Entry hours
+              example: 920
+              x-workday-type: Numeric
+            timeOffType:
+              $ref: >-
+                #/components/schemas/TimeOffTypeAbsenceTypeView
+            comment:
+              type: string
+              description: The comment on the time off entry.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    LeaveImpactFieldsLeavesOfAbsenceView:
+      allOf:
+        - type: object
+          properties:
+            payrollEffect:
+              type: boolean
+              description: If true, the Leave Of Absence event has an effect on payroll.
+              example: true
+              x-workday-type: Boolean
+            professionalLeaveEffect:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence event has a Professional Leave
+                Effect leave impact field.
+              example: true
+              x-workday-type: Boolean
+            stockVestingEffect:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence event has an effect on the
+                ~worker's~ stock vesting schedule. It may require a change to
+                the vesting schedule of any stock grants that the ~worker~
+                holds.
+              example: true
+              x-workday-type: Boolean
+            schedulingEffect:
+              type: boolean
+              description: "True if the leave event is for a leave type that is configured to allow a\_~worker~\_to be scheduled to work when placed on leave."
+              example: true
+              x-workday-type: Boolean
+            inactivateWorker:
+              type: boolean
+              description: >-
+                If true, the ~worker~ on leave will be inactivated in the
+                Workday system. If the leave type is position-based, the
+                ~worker~ will not be inactive unless the ~worker~ is on leave
+                for all positions with this effect.
+              example: true
+              x-workday-type: Boolean
+            sabbaticalEffect:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence event has an effect on sabbatical
+                eligibility. It may require a manual change to a ~worker's~
+                sabbatical records.
+              example: true
+              x-workday-type: Boolean
+            continuousServiceAccrualEffect:
+              type: boolean
+              description: >-
+                If true, it has an impact on the ~worker's~ service accrual. It
+                may need a manual change to the ~worker's~ service accrual.
+              example: true
+              x-workday-type: Boolean
+            benefitEffect:
+              type: boolean
+              description: If true, it may require a change to the ~worker's~ benefits.
+              example: true
+              x-workday-type: Boolean
+            talentEffect:
+              type: boolean
+              description: >-
+                If true, Workday removes the ~worker~ on this type of leave from
+                the ~Worker~ prompt of select ~worker~ reviews and feedback in
+                talent.
+              example: true
+              x-workday-type: Boolean
+            tenureEffect:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence event has an effect on tenure
+                eligibility. It may require a manual change to a ~worker's~
+                tenure records.
+              example: true
+              x-workday-type: Boolean
+            absenceAccrualEffect:
+              type: boolean
+              description: If true, it impacts the ~worker's~ absence accrual.
+              example: true
+              x-workday-type: Boolean
+    JobWorkspaceData:
+      allOf:
+        - type: object
+          properties:
+            locationChain:
+              type: string
+              description: Location chain including bread crumbs for location.
+              example: Sample Location Chain
+              x-workday-type: Text
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    ContentType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    UploadedBy:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+      x-readOnly: true
+    EventAttachmentsForToolbar:
+      allOf:
+        - type: object
+          properties:
+            description:
+              type: string
+              description: Event attachment description
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            contentType:
+              $ref: >-
+                #/components/schemas/ContentType
+            fileLength:
+              type: integer
+              description: File length of the attachment
+              example: 881481976
+              x-workday-type: Numeric
+            uploadDate:
+              type: string
+              description: Returns Date the Business Process Attachment was updated.
+              format: date
+              readOnly: true
+              x-workday-type: Date
+            fileName:
+              maxLength: 255
+              type: string
+              description: File name of the attachment
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            uploadedBy:
+              $ref: '#/components/schemas/UploadedBy'
+            category:
+              $ref: '#/components/schemas/Category'
+            id:
+              type: string
+              description: Id of the instance
+    Country:
+      allOf:
+        - $ref: >-
+            #/components/schemas/CountryDataForLocationData
+        - type: object
+    LocationDataJobView:
+      allOf:
+        - type: object
+          properties:
+            country:
+              $ref: '#/components/schemas/Country'
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    CoordinatedTimeOffTypeView:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: >-
+                The Time Off Type Name or Absence Table Name for Coordinated
+                Time Off Entry.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+    Dependent:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    AdditionalFieldsLeavesOfAbsenceView:
+      allOf:
+        - type: object
+          properties:
+            stillbirthBabyDeceased:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence indicates a stillbirth or baby
+                deceased, which may impact ~worker's~ leave entitlements.
+              example: true
+              x-workday-type: Boolean
+            stopPaymentDate:
+              type: string
+              description: >-
+                The Stop Payment Date additional field for the Leave Of Absence
+                using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            singleParentIndicator:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence indicates a single parent, which
+                may impact ~worker's~ leave entitlements.
+              example: true
+              x-workday-type: Boolean
+            childsDateOfDeath:
+              type: string
+              description: >-
+                The Child's Date Of Death additional field for the Leave Of
+                Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            multipleChildIndicator:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence indicates multiple children, which
+                may impact ~worker's~ leave entitlements.
+              example: true
+              x-workday-type: Boolean
+            locationDuringLeave:
+              type: string
+              description: >-
+                The Location During Leave text additional field for the Leave Of
+                Absence.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            numberOfBabiesAdoptedChildren:
+              type: integer
+              description: >-
+                The Number Of Babies Or Adopted Children numerical additional
+                field for the Leave Of Absence.
+              example: 26
+              x-workday-type: Numeric
+            dateChildEnteredCountry:
+              type: string
+              description: >-
+                The Date Child Entered ~Country~ additional field for the Leave
+                Of Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            caesareanSectionBirth:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence indicates a caesarean section
+                birth, which may impact ~worker's~ leave entitlements.
+              example: true
+              x-workday-type: Boolean
+            dateOfRecall:
+              type: string
+              description: >-
+                The Date Of Recall additional field for the Leave Of Absence
+                using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            expectedDueDate:
+              type: string
+              description: >-
+                The Expected Due Date additional field for the Leave Of Absence
+                using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            lastDateForWhichPaid:
+              type: string
+              description: >-
+                The Last Date For Which Paid additional field for the Leave Of
+                Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            childsBirthDate:
+              type: string
+              description: >-
+                The Child's Birth Date additional field for the Leave Of Absence
+                using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            numberOfPreviousMaternityLeaves:
+              type: integer
+              description: >-
+                The Number Of Previous Maternity Leaves numerical additional
+                field for the Leave Of Absence.
+              example: 73
+              x-workday-type: Numeric
+            workRelated:
+              type: boolean
+              description: >-
+                If true, the Leave Of Absence is work related, which may impact
+                Record Of Employment in Canada.
+              example: true
+              x-workday-type: Boolean
+            weekOfConfinement:
+              type: string
+              description: >-
+                The Week Of Confinement Date additional field for the Leave Of
+                Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            adoptionNotificationDate:
+              type: string
+              description: >-
+                The Adoption Notification Date additional field for the Leave Of
+                Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            dateBabyArrivedHomeFromHospital:
+              type: string
+              description: >-
+                The Date Baby Arrived Home From Hospital additional field for
+                the Leave Of Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            leavePercentage:
+              type: integer
+              description: >-
+                The Leave Percentage numerical additional field for the Leave Of
+                Absence.
+              example: 922
+              x-workday-type: Numeric
+            numberOfPreviousBirths:
+              type: integer
+              description: >-
+                The Number Of Previous Births numerical additional field for the
+                Leave Of Absence.
+              example: 82
+              x-workday-type: Numeric
+            dependent:
+              $ref: '#/components/schemas/Dependent'
+            leaveEntitlementOverride:
+              type: integer
+              description: >-
+                The Leave Entitlement Override numerical additional field for
+                the Leave Of Absence.
+              example: 66309
+              x-workday-type: Numeric
+            numberOfChildDependents:
+              type: integer
+              description: >-
+                The Number Of Child Dependents numerical additional field for
+                the Leave Of Absence.
+              example: 62
+              x-workday-type: Numeric
+            socialSecurityDisabilityCode:
+              maxLength: 8
+              type: string
+              description: >-
+                The Social Security Disability Code text additional field for
+                the Leave Of Absence.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            adoptionPlacementDate:
+              type: string
+              description: >-
+                The Adoption Placement Date additional field for the Leave Of
+                Absence using the yyyy-mm-dd format.
+              format: date
+              x-workday-type: Date
+            ageOfDependent:
+              type: integer
+              description: >-
+                The Age Of Dependent numerical additional field for the Leave Of
+                Absence.
+              example: 931
+              x-workday-type: Numeric

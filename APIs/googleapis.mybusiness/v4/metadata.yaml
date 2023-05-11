@@ -1,0 +1,14 @@
+id: googleapis.mybusiness
+displayName: Google My Business
+type: OpenAPI
+version: v4
+description: This is the [Google My Business API v4.9](https://developers.google.com/my-business/) OpenAPI specification.
+idlPath: /googleapis.mybusiness/v4/openapi.yaml
+thumbnailPath: /googleapis.mybusiness/v4/icon.png
+documentationPath: /googleapis.mybusiness/v4/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://mybusiness.googleapis.com/

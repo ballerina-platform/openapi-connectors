@@ -1,0 +1,2364 @@
+openapi: 3.0.0
+info:
+  version: 1.5.2
+  title: Flight Create Orders
+  x-tags:
+    - "#quick-connect"
+    - "#online-retail"
+    - "#mobile-services"
+    - "#ama-for-dev"
+  x-status: validated
+  x-release-note:
+    1.5.0:
+      - Add new General Remark enum "TOUR_CODE"
+    1.4.0:
+      - Add new Gender enum "UNSPECIFIED" and "UNDISCLOSED"
+      - Add EasyPay credit card brand - **not available in self-service**
+    1.3.0:
+      - Add new airlineRemark subtype "ADVANCED_TICKET_TIME_LIMIT"
+    1.2.0:
+      - Add new sources "LTC" and "EAC" - **not available in self-service**
+    1.1.0:
+      - Add Co2Emissions information into Create flight-order reply
+      - Add language in Contact for the APN feature
+    1.0.0:
+      - Initial version
+  description: >-
+    This is a generated connector for [Amadeus Flight Create Orders API](https://developers.amadeus.com/self-service/category/air/api-doc/flight-create-orders) OpenAPI specification. 
+    This [Amadeus Flight Create Orders API](https://developers.amadeus.com/) provides the capability to perform the final booking for a chosen flight. 
+    Use this after completing a flight search with Flight Offers Search and confirming real-time price and availability with Flight Offers Price.
+  x-ballerina-init-description: >
+    The connector initialization requires clientId and clientSecret. 
+    Please create [Amadeus](https://developers.amadeus.com/register) account and Obtain clientId and clientSecret following [this guide](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
+  x-ballerina-display:
+    label: Amadeus Flight Create Orders
+    iconPath: "icon.png"  
+servers:
+  - url: https://test.api.amadeus.com/v1
+paths:
+  /booking/flight-orders:
+    post:
+      tags:
+        - Booking
+      operationId: createFlightOrders
+      summary: Create Order associated to the Flight offers.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: FlightOrderQuery
+              properties:
+                data:
+                  $ref: "#/components/schemas/FlightOrder"
+              example:
+                data:
+                  type: flight-order
+                  flightOffers:
+                    - type: flight-offer
+                      id: "1"
+                      source: GDS
+                      instantTicketingRequired: false
+                      nonHomogeneous: false
+                      paymentCardRequired: false
+                      lastTicketingDate: 2020-03-01
+                      itineraries:
+                        - segments:
+                            - departure:
+                                iataCode: GIG
+                                terminal: "2"
+                                at: 2020-03-01T21:05:00
+                              arrival:
+                                iataCode: CDG
+                                terminal: 2E
+                                at: 2020-03-02T12:20:00
+                              carrierCode: KL
+                              number: "2410"
+                              aircraft:
+                                code: "772"
+                              operating:
+                                carrierCode: AF
+                              duration: PT11H15M
+                              id: "40"
+                              numberOfStops: 0
+                            - departure:
+                                iataCode: CDG
+                                terminal: 2F
+                                at: 2020-03-02T14:30:00
+                              arrival:
+                                iataCode: AMS
+                                at: 2020-03-02T15:45:00
+                              carrierCode: KL
+                              number: "1234"
+                              aircraft:
+                                code: 73H
+                              operating:
+                                carrierCode: KL
+                              duration: PT1H15M
+                              id: "41"
+                              numberOfStops: 0
+                            - departure:
+                                iataCode: AMS
+                                at: 2020-03-02T17:05:00
+                              arrival:
+                                iataCode: MAD
+                                terminal: "2"
+                                at: 2020-03-02T19:35:00
+                              carrierCode: KL
+                              number: "1705"
+                              aircraft:
+                                code: 73J
+                              operating:
+                                carrierCode: KL
+                              duration: PT2H30M
+                              id: "42"
+                              numberOfStops: 0
+                        - segments:
+                            - departure:
+                                iataCode: MAD
+                                terminal: "2"
+                                at: 2020-03-05T20:25:00
+                              arrival:
+                                iataCode: AMS
+                                at: 2020-03-05T23:00:00
+                              carrierCode: KL
+                              number: "1706"
+                              aircraft:
+                                code: 73J
+                              operating:
+                                carrierCode: KL
+                              duration: PT2H35M
+                              id: "81"
+                              numberOfStops: 0
+                            - departure:
+                                iataCode: AMS
+                                at: 2020-03-06T10:40:00
+                              arrival:
+                                iataCode: GIG
+                                terminal: "2"
+                                at: 2020-03-06T18:35:00
+                              carrierCode: KL
+                              number: "705"
+                              aircraft:
+                                code: "772"
+                              operating:
+                                carrierCode: KL
+                              duration: PT11H55M
+                              id: "82"
+                              numberOfStops: 0
+                      price:
+                        currency: USD
+                        total: "8514.96"
+                        base: "8314.00"
+                        fees:
+                          - amount: "0.00"
+                            type: SUPPLIER
+                          - amount: "0.00"
+                            type: TICKETING
+                          - amount: "0.00"
+                            type: FORM_OF_PAYMENT
+                        grandTotal: "8514.96"
+                        billingCurrency: USD
+                      pricingOptions:
+                        fareType:
+                          - PUBLISHED
+                        includedCheckedBagsOnly: true
+                      validatingAirlineCodes:
+                        - AF
+                      travelerPricings:
+                        - travelerId: "1"
+                          fareOption: STANDARD
+                          travelerType: ADULT
+                          price:
+                            currency: USD
+                            total: "4849.48"
+                            base: "4749.00"
+                            taxes:
+                              - amount: "31.94"
+                                code: BR
+                              - amount: "14.68"
+                                code: CJ
+                              - amount: "5.28"
+                                code: FR
+                              - amount: "17.38"
+                                code: JD
+                              - amount: "0.69"
+                                code: OG
+                              - amount: "3.95"
+                                code: QV
+                              - amount: "12.12"
+                                code: QX
+                              - amount: "14.44"
+                                code: RN
+                          fareDetailsBySegment:
+                            - segmentId: "40"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: C
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "41"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: J
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "42"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: J
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "81"
+                              cabin: ECONOMY
+                              fareBasis: YFFBR
+                              brandedFare: FULLFLEX
+                              class: Y
+                              includedCheckedBags:
+                                quantity: 1
+                            - segmentId: "82"
+                              cabin: ECONOMY
+                              fareBasis: YFFBR
+                              brandedFare: FULLFLEX
+                              class: Y
+                              includedCheckedBags:
+                                quantity: 1
+                        - travelerId: "2"
+                          fareOption: STANDARD
+                          travelerType: CHILD
+                          price:
+                            currency: USD
+                            total: "3665.48"
+                            base: "3565.00"
+                            taxes:
+                              - amount: "31.94"
+                                code: BR
+                              - amount: "14.68"
+                                code: CJ
+                              - amount: "5.28"
+                                code: FR
+                              - amount: "17.38"
+                                code: JD
+                              - amount: "0.69"
+                                code: OG
+                              - amount: "3.95"
+                                code: QV
+                              - amount: "12.12"
+                                code: QX
+                              - amount: "14.44"
+                                code: RN
+                          fareDetailsBySegment:
+                            - segmentId: "40"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: C
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "41"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: J
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "42"
+                              cabin: BUSINESS
+                              fareBasis: CFFBR
+                              brandedFare: BUSINESS
+                              class: J
+                              includedCheckedBags:
+                                quantity: 2
+                            - segmentId: "81"
+                              cabin: ECONOMY
+                              fareBasis: YFFBR
+                              brandedFare: FULLFLEX
+                              class: Y
+                              includedCheckedBags:
+                                quantity: 1
+                            - segmentId: "82"
+                              cabin: ECONOMY
+                              fareBasis: YFFBR
+                              brandedFare: FULLFLEX
+                              class: Y
+                              includedCheckedBags:
+                                quantity: 1
+                  travelers:
+                    - id: "1"
+                      dateOfBirth: 1982-01-16
+                      name:
+                        firstName: JORGE
+                        lastName: GONZALES
+                      gender: MALE
+                      contact:
+                        emailAddress: jorge.gonzales833@telefonica.es
+                        phones:
+                          - deviceType: MOBILE
+                            countryCallingCode: "34"
+                            number: "480080076"
+                      documents:
+                        - documentType: PASSPORT
+                          birthPlace: Madrid
+                          issuanceLocation: Madrid
+                          issuanceDate: 2015-04-14
+                          number: "00000000"
+                          expiryDate: 2025-04-14
+                          issuanceCountry: ES
+                          validityCountry: ES
+                          nationality: ES
+                          holder: true
+                    - id: "2"
+                      dateOfBirth: 2012-10-11
+                      gender: FEMALE
+                      contact:
+                        emailAddress: jorge.gonzales833@telefonica.es
+                        phones:
+                          - deviceType: MOBILE
+                            countryCallingCode: "34"
+                            number: "480080076"
+                      name:
+                        firstName: ADRIANA
+                        lastName: GONZALES
+                  remarks:
+                    general:
+                      - subType: GENERAL_MISCELLANEOUS
+                        text: ONLINE BOOKING FROM INCREIBLE VIAJES
+                  ticketingAgreement:
+                    option: DELAY_TO_CANCEL
+                    delay: 6D
+                  contacts:
+                    - addresseeName:
+                        firstName: PABLO
+                        lastName: RODRIGUEZ
+                      companyName: INCREIBLE VIAJES
+                      purpose: STANDARD
+                      phones:
+                        - deviceType: LANDLINE
+                          countryCallingCode: "34"
+                          number: "480080071"
+                        - deviceType: MOBILE
+                          countryCallingCode: "33"
+                          number: "480080072"
+                      emailAddress: support@increibleviajes.es
+                      address:
+                        lines:
+                          - Calle Prado, 16
+                        postalCode: "28014"
+                        cityName: Madrid
+                        countryCode: ES
+        description: list of element needed to book a flight Order
+        required: true
+      responses:
+        "201":
+          $ref: "#/components/responses/returnFlightOrders"
+        "400":
+          $ref: "#/components/responses/400_Book"
+        default:
+          $ref: "#/components/responses/500"
+      description: ""
+x-generatedAt: 2021-05-03T13:13:05.285Z
+components:
+  responses:
+    "500":
+      description: Unexpected error
+      content:
+        application/vnd.amadeus+json:
+          schema:
+            $ref: "#/components/schemas/Error_500"
+    returnFlightOrders:
+      description: Successful Operation
+      content:
+        application/vnd.amadeus+json:
+          schema:
+            title: Success_Booking
+            type: object
+            required:
+              - data
+            properties:
+              meta:
+                $ref: "#/components/schemas/Collection_Meta_Link"
+              warnings:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Issue"
+              data:
+                $ref: "#/components/schemas/FlightOrder"
+              dictionaries:
+                $ref: "#/components/schemas/Dictionaries"
+            example:
+              data:
+                type: flight-order
+                id: MlpZVkFMfFdBVFNPTnwyMDE1LTExLTAy
+                queuingOfficeId: NCE1A0950
+                associatedRecords:
+                  - reference: 2ZYVAL
+                    creationDateTime: 2018-07-13T20:17:00
+                    originSystemCode: 1A
+                    flightOfferId: "1"
+                travelers:
+                  - id: "1"
+                    dateOfBirth: 1982-01-16
+                    name:
+                      firstName: STEPHANE
+                      lastName: MARTIN
+                    contact:
+                      phones:
+                        - countryCallingCode: "33"
+                          number: "487692704"
+                    documents:
+                      - documentType: PASSPORT
+                        number: "012345678"
+                        expiryDate: 2009-04-14
+                        issuanceCountry: GB
+                        nationality: GB
+                        holder: true
+                  - id: "3"
+                    dateOfBirth: 2018-03-24
+                    name:
+                      firstName: JULES
+                      lastName: MARTIN
+                  - id: "2"
+                    dateOfBirth: 2007-10-11
+                    name:
+                      firstName: EMILIE
+                      lastName: MARTIN
+                flightOffers:
+                  - id: "1"
+                    type: flight-offer
+                    source: GDS
+                    itineraries:
+                      - duration: PT2H
+                        segments:
+                          - id: "1"
+                            duration: PT2H
+                            aircraft:
+                              code: "320"
+                            numberOfStops: 0
+                            blacklistedInEU: false
+                            carrierCode: IB
+                            operating:
+                              carrierCode: IB
+                            number: "3403"
+                            departure:
+                              at: 2018-09-22T10:15:00
+                              terminal: W
+                              iataCode: ORY
+                            arrival:
+                              at: 2018-09-22T12:15:00
+                              terminal: "4"
+                              iataCode: MAD
+                            co2Emissions:
+                              - weight: "100"
+                                weightUnit: KG
+                                cabin: ECONOMY
+                      - duration: PT1H20M
+                        segments:
+                          - id: "20"
+                            duration: PT1H20M
+                            aircraft:
+                              code: "320"
+                            numberOfStops: 0
+                            blacklistedInEU: false
+                            carrierCode: IB
+                            operating:
+                              carrierCode: IB
+                            number: "3118"
+                            departure:
+                              at: 2018-09-26T23:05:00
+                              terminal: "4"
+                              iataCode: MAD
+                            arrival:
+                              at: 2018-09-26T23:25:00
+                              terminal: "1"
+                              iataCode: LIS
+                            co2Emissions:
+                              - weight: "100"
+                                weightUnit: KG
+                                cabin: ECONOMY
+                      - duration: PT4H30M
+                        segments:
+                          - id: "30"
+                            duration: PT2H
+                            aircraft:
+                              code: "320"
+                            numberOfStops: 0
+                            blacklistedInEU: false
+                            carrierCode: IB
+                            operating:
+                              carrierCode: IB
+                            number: "3109"
+                            departure:
+                              at: 2018-10-04T12:35:00
+                              terminal: "1"
+                              iataCode: LIS
+                            arrival:
+                              at: 2018-10-04T14:55:00
+                              terminal: "4"
+                              iataCode: MAD
+                            co2Emissions:
+                              - weight: "100"
+                                weightUnit: KG
+                                cabin: ECONOMY
+                          - id: "31"
+                            duration: PT2H30M
+                            aircraft:
+                              code: "320"
+                            numberOfStops: 0
+                            blacklistedInEU: false
+                            carrierCode: IB
+                            operating:
+                              carrierCode: IB
+                            number: "3444"
+                            departure:
+                              at: 2018-10-04T16:05:00
+                              terminal: "4"
+                              iataCode: MAD
+                            arrival:
+                              at: 2018-10-04T18:05:00
+                              terminal: W
+                              iataCode: ORY
+                            co2Emissions:
+                              - weight: "100"
+                                weightUnit: KG
+                                cabin: ECONOMY
+                    price:
+                      grandTotal: "689.21"
+                      total: "423.21"
+                      base: "242.00"
+                      currency: EUR
+                      billingCurrency: EUR
+                      fees:
+                        - type: SUPPLIER
+                          amount: "0"
+                        - type: FORM_OF_PAYMENT
+                          amount: "6"
+                        - type: TICKETING
+                          amount: "0"
+                      additionalServices:
+                        - type: CHECKED_BAGS
+                          amount: "100"
+                        - type: SEATS
+                          amount: "166"
+                    pricingOptions:
+                      fareType:
+                        - PUBLISHED
+                      includedCheckedBags: false
+                    validatingAirlineCodes:
+                      - IB
+                    travelerPricings:
+                      - travelerId: "1"
+                        fareOption: STANDARD
+                        travelerType: ADULT
+                        price:
+                          currency: EUR
+                          total: "200.94"
+                          base: "126"
+                          taxes:
+                            - code: YQ
+                              amount: "0.94"
+                            - code: CJ
+                              amount: "41.67"
+                            - code: FR
+                              amount: "31.33"
+                        fareDetailsBySegment:
+                          - segmentId: "1"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "20"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "30"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "31"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                      - travelerId: "2"
+                        fareOption: STANDARD
+                        travelerType: CHILD
+                        price:
+                          currency: EUR
+                          total: "180.94"
+                          base: "106"
+                          taxes:
+                            - code: YQ
+                              amount: "0.94"
+                            - code: CJ
+                              amount: "41.67"
+                            - code: FR
+                              amount: "31.33"
+                        fareDetailsBySegment:
+                          - segmentId: "1"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                            additionalServices:
+                              chargeableCheckedBags:
+                                quantity: 1
+                                weight: 20
+                              chargeableSeatNumber: 33D
+                          - segmentId: "20"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                            additionalServices:
+                              chargeableCheckedBags:
+                                quantity: 1
+                                weight: 20
+                              chargeableSeatNumber: 28A
+                          - segmentId: "30"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                            additionalServices:
+                              chargeableCheckedBags:
+                                quantity: 1
+                                weight: 20
+                              chargeableSeatNumber: 12C
+                          - segmentId: "31"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                            additionalServices:
+                              chargeableCheckedBags:
+                                quantity: 1
+                                weight: 20
+                              chargeableSeatNumber: 33D
+                      - travelerId: "3"
+                        fareOption: STANDARD
+                        travelerType: HELD_INFANT
+                        associatedAdultId: "1"
+                        price:
+                          currency: EUR
+                          total: "41.33"
+                          base: "10"
+                          taxes:
+                            - code: FR
+                              amount: "31.33"
+                        fareDetailsBySegment:
+                          - segmentId: "1"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "20"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "30"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                          - segmentId: "31"
+                            cabin: ECONOMY
+                            fareBasis: ANNNNF4K
+                            brandedFare: LIGHTONE
+                            class: A
+                            isAllotment: true
+                            allotmentDetails:
+                              tourName: tour
+                              tourReference: ref
+                            sliceDiceIndicator: ABCDEF
+                            includedCheckedBags:
+                              quantity: 0
+                ticketingAggreement:
+                  option: DELAY_TO_CANCEL
+                  dateTime: 2018-08-21T10:15:00.000
+                contacts:
+                  - companyName: AMADEUS
+                    purpose: STANDARD
+                    phones:
+                      - deviceType: FAX
+                        countryCallingCode: "33"
+                        number: "480080070"
+                      - deviceType: LANDLINE
+                        countryCallingCode: "33"
+                        number: "480080070"
+                    emailAddress: support@mail.com
+                    address:
+                      lines:
+                        - 485 route du Pin Montard
+                      postalCode: "06902"
+                      cityName: Sophia Antipolis Cedex
+                      countryCode: FR
+              dictionaries:
+                locations:
+                  CDG:
+                    cityCode: PAR
+                    countryCode: FR
+                  ORY:
+                    cityCode: PAR
+                    countryCode: FR
+                  MAD:
+                    cityCode: MAD
+                    countryCode: ES
+    400_Book:
+      description: |
+        code    | title                                 
+        ------- | ------------------------------------- 
+        477     | INVALID FORMAT
+        1304    | CREDIT CARD NOT ACCEPTED
+        2781    | INVALID LENGTH
+        4926    | INVALID DATA RECEIVED
+        9112    | TICKETING - TKT
+        2668    | PARAMETER COMBINATION INVALID/RESTRICTED
+        32171   | MANDATORY DATA MISSING
+        34107   | NOT APPLICABLE FARE
+        34651   | SEGMENT SELL FAILURE
+        34733   | VIRTUAL CARD CREATION FAILED
+        36870   | BOOKING FAILED
+        37200   | PRICE DISCREPANCY
+        38034   | ONE OR MORE SERVICES ARE NOT AVAILABLE
+      content:
+        application/vnd.amadeus+json:
+          schema:
+            $ref: "#/components/schemas/Error_400"
+  schemas:
+    Error_400:
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Issue"
+      required:
+        - errors
+      example:
+        errors:
+          - status: 400
+            code: 477
+            title: INVALID FORMAT
+            detail: invalid query parameter format
+            source:
+              parameter: airport
+              example: CDG
+    Error_500:
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Issue"
+      required:
+        - errors
+      example:
+        errors:
+          - status: 500
+            code: 141
+            title: SYSTEM ERROR HAS OCCURRED
+    Issue:
+      properties:
+        status:
+          description: the HTTP status code applicable to this error
+          type: integer
+        code:
+          description: an application-specific error code
+          type: integer
+          format: int64
+        title:
+          description: a short summary of the error
+          type: string
+        detail:
+          description: explanation of the error
+          type: string
+        source:
+          type: object
+          title: Issue_Source
+          description: an object containing references to the source of the error
+          maxProperties: 1
+          properties:
+            pointer:
+              description: a JSON Pointer [RFC6901] to the associated entity in the request
+                document
+              type: string
+            parameter:
+              description: a string indicating which URI query parameter caused the issue
+              type: string
+            example:
+              description: a string indicating an example of the right value
+              type: string
+    Collection_Meta_Link:
+      title: Collection_Meta
+      properties:
+        count:
+          type: integer
+          example: 1
+        links:
+          title: CollectionLinks
+          properties:
+            self:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+            next:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+            previous:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+            last:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+            first:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+            up:
+              type: string
+              format: uri
+              example: https://test.api.amadeus.com/v1/area/resources?...
+          example:
+            self: https://test.api.amadeus.com/v1/area/resources?param=value
+    LocationEntry:
+      properties:
+        key:
+          type: string
+      additionalProperties:
+        $ref: "#/components/schemas/LocationValue"
+    AircraftEntry:
+      type: object
+      properties:
+        key:
+          type: string
+      additionalProperties:
+        description: the manufacturer/model of aircraft
+        type: string
+    CurrencyEntry:
+      properties:
+        key:
+          type: string
+          example: Euro
+      additionalProperties:
+        type: string
+        example: EUR
+    CarrierEntry:
+      type: object
+      properties:
+        key:
+          type: string
+      additionalProperties:
+        description: the carrier name
+        type: string
+    FlightSegment:
+      type: object
+      description: defining a flight segment; including both operating and marketing
+        details when applicable
+      properties:
+        departure:
+          $ref: "#/components/schemas/FlightEndPoint"
+        arrival:
+          $ref: "#/components/schemas/FlightEndPoint"
+        carrierCode:
+          type: string
+          description: providing the airline / carrier code
+          minLength: 1
+          maxLength: 2
+          example: DL
+        number:
+          type: string
+          description: the flight number as assigned by the carrier
+          minLength: 1
+          maxLength: 4
+          example: "212"
+        aircraft:
+          $ref: "#/components/schemas/AircraftEquipment"
+        operating:
+          $ref: "#/components/schemas/OperatingFlight"
+        duration:
+          type: string
+          description: stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+            PnYnMnDTnHnMnS format, e.g. PT2H10M
+          example: PT2H10M
+        stops:
+          type: array
+          description: information regarding the different stops composing the flight
+            segment. E.g. technical stop, change of gauge...
+          items:
+            $ref: "#/components/schemas/FlightStop"
+    OriginalFlightEndPoint:
+      type: object
+      description: departure or arrival information
+      properties:
+        iataCode:
+          description: "[IATA airline
+            codes](http://www.iata.org/publications/Pages/code-search.aspx)"
+          type: string
+          example: JFK
+        terminal:
+          description: terminal name / number
+          type: string
+          example: T2
+    FlightEndPoint:
+      title: FlightEndPoint
+      description: departure or arrival information
+      allOf:
+        - $ref: "#/components/schemas/OriginalFlightEndPoint"
+        - type: object
+          properties:
+            at:
+              description: local date and time in
+                [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+                YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00
+              type: string
+              format: date-time
+              example: 2017-10-23T20:00:00
+    OriginalFlightStop:
+      description: details of stops for direct or change of gauge flights
+      type: object
+      properties:
+        iataCode:
+          description: "[IATA airline
+            codes](http://www.iata.org/publications/Pages/code-search.aspx)"
+          type: string
+          example: JFK
+        duration:
+          type: string
+          description: stop duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+            PnYnMnDTnHnMnS format, e.g. PT2H10M
+          example: PT2H10M
+    FlightStop:
+      title: FlightStop
+      description: details of stops for direct or change of gauge flights
+      allOf:
+        - $ref: "#/components/schemas/OriginalFlightStop"
+        - type: object
+          properties:
+            arrivalAt:
+              description: arrival at the stop in
+                [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+                YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00
+              type: string
+              format: date-time
+              example: 2017-10-23T20:00:00
+            departureAt:
+              description: departure from the stop in
+                [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+                YYYY-MM-ddThh:mm:ss format, e.g. 2017-02-10T20:40:00
+              type: string
+              format: date-time
+              example: 2017-10-23T20:00:00
+    AircraftEquipment:
+      description: information related to the aircraft
+      properties:
+        code:
+          type: string
+          description: >
+            IATA aircraft code
+            (http://www.flugzeuginfo.net/table_accodes_iata_en.php)
+          pattern: "[a-zA-Z0-9]{3}"
+          example: "318"
+    OperatingFlight:
+      type: object
+      description: information about the operating flight
+      properties:
+        carrierCode:
+          type: string
+          description: providing the airline / carrier code
+          minLength: 1
+          maxLength: 2
+          example: DL
+    Price:
+      properties:
+        currency:
+          type: string
+          example: USD
+        total:
+          description: Total amount paid by the user
+          type: string
+          example: "932.70"
+        base:
+          description: Amount without taxes
+          type: string
+          example: "632.70"
+        fees:
+          description: List of applicable fees
+          type: array
+          items:
+            $ref: "#/components/schemas/Fee"
+        taxes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tax"
+        refundableTaxes:
+          description: The amount of taxes which are refundable
+          type: string
+          example: "200.00"
+    Extended_Price:
+      type: object
+      title: Price
+      description: price information
+      allOf:
+        - type: object
+          properties:
+            margin:
+              description: BOOK step ONLY - The price margin percentage (plus or minus)
+                that the booking can tolerate. When set to 0, then no price
+                magin is tolerated.
+              type: string
+              example: "1.00"
+            grandTotal:
+              description: Total amount paid by the user (including fees and selected
+                additional services).
+              type: string
+              example: "987.00"
+            billingCurrency:
+              description: Currency of the payment. It may be different than the requested
+                currency
+              type: string
+              example: EUR
+            additionalServices:
+              type: array
+              title: AdditionalServices
+              items:
+                title: AdditionalService
+                type: object
+                properties:
+                  amount:
+                    type: string
+                    example: "332.70"
+                  type:
+                    $ref: "#/components/schemas/AdditionalServiceType"
+        - $ref: "#/components/schemas/Price"
+    Fee:
+      description: a fee
+      properties:
+        amount:
+          type: string
+          example: "332.70"
+        type:
+          $ref: "#/components/schemas/FeeType"
+    FeeType:
+      type: string
+      description: type of fee
+      enum:
+        - TICKETING
+        - FORM_OF_PAYMENT
+        - SUPPLIER
+      example: TICKETING
+    Tax:
+      description: a tax
+      type: object
+      properties:
+        amount:
+          type: string
+          example: "332.70"
+        code:
+          type: string
+          example: MX
+    TravelClass:
+      description: quality of service offered in the cabin where the seat is located in
+        this flight. Economy, premium economy, business or first class
+      type: string
+      enum:
+        - ECONOMY
+        - PREMIUM_ECONOMY
+        - BUSINESS
+        - FIRST
+      example: PREMIUM_ECONOMY
+    Co2Emission:
+      type: object
+      properties:
+        weight:
+          description: Weight of Co2 emitted for the concerned segment
+          type: integer
+          example: 90
+        weightUnit:
+          description: Code to qualify unit as pounds or kilos
+          type: string
+          example: KG
+        cabin:
+          $ref: "#/components/schemas/TravelClass"
+    FlightOffer:
+      title: Flight-offer
+      type: object
+      required:
+        - type
+        - id
+      properties:
+        type:
+          type: string
+          description: the resource name
+          example: flight-offer
+        id:
+          description: Id of the flight offer
+          type: string
+          example: "1"
+        source:
+          $ref: "#/components/schemas/FlightOfferSource"
+        instantTicketingRequired:
+          description: If true, inform that a ticketing will be required at booking step.
+          type: boolean
+          example: false
+        disablePricing:
+          description: BOOK step ONLY - If true, allows to book a PNR without pricing. Only
+            for the source "GDS"
+          type: boolean
+          example: false
+        nonHomogeneous:
+          description: If true, upon completion of the booking, this pricing solution is
+            expected to yield multiple records (a record contains booking
+            information confirmed and stored, typically a Passenger Name Record
+            (PNR), in the provider GDS or system)
+          type: boolean
+          example: false
+        oneWay:
+          description: If true, the flight offer fulfills only one originDestination and
+            has to be combined with other oneWays to complete the whole journey.
+          type: boolean
+          example: false
+        paymentCardRequired:
+          description: If true, a payment card is mandatory to book this flight offer
+          type: boolean
+          example: false
+        lastTicketingDate:
+          description: If booked on the same day as the search (with respect to timezone),
+            this flight offer is guaranteed to be thereafter valid for ticketing
+            until this date (included). Unspecified when it does not make sense
+            for this flight offer (e.g. no control over ticketing once booked).
+            YYYY-MM-DD format, e.g. 2019-06-07
+          type: string
+          example: 2018-06-19T00:00:00.000Z
+        numberOfBookableSeats:
+          description: Number of seats bookable in a single request. Can not be higher than
+            9.
+          type: number
+          example: 9
+          minimum: 1
+          maximum: 9
+        itineraries:
+          type: array
+          minItems: 1
+          maxItems: 250
+          items:
+            title: Itineraries
+            type: object
+            properties:
+              duration:
+                description: duration in [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+                  PnYnMnDTnHnMnS format, e.g. PT2H10M for a duration of 2h10m
+                type: string
+                example: PT2H10M
+              segments:
+                title: Segments
+                type: array
+                minItems: 1
+                maxItems: 9
+                items:
+                  $ref: "#/components/schemas/Segment"
+            required:
+              - segments
+        price:
+          $ref: "#/components/schemas/Extended_Price"
+        pricingOptions:
+          title: PricingOptions
+          type: object
+          properties:
+            fareType:
+              $ref: "#/components/schemas/PricingOptionsFareType"
+            includedCheckedBagsOnly:
+              type: boolean
+              description: If true, returns the flight-offers with included checked bags
+                only
+              example: true
+            refundableFare:
+              type: boolean
+              description: If true, returns the flight-offers with refundable fares only
+              example: true
+            noRestrictionFare:
+              type: boolean
+              description: If true, returns the flight-offers with no restriction fares only
+              example: true
+            noPenaltyFare:
+              type: boolean
+              description: If true, returns the flight-offers with no penalty fares only
+              example: true
+        validatingAirlineCodes:
+          description: This option ensures that the system will only consider these
+            airlines.
+          type: array
+          minItems: 1
+          maxItems: 9
+          items:
+            type: string
+          example:
+            - AF
+        travelerPricings:
+          title: TravelerPricings
+          description: Fare information for each traveler/segment
+          type: array
+          minItems: 1
+          maxItems: 18
+          items:
+            title: TravelerPricing
+            required:
+              - travelerId
+              - fareOption
+              - travelerType
+              - fareDetailsBySegment
+            properties:
+              travelerId:
+                type: string
+                example: "1"
+                description: Id of the traveler
+              fareOption:
+                $ref: "#/components/schemas/TravelerPricingFareOption"
+              travelerType:
+                $ref: "#/components/schemas/TravelerType"
+              associatedAdultId:
+                type: string
+                description: if type="HELD_INFANT", corresponds to the adult traveler's id
+                  who will share the seat
+              price:
+                $ref: "#/components/schemas/Price"
+              fareDetailsBySegment:
+                type: array
+                minItems: 1
+                maxItems: 18
+                items:
+                  title: FareDetailsBySegment
+                  description: Fare details of the segment
+                  required:
+                    - segmentId
+                  properties:
+                    segmentId:
+                      type: string
+                      example: "1"
+                      description: Id of the segment
+                    cabin:
+                      $ref: "#/components/schemas/TravelClass"
+                    fareBasis:
+                      description: Fare basis specifying the rules of a fare. Usually,
+                        though not always, is composed of the booking class code
+                        followed by a set of letters and digits representing
+                        other characteristics of the ticket, such as
+                        refundability, minimum stay requirements, discounts or
+                        special promotional elements.
+                      type: string
+                      example: ANNNNF4K
+                      pattern: "[[A-Z0-9]{1,18}"
+                    brandedFare:
+                      description: The name of the Fare Family corresponding to the fares.
+                        Only for the GDS provider and if the airline has fare
+                        families filled
+                      type: string
+                      example: LIGHTONE
+                    class:
+                      description: The code of the booking class, a.k.a. class of service
+                        or Reservations/Booking Designator (RBD)
+                      type: string
+                      example: A
+                      pattern: "[A-Z]{1}"
+                    isAllotment:
+                      description: True if the corresponding booking class is in an
+                        allotment
+                      type: boolean
+                      example: true
+                    allotmentDetails:
+                      title: AllotmentDetails
+                      type: object
+                      properties:
+                        tourName:
+                          type: string
+                        tourReference:
+                          type: string
+                    sliceDiceIndicator:
+                      $ref: "#/components/schemas/SliceDiceIndicator"
+                    includedCheckedBags:
+                      $ref: "#/components/schemas/BaggageAllowance"
+                    additionalServices:
+                      type: object
+                      title: AdditionalServicesRequest
+                      properties:
+                        chargeableCheckedBags:
+                          $ref: "#/components/schemas/BaggageAllowance"
+                        chargeableSeatNumber:
+                          type: string
+                          description: seat number
+                          example: 33D
+                          pattern: "[1-9][0-9]{0,2}[A-Z]?"
+                        otherServices:
+                          type: array
+                          description: Other services to add
+                          items:
+                            $ref: "#/components/schemas/ServiceName"
+                          example:
+                            - PRIORITY_BOARDING
+    Segment:
+      allOf:
+        - type: object
+          properties:
+            id:
+              description: Id of the segment
+              type: string
+              example: 1
+            numberOfStops:
+              description: Number of stops
+              type: integer
+              example: 0
+            blacklistedInEU:
+              description: >
+                When the flight has a marketing or/and operating airline that is
+                identified as blacklisted by the European Commission. 
+
+
+                To improve travel safety, the European Commission regularly updates the list of the banned carriers from operating in Europe. It allows any Travel Agency located in the European Union to easily identify and hide any travel recommendation based on some unsafe airlines. 
+
+                The [list of the banned airlines](https://ec.europa.eu/transport/sites/transport/files/air-safety-list_en.pdf) is published in the Official Journal of the European Union, where they are included as annexes A and B to the Commission Regulation. The blacklist of an airline can concern all its flights or some specific aircraft types pertaining to the airline   
+              type: boolean
+              example: false
+            co2Emissions:
+              description: Co2 informations
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/Co2Emission"
+        - $ref: "#/components/schemas/FlightSegment"
+    TravelerType:
+      type: string
+      description: >
+        traveler type
+
+        age restrictions : CHILD < 12y, HELD_INFANT < 2y, SEATED_INFANT < 2y, SENIOR >=60y
+      enum:
+        - ADULT
+        - CHILD
+        - SENIOR
+        - YOUNG
+        - HELD_INFANT
+        - SEATED_INFANT
+        - STUDENT
+      example: ADULT
+    AdditionalServiceType:
+      type: string
+      description: additional service type
+      enum:
+        - CHECKED_BAGS
+        - MEALS
+        - SEATS
+        - OTHER_SERVICES
+      example: CHECKED_BAGS
+    FlightOfferSource:
+      description: source of the flight offer
+      type: string
+      enum:
+        - GDS
+      example: GDS
+    PricingOptionsFareType:
+      type: array
+      description: type of fare of the flight-offer
+      items:
+        type: string
+        enum:
+          - PUBLISHED
+      example:
+        - PUBLISHED
+    TravelerPricingFareOption:
+      description: >
+        option specifying a group of fares, which may be valid under certain
+        conditons
+
+        Can be used to specify special fare discount for a passenger
+      type: string
+      enum:
+        - STANDARD
+        - INCLUSIVE_TOUR
+        - SPANISH_MELILLA_RESIDENT
+        - SPANISH_CEUTA_RESIDENT
+        - SPANISH_CANARY_RESIDENT
+        - SPANISH_BALEARIC_RESIDENT
+        - AIR_FRANCE_METROPOLITAN_DISCOUNT_PASS
+        - AIR_FRANCE_DOM_DISCOUNT_PASS
+        - AIR_FRANCE_COMBINED_DISCOUNT_PASS
+        - AIR_FRANCE_FAMILY
+        - ADULT_WITH_COMPANION
+        - COMPANION
+      example: STANDARD
+    SliceDiceIndicator:
+      description: slice and Dice indicator, such as Local Availability, Sub OnD(Origin and
+        Destination) 1 Availability and Sub OnD 2 Availability
+      type: string
+      enum:
+        - LOCAL_AVAILABILITY
+        - SUB_OD_AVAILABILITY_1
+        - SUB_OD_AVAILABILITY_2
+    Dictionaries:
+      type: object
+      properties:
+        locations:
+          $ref: "#/components/schemas/LocationEntry"
+        aircraft:
+          $ref: "#/components/schemas/AircraftEntry"
+        currencies:
+          $ref: "#/components/schemas/CurrencyEntry"
+        carriers:
+          $ref: "#/components/schemas/CarrierEntry"
+    LocationValue:
+      properties:
+        cityCode:
+          type: string
+          description: City code associated to the airport
+          example: PAR
+        countryCode:
+          type: string
+          description: Country code of the airport
+          example: FR
+    ElementaryPrice:
+      description: elementaryPrice
+      type: object
+      properties:
+        amount:
+          type: string
+          description: Amount of the fare. could be alpha numeric. Ex- 500.20 or 514.13A,
+            'A'signifies additional collection.
+        currencyCode:
+          type: string
+          description: Currency type of the fare.
+    BaggageAllowance:
+      description: baggageAllowance
+      type: object
+      properties:
+        quantity:
+          type: integer
+          description: Total number of units
+          example: 1
+        weight:
+          type: integer
+          description: Weight of the baggage allowance
+          example: 20
+        weightUnit:
+          type: string
+          description: Code to qualify unit as pounds or kilos
+          example: KG
+    ServiceName:
+      description: type of service
+      type: string
+      enum:
+        - PRIORITY_BOARDING
+        - AIRPORT_CHECKIN
+      example: PRIORITY_BOARDING
+    FlightOrder:
+      title: FlightOrderCreateQuery
+      type: object
+      description: input parameter to create a flight order
+      required:
+        - type
+        - flightOffers
+        - travelers
+        - contacts
+      properties:
+        type:
+          description: the resource name
+          type: string
+          example: flight-order
+        id:
+          description: unique identifier of the flight order
+          type: string
+          example: MlpZVkFMfFdBVFNPTnwyMDE1LTExLTAy
+          readOnly: true
+        queuingOfficeId:
+          description: office Id where to queue the order
+          type: string
+          example: NCE1A0955
+        ownerOfficeId:
+          description: office Id where will be transfered the ownership of the order
+          type: string
+          example: NCE1A0955
+        associatedRecords:
+          description: list of associated record
+          type: array
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/AssociatedRecord"
+        flightOffers:
+          description: list of flight offer
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            $ref: "#/components/schemas/FlightOffer"
+        travelers:
+          description: list of travelers
+          type: array
+          minItems: 1
+          maxItems: 18
+          items:
+            $ref: "#/components/schemas/Traveler"
+        remarks:
+          $ref: "#/components/schemas/Remarks"
+        formOfPayments:
+          description: list of form of payments
+          type: array
+          minItems: 1
+          maxItems: 6
+          readOnly: true
+          items:
+            $ref: "#/components/schemas/FormOfPayment"
+        ticketingAgreement:
+          $ref: "#/components/schemas/TicketingAgreement"
+        automatedProcess:
+          description: list of automatic queuing
+          type: array
+          minItems: 0
+          maxItems: 31
+          items:
+            $ref: "#/components/schemas/AutomatedProcess"
+        contacts:
+          description: list of general contact information
+          type: array
+          items:
+            $ref: "#/components/schemas/Contact"
+        tickets:
+          description: list of tickets
+          readOnly: true
+          type: array
+          items:
+            $ref: "#/components/schemas/AirTravelDocument"
+    Stakeholder:
+      type: object
+      description: stakeholder definition
+      required: 
+        - id
+        - name
+      properties:
+        id:
+          description: item identifier
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+          description: The date of birth in ISO 8601 format (yyyy-mm-dd)
+        gender:
+          $ref: "#/components/schemas/StakeholderGender"
+        name:
+          $ref: "#/components/schemas/Name"
+        documents:
+          type: array
+          description: Advanced Passenger Information - regulatory identity documents - SSR
+            DOCS & DOCO elements
+          items:
+            $ref: "#/components/schemas/IdentityDocument"
+    StakeholderGender:
+      type: string
+      description: Gender for individual
+      enum:
+        - MALE
+        - FEMALE
+        - UNSPECIFIED
+        - UNDISCLOSED
+      title: Gender
+      example: FEMALE
+    IdentityDocument:
+      title: traveler documents
+      description: documents of the traveler
+      allOf:
+        - $ref: "#/components/schemas/Document"
+        - type: object
+          properties:
+            documentType:
+              $ref: "#/components/schemas/DocumentType"
+            validityCountry:
+              type: string
+              description: "[ISO 3166-1
+                alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of
+                the country where the document is valid"
+              example: IN
+              pattern: "[a-zA-Z]{2}"
+            birthCountry:
+              type: string
+              description: "[ISO 3166-1
+                alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of
+                the country of birth"
+              example: FR
+              pattern: "[a-zA-Z]{2}"
+            holder:
+              type: boolean
+              description: boolean to specify if the traveler is the holder of the document
+              example: true
+    Document:
+      type: object
+      description: the information that are found on an ID document
+      properties:
+        number:
+          type: string
+          description: The document number (shown on the document) . E.g. QFU514563221J
+        issuanceDate:
+          type: string
+          description: Date at which the document has been issued.
+          format: date
+        expiryDate:
+          type: string
+          description: Date after which the document is not valid anymore.
+          format: date
+        issuanceCountry:
+          type: string
+          description: "[ISO 3166-1
+            alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the
+            country that issued the document"
+          pattern: "[a-zA-Z]{2}"
+        issuanceLocation:
+          type: string
+          description: A more precise information concerning the place where the document
+            has been issued, when available. It may be a country, a state, a
+            city or any other type of location. e.g. New-York
+        nationality:
+          type: string
+          description: "[ISO 3166-1
+            alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) of the
+            nationality appearing on the document"
+          pattern: "[a-zA-Z]{2}"
+        birthPlace:
+          type: string
+          description: Birth place as indicated on the document
+    DocumentType:
+      type: string
+      description: the nature/type of the document
+      enum:
+        - VISA
+        - PASSPORT
+        - IDENTITY_CARD
+        - KNOWN_TRAVELER
+        - REDRESS
+      example: VISA
+    EmergencyContact:
+      type: object
+      description: emergency contact number
+      properties:
+        addresseeName:
+          type: string
+          description: Adressee name (e.g. in case of emergency purpose it corresponds to
+            name of the person to be contacted).
+          pattern: "[a-zA-Z -]"
+        countryCode:
+          type: string
+          description: Country code of the country (ISO3166-1). E.g. "US" for the United
+            States
+          pattern: "[A-Z]{2}"
+        number:
+          type: string
+          description: Phone number. Composed of digits only. The number of digits depends
+            on the country.
+          pattern: "[0-9]{1,15}"
+        text:
+          type: string
+          description: additional details
+    LoyaltyProgram:
+      title: LoyaltyProgram
+      description: loyalty program information
+      type: object
+      properties:
+        programOwner:
+          type: string
+          description: loyalty program airline code
+          example: AF
+        id:
+          type: string
+          description: loyalty program number
+          example: "12357466574"
+    Discount:
+      title: Discount
+      description: traveler discount
+      type: object
+      properties:
+        subType:
+          $ref: "#/components/schemas/DiscountType"
+        cityName:
+          type: string
+          description: city of residence
+          example: MADRID
+        travelerType:
+          $ref: "#/components/schemas/DiscountTravelerType"
+        cardNumber:
+          type: string
+          description: resident card number
+          example: 12568215Z
+          pattern: "[0-9A-Z][0-9]{0,12}[A-Z]"
+        certificateNumber:
+          type: string
+          description: resident certificate number
+          example: 12568215Z
+          pattern: "[0-9A-Z][0-9]{0,12}[A-Z]"
+    DiscountType:
+      description: type of discount applied
+      type: string
+      enum:
+        - SPANISH_RESIDENT
+        - AIR_FRANCE_DOMESTIC
+        - AIR_FRANCE_COMBINED
+        - AIR_FRANCE_METROPOLITAN
+      example: SPANISH_RESIDENT
+    DiscountTravelerType:
+      description: type of discount applied
+      type: string
+      enum:
+        - SPANISH_CITIZEN
+        - EUROPEAN_CITIZEN
+        - GOVERNMENT_WORKER
+        - MILITARY
+        - MINOR_WITHOUT_ID
+      example: SPANISH_CITIZEN
+    Traveler:
+      title: traveler element
+      description: the traveler of the trip
+      allOf:
+        - $ref: "#/components/schemas/Stakeholder"
+        - type: object
+          properties:
+            emergencyContact:
+              $ref: "#/components/schemas/EmergencyContact"
+            loyaltyPrograms:
+              description: list of loyalty program followed by the traveler
+              type: array
+              minItems: 0
+              maxItems: 10
+              items:
+                $ref: "#/components/schemas/LoyaltyProgram"
+            discountEligibility:
+              description: list of element that allow a discount.
+              type: array
+              minItems: 0
+              maxItems: 10
+              items:
+                $ref: "#/components/schemas/Discount"
+            contact:
+              $ref: "#/components/schemas/Contact"
+    Contact:
+      description: contact information
+      allOf:
+        - $ref: "#/components/schemas/ContactDictionary"
+        - type: object
+          properties:
+            phones:
+              description: Phone numbers
+              type: array
+              maxItems: 3
+              items:
+                $ref: "#/components/schemas/Phone"
+            companyName:
+              description: Name of the company
+              type: string
+              example: AMADEUS
+            emailAddress:
+              type: string
+              description: Email address (e.g. john@smith.com)
+              example: support@mail.com
+    ContactPurpose:
+      description: >-
+        the purpose for which this contact is to be used.
+         - STANDARD for standard use, comunication, advertissement etc...
+         - INVOICE for your invoice contact, usually its your billing adress. it's mandatory in france when you buy online
+         - STANDARD_WITHOUT_TRANSMISSION is standard contact that are not share with third party outside of Amadeus
+      type: string
+      enum:
+        - STANDARD
+        - INVOICE
+        - STANDARD_WITHOUT_TRANSMISSION
+    ContactDictionary:
+      description: represents a contact
+      type: object
+      properties:
+        addresseeName:
+          $ref: "#/components/schemas/Name"
+        address:
+          $ref: "#/components/schemas/Address"
+        language:
+          description: the preferred language of communication with this Contact
+          type: string
+        purpose:
+          $ref: "#/components/schemas/ContactPurpose"
+    Name:
+      title: name
+      description: name
+      allOf:
+        - $ref: "#/components/schemas/BaseName"
+        - type: object
+          properties:
+            secondLastName:
+              description: second last name
+              type: string
+    BaseName:
+      type: object
+      description: description of the name of a physical person
+      properties:
+        firstName:
+          description: First name.
+          type: string
+        lastName:
+          description: Last name.
+          type: string
+        middleName:
+          description: Middle name(s), for example "Lee" in "John Lee Smith".
+          type: string
+    Phone:
+      type: object
+      description: phone information
+      required:
+        - deviceType
+        - countryCallingCode
+        - number
+      properties:
+        deviceType:
+          $ref: "#/components/schemas/PhoneDeviceType"
+        countryCallingCode:
+          type: string
+          description: Country calling code of the phone number, as defined by the
+            International Communication Union. Examples - "1" for US, "371" for
+            Latvia.
+          pattern: "[0-9+]{2,5}"
+        number:
+          type: string
+          description: Phone number. Composed of digits only. The number of digits depends
+            on the country.
+          pattern: "[0-9]{1,15}"
+    PhoneDeviceType:
+      type: string
+      description: Type of the device (Landline, Mobile or Fax)
+      enum:
+        - MOBILE
+        - LANDLINE
+        - FAX
+    Address:
+      type: object
+      description: address information
+      properties:
+        lines:
+          type: array
+          description: >-
+            Line 1 = Street address, Line 2 = Apartment, suite, unit, building,
+            floor, etc 
+
+            Each line is limited to 35 characters
+          items:
+            type: string
+        postalCode:
+          type: string
+          description: "Example: 74130"
+        countryCode:
+          type: string
+          description: country code [ISO 3166-1 country
+            code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+          pattern: "[a-zA-Z]{2}"
+        cityName:
+          type: string
+          description: "Full city name. Example: Dublin"
+          pattern: "[a-zA-Z -]{1,35}"
+        stateName:
+          type: string
+          description: Full state name
+        postalBox:
+          type: string
+          description: E.g. BP 220
+    TicketingAgreement:
+      title: Ticketing Agreement
+      description: ticketing agreement
+      type: object
+      properties:
+        option:
+          $ref: "#/components/schemas/TicketingAgreementOption"
+        delay:
+          description: Delay before applying automatic process if no issuance in days
+          type: string
+        dateTime:
+          description: Exact date to apply automatic process if no issuance. YYYY-MM-DD
+            format, e.g. 2019-06-07
+          type: string
+          readOnly: true
+          example: 2017-10-23
+        segmentIds:
+          description: Ids of the impacted segments
+          type: array
+          readOnly: true
+          items:
+            type: string
+          example: "1"
+    TicketingAgreementOption:
+      description: >
+        Ticketing agreement option
+
+        * **CONFIRM**, when the payment is done
+
+        * **DELAY_TO_QUEUE**, queue the reservation at a wished date if the payment is not done
+
+        * **DELAY_TO_CANCEL**, cancel the reservation at a wished date if the payment is not done
+
+
+        Queueing and cancellation occurs at local date and time. When no time is specified, reservation is queued or cancelled at 00:00.
+      type: string
+      enum:
+        - CONFIRM
+        - DELAY_TO_QUEUE
+        - DELAY_TO_CANCEL
+      example: DELAY_TO_QUEUE
+    AutomatedProcessCommon:
+      type: object
+      description: Provides information on ticketing arrangements and Amadeus Time Limits
+      properties:
+        code:
+          $ref: "#/components/schemas/AutomatedProcessCode"
+        queue:
+          title: Queue
+          type: object
+          description: Identifies the queue onto which PNR must be automatically placed
+            upon process execution.
+          properties:
+            number:
+              type: string
+            category:
+              type: string
+        text:
+          type: string
+          description: Free text
+    AutomatedProcess:
+      title: Automated Process
+      description: automatic process applied to the Order
+      allOf:
+        - $ref: "#/components/schemas/AutomatedProcessCommon"
+        - type: object
+          properties:
+            delay:
+              description: Delay before applying process in days
+              type: string
+            officeId:
+              description: Office into which the process must be triggered.
+              type: string
+              example: NCE1A0955
+            dateTime:
+              type: string
+              format: date-time
+              description: Datetime limit at which the process takes action in case
+                issuance is not done.
+    AutomatedProcessCode:
+      type: string
+      description: queuing action to be taken
+      enum:
+        - IMMEDIATE
+        - DELAYED
+        - ERROR
+      example: IMMEDIATE
+    Remarks:
+      title: Remarks
+      description: remarks
+      type: object
+      properties:
+        general:
+          description: list of general remarks
+          type: array
+          minItems: 0
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/GeneralRemark"
+        airline:
+          description: list of airline remarks
+          type: array
+          minItems: 0
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/AirlineRemark"
+    GeneralRemark:
+      title: GeneralRemark
+      type: object
+      required:
+        - subType
+        - text
+      properties:
+        subType:
+          $ref: "#/components/schemas/GeneralRemarkType"
+        category:
+          description: remark category
+          type: string
+          example: Z
+          pattern: "[A-Z]{1}"
+        text:
+          description: remark free text
+          type: string
+          example: PASSENGER NEED ASSISTANCE
+        travelerIds:
+          description: Id of the concerned traveler
+          type: array
+          items:
+            type: string
+          example: "1"
+        flightOfferIds:
+          description: Id of the concern flightOffers
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            type: string
+          example: "1"
+    GeneralRemarkType:
+      description: general remark type
+      type: string
+      enum:
+        - GENERAL_MISCELLANEOUS
+        - CONFIDENTIAL
+        - INVOICE
+        - QUALITY_CONTROL
+        - BACKOFFICE
+        - FULFILLMENT
+        - ITINERARY
+        - TICKETING_MISCELLANEOUS
+        - TOUR_CODE
+      example: GENERAL_MISCELLANEOUS
+    AirlineRemark:
+      title: AirlineRemark
+      type: object
+      required:
+        - subType
+        - airlineCode
+        - text
+      properties:
+        subType:
+          $ref: "#/components/schemas/AirlineRemarkType"
+        keyword:
+          description: keyword code - only applicable for subType Keyword
+          type: string
+          example: PARK
+        airlineCode:
+          description: >
+            Code of the airline following IATA standard ([IATA table
+            codes](http://www.iata.org/publications/Pages/code-search.aspx))
+
+
+            When it apply to any airline, value is YY.
+          type: string
+          example: AF
+        text:
+          description: remark free text
+          type: string
+          example: CAR PARK
+        travelerIds:
+          description: Id of the concerned traveler
+          type: array
+          items:
+            type: string
+          example: "1"
+        flightOfferIds:
+          description: Id of the concern flightOffers
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            type: string
+          example: "1"
+    AirlineRemarkType:
+      description: airline remark type
+      type: string
+      enum:
+        - OTHER_SERVICE_INFORMATION
+        - KEYWORD
+        - OTHER_SERVICE
+        - CLIENT_ID
+        - ADVANCED_TICKET_TIME_LIMIT
+      example: KEYWORD
+    FormOfPayment:
+      title: Form Of Payment
+      description: form of payment used
+      type: object
+      properties:
+        b2bWallet:
+          $ref: "#/components/schemas/B2bWallet"
+        creditCard:
+          $ref: "#/components/schemas/CreditCard"
+        other:
+          $ref: "#/components/schemas/OtherMethod"
+    B2bWallet:
+      title: B2bWallet
+      type: object
+      description: b2b wallet
+      properties:
+        cardId:
+          readOnly: true
+          description: card identifier
+          type: string
+          example: "1245365895336"
+        cardUsageName:
+          description: card usage name
+          type: string
+        cardFriendlyName:
+          description: card name
+          type: string
+          example: CB1
+          pattern: "[a-zA-Z0-9]{1,35}"
+        reportingData:
+          type: array
+          title: reportingData
+          items:
+            title: reportingData
+            type: object
+            properties:
+              name:
+                type: string
+                example: reconcil1
+              value:
+                type: string
+                example: data1
+        virtualCreditCardDetails:
+          $ref: "#/components/schemas/VirtualCreditCardDetails"
+        flightOfferIds:
+          description: Id of the concern flightOffers
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            type: string
+          example: "1"
+    VirtualCreditCardDetails:
+      description: detail information of the virtual card
+      allOf:
+        - $ref: "#/components/schemas/CreditCardCommon"
+        - $ref: "#/components/schemas/ElementaryPrice"
+    CreditCard:
+      title: creditCard
+      type: object
+      description: credit card
+      allOf:
+        - $ref: "#/components/schemas/CreditCardCommon"
+        - type: object
+          properties:
+            securityCode:
+              description: card security code
+              type: string
+              example: "123"
+            flightOfferIds:
+              description: Id of the concern flightOffers
+              type: array
+              minItems: 1
+              maxItems: 6
+              items:
+                type: string
+              example: "1"
+    CreditCardCommon:
+      title: creditCardCommon
+      type: object
+      description: credit card common attribute
+      properties:
+        brand:
+          $ref: "#/components/schemas/CreditCardBrand"
+        holder:
+          description: card holder as on the card
+          type: string
+          example: MR DUPON DAMIEN
+        number:
+          description: card number
+          type: string
+          example: "4012999999999999"
+          pattern: "[a-zA-Z0-9]{1,35}"
+        expiryDate:
+          description: credit card expiration date following [ISO
+            8601](https://en.wikipedia.org/wiki/ISO_8601) (YYYY-MM format, e.g.
+            2012-08)
+          type: string
+          example: 2021-08
+    CreditCardBrand:
+      description: credit card brand
+      type: string
+      enum:
+        - VISA
+        - AMERICAN_EXPRESS
+        - MASTERCARD
+        - VISA_ELECTRON
+        - VISA_DEBIT
+        - MASTERCARD_DEBIT
+        - MAESTRO
+        - DINERS
+        - EASYPAY
+      example: VISA
+    OtherMethod:
+      title: creditCard
+      type: object
+      description: other payment method
+      properties:
+        method:
+          $ref: "#/components/schemas/OtherPaymentMethod"
+        flightOfferIds:
+          description: Id of the concern flightOffers
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            type: string
+          example: "1"
+    OtherPaymentMethod:
+      description: other payment method
+      type: string
+      enum:
+        - ACCOUNT
+        - CHECK
+        - CASH
+        - NONREFUNDABLE
+      example: CASH
+    AssociatedRecordCommon:
+      type: object
+      description: describes the relation between the current reservation and another one
+      properties:
+        reference:
+          type: string
+          description: Record locator [Amadeus or OA] with which the current reservation is
+            related. In case of a codeshare relation, it enables to identify the
+            operating PNR.
+        creationDate:
+          type: string
+          description: Creation date of the referenced reservation. Date and time in
+            [ISO8601](https://en.wikipedia.org/wiki/ISO_8601)
+            YYYY-MM-ddThh:mm:ss.sss format, e.g. 2019-07-09T12:30:00.000
+          example: 2019-07-09T12:30:00.000
+        originSystemCode:
+          type: string
+          description: Designates the system which has originated the referenced
+            reservation.
+          minLength: 2
+          maxLength: 3
+    AssociatedRecord:
+      title: associated record
+      description: record associated to the order
+      allOf:
+        - $ref: "#/components/schemas/AssociatedRecordCommon"
+        - type: object
+          properties:
+            flightOfferId:
+              type: string
+              description: id of the impacted flight offer
+              example: "1"
+    AirTravelDocument:
+      title: AirTravelDocument
+      description: ticket information
+      allOf:
+        - $ref: "#/components/schemas/AirTravelDocumentCommon"
+        - type: object
+          properties:
+            travelerId:
+              type: string
+              description: id of the impacted traveler
+              example: "1"
+            segmentIds:
+              description: Ids of the impacted segments
+              type: array
+              items:
+                type: string
+              example: "1"
+    AirTravelDocumentCommon:
+      type: object
+      properties:
+        documentType:
+          type: string
+          description: Type of the travel document
+          enum:
+            - ETICKET
+            - PTICKET
+            - EMD
+            - MCO
+        documentNumber:
+          type: string
+          description: Identifier of the travel document prefixed by its owner code [NALC -
+            3 digits]. Can either be a primary or a conjunctive document number.
+            Necessary for TicketingReference definition.
+        documentStatus:
+          type: string
+          description: Status of the travel document contained in the fare element
+          enum:
+            - ISSUED
+            - REFUNDED
+            - VOID
+            - ORIGINAL
+            - EXCHANGED
+  securitySchemes:
+    OAuth2:
+      type: oauth2        
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://test.api.amadeus.com/v1/security/oauth2/token

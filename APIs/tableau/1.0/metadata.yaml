@@ -1,0 +1,13 @@
+id: tableau
+displayName: Tableau
+type: OpenAPI
+version: "1.0"
+description: This documentation describes the growing number OpenAPI endpoints  being released alongside more than 150 [classic REST endpoints](https://help.tableau.com/current/api/rest_api/en-us/REST/rest_api_ref.htm)  that are currently in wide usage in the Tableau community. 
+idlPath: /tableau/1.0/openapi.yaml
+thumbnailPath: /tableau/1.0/icon.png
+documentationPath: /tableau/1.0/readme.md
+keywords:
+  - BusinessIntelligence/Visualization
+  - Cost/Freemium
+endpoint:
+  - url: https://tableau.example.com/

@@ -1,0 +1,13 @@
+id: interzoid.globalnumberinfo
+displayName: Interzoid Global Phone Number Info
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Global Phone Number Information API v1.0.0](https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification. This API provides geographic information for a global telephone number, including city and country information, primary languages spoken, and mobile device identification. For additional help getting started with the API,  visit [Interzoid Global Phone Number Information API](https://interzoid.com/services/getglobalnumberinfo)
+idlPath: /interzoid.globalnumberinfo/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.globalnumberinfo/1.0.0/icon.png
+documentationPath: /interzoid.globalnumberinfo/1.0.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

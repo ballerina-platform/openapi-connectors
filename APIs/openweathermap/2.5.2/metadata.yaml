@@ -1,0 +1,13 @@
+id: openweathermap
+displayName: OpenWeatherMap
+type: OpenAPI
+version: 2.5.2
+description: This is a generated connector from [Open Weather Map API version 2.5](https://openweathermap.org/) OpenAPI Specification.  The Open Weather Map API provides access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.
+idlPath: /openweathermap/2.5.2/openapi.yaml
+thumbnailPath: /openweathermap/2.5.2/icon.png
+documentationPath: /openweathermap/2.5.2/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Freemium
+endpoint:
+  - url: http://api.openweathermap.org/data/2.5/

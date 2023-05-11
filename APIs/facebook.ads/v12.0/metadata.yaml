@@ -1,0 +1,13 @@
+id: facebook.ads
+displayName: Facebook Ads
+type: OpenAPI
+version: v12.0
+description: This is the [Facebook Marketing API v12.0](https://developers.facebook.com/docs/marketing-apis) OpenAPI specification.  Facebook is an American online social media and social networking service owned by Facebook, Inc.Facebook Marketing  APIs are a collection of Graph API endpoints that can be used to help you advertise on Facebook.
+idlPath: /facebook.ads/v12.0/openapi.yaml
+thumbnailPath: /facebook.ads/v12.0/icon.png
+documentationPath: /facebook.ads/v12.0/readme.md
+keywords:
+  - Marketing/SocialMediaAccounts
+  - Cost/Free
+endpoint:
+  - url: https://graph.facebook.com/v12.0

@@ -1,0 +1,16 @@
+id: adobe.analytics
+displayName: Adobe Analytics
+type: OpenAPI
+version: v1
+description: 
+    The Adobe Analytics 2.0 APIs allow you to directly call Adobe's servers to perform almost any action that you can 
+    perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. 
+    You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics. 
+idlPath: /adobe.analytics/v1/openapi.yaml
+thumbnailPath: /adobe.analytics/v1/icon.png
+documentationPath: /adobe.analytics/v1/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Freemium
+endpoint:
+  - url: https://analytics.adobe.io/

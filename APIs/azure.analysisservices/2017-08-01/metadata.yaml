@@ -1,0 +1,14 @@
+id: azure.analysisservices
+displayName: Azure Analysis Services
+type: OpenAPI
+version: "2017-08-01"
+description: This is the [Azure Analysis Services API v2017-08-01](https://azure.microsoft.com/en-us/services/analysis-services/) OpenAPI specification. The Azure Analysis Services Web API provides a RESTful set of web services that enables users to create, retrieve, update, and delete Analysis Services servers
+idlPath: /azure.analysisservices/2017-08-01/openapi.yaml
+thumbnailPath: /azure.analysisservices/2017-08-01/icon.png
+documentationPath: /azure.analysisservices/2017-08-01/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Paid
+  - Vendor/Microsoft
+endpoint:
+  - url: https://management.azure.com/

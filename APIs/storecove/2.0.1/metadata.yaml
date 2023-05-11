@@ -1,0 +1,13 @@
+id: storecove
+displayName: Storecove
+type: OpenAPI
+version: 2.0.1
+description: This is the [Storcove API v2](https://app.storecove.com/docs) OpenAPI Specification.
+idlPath: /storecove/2.0.1/openapi.yaml
+thumbnailPath: /storecove/2.0.1/icon.png
+documentationPath: /storecove/2.0.1/readme.md
+keywords:
+  - Finance/Billing
+  - Cost/Freemium
+endpoint:
+  - url: https://api.storecove.com/api/v2

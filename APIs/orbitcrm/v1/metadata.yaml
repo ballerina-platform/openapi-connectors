@@ -1,0 +1,13 @@
+id: orbitcrm
+displayName: Orbit
+type: OpenAPI
+version: v1
+description: This is the [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification.  Orbit API used to track activities of users and manage users.
+idlPath: /orbitcrm/v1/openapi.yaml
+thumbnailPath: /orbitcrm/v1/icon.png
+documentationPath: /orbitcrm/v1/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://app.orbit.love/api/v1

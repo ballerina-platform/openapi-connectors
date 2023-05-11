@@ -1,0 +1,2273 @@
+openapi: 3.0.0
+info:
+  title: MFT Gateway REST API
+  contact:
+    name: MFT Gateway Team
+    email: support@mftgateway.com
+  version: '1.0'
+  description: >
+    This is a generated connector for [MFT REST API v1.0](https://documenter.getpostman.com/view/12285357/UV5WEe66) OpenAPI specification.
+    The [MFT REST API](https://documenter.getpostman.com/view/12285357/UV5WEe66)  provides a secure AS2 secured channel for such communications, and offers your company, multiple ways to upload/download files, or automate the exchange through integration mechanisms.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create a [MFT account](https://console.mftgateway.com/auth/register) and obtain tokens following [this guide](https://aayutechnologies.com/docs/product/mft-gateway/user-guide/).
+  x-ballerina-display:
+    label: MFT
+    iconPath: "icon.png"
+servers:
+  - url: https://api.mftgateway.com
+    variables: {}
+paths:
+  # Authorization
+  /authorize:
+    post:
+      tags:
+        - Authorization
+      summary: Authorize
+      description: >-
+        MFT Gateway authorization end-point. After successfully authorized, you
+        will receive two tokens **api_token** and **refresh_token**. The
+        **api_token** must be included in the **Authorization** header of every
+        protected API request. The **refresh_token** can be used for
+        re-authorization process without user password by using "Refresh Auth
+        Token" end-point.
+      operationId: Authorize
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#21-authorize--post-authorize
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorizeRequest'
+            example:
+              username: myemail@mydomain.com
+              password: Abc@1234
+        required: true
+      responses:
+        '200':
+          description: 'Successful Authorization'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulAuthorizationResponse'
+              example:
+                api_token: <JWT_token>
+                refresh_token: <JWT_token>
+        '401':
+          description: 'Failed Authorization'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: 'Authentication Failed: Bad credentials'
+  /refresh-session:
+    post:
+      tags:
+        - Authorization
+      summary: Refresh Auth Token
+      description: >-
+        This end-point can be used to re-authorize without entering user
+        password, by using **refresh-token** received from initial
+        authentication.
+      operationId: RefreshAuthToken
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#22-refresh--post-refresh-session
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshAuthTokenRequest'
+            example:
+              username: myemail@mydomain.com
+              refreshToken: refresh_token
+        required: true
+      responses:
+        '200':
+          description: 'Successful Auth Token Refresh'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulAuthorizationResponse'
+              example:
+                api_token: <JWT_token>
+                refresh_token: <JWT_token>
+        '500':
+          description: 'Failed Auth Token Refresh'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Error occurred while refreshing the user session
+      deprecated: false
+  # Submit message
+  /message/submit:
+    post:
+      tags:
+        - Sending Messages
+      summary: Send Message
+      description: >-
+        Send (enqueue) an AS2 message with a single or multiple attachments.
+
+
+        Similar to the MFT Gateway web dashboard, this simply places the newly
+        submitted message into a queue, in a **queued**(to-be-sent) state; it
+        may take several seconds before the message actually gets sent out.
+
+
+        Additionally, if the actual send action fails, the message will not
+        appear under the **outbox**; and the URL previously returned in the
+        **Link** header would no longer be valid.
+
+        In such cases it is advised to check **outbox/failed** and
+        **outbox/queued** to find out the current status of the message.
+      operationId: SendMessage
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#31-send-enqueue-as2-messages--post-messagesubmit
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: AS2-From
+          in: header
+          description: 'Station AS2 identifier which sends the message'
+          required: true
+          schema:
+            type: string
+            example: MyStation
+        - name: AS2-To
+          in: header
+          description: 'Partner AS2 identifier which intends to receive the message'
+          required: true
+          schema:
+            type: string
+            example: MyPartner
+        - name: Subject
+          in: header
+          description: 'Subject of the message. If not specified, the default subject configured for the intended partner will be applied.'
+          required: false
+          schema:
+            type: string
+            example: Test message from MFTG API
+        - name: Attachment-Name
+          in: header
+          description: 'Name of the message attachment (Only applicable when sending a message with single attachment)'
+          required: false
+          schema:
+            type: string
+            example: Attachment.txt
+        - name: Content-Type
+          in: header
+          description: 'Content type of the message payload. For multiple attachments, content type should be **multipart/form-data** with valid form content'
+          required: true
+          schema:
+            type: string
+            example: text/plain
+      requestBody:
+        content:
+          multipart/form-data:
+            # encoding: { }
+            schema:
+              required:
+                - File
+              type: object
+              properties:
+                File:
+                  type: string
+                  format: binary
+        required: true
+      responses:
+        '202':
+          description: Accepted for Processing
+          headers:
+            link:
+              description: >-
+                An absolute URL to the AS2 message which will be created after the outgoing message entry is processed.
+                Therefore the resource in this URL may not be available immediately after the response for this API call
+                is returned. It would be better to wait around 5 to 10 seconds before querying for the resource
+                represented in the **Link** header value.
+              schema:
+                type: string
+                example: >-
+                  https://api.mftgateway.com/message/outbox/<159599863352334660@mftgateway.com>
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageSubmitResponse'
+              example:
+                message: Message queued successfully
+                as2MessageId: '<16037890537199092@mftgateway.com>'
+        '422':
+          description: Message submission faild (One or more invalid identifiers)
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: 'Unable to find partner with AS2 identifier: MyPartner'
+  # Inbox messages
+  /message/inbox:
+    get:
+      tags:
+        - Inbox Messages
+      summary: List Received Messages
+      description: >-
+        This API endpoint can be used to list **received** messages with
+        **optional** filters as **query** parameters.
+
+
+        Following **General filters** can be applied along with other filters(primary/secondary) without any restrictions
+
+        - sortDir
+
+        - pageOffset
+
+        - pageLength
+
+        - fetchAll
+
+
+        Following **Primary filters** have higher precedence over secondary filters. If both primary and secondary filters
+        are used in the same API request, **secondary filters** will be **ignored**.
+
+        - partnerAS2Id
+
+        - stationAS2Id
+
+
+        Only one of the following **Secondary filters** can be applied per API request. If multiple secondary filters
+        are used in a single API request, only the filter with **the highest precedence** will be applied and the rest will
+        be ignored. The precedence of the secondary filters are in the listed order.
+
+        - as2MessageId
+
+        - subject
+      operationId: ListReceivedMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#32-list-messages--get-messagebox
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: sortDir
+          in: query
+          description: 'Sort direction of messages'
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: pageLength
+          in: query
+          description: 'Length of a page. An integer value greater than or equal to 1 and less than or equal to 100 is accepted.'
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: pageOffset
+          in: query
+          description: 'Page offset, supports non-negative integer values'
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: stationAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Station that received these messages'
+          required: false
+          schema:
+            type: string
+            example: test-station
+        - name: partnerAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Partner that sent these messages'
+          required: false
+          schema:
+            type: string
+            example: test-partner
+        - name: as2MessageId
+          in: query
+          description: 'AS2 message identifier of the required AS2 message(s)'
+          required: false
+          schema:
+            type: string
+            example: '<1595831212322@mftgateway.com>'
+        - name: subject
+          in: query
+          description: 'Any subject string to filter messages against'
+          required: false
+          schema:
+            type: string
+            example: message subject
+        - name: fetchAll
+          in: query
+          description: 'Fetch all messages including already been "marked as read" within the API scope'
+          required: false
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageListRetrievalResponse'
+              examples:
+                'Has messages':
+                  description: Has messages matching the provided filters
+                  value:
+                    messages:
+                      - <15947211062750@mftgateway.com>
+                      - <15947210997311@mftgateway.com>
+                      - <15947210989114@mftgateway.com>
+                      - <15947210979767@mftgateway.com>
+                      - <15947210969966@mftgateway.com>
+                      - <15947210950640@mftgateway.com>
+                      - <15947210941011@mftgateway.com>
+                'No messages':
+                  description: No messages matching the provided filters
+                  value:
+                    messages: []
+  /message/inbox/{as2MessageId}:
+    get:
+      tags:
+        - Inbox Messages
+      summary: Retrieve an Inbox (Received) Message
+      description: >-
+        This API endpoint can be used to retrieve a **received** message with optional capability to **Mark
+        it as Read**
+      operationId: RetrieveInboxMessage
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#331-retrieve-inbox-received-message--get-messageinboxas2-message-id
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to be retrieved'
+          required: true
+          schema:
+            type: string
+            example: <158719527.1469.1594924294697@as2gateway.com>
+        - name: markAsRead
+          in: query
+          description: >-
+            If this is set to **true**, the message will be "marked as read" upon retrieval.
+            Any message list queries with `fetchAll` query param set to `false`, will not return the corresponding message
+            afterwards. You can combine this and the `fetchAll` query parameter, to ensure one-time processing of
+            received messages.
+
+              *(Note that this marking will be applied only at API scope; "marked as read" messages may
+            still appear as unread on the MFT Gateway webapp inbox.)*
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AS2Message'
+              example:
+                id: 10959001878639
+                as2MessageId: <158719527.1469.1594924294698@as2gateway.com>
+                incoming: true
+                msgStatus: Received
+                mdnStatus: Sent Signed MDN
+                receiverAS2Id: MyStation
+                senderAS2Id: MyPartner
+                subject: AS2 Message from MyPartner
+                failures: 0
+                attachmentPaths:
+                  - 'AS2/files/MyStation/MyPartner/inbox/1594924300560-333/Attachment1.raw'
+                  - 'AS2/files/MyStation/MyPartner/inbox/1594924300560-333/Attachment2.raw'
+                compressed: false
+                signed: true
+                encrypted: true
+                mic: cxbzphztud4C6z8+lJa0R9V6uUw=, sha1
+                micMatches: false
+                transportStatusReceived: 0
+                userAgent: AdroitLogic UltraESB-X
+                timestamp: 1594924304442
+                apiFetched: true
+                transportHeaders:
+                  AS2-From: MyPartner
+                  AS2-To: MyStation
+                  User-Agent: AdroitLogic UltraESB-X
+                  Accept-Encoding: gzip
+                  Content-Transfer-Encoding: binary
+                  Message-ID: <158719527.1469.1594924294698@as2gateway.com>
+                  Disposition-Notification-Options: >-
+                    signed-receipt-protocol=optional,pkcs7-signature;
+                    signed-receipt-micalg=optional,sha1,md5
+                  Content-Type: >-
+                    application/octet-stream; name="smime.p7m";
+                    smime-type=enveloped-data
+                  Disposition-Notification-To: mystation@mymail.com
+                  AS2-Version: '1.1'
+                  Host: service.mftgateway.com
+                  From: mystation@mymail.com
+                  MIME-Version: '1.0'
+                  Subject: 'AS2 Message from: MyPartner'
+                mdnMessage:
+                  mdnId: <1870054092.0.1594924307180@mftgateway.com>
+                  messageId: 10959001878639
+                  as2MessageId: <158719527.1469.1594924294698@as2gateway.com>
+                  disposition: automatic-action/MDN-sent-automatically; processed
+                  humanMessage: "MDN for Message-ID: <158719527.1469.1594924294698@as2gateway.com>\r\nFrom: MyPartner\r\nTo: MyStation\r\nReceived on: Thu Jul 16 18:31:46 UTC 2020\r\nStatus: processed\r\nComment: This is not a guarantee that the message has been completely processed or understood by the receiving translator.\r\nPowered by MFT Gateway\r\n"
+                  rawMdnS3Key: AS2/raw-mdn/incoming/10959001878639/mdn.raw
+                  mic: cxbzphztud4C6z8+lJa0R9V6uUw=, sha1
+                  signed: true
+                  incoming: false
+                  status: Sent Signed MDN
+                  timestamp: 1594924307980
+        '404':
+          description: Message Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Message not found
+    delete:
+      tags:
+        - Inbox Messages
+      summary: Delete Inbox (Received) Message
+      description: This API endpoint can be used to delete an **inbox** message
+      operationId: DeleteInboxMessage
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to be deleted'
+          required: true
+          schema:
+            type: string
+            example: <1696315973.0.1620624078702@as2gateway.com>
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageDeletionResponse'
+              example:
+                deleted: <16206212538784367@mftgateway.com>
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Unable to find message
+  /message/inbox/{as2MessageId}/markUnread:
+    post:
+      tags:
+        - Inbox Messages
+      summary: Mark Received Message As UnRead
+      description: >-
+        This end-point can be used to mark a received AS2 message as **API unread**. Please note that the result of this
+        operation will not affect the status on the MFT Gateway dashboard.
+      operationId: MarkReceivedMessageAsUnRead
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#332-mark-received-message-as-unread--post-messageinboxas2_message_idmarkunread
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: AS2 ID of the message to be marked as unread
+          required: true
+          schema:
+            type: string
+            example: <1594723844328@mftgateway.com>
+      responses:
+        '200':
+          description: Successfully marked as Unread
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: 'Successfully marked message <1594723844329@mftgateway.com> as unread'
+        '404':
+          description: Message Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Message not found
+  /message/inbox/{as2MessageId}/attachments:
+    get:
+      tags:
+        - Inbox Messages
+      summary: Retrieve Inbox (Received) Message Attachment(s)
+      description: >-
+        This API endpoint can be used to retrieve pre-signed URL(s) to download attachments of a received message from
+        Amazon S3 bucket. Please note that the **validity of the S3 signed URL is limited to 10 minutes**.
+      operationId: RetrieveInboxMessageAttachments
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#334-retrieve-message-attachments
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to retrieve attachments of'
+          required: true
+          schema:
+            type: string
+            example: <158719527.1469.1594924294698@as2gateway.com>
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulAttachmentListResponse'
+              example:
+                total: 2
+                attachments:
+                  - name: Attachment1.raw
+                    url: >-
+                      https://mftg-my-bucket.s3.amazonaws.com/AS2/files/MyStation/MyPartner/inbox/1594924300560-333/Attachment1.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T110019Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2972481f458e4b4aa0453264885f345fdbbb889f87fb08d8b3cb2577266d9b92&X-Amz-SignedHeaders=host
+                  - name: Attachment2.raw
+                    url: >-
+                      https://mftg-my-bucket.s3.amazonaws.com/AS2/files/MyStation/MyPartner/inbox/1594924300560-333/Attachment2.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T110019Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2972481f458e4b4aa0453264885f345fdbbb889f87fb08d8b3cb2577266d9b92&X-Amz-SignedHeaders=host
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Attachment(s) not found
+  /message/inbox/{as2MessageId}/mdn:
+    get:
+      tags:
+        - Inbox Messages
+      summary: Retrieve Inbox (Received) Message MDN
+      description: >-
+        This API endpoint can be used to retrieve S3 pre-signed URL to download the MDN sent for a received message
+        from Amazon S3 bucket. Please note that the **validity of the S3 signed URL is limited 10 minutes**.
+      operationId: RetrieveInboxMessageMDN
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#335-retrieve-message-mdn
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to retrieve MDN of'
+          required: true
+          schema:
+            type: string
+            example: <158719527.1469.1594924294698@as2gateway.com>
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMDNRetrievalResponse'
+              example:
+                url: >-
+                  https://mftg-my-bucket.s3.amazonaws.com/AS2/raw-mdn/incoming/10959001878639/mdn.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T111420Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2641a9625dc0cab29702dcb67fc33ee66e0df5edfb0aa6c2c7029cc54110602f&X-Amz-SignedHeaders=host
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: MDN not found
+  /message/inbox/delete:
+    post:
+      tags:
+        - Inbox Messages
+      summary: Batch Delete Inbox (Received) Messages
+      description: >-
+        This API endpoint can be used to delete multiple **inbox** messages as a batch operation. Endpoint supports upto
+        100 messages per API call.
+      operationId: BatchDeleteInboxMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#35-batch-delete--post-messageboxdelete
+      security:
+        - TokenAuth: []
+      requestBody:
+        description: 'AS2 IDs of the messages to be deleted'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageBatchOperationRequest'
+            example:
+              as2MessageIds:
+                - <16206212538784368@mftgateway.com>
+                - <16094169443904964@mftgateway.com>
+        required: true
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageBatchDeletionResponse'
+              example:
+                deleted:
+                  - <16206212538784368@mftgateway.com>
+                  - <16094169443904964@mftgateway.com>
+        '404':
+          description: Message Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Unable to find messages
+  # Outbox messages
+  /message/outbox:
+    get:
+      tags:
+        - Outbox Messages
+      summary: List Sent Messages
+      description: >-
+        This API endpoint can be used to list **successfully sent** messages with
+        **optional** filters as **query** parameters.
+
+
+        Following **General filters** can be applied along with other filters(primary/secondary) without any restrictions
+
+        - sortDir
+
+        - pageOffset
+
+        - pageLength
+
+
+        Following **Primary filters** have higher precedence over secondary filters. If both primary and secondary filters
+        are used in the same API request, **secondary filters** will be **ignored**.
+
+        - partnerAS2Id
+
+        - stationAS2Id
+
+
+        Only one of the following **Secondary filters** can be applied per API request. If multiple secondary filters
+        are used in a single API request, only the filter with **the highest precedence** will be applied and the rest will
+        be ignored. The precedence of the secondary filters are in the listed order.
+
+        - as2MessageId
+
+        - subject
+      operationId: ListSentMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#32-list-messages--get-messagebox
+      security:
+      - TokenAuth: []
+      parameters:
+      - name: sortDir
+        in: query
+        description: 'Sort direction of messages'
+        required: false
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: desc
+      - name: pageLength
+        in: query
+        description: 'Length of a page. An integer value greater than or equal to 1 and less than or equal to 100 is accepted.'
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      - name: pageOffset
+        in: query
+        description: 'Page offset, supports non-negative integer values'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      - name: stationAS2Id
+        in: query
+        description: 'AS2 identifier of the AS2 Station that sent these messages'
+        required: false
+        schema:
+          type: string
+          example: test-station
+      - name: partnerAS2Id
+        in: query
+        description: 'AS2 identifier of the AS2 Partner that received these messages'
+        required: false
+        schema:
+          type: string
+          example: test-partner
+      - name: as2MessageId
+        in: query
+        description: 'AS2 message identifier of the required AS2 message(s)'
+        required: false
+        schema:
+          type: string
+          example: '<1595831212322@mftgateway.com>'
+      - name: subject
+        in: query
+        description: 'Any subject string to filter messages against'
+        required: false
+        schema:
+          type: string
+          example: message subject
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageListRetrievalResponse'
+              examples:
+                'Has messages':
+                  description: Has messages matching the provided filters
+                  value:
+                    messages:
+                      - <15947211062750@mftgateway.com>
+                      - <15947210997311@mftgateway.com>
+                      - <15947210989114@mftgateway.com>
+                      - <15947210979767@mftgateway.com>
+                      - <15947210969966@mftgateway.com>
+                      - <15947210950640@mftgateway.com>
+                      - <15947210941011@mftgateway.com>
+                'No messages':
+                  description: No messages matching the provided filters
+                  value:
+                    messages: []
+  /message/outbox/queued:
+    get:
+      tags:
+        - Outbox Messages
+      summary: List Queued Messages
+      description: >-
+        This API endpoint can be used to list **queued (pending-send)** messages with
+        **optional** filters as **query** parameters.
+
+
+        Following **General filters** can be applied along with other filters(primary/secondary) without any restrictions
+
+        - sortDir
+
+        - pageOffset
+
+        - pageLength
+
+
+        Following **Primary filters** have higher precedence over secondary filters. If both primary and secondary filters
+        are used in the same API request, **secondary filters** will be **ignored**.
+
+        - partnerAS2Id
+
+        - stationAS2Id
+
+
+        Only one of the following **Secondary filters** can be applied per API request. If multiple secondary filters
+        are used in a single API request, only the filter with **the highest precedence** will be applied and the rest will
+        be ignored. The precedence of the secondary filters are in the listed order.
+
+        - as2MessageId
+
+        - subject
+      operationId: ListQueuedMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#32-list-messages--get-messagebox
+      security:
+      - TokenAuth: []
+      parameters:
+      - name: sortDir
+        in: query
+        description: 'Sort direction of messages'
+        required: false
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: desc
+      - name: pageLength
+        in: query
+        description: 'Length of a page. An integer value greater than or equal to 1 and less than or equal to 100 is accepted.'
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+      - name: pageOffset
+        in: query
+        description: 'Page offset, supports non-negative integer values'
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      - name: stationAS2Id
+        in: query
+        description: 'AS2 identifier of the AS2 Station that will be sending these messages'
+        required: false
+        schema:
+          type: string
+          example: test-station
+      - name: partnerAS2Id
+        in: query
+        description: 'AS2 identifier of the AS2 Partner that will be receiving these messages'
+        required: false
+        schema:
+          type: string
+          example: test-partner
+      - name: as2MessageId
+        in: query
+        description: 'AS2 message identifier of the required AS2 message(s)'
+        required: false
+        schema:
+          type: string
+          example: '<1595831212322@mftgateway.com>'
+      - name: subject
+        in: query
+        description: 'Any subject string to filter messages against'
+        required: false
+        schema:
+          type: string
+          example: message subject
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageListRetrievalResponse'
+              examples:
+                'Has messages':
+                  description: Has messages matching the provided filters
+                  value:
+                    messages:
+                      - <15947211062750@mftgateway.com>
+                      - <15947210997311@mftgateway.com>
+                      - <15947210989114@mftgateway.com>
+                      - <15947210979767@mftgateway.com>
+                      - <15947210969966@mftgateway.com>
+                      - <15947210950640@mftgateway.com>
+                      - <15947210941011@mftgateway.com>
+                'No messages':
+                  description: No messages matching the provided filters
+                  value:
+                    messages: []
+  /message/outbox/failed:
+    get:
+      tags:
+        - Outbox Messages
+      summary: List Failed Messages
+      description: >-
+        This API endpoint can be used to list **sending failed** messages with
+        **optional** filters as **query** parameters.
+
+
+        Following **General filters** can be applied along with other filters(primary/secondary) without any restrictions
+
+        - sortDir
+
+        - pageOffset
+
+        - pageLength
+
+
+        Following **Primary filters** have higher precedence over secondary filters. If both primary and secondary filters
+        are used in the same API request, **secondary filters** will be **ignored**.
+
+        - partnerAS2Id
+
+        - stationAS2Id
+
+
+        Only one of the following **Secondary filters** can be applied per API request. If multiple secondary filters
+        are used in a single API request, only the filter with **the highest precedence** will be applied and the rest will
+        be ignored. The precedence of the secondary filters are in the listed order.
+
+        - as2MessageId
+
+        - subject
+      operationId: ListFailedMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#32-list-messages--get-messagebox
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: sortDir
+          in: query
+          description: 'Sort direction of messages'
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: pageLength
+          in: query
+          description: 'Length of a page. An integer value greater than or equal to 1 and less than or equal to 100 is accepted.'
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: pageOffset
+          in: query
+          description: 'Page offset, supports non-negative integer values'
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: stationAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Station that that was intended to sent these messages'
+          required: false
+          schema:
+            type: string
+            example: test-station
+        - name: partnerAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Partner that was intended to receive these messages'
+          required: false
+          schema:
+            type: string
+            example: test-partner
+        - name: as2MessageId
+          in: query
+          description: 'AS2 message identifier of the required AS2 message(s)'
+          required: false
+          schema:
+            type: string
+            example: '<1595831212322@mftgateway.com>'
+        - name: subject
+          in: query
+          description: 'Any subject string to filter messages against'
+          required: false
+          schema:
+            type: string
+            example: message subject
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageListRetrievalResponse'
+              examples:
+                'Has messages':
+                  description: Has messages matching the provided filters
+                  value:
+                    messages:
+                      - <15947211062750@mftgateway.com>
+                      - <15947210997311@mftgateway.com>
+                      - <15947210989114@mftgateway.com>
+                      - <15947210979767@mftgateway.com>
+                      - <15947210969966@mftgateway.com>
+                      - <15947210950640@mftgateway.com>
+                      - <15947210941011@mftgateway.com>
+                'No messages':
+                  description: No messages matching the provided filters
+                  value:
+                    messages: []
+  /message/outbox/incomplete:
+    get:
+      tags:
+        - Outbox Messages
+      summary: List Incompleted Messages
+      description: >-
+        This API endpoint can be used to list **successfully sent** messages with
+        **optional** filters as **query** parameters.
+
+
+        Following **General filters** can be applied along with other filters(primary/secondary) without any restrictions
+
+        - sortDir
+
+        - pageOffset
+
+        - pageLength
+
+
+        Following **Primary filters** have higher precedence over secondary filters. If both primary and secondary filters
+        are used in the same API request, **secondary filters** will be **ignored**.
+
+        - partnerAS2Id
+
+        - stationAS2Id
+
+
+        Only one of the following **Secondary filters** can be applied per API request. If multiple secondary filters
+        are used in a single API request, only the filter with **the highest precedence** will be applied and the rest will
+        be ignored. The precedence of the secondary filters are in the listed order.
+
+        - as2MessageId
+
+        - subject
+      operationId: ListIncompletedMessages(ComingSoon)
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#32-list-messages--get-messagebox
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: sortDir
+          in: query
+          description: 'Sort direction of messages'
+          required: false
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - name: pageLength
+          in: query
+          description: 'Length of a page. An integer value greater than or equal to 1 and less than or equal to 100 is accepted.'
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+        - name: pageOffset
+          in: query
+          description: 'Page offset, supports non-negative integer values'
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+        - name: stationAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Station that sent these messages'
+          required: false
+          schema:
+            type: string
+            example: test-station
+        - name: partnerAS2Id
+          in: query
+          description: 'AS2 identifier of the AS2 Partner that received these messages'
+          required: false
+          schema:
+            type: string
+            example: test-partner
+        - name: as2MessageId
+          in: query
+          description: 'AS2 message identifier of the required AS2 message(s)'
+          required: false
+          schema:
+            type: string
+            example: '<1595831212322@mftgateway.com>'
+        - name: subject
+          in: query
+          description: 'Any subject string to filter messages against'
+          required: false
+          schema:
+            type: string
+            example: message subject
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageListRetrievalResponse'
+              examples:
+                'Has messages':
+                  description: Has messages matching the provided filters
+                  value:
+                    messages:
+                      - <15947211062750@mftgateway.com>
+                      - <15947210997311@mftgateway.com>
+                      - <15947210989114@mftgateway.com>
+                      - <15947210979767@mftgateway.com>
+                      - <15947210969966@mftgateway.com>
+                      - <15947210950640@mftgateway.com>
+                      - <15947210941011@mftgateway.com>
+                'No messages':
+                  description: No messages matching the provided filters
+                  value:
+                    messages: []
+  /message/outbox/{as2MessageId}:
+    get:
+      tags:
+        - Outbox Messages
+      summary: Retrieve Outbox (Sent/Queued/Failed/Incomplete) Message
+      description: >-
+        This API endpoint can be used to retrieve an outbox
+        (sent/queued/failed/incomplete) message by AS2 message identifier.
+      operationId: RetrieveOutboxMessage
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#33-retrieve-message
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to be retrieved'
+          required: true
+          schema:
+            type: string
+            example: <159592985268202051@mftgateway.com>
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AS2Message'
+              example:
+                id: 159592985268293700
+                as2MessageId: <159592985268202050@mftgateway.com>
+                incoming: false
+                msgStatus: Sent
+                mdnStatus: Received; MDN Signature Verified
+                receiverAS2Id: MyPartner
+                senderAS2Id: MyStation
+                subject: Test Message from API
+                attachmentPaths:
+                  - >-
+                    AS2/files/MyStation/MyPartner/outbox/1595929852764-479/Attachment.raw
+                compressed: false
+                signed: true
+                encrypted: true
+                mic: rx3QMbPGeKtkoubnmibSxBbe9Gs=, sha1
+                micMatches: true
+                transportStatusReceived: 200
+                timestamp: 1595929857954
+                apiFetched: false
+                transportHeaders:
+                  AS2-From: MyStation
+                  AS2-To: MyPartner
+                  User-Agent: MFT Gateway
+                  Disposition-Notification-To: mystation@mymail.com
+                  AS2-Version: '1.1'
+                  From: mystation@mymail.com
+                  Message-Id: <159592985268202050@mftgateway.com>
+                  Content-Transfer-Encoding: binary
+                  Disposition-Notification-Options: >-
+                    signed-receipt-protocol=required,pkcs7-signature;
+                    signed-receipt-micalg=required,sha1,md5
+                  Subject: Test Message from API
+                  MIME-Version: '1.0'
+                  Content-Type: >-
+                    application/octet-stream; name="smime.p7m";
+                    smime-type=enveloped-data
+                mdnMessage:
+                  mdnId: <1129007699.17286.1595929857998@as2gateway.com>
+                  messageId: 159592985268293700
+                  as2MessageId: <159592985268202050@mftgateway.com>
+                  disposition: automatic-action/MDN-sent-automatically;processed
+                  humanMessage: "MDN for Message-ID: <159592985268202050@mftgateway.com>\r\nFrom: MyStation\r\nTo: MyPartner\r\nReceived on: Tue Jul 28 09:50:57 UTC 2020\r\nStatus: processed\r\nComment: This is not a guarantee that the message has been completely processed or understood by the receiving translator\r\nPowered by the AdroitLogic UltraESB-X (https://www.adroitlogic.com)\r\n"
+                  rawMdnS3Key: AS2/raw-mdn/incoming/159592985268293700/mdn.raw
+                  mic: rx3QMbPGeKtkoubnmibSxBbe9Gs=, sha1
+                  signed: true
+                  incoming: true
+                  status: Received; MDN Signature Verified
+                  timestamp: 1595929858171
+        '404':
+          description: Message Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Message not found
+    delete:
+      tags:
+        - Outbox Messages
+      summary: Delete Outbox (Sent/Queued/Failed) Message
+      description: >-
+        This API endpoint can be used to delete an outbox
+        (Sent/Queued/Failed) message.
+      operationId: DeleteOutboxMessage
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#34-delete-message
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to be deleted'
+          required: true
+          schema:
+            type: string
+            example: <16206212538784368@mftgateway.com>
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageDeletionResponse'
+              example:
+                deleted: <16206212538784367@mftgateway.com>
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Unable to find message
+  /message/outbox/{as2MessageId}/attachments:
+    get:
+      tags:
+        - Outbox Messages
+      summary: Retrieve Outbox (Sent/Queued/Failed) Message Attachment(s)
+      description: >-
+        This API endpoint can be used to retrieve pre-signed URL(s) to download attachments of an outbox message from
+        Amazon S3 bucket. Please note that the **validity of the S3 signed URL is limited to 10 minutes**.
+      operationId: RetrieveOutboxMessageAttachments
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#334-retrieve-message-attachments
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to retrieve attachments of'
+          required: true
+          schema:
+            type: string
+            example: <158719527.1469.1594924294698@as2gateway.com>
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulAttachmentListResponse'
+              example:
+                total: 2
+                attachments:
+                  - name: Attachment1.raw
+                    url: >-
+                      https://mftg-my-bucket.s3.amazonaws.com/AS2/files/MyStation/MyPartner/outbox/1594924300560-333/Attachment1.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T110019Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2972481f458e4b4aa0453264885f345fdbbb889f87fb08d8b3cb2577266d9b92&X-Amz-SignedHeaders=host
+                  - name: Attachment2.raw
+                    url: >-
+                      https://mftg-my-bucket.s3.amazonaws.com/AS2/files/MyStation/MyPartner/outbox/1594924300560-333/Attachment2.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T110019Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2972481f458e4b4aa0453264885f345fdbbb889f87fb08d8b3cb2577266d9b92&X-Amz-SignedHeaders=host
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Attachment(s) not found
+  /message/outbox/{as2MessageId}/mdn:
+    get:
+      tags:
+        - Outbox Messages
+      summary: Retrieve Outbox (Sent/Queued/Failed) Message MDN
+      description: >-
+        This API endpoint can be used to retrieve S3 pre-signed URL to download the MDN received for a sent message
+        from Amazon S3 bucket. Please note that the **validity of the S3 signed URL is limited 10 minutes**.
+      operationId: RetrieveOutboxMessageMDN
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#335-retrieve-message-mdn
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: as2MessageId
+          in: path
+          description: 'AS2 ID of the message to retrieve MDN of'
+          required: true
+          schema:
+            type: string
+            example: <158719527.1469.1594924294698@as2gateway.com>
+      responses:
+        '200':
+          description: Successfully Retrieved
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMDNRetrievalResponse'
+              example:
+                url: >-
+                  https://mftg-my-bucket.s3.amazonaws.com/AS2/raw-mdn/incoming/10959001878639/mdn.raw?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA5ZHZSFAWLSPHUVP7%2F20200728%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20200728T111420Z&X-Amz-Expires=600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDMaCXVzLWVhc3QtMSJIMEYCIQCWmQLPrM6yJuGXyfa02uwVj9nhO9TgykFYgnO7pw3PzQIhAOd2qR0LQ%2BIpU2izw%2BMcYK0R5C8UgWX3oVC%2BKzt70ZaWKuMBCOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTQ3NTYzNjY5NTQ4Igx5mzeWLIVApF6w7sYqtwGpje0TL%2F3Kwj7wCI1LRmIUfKK6YUaNtzPfftPS1ZA54rfOrAV29yyJym5ZJ4BMBUL1dtclA5Uwejg%2F5m8zcBHP75DmFRKVyO1U74h%2FknuIxjh7qtObkHXf3vvD6amFCdDB1hdqBs7pk2yB93IsFRkyBJtZAU7EOaGC%2BbhCghClqEmcLsMkC5FWAoHxM%2FncSSwkdDa1VBLy3%2BRDhzPlQddhggymrGgNlYdbHIi9DUbVtB83qC2fbB4wjIqA%2BQU63wFAj3I5FFE4C6IpvPnokaVJ93h9Iegy0zVaaQjOYBG3QdyTyefc%2BJWSuVhJMk770mYyWsVcTJMUUb1FWQ%2BKL2gqlxKjJGqdyxJR9ZuX3CJC3dKQWCUeIjausiJevBW7ReeUwCJEM52tOHwNvTMSPStkV%2FHUleAhmGQ0Q%2F5x8Sz%2BHgbxlUD%2B%2FfEuJq3N4ZKt80BX%2FlKRUnmoNAub8%2BpHbZBLKZPIJQt1aBMIHNn1EdCmx4li00EXdLSYCrDTmob7Vw8SIhwOFlOxQ1qNfKmKNUwN5xNyvLgzzyavdrnJwfgq&X-Amz-Signature=2641a9625dc0cab29702dcb67fc33ee66e0df5edfb0aa6c2c7029cc54110602f&X-Amz-SignedHeaders=host
+        '404':
+          description: Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: MDN not found
+  /message/outbox/delete:
+    post:
+      tags:
+        - Outbox Messages
+      summary: Batch Delete Outbox (Sent/Queued/Failed) Messages
+      description: >-
+        This API endpoint can be used to delete multiple **outbox** messages as a batch operation. Endpoint supports upto
+        100 messages per API call.
+      operationId: BatchDeleteOutboxMessages
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#35-batch-delete--post-messageboxdelete
+      security:
+        - TokenAuth: [ ]
+      requestBody:
+        description: 'AS2 IDs of the messages to be deleted'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageBatchOperationRequest'
+            example:
+              as2MessageIds:
+                - <16206212538784368@mftgateway.com>
+                - <16094169443904964@mftgateway.com>
+        required: true
+      responses:
+        '200':
+          description: Successfully Deleted
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulMessageBatchDeletionResponse'
+              example:
+                deleted:
+                  - <16206212538784368@mftgateway.com>
+                  - <16094169443904964@mftgateway.com>
+        '404':
+          description: Message Not Found
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: Unable to find messages
+  # Certificates
+  /certificate:
+    get:
+      tags:
+        - Certificate
+      summary: List Certificates
+      description: >-
+        This API endpoint can be used to list **available certificates** on the
+        MFT Gateway account.
+      operationId: ListCertificates
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#6-certificates--get-certificatecerttypetype
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: certType
+          in: query
+          description: 'Certificate type to filter. Allowed values: ''STATION'', ''PARTNER'', ''HTTPS'', ''PARTNER_CHAIN'' and ''HTTPS_CHAIN'' Defaults to null (all certificates)'
+          required: false
+          allowEmptyValue: true
+          schema:
+            type: string
+            enum: [STATION, PARTNER, HTTPS, PARTNER_CHAIN, HTTPS_CHAIN]
+      responses:
+        '200':
+          description: Successful Certificate List Retrieval
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulCertListRetrievalResponse'
+              examples:
+                'Without filter':
+                  description: 'Certificate list response without certType filter'
+                  value:
+                    - alias: f54967f4-23fb-4b1a-9759-ba6b94cd7922
+                      type: HTTPS
+                    - alias: 5208e1af-cd9e-4106-8cd0-04b1be74db1d
+                      type: PARTNER
+                    - alias: d710c1e7-9fe3-44fe-b68c-f5823668b698
+                      type: PARTNER
+                    - alias: 32ed186f-346e-4a7d-9b9b-562c0a510e54
+                      type: PARTNER
+                    - alias: f07b6f2e-ac1a-4499-994c-66f839671f8a
+                      type: PARTNER
+                    - alias: 48f358bb-f815-45ad-a5b8-11916ece0d88
+                      type: STATION
+                    - alias: 99f931e2-57dc-467a-805c-fbe1849b2908
+                      type: STATION
+                'With filter':
+                  description: 'Certificate list response with certType filter as ''STATION'''
+                  value:
+                    - alias: 48f358bb-f815-45ad-a5b8-11916ece0d88
+                      type: STATION
+                    - alias: 99f931e2-57dc-467a-805c-fbe1849b2908
+                      type: STATION
+  /certificate/{alias}:
+    get:
+      tags:
+        - Certificate
+      summary: Retrieve Certificate Metadata
+      description: >-
+        This API endpoint can be used to retrieve the **metadata** of a certificate with the given certificate alias.
+      operationId: RetrieveCertificateMetadata
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#6-certificates--get-certificatecerttypetype
+      security:
+        - TokenAuth: [ ]
+      parameters:
+        - name: alias
+          in: path
+          description: 'Alias of the certificate to retrieve'
+          required: true
+          schema:
+            type: string
+            example: f54967f4-23fb-4b1a-9759-ba6b94cd79222
+      responses:
+        '200':
+          description: 'A certificate with given alias found'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulCertRetrievalResponse'
+              example:
+                alias: f54967f4-23fb-4b1a-9759-ba6b94cd7922
+                type: HTTPS
+                serial_number: 66c9fcf99bf8c0a39e2f0788a43e696365bca
+                subject_common_name: Amazon Root CA 1
+                subject_distinguish_name: CN=Amazon Root CA 1, O=Amazon, C=US
+                issuer_common_name: Amazon Root CA 1
+                issuer_distinguish_name: CN=Amazon Root CA 1, O=Amazon, C=US
+                valid_from: Tue May 26 00:00:00 UTC 2015
+                expiry: Sun Jan 17 00:00:00 UTC 2038
+                belongsTo:
+                  - Partner-01
+                  - Station_02
+        '404':
+          description: 'A certificate with given alias not found'
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ResponseWithMessage'
+              example:
+                message: 'Unable to find certificate with alias: f54967f4-23fb-4b1a-9759-ba6b94cd79222'
+  # Station
+  /station:
+    post:
+      tags:
+        - Station
+      summary: Create Station
+      description: >-
+        This endpoint can be used to create a new station
+      operationId: CreateStation
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#4-station--post-station
+      security:
+        - TokenAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStationRequest'
+            example:
+              name: Station
+              as2Identifier: station
+              email: email1@email.com,email3@email.com,email3@email.com
+              certificate:
+                type: NEW_SELF_SIGN_CERTIFICATE
+                commonName: Certificate CN
+                password: private-key-password
+                keyLength: 2048
+                validity: 5
+                orgUnit: Organization Unit
+                orgName: Organization Name
+                city: City
+                state: State
+                country: US
+        required: true
+      responses:
+        '200':
+          description: Successfully Created
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulStationCreationResponse'
+              example:
+                message: Station created successfully
+                stationId: 555119144483082
+        '422':
+          description: Creation Failed
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/CreationErrorResponse'
+              example:
+                message: User input validation failed. Please try again
+                errors:
+                  - as2Identifier: 'Station already exists with AS2 identifier: station_as2_id'
+  # Partner
+  /partner:
+    post:
+      tags:
+        - Partner
+      summary: Create Partner
+      description: >-
+        This endpoint can be used to create a new trading partner
+      operationId: CreatePartner
+      externalDocs:
+        url: https://aayutechnologies.com/docs/product/mft-gateway/rest-api-integration/#5-partner--post-partner
+      security:
+        - TokenAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePartnerRequest'
+            example:
+              name: Partner Name
+              as2Identifier: partner_as2_id
+              url: https://partner.com
+              encryptionCertificate: <Base64 encoded encryption certificate>
+              encryptMessage: true
+              encryptionAlgorithm: DES_EDE3_CBC
+              signMessage: true
+              signatureAlgorithm: SHA1
+              httpsCertificate: <Base64 encoded SSL certificate>
+              httpsChainCertificates:
+                - <Base64 encoded SSL chain certificate one>
+                - <Base64 encoded SSL chain certificate two>
+              customHeaders:
+                - headerName: <custom-header-name>
+                  headerValue: <custom-header-value>
+        required: true
+      responses:
+        '200':
+          description: Successfully Created
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/SuccessfulPartnerCreationResponse'
+              example:
+                message: Partner created successfully
+                partnerId: 555131984980067
+        '422':
+          description: Creation Failed
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/CreationErrorResponse'
+              example:
+                message: User input validation failed. Please try again
+                errors:
+                  - as2Identifier: 'Partner already exists with AS2 identifier: partner_as2_id'
+
+components:
+  securitySchemes:
+    TokenAuth: # arbitrary name for the security scheme
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Auth token retrieved from authorization endpoint or refresh token endpoint'
+  schemas:
+    # Common
+    ResponseWithMessage:
+      title: Response with message
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+    RequestFieldError:
+      title: Request Field Error
+      type: object
+      maxProperties: 1
+      example:
+        fieldName: Error Reason
+    CreationErrorResponse:
+       title: Creation Error Response
+       required:
+         - message
+         - errors
+       type: object
+       properties:
+         message:
+           type: string
+         errors:
+           type: array
+           items:
+             $ref: '#/components/schemas/RequestFieldError'
+           description: ''
+    # Authorize
+    AuthorizeRequest:
+      title: Authorize Request
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    SuccessfulAuthorizationResponse:
+      title: Successful Authorization Response
+      required:
+        - api_token
+        - refresh_token
+      type: object
+      properties:
+        api_token:
+          type: string
+        refresh_token:
+          type: string
+    # Refresh Auth Token
+    RefreshAuthTokenRequest:
+      title: Refresh Auth Token Request
+      required:
+        - username
+        - refreshToken
+      type: object
+      properties:
+        username:
+          type: string
+        refreshToken:
+          type: string
+    # Certificates
+    SuccessfulCertListRetrievalResponse:
+      title: Successful Certificate List Retrieval Response
+      required:
+        - alias
+        - type
+      type: array
+      items:
+        type: object
+        properties:
+          alias:
+            type: string
+          type:
+            type: string
+    SuccessfulCertRetrievalResponse:
+      title: Successful Certificate Retrieval Response
+      type: object
+      required:
+        - alias
+        - type
+        - serial_number
+        - subject_common_name
+        - subject_distinguish_name
+        - issuer_common_name
+        - issuer_distinguish_name
+        - valid_from
+        - expiry
+        - belongsTo
+      properties:
+        alias:
+          type: string
+        type:
+          type: string
+        serial_number:
+          type: string
+        subject_common_name:
+          type: string
+        subject_distinguish_name:
+          type: string
+        issuer_common_name:
+          type: string
+        issuer_distinguish_name:
+          type: string
+        valid_from:
+          type: string
+        expiry:
+          type: string
+        belongsTo:
+          type: array
+          items:
+            type: string
+          description: 'To which entities this certificate belongs to'
+    # Send message
+    SuccessfulMessageSubmitResponse:
+      title: Successful Message Submission Response
+      type: object
+      properties:
+        message:
+          type: string
+        as2MessageId:
+          type: string
+    # Message
+    AS2Message:
+      title: AS2 Message
+      required:
+        - id
+        - as2MessageId
+        - incoming
+        - msgStatus
+        - mdnStatus
+        - receiverAS2Id
+        - senderAS2Id
+        - subject
+        - failures
+        - attachmentPaths
+        - compressed
+        - signed
+        - encrypted
+        - mic
+        - micMatches
+        - transportStatusReceived
+        - userAgent
+        - timestamp
+        - apiFetched
+        - transportHeaders
+        - mdnMessage
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        as2MessageId:
+          type: string
+        incoming:
+          type: boolean
+        msgStatus:
+          type: string
+        mdnStatus:
+          type: string
+        receiverAS2Id:
+          type: string
+        senderAS2Id:
+          type: string
+        subject:
+          type: string
+        failures:
+          type: integer
+        attachmentPaths:
+          type: array
+          items:
+            type: string
+        compressed:
+          type: boolean
+        signed:
+          type: boolean
+        encrypted:
+          type: boolean
+        mic:
+          type: string
+        micMatches:
+          type: boolean
+        transportStatusReceived:
+          type: integer
+          format: int32
+        userAgent:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        apiFetched:
+          type: boolean
+        transportHeaders:
+          $ref: '#/components/schemas/TransportHeader'
+        mdnMessage:
+          $ref: '#/components/schemas/MdnMessage'
+    TransportHeader:
+      title: Transport Header
+      required:
+        - AS2-From
+        - User-Agent
+        - Accept-Encoding
+        - Content-Transfer-Encoding
+        - Message-ID
+        - Disposition-Notification-Options
+        - AS2-To
+        - Content-Type
+        - Disposition-Notification-To
+        - AS2-Version
+        - Host
+        - From
+        - MIME-Version
+        - Subject
+      type: object
+      properties:
+        AS2-From:
+          type: string
+        User-Agent:
+          type: string
+        Accept-Encoding:
+          type: string
+        Content-Transfer-Encoding:
+          type: string
+        Message-ID:
+          type: string
+        Disposition-Notification-Options:
+          type: string
+        AS2-To:
+          type: string
+        Content-Type:
+          type: string
+        Disposition-Notification-To:
+          type: string
+        AS2-Version:
+          type: string
+        Host:
+          type: string
+        From:
+          type: string
+        MIME-Version:
+          type: string
+        Subject:
+          type: string
+    MdnMessage:
+      title: MDN Message
+      required:
+        - mdnId
+        - messageId
+        - as2MessageId
+        - disposition
+        - humanMessage
+        - rawMdnS3Key
+        - mic
+        - signed
+        - incoming
+        - status
+        - timestamp
+      type: object
+      properties:
+        mdnId:
+          type: string
+        messageId:
+          type: integer
+          format: int64
+        as2MessageId:
+          type: string
+        disposition:
+          type: string
+        humanMessage:
+          type: string
+        rawMdnS3Key:
+          type: string
+        mic:
+          type: string
+        signed:
+          type: boolean
+        incoming:
+          type: boolean
+        status:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+    Attachment:
+      title: Attachment
+      required:
+        - name
+        - url
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+    SuccessfulMessageListRetrievalResponse:
+      title: Successful Message List Retrieval Response
+      required:
+        - messages
+      type: object
+      properties:
+        messages:
+          type: array
+          items:
+            type: string
+          description: 'Array of AS2 IDs of the messages'
+    SuccessfulMessageDeletionResponse:
+      title: Successful Message Deletion Response
+      required:
+        - deleted
+      type: object
+      properties:
+        deleted:
+          type: string
+          description: 'AS2 ID of the deleted message'
+    SuccessfulAttachmentListResponse:
+      title: Successful Attachment List Retrieval Response
+      required:
+        - total
+        - attachments
+      type: object
+      properties:
+        total:
+          type: integer
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+    SuccessfulMDNRetrievalResponse:
+      title: Successful MDN Retrieval Response
+      required:
+        - url
+      type: object
+      properties:
+        url:
+          type: string
+    MessageBatchOperationRequest:
+      title: Message Batch Operation Request
+      required:
+        - as2MessageIds
+      type: object
+      properties:
+        as2MessageIds:
+          type: array
+          items:
+            type: string
+            maxItems: 100
+          description: 'AS2 IDs of the messages'
+    SuccessfulMessageBatchDeletionResponse:
+      title: Successful Message Batch Deletion Response
+      required:
+        - deleted
+      type: object
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            maxItems: 100
+          description: 'AS2 IDs of the deleted messages'
+    # Station
+    NewCertificateForStation:
+      title: New Self-Signed Certificate for Station
+      required:
+        - type
+        - commonName
+        - password
+        - keyLength
+        - validity
+      type: object
+      properties:
+        type:
+          description: Certificate configuration type
+          type: string
+          enum:
+            - NEW_SELF_SIGN_CERTIFICATE
+          default: NEW_SELF_SIGN_CERTIFICATE
+        commonName:
+          description: Certificate Common Name
+          type: string
+        password:
+          description: Private key password
+          type: string
+        keyLength:
+          description: Certificate key length
+          type: integer
+          enum:
+            - 1024
+            - 2048
+            - 4096
+          default: 2048
+        validity:
+          description: Certificate validity in years
+          type: integer
+          enum:
+            - 1
+            - 2
+            - 5
+            - 8
+            - 10
+          default: 5
+        orgUnit:
+          description: Organization unit
+          type: string
+        orgName:
+          description: Organization name
+          type: string
+        city:
+          description: City
+          type: string
+        state:
+          description: State code ISO 3166-1 alpha-2
+          type: string
+        country:
+          description: Country code ISO 3166-1 alpha-2
+          type: string
+      example:
+        type: NEW_SELF_SIGN_CERTIFICATE
+        commonName: Certificate CN
+        password: private-key-password
+        keyLength: 2048
+        validity: 5
+        orgUnit: Organization Unit
+        orgName: Organization Name
+        city: City
+        state: State
+        country: US
+    CertificateFromKeystoreForStation:
+      title: Existing Certificate from Keystore for Station
+      required:
+        - type
+        - keystore
+        - keystorePassword
+        - alias
+        - privateKeyPassword
+      type: object
+      properties:
+        type:
+          description: Certificate configuration type
+          type: string
+          enum:
+            - FROM_KEYSTORE
+          default: FROM_KEYSTORE
+        keystore:
+          description: S3 key of the existing keystore in your MFT Gateway S3 bucket
+          type: string
+        keystorePassword:
+          description: Keystore password
+          type: string
+        alias:
+          description: Certificate alias
+          type: string
+        privateKeyPassword:
+          description: Existing private key password
+          type: string
+        newPrivateKeyPassword:
+          description: New private key password. If not provided, the existing private key password will be used as new password.
+          type: string
+    CertificateFromCertStoreForStation:
+      title: Existing Certificate from Certificate Store for Station
+      required:
+        - type
+        - alias
+      type: object
+      properties:
+        type:
+          description: Certificate configuration type
+          type: string
+          enum:
+            - FROM_CERTIFICATE_STORE
+          default: FROM_CERTIFICATE_STORE
+        alias:
+          description: Existing MFT Gateway **IDENTITY** type certificate alias
+          type: string
+    CreateStationRequest:
+      title: Create Station Request
+      required:
+        - name
+        - as2Identifier
+        - email
+        - certificate
+      type: object
+      properties:
+        name:
+          type: string
+        as2Identifier:
+          type: string
+        email:
+          description: Comma separated list of emails (up to maximum of 3 emails)
+          type: string
+        certificate:
+          description: Nested JSON object with station identity certificate configuration
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/NewCertificateForStation'
+            - $ref: '#/components/schemas/CertificateFromKeystoreForStation'
+            - $ref: '#/components/schemas/CertificateFromCertStoreForStation'
+        description:
+          type: string
+        receivedMessageNotifications:
+          description: Whether to enable email notifications for received messages
+          type: boolean
+          default: false
+        failedMessageNotifications:
+          description: Whether to enable email notifications for send failures
+          type: boolean
+          default: true
+        largePayloadSupport:
+          description: Whether to receive messages with payload size larger than 3MB through static IP address (Business/Enterprise tier feature)
+          type: boolean
+          default: false
+    SuccessfulStationCreationResponse:
+      title: Successful Station Creation Response
+      required:
+        - message
+        - stationId
+      type: object
+      properties:
+        message:
+          type: string
+        stationId:
+          type: integer
+          format: int64
+    # Partner
+    CreatePartnerRequest:
+      title: Create Partner Request
+      required:
+        - name
+        - as2Identifier
+        - url
+        - encryptionCertificate
+      type: object
+      properties:
+        name:
+          type: string
+        as2Identifier:
+          type: string
+        description:
+          type: string
+        url:
+          description: Trading partner message delivery endpoint
+          type: string
+        encryptionCertificate:
+          description: >-
+            **Base64 encoded** encryption certificate
+          type: string
+        encryptMessage:
+          description: Whether to encrypt outbound messages
+          type: boolean
+          default: true
+        encryptionAlgorithm:
+          description: Encryption algorithm to be used
+          type: string
+          enum:
+            - DES_EDE3_CBC
+            - AES128_CBC
+            - AES192_CBC
+            - AES256_CBC
+            - CAMELLIA128_CBC
+            - CAMELLIA192_CBC
+            - CAMELLIA256_CBC
+            - CAST5_CBC
+            - RC2_CBC
+            - SEED_CBC
+            - ECDH_SHA1KDF
+          default: DES_EDE3_CBC
+        signMessage:
+          description: Whether to sign outbound messages
+          type: boolean
+          default: true
+        signatureAlgorithm:
+          description: Signature algorithm to be used
+          type: string
+          enum:
+            - SHA1
+            - MD2
+            - MD5
+            - SHA224
+            - SHA256
+            - SHA384
+            - SHA512
+          default: SHA1
+        useDiffCertAsSignCert:
+          description: >-
+            Whether to use a different certificate to verify signature of the inbound messages. If set to
+            `false`, **encryptionCertificate** will be used to validate incoming message signatures.
+          type: boolean
+          default: false
+        signatureCertificate:
+          description: >-
+            Base64 encoded signature certificate (Required if **useDiffCertAsSignCert** set to `true`)
+          type: string
+        httpsCertificate:
+          description: Base64 encoded SSL certificate
+          type: string
+        encryptSignChainCertificates:
+          description: Base64 encoded encryption/sign chain certificate(s)
+          type: array
+          items:
+            type: string
+        httpsChainCertificates:
+          description: Base64 encoded SSL chain certificate(s)
+          type: array
+          items:
+            type: string
+        validateTrustAnchor:
+          description: Whether to validate trust anchor of the uploaded certificates
+          type: boolean
+          default: false
+        messageSubject:
+          description: Default message subject for trading partner
+          type: string
+          minLength: 1
+          maxLength: 128
+        compressBefore:
+          description: Whether to compress messages before encryption/sign
+          type: boolean
+          default: false
+        compressAfter:
+          description: Whether to compress messages after encryption/sign
+          type: boolean
+          default: false
+        requestMDN:
+          description: Whether to request Message Disposition Notification
+          type: boolean
+          default: true
+        requestSignedMDN:
+          description: Whether to request signed Message Disposition Notification
+          type: boolean
+          default: true
+        requestAsyncMDN:
+          description: Whether to request asynchronous Disposition Notification
+          type: boolean
+          default: false
+        useStaticIP:
+          description: Whether to use Static IP for outbound messages (Business/Enterprise tier feature)
+          type: boolean
+          default: false
+        transmissionTimeout:
+          description: Maximum waiting time (in seconds) before closing the outbound connection
+          type: integer
+          enum: [60, 120, 180, 300]
+          default: 120
+        deleteAttachmentsOnSuccessMdn:
+          description: Whether to delete Attachments from the S3 bucket when a success MDN is received
+          type: boolean
+          default: false
+        autoRetryIncompleteMessages:
+          description: >-
+            Whether to auto retry incomplete messages.
+              Incomplete messages may have successfully processed by the trading partner but failed to acknowledge before
+              the configured timeout. If sets to `true` there is a possibility of duplicating outbound messages.
+          type: boolean
+          default: false
+        customHeaders:
+          description: >-
+            Custom transport headers to be included in the outbound messages to this trading partner.
+              Following header names are reserved and cannot be used. 'as2-from', 'as2-to', 'as2-version',
+              'content-transfer-encoding', 'content-type', 'disposition-notification-options', 'mime-version',
+              'message-id', 'receipt-delivery-option', 'destination'
+          type: array
+          items:
+            type: object
+            required:
+              - headerName
+              - headerValue
+            properties:
+              headerName:
+                type: string
+              headerValue:
+                type: string
+    SuccessfulPartnerCreationResponse:
+      title: Successful Partner Creation Response
+      required:
+        - message
+        - partnerId
+      type: object
+      properties:
+        message:
+          type: string
+        partnerId:
+          type: integer
+          format: int64
+tags:
+  - name: Authorization
+    description: Authentication token related operations
+  - name: Sending Messages
+    description: Submitting messages for sending
+  - name: Inbox Messages
+    description: Operations related to inbox (received) messages
+  - name: Outbox Messages
+    description: Operations related to outbox (sent, queued, failed, incomplete)s messages
+  - name: Certificate
+    description: Operations related to certificate management
+  - name: Station
+    description: Operations related to station management
+  - name: Partner
+    description: Operations related to partner management

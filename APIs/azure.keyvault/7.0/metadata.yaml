@@ -1,0 +1,12 @@
+id: azure.keyvault
+displayName: Azure Key Vault
+type: OpenAPI
+version: "7.0"
+description: This is the [Azure Key Vault API v7.0](https://azure.microsoft.com/en-us/services/key-vault/) OpenAPI specification. The Key Vault client performs cryptographic key operations and vault operations against the Key Vault service.
+idlPath: /azure.keyvault/7.0/openapi.yaml
+thumbnailPath: /azure.keyvault/7.0/icon.png
+documentationPath: /azure.keyvault/7.0/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Paid
+  - Vendor/Microsoft

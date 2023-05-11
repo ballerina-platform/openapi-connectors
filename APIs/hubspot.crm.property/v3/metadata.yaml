@@ -1,0 +1,13 @@
+id: hubspot.crm.property
+displayName: HubSpot CRM Property
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. All HubSpot objects store data in default and custom properties. These endpoints provide access to read and modify object properties in HubSpot.
+idlPath: /hubspot.crm.property/v3/openapi.yaml
+thumbnailPath: /hubspot.crm.property/v3/icon.png
+documentationPath: /hubspot.crm.property/v3/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

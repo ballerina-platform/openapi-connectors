@@ -1,0 +1,14 @@
+id: xero.bankfeeds
+displayName: Xero Bank Feeds
+type: OpenAPI
+version: 2.16.0
+description: This is the [Xero Bank Feeds API v2.16.0](https://developer.xero.com/documentation/api/bankfeeds/overview) OpenAPI specification.
+idlPath: /xero.bankfeeds/2.16.0/openapi.yaml
+thumbnailPath: /xero.bankfeeds/2.16.0/icon.png
+documentationPath: /xero.bankfeeds/2.16.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid
+endpoint:
+  - url: https://api.xero.com/bankfeeds.xro/1.0
+    description: Xero Bank Feeds API base url

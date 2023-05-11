@@ -1,0 +1,13 @@
+id: icons8
+displayName: Icons8
+type: OpenAPI
+version: 1.0.0
+description: This is the [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.
+idlPath: /icons8/1.0.0/openapi.yaml
+thumbnailPath: /icons8/1.0.0/icon.png
+documentationPath: /icons8/1.0.0/readme.md
+keywords:
+  - Content&Files/Images&Design
+  - Cost/Freemium
+endpoint:
+  - url: https://api.icons8.com

@@ -1,0 +1,13 @@
+id: vonage.voice
+displayName: Vonage Voice
+type: OpenAPI
+version: 1.3.6
+description: This is the [Vonage Voice API v1.3.6](https://nexmo-api-specification.herokuapp.com/api/voice) OpenAPI specification. The Voice API lets you create outbound calls, control in-progress calls and get information about historical calls.  More information about the Voice API can be found at https://developer.nexmo.com/voice/voice-api/overview.
+idlPath: /vonage.voice/1.3.6/openapi.yaml
+thumbnailPath: /vonage.voice/1.3.6/icon.png
+documentationPath: /vonage.voice/1.3.6/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: https://api.nexmo.com/v1/calls

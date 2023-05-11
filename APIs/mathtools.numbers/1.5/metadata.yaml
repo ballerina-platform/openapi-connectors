@@ -1,0 +1,14 @@
+id: mathtools.numbers
+displayName: Math Tools Numbers
+type: OpenAPI
+version: "1.5"
+description: This is the [Numbers API v1.5](https://math.tools/api/numbers/) OpenAPI specification.   Numbers API of [Math Tools](https://math.tools/) provides the capability to access the operations that are all about numbers
+idlPath: /mathtools.numbers/1.5/openapi.yaml
+thumbnailPath: /mathtools.numbers/1.5/icon.png
+documentationPath: /mathtools.numbers/1.5/readme.md
+keywords:
+  - Education/eLearning
+  - Cost/Freemium
+endpoint:
+  - url: https://api.math.tools
+  - url: http://api.math.tools

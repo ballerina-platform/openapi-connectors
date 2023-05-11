@@ -1,0 +1,11 @@
+id: avatax
+displayName: AvaTax
+type: OpenAPI
+version: v2
+description: This is the [Avalara AvaTax API v2](https://developer.avalara.com/api-reference/avatax/rest/v2/) OpenAPI specification. Avalara AvaTax is sales tax software that automates tax calculations and the tax filing process.
+idlPath: /avatax/v2/openapi.yaml
+thumbnailPath: /avatax/v2/icon.png
+documentationPath: /avatax/v2/readme.md
+keywords:
+  - BusinessIntelligence/Reporting
+  - Cost/Freemium

@@ -1,0 +1,20 @@
+id: neutrino
+displayName: Neutrino
+type: OpenAPI
+version: 3.5.0
+description: This is the [Neutrino API v3.5.0](https://www.neutrinoapi.com/api/api-basics/) OpenAPI specification.
+idlPath: /neutrino/3.5.0/openapi.yaml
+thumbnailPath: /neutrino/3.5.0/icon.png
+documentationPath: /neutrino/3.5.0/readme.md
+keywords:
+  - Website&AppBuilding/AppBuilders
+  - Cost/Freemium
+endpoint:
+  - url: https://neutrinoapi.net/
+    description: Multicloud endpoint
+  - url: https://aws.neutrinoapi.net/
+    description: AWS endpoint
+  - url: https://gcp.neutrinoapi.net/
+    description: GCP endpoint
+  - url: https://msa.neutrinoapi.net/
+    description: MS Azure endpoint

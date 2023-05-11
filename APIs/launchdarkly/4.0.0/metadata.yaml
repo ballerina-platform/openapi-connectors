@@ -1,0 +1,13 @@
+id: launchdarkly
+displayName: LaunchDarkly
+type: OpenAPI
+version: 4.0.0
+description: This is the [LaunchDarkly API v2.0](https://apidocs.launchdarkly.com/) OpenAPI specification. LaunchDarkly is a feature management platform enables teams to deploy code at any time, even if a feature isn't ready to be released to all users.
+idlPath: /launchdarkly/4.0.0/openapi.yaml
+thumbnailPath: /launchdarkly/4.0.0/icon.png
+documentationPath: /launchdarkly/4.0.0/readme.md
+keywords:
+  - Productivity/ProjectManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://app.launchdarkly.com/api/v2

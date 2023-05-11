@@ -1,0 +1,14 @@
+id: journey.io
+displayName: journey.io
+type: OpenAPI
+version: 1.0.0
+description: This is the [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification. The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
+idlPath: /journey.io/1.0.0/openapi.yaml
+thumbnailPath: /journey.io/1.0.0/icon.png
+documentationPath: /journey.io/1.0.0/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Freemium
+endpoint:
+  - url: https://api.journy.io
+    description: Production

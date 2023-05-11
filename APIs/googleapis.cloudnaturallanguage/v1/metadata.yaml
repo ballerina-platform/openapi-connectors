@@ -1,0 +1,13 @@
+id: googleapis.cloudnaturallanguage
+type: OpenAPI
+version: v1
+description: v1
+idlPath: /googleapis.cloudnaturallanguage/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudnaturallanguage/v1/icon.png
+documentationPath: /googleapis.cloudnaturallanguage/v1/readme.md
+keywords:
+  - BusinessIntelligence/LanguageAnalysis
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://language.googleapis.com/

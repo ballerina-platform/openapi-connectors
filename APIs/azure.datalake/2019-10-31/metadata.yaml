@@ -1,0 +1,12 @@
+id: azure.datalake
+displayName: Azure Data Lake
+type: OpenAPI
+version: "2019-10-31"
+description: This is the [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification. Azure Data Lake Storage provides storage for Hadoop and other big data workloads.
+idlPath: /azure.datalake/2019-10-31/openapi.yaml
+thumbnailPath: /azure.datalake/2019-10-31/icon.png
+documentationPath: /azure.datalake/2019-10-31/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Paid
+  - Vendor/Microsoft

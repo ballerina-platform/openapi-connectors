@@ -1,0 +1,13 @@
+id: shipstation
+displayName: ShipStation
+type: OpenAPI
+version: "1.0"
+description: This is the [ShipStation API v1.0](https://www.shipstation.com/docs/api/) OpenAPI specification.
+idlPath: /shipstation/1.0/openapi.yaml
+thumbnailPath: /shipstation/1.0/icon.png
+documentationPath: /shipstation/1.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+endpoint:
+  - url: https://ssapi.shipstation.com/

@@ -1,0 +1,11 @@
+id: dropbox
+displayName: Dropbox
+type: OpenAPI
+version: v1.0
+description: This is the [Dropbox API v2](https://www.dropbox.com/developers/documentation/http/overview) OpenAPI specification.  Dropbox is a modern workspace designed to reduce busywork-so you can focus on the things that matter. Sign in and put your creative energy to work.
+idlPath: /dropbox/v1.0/openapi.yaml
+thumbnailPath: /dropbox/v1.0/icon.png
+documentationPath: /dropbox/v1.0/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Free

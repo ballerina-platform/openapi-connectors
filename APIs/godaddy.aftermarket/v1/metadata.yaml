@@ -1,0 +1,13 @@
+id: godaddy.aftermarket
+displayName: GoDaddy Aftermarket
+type: OpenAPI
+version: v1
+description: This is the [GoDaddy Aftermarket API v1](https://developer.godaddy.com/doc/endpoint/aftermarket) OpenAPI specification. The GoDaddy Aftermarket API provides capability to access GoDaddy operations related to GoDaddy Auctions.
+idlPath: /godaddy.aftermarket/v1/openapi.yaml
+thumbnailPath: /godaddy.aftermarket/v1/icon.png
+documentationPath: /godaddy.aftermarket/v1/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com/

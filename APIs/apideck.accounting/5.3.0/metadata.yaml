@@ -1,0 +1,13 @@
+id: apideck.accounting
+displayName: Apideck Accounting
+type: OpenAPI
+version: 5.3.0
+description: This is the [Apideck Accounting API v5.3.0](https://docs.apideck.com/apis/accounting/reference) OpenAPI specification. You can use this API to access all Accounting API endpoints.
+idlPath: /apideck.accounting/5.3.0/openapi.yaml
+thumbnailPath: /apideck.accounting/5.3.0/icon.png
+documentationPath: /apideck.accounting/5.3.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://unify.apideck.com

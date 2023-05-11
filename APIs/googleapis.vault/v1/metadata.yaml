@@ -1,0 +1,14 @@
+id: googleapis.vault
+displayName: Google Vault
+type: OpenAPI
+version: v1
+description: This is the [Google Vault API v1](https://developers.google.com/vault/reference/rest) OpenAPI specification.
+idlPath: /googleapis.vault/v1/openapi.yaml
+thumbnailPath: /googleapis.vault/v1/icon.png
+documentationPath: /googleapis.vault/v1/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Paid
+  - Vendor/Google
+endpoint:
+  - url: https://vault.googleapis.com/

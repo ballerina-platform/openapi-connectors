@@ -1,0 +1,14 @@
+id: xero.appstore
+displayName: Xero AppStore
+type: OpenAPI
+version: 2.18.0
+description: This is the [Xero AppStore API v2.18.0](https://developer.xero.com/documentation/api/xero-app-store/overview) OpenAPI specification. The Xero AppStore API is a collection of endpoints for Xero Partners to interact with the App Store Billing platform.
+idlPath: /xero.appstore/2.18.0/openapi.yaml
+thumbnailPath: /xero.appstore/2.18.0/icon.png
+documentationPath: /xero.appstore/2.18.0/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Paid
+endpoint:
+  - url: https://api.xero.com/appstore/2.0
+    description: Xero App Store API

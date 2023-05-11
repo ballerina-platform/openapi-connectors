@@ -1,0 +1,3309 @@
+openapi: 3.0.2
+info:
+  title: atSpoke API Reference
+  x-logo:
+    url: https://static.askspoke.com/img/logo/full-logo.png
+  contact:
+    name: atSpoke Support
+    email: support@askpoke.com
+  version: 0.1.0
+  termsOfService: https://www.askspoke.com/terms-of-service/
+  description: >-
+    This is a generated connector for [atSpoke API v0.1.0](https://askspoke.com/api/reference) OpenAPI specification.
+    The atSpoke REST API provides a broad set of operations including:
+    - Creation, manipulation, and deletion of requests in atSpoke
+    - Management of users in atSpoke
+    - Creation, manipulation, and deletion of knowledge resources in atSpoke
+    The public API is served from https://api.askspoke.com/api/v1 – note `api`
+    in the host name, not your usual organization id.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create a [atSpoke account](https://www.atspoke.com) and obtain tokens by following [this guide](https://help.atspoke.com/article/uga6efxps2-api-authentication).
+  x-ballerina-display:
+    label: atSpoke
+    iconPath: "icon.png"
+servers:
+  - url: https://api.askspoke.com/api/v1
+    description: Production API server
+tags:
+  - name: Users
+  - name: Requests
+  - name: Resources
+  - name: Webhook Subscriptions
+    description: >-
+      Webhooks allow for the integration of atSpoke with
+
+      external systems. When certain events take place in atSpoke, we will send
+      an
+
+      HTTPS POST request to a URL endpoint of your choosing.<br/><br/>When you
+      receive a POST request from atSpoke, it will have the following
+
+      properties:
+
+
+      - you: the atSpoke User id of the user that set up the webhook
+
+      - org: the atSpoke Org id that the request or resource was filed against
+
+      - topic: `enum("request.created", "resource.created", "request.updated")`
+
+      - message:
+       - updates
+       - the resource or request (their schemas can be viewed earlier in this
+       document)
+      The APIs below allow you to manage your Webhook Subscriptions.
+components:
+  schemas:
+    Request:
+      description: Request object.
+      type: object
+      required:
+        - subject
+        - requester
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        requester:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Requester
+        owner:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Owner
+        subject:
+          type: string
+          example: What's the Wi-Fi passowrd?
+          description: Subject
+        status:
+          $ref: '#/components/schemas/RequestStatus'
+          description: Status
+        requestType:
+          type: object
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Request type
+        requestTypeInfo:
+          $ref: '#/components/schemas/RequestTypeInfoResponse'
+          description: Request type info
+        privacyLevel:
+          enum:
+            - private
+            - public
+          description: Privacy level
+        team:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Team
+        org:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Org
+        isAutoResolved:
+          type: boolean
+          description: Is auto resolved
+        isFiled:
+          type: boolean
+          description: is filed
+        email:
+          type: string
+          format: email
+          readOnly: true
+          description: Email
+        permalink:
+          type: string
+          format: url
+          readOnly: true
+          example: https://example.askspoke.com/requests/8782
+          description: Permalink
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Created at
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Updated at
+        resolveTime:
+          type: integer
+          readOnly: true
+          example: 123456
+          description: Resolve time
+        teamResponseTimeInMs:
+          type: integer
+          readOnly: true
+          example: 123456
+          description: Team response time in ms
+        lastResolvedAt:
+          type: string
+          readOnly: true
+          format: date-time
+          example: '2019-02-27T18:54:09.980Z'
+          description: Last resolved at
+        tags:
+          type: array
+          items:
+            type: string
+            example: 5c61e9f43e8c4c11f53240f8
+          description: Tags
+        taskInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskInstanceResponse'
+          description: Task instances
+    RequestPatchBody:
+      description: Request PATCH object.
+      type: object
+      properties:
+        requester:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: New requester user id
+        owner:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: New request owner user id
+        subject:
+          type: string
+          example: What's the Wi-Fi passowrd?
+          description: New request subject
+        status:
+          $ref: '#/components/schemas/RequestStatus'
+        requestType:
+          type: object
+          example: 5c61e9f43e8c4c11f53240f8
+          description: New request type id
+        requestTypeInfo:
+          $ref: '#/components/schemas/RequestTypeInfo'
+        taskInstances:
+          description: Task instances
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskInstance'
+        privacyLevel:
+          enum:
+            - private
+            - public
+          description: New privacy level
+        team:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: New team id
+    RequestStatus:
+      description: Request statuses.
+      enum:
+        - AUTO_RESOLVED
+        - OPEN
+        - RESOLVED
+    RequestTask:
+      description: Request containing single task object.
+      type: object
+      required:
+        - subject
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        subject:
+          type: string
+          example: What's the Wi-Fi passowrd?
+          description: Subject
+        permalinkId:
+          type: integer
+          example: 123
+          description: Permalink ID
+        taskInstances:
+          $ref: '#/components/schemas/TaskInstance'
+          description: Task instances
+        sortField:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Sort field
+    TaskInstance:
+      description: Task instances
+      type: object
+      required:
+        - uuid
+      properties:
+        uuid:
+          description: UUID
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+        owner:
+          description: Owner
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+        status:
+          description: Status
+          type: string
+          enum:
+            - OPEN
+            - COMPLETED
+            - TOMBSTONED
+        dueDate:
+          description: Due date
+          type: string
+          example: '2021-01-01T08:00:00.000Z'
+    TaskInstanceResponse:
+      description: A representation of a single task on a request
+      type: object
+      required:
+        - subject
+      properties:
+        uuid:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: UUID
+        subject:
+          type: string
+          example: Add user to Okta.
+          description: Subject
+        taskTemplate:
+          $ref: '#/components/schemas/TaskTemplate'
+          description: Task template
+        requestTypeId:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Request type ID
+        isRequired:
+          type: boolean
+          description: Is required
+        parentTaskUUIDs:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Parent task UUIDs
+        isApproval:
+          type: boolean
+          description: Is Approval
+        approvalState:
+          type: string
+          enum:
+            - APPROVED
+            - DENIED
+          description: Approval State
+        owner:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Owner
+        dueDate:
+          type: string
+          format: date-time
+          example: '2019-02-27T18:54:09.980Z'
+          description: Due date
+        wasManuallyReassigned:
+          type: boolean
+          description: Was manually reassigned
+        status:
+          type: string
+          enum:
+            - OPEN
+            - COMPLETED
+            - TOMBSTONED
+          description: Status
+        timestamps:
+          type: string
+          format: date-time
+          example: '2019-02-27T18:54:09.980Z'
+          description: Timestamps
+    Resource:
+      description: Resource object.
+      type: object
+      required:
+        - subject
+        - requester
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        type:
+          enum:
+            - text
+            - link
+            - file
+          description: Type
+        author:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Author
+        title:
+          type: string
+          example: Wi-Fi password
+          description: Title
+        body:
+          type: string
+          example: <Wi-Fi password here>
+          description: Body
+        file:
+          type: object
+          example: File object
+          description: File
+        link:
+          type: object
+          example: Link object
+          description: Link
+        keywords:
+          type: array
+          items:
+            type: string
+          example: '[''Wi-Fi'', ''password'']'
+          description: Keywords
+        team:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Team
+        org:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Org
+        isDeprecated:
+          type: boolean
+          description: Is deprecated
+        needsReview:
+          type: boolean
+          description: Needs review
+        reviewStatus:
+          enum:
+            - '0'
+            - '1'
+            - '2'
+          readOnly: true
+          description: Review status
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Created at
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Updated at
+    ResourcePostBody:
+      description: Resource object.
+      type: object
+      required:
+        - title
+        - author
+      properties:
+        type:
+          enum:
+            - text
+          description: >-
+            The type of the resource. atSpoke supports many types of resources
+            but only text-based ones can be created via API.
+        author:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: The user id of the author of this resource.
+        title:
+          type: string
+          example: Wi-Fi password
+          description: The title of this resource.
+        body:
+          type: string
+          example: <Wi-Fi password here>
+          description: The body of this resource.
+        team:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: The id of the team this resource should belong to.
+    BulkAddLabelBody:
+      description: Body to bulk add labels
+      type: object
+      required:
+        - requests
+        - label
+      properties:
+        requests:
+          type: array
+          items:
+            type: string
+          description: A list of request ids to add a label to.
+        label:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Label id to add to the requests.
+    Team:
+      description: Team object.
+      type: object
+      required:
+        - name
+        - owner
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        name:
+          type: string
+          example: Engineering
+          description: Name
+        slug:
+          type: string
+          example: engineering
+          description: Slug
+        description:
+          type: string
+          example: Build cool things.
+          description: Description
+        keywords:
+          type: array
+          items:
+            type: string
+          example: '[''new feature'', ''issue report'']'
+          description: Keywords
+        icon:
+          enum:
+            - support
+            - administrative
+            - finance
+            - it
+            - security
+            - sales
+            - legal
+            - hr
+            - events
+            - cleaning
+            - design
+            - engineering
+            - facilities
+            - operations
+            - recruiting
+          example: engineering
+          description: Icon
+        color:
+          enum:
+            - blue
+            - cyan
+            - green
+            - grey
+            - indigo
+            - purple
+            - red
+            - pink
+            - yellow
+          example: blue
+          description: Color
+        status:
+          enum:
+            - ACTIVE
+            - CLOSED
+          example: ACTIVE
+          description: Status
+        goals:
+          type: object
+          example: '{...}'
+          description: Goals
+        agentList:
+          type: array
+          items:
+            type: object
+          example: '[...]'
+          description: Agent list
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Created at
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Updated at
+        owner:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Owner
+        org:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Org
+        email:
+          type: string
+          format: email
+          readOnly: true
+          description: Email
+        permalink:
+          type: string
+          format: url
+          readOnly: true
+          example: https://example.askspoke.com/teams/engineering
+          description: Permalink
+        settings:
+          $ref: '#/components/schemas/TeamSettings'
+          description: Settings
+    TeamPatchBody:
+      description: Team PATCH object
+      type: object
+      properties:
+        settings:
+          $ref: '#/components/schemas/TeamSettings'
+    TeamSettings:
+      description: Team settings
+      type: object
+      properties:
+        delegation:
+          $ref: '#/components/schemas/TeamDelegation'
+        flags:
+          description: Flags
+          type: object
+          properties:
+            AUTO_DELEGATION:
+              type: boolean
+              example: 'false'
+              description: whether this team should use auto delegation
+    TeamDelegation:
+      description: Team delegation settings
+      type: object
+      properties:
+        strategy:
+          $ref: '#/components/schemas/TeamDelegationStrategy'
+        specificUser:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: user id, valid only for SPECIFIC_USER strategy
+        excludedUsers:
+          description: user ids of excluded users, valid only for ROUND_ROBIN strategy
+          type: array
+          items:
+            type: string
+            example: 5c61e9f43e8c4c11f53240f8
+    TeamDelegationStrategy:
+      description: Team delegation strategies.
+      enum:
+        - SPECIFIC_USER
+        - ROUND_ROBIN
+        - SMART_ASSIGNMENT
+    User:
+      description: User object.
+      type: object
+      required:
+        - email
+        - displayName
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        displayName:
+          type: string
+          example: Jane Doe
+          description: Display name
+        email:
+          type: string
+          format: email
+          description: Email
+        isEmailVerified:
+          type: boolean
+          readOnly: true
+          description: Is email verified
+        isProfileCompleted:
+          type: boolean
+          readOnly: true
+          description: Is profile completed
+        status:
+          enum:
+            - ACTIVE
+            - INVITED
+          example: ACTIVE
+          description: Status
+        profile:
+          $ref: '#/components/schemas/Profile'
+          description: Profile
+        memberships:
+          type: array
+          items:
+            type: string
+          example: '[...]'
+          description: Memberships
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+          description: Created at
+    CustomNavList:
+      description: A custom nav list used to organize a user’s requests
+      type: object
+      required:
+        - name
+        - slug
+      properties:
+        name:
+          type: string
+          description: Name
+        slug:
+          type: string
+          description: Slug
+        filters:
+          type: object
+          description: Filters
+          properties:
+            status:
+              description: Status
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            team:
+              description: Team
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            requestType:
+              description: Request type
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            assignee:
+              description: Assignee
+              type: object
+              properties:
+                includeNoValue: 
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            requester:
+              description: Requester
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            follower:
+              description: Follower
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            taskAssignee:
+              description: Task assignee
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            tag:
+              description: Tag
+              type: object
+              properties:
+                includeNoValue:
+                  description: Include no value
+                  default: false
+                  type: boolean
+                values:
+                  description: Values
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+            query:
+              description: Query
+              type: string
+              example: Search query
+    RequestType:
+      description: Request type object
+      type: object
+      required:
+        - org
+        - team
+        - title
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+          description: ID
+        title:
+          type: string
+          example: Software error/bug
+          description: Title
+        form:
+          type: object
+          description: Form
+          properties:
+            fields:
+              description: Fields
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+                  type:
+                    enum:
+                      - SELECT
+                      - TEXT
+                  label:
+                    type: string
+                    example: When kind of license?
+                  select:
+                    type: object
+                    properties:
+                      choices:
+                        type: array
+                        items:
+                          type: string
+                          example: Annual Subscription
+        taskTemplates:
+          description: Task template
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskTemplate'
+        status:
+          description: Status
+          enum:
+            - ACTIVE
+            - TOMBSTONE
+        icon:
+          description: Icon
+          type: string
+          example: bug
+        team:
+          description: Team
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+        description:
+          description: Description
+          type: string
+          example: For bugs
+        org:
+          description: Org
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+        hasForm:
+          description: Has form
+          type: boolean
+          readOnly: true
+        createdAt:
+          description: Created at
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+        updatedAt:
+          description: Updated at
+          type: string
+          format: date-time
+          readOnly: true
+          example: '2019-02-27T18:54:09.980Z'
+    TaskTemplate:
+      description: >-
+        the template a RequestType uses to create a task. Copied onto the
+        created TaskInstance at instantiation
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: UUID
+        subject:
+          type: string
+          example: Add user to Okta.
+          description: Subject
+        assignmentRule:
+          description: Assignment rule
+          type: object
+          properties:
+            type:
+              description: Type
+              enum:
+                - TEAM_MEMBER
+                - SPECIFIC_USER
+                - ASSIGNEE
+                - REQUESTER
+                - MANAGER
+                - UNASSIGNED
+            team:
+              description: Team
+              type: string
+              example: 5c61e9f43e8c4c11f53240f8
+            user:
+              description: User
+              type: string
+              example: 5c61e9f43e8c4c11f53240f8
+    RequestTypeInfoResponse:
+      description: Request type form answer values.
+      type: object
+      properties:
+        answeredFields:
+          description: Answered fields
+          type: array
+          items:
+            type: object
+            properties:
+              simpleValue:
+                type: string
+                example: Annual Subscription
+              field:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+                  type:
+                    enum:
+                      - SELECT
+                      - TEXT
+                  label:
+                    type: string
+                    example: When kind of license?
+                  select:
+                    type: object
+                    properties:
+                      choices:
+                        type: array
+                        items:
+                          type: string
+                          example: Annual Subscription
+                  assignmentRule:
+                    type: object
+                    properties:
+                      type:
+                        enum:
+                          - TEAM_MEMBER
+                          - SPECIFIC_USER
+                          - ASSIGNEE
+                          - REQUESTER
+                          - MANAGER
+                          - UNASSIGNED
+                      team:
+                        type: string
+                        example: 5c61e9f43e8c4c11f53240f8
+                      user:
+                        type: string
+                        example: 5c61e9f43e8c4c11f53240f8
+    RequestTypeInfo:
+      description: Request type form values.
+      type: object
+      properties:
+        answeredFields:
+          description: Answered fields
+          type: array
+          items:
+            type: object
+            properties:
+              fieldId:
+                type: string
+                example: b0ca44ec-7d38-4be2-85ba-17ca23478953
+              value:
+                type: string
+                example: Form field value
+    SubscriberList:
+      description: A list of the subscribers on the request
+      type: array
+      items:
+        type: object
+        properties:
+          subscriber:
+            type: string
+            example: 5c61e9f43e8c4c11f53240f8
+            description: The user id of a user subscribed to this request
+          unsubscribed:
+            type: boolean
+            example: false
+            description: whether this user has unsubscribed from this request
+          reason:
+            type: string
+            description: why this user was subscribed
+    Tag:
+      description: Request tag.
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: ID
+        color:
+          enum:
+            - blue
+            - green
+            - red
+            - yellow
+            - orange
+            - purple
+          description: Color
+        status:
+          enum:
+            - ACTIVE
+            - TOMBSTONE
+          description: Status
+        text:
+          type: string
+          example: Priority 1
+          description: Text
+        org:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Org
+    ConfigList:
+      description: Configuration Item List
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: ID
+        name:
+          type: string
+          example: Computer types
+          description: Name
+        status:
+          enum:
+            - ACTIVE
+            - TOMBSTONED
+          description: Status
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConfigListItem'
+          description: Items
+        externalData:
+          $ref: '#/components/schemas/ConfigListExternalData'
+          description: External data
+        org:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Org
+    ConfigListItem:
+      description: A single item in a configuration list
+      type: object
+      properties:
+        id:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: ID
+        name:
+          type: string
+          example: MacBook Pro
+          description: Name
+        status:
+          enum:
+            - ACTIVE
+            - ARCHIVED
+          description: Status
+        externalData:
+          $ref: '#/components/schemas/ConfigListItemExternalData'
+    ConfigListExternalData:
+      description: Third-party data associated with a configuration list
+      type: object
+      properties:
+        sourceIntegrationId:
+          type: string
+          example: OKTA
+          description: >-
+            Integration id of the third party app this list or item is synced
+            from
+        lastSyncedAt:
+          type: string
+          example: '2019-02-27T18:54:09.980Z'
+          description: >-
+            Most recent timestamp when this list was synced with the third-party
+            system
+    ConfigListItemExternalData:
+      description: Third-party data associated with a configuration list
+      type: object
+      properties:
+        sourceIntegrationId:
+          type: string
+          example: OKTA
+          description: >-
+            Integration id of the third party app this list or item is synced
+            from
+        remoteId:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Unique id in the third-party system for this item
+        remoteLink:
+          type: string
+          example: https://example.com
+          description: Unique link for this item in the third-party system
+        lastSyncedAt:
+          type: string
+          example: '2019-02-27T18:54:09.980Z'
+          description: >-
+            Most recent timestamp when this list was synced with the third-party
+            system
+    Profile:
+      description: User profile object.
+      type: object
+      properties:
+        id:
+          type: string
+          example: WORKDAY-1001
+          description: ID
+        jobTitle:
+          type: string
+          example: Software Engineer
+          description: Job title
+        location:
+          type: string
+          example: San Francisco, CA
+          description: Location
+        department:
+          type: string
+          example: Sales
+          description: Department
+        manager:
+          type: object
+          properties:
+            name:
+              type: string
+              example: John Doe
+              description: Name
+            email:
+              type: string
+              example: john@example.com
+              description: Email
+          description: Manager
+        startDate:
+          type: string
+          example: 01-01-2001
+          description: Start date
+    WebhookSubscription:
+      description: Webhook Subscription object.
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the webhook subscription.
+          example: 5c61e9f43e8c4c11f53240f8
+        client:
+          type: string
+          description: A description of the client software that created the webhook.
+          example: Zapier
+        org:
+          type: string
+          description: The subscriptions org.
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+        user:
+          type: string
+          description: The user who owns the subscription.
+          example: 5c61e9f43e8c4c11f53240f8
+          readOnly: true
+        url:
+          type: string
+          description: The URL to which webhooks will be posted.
+          example: https://example.com/receive_hook
+        enabled:
+          type: boolean
+          description: >-
+            Whether the webhook is enabled. If disabled, webhooks will not be
+            sent, but one can always re-enable the subscription later.
+        topics:
+          type: array
+          description: An array of the topics to which to subscribe.
+          items:
+            enum:
+              - request.created
+              - resource.created
+              - request.updated
+        description:
+          type: string
+          description: A description of this subscription in particular
+          example: Push resource creation to external system.
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: When the subscription was created
+          example: '2019-02-27T18:54:09.980Z'
+        authentication:
+          description: Webhook authentication mechanism
+          type: object
+          properties:
+            type:
+              type: string
+              example: client_secret
+              description: >-
+                The type of authentication for this webhook.  Currently,
+                client_secret is the default and only supported value. This
+                means that a secret will be sent in the headers of each request
+                (as the "Client-Secret" header).
+            clientSecret:
+              type: string
+              example: a9841c029bff989d2
+              description: >-
+                The secret sent with each request. Set only if
+                authentication.type is client_secret.
+    WebhookSubscriptionPostBody:
+      description: Webhook Subscription object.
+      type: object
+      required:
+        - url
+        - client
+      properties:
+        client:
+          type: string
+          description: A description of the client software that created the webhook.
+          example: Zapier
+        url:
+          type: string
+          description: The URL to which webhooks will be posted. Must be HTTPS
+          example: https://example.com/receive_hook
+        topics:
+          type: array
+          description: >-
+            An array of the topics to which to subscribe. If this is left empty,
+            it will default to an empty array.
+
+            - request.created is fired when a request is created 
+
+            - resource.created is fired when a resource is created 
+
+            - request.updated is fired when a request is updated 
+             - Change in request status
+             - Change in associated requestType
+             - Change in request tags
+             - Change in form fields
+          items:
+            enum:
+              - request.created
+              - resource.created
+              - request.updated
+        description:
+          type: string
+          description: A description of this subscription in particular
+          example: Push resource creation to external system.
+        enabled:
+          type: boolean
+          description: if false, webhook will not actually be sent.
+        authentication:
+          type: object
+          description: Authentication info for this webhook.
+          properties:
+            clientSecret:
+              type: string
+              description: >-
+                A secret that will be sent with every fired webhook. Use this to
+                confirm that webhooks are coming from atSpoke.
+    TeamAgentStatus:
+      description: Team agent statuses.
+      enum:
+        - AVAILABLE
+        - AWAY
+    TeamAgent:
+      description: Describes an agent in a team.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        status:
+          $ref: '#/components/schemas/TeamAgentStatus'
+        lastAssignedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: last request assigned at timestamp
+        joinedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          description: timestamp when this agent joined the team
+        timestamps:
+          description: Timestamps
+          type: object
+          properties:
+            lastAvailableAt:
+              type: string
+              format: date-time
+              readOnly: true
+              description: when this agent became available most recently
+            lastAwayAt:
+              type: string
+              format: date-time
+              readOnly: true
+              description: when this agent went away most recently
+        isExcluded:
+          type: boolean
+          description: Whether this agent is excluded from rotation
+        numRequests:
+          type: integer
+          description: number of open requests assigned to this user on this team
+    Update:
+      description: Update object
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/MessageContent'
+        actor:
+          $ref: '#/components/schemas/UpdateActor'
+    MessageContent:
+      type: object
+      description: The content of the update
+      properties:
+        message:
+          type: object
+          description: >-
+            An object that holds various types of updates. Only the text type is
+            supported via the public API. Attachments are not supported.
+          properties:
+            text:
+              type: string
+              description: a plain text string of the message to be posted to the request
+      example:
+        message:
+          text: Your request is complete!
+    UpdateActor:
+      description: Describes the actor that led to an update.
+      type: object
+      properties:
+        kind:
+          description: Kind
+          enum:
+            - User
+            - Team
+            - null
+        ref:
+          type: string
+          description: A team or user id
+          example: 5c61e9f43e8c4c11f53240f8
+    VisibleSegment:
+      description: VisibleSegment object.
+      type: object
+      required:
+        - org
+      properties:
+        id:
+          type: string
+          example: VisibleSegment uid
+          readOnly: true
+          description: ID
+        org:
+          type: string
+          description: Org
+        name:
+          type: string
+          example: Segment name
+          description: Name
+        teams:
+          type: array
+          items:
+            $ref: '#/components/schemas/SegmentTeamField'
+          example: list of teams
+          description: Teams
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/SegmentStringField'
+          description: SegmentStringField
+        departments:
+          type: array
+          items:
+            $ref: '#/components/schemas/SegmentStringField'
+          description: Departments
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: created timestamp
+          description: Created at
+        updatedAt:
+          type: string
+          format: date-time
+          readOnly: true
+          example: timestamp for last update
+          description: Updated at
+    SegmentTeamField:
+      description: A team field in a VisibleSegment
+      type: object
+      properties:
+        operator:
+          description: Operator
+          enum:
+            - IS
+            - IS_NOT
+        value:
+          $ref: '#/components/schemas/Team'
+    SegmentStringField:
+      description: A string field in a VisibleSegment
+      type: object
+      properties:
+        operator:
+          enum:
+            - IS
+            - IS_NOT
+          description: Operator
+        value:
+          type: string
+          description: Value
+    SearchProposal:
+      description: A DB record for storing search recommendations.
+      type: object
+      properties:
+        query:
+          type: string
+          description: Query
+        channelId:
+          enum:
+            - WEB_SEARCH_BAR
+            - WEB_REQUEST_PANEL_SUGGESTIONS
+            - WEB_NEW_REQUEST_PAGE
+            - SLACK
+            - EMAIL
+            - GOOGLE_CHAT
+            - MSFT_TEAMS
+            - ZOOM
+          description: Channel ID
+        user:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: User
+        org:
+          type: string
+          description: Org
+        pivot:
+          $ref: '#/components/schemas/SearchProposalPivot'
+          description: Pivot
+        interactionId:
+          type: string
+          description: Interaction ID
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchProposalItem'
+          example: list of search proposal items
+          description: Proposals
+    SearchProposalPivot:
+      description: The item created from the search proposal.
+      type: object
+      properties:
+        kind:
+          enum:
+            - Request
+            - ChatSession
+          description: Kind
+        ref:
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+          description: Ref
+    SearchProposalItem:
+      description: The item created from the search proposal.
+      type: object
+      properties:
+        action:
+          description: Action
+          enum:
+            - ACCEPTED
+            - NEUTRAL
+            - REJECTED
+        itemType:
+          description: Item type
+          enum:
+            - request
+            - resource
+            - request_type
+            - action
+            - team
+            - user
+        ref:
+          description: Ref
+          type: string
+          example: 5c61e9f43e8c4c11f53240f8
+    Forbidden:
+      description: Forbidden
+      type: object
+      properties:
+        code:
+          type: integer
+          description: atSpoke error code.
+          example: 11038
+        message:
+          type: string
+          description: Error message.
+          example: API Key invalid. Use the Api-Key header to pass your key.
+    NotFound:
+      description: Not Found
+      type: object
+      properties:
+        code:
+          type: integer
+          description: atSpoke error code.
+          example: 11003
+        message:
+          type: string
+          description: Error message.
+          example: The requested item could not be found.
+    PaymentRequired:
+      description: Payment required
+      type: object
+      properties:
+        code:
+          type: integer
+          description: atSpoke error code.
+          example: 11003
+        message:
+          type: string
+          description: Error message.
+          example: The requested item could not be found.
+    BadRequest:
+      description: Bad request
+      type: object
+      properties:
+        code:
+          type: integer
+          description: atSpoke error code.
+          example: 11008
+        message:
+          type: string
+          description: Error message.
+          example: The request was malformed.
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
+    PaymentRequired:
+      description: You do not have access to this feature.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentRequired'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: header
+      name: Api-Key
+      x-ballerina-apikey-description: "Provide your API key as `api_key`. Eg: `{\"api_key\" : \"<API key>\"}`"
+      description: |-
+        Users on atSpoke's Standard and Plus plans can
+                   generate an API key by navigating to "My Profile" and then selecting
+                   the API tab. All API actions are taken by the API user. If a
+                   new key is generated or the user is deactivated, the old API key is
+                   deactivated automatically.<br/><br/>
+                   Requests made to atSpoke's public API are rate-limited to no more
+                   than 6000 requests per minute per API key.<br/><br/>
+                   <b> Warning:</b> _All_ private items viewable by the user whose
+                API key is being used will be viewable via the API. This means that if
+                an admin uses their key to connect atSpoke to an external system,
+                requests and resources that are private to a team in atSpoke will
+                accessible in the external system. Keep this in mind when building with
+                the API so that private data does not become public.
+paths:
+  /requests:
+    get:
+      summary: List requests
+      description: Return a list of requests.
+      operationId: getRequests
+      tags:
+        - Requests
+      parameters:
+        - name: filter
+          in: query
+          description: Parameter to filter queries
+          required: false
+          schema:
+            enum:
+              - inbox
+              - unassigned
+              - sent
+            type: string
+            default: inbox
+        - name: status
+          in: query
+          description: >-
+            Parameter to get requests by status. Should be a comma-separated
+            string of statuses.
+          required: false
+          example: OPEN,RESOLVED
+          schema:
+            enum:
+              - OPEN
+              - PENDING
+              - LOCKED
+              - RESOLVED
+              - AUTO_RESOLVED
+            type: string
+            default: OPEN
+        - name: team
+          in: query
+          description: Get requests belonging to this team
+          required: false
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: >-
+            Get requests tagged with this tag. Accepts a comma-separated string
+            of many tags, and returns requests that match any provided tag. The
+            keyword `none` can also be passed to return requests that are not
+            tagged.
+          required: false
+          example: 5eac9b4b0972029e5ca5dde1,none
+          schema:
+            type: string
+        - name: q
+          in: query
+          description: Searches and returns request with this text
+          example: wifi
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: The index of the request to start with
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The number of requests to return at once. Max is 100.
+          required: false
+          schema:
+            type: integer
+            default: 25
+        - name: sort
+          in: query
+          description: >-
+            The order by which requests should be returned. When querying with a
+            `q` param, results will be sorted by their similarity to the query
+            when no other `sort` is specified.
+          required: false
+          schema:
+            enum:
+              - updated
+              - updatedFirst
+              - createdLast
+              - createdFirst
+              - slaAscending
+            default: updated
+            type: string
+      responses:
+        '200':
+          description: List of requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Request'
+                    description: The list of requests itself.
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of requests.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of requests.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of requests returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+    post:
+      summary: Create new request
+      description: >-
+        Create a new askSpoke request. Admins can create a request with anyone
+        as the requester while regularly priviledged users can only request for
+        themselves.
+      operationId: addRequest
+      tags:
+        - Requests
+      requestBody:
+        description: AddRequest payload
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - subject
+                - requester
+              properties:
+                subject:
+                  description: Request subject.
+                  type: string
+                  example: What's the Wi-Fi password?
+                body:
+                  description: a longer description of the request
+                  type: string
+                  example: I swear I had it yesterday...
+                requester:
+                  description: user id of person who will be the requester
+                  type: string
+                  example: 5c61e9f43e8c4c11f53240f8
+                owner:
+                  description: >-
+                    user id of the person the request will be assigned to. Will
+                    be automatically delegated if left blank
+                  type: string
+                  example: 5c61e9f43e8c4c11f53240f8
+                team:
+                  description: ID of the team to assign the request to.
+                  type: string
+                  example: 5c61e9f43e8c4c11f53240f8
+                privacyLevel:
+                  description: Privacy level for the request.
+                  enum:
+                    - private
+                    - public
+                requestType:
+                  description: ID of the request type form.
+                  type: string
+                  example: 5c61e9f43e8c4c11f53240f8
+                requestTypeInfo:
+                  $ref: '#/components/schemas/RequestTypeInfo'
+      responses:
+        '200':
+          description: Request detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /requests/tasks:
+    get:
+      summary: Get open tasks
+      description: Return open tasks with requests subject and permalinkId.
+      operationId: getOpenTasks
+      tags:
+        - Requests
+      parameters:
+        - name: start
+          in: query
+          description: The index of the task to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of tasks to return.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: byDueDate
+          in: query
+          description: Whether to sort tasks by due date or not.
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: List of pending tasks.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RequestTask'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of tasks.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of tasks.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of tasks returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /requests/{requestId}:
+    patch:
+      summary: Update a request
+      description: Update a request.
+      operationId: updateRequest
+      tags:
+        - Requests
+      requestBody:
+        description: RequestPatchBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPatchBody'
+      parameters:
+        - name: requestId
+          in: path
+          description: the ID of the request, 24 characters, hexadecimal
+          required: true
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated request object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    delete:
+      summary: Delete a request
+      description: Delete a request.
+      operationId: deleteRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: the ID of the request, 24 characters, hexadecimal
+          required: true
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    get:
+      summary: Get a request
+      description: Get a request.
+      operationId: getRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: the ID of the request, 24 characters, hexadecimal
+          required: true
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Request object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /requests/bulk_add_tag:
+    patch:
+      summary: Bulk add tags
+      description: Add a tag to multiple requests.
+      operationId: bulkAddTags
+      tags:
+        - Requests
+      requestBody:
+        description: >-
+          A payload containing the tag id of the tag to be added and a list of
+          request ids that the tag will be added to.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requests
+                - tag
+              example:
+                requests:
+                  - 5c61e9f43e8c4c11f53240f8
+                tag: 5c61e9f43e8c4c11f532000
+              properties:
+                requests:
+                  description: >-
+                    the IDs of the requests to be updated, 24 characters,
+                    hexadecimal
+                  type: array
+                  items:
+                    type: string
+                tag:
+                  description: ID of the tag to add to the requests.
+                  type: string
+      responses:
+        '204':
+          description: No content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /requests/{requestId}/secondary:
+    get:
+      summary: Get merged requests
+      description: Gets requests merged into the given request.
+      operationId: getMergedRequests
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: >-
+            the request id of the request for which you wish to see the merged
+            requests of
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: The index of merged requests to start with
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: >-
+            The number of requests merged with your initial request to return.
+            Defaults to 25.
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of requests.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Request'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the requests.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of requests.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of requests returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /requests/{requestId}/messages:
+    post:
+      summary: Post a message
+      description: >-
+        Post a message to a request. The message will show up in the Request
+        Panel. If creating a message as a User, the user id included in the POST
+        body must match the user that generated the API key
+      operationId: postRequestMessage
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: ID of the request.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: PostRequestMessage payload
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - actor
+                - content
+              properties:
+                actor:
+                  $ref: '#/components/schemas/UpdateActor'
+                content:
+                  $ref: '#/components/schemas/MessageContent'
+      responses:
+        '200':
+          description: Update object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /requests/{requestId}/merge:
+    post:
+      summary: Merge requests
+      description: >-
+        Merge a list of spoke requests to a primary request. Merging a request
+        carries out the following actions – 1. Mark all the tasks of the
+        secondary requests as completed. 2. Lock all the secondary requests. 3.
+        Add all the viewers of secondary requests to primary request.
+      operationId: mergeRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: the request id of the request you wish to merge in to
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: MergeRequest payload
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - requests
+              example:
+                requests:
+                  - 5c61e9f43e8c4c11f53240f8
+              properties:
+                requests:
+                  description: >-
+                    Request ids to be merged into the request in the path
+                    parameter
+                  type: array
+                  items:
+                    type: string
+                    example: 5c61e9f43e8c4c11f53240f8
+      responses:
+        '200':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /requests/{requestId}/tags:
+    patch:
+      summary: Add tags
+      description: Add tags to a request.
+      operationId: AddTagsToRequest
+      tags:
+        - Requests
+      requestBody:
+        description: AddTagsToRequest payload
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - tags
+              example:
+                tags:
+                  - _id: 5c61e9f43e8c4c11f53240f7
+                  - _id: 5c61e9f43e8c4c11f53240f8
+              properties:
+                tags:
+                  description: Tag ids to add
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        description: a tag id
+                        example: 5c61e9f43e8c4c11f53240f8
+      parameters:
+        - name: requestId
+          in: path
+          description: ID of the request that needs to be updated.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /requests/{requestId}/tags/{tagId}:
+    delete:
+      summary: Delete tag
+      description: Delete tag from a request.
+      operationId: DeleteTagFromRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: ID of the request that needs to be updated.
+          required: true
+          schema:
+            type: string
+        - name: tagId
+          in: path
+          description: ID of the tag to remove from the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /requests/{requestId}/subscribers/{userId}:
+    post:
+      summary: Add a subscriber
+      description: Add a subscriber to a request
+      operationId: AddSubscriberToRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: ID of the request that will have the new subscriber.
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: ID of the user to subscribe to the request.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: All request subscribers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriberList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      summary: Remove a subscriber
+      description: Remove a subscriber to a request
+      operationId: RemoveSubscriberFromRequest
+      tags:
+        - Requests
+      parameters:
+        - name: requestId
+          in: path
+          description: ID of the request that will have the subscriber removed.
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: ID of the user to remove as a subscriber.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: All request subscribers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriberList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /request_types:
+    get:
+      summary: List request types
+      description: Return a list of request types.
+      operationId: getRequestTypes
+      tags:
+        - RequestTypes
+      parameters:
+        - name: q
+          in: query
+          description: Parameter for text-searching requestTypes
+          required: false
+          schema:
+            type: string
+        - name: team
+          in: query
+          description: Get request types belonging to a team.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: The index of the request type to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of request types to return. Defaults to 25.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: sort
+          in: query
+          description: sort order for the returned request types
+          required: false
+          schema:
+            type: string
+            enum:
+              - createdLast
+              - createdFirst
+              - updated
+              - text
+      responses:
+        '200':
+          description: List of request types.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RequestType'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the request types.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of request types.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of request types returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /request_types/{requestTypeId}:
+    get:
+      summary: Get a request type.
+      description: Return a single equest type.
+      operationId: getRequestType
+      tags:
+        - RequestTypes
+      parameters:
+        - name: requestTypeId
+          in: path
+          description: id of the request type
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A request type object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestType'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /resources:
+    post:
+      summary: Create a resource
+      description: >-
+        Create a new askSpoke resource. Users with Administrator permissions can
+        create a resource with anyone as the author. Regularly permissioned
+        users can only author requests as themselves.
+      operationId: addResource
+      tags:
+        - Resources
+      requestBody:
+        description: ResourcePostBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePostBody'
+      responses:
+        '200':
+          description: Updated resource object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    get:
+      summary: List resources
+      description: Return a list of resources.
+      operationId: getResources
+      tags:
+        - Resources
+      parameters:
+        - name: q
+          in: query
+          description: A search query to search resources for.
+          required: false
+          schema:
+            type: string
+        - name: ai
+          in: query
+          description: Whether or not to use AI-based search. Requires q to be set as well.
+          required: false
+          schema:
+            type: boolean
+        - name: status
+          in: query
+          description: >-
+            Parameter to get resources by status.  0 = ok, 1 = needs_review, 2 =
+            deprecated..
+          required: false
+          schema:
+            enum:
+              - 0
+              - 1
+              - 2
+        - name: team
+          in: query
+          description: >-
+            Get resources belonging to one or more teams. Send comma-separated
+            string for multiple teams, "none" for no team
+          required: false
+          schema:
+            type: string
+        - name: author
+          in: query
+          description: >-
+            Get resources created one or more authors. Send comma-separated
+            string for multiple authors.
+          required: false
+          schema:
+            type: string
+        - name: reviewBy
+          in: query
+          description: Get resources up for review before this timestamp (ms since epoch).
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: start
+          in: query
+          description: The index of the request to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of parameters to return. Defaults to 25.
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of resources.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Resource'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the resources.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of resouces.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of resouces returned.
+                  newStart:
+                    type: integer
+                    format: int32
+                    description: Where to start next request for pagination.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /resources/{resourceId}:
+    patch:
+      summary: Update a resource
+      description: Update a resource.
+      operationId: updateResource
+      tags:
+        - Resources
+      requestBody:
+        description: ResourcePostBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePostBody'
+      parameters:
+        - name: resourceId
+          in: path
+          description: ID of the resource that needs to be updated.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated resource object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    delete:
+      summary: Delete a resource
+      description: Delete a resource.
+      operationId: deleteResource
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          in: path
+          description: ID of resource that needs to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    get:
+      summary: Get a resource
+      description: Get a resource.
+      operationId: getResource
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          in: path
+          description: ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Resource object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /tags:
+    get:
+      summary: List tags
+      description: Returns a list of tags.
+      operationId: getTags
+      tags:
+        - Tags
+      parameters:
+        - name: start
+          in: query
+          description: The index of the tag to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of tags to return. Defaults to 25.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: q
+          in: query
+          description: A search query to search tags for
+          required: false
+          schema:
+            type: string
+        - name: tagId
+          in: query
+          description: A comma separated list of tags
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tags.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Tag'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the tags.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of tags.
+                  count:
+                    type: integer
+                    format: int32
+                    description: The number of tags returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /teams:
+    get:
+      summary: List teams
+      description: Return a list of teams.
+      operationId: getTeams
+      tags:
+        - Teams
+      parameters:
+        - name: q
+          in: query
+          description: Text search to search teams for.
+          required: false
+          schema:
+            type: string
+        - name: ai
+          in: query
+          description: Whether or not to use AI-based search. Requires q to be set as well.
+          required: false
+          schema:
+            type: boolean
+        - name: slug
+          in: query
+          description: Comma-separated list of team slugs to get.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: >-
+            The index of the request to start with. Ignored if ai is set to
+            true.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: >-
+            The number of parameters to return. Defaults to 25. Ignored if ai is
+            set to true.
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of teams.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Team'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the teams.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of teams.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The limit of teams returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /teams/{teamId}:
+    patch:
+      summary: Update a team
+      description: Update a team.
+      operationId: updateTeam
+      tags:
+        - Teams
+      requestBody:
+        description: TeamPatchBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamPatchBody'
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of the team.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Team object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    get:
+      summary: Get a team
+      description: Get a team.
+      operationId: getTeam
+      tags:
+        - Teams
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of the team.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Team object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /users:
+    get:
+      summary: List users
+      description: Return a list of users.
+      operationId: getUsers
+      tags:
+        - Users
+      parameters:
+        - name: q
+          in: query
+          description: Text search to search user for.
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Filter user based on status.
+          required: false
+          schema:
+            enum:
+              - ACTIVE
+              - INVITED
+        - name: team
+          in: query
+          description: Filter user based on team.
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: The index of the request to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of parameters to return. Defaults to 10.
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: List of users.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of the users.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of users.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of users returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /users/{userId}:
+    patch:
+      summary: Update a user
+      description: Update a user.
+      operationId: updateUser
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user that needs to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: UpdateUser payload
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: New display name.
+                  type: string
+                  example: Jane Doe
+                phoneNumber:
+                  description: New phone number of the user.
+                  type: string
+                  example: 1234567890
+                countryId:
+                  description: country of the users phone number.
+                  type: string
+                  example: US
+                email:
+                  description: New email of the user.
+                  type: string
+                  format: email
+                profile:
+                  $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: User detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+    get:
+      summary: Get a user
+      description: Get a user.
+      operationId: getUser
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /users/email/{address}:
+    get:
+      summary: Get a user by email
+      description: Look up a user by email address.
+      operationId: getUserByEmail
+      tags:
+        - Users
+      parameters:
+        - name: address
+          in: path
+          description: Email address of the user. Case insensitive.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /whoami:
+    get:
+      summary: Get API user details
+      description: Returns user id, name, current org and role for the API key.
+      operationId: whoami
+      tags:
+        - Users
+      responses:
+        '200':
+          description: User and Org details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  org:
+                    type: string
+                    description: current org id
+                    example: askSpoke
+                  user:
+                    type: string
+                    description: user id
+                    example: 5c61e9f43e8c4c11f53240f8
+                  displayName:
+                    type: string
+                    description: user name
+                    example: Jane Doe
+                  role:
+                    type: string
+                    description: user role
+                    example: MEMBER
+                  status:
+                    type: string
+                    description: user status
+                    example: ACTIVE
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /configlists:
+    get:
+      summary: List config lists
+      description: Return a list of CMDB lists.
+      operationId: getConfigLists
+      tags:
+        - ConfigList
+      parameters:
+        - name: q
+          in: query
+          description: Parameter for text-searching lists by name or item name
+          required: false
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: The index of the list to start with.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: The number of lists to return. Defaults to 25.
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: listId
+          in: query
+          description: comma-separated list of listids to return
+          required: false
+          schema:
+            type: string
+        - name: withItem
+          in: query
+          description: comma-separated list of itemids to return
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of config lists.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ConfigList'
+                  total:
+                    type: integer
+                    format: int32
+                    description: The total number of config lists.
+                  start:
+                    type: integer
+                    format: int32
+                    description: The start offset for this set of lists.
+                  limit:
+                    type: integer
+                    format: int32
+                    description: The number of lists returned.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /configlists/{listId}:
+    post:
+      summary: Create a config list.
+      description: Create a single config list.
+      operationId: addConfigList
+      tags:
+        - ConfigList
+      parameters:
+        - name: listId
+          in: path
+          description: List ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: ConfigList payload 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigList'
+      responses:
+        '200':
+          description: A config list object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    patch:
+      summary: Update a config list.
+      description: Update a single config list.
+      operationId: updateConfigList
+      tags:
+        - ConfigList
+      requestBody:
+        description: ConfigList payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfigList'
+      parameters:
+        - name: listId
+          in: path
+          description: the ID of the configlist, 24 characters, hexadecimal
+          required: true
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A config list object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    delete:
+      summary: Delete a config list.
+      description: Delete a single config list.
+      operationId: deleteConfigList
+      tags:
+        - ConfigList
+      parameters:
+        - name: listId
+          in: path
+          description: the ID of the configlist, 24 characters, hexadecimal
+          required: true
+          example: 5c61e9f43e8c4c11f53240f8
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+  /webhooks:
+    post:
+      summary: Creates a new webhook subscription
+      description: Sign up to receive webhooks from askSpoke.
+      operationId: addWebhook
+      tags:
+        - Webhook Subscriptions
+      requestBody:
+        description: WebhookSubscriptionPostBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionPostBody'
+      responses:
+        '200':
+          description: Webhook subscription detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+    get:
+      summary: Lists webhook subscriptions
+      description: An array of all the webhook subscriptions for this user on this org.
+      operationId: getWebhooks
+      tags:
+        - Webhook Subscriptions
+      responses:
+        '200':
+          description: Lists all the webhook subscriptions for this user on this org.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WebhookSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+        - api_key: []
+  /webhooks/{webhookId}:
+    get:
+      summary: Get a webhook subscription
+      description: Get a webhook subscription.
+      operationId: getWebhook
+      tags:
+        - Webhook Subscriptions
+      parameters:
+        - name: webhookId
+          in: path
+          description: The ID of the webhook to get.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Webhook Subscription object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    patch:
+      summary: Update a webhook subscription
+      description: Update a webhook subscription.
+      operationId: updateWebhook
+      tags:
+        - Webhook Subscriptions
+      requestBody:
+        description: WebhookSubscriptionPostBody payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookSubscriptionPostBody'
+      parameters:
+        - name: webhookId
+          in: path
+          description: ID of the webhook subscription that needs to be updated.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated webhook subscription object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookSubscription'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []
+    delete:
+      summary: Delete a  webhook subscription.
+      description: Delete a  webhook subscription.
+      operationId: deleteWebhook
+      tags:
+        - Webhook Subscriptions
+      parameters:
+        - name: webhookId
+          in: path
+          description: ID of  webhook subscription to deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content.
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - api_key: []

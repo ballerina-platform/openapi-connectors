@@ -1,0 +1,13 @@
+id: opendesign
+displayName: opendesign
+type: OpenAPI
+version: 0.3.4
+description: This is the [Open Design REST API v0.3.4](https://opendesign.dev/docs/api-reference/introduction) OpenAPI specification.  Open Design read and display data from designs using code. Unlock the power of programmatic design.
+idlPath: /opendesign/0.3.4/openapi.yaml
+thumbnailPath: /opendesign/0.3.4/icon.png
+documentationPath: /opendesign/0.3.4/readme.md
+keywords:
+  - Content&Files/Images&Design
+  - Cost/Freemium
+endpoint:
+  - url: https://api.opendesign.dev

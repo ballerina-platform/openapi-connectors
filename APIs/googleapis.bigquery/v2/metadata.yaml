@@ -1,0 +1,14 @@
+id: googleapis.bigquery
+displayName: Google BigQuery
+type: OpenAPI
+version: v2
+description: This is the [Google BigQuery API v2.0](https://cloud.google.com/bigquery/docs/reference/rest) OpenAPI specification. The BigQuery API provides access to create, manage, share and query data.
+idlPath: /googleapis.bigquery/v2/openapi.yaml
+thumbnailPath: /googleapis.bigquery/v2/icon.png
+documentationPath: /googleapis.bigquery/v2/readme.md
+keywords:
+  - ITOperations/Databases
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://bigquery.googleapis.com/bigquery/v2

@@ -1,0 +1,11 @@
+id: paypal.payments
+displayName: Paypal Payments
+type: OpenAPI
+version: v2
+description: This is the [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
+idlPath: /paypal.payments/v2/openapi.yaml
+thumbnailPath: /paypal.payments/v2/icon.png
+documentationPath: /paypal.payments/v2/readme.md
+keywords:
+  - Finance/Payment
+  - Cost/Freemium

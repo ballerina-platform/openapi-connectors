@@ -1,0 +1,13 @@
+id: optimizely
+displayName: Optimizely
+type: OpenAPI
+version: "2.0"
+description: Connects to [Optimizely API v2](https://www.optimizely.com/) from Ballerina Optimizely Agent is a stand-alone, open-source microservice that provides major benefits over using Optimizely SDKs in certain use cases. Its REST API offers consolidated and simplified endpoints for accessing all the functionality of Optimizely Full Stack SDKs. Use this API the control experiments (such as a feature tests).
+idlPath: /optimizely/2.0/openapi.yaml
+thumbnailPath: /optimizely/2.0/icon.png
+documentationPath: /optimizely/2.0/readme.md
+keywords:
+  - ITOperations/TestingTools
+  - Cost/Paid
+endpoint:
+  - url: https://api.optimizely.com/v2

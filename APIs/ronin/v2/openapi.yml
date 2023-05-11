@@ -1,0 +1,1357 @@
+openapi: 3.0.0
+info:
+  title: Ronin API
+  description: |
+    This is a generated connector for [Ronin API v1](https://www.roninapp.com/api) OpenAPI specification.
+    Ronin is a full featured time tracking and invoicing application. It allows you to easily manage almost all aspects of your online projects, though it has a focus on the billing side.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Ronin account](https://www.roninapp.com) and obtain tokens by following [this guide](https://www.roninapp.com/api).
+  x-ballerina-display:
+    label: Ronin
+    iconPath: "icon.png"
+  version: "v2"
+security:
+- basicAuth: []
+tags:
+  - name: clients
+  - name: contacts
+  - name: estimates
+  - name: invoices
+  - name: projects
+  - name: tasks
+paths:
+  /api/v2/clients.json:
+    post:
+      summary: "Creates a new client. Clients represent companies, groups, organizations or other contact containers. All contacts must belong to a client. Clients are also the main containers for Projects and Invoices."
+      description: "https://www.roninapp.com/api/clients"
+      parameters: []
+      requestBody:
+        description: The data required to create a client. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateClientRequest'
+      tags:
+        - "clients"
+      responses:
+        201:
+          description: "Created client"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ClientObject'
+      operationId: "create_client"
+    get:
+      summary: "Get all clients"
+      description: "https://www.roninapp.com/api/clients"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of clients to retrieve."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "updated_since"
+          description: "Filter by update time for clients."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "sort"
+          description: "You can get the most recently created clients by date, rather than the default sort which is based on client name."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "clients"
+      responses:
+        200:
+          description: "An object with a property clients which is an array of Client objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Clients'
+      operationId: "list_clients"
+  /api/v2/clients/{id}.json:
+    get:
+      summary: "Get a client."
+      description: "https://www.roninapp.com/api/clients"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The client ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "clients"
+      responses:
+        200:
+          description: "A client object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/ClientObject'
+      operationId: "get_client"
+  /api/v2/clients/{client_id}/contacts.json:
+    post:
+      summary: "Creates a new contact. Contacts represent individuals belonging to Clients. In many cases, if a Contact is a Client, the Contact is where the email and other important information for the client whereas the Client is just a shell container."
+      description: "https://www.roninapp.com/api/contacts"
+      parameters: 
+        - in: "path"
+          name: "client_id"
+          description: "The client ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The data required to create a contact. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateContactRequest'
+      tags:
+        - "contacts"
+      responses:
+        201:
+          description: "Created contact"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Contact'
+      operationId: "create_contact"
+    get:
+      summary: "Get all contacts specific to a client"
+      description: "https://www.roninapp.com/api/contacts"
+      parameters:
+        - in: "path"
+          name: "client_id"
+          description: "The client ID"
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of contacts to retrieve."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "page_size"
+          description: "You may also use a different page_size parameter. The maximum allowed page_size is 100."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "contacts"
+      responses:
+        200:
+          description: "An object with a property contacts which is an array of Contact objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Contacts'
+      operationId: "list_contacts_by_client"
+  /api/v2/contacts.json:
+    get:
+      summary: "Get all contacts"
+      description: "https://www.roninapp.com/api/contacts"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of contacts to retrieve."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "page_size"
+          description: "You may also use a different page_size parameter. The maximum allowed page_size is 100."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "contacts"
+      responses:
+        200:
+          description: "An object with a property contacts which is an array of Contact objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Contacts'
+      operationId: "list_contacts"
+  /api/v2/contacts/{id}.json:
+    get:
+      summary: "Get a contact."
+      description: "https://www.roninapp.com/api/contacts"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The contact ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "contacts"
+      responses:
+        200:
+          description: "A contact object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Contact'
+      operationId: "get_contact"
+  /api/v2/estimates.json:
+    post:
+      summary: "Creates a new estimate. Estimates serve as proposals or quotes to be sent to Clients."
+      description: "https://www.roninapp.com/api/estimates"
+      parameters: []
+      requestBody:
+        description: The data required to create an estimate. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateEstimateRequest'
+      tags:
+        - "estimates"
+      responses:
+        201:
+          description: "Created estimate"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Estimate'
+      operationId: "create_estimate"
+    get:
+      summary: "Get all estimates"
+      description: "https://www.roninapp.com/api/estimates"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of clients to retrieve."
+          schema:
+            type: integer
+          required: false
+      tags:
+        - "estimates"
+      responses:
+        200:
+          description: "An object with a property estimates which is an array of Estimate objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Estimates'
+      operationId: "list_estimates"
+  /api/v2/estimates/{id}.json:
+    get:
+      summary: "Get an estimate."
+      description: "https://www.roninapp.com/api/estimates"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The estimate ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "estimates"
+      responses:
+        200:
+          description: "An estimate object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Estimate'
+      operationId: "get_estimate"
+  /api/v2/invoices.json:
+    post:
+      summary: "Creates a new invoice. Ronin provides programmatic access to invoices and invoice items."
+      description: "https://www.roninapp.com/api/invoices"
+      parameters: []
+      requestBody:
+        description: The data required to create an invoice. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateInvoiceRequest'
+      tags:
+        - "invoices"
+      responses:
+        201:
+          description: "Created invoice"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Invoice'
+      operationId: "create_invoice"
+    get:
+      summary: "Get all invoices"
+      description: "https://www.roninapp.com/api/invoices"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of invoices to retrieve."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "updated_since"
+          description: "Filter by update time for invoices."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "invoices"
+      responses:
+        200:
+          description: "An object with a property invoices which is an array of Invoice objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Invoices'
+      operationId: "list_invoices"
+  /api/v2/invoices/{id}.json:
+    get:
+      summary: "Get a invoice."
+      description: "https://www.roninapp.com/api/invoices"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The invoice ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "invoices"
+      responses:
+        200:
+          description: "An invoice object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Invoice'
+      operationId: "get_invoice"
+  /api/v2/projects.json:
+    post:
+      summary: "Creates a new project. Projects represent hubs of work, tasks, logged hours, expenses, and invoices related to a Client."
+      description: "https://www.roninapp.com/api/projects"
+      parameters: []
+      requestBody:
+        description: The data required to create a project. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateProjectRequest'
+      tags:
+        - "projects"
+      responses:
+        201:
+          description: "Created project"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Project'
+      operationId: "create_project"
+    get:
+      summary: "Get all projects"
+      description: "https://www.roninapp.com/api/projects"
+      parameters:
+        - in: "query"
+          name: "page"
+          description: "Specifies the page of projects to retrieve."
+          schema:
+            type: integer
+          required: false
+        - in: "query"
+          name: "filter"
+          description: "By default, this end point will only return active and billable projects. To also retrieve closed projects, use the filter parameter with value all."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "projects"
+      responses:
+        200:
+          description: "An object with a property projects which is an array of Project objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Projects'
+      operationId: "list_projects"
+  /api/v2/projects/{id}.json:
+    get:
+      summary: "Get a project."
+      description: "https://www.roninapp.com/api/projects"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The project ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "projects"
+      responses:
+        200:
+          description: "An project object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Projects'
+      operationId: "get_project"
+  /api/v2/task.json:
+    post:
+      summary: "Creates a new task. Tasks are TODO items that can be added to projects and assigned to staff members."
+      description: "https://www.roninapp.com/api/tasks"
+      parameters: []
+      requestBody:
+        description: The data required to create a task. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateTaskRequest'
+      tags:
+        - "tasks"
+      responses:
+        201:
+          description: "Created task"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Task'
+      operationId: "create_task"
+    get:
+      summary: "Get all tasks"
+      description: "https://www.roninapp.com/api/tasks"
+      parameters: []
+      tags:
+        - "tasks"
+      responses:
+        200:
+          description: "An object with a property tasks which is an array of Task objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Tasks'
+      operationId: "list_tasks"
+  /api/v2/tasks/{id}.json:
+    get:
+      summary: "Get a task."
+      description: "https://www.roninapp.com/api/tasks"
+      parameters:
+        - in: "path"
+          name: "id"
+          description: "The task ID"
+          schema:
+            type: string
+          required: true
+      tags:
+        - "tasks"
+      responses:
+        200:
+          description: "An task object"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Task'
+      operationId: "get_task"
+    put:
+      summary: "Updates a new task. Tasks are TODO items that can be added to projects and assigned to staff members."
+      description: "https://www.roninapp.com/api/tasks"
+      parameters: 
+        - in: "path"
+          name: "id"
+          description: "The task ID"
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: The data required to update a task. 
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/UpdateTaskRequest'
+      tags:
+        - "tasks"
+      responses:
+        204:
+          description: "An empty body if the task was successfully updated."
+      operationId: "update_task"
+
+components:
+  schemas:
+    CreateClientRequest:
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientRequest'
+      description: The data required to create a client.
+    ClientRequest:
+      type: object
+      required:
+        - "name"
+      properties:
+        number:
+          type: string
+          description: The unique number for the client
+        name:
+          type: string
+          description: The name of the client
+        city:
+          type: string
+          description: The city of the client
+        address:
+          type: string
+          description: The address of the client
+        zip:
+          type: string
+          description: The zip code of the client
+        country:
+          type: string
+          description: The country of the client
+        website:
+          type: string
+          description: The website of the client
+        address_2:
+          type: string
+          description: The address2 of the client
+        description:
+          type: string
+          description: The description about the client
+        state:
+          type: string
+          description: The state of the client
+      description: Clients represent companies, groups, organizations or other contact containers. All contacts must belong to a client. Clients are also the main containers for Projects and Invoices.
+    ClientObject:
+      type: object
+      properties:
+        number:
+          type: string
+          description: The unique number for the client
+        name:
+          type: string
+          description: The name of the client
+        city:
+          type: string
+          description: The city of the client
+        address:
+          type: string
+          description: The address of the client
+        zip:
+          type: string
+          description: The zip code of the client
+        country:
+          type: string
+          description: The country of the client
+        id:
+          type: integer
+          description: Client ID
+        website:
+          type: string
+          description: The website of the client
+        address_2:
+          type: string
+          description: The address2 of the client
+        description:
+          type: string
+          description: The description about the client
+        state:
+          type: string
+          description: The state of the client
+      description: Clients represent companies, groups, organizations or other contact containers. All contacts must belong to a client. Clients are also the main containers for Projects and Invoices.
+    Clients:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientObject'
+          description: An array of Client objects.
+      description: An object with a property clients which is an array of Client objects.
+    CreateContactRequest:
+      type: object
+      properties:
+        client_user:
+          $ref: '#/components/schemas/ContactRequest'
+      description: The data required to create a contact.
+    ContactRequest:
+      type: object
+      required:
+        - "name"
+        - "email"
+      properties:
+        name:
+          type: string
+          description: The name of the contact
+        ext:
+          type: string
+          description: The ext number of the contact
+        title:
+          type: string
+          description: The title of the contact
+        client_id:
+          type: integer
+          description: The ID of the client which the contact belongs
+        mobile:
+          type: string
+          description: The mobile number of the contact
+        phone:
+          type: string
+          description: The phone number of the contact
+        avatar:
+          type: string
+          description: The avatar
+        email:
+          type: string
+          description: The e-mail address of the contact
+      description: Contacts represent individuals belonging to Clients. In many cases, if a Contact is a Client, the Contact is where the email and other important information for the client whereas the Client is just a shell container.
+    Contact:
+      type: object
+      required:
+        - "name"
+        - "email"
+      properties:
+        name:
+          type: string
+          description: The name of the contact
+        ext:
+          type: string
+          description: The ext number of the contact
+        title:
+          type: string
+          description: The title of the contact
+        id:
+          type: integer
+          description: Contact ID
+        client_id:
+          type: integer
+          description: The ID of the client which the contact belongs
+        mobile:
+          type: string
+          description: The mobile number of the contact
+        phone:
+          type: string
+          description: The phone number of the contact
+        avatar:
+          type: string
+          description: The avatar
+        email:
+          type: string
+          description: The e-mail address of the contact
+      description: Contacts represent individuals belonging to Clients. In many cases, if a Contact is a Client, the Contact is where the email and other important information for the client whereas the Client is just a shell container.
+    Contacts:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        contacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contact'
+          description: An array of Contact objects.
+      description: An object with a property contacts which is an array of Contact objects.
+    CreateEstimateRequest:
+      type: object
+      properties:
+        estimate:
+          $ref: '#/components/schemas/EstimateRequest'
+      description: The data required to create an estimate.
+    EstimateRequest:
+      type: object
+      required:
+        - "date"
+        - "currency_code"
+      properties:
+        tax:
+          type: number
+          description: Tax
+        number:
+          type: string
+          description: Invoice number
+        total_cost:
+          type: number
+          description: Total cost
+        subtotal:
+          type: number
+          description: Subtotal
+        title:
+          type: string
+          description: Title
+        tax_label:
+          type: string
+          description: Tax label
+        compound_tax:
+          type: boolean
+          description: Compound tax
+        date:
+          type: string
+          description: Date
+        client_id:
+          type: integer
+          description: Client ID
+        note:
+          type: string
+          description: Note
+        estimate_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimateItem'
+          description: Estimate items
+        tax2_label:
+          type: string
+          description: Secondary tax label
+        summary:
+          type: string
+          description: Summary
+        tax2:
+          type: number
+          description: Secondary tax
+        status:
+          type: number
+          description: Status
+        currency_code:
+          type: string
+          description: Currency code
+        tax3_label:
+          type: string
+          description: Tertiary tax label
+        tax3:
+          type: number
+          description: Tertiary tax
+        estimate_items_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimateItemAttribute'
+          description: Estimate items attributes. estimate_items_attributes.title, estimate_items_attributes.quantity, estimate_items_attributes.price must be provided if any items are added.
+      description: Estimates serve as proposals or quotes to be sent to Clients.
+    Estimate:
+      type: object
+      required:
+        - "date"
+        - "currency_code"
+      properties:
+        tax:
+          type: number
+          description: Tax
+        number:
+          type: string
+          description: Invoice number
+        total_cost:
+          type: number
+          description: Total cost
+        subtotal:
+          type: number
+          description: Subtotal
+        title:
+          type: string
+          description: Title
+        tax_label:
+          type: string
+          description: Tax label
+        compound_tax:
+          type: boolean
+          description: Compound tax
+        id:
+          type: integer
+          description: Invoice ID
+        date:
+          type: string
+          description: Date
+        client_id:
+          type: integer
+          description: Client ID
+        note:
+          type: string
+          description: Note
+        estimate_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimateItem'
+          description: Estimate items
+        tax2_label:
+          type: string
+          description: Secondary tax label
+        summary:
+          type: string
+          description: Summary
+        tax2:
+          type: number
+          description: Secondary tax
+        status:
+          type: number
+          description: Status
+        currency_code:
+          type: string
+          description: Currency code
+        tax3_label:
+          type: string
+          description: Tertiary tax label
+        tax3:
+          type: number
+          description: Tertiary tax
+        estimate_items_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimateItemAttribute'
+          description: Estimate items attributes. estimate_items_attributes.title, estimate_items_attributes.quantity, estimate_items_attributes.price must be provided if any items are added.
+      description: Estimates serve as proposals or quotes to be sent to Clients.
+    EstimateItem:
+      type: object
+      properties:
+        price:
+          type: number
+          description: Price
+        title:
+          type: string
+          description: Title
+        quantity:
+          type: integer
+          description: Quantity
+        taxable:
+          type: boolean
+          description: Taxable
+        id:
+          type: integer
+          description: Estimate Item ID
+      description: Estimate item
+    EstimateItemAttribute:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title
+        quantity:
+          type: integer
+          description: Quantity
+        price:
+          type: number
+          description: Price
+      description: Estimate item attribute
+    Estimates:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        Estimates:
+          type: array
+          items:
+            $ref: '#/components/schemas/Estimate'
+          description: An array of Estimate objects.
+      description: An object with a property estimates which is an array of Estimate objects.
+    CreateInvoiceRequest:
+      type: object
+      properties:
+        invoice:
+          $ref: '#/components/schemas/InvoiceRequest'
+      description: The data required to create an invoice.
+    InvoiceRequest:
+      type: object
+      required:
+        - "date"
+        - "currency_code"
+        - "due_date"
+      properties:
+        tax:
+          type: number
+          description: Tax
+        number:
+          type: string
+          description: Invoice number
+        total_cost:
+          type: number
+          description: Total cost
+        balance:
+          type: number
+          description: Balance
+        subtotal:
+          type: number
+          description: Sub total
+        title:
+          type: string
+          description: Title
+        tax_label:
+          type: string
+          description: Tax label
+        compound_tax:
+          type: boolean
+          description: Compound tax
+        date:
+          type: string
+          description: Date
+        client_id:
+          type: integer
+          description: Client ID
+        note:
+          type: string
+          description: A note about payment
+        due_date:
+          type: string
+          description: Due date
+        invoice_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceItem'
+          description: Invoice items
+        tax2_label:
+          type: string
+          description: Secondary tax label
+        summary:
+          type: string
+          description: Summary
+        total_payments:
+          type: number
+          description: Total payments
+        tax2:
+          type: number
+          description: Secondary tax
+        status:
+          type: number
+          description: Status
+        po:
+          type: string
+          description: PO
+        currency_code:
+          type: string
+          description: Currency code
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+          description: Payments
+        tax3_label:
+          type: string
+          description: Tertiary tax label
+        tax3:
+          type: number
+          description: Tertiary tax
+        invoice_items_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceItemAttribute'
+          description: Invoice items attributes. invoice_item_attributes.title, invoice_item_attributes.quantity, invoice_item_attributes.price must be provided if any items are added.
+      description: Ronin provides programmatic access to invoices and invoice items.
+    Invoices:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+          description: An array of Invoice objects.
+      description: An object with a property invoices which is an array of Invoice objects.
+    Invoice:
+      type: object
+      required:
+        - "date"
+        - "currency_code"
+        - "due_date"
+      properties:
+        tax:
+          type: number
+          description: Tax
+        number:
+          type: string
+          description: Invoice number
+        total_cost:
+          type: number
+          description: Total cost
+        balance:
+          type: number
+          description: Balance
+        subtotal:
+          type: number
+          description: Sub total
+        title:
+          type: string
+          description: Title
+        tax_label:
+          type: string
+          description: Tax label
+        compound_tax:
+          type: boolean
+          description: Compound tax
+        id:
+          type: integer
+          description: Invoice ID
+        date:
+          type: string
+          description: Date
+        client_id:
+          type: integer
+          description: Client ID
+        note:
+          type: string
+          description: A note about payment
+        due_date:
+          type: string
+          description: Due date
+        invoice_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceItem'
+          description: Invoice items
+        tax2_label:
+          type: string
+          description: Secondary tax label
+        summary:
+          type: string
+          description: Summary
+        total_payments:
+          type: number
+          description: Total payments
+        tax2:
+          type: number
+          description: Secondary tax
+        status:
+          type: number
+          description: Status
+        po:
+          type: string
+          description: PO
+        currency_code:
+          type: string
+          description: Currency code
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+          description: Payments
+        tax3_label:
+          type: string
+          description: Tertiary tax label
+        tax3:
+          type: number
+          description: Tertiary tax
+        invoice_items_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceItemAttribute'
+          description: Invoice items attributes. invoice_item_attributes.title, invoice_item_attributes.quantity, invoice_item_attributes.price must be provided if any items are added.
+      description: Ronin provides programmatic access to invoices and invoice items.
+    InvoiceItem:
+      type: object
+      properties:
+        price:
+          type: string
+          description: Price
+        title:
+          type: string
+          description: Title
+        quantity:
+          type: integer
+          description: Quantity
+        taxable:
+          type: boolean
+          description: Taxable
+        id:
+          type: integer
+          description: Invoice Item ID
+      description: Invoice item
+    Payment:
+      type: object
+      properties:
+        received_on:
+          type: string
+          description: Payment received on
+        updated_at:
+          type: string
+          description: Payment updated at
+        invoice_id:
+          type: integer
+          description: Invoice ID
+        amount:
+          type: number
+          description: Payment amount
+        id:
+          type: integer
+          description: Payment ID
+        note:
+          type: string
+          description: Payment note
+      description: Payment details
+    InvoiceItemAttribute:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title
+        quantity:
+          type: integer
+          description: Quantity
+        price:
+          type: number
+          description: Price
+      description: Invoice item attribute
+    CreateProjectRequest:
+      type: object
+      properties:
+        project:
+          $ref: '#/components/schemas/ProjectRequest'
+      description: The data required to create a project.
+    ProjectRequest:
+      type: object
+      required:
+        - "name"
+        - "rate"
+      properties:
+        number:
+          type: string
+          description: The unique identifier for the project
+        name:
+          type: string
+          description: The name for the project
+        budget_type:
+          type: number
+          description: The budget type of the project
+        client:
+          $ref: '#/components/schemas/ClientObject'
+        project_type:
+          type: number
+          description: The type of the project
+        worked_hours:
+          type: number
+          description: Worked hours
+        rate:
+          type: number
+          description: The billing rate for the project
+        unbilled_hours:
+          type: number
+          description: Unbilled hours
+        cost:
+          type: number
+          description: Cost
+        description:
+          type: string
+          description: The description about the project
+        status:
+          type: number
+          description: The status of the project
+        end_date:
+          type: string
+          description: The end date of the project
+        currency_code:
+          type: string
+          description: The currency code of the project
+        budget:
+          type: number
+          description: Budget
+      description: Projects represent hubs of work, tasks, logged hours, expenses, and invoices related to a Client. budget_type can be 0 (total budgeted hours) or 1 (total budgeted amount). project_type can be 0 (hourly rate project) or 2 (fixed amount project). Rate the total cost of the project in the latter case.
+    Projects:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+          description: An array of Project objects.
+      description: An object with a property projects which is an array of Project objects.
+    Project:
+      type: object
+      required:
+        - "name"
+        - "rate"
+      properties:
+        number:
+          type: string
+          description: The unique identifier for the project
+        name:
+          type: string
+          description: The name for the project
+        budget_type:
+          type: number
+          description: The budget type of the project
+        client:
+          $ref: '#/components/schemas/ClientObject'
+        project_type:
+          type: number
+          description: The type of the project
+        worked_hours:
+          type: number
+          description: Worked hours
+        rate:
+          type: number
+          description: The billing rate for the project
+        unbilled_hours:
+          type: number
+          description: Unbilled hours
+        id:
+          type: integer
+          description: Project ID
+        cost:
+          type: number
+          description: Cost
+        description:
+          type: string
+          description: The description about the project
+        status:
+          type: number
+          description: The status of the project
+        end_date:
+          type: string
+          description: The end date of the project
+        currency_code:
+          type: string
+          description: The currency code of the project
+        budget:
+          type: number
+          description: Budget
+      description: Projects represent hubs of work, tasks, logged hours, expenses, and invoices related to a Client. budget_type can be 0 (total budgeted hours) or 1 (total budgeted amount). project_type can be 0 (hourly rate project) or 2 (fixed amount project). Rate the total cost of the project in the latter case. 
+    CreateTaskRequest:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/TaskRequest'
+      description: The data required to create a task.
+    UpdateTaskRequest:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/TaskRequest'
+      description: The data required to update a task.
+    TaskRequest:
+      type: object
+      required:
+        - "title"
+      properties:
+        completed_at:
+          type: string
+          description: Completed at
+        created_at:
+          type: string
+          description: Created at
+        title:
+          type: string
+          description: The title of the task
+        assignee_id:
+          type: integer
+          description: The assignee ID of the task
+        updated_at:
+          type: string
+          description: Updated at
+        project_id:
+          type: integer
+          description: The project ID of the task
+        user_id:
+          type: integer
+          description: The user ID
+        client_id:
+          type: integer
+          description: The client ID of the task
+        due_date:
+          type: string
+          description: The due date of the task
+        complete:
+          type: boolean
+          description: The boolean flag to indicate that, task is completed or not
+        description:
+          type: string
+          description: The description
+      description: Tasks are TODO items that can be added to projects and assigned to staff members.
+    Task:
+      type: object
+      required:
+        - "title"
+      properties:
+        completed_at:
+          type: string
+          description: Completed at
+        created_at:
+          type: string
+          description: Created at
+        title:
+          type: string
+          description: The title of the task
+        assignee_id:
+          type: integer
+          description: The assignee ID of the task
+        updated_at:
+          type: string
+          description: Updated at
+        project_id:
+          type: integer
+          description: The project ID of the task
+        id:
+          type: integer
+          description: The task ID
+        user_id:
+          type: integer
+          description: The user ID
+        client_id:
+          type: integer
+          description: The client ID of the task
+        due_date:
+          type: string
+          description: The due date of the task
+        complete:
+          type: boolean
+          description: The boolean flag to indicate that, task is completed or not
+        description:
+          type: string
+          description: The description
+      description: Tasks are TODO items that can be added to projects and assigned to staff members.
+    Tasks:
+      type: object
+      properties:
+        page_count:
+          type: integer
+          description: The page count
+        page_size:
+          type: integer
+          description: The page size
+        total_count:
+          type: integer
+          description: The total count
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+          description: An array of Task objects.
+      description: An object with a property tasks which is an array of Task objects.
+    
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic

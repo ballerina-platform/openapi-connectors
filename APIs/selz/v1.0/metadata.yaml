@@ -1,0 +1,11 @@
+id: selz
+displayName: Selz
+type: OpenAPI
+version: v1.0
+description: This is the [selz API v1.0](https://developer.selz.com/api/reference) OpenAPI specification.
+idlPath: /selz/v1.0/openapi.yaml
+thumbnailPath: /selz/v1.0/icon.png
+documentationPath: /selz/v1.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

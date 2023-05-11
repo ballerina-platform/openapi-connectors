@@ -1,0 +1,4559 @@
+openapi: 3.0.0
+info:
+  version: v1.0
+  title: Selz API Reference
+  description: |
+    This is a generated connector for [selz API v1.0](https://developer.selz.com/api/reference) OpenAPI specification.
+    The Selz API is organized around REST. Our API has predictable
+    resource-oriented URLs, accepts form-encoded request bodies, returns
+    JSON-encoded responses, and uses standard HTTP response codes,
+    authentication, and verbs.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create a [selz account](https://selz.com) and obtain tokens by following [this guide](https://developer.selz.com/api/authentication).
+  x-ballerina-display:
+    label: Selz
+    iconPath: "icon.png"
+  termsOfService: https://selz.com/terms
+  contact:
+    name: Selz Engineering Team
+    email: engineer@selz.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /blog/posts:
+    get:
+      tags:
+        - BlogPosts
+      summary: List all blog posts
+      description: >-
+        Returns a list of your blog posts. The blog posts are returned sorted by
+        creation date, with the most recent blog posts appearing first.
+      operationId: get.blogposts
+      parameters:
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.BlogPosts.BlogPostResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - BlogPosts
+      summary: Create a blog post
+      description: Creates a new blog post object.
+      operationId: create.blogposts
+      requestBody:
+        description: Create blogposts request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostRequest
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /blog/posts/{id}:
+    get:
+      tags:
+        - BlogPosts
+      summary: Retrieve a blog post
+      description: >-
+        Retrieves the details of an existing blog post. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.blogposts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the blog post to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - BlogPosts
+      summary: Update a blog post
+      description: Update an existing blog post.
+      operationId: update.blogposts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the blog post to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostPutRequest
+        description: The fields to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - BlogPosts
+      summary: Delete a blog post
+      description: Permanently deletes a blog post. It cannot be undone
+      operationId: delete.blogposts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the blog post to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /blog/posts/{id}/image:
+    post:
+      tags:
+        - BlogPosts
+      summary: Add blog post hero image
+      description: Add an image to a blog post hero
+      operationId: addimage.blogposts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the blog post.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Add blog post hero image request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.AddImageRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.AddImageRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.AddImageRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.BlogPosts.AddImageRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.BlogPosts.AddImageResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - BlogPosts
+      summary: Remove blog post hero image
+      description: Remove the hero image from a blog post
+      operationId: removeimage.blogposts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the blog post.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: List all categories
+      description: >-
+        Returns a list of your categories. The categories are returned sorted by
+        creation date, with the most recent categories appearing first.
+      operationId: get.categories
+      parameters:
+        - name: product_id
+          in: query
+          description: Only return orders that contain a product with the given product id.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Core.Api.Models.SlicedListResponse_1_Selz.Api.Public.Models.Categories.CategoryResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Categories
+      summary: Create a category
+      description: Creates a new category object.
+      operationId: create.categories
+      requestBody:
+        description: Create a category request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryRequest
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Categories.CategoryResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Retrieve a category
+      description: >-
+        Retrieves the details of an existing category. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.categories
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the category to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Categories.CategoryResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Categories
+      summary: Update a category
+      description: Update an existing category.
+      operationId: update.categories
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the category to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Categories.CategoryPutRequest
+        description: The fields to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Categories.CategoryResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Categories
+      summary: Delete a category
+      description: Permanently deletes a category. It cannot be undone
+      operationId: delete.categories
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the category to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /customers:
+    get:
+      tags:
+        - Customers
+      summary: List all customers
+      description: >-
+        Returns a sliced-list of your customers. The customers are returned
+        sorted by creation date, with the most recent customers appearing first.
+      operationId: get.customers
+      parameters:
+        - name: email
+          in: query
+          description: Filter by customer email
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Customers.CustomerResponse
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Customers
+      summary: Create a customer
+      description: Creates a new customer object.
+      operationId: create.customers
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerRequest
+        description: Customer to be created
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Customers.CustomerResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /customers/{id}:
+    get:
+      tags:
+        - Customers
+      summary: Retrieve a customer
+      description: >-
+        Retrieves the details of an existing customer. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.customers
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the customer to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Customers.CustomerResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Customers
+      summary: Update a customer
+      description: Update an existing customer.
+      operationId: update.customers
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the customer to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Customers.CustomerPutRequest
+        description: The fields to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Customers.CustomerResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Customers
+      summary: Delete a customer
+      description: Permanently deletes a customer. It cannot be undone
+      operationId: delete.customers
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the customer to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /customers/email/{email}:
+    get:
+      tags:
+        - Customers
+      summary: Retrieve a customer by email
+      description: Retrieves the details of an existing customer matching specified email.
+      operationId: get.customers.byemail
+      parameters:
+        - name: email
+          in: path
+          description: email of the customer
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Customers.CustomerResponse
+        '404':
+          description: Not Found
+  /discounts:
+    get:
+      tags:
+        - Discounts
+      summary: List all discounts
+      description: >-
+        Returns a sliced-list of your discounts. The discounts are returned
+        sorted by creation date, with the most recent discounts appearing first.
+      operationId: get.discounts
+      parameters:
+        - name: discount_code
+          in: query
+          description: Filter by the case-insensitive discount code.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Discounts.DiscountResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Discounts
+      summary: Create a discount
+      description: Creates a new discount object.
+      operationId: create.discounts
+      requestBody:
+        description: Create a discount request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountRequest
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /discounts/{id}:
+    get:
+      tags:
+        - Discounts
+      summary: Retrieve a discount
+      description: >-
+        Retrieves the details of an existing discount. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.discounts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the discount to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Discounts
+      summary: Update a discount
+      description: Update an existing discount.
+      operationId: update.discounts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the discount to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountPutRequest
+        description: The fields to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Discounts
+      summary: Delete a discount
+      description: Permanently deletes a discount. It cannot be undone
+      operationId: delete.discounts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the discount to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /disputes:
+    get:
+      tags:
+        - Disputes
+      summary: List Disputes
+      operationId: get.disputes
+      parameters:
+        - name: status
+          in: query
+          description: "Filter by the case-insensitive dispute status. Value Can be one of NeedsResponse, UnderReview, CannotRespond, Closed, Refunded, Won, Lost"
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Disputes.DisputeResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+  /disputes/{id}:
+    get:
+      tags:
+        - Disputes
+      summary: Retrieve a dispute
+      description: Retrieves the details of an existing dispute.
+      operationId: retrieve.disputes
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the dispute to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Disputes.DisputeResponse
+        '404':
+          description: Not Found
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: List all Orders
+      description: >-
+        Returns a list of your Orders. The Orders are returned sorted by
+        creation date, with the most recent Orders appearing first.
+      operationId: get.orders
+      parameters:
+        - name: customer_email
+          in: query
+          description: >-
+            A filter on the list based on the customer’s email field. The value
+            must be a string.
+          required: false
+          schema:
+            type: string
+        - name: order_status
+          in: query
+          description: Only return orders that have the given status.
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Orders.OrderResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: Retrieve an Order
+      description: >-
+        Retrieves the details of an existing Order. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.orders
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the Order to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Orders.OrderResponse
+        '404':
+          description: Not Found
+  /orders/{id}/complete:
+    put:
+      tags:
+        - Orders
+      summary: Update an order to complete status
+      description: Update an existing order status to complete.
+      operationId: complete.orders
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the order to be updated.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Orders.OrderResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /payouts:
+    get:
+      tags:
+        - Payouts
+      summary: List Payouts
+      description: ''
+      operationId: get.payouts
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Payouts.PayoutResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+  /payouts/{id}:
+    get:
+      tags:
+        - Payouts
+      summary: Retrieve a payout
+      description: Retrieves the details of an existing payout.
+      operationId: retrieve.payouts
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the payout to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Payouts.PayoutResponse
+        '404':
+          description: Not Found
+  /products:
+    get:
+      tags:
+        - Products
+      summary: List all products
+      description: >-
+        Returns a list of your products. The products are returned sorted by
+        creation date, with the most recent products appearing first.
+      operationId: find.products
+      parameters:
+        - name: product_type
+          in: query
+          description: Filter by Product Type
+          required: false
+          schema:
+            type: string
+            enum:
+              - physical
+              - digital
+              - service
+        - name: is_published
+          in: query
+          description: Filter by IsPublished
+          required: false
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Core.Api.Models.SlicedListResponse_1_Selz.Api.Public.Models.Products.ProductResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Products
+      summary: Create a product
+      description: Creates a new product object.
+      operationId: create.products
+      requestBody:
+        description: Create a product request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductRequest
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.ProductResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Retrieve a product
+      description: >-
+        Retrieves the details of an product. You need only supply the unique
+        model identifier that was returned upon model creation.
+      operationId: retrieve.products
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.ProductResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - Products
+      summary: Update a product
+      description: Update an existing product.
+      operationId: products.update
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductPutRequest
+        description: The fields to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.ProductResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - Products
+      summary: Delete a product
+      description: Permanently deletes a product. It cannot be undone
+      operationId: delete.products
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/categories:
+    get:
+      tags:
+        - Products
+      summary: List categories
+      description: >-
+        Allows you to retrieve information about categories assigned to the
+        specified product.
+      operationId: get.products.categories
+      parameters:
+        - name: product_id
+          in: query
+          description: Only return categories that contain this product id
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: id
+          description: ID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Categories.CategoryResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Products
+      summary: Assign to category
+      description: Allows you to assign a category to a specified product.
+      operationId: add.product.to.category
+      parameters:
+        - name: id
+          in: path
+          description: the product id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Assign to category request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddProductToCategoryRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddProductToCategoryRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddProductToCategoryRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddProductToCategoryRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.AddProductToCategoryResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{productId}/categories/{categoryId}:
+    delete:
+      tags:
+        - Products
+      summary: Remove from category
+      description: Allows you to remove a category from a specified product.
+      operationId: remove.product.from.category
+      parameters:
+        - name: productId
+          in: path
+          description: the product id
+          required: true
+          schema:
+            type: string
+        - name: categoryId
+          in: path
+          description: the category id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/licenses/verify:
+    post:
+      tags:
+        - Products
+      summary: Verify a license key
+      description: Retrieves the details of a license key and the order associated with it.
+      operationId: verify.products.license
+      parameters:
+        - name: id
+          in: path
+          description: the product id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Verify a license key request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.LicenseVerifyRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.LicenseVerifyRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.LicenseVerifyRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.LicenseVerifyRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.LicenseVerifyResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Core.Api.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/image:
+    post:
+      tags:
+        - Products
+      summary: Add product image
+      description: Add an image to a product
+      operationId: add.products.image
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Add product image request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddImageRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddImageRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddImageRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.AddImageRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.AddImageResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/images:
+    delete:
+      tags:
+        - Products
+      summary: Remove product images
+      description: Remove images from a product
+      operationId: remove.all.products.images
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/variants:
+    post:
+      tags:
+        - Products
+      summary: Adds new variant to a product
+      description: Allows to add a new variant to an existing Product
+      operationId: add.product.variant
+      parameters:
+        - name: id
+          in: path
+          description: the product id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Adds new variant to a product request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /products/{id}/variants/{variantId}:
+    put:
+      tags:
+        - Products
+      summary: Update product variant
+      description: Update an existing product variant.
+      operationId: update.product.variant
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the product to be updated.
+          required: true
+          schema:
+            type: string
+        - name: variantId
+          in: path
+          description: The identifier of the variant to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantPutRequest
+        description: The fields of the variant to update
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantResponse
+    delete:
+      tags:
+        - Products
+      summary: Deletes existing variant from a product
+      description: Allows delete existing Product Variant
+      operationId: delete.product.variant
+      parameters:
+        - name: id
+          in: path
+          description: the product id
+          required: true
+          schema:
+            type: string
+        - name: variantId
+          in: path
+          description: the variant id
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+  /refunds:
+    get:
+      tags:
+        - Refunds
+      summary: List all refunds
+      description: "Returns a list of your products. The refunds are returned sorted by creation date, with the most recent refunds appearing first.\r\nOptionally you can filter the refunds."
+      operationId: find.refunds
+      parameters:
+        - name: status
+          in: query
+          description: Filter by refund status
+          required: false
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Orders.Api.Models.RefundResponse_Selz.Orders.Api.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+  /refunds/{id}:
+    get:
+      tags:
+        - Refunds
+      summary: Retrieve a refund
+      description: >-
+        Retrieves the details of a refund. You need only supply the unique model
+        identifier that was returned upon the refunds creation.
+      operationId: retrieve.refunds
+      parameters:
+        - name: id
+          in: path
+          description: the identifier of the refund to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Refunds.RefundResponse
+        '404':
+          description: Not Found
+  /store:
+    get:
+      tags:
+        - Store
+      summary: Retrieve store details
+      description: Get details of the store
+      operationId: retrieve.store
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.Store.StoreResponse
+        '404':
+          description: Not Found
+  /webhooks:
+    get:
+      tags:
+        - WebHooks
+      summary: List all webhooks
+      description: >-
+        Returns a list of your webhooks. The webhooks are returned sorted by
+        creation date, with the most recent webhooks appearing first.
+      operationId: get.webhooks
+      parameters:
+        - name: event_type
+          in: query
+          description: A filter on the list based on the webhook event type
+          required: false
+          schema:
+            type: string
+            enum:
+              - order_payment_succeeded
+              - product_soldout
+              - product_variant_soldout
+              - customer_created
+              - customer_updated
+              - customer_deleted
+              - category_created
+              - category_updated
+              - category_deleted
+              - blog_post_created
+              - blog_post_updated
+              - blog_post_deleted
+              - discount_created
+              - discount_updated
+              - discount_deleted
+              - product_created
+              - product_updated
+              - product_deleted
+              - order_completed
+              - Invalid
+        - name: limit
+          in: query
+          description: >-
+            A limit on the number of objects to be returned. Limit can range
+            between 1 and 100 items. (default is 10)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: starting_after
+          in: query
+          description: >-
+            A cursor for use in pagination. starting_after is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, ending with obj_foo, your
+            subsequent call can include starting_after=obj_foo in order to fetch
+            the next page of the list.
+          required: false
+          schema:
+            type: string
+        - name: ending_before
+          in: query
+          description: >-
+            A cursor for use in pagination. ending_before is an object ID that
+            defines your place in the list. For instance, if you make a list
+            request and receive 100 objects, starting with obj_bar, your
+            subsequent call can include ending_before=obj_bar in order to fetch
+            the previous page of the list.
+          required: false
+          schema:
+            type: string
+        - name: created_date_min
+          in: query
+          description: Filter by minimum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: created_date_max
+          in: query
+          description: Filter by maximum created date
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_min
+          in: query
+          description: Filter by minimum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: updated_date_max
+          in: query
+          description: Filter by maximum updated date.
+          required: false
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.WebHooks.WebHookResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - WebHooks
+      summary: Create a webhook
+      description: Creates a new webhook object.
+      operationId: create.webhooks
+      requestBody:
+        description: Create a webhook request
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookRequest
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookResponse
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+  /webhooks/{id}:
+    get:
+      tags:
+        - WebHooks
+      summary: Retrieve a webhook
+      description: >-
+        Retrieves the details of an existing webhook. You need only supply the
+        unique model identifier that was returned upon model creation.
+      operationId: retrieve.webhooks
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the webhook to be retrieved.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: >-
+                  #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookResponse
+        '404':
+          description: Not Found
+    put:
+      tags:
+        - WebHooks
+      summary: Update a webhook
+      description: Update an existing webhook.
+      operationId: put.webhooks
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the webhook to be updated.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookPutRequest
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookPutRequest
+          text/json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookPutRequest
+          application/*+json:
+            schema:
+              $ref: >-
+                #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookPutRequest
+        description: The fields to update
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+    delete:
+      tags:
+        - WebHooks
+      summary: Delete a webhook
+      description: Permanently deletes a webhook. It cannot be undone
+      operationId: delete.webhooks
+      parameters:
+        - name: id
+          in: path
+          description: The identifier of the webhook to be deleted.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json;v=1.0:
+              schema:
+                $ref: '#/components/schemas/Selz.Api.Public.Models.ErrorResponse'
+        '404':
+          description: Not Found
+security:
+  - Bearer: []
+components:
+  securitySchemes:
+    Bearer:
+      scheme: bearer
+      type: http
+  schemas:
+    Selz.Api.Public.Models.BlogPosts.BlogPostResponse:
+      description: A Blog post
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the customer
+          type: string
+        title:
+          description: The title of the blogPost.
+          type: string
+        meta_title:
+          description: >-
+            The HTML meta title that specifies the title of the categoty web
+            page
+          type: string
+        excerpt:
+          description: The description of the blogPost, complete with HTML markup
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the
+            categoty web page
+          type: string
+        content:
+          description: The content of the blog post
+          type: string
+        image:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.BlogPosts.ShopImageResponse
+        slug:
+          description: >-
+            A human-friendly unique string for the blogPost automatically
+            generated from its title
+          type: string
+        is_published:
+          description: >-
+            States whether the blogPost is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the blogPost was created. The API returns
+            this value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the blogPost was last updated. The API
+            returns this value in ISO 8601 format.
+          type: string
+        tags:
+          description: Tags associated with this blog post
+          type: string
+    Selz.Api.Public.Models.BlogPosts.ShopImageResponse:
+      description: Represent an image
+      type: object
+      properties:
+        original:
+          description: Original size
+          type: string
+        is_featured:
+          description: Is featured image
+          type: boolean
+        is_default:
+          description: Is default image
+          type: boolean
+        pico:
+          description: Resized 24 * 24 size image
+          type: string
+        icon:
+          description: Resized 48 * 48 size image
+          type: string
+        thumb:
+          description: Resized 64 * 64 size image
+          type: string
+        small:
+          description: Resized 96 * 96 size image
+          type: string
+        compact:
+          description: Resized 192 * 192 size image
+          type: string
+        medium:
+          description: Resized 256 * 256 size image
+          type: string
+        large:
+          description: Resized 640 * 640 size image
+          type: string
+        grande:
+          description: Resized 1280 * 1280 size image
+          type: string
+        mucho_grande:
+          description: Resized 1600 * 1600 size image
+          type: string
+        huge:
+          description: Resized 2048 * 2048 size image
+          type: string
+    Selz.Api.Public.Models.BlogPosts.BlogPostRequest:
+      description: Create a blog post
+      type: object
+      properties:
+        title:
+          description: The title of the blog.
+          type: string
+        slug:
+          description: >-
+            A human-friendly unique string for the blogPost automatically
+            generated from its title
+          type: string
+        excerpt:
+          description: An excerpt of the blog post, complete with HTML markup
+          type: string
+        content:
+          description: The content of the blog post
+          type: string
+        meta_title:
+          description: The HTML meta title that specifies the title of the blog web page
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the blog
+            web page
+          type: string
+        is_published:
+          description: >-
+            States whether the blog post is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        disable_comments:
+          description: States whether comments are allowed on the blog post
+          type: boolean
+        image:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.BlogPosts.ShopImageRequest
+        tags:
+          description: Comma separated tags Id associated with this blog post
+          type: string
+    Selz.Api.Public.Models.BlogPosts.ShopImageRequest:
+      description: Image
+      type: object
+      properties:
+        url:
+          description: Url of the blog post image
+          type: string
+    Selz.Api.Public.Models.ErrorResponse:
+      description: Error response model
+      type: object
+      properties:
+        type:
+          description: >-
+            The type of error returned. Can be: api_connection_error, api_error,
+            authentication_error, invalid_request_error, or rate_limit_error.
+          enum:
+            - api_connection_error
+            - api_error
+            - authentication_error
+            - invalid_request_error
+            - rate_limit_error
+          type: string
+        message:
+          description: A human-readable message providing more details about the error.
+          type: string
+        errors:
+          description: >-
+            The parameter the error relates to if the error is
+            parameter-specific.
+          type: object
+          additionalProperties:
+            uniqueItems: false
+            type: array
+            items:
+              type: string
+    Selz.Api.Public.Models.BlogPosts.BlogPostPutRequest:
+      description: Patch a blog post
+      type: object
+      properties:
+        title:
+          description: The title of the blog.
+          type: string
+        slug:
+          description: >-
+            A human-friendly unique string for the blogPost automatically
+            generated from its title
+          type: string
+        excerpt:
+          description: An excerpt of the blog post, complete with HTML markup
+          type: string
+        content:
+          description: The content of the blog post
+          type: string
+        meta_title:
+          description: The HTML meta title that specifies the title of the blog web page
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the blog
+            web page
+          type: string
+        is_published:
+          description: >-
+            States whether the blog post is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        disable_comments:
+          description: States whether comments are allowed on the blog post
+          type: boolean
+        image:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.BlogPosts.ShopImageRequest
+        tags:
+          description: Comma separated tags Id associated with this blog post
+          type: string
+    Selz.Api.Public.Models.BlogPosts.AddImageRequest:
+      description: Add image to blog post by base64 encoded string or url to download
+      type: object
+      properties:
+        attachment:
+          description: A base64 encoded string representing the file
+          type: string
+        filename:
+          description: The name of the file, required if using base64 encoded string
+          type: string
+        url:
+          description: The source URL of the file that will be downloaded by Selz
+          type: string
+    Selz.Api.Public.Models.BlogPosts.AddImageResponse:
+      description: Added image for the blog post
+      type: object
+      properties:
+        url:
+          description: Url of the added image
+          type: string
+    Selz.Core.Api.Models.SlicedListMetaData:
+      type: object
+      properties:
+        limit:
+          format: int32
+          type: integer
+          readOnly: true
+        previous_cursor:
+          type: string
+          readOnly: true
+        next_cursor:
+          type: string
+          readOnly: true
+        has_previous:
+          type: boolean
+          readOnly: true
+        has_next:
+          type: boolean
+          readOnly: true
+    Selz.Api.Public.Models.Categories.CategoryResponse:
+      description: Represent Category detail
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the category
+          type: string
+        parent_id:
+          description: Unique identifier of the parent category
+          type: string
+        title:
+          description: The title of the category.
+          type: string
+        meta_title:
+          description: >-
+            The HTML meta title that specifies the title of the categoty web
+            page
+          type: string
+        description:
+          description: The description of the category, complete with HTML markup
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the
+            category web page
+          type: string
+        image:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageResponse'
+        slug:
+          description: >-
+            A human-friendly unique string for the category automatically
+            generated from its title
+          type: string
+        sort_type:
+          description: The order in which products in the category appear
+          enum:
+            - Unknown
+            - manual
+            - alpha_asc
+            - alpha_desc
+            - created_asc
+            - created_desc
+            - price_asc
+            - price_desc
+          type: string
+        is_published:
+          description: >-
+            States whether the category is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the category was created. The API returns
+            this value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the category was last updated. The API
+            returns this value in ISO 8601 format.
+          type: string
+    Selz.Core.Api.Models.ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+    Selz.Api.Public.Models.Products.ImageResponse:
+      description: ImageResponse
+      type: object
+      properties:
+        original:
+          description: The url if the original image
+          type: string
+        is_featured:
+          description: Is featured
+          type: boolean
+        is_default:
+          description: Is default
+          type: boolean
+        pico:
+          description: 24 x 24 pixels image
+          type: string
+        icon:
+          description: 48 x 48 pixels image
+          type: string
+        thumb:
+          description: 64 x 64 pixels image
+          type: string
+        small:
+          description: 96 x 96 pixels image
+          type: string
+        compact:
+          description: 192 x 192 pixels image
+          type: string
+        medium:
+          description: 256 x 256 pixels image
+          type: string
+        large:
+          description: 640 x 640 pixels image
+          type: string
+        grande:
+          description: 1280 x 1280 pixels
+          type: string
+        mucho_grande:
+          description: 1600 x 1600 pixels
+          type: string
+        huge:
+          description: 2048 x 2048 pixels
+          type: string
+    Selz.Api.Public.Models.Categories.CategoryRequest:
+      description: Represent an Category object to be created
+      type: object
+      properties:
+        parent_id:
+          description: An optional unique identifier of the parent category
+          type: string
+        title:
+          description: The title of the category.
+          type: string
+        meta_title:
+          description: >-
+            The HTML meta title that specifies the title of the category web
+            page
+          type: string
+        slug:
+          description: >-
+            A human-friendly unique string for the category automatically
+            generated from its title
+          type: string
+        description:
+          description: The description of the category, complete with HTML markup
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the
+            categoty web page
+          type: string
+        is_published:
+          description: >-
+            States whether the category is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        products:
+          description: List of product Ids which belong to the category
+          uniqueItems: false
+          type: array
+          items:
+            type: string
+        sort_type:
+          description: >-
+            Sort type of category: "manual", "alpha_asc", "alpha_desc",
+            "created_asc", "created_desc", "price_asc", "price_desc"
+          type: string
+        image:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageRequest'
+    Selz.Api.Public.Models.Products.ImageRequest:
+      description: ImageRequest
+      type: object
+      properties:
+        url:
+          description: The image url
+          type: string
+    Selz.Api.Public.Models.Categories.CategoryPutRequest:
+      description: Represents fields of Category object to be updated
+      type: object
+      properties:
+        parent_id:
+          description: An optional unique identifier of the parent category
+          type: string
+        title:
+          description: The title of the category.
+          type: string
+        meta_title:
+          description: >-
+            The HTML meta title that specifies the title of the category web
+            page
+          type: string
+        slug:
+          description: >-
+            A human-friendly unique string for the category automatically
+            generated from its title
+          type: string
+        description:
+          description: The description of the category, complete with HTML markup
+          type: string
+        meta_description:
+          description: >-
+            The HTML meta description that specifies the description of the
+            categoty web page
+          type: string
+        is_published:
+          description: >-
+            States whether the category is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+        products:
+          description: list of product id's that belong to the category
+          uniqueItems: false
+          type: array
+          items:
+            type: string
+        sort_type:
+          description: The order in which products in the category appear
+          type: string
+    Selz.Api.Public.Models.Customers.CustomerResponse:
+      description: A customer
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the customer
+          type: string
+        first_name:
+          description: Customer first name
+          type: string
+        last_name:
+          description: Customer last name
+          type: string
+        email:
+          description: Customer email address
+          type: string
+        accepts_marketing:
+          description: Customer accepts marketing
+          type: boolean
+        company:
+          description: Company
+          type: string
+        delivery_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Customers.AddressResponse
+        billing_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Customers.AddressResponse
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the customer was created. The API returns
+            this value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the customer was last updated. The API
+            returns this value in ISO 8601 format.
+          type: string
+    Selz.Api.Public.Models.Customers.AddressResponse:
+      description: Address Response
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.Customers.CustomerRequest:
+      description: Represents a customer object to be create
+      type: object
+      properties:
+        first_name:
+          description: Customer first name
+          type: string
+        last_name:
+          description: Customer last name
+          type: string
+        email:
+          description: Customer email address
+          type: string
+          example: mathieu@selz.com
+        accepts_marketing:
+          description: Accepts marketing
+          type: boolean
+        company:
+          description: Company
+          type: string
+        business_number:
+          description: Business number
+          type: string
+        delivery_address:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Customers.AddressRequest'
+        billing_address:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Customers.AddressRequest'
+    Selz.Api.Public.Models.Customers.AddressRequest:
+      description: Address Request
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.Customers.CustomerPutRequest:
+      description: Represents fields of customer object to be updated
+      type: object
+      properties:
+        first_name:
+          description: Customer first name
+          type: string
+        last_name:
+          description: Customer last name
+          type: string
+        email:
+          description: Customer email address
+          type: string
+        accepts_marketing:
+          description: Customer accepts marketing
+          type: boolean
+        company:
+          description: Company
+          type: string
+        delivery_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Customers.AddressPutRequest
+        billing_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Customers.AddressPutRequest
+    Selz.Api.Public.Models.Customers.AddressPutRequest:
+      description: Represents fields of customer's Address object to be updated
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.Discounts.DiscountResponse:
+      description: Object representing discount
+      type: object
+      properties:
+        id:
+          description: The unique identifier for the discount.
+          type: string
+        name:
+          description: A friendly name to remember the discount
+          type: string
+        code:
+          description: The case-insensitive discount code that customers use at checkout.
+          type: string
+        short_url:
+          description: The shorten url associated with the discount
+          type: string
+        type:
+          description: >-
+            Specify to what the discount's value is applied to a product,
+            category or an order.
+          type: string
+        target_id:
+          description: >-
+            The unique identifier of the product or the category to which
+            discount applies to.
+          type: string
+        minimum_value:
+          format: decimal
+          description: "The minimum order value for the discount to be valid. This value excludes tax and shipping and applies to the order\r\ndiscounts only."
+          type: string
+        free_shipping:
+          description: Discount includes free shipping.
+          type: boolean
+        value_off:
+          format: decimal
+          description: Value that will be taken off.
+          type: string
+        percent_off:
+          format: int32
+          description: Percent that will be taken off.
+          type: integer
+        currency_code:
+          description: "Three-letter ISO currency code representing the currency of the category or order type discount value. Product\r\ndiscounts are in the product currency."
+          type: string
+        quantity:
+          format: int32
+          description: Maximum number of times the discount can be applied.
+          type: integer
+        quantity_sold:
+          format: int32
+          description: Number of times the discount was applied.
+          type: integer
+        valid_from:
+          format: date-time
+          description: >-
+            The date the discount becomes valid for use during checkout in ISO
+            8601 format.
+          type: string
+        valid_to:
+          format: date-time
+          description: The date when the discount code becomes disabled in ISO 8601 format.
+          type: string
+        is_published:
+          description: "States whether the discount is visible. Valid values are \"true\" for visible and \"false\" for hidden. By default\r\nfalse"
+          type: boolean
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the discount was created. The API returns
+            this value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the discount was last updated. The API
+            returns this value in ISO 8601 format.
+          type: string
+    Selz.Api.Public.Models.Discounts.DiscountRequest:
+      description: Represents an object that is required to create a discount.
+      type: object
+      properties:
+        name:
+          description: A friendly name to remember the discount
+          type: string
+        code:
+          description: The case-insensitive discount code that customers use at checkout.
+          type: string
+        type:
+          description: >-
+            Specify to what the discount's value is applied to a product,
+            category or an order.
+          type: string
+        target_id:
+          description: >-
+            The unique identifier of the product or the category to which
+            discount applies to.
+          type: string
+        minimum_value:
+          format: decimal
+          description: >-
+            The minimum order value for the discount to be valid. This value
+            excludes tax and shipping and applies to the order discounts only.
+          type: string
+        value_off:
+          format: decimal
+          description: Value that will be taken off.
+          type: string
+        free_shipping:
+          description: Discount includes free shipping.
+          type: boolean
+        percent_off:
+          format: int32
+          description: Percent that will be taken off.
+          type: integer
+        currency_code:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            category or order type discount value. Product discounts are in the
+            product currency.
+          type: string
+        quantity:
+          format: int32
+          description: Maximum number of times the discount can be applied.
+          type: integer
+        valid_from:
+          format: date-time
+          description: >-
+            The date the discount becomes valid for use during checkout in ISO
+            8601 format.
+          type: string
+        valid_to:
+          format: date-time
+          description: The date when the discount code becomes disabled in ISO 8601 format.
+          type: string
+        is_published:
+          description: >-
+            States whether the discount is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+    Selz.Api.Public.Models.Discounts.DiscountPutRequest:
+      description: Represents an object that is required to update existing discount.
+      type: object
+      properties:
+        name:
+          description: A friendly name to remember the discount
+          type: string
+        minimum_value:
+          format: decimal
+          description: "The minimum order value for the discount to be valid. This value excludes tax and shipping and applies to the order\r\ndiscounts only."
+          type: string
+        free_shipping:
+          description: Discount includes free shipping.
+          type: boolean
+        value_off:
+          format: decimal
+          description: Value that will be taken off.
+          type: string
+        percent_off:
+          format: int32
+          description: Percent that will be taken off.
+          type: integer
+        currency_code:
+          description: "Three-letter ISO currency code representing the currency of the category or order type discount value. Product\r\ndiscounts are in the product currency."
+          type: string
+        quantity:
+          format: int32
+          description: Maximum number of times the discount can be applied.
+          type: integer
+        valid_from:
+          format: date-time
+          description: >-
+            The date the discount becomes valid for use during checkout in ISO
+            8601 format.
+          type: string
+        valid_to:
+          format: date-time
+          description: The date when the discount code becomes disabled in ISO 8601 format.
+          type: string
+        is_published:
+          description: >-
+            States whether the discount is visible. Valid values are "true" for
+            visible and "false" for hidden. By default false
+          type: boolean
+    Selz.Api.Public.Models.Disputes.DisputeResponse:
+      description: Object representing Dispute
+      type: object
+      properties:
+        id:
+          description: The unique identifier for dispute.
+          type: string
+        order_id:
+          description: Order Id associated with this dispute.
+          type: string
+        status:
+          description: Status of the dispute.
+          type: string
+        total_amount:
+          format: decimal
+          description: Total amount
+          type: string
+        currency:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            dispute
+          type: string
+        reason:
+          description: Reason of the Dispute
+          type: string
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the dispute was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the dispute was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+    Selz.Api.Public.Models.Orders.OrderResponse:
+      description: Order
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the order
+          type: string
+        reference_id:
+          description: Order reference id used by the seller and customer
+          type: string
+        customer:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Orders.BuyerResponse'
+        items:
+          description: Line items of the order
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Orders.OrderItemResponse
+        currency:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            product price
+          type: string
+        total_price:
+          format: decimal
+          description: Total price of the order
+          type: string
+        total_shipping:
+          format: decimal
+          description: Total price of the shipping method
+          type: string
+        shipping_tax:
+          format: decimal
+          description: Total tax charged on shipping
+          type: string
+        shipping_tax_rate:
+          format: double
+          description: Shipping tax rate
+          type: number
+        shipping_tax_name:
+          description: Shipping tax name
+          type: string
+        total_tax:
+          format: decimal
+          description: Total amount of tax charged for the whole order (including shipping)
+          type: string
+        price_includes_tax:
+          description: Tax is including in the price (true/false)
+          type: boolean
+        total_fees:
+          format: decimal
+          description: Total amount of fees charged
+          type: string
+        status:
+          description: >-
+            Status of the order (processed, failed, completed, refunded,
+            disputed, etc)
+          enum:
+            - incomplete
+            - processed
+            - failed
+            - completed
+            - refunded
+            - pending
+            - disputed
+          type: string
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the order was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the order was updated. The API returns this
+            value in ISO 8601 format.
+          type: string
+        tracking_id:
+          description: Custom tracking id
+          type: string
+        custom_fields:
+          description: Custom fields
+          type: object
+          additionalProperties:
+            type: object
+        payment_details:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Orders.PaymentDetailsResponse
+        payment_processor_type:
+          description: Type of payment processor
+          enum:
+            - SelzPay
+            - PayPal
+            - TwoCheckout
+            - IZettle
+          type: string
+    Selz.Api.Public.Models.Orders.BuyerResponse:
+      description: BuyerResponse
+      type: object
+      properties:
+        first_name:
+          description: Customer first name
+          type: string
+        last_name:
+          description: Customer last name
+          type: string
+        email:
+          description: Customer email address
+          type: string
+        accepts_marketing:
+          description: Customer accepts marketing
+          type: boolean
+        company:
+          description: Company
+          type: string
+        delivery_address:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Orders.AddressResponse'
+        billing_address:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Orders.AddressResponse'
+    Selz.Api.Public.Models.Orders.OrderItemResponse:
+      description: Order item line
+      type: object
+      properties:
+        product_id:
+          description: Unique identifier of the product.
+          type: string
+        product_title:
+          description: The name of the product.
+          type: string
+        product_sku:
+          description: Stock keeping unit of the product.
+          type: string
+        product_variant_id:
+          description: Unique identifier of the product variant.
+          type: string
+        product_variant_title:
+          description: The name of the product variant.
+          type: string
+        product_variant_sku:
+          description: Stock keeping unit of the product variant.
+          type: string
+        discount_code:
+          description: Discount code applied to the line item
+          type: string
+        quantity:
+          format: int32
+          description: The number of products ordered
+          type: integer
+        unit_price:
+          format: decimal
+          description: Unit price of the line item
+          type: string
+        currency:
+          description: Currency of the product ordered
+          type: string
+        tax_rate:
+          format: double
+          description: Tax rate of the line item
+          type: number
+        tax_name:
+          description: Tax name of the line item
+          type: string
+        total_tax:
+          format: double
+          description: Tax amount of the line item
+          type: number
+        total_discount:
+          format: double
+          description: Discount amount of the line item
+          type: number
+    Selz.Api.Public.Models.Orders.PaymentDetailsResponse:
+      description: PaymentDetailsResponse
+      type: object
+      properties:
+        type:
+          description: Type of the payment, e.g. "card" or "paypal"
+          type: string
+        card:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Orders.CardPaymentDetailsResponse
+        paypal:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Orders.PaypalPaymentDetailsResponse
+    Selz.Api.Public.Models.Orders.AddressResponse:
+      description: Address
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.Orders.CardPaymentDetailsResponse:
+      description: CardPaymentDetailsResponse
+      type: object
+      properties:
+        reference:
+          description: Reference id from the payment gateway response
+          type: string
+        brand:
+          description: Brand of the credit card
+          type: string
+        name:
+          description: Name on the credit card
+          type: string
+        country:
+          description: Country the credit card was issued in
+          type: string
+        last_four:
+          description: Last four digits of the credit card
+          type: string
+    Selz.Api.Public.Models.Orders.PaypalPaymentDetailsResponse:
+      description: PaypalPaymentDetailsResponse
+      type: object
+      properties:
+        reference:
+          description: Reference id returned from Paypal for the transaction
+          type: string
+        email:
+          description: Email address of the Paypal account used for the transaction
+          type: string
+    Selz.Api.Public.Models.Payouts.PayoutResponse:
+      description: Object representing Payout
+      type: object
+      properties:
+        id:
+          description: The unique identifier for payout.
+          type: string
+        status:
+          description: Status of the payout
+          type: string
+        total_amount:
+          format: decimal
+          description: Total amount associated with the payout
+          type: string
+        currency:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            payout
+          type: string
+        destination:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Payouts.PayoutDestinationResponseModel
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the Payout was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the Payout was last updated. The API returns
+            this value in ISO 8601 format.
+          type: string
+        scheduled_time:
+          format: date-time
+          description: >-
+            The date and time when the Payout is scheduled. The API returns this
+            value in ISO 8601 format.
+          type: string
+    Selz.Api.Public.Models.Payouts.PayoutDestinationResponseModel:
+      description: Bank detail of the payout
+      type: object
+      properties:
+        type:
+          description: Type
+          type: string
+        bank:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Payouts.PayoutDestinationBankResponseModel
+    Selz.Api.Public.Models.Payouts.PayoutDestinationBankResponseModel:
+      description: Bank detail of a transfer
+      type: object
+      properties:
+        name:
+          description: Name
+          type: string
+        country:
+          description: Country
+          type: string
+        routing:
+          description: Routing
+          type: string
+        last_four:
+          description: Last four digit of the card
+          type: string
+    Selz.Api.Public.Models.Products.ProductRequest:
+      description: ProductRequest
+      type: object
+      properties:
+        product_type:
+          description: Type of product (e.g. physical, digital, etc)
+          type: string
+        sku:
+          description: Stock keeping unit of the product
+          type: string
+        title:
+          description: The name of the product
+          type: string
+        description:
+          description: The description of the product, complete with HTML formatting
+          type: string
+        page_title:
+          description: Page title used for SEO
+          type: string
+        meta_description:
+          description: Meta description used for SEO
+          type: string
+        slug:
+          description: The slug of the product
+          type: string
+        quantity:
+          format: int32
+          description: The number of items in stock for this product
+          type: integer
+        currency_code:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            product price
+          type: string
+        price:
+          format: decimal
+          description: The price of the product
+          type: string
+        regular_price:
+          format: decimal
+          description: The original price of the product
+          type: string
+        is_price_flexible:
+          description: Is the price flexible
+          type: boolean
+        is_published:
+          description: The published state of the product
+          type: boolean
+        is_free_shipping:
+          description: Flag indicating if product has free shipping
+          type: boolean
+        weight:
+          format: decimal
+          description: >-
+            The weight of the product in the unit system specified with
+            weight_unit.
+          type: string
+        weight_unit:
+          description: >-
+            The unit system that the product's weight is measure in. The
+            weight_unit can be either "g", "kg, "oz", or "lb". Default is "g".
+          type: string
+        variants:
+          description: >-
+            A list of variant objects, each one representing a slightly
+            different version of the product
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+        images:
+          description: Product image
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageRequest'
+    Selz.Api.Public.Models.Products.ProductVariantRequest:
+      description: ProductVariantRequest
+      type: object
+      properties:
+        id:
+          description: Id of the product variant
+          type: string
+        sku:
+          description: Stock keeping unit of the product variant
+          type: string
+        title:
+          description: The title of the product variant.
+          type: string
+        price:
+          format: decimal
+          description: The price of the product variant
+          type: string
+        quantity:
+          format: int32
+          description: The number of items in stock for this product variant
+          type: integer
+        is_unlimited_quantity:
+          description: >-
+            Flag indicating that number of items in stock for this product
+            variant is unlimited
+          type: boolean
+        options:
+          description: A key value pair representing variant options eg:{"Color","Blue"}
+          type: object
+          additionalProperties:
+            type: string
+    Selz.Api.Public.Models.Products.ProductResponse:
+      description: ProductResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the product
+          type: string
+        sku:
+          description: Stock keeping unit of the product
+          type: string
+        title:
+          description: The name of the product
+          type: string
+        slug:
+          description: The slug of the product
+          type: string
+        description:
+          description: The description of the product, complete with HTML formatting
+          type: string
+        short_url:
+          description: The Product short URL
+          type: string
+        product_type:
+          description: The type of Product, can be physical, digital or service
+          enum:
+            - physical
+            - digital
+            - service
+          type: string
+        currency_code:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            product price
+          type: string
+        price:
+          format: double
+          description: The price of the product
+          type: number
+        regular_price:
+          format: double
+          description: The original price of the product
+          type: number
+        is_price_flexible:
+          description: TBC
+          type: boolean
+        quantity:
+          format: int32
+          description: The number of items in stock for this product
+          type: integer
+        quantity_available:
+          format: int32
+          description: The number of items in stock which is available for this product
+          type: integer
+        variants:
+          description: >-
+            A list of variant objects, each one representing a slightly
+            different version of the product
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantResponse
+        variant_attributes:
+          description: A list of variants attributes
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.VariantAttributeResponse
+        images:
+          description: >-
+            A list of image objects, each one representing an image associated
+            with the product
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageResponse'
+        featured_image:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageResponse'
+        media_type:
+          description: The type of media (e.g. Video, Audio, YouTube or Vimeo)
+          enum:
+            - Invalid
+            - undefined
+            - youtube
+            - video
+            - audio
+            - vimeo
+          type: string
+        media_url:
+          description: >-
+            The URL for the media. In the case of YouTube and Vimeo, the video
+            ID
+          type: string
+        media_cover:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageResponse'
+        is_published:
+          description: The published state of the product
+          type: boolean
+        is_free_shipping:
+          description: If the product includes free shipping
+          type: boolean
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the product was created. The API returns this
+            value in ISO 8601 format
+          type: string
+        updated_time:
+          format: date-time
+          description: The date and time when the product was last updated.
+          type: string
+    Selz.Api.Public.Models.Products.ProductVariantResponse:
+      description: ProductVariantResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the product variant
+          type: string
+        sku:
+          description: Stock keeping unit of the product variant
+          type: string
+        title:
+          description: The title of the product variant.
+          type: string
+        price_regular:
+          format: double
+          description: The original price of the product variant
+          type: number
+        price:
+          format: double
+          description: The price of the product variant
+          type: number
+        quantity:
+          format: int32
+          description: The number of items in stock for this product variant
+          type: integer
+        quantity_available:
+          format: int32
+          description: >-
+            The number of items in stock which is available for this product
+            variant
+          type: integer
+        options:
+          description: >-
+            A list of options, each one representing a slightly different
+            version of the product variant
+          uniqueItems: false
+          type: array
+          items:
+            type: string
+    Selz.Api.Public.Models.Products.VariantAttributeResponse:
+      description: VariantAttributeResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the variant option
+          type: string
+        name:
+          description: 'Attribute name (e.g: "Size", "Color", etc)'
+          type: string
+        options:
+          description: 'Attribute option (e.g: "Red", "Green", "Yellow", etc)'
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.VariantOptionResponse
+    Selz.Api.Public.Models.Products.VariantOptionResponse:
+      description: VariantOptionResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the variant option
+          type: string
+        value:
+          description: 'Variant option value (e.g: "Red", "Green", "Yellow", etc)'
+          type: string
+    Selz.Api.Public.Models.Products.ProductPutRequest:
+      description: ProductPutRequest
+      type: object
+      properties:
+        product_type:
+          description: The type of Product, can be physical, digital or service
+          enum:
+            - physical
+            - digital
+            - service
+          type: string
+        sku:
+          description: Stock keeping unit of the product
+          type: string
+        title:
+          description: The name of the product
+          type: string
+        description:
+          description: The description of the product, complete with HTML formatting
+          type: string
+        page_title:
+          description: Page title used for SEO
+          type: string
+        meta_description:
+          description: Meta description used for SEO
+          type: string
+        slug:
+          description: The slug of the product
+          type: string
+        quantity:
+          format: int32
+          description: The number of items in stock for this product
+          type: integer
+        quantity_available:
+          format: int32
+          description: The number of items in stock which is available for this product
+          type: integer
+        is_unlimited_quantity:
+          description: Flag indicating that number of items in stock is unlimited
+          type: boolean
+        currency_code:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            product price
+          type: string
+        price:
+          format: decimal
+          description: The price of the product
+          type: string
+        regular_price:
+          format: decimal
+          description: The original price of the product
+          type: string
+        is_price_flexible:
+          description: Is the price flexible
+          type: boolean
+        is_published:
+          description: The published state of the product
+          type: boolean
+        is_free_shipping:
+          description: Flag indicating if product has free shipping
+          type: boolean
+        weight:
+          format: decimal
+          description: >-
+            The weight of the product in the unit system specified with
+            weight_unit.
+          type: string
+        weight_unit:
+          description: >-
+            The unit system that the product's weight is measure in. The
+            weight_unit can be either "g", "kg, "oz", or "lb".
+          type: string
+        variants:
+          description: >-
+            A list of variant objects, each one representing a slightly
+            different version of the product
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.ProductVariantRequest
+        image:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Products.ImageRequest'
+    Selz.Api.Public.Models.Products.AddProductToCategoryRequest:
+      description: AddProductToCategoryRequest
+      type: object
+      properties:
+        category_id:
+          description: The category Id
+          type: string
+    Selz.Api.Public.Models.Products.AddProductToCategoryResponse:
+      description: AddProductToCategoryResponse
+      type: object
+      properties:
+        category_id:
+          description: The category Id
+          type: string
+    Selz.Api.Public.Models.Products.LicenseVerifyRequest:
+      description: LicenseVerifyRequest
+      type: object
+      properties:
+        key:
+          description: The license key itself
+          type: string
+        increment_usage_count:
+          description: Should the license usage count be incremented
+          type: boolean
+    Selz.Api.Public.Models.Products.LicenseVerifyResponse:
+      description: LicenseVerifyResponse
+      type: object
+      properties:
+        is_active:
+          description: True if the license is active, false otherwise
+          type: boolean
+        usage_count:
+          format: int32
+          description: Number of time the licenses has been used
+          type: integer
+        order:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Products.CatalogOrderResponse
+    Selz.Api.Public.Models.Products.CatalogOrderResponse:
+      description: CatalogOrderResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the order
+          type: string
+        reference_id:
+          description: Order reference id used by the seller and customer
+          type: string
+        customer:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Products.CatalogBuyerResponse
+        items:
+          description: Line items of the order
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.CatalogOrderItemResponse
+        currency:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            product price
+          type: string
+        total_price:
+          format: decimal
+          description: Total price of the order
+          type: string
+        total_shipping:
+          format: decimal
+          description: Total price of the shipping method
+          type: string
+        total_tax:
+          format: decimal
+          description: Total amount of tax charged
+          type: string
+        price_includes_tax:
+          description: Tax is including in the price (true/false)
+          type: boolean
+        status:
+          description: >-
+            Status of the order (processed, failed, completed, refunded,
+            disputed, etc)
+          enum:
+            - incomplete
+            - processed
+            - failed
+            - completed
+            - refunded
+            - pending
+            - disputed
+          type: string
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the order was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+        tracking_id:
+          description: Custom tracking id
+          type: string
+        custom_fields:
+          description: List of custom fields
+          type: object
+          additionalProperties:
+            type: object
+    Selz.Api.Public.Models.Products.CatalogBuyerResponse:
+      description: CatalogBuyerResponse
+      type: object
+      properties:
+        first_name:
+          description: Customer first name
+          type: string
+        last_name:
+          description: Customer last name
+          type: string
+        email:
+          description: Customer email address
+          type: string
+        accepts_marketing:
+          description: Customer accepts marketing
+          type: boolean
+        company:
+          description: Company
+          type: string
+        delivery_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Products.CatalogAddressResponse
+        billing_address:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Products.CatalogAddressResponse
+    Selz.Api.Public.Models.Products.CatalogOrderItemResponse:
+      description: CatalogOrderItemResponse
+      type: object
+      properties:
+        product_id:
+          description: Unique identifier of the product.
+          type: string
+        product_title:
+          description: The name of the product.
+          type: string
+        product_sku:
+          description: Stock keeping unit of the product.
+          type: string
+        product_variant_id:
+          description: Unique identifier of the product variant.
+          type: string
+        product_variant_title:
+          description: The name of the product variant.
+          type: string
+        product_variant_sku:
+          description: Stock keeping unit of the product variant.
+          type: string
+        discount_code:
+          description: Discount code applied to the line item
+          type: string
+        quantity:
+          format: int32
+          description: The number of products ordered
+          type: integer
+        unit_price:
+          format: decimal
+          description: Unit price of the line item
+          type: string
+        currency:
+          description: Currency of the product ordered
+          type: string
+    Selz.Api.Public.Models.Products.CatalogAddressResponse:
+      description: CatalogAddressResponse
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.Products.AddImageRequest:
+      description: Add image to product by base64 encoded string or url to download
+      type: object
+      properties:
+        attachment:
+          description: A base64 encoded string representing the file
+          type: string
+        filename:
+          description: The name of the file, required if using base64 encoded string
+          type: string
+        url:
+          description: The source URL of the file that will be downloaded by Selz
+          type: string
+    Selz.Api.Public.Models.Products.AddImageResponse:
+      description: AddImageResponse
+      type: object
+      properties:
+        url:
+          description: The Url of the image
+          type: string
+    Selz.Api.Public.Models.Products.ProductVariantPutRequest:
+      description: ProductVariantRequest
+      type: object
+      properties:
+        sku:
+          description: Stock keeping unit of the product variant
+          type: string
+        title:
+          description: The title of the product variant.
+          type: string
+        price:
+          format: decimal
+          description: The price of the product variant
+          type: string
+        quantity:
+          format: int32
+          description: The number of items in stock for this product variant
+          type: integer
+        quantity_available:
+          format: int32
+          description: The number of items in stock which is available for this product
+          type: integer
+        is_unlimited_quantity:
+          description: >-
+            Flag indicating that number of items in stock for this product
+            variant is unlimited
+          type: boolean
+        options:
+          description: A list of object Id's as strings representing variant options
+          type: object
+          additionalProperties:
+            type: string
+    Selz.Orders.Api.Models.RefundResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        shop_id:
+          format: int32
+          type: integer
+        order_id:
+          type: string
+        order_created_date:
+          format: date-time
+          type: string
+        order_reference_id:
+          type: string
+        total_amount:
+          format: double
+          type: number
+        total_amount_in_base_currency:
+          format: double
+          type: number
+        disbursed:
+          format: double
+          type: number
+        balance:
+          format: double
+          type: number
+        balance_in_base_currency:
+          format: double
+          type: number
+        currency_code:
+          type: string
+        currency_rate:
+          format: double
+          type: number
+        exclude_from_seller_balance:
+          type: boolean
+        payment_gateway:
+          enum:
+            - Westpac
+            - Pin
+            - PayPal
+            - StripeAu
+            - StripeUs
+            - AuthorizeNet
+            - AuthorizeNetTpa
+            - PayPalChained
+            - SecureNet
+            - StripeConnect
+            - TwoCheckout
+            - PayPalMarketplace
+            - IZettle
+          type: string
+        payment_processor_type:
+          enum:
+            - Selz
+            - PayPal
+            - TwoCheckout
+            - IZettle
+          type: string
+        status:
+          enum:
+            - Pending
+            - Rejected
+            - Refunded
+          type: string
+        created_by:
+          type: string
+        created_time:
+          format: date-time
+          type: string
+        updated_by:
+          type: string
+        updated_time:
+          format: date-time
+          type: string
+        extra_data:
+          type: object
+          additionalProperties:
+            type: object
+    Selz.Api.Public.Models.Refunds.RefundResponse:
+      description: RefundResponse
+      type: object
+      properties:
+        id:
+          description: The refund's identifier.
+          type: string
+        order_id:
+          description: The identifier of the order the refund is associated with.
+          type: string
+        status:
+          description: The current status of refund.
+          type: string
+        total_amount:
+          format: decimal
+          description: The total amount refunded
+          type: string
+        currency:
+          description: >-
+            Three-letter ISO currency code representing the currency of the
+            refund
+          type: string
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the refund was created. The API returns this
+            value in ISO 8601 format.
+          type: string
+        updated_time:
+          format: date-time
+          description: >-
+            The date and time when the refund was updated. The API returns this
+            value in ISO 8601 format.
+          type: string
+    Selz.Api.Public.Models.Store.StoreResponse:
+      description: Store
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the store
+          type: string
+        name:
+          description: Name of the store
+          type: string
+        logo:
+          description: Logo url of the store
+          type: string
+        owner:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Store.OwnerResponse'
+        icon:
+          description: Icon url of the store
+          type: string
+        display_name:
+          description: User friendly display for the store
+          type: string
+        domain:
+          description: Domain of the store
+          type: string
+        culture_name:
+          description: Culture of the shop, ISO two-letter (639-1) language code (e.g. en)
+          type: string
+        time_zone:
+          description: "ISO 8601 time zone name e.g. Pacific Standard Time,\r\nhttps://en.wikipedia.org/wiki/List_of_time_zone_abbreviations for the full list of time zone names."
+          type: string
+        currency:
+          description: ISO 4217 Currency code (e.g USD of U.S dollars)
+          type: string
+        subscription:
+          $ref: >-
+            #/components/schemas/Selz.Api.Public.Models.Store.ShopSubscriptionResponse
+        created_time:
+          format: date-time
+          description: Store creation time
+          type: string
+    Selz.Api.Public.Models.Store.OwnerResponse:
+      description: Owner
+      type: object
+      properties:
+        full_name:
+          description: Name of the shop
+          type: string
+        email:
+          description: Email of the shop
+          type: string
+        biography:
+          description: Biography of the shop
+          type: string
+        avatar:
+          description: Avatar image url of the shop
+          type: string
+        address:
+          $ref: '#/components/schemas/Selz.Api.Public.Models.Store.AddressResponse'
+    Selz.Api.Public.Models.Store.ShopSubscriptionResponse:
+      description: Subscription
+      type: object
+      properties:
+        plan_id:
+          description: Plan Id of the subscription (e.g. Free, Basic, Standard, Advanced)
+          type: string
+        plan_name:
+          description: >-
+            Plan name of the subscription (e.g. Free, Basic - 2019 Standard -
+            2019, Advanced - 2019)
+          type: string
+    Selz.Api.Public.Models.Store.AddressResponse:
+      description: Address
+      type: object
+      properties:
+        line1:
+          description: Street address
+          type: string
+        line2:
+          description: An optional additional field for the street address
+          type: string
+        city:
+          description: City/Suburb/Town/Village
+          type: string
+        post_code:
+          description: Zip/Postal Code
+          type: string
+        state_code:
+          description: Code for the state or region
+          type: string
+        country_code:
+          description: Two-letter ISO code for the country
+          type: string
+    Selz.Api.Public.Models.WebHooks.WebHookResponse:
+      description: WebHookResponse
+      type: object
+      properties:
+        id:
+          description: Unique identifier of the webHook
+          type: string
+        key:
+          description: >-
+            A secret that you can use to validate the integrity of these
+            webHooks
+          type: string
+        url:
+          description: >-
+            The URL where the webHook should send the POST request when the
+            event occurs.
+          type: string
+        event_type:
+          description: >-
+            Description of the event: e.g order_payment_succeeded,
+            product_soldout
+          type: string
+        created_time:
+          format: date-time
+          description: >-
+            The date and time when the webHook was created. The API returns this
+            value in ISO 8601 format
+          type: string
+    Selz.Api.Public.Models.WebHooks.WebHookRequest:
+      description: Webhook
+      type: object
+      properties:
+        url:
+          description: >-
+            The URL where the webhook should send the POST request when the
+            event occurs.
+          type: string
+        event_type:
+          description: 'Event type: e.g order_payment_succeeded, product_soldout'
+          enum:
+            - order_payment_succeeded
+            - product_soldout
+            - product_variant_soldout
+            - customer_created
+            - customer_updated
+            - customer_deleted
+            - category_created
+            - category_updated
+            - category_deleted
+            - blog_post_created
+            - blog_post_updated
+            - blog_post_deleted
+            - discount_created
+            - discount_updated
+            - discount_deleted
+            - product_created
+            - product_updated
+            - product_deleted
+            - order_completed
+            - Invalid
+          type: string
+    Selz.Api.Public.Models.WebHooks.WebHookPutRequest:
+      description: WebHookPutRequest
+      type: object
+      properties:
+        url:
+          description: >-
+            The URL where the webHook should send the POST request when the
+            event occurs.
+          type: string
+        event_type:
+          description: 'Event type: e.g order_payment_succeeded, product_soldout'
+          enum:
+            - order_payment_succeeded
+            - product_soldout
+            - product_variant_soldout
+            - customer_created
+            - customer_updated
+            - customer_deleted
+            - category_created
+            - category_updated
+            - category_deleted
+            - blog_post_created
+            - blog_post_updated
+            - blog_post_deleted
+            - discount_created
+            - discount_updated
+            - discount_deleted
+            - product_created
+            - product_updated
+            - product_deleted
+            - order_completed
+            - Invalid
+          type: string
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.BlogPosts.BlogPostResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.BlogPosts.BlogPostResponse
+    Selz.Core.Api.Models.SlicedListResponse_1_Selz.Api.Public.Models.Categories.CategoryResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Selz.Core.Api.Models.SlicedListMetaData'
+        data:
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Categories.CategoryResponse
+        errors:
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Core.Api.Models.ErrorResponse'
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Discounts.DiscountResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Discounts.DiscountResponse
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Disputes.DisputeResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Disputes.DisputeResponse
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Orders.OrderResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Api.Public.Models.Orders.OrderResponse'
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Payouts.PayoutResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Api.Public.Models.Payouts.PayoutResponse'
+    Selz.Core.Api.Models.SlicedListResponse_1_Selz.Api.Public.Models.Products.ProductResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Selz.Core.Api.Models.SlicedListMetaData'
+        data:
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Products.ProductResponse
+        errors:
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Core.Api.Models.ErrorResponse'
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.Categories.CategoryResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.Categories.CategoryResponse
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Orders.Api.Models.RefundResponse_Selz.Orders.Api.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: '#/components/schemas/Selz.Orders.Api.Models.RefundResponse'
+    Selz.Api.Public.Models.SlicedListResponse_1_Selz.Api.Public.Models.WebHooks.WebHookResponse_Selz.Api.Public.Models_Version_1.0.0.0_Culture_neutral_PublicKeyToken_null_:
+      description: SlicedListResponse
+      type: object
+      properties:
+        limit:
+          format: int32
+          description: Limit on the number of objects to be returned
+          type: integer
+          readOnly: true
+        has_more:
+          description: Flag indicating if list has more objects
+          type: boolean
+          readOnly: true
+        data:
+          description: List of objects
+          uniqueItems: false
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/Selz.Api.Public.Models.WebHooks.WebHookResponse
